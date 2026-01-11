@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  .score-badge {
+    @apply inline-flex items-center justify-center w-12 h-12 rounded-lg font-bold text-lg;
+  }
+
+  .score-badge-high {
+    @apply bg-green-500 text-white;
+  }
+
+  .score-badge-medium {
+    @apply bg-yellow-500 text-gray-900;
+  }
+
+  .score-badge-low {
+    @apply bg-red-500 text-white;
+  }
+
+  .score-badge-none {
+    @apply bg-gray-600 text-gray-400;
+  }
+
+  .status-chip {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+  }
+
+  .status-previews {
+    @apply bg-purple-500/20 text-purple-300;
+  }
+
+  .status-opened {
+    @apply bg-green-500/20 text-green-300;
+  }
+
+  .status-closing {
+    @apply bg-yellow-500/20 text-yellow-300;
+  }
+
+  .status-closed {
+    @apply bg-gray-500/20 text-gray-400;
+  }
+
+  .confidence-badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+  }
+
+  .confidence-high {
+    @apply bg-green-500/20 text-green-300;
+  }
+
+  .confidence-medium {
+    @apply bg-yellow-500/20 text-yellow-300;
+  }
+
+  .confidence-low {
+    @apply bg-red-500/20 text-red-300;
+  }
+}
