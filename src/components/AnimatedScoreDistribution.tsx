@@ -41,9 +41,9 @@ export default function AnimatedScoreDistribution({ reviews }: AnimatedScoreDist
 
   return (
     <div ref={ref} className="mb-5 space-y-2">
-      {/* Positive */}
+      {/* Favorable */}
       <div className="flex items-center gap-3">
-        <span className="text-xs text-gray-400 w-16">Positive</span>
+        <span className="text-xs text-gray-400 w-16">Favorable</span>
         <div className="flex-1 h-2.5 bg-surface-overlay rounded-full overflow-hidden">
           <div
             className="bg-score-high h-full rounded-full transition-all duration-700 ease-out"
@@ -63,9 +63,9 @@ export default function AnimatedScoreDistribution({ reviews }: AnimatedScoreDist
         </div>
         <span className="text-xs font-medium text-gray-300 w-12 text-right">{medium} ({mediumPct}%)</span>
       </div>
-      {/* Negative */}
+      {/* Unfavorable */}
       <div className="flex items-center gap-3">
-        <span className="text-xs text-gray-400 w-16">Negative</span>
+        <span className="text-xs text-gray-400 w-16">Unfavorable</span>
         <div className="flex-1 h-2.5 bg-surface-overlay rounded-full overflow-hidden">
           <div
             className="bg-score-low h-full rounded-full transition-all duration-700 ease-out delay-200"

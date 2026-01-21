@@ -46,10 +46,10 @@ function formatDate(dateStr: string): string {
   });
 }
 
-function getScoreColor(score: number): string {
-  if (score >= 70) return '#10b981';
-  if (score >= 50) return '#f59e0b';
-  return '#ef4444';
+function getScoreClasses(score: number): string {
+  if (score >= 70) return 'bg-score-high text-white';
+  if (score >= 50) return 'bg-score-medium text-gray-900';
+  return 'bg-score-low text-white';
 }
 
 function OutletLogo({ outlet }: { outlet: string }) {
@@ -158,7 +158,7 @@ function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
                 <span className="text-gray-500 text-sm ml-2">by {review.criticName}</span>
               )}
             </div>
-            <div className="flex-shrink-0 text-xl font-bold transition-transform group-hover:scale-110" style={{ color: getScoreColor(review.reviewMetaScore) }}>
+            <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-base font-bold transition-transform group-hover:scale-105 ${getScoreClasses(review.reviewMetaScore)}`}>
               {review.reviewMetaScore}
             </div>
           </div>
