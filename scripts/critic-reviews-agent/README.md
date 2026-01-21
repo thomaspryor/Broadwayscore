@@ -2,47 +2,46 @@
 
 A data agent for fetching, normalizing, and managing critic reviews for Broadway shows.
 
+## ⚠️ Important: Use Claude Code Integration
+
+**Direct web scraping gets 403 blocked by most review sites.**
+
+The recommended workflow is to use **Claude Code's WebSearch capability** to find and verify reviews. See [WORKFLOW.md](./WORKFLOW.md) for the step-by-step process.
+
 ## Features
 
-- **Search API Integration**: Uses web search APIs (SerpAPI, Brave) for reliable review discovery
-- **Multi-Source Fetching**: Pulls reviews from BroadwayWorld, DidTheyLikeIt, Show-Score
 - **Rating Normalization**: Converts various rating formats (stars, letters, buckets) to 0-100 scale
+- **Validation**: Ensures bucket/thumb consistency with scores
 - **Deduplication**: Identifies and merges duplicate reviews from different sources
 - **Consistency**: Running twice produces identical results (idempotent)
 - **Manual Entry Support**: Add reviews that can't be automatically fetched
-- **Claude Code Integration**: Can be driven directly by Claude Code for automated data collection
+- **DTLI Cross-Check**: Validate review counts against Did They Like It
 
 ## Quick Start
 
-### Option 1: Search API (Recommended)
-Uses a web search API to find reviews - more reliable than direct scraping.
+### Recommended: Claude Code Integration
+
+Ask Claude Code to collect reviews:
+```
+"Collect reviews for [Show Name]. Cross-check against Did They Like It for accuracy."
+```
+
+Claude Code will:
+1. Search for the show's review roundup
+2. Find each outlet's review with actual star/letter ratings
+3. Convert to 0-100 scores
+4. Validate against DTLI's counts
+5. Add to reviews.json
+
+### Validate Existing Data
 
 ```bash
-# Get a free API key from https://serpapi.com (100 searches/month free)
-export SERPAPI_KEY=your_api_key
+# Validate a show's reviews
+npx ts-node scripts/critic-reviews-agent/validate.ts bug-2025
 
-# Fetch reviews for a specific show
-npm run reviews:fetch -- --show bug-2025 --search --verbose
-
-# Fetch for all open shows
-npm run reviews:all -- --search
+# Generate coverage report
+npm run reviews:report
 ```
-
-### Option 2: Direct Scraping (May be blocked)
-```bash
-# Fetch reviews for a specific show (direct scraping)
-npm run reviews:fetch -- --show two-strangers-bway-2025
-
-# Comprehensive search across all outlets
-npm run reviews:fetch -- --show cabaret-2024 --comprehensive --verbose
-```
-
-### Option 3: Claude Code Integration
-Ask Claude Code to fetch reviews directly:
-```
-"Fetch reviews for Bug using web search and add them to reviews.json"
-```
-Claude Code will use its WebSearch capability to find reviews and populate the data.
 
 ## Command Reference
 
