@@ -1,52 +1,37 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getTopShowsByCategory, getAllShows } from '@/lib/data';
+import Link from 'next/link';
+import { Metadata } from 'next';
+import { getBestOfList, getAllBestOfCategories, BestOfCategory } from '@/lib/data';
+import { generateBreadcrumbSchema, generateItemListSchema } from '@/lib/seo';
 
-type CategoryConfig = {
-  title: string;
-  description: string;
-  type: 'musicals' | 'plays' | 'all';
-};
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
 
-const categories: Record<string, CategoryConfig> = {
-  musicals: {
-    title: 'Best Broadway Musicals',
-    description: 'The highest-rated Broadway musicals based on critic reviews and metascores.',
-    type: 'musicals',
-  },
-  plays: {
-    title: 'Best Broadway Plays',
-    description: 'The highest-rated Broadway plays based on critic reviews and metascores.',
-    type: 'plays',
-  },
-  all: {
-    title: 'Best Broadway Shows',
-    description: 'The highest-rated Broadway shows of all types based on critic reviews and metascores.',
-    type: 'all',
-  },
-};
-
-export async function generateStaticParams() {
-  return Object.keys(categories).map(category => ({ category }));
+export function generateStaticParams() {
+  return getAllBestOfCategories().map((category) => ({ category }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ category: string }>;
-}): Promise<Metadata> {
-  const { category } = await params;
-  const config = categories[category];
+export function generateMetadata({ params }: { params: { category: string } }): Metadata {
+  const list = getBestOfList(params.category as BestOfCategory);
+  if (!list) return { title: 'List Not Found' };
 
-  if (!config) return { title: 'Not Found' };
+  const canonicalUrl = `${BASE_URL}/best/${params.category}`;
 
   return {
-    title: `${config.title} | Broadway Metascore`,
-    description: config.description,
+    title: `${list.title} 2026 | BroadwayMetaScores`,
+    description: list.description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
-      title: config.title,
-      description: config.description,
+      title: list.title,
+      description: list.description,
+      url: canonicalUrl,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: list.title,
+      description: list.description,
     },
   };
 }
@@ -54,110 +39,158 @@ export async function generateMetadata({
 function ScoreBadge({ score }: { score?: number | null }) {
   if (score === undefined || score === null) {
     return (
-      <div className="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center text-gray-500 font-bold text-lg">
+      <div className="w-12 h-12 bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold text-lg rounded-xl">
         —
       </div>
     );
   }
 
   const roundedScore = Math.round(score);
-  const colorClass =
-    roundedScore >= 70
-      ? 'bg-green-500 text-white'
-      : roundedScore >= 50
-      ? 'bg-yellow-500 text-black'
-      : 'bg-red-500 text-white';
+  const colorClass = roundedScore >= 70
+    ? 'bg-score-high text-white'
+    : roundedScore >= 50
+    ? 'bg-score-medium text-gray-900'
+    : 'bg-score-low text-white';
 
   return (
-    <div className={`w-12 h-12 rounded-lg ${colorClass} flex items-center justify-center font-bold text-lg`}>
+    <div className={`w-12 h-12 ${colorClass} flex items-center justify-center font-bold text-lg rounded-xl`}>
       {roundedScore}
     </div>
   );
 }
 
-export default async function BestCategoryPage({
-  params,
-}: {
-  params: Promise<{ category: string }>;
-}) {
-  const { category } = await params;
-  const config = categories[category];
+function RankBadge({ rank }: { rank: number }) {
+  const isTop3 = rank <= 3;
+  return (
+    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+      isTop3 ? 'bg-accent-gold text-gray-900' : 'bg-surface-overlay text-gray-400 border border-white/10'
+    }`}>
+      {rank}
+    </div>
+  );
+}
 
-  if (!config) {
+export default function BestOfPage({ params }: { params: { category: string } }) {
+  const list = getBestOfList(params.category as BestOfCategory);
+
+  if (!list) {
     notFound();
   }
 
-  const shows = getTopShowsByCategory(config.type, 20);
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: 'Best Of', url: `${BASE_URL}/best` },
+    { name: list.title, url: `${BASE_URL}/best/${params.category}` },
+  ]);
+
+  const itemListSchema = generateItemListSchema(
+    list.shows.map(show => ({
+      name: show.title,
+      url: `${BASE_URL}/show/${show.slug}`,
+      image: show.images?.hero,
+      score: show.criticScore?.score ? Math.round(show.criticScore.score) : undefined,
+    })),
+    list.title
+  );
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <Link
-          href="/"
-          className="inline-flex items-center text-gray-400 hover:text-white mb-6 transition-colors"
-        >
-          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, itemListSchema]) }}
+      />
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+        {/* Back Link */}
+        <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Back to all shows
+          All Shows
         </Link>
 
-        <h1 className="text-3xl font-bold text-white mb-2">{config.title}</h1>
-        <p className="text-gray-400 mb-8">{config.description}</p>
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">{list.title}</h1>
+          <p className="text-gray-400 text-lg">{list.description}</p>
+          <p className="text-gray-500 text-sm mt-2">
+            Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+          </p>
+        </div>
 
-        {shows.length === 0 ? (
-          <p className="text-gray-500">No scored shows in this category yet.</p>
-        ) : (
+        {/* Show List */}
+        {list.shows.length > 0 ? (
           <div className="space-y-4">
-            {shows.map((show, index) => (
+            {list.shows.map((show, index) => (
               <Link
                 key={show.id}
                 href={`/show/${show.slug}`}
-                className="flex items-center gap-4 p-4 bg-surface rounded-xl hover:bg-surface-elevated transition-colors"
+                className="card p-4 flex items-center gap-4 hover:bg-surface-raised/80 transition-colors group"
               >
-                <span className="text-2xl font-bold text-gray-500 w-8 text-center">
-                  {index + 1}
-                </span>
-                <ScoreBadge score={show.metascore} />
+                <RankBadge rank={index + 1} />
+
+                {/* Thumbnail */}
+                <div className="w-16 h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                  {show.images?.thumbnail ? (
+                    <img
+                      src={show.images.thumbnail}
+                      alt={`${show.title} Broadway ${show.type}`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-2xl">🎭</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-lg font-semibold text-white truncate">{show.title}</h2>
-                  <p className="text-sm text-gray-400">
+                  <h2 className="font-bold text-white group-hover:text-brand transition-colors truncate">
+                    {show.title}
+                  </h2>
+                  <p className="text-gray-400 text-sm truncate">
                     {show.venue} • {show.type === 'musical' ? 'Musical' : 'Play'}
                   </p>
+                  {show.criticScore && (
+                    <p className="text-gray-500 text-xs mt-1">
+                      {show.criticScore.reviewCount} reviews
+                    </p>
+                  )}
                 </div>
-                <span
-                  className={`px-2 py-1 rounded text-xs font-medium ${
-                    show.status === 'open'
-                      ? 'bg-green-500/20 text-green-400'
-                      : 'bg-gray-500/20 text-gray-400'
-                  }`}
-                >
-                  {show.status === 'open' ? 'Now Playing' : 'Closed'}
-                </span>
+
+                {/* Score */}
+                <ScoreBadge score={show.criticScore?.score} />
               </Link>
             ))}
+          </div>
+        ) : (
+          <div className="card p-8 text-center">
+            <p className="text-gray-400">No shows found in this category.</p>
           </div>
         )}
 
-        <div className="mt-12 pt-8 border-t border-gray-800">
-          <h2 className="text-lg font-semibold text-white mb-4">Browse by Category</h2>
-          <div className="flex flex-wrap gap-3">
-            {Object.entries(categories).map(([key, cat]) => (
-              <Link
-                key={key}
-                href={`/best/${key}`}
-                className={`px-4 py-2 rounded-lg transition-colors ${
-                  key === category
-                    ? 'bg-brand text-white'
-                    : 'bg-surface text-gray-400 hover:bg-surface-elevated hover:text-white'
-                }`}
-              >
-                {cat.title.replace('Best Broadway ', '')}
-              </Link>
-            ))}
+        {/* Other Lists */}
+        <div className="mt-12 pt-8 border-t border-white/10">
+          <h3 className="text-lg font-bold text-white mb-4">Explore More Lists</h3>
+          <div className="flex flex-wrap gap-2">
+            {getAllBestOfCategories()
+              .filter(cat => cat !== params.category)
+              .map(cat => {
+                const otherList = getBestOfList(cat);
+                return otherList ? (
+                  <Link
+                    key={cat}
+                    href={`/best/${cat}`}
+                    className="px-4 py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors"
+                  >
+                    {otherList.title.replace('Best ', '').replace('Top 10 ', '')}
+                  </Link>
+                ) : null;
+              })}
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
