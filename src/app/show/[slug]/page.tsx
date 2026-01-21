@@ -12,17 +12,41 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!show) return { title: 'Show Not Found' };
 
   const score = show.criticScore?.score;
-  const description = score
-    ? `${show.title} has a critic score of ${score}. Read ${show.criticScore?.reviewCount} reviews.`
-    : `Reviews and scores for ${show.title} on Broadway.`;
+  const scoreText = score ? ` (Score: ${score}/100)` : '';
+  const reviewText = show.criticScore?.reviewCount ? ` Based on ${show.criticScore.reviewCount} critic reviews.` : '';
+
+  const description = show.synopsis
+    ? `${show.synopsis.slice(0, 150)}...${scoreText}`
+    : `${show.title} at ${show.venue}.${scoreText}${reviewText}`;
+
+  const title = score
+    ? `${show.title} - Score: ${score} | Broadway Reviews`
+    : `${show.title} - Broadway Reviews & Tickets`;
 
   return {
-    title: `${show.title} - Critic Score & Reviews`,
+    title,
     description,
+    keywords: [show.title, show.venue, 'Broadway', 'tickets', 'reviews', ...(show.tags || [])],
     openGraph: {
-      title: `${show.title} - Broadway Score`,
+      type: 'website',
+      title: `${show.title}${scoreText} - BroadwayScore`,
       description,
-      images: show.images?.hero ? [{ url: show.images.hero }] : undefined,
+      images: show.images?.hero ? [{
+        url: show.images.hero,
+        width: 1920,
+        height: 1080,
+        alt: show.title,
+      }] : undefined,
+      siteName: 'BroadwayScore',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${show.title}${scoreText}`,
+      description: description.slice(0, 200),
+      images: show.images?.hero ? [show.images.hero] : undefined,
+    },
+    alternates: {
+      canonical: `${BASE_URL}/show/${show.slug}`,
     },
   };
 }
@@ -109,28 +133,89 @@ function ExternalLinkIcon() {
   );
 }
 
-// JSON-LD structured data for SEO
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore.com';
+
+// JSON-LD structured data for SEO - generates rich results in Google
 function generateStructuredData(show: ComputedShow) {
-  return {
+  // Main event schema
+  const eventData: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'TheaterEvent',
     name: show.title,
+    description: show.synopsis,
+    url: `${BASE_URL}/show/${show.slug}`,
     location: {
       '@type': 'PerformingArtsTheater',
       name: show.venue,
-      address: show.theaterAddress || 'New York, NY',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: show.theaterAddress?.split(',')[0] || show.venue,
+        addressLocality: 'New York',
+        addressRegion: 'NY',
+        addressCountry: 'US',
+      },
     },
     startDate: show.openingDate,
-    ...(show.closingDate && { endDate: show.closingDate }),
-    ...(show.images?.hero && { image: show.images.hero }),
-    aggregateRating: show.criticScore?.score ? {
+    eventStatus: show.status === 'open' ? 'https://schema.org/EventScheduled' : 'https://schema.org/EventCancelled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  };
+
+  if (show.closingDate) {
+    eventData.endDate = show.closingDate;
+  }
+
+  if (show.images?.hero) {
+    eventData.image = [show.images.hero, show.images.poster, show.images.thumbnail].filter(Boolean);
+  }
+
+  // Add aggregate rating if we have reviews
+  if (show.criticScore?.score) {
+    eventData.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: show.criticScore.score,
       bestRating: 100,
       worstRating: 0,
       reviewCount: show.criticScore.reviewCount,
-    } : undefined,
-  };
+      ratingCount: show.criticScore.reviewCount,
+    };
+  }
+
+  // Add ticket offers for rich results
+  if (show.ticketLinks && show.ticketLinks.length > 0) {
+    eventData.offers = show.ticketLinks.map((link) => ({
+      '@type': 'Offer',
+      url: link.url,
+      price: link.priceFrom || 0,
+      priceCurrency: 'USD',
+      availability: show.status === 'open' ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
+      validFrom: show.openingDate,
+      seller: {
+        '@type': 'Organization',
+        name: link.platform,
+      },
+    }));
+  }
+
+  // Add performers (cast)
+  if (show.cast && show.cast.length > 0) {
+    eventData.performer = show.cast.map((member) => ({
+      '@type': 'Person',
+      name: member.name,
+    }));
+  }
+
+  // Add organizer (creative team / production)
+  if (show.creativeTeam && show.creativeTeam.length > 0) {
+    const director = show.creativeTeam.find((m) => m.role.toLowerCase().includes('director'));
+    if (director) {
+      eventData.director = {
+        '@type': 'Person',
+        name: director.name,
+      };
+    }
+  }
+
+  return eventData;
 }
 
 export default function ShowPage({ params }: { params: { slug: string } }) {

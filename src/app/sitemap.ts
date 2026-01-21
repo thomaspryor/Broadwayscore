@@ -1,17 +1,23 @@
 import { MetadataRoute } from 'next';
-import { getAllShowSlugs } from '@/lib/data';
+import { getAllShowSlugs, getShowBySlug } from '@/lib/data';
 
-const BASE_URL = 'https://thomaspryor.github.io/Broadwayscore';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const showSlugs = getAllShowSlugs();
 
-  const showPages = showSlugs.map((slug) => ({
-    url: `${BASE_URL}/show/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }));
+  // Prioritize open shows higher than closed shows
+  const showPages = showSlugs.map((slug) => {
+    const show = getShowBySlug(slug);
+    const isOpen = show?.status === 'open';
+
+    return {
+      url: `${BASE_URL}/show/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: isOpen ? 'weekly' as const : 'monthly' as const,
+      priority: isOpen ? 0.9 : 0.6,
+    };
+  });
 
   return [
     {
@@ -25,12 +31,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.5,
-    },
-    {
-      url: `${BASE_URL}/data`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.3,
     },
     ...showPages,
   ];
