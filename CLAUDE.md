@@ -1,5 +1,11 @@
 # Broadway Metascore Project Context
 
+## User Preferences (IMPORTANT)
+- **NEVER suggest manual steps** if automation is possible. Always write scripts, create GitHub Actions, or implement code solutions instead.
+- If a task requires network access Claude can't perform, write a script the user can run locally with a single command.
+- When scripts fail for some items, fix the script or add retry logic - don't ask the user to manually fetch data.
+- Automate everything: data fetching, image URLs, status updates, deployments.
+
 ## Project Overview
 A website that aggregates Broadway show reviews and calculates composite "metascores" similar to Metacritic, but for Broadway shows.
 
