@@ -235,70 +235,119 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      {/* Hero Image */}
-      {show.images?.hero && (
-        <div className="relative h-48 sm:h-64 lg:h-80 -mt-16 sm:-mt-18">
-          <img
-            src={show.images.hero}
-            alt={show.title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent" />
-        </div>
-      )}
-
-      <div className={`max-w-3xl mx-auto px-4 sm:px-6 ${show.images?.hero ? '-mt-24 relative z-10' : 'py-8'}`}>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         {/* Back Link */}
         <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">
           <BackArrow />
           All Shows
         </Link>
 
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-6 mb-8">
-          {/* Score Badge */}
-          <div className="flex-shrink-0">
-            <ScoreBadge score={score} size="xl" />
+        {/* Main Header - Poster Layout */}
+        <div className="flex flex-col md:flex-row gap-6 md:gap-8 mb-8">
+          {/* Poster Image */}
+          <div className="flex-shrink-0 relative">
+            {show.images?.poster ? (
+              <div className="relative">
+                <img
+                  src={show.images.poster}
+                  alt={show.title}
+                  className="w-48 md:w-56 rounded-lg shadow-2xl object-cover aspect-[2/3]"
+                />
+                {/* Score Badge Overlay */}
+                <div className="absolute -bottom-3 -right-3">
+                  <ScoreBadge score={score} size="lg" />
+                </div>
+              </div>
+            ) : (
+              <div className="w-48 md:w-56 aspect-[2/3] bg-surface-card rounded-lg flex items-center justify-center">
+                <span className="text-4xl">🎭</span>
+              </div>
+            )}
             {show.criticScore && (
-              <p className="text-center text-xs text-gray-500 mt-2">
+              <p className="text-center text-xs text-gray-500 mt-4">
                 {show.criticScore.reviewCount} reviews
               </p>
             )}
           </div>
 
-          {/* Title & Meta */}
+          {/* Show Info */}
           <div className="flex-1">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
+            {/* Tags */}
+            <div className="flex flex-wrap gap-2 mb-3">
+              {show.type && (
+                <span className="px-3 py-1 bg-surface-overlay text-gray-300 text-xs font-medium rounded-full uppercase">
+                  {show.type}
+                </span>
+              )}
+              <StatusChip status={show.status} />
+            </div>
+
+            {/* Title */}
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight mb-3">
               {show.title}
             </h1>
-            <div className="flex flex-wrap items-center gap-2 mt-2 text-gray-400 text-sm">
+
+            {/* Meta */}
+            <div className="flex flex-wrap items-center gap-2 text-gray-400 text-sm mb-4">
               <span className="text-gray-300">{show.venue}</span>
               <span className="text-gray-600">•</span>
               <span>{show.runtime}</span>
-              <span className="text-gray-600">•</span>
-              <StatusChip status={show.status} />
             </div>
+
+            {/* Score Label */}
+            {score !== undefined && score !== null && (
+              <div className="flex items-center gap-2 mb-4">
+                <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                  score >= 70 ? 'bg-score-high/20 text-score-high' :
+                  score >= 50 ? 'bg-score-medium/20 text-score-medium' :
+                  'bg-score-low/20 text-score-low'
+                }`}>
+                  {score >= 70 ? 'GREAT' : score >= 50 ? 'MIXED' : 'POOR'}
+                </span>
+                <span className="text-gray-400 text-sm">Based on {show.criticScore?.reviewCount} reviews</span>
+              </div>
+            )}
+
+            {/* Ticket Links */}
+            {show.ticketLinks && show.ticketLinks.length > 0 && (
+              <div className="flex flex-wrap gap-3 mb-4">
+                {show.ticketLinks.map((link, i) => (
+                  <a
+                    key={i}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary flex items-center gap-2"
+                  >
+                    {link.platform}
+                    {link.priceFrom && <span className="opacity-80">from ${link.priceFrom}</span>}
+                    <ExternalLinkIcon />
+                  </a>
+                ))}
+                {show.officialUrl && (
+                  <a
+                    href={show.officialUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary flex items-center gap-2"
+                  >
+                    <span>🌐</span> Official Site
+                  </a>
+                )}
+                {show.trailerUrl && (
+                  <a
+                    href={show.trailerUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary flex items-center gap-2"
+                  >
+                    <span>▶</span> Trailer
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Ticket Links */}
-        {show.ticketLinks && show.ticketLinks.length > 0 && (
-          <div className="flex flex-wrap gap-3 mb-8">
-            {show.ticketLinks.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary flex items-center gap-2"
-              >
-                {link.platform}
-                {link.priceFrom && <span className="opacity-80">from ${link.priceFrom}</span>}
-                <ExternalLinkIcon />
-              </a>
-            ))}
-          </div>
-        )}
 
         {/* Synopsis */}
         {show.synopsis && (
