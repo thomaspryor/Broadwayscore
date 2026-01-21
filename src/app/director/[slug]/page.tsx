@@ -1,115 +1,147 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getAllDirectors, getDirectorBySlug } from '@/lib/data';
+import Link from 'next/link';
+import { Metadata } from 'next';
+import { getDirectorBySlug, getAllDirectorSlugs } from '@/lib/data';
+import { generateBreadcrumbSchema, generatePersonSchema } from '@/lib/seo';
 
-export async function generateStaticParams() {
-  const directors = getAllDirectors();
-  return directors.map(director => ({ slug: director.slug }));
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
+
+export function generateStaticParams() {
+  return getAllDirectorSlugs().map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const director = getDirectorBySlug(slug);
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+  const director = getDirectorBySlug(params.slug);
+  if (!director) return { title: 'Director Not Found' };
 
-  if (!director) return { title: 'Not Found' };
+  const canonicalUrl = `${BASE_URL}/director/${params.slug}`;
+  const description = director.avgScore
+    ? `${director.name} has directed ${director.showCount} Broadway show${director.showCount > 1 ? 's' : ''} with an average critic score of ${director.avgScore}/100.`
+    : `${director.name} has directed ${director.showCount} Broadway show${director.showCount > 1 ? 's' : ''}. See their full Broadway history.`;
 
   return {
-    title: `${director.name} - Broadway Director | Broadway Metascore`,
-    description: `Broadway shows directed by ${director.name}. See reviews, scores, and productions.`,
+    title: `${director.name} - Broadway Director | BroadwayMetaScores`,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: `${director.name} - Broadway Director`,
-      description: `Broadway shows directed by ${director.name}. See reviews, scores, and productions.`,
+      description,
+      url: canonicalUrl,
+      type: 'profile',
+    },
+    twitter: {
+      card: 'summary',
+      title: `${director.name} - Broadway Director`,
+      description,
     },
   };
 }
 
-function ScoreBadge({ score }: { score?: number | null }) {
+function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm' | 'md' }) {
+  const sizeClasses = {
+    sm: 'w-10 h-10 text-sm rounded-lg',
+    md: 'w-12 h-12 text-lg rounded-xl',
+  };
+
   if (score === undefined || score === null) {
     return (
-      <div className="w-11 h-11 rounded-lg bg-gray-800 flex items-center justify-center text-gray-500 font-bold">
+      <div className={`${sizeClasses[size]} bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold`}>
         —
       </div>
     );
   }
 
   const roundedScore = Math.round(score);
-  const colorClass =
-    roundedScore >= 70
-      ? 'bg-green-500 text-white'
-      : roundedScore >= 50
-      ? 'bg-yellow-500 text-black'
-      : 'bg-red-500 text-white';
+  const colorClass = roundedScore >= 70
+    ? 'bg-score-high text-white'
+    : roundedScore >= 50
+    ? 'bg-score-medium text-gray-900'
+    : 'bg-score-low text-white';
 
   return (
-    <div className={`w-11 h-11 rounded-lg ${colorClass} flex items-center justify-center font-bold`}>
+    <div className={`${sizeClasses[size]} ${colorClass} flex items-center justify-center font-bold`}>
       {roundedScore}
     </div>
   );
 }
 
-export default async function DirectorPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const director = getDirectorBySlug(slug);
+export default function DirectorPage({ params }: { params: { slug: string } }) {
+  const director = getDirectorBySlug(params.slug);
 
   if (!director) {
     notFound();
   }
 
-  const openShows = director.shows.filter(s => s.status === 'open');
-  const closedShows = director.shows.filter(s => s.status === 'closed');
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: 'Directors', url: `${BASE_URL}/director` },
+    { name: director.name, url: `${BASE_URL}/director/${params.slug}` },
+  ]);
 
-  // Calculate average score
-  const scoredShows = director.shows.filter(s => s.metascore !== null && s.metascore !== undefined);
-  const avgScore = scoredShows.length > 0
-    ? Math.round(scoredShows.reduce((sum, s) => sum + (s.metascore ?? 0), 0) / scoredShows.length)
-    : null;
+  const personSchema = generatePersonSchema({
+    name: director.name,
+    slug: director.slug,
+    role: 'Director',
+    shows: director.shows.map(s => ({
+      title: s.title,
+      slug: s.slug,
+      score: s.criticScore?.score ? Math.round(s.criticScore.score) : undefined,
+    })),
+  });
+
+  // Sort shows by opening date (newest first)
+  const sortedShows = [...director.shows].sort((a, b) =>
+    new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
+  );
+
+  const openShows = sortedShows.filter(s => s.status === 'open');
+  const closedShows = sortedShows.filter(s => s.status === 'closed');
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <Link
-          href="/"
-          className="inline-flex items-center text-gray-400 hover:text-white mb-6 transition-colors"
-        >
-          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, personSchema]) }}
+      />
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+        {/* Back Link */}
+        <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Back to all shows
+          All Shows
         </Link>
 
-        <div className="flex items-start gap-6 mb-8">
-          <div className="w-20 h-20 rounded-full bg-surface flex items-center justify-center text-3xl font-bold text-brand">
-            {director.name.charAt(0)}
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold text-white mb-1">{director.name}</h1>
-            <p className="text-gray-400">Broadway Director</p>
-            <div className="flex items-center gap-4 mt-3 text-sm">
-              <span className="text-gray-500">
-                {director.shows.length} production{director.shows.length !== 1 ? 's' : ''}
-              </span>
-              {avgScore !== null && (
-                <span className="text-gray-500">
-                  Avg. Score: <span className="text-white font-semibold">{avgScore}</span>
-                </span>
-              )}
+        {/* Header */}
+        <div className="mb-8">
+          <p className="text-brand text-sm font-medium uppercase tracking-wider mb-2">Director</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">{director.name}</h1>
+
+          {/* Stats */}
+          <div className="flex flex-wrap gap-6">
+            <div>
+              <p className="text-gray-500 text-sm">Shows Directed</p>
+              <p className="text-2xl font-bold text-white">{director.showCount}</p>
             </div>
+            {director.avgScore && (
+              <div>
+                <p className="text-gray-500 text-sm">Average Score</p>
+                <div className="flex items-center gap-2 mt-1">
+                  <ScoreBadge score={director.avgScore} size="sm" />
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
+        {/* Currently Running */}
         {openShows.length > 0 && (
-          <section className="mb-10">
-            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500"></span>
+          <section className="mb-8">
+            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-status-open"></span>
               Currently Running
             </h2>
             <div className="space-y-3">
@@ -117,24 +149,45 @@ export default async function DirectorPage({
                 <Link
                   key={show.id}
                   href={`/show/${show.slug}`}
-                  className="flex items-center gap-4 p-4 bg-surface rounded-xl hover:bg-surface-elevated transition-colors"
+                  className="card p-4 flex items-center gap-4 hover:bg-surface-raised/80 transition-colors group"
                 >
-                  <ScoreBadge score={show.metascore} />
+                  {/* Thumbnail */}
+                  <div className="w-14 h-14 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                    {show.images?.thumbnail ? (
+                      <img
+                        src={show.images.thumbnail}
+                        alt={`${show.title} - Broadway ${show.type} directed by ${director.name}`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-xl">🎭</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-white truncate">{show.title}</h3>
-                    <p className="text-sm text-gray-400">
-                      {show.venue} • {show.type === 'musical' ? 'Musical' : 'Play'}
+                    <h3 className="font-bold text-white group-hover:text-brand transition-colors truncate">
+                      {show.title}
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      {show.venue} • Opened {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                     </p>
                   </div>
+
+                  {/* Score */}
+                  <ScoreBadge score={show.criticScore?.score} size="sm" />
                 </Link>
               ))}
             </div>
           </section>
         )}
 
+        {/* Past Shows */}
         {closedShows.length > 0 && (
           <section>
-            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-gray-500"></span>
               Past Productions
             </h2>
@@ -143,40 +196,49 @@ export default async function DirectorPage({
                 <Link
                   key={show.id}
                   href={`/show/${show.slug}`}
-                  className="flex items-center gap-4 p-4 bg-surface rounded-xl hover:bg-surface-elevated transition-colors opacity-75"
+                  className="card p-4 flex items-center gap-4 hover:bg-surface-raised/80 transition-colors group opacity-75 hover:opacity-100"
                 >
-                  <ScoreBadge score={show.metascore} />
+                  {/* Thumbnail */}
+                  <div className="w-14 h-14 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                    {show.images?.thumbnail ? (
+                      <img
+                        src={show.images.thumbnail}
+                        alt={`${show.title} - Broadway ${show.type} directed by ${director.name}`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-xl">🎭</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-white truncate">{show.title}</h3>
-                    <p className="text-sm text-gray-400">
-                      {show.venue}
-                      {show.closingDate && ` • Closed ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`}
+                    <h3 className="font-bold text-white group-hover:text-brand transition-colors truncate">
+                      {show.title}
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      {show.venue} • {new Date(show.openingDate).getFullYear()}
+                      {show.closingDate && ` – ${new Date(show.closingDate).getFullYear()}`}
                     </p>
                   </div>
+
+                  {/* Score */}
+                  <ScoreBadge score={show.criticScore?.score} size="sm" />
                 </Link>
               ))}
             </div>
           </section>
         )}
 
-        <div className="mt-12 pt-8 border-t border-gray-800">
-          <h2 className="text-lg font-semibold text-white mb-4">Other Broadway Directors</h2>
-          <div className="flex flex-wrap gap-2">
-            {getAllDirectors()
-              .filter(d => d.slug !== slug)
-              .slice(0, 12)
-              .map(d => (
-                <Link
-                  key={d.slug}
-                  href={`/director/${d.slug}`}
-                  className="px-3 py-1.5 rounded-lg bg-surface text-gray-400 hover:bg-surface-elevated hover:text-white text-sm transition-colors"
-                >
-                  {d.name}
-                </Link>
-              ))}
+        {/* Empty State */}
+        {director.shows.length === 0 && (
+          <div className="card p-8 text-center">
+            <p className="text-gray-400">No shows found for this director.</p>
           </div>
-        </div>
+        )}
       </div>
-    </div>
+    </>
   );
 }

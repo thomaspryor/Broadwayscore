@@ -1,10 +1,13 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow } from '@/lib/data';
+import { getShowBySlug, getAllShowSlugs, ComputedShow, getTheaterBySlug, getAllShows } from '@/lib/data';
+import { generateShowSchema, generateBreadcrumbSchema } from '@/lib/seo';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import AnimatedScoreDistribution from '@/components/AnimatedScoreDistribution';
 import ReviewsList from '@/components/ReviewsList';
+
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -15,17 +18,39 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!show) return { title: 'Show Not Found' };
 
   const score = show.criticScore?.score;
-  const description = score
-    ? `${show.title} has a critic score of ${score}. Read ${show.criticScore?.reviewCount} reviews.`
-    : `Reviews and scores for ${show.title} on Broadway.`;
+  const roundedScore = score ? Math.round(score) : null;
+  const reviewCount = show.criticScore?.reviewCount || 0;
+
+  // Enhanced title with score for better CTR
+  const title = roundedScore
+    ? `${show.title} Reviews | ${roundedScore}/100 Critic Score`
+    : `${show.title} - Broadway Reviews & Ratings`;
+
+  // Enhanced description with call-to-action
+  const description = roundedScore
+    ? `${show.title} has a ${roundedScore}/100 critic score based on ${reviewCount} reviews. See what critics are saying about this Broadway ${show.type}.`
+    : `Read critic reviews and ratings for ${show.title} on Broadway at ${show.venue}.`;
+
+  const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
 
   return {
-    title: `${show.title} - Critic Score & Reviews`,
+    title,
     description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: `${show.title} - BroadwayMetaScores`,
       description,
-      images: show.images?.hero ? [{ url: show.images.hero }] : undefined,
+      url: canonicalUrl,
+      type: 'article',
+      images: show.images?.hero ? [{ url: show.images.hero, width: 1200, height: 630, alt: `${show.title} Broadway show` }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: roundedScore ? `${show.title} - ${roundedScore}/100` : show.title,
+      description,
+      images: show.images?.hero ? [show.images.hero] : undefined,
     },
   };
 }
@@ -214,28 +239,16 @@ function getGoogleMapsUrl(address: string): string {
 }
 
 
-// JSON-LD structured data for SEO
-function generateStructuredData(show: ComputedShow) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'TheaterEvent',
-    name: show.title,
-    location: {
-      '@type': 'PerformingArtsTheater',
-      name: show.venue,
-      address: show.theaterAddress || 'New York, NY',
-    },
-    startDate: show.openingDate,
-    ...(show.closingDate && { endDate: show.closingDate }),
-    ...(show.images?.hero && { image: show.images.hero }),
-    aggregateRating: show.criticScore?.score ? {
-      '@type': 'AggregateRating',
-      ratingValue: show.criticScore.score,
-      bestRating: 100,
-      worstRating: 0,
-      reviewCount: show.criticScore.reviewCount,
-    } : undefined,
-  };
+// Generate all structured data for the page (TheaterEvent + BreadcrumbList)
+function generateAllStructuredData(show: ComputedShow) {
+  const showSchema = generateShowSchema(show);
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: 'Shows', url: `${BASE_URL}/#shows` },
+    { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
+  ]);
+
+  return [showSchema, breadcrumbSchema];
 }
 
 export default function ShowPage({ params }: { params: { slug: string } }) {
@@ -245,11 +258,12 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  const structuredData = generateStructuredData(show);
+  const structuredData = generateAllStructuredData(show);
   const score = show.criticScore?.score;
 
   return (
     <>
+      {/* Enhanced JSON-LD: TheaterEvent with Reviews + BreadcrumbList */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -273,19 +287,19 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {show.images?.poster ? (
                 <img
                   src={show.images.poster}
-                  alt={show.title}
+                  alt={`${show.title} Broadway ${show.type} poster - now playing at ${show.venue}`}
                   className="w-full h-full object-cover"
                 />
               ) : show.images?.thumbnail ? (
                 <img
                   src={show.images.thumbnail}
-                  alt={show.title}
+                  alt={`${show.title} Broadway ${show.type} - now playing at ${show.venue}`}
                   className="w-full h-full object-cover"
                 />
               ) : show.images?.hero ? (
                 <img
                   src={show.images.hero}
-                  alt={show.title}
+                  alt={`${show.title} Broadway ${show.type} - now playing at ${show.venue}`}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -495,6 +509,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </dl>
         </div>
 
+        {/* Internal Links - SEO & Discovery */}
+        <InternalLinks show={show} />
+
         {/* Footer */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
           <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
@@ -503,5 +520,114 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         </div>
       </div>
     </>
+  );
+}
+
+// Internal linking component for SEO
+function InternalLinks({ show }: { show: ComputedShow }) {
+  // Get director info
+  const director = show.creativeTeam?.find(m =>
+    m.role.toLowerCase().includes('director') &&
+    !m.role.toLowerCase().includes('music director')
+  );
+  const directorSlug = director?.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+  // Get other shows at this theater
+  const theaterSlug = show.venue.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const theater = getTheaterBySlug(theaterSlug);
+  const otherShowsAtTheater = theater?.allShows.filter(s => s.slug !== show.slug && s.status === 'open').slice(0, 3) || [];
+
+  // Get related shows by tags
+  const allShows = getAllShows();
+  const showTags = show.tags?.map(t => t.toLowerCase()) || [];
+  const relatedShows = allShows
+    .filter(s =>
+      s.slug !== show.slug &&
+      s.status === 'open' &&
+      s.tags?.some(t => showTags.includes(t.toLowerCase()))
+    )
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .slice(0, 4);
+
+  if (!director && otherShowsAtTheater.length === 0 && relatedShows.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-6 border-t border-white/5 pt-6 mt-6">
+      {/* Director Link */}
+      {director && directorSlug && (
+        <div>
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            More from the Director
+          </h3>
+          <Link
+            href={`/director/${directorSlug}`}
+            className="inline-flex items-center gap-2 text-brand hover:text-brand-hover transition-colors"
+          >
+            <span className="font-medium">{director.name}</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
+      )}
+
+      {/* Theater Link */}
+      {theater && (
+        <div>
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            More at {show.venue}
+          </h3>
+          <Link
+            href={`/theater/${theaterSlug}`}
+            className="inline-flex items-center gap-2 text-brand hover:text-brand-hover transition-colors"
+          >
+            <span className="font-medium">View theater page</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
+      )}
+
+      {/* Related Shows */}
+      {relatedShows.length > 0 && (
+        <div>
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            You Might Also Like
+          </h3>
+          <div className="grid grid-cols-2 gap-3">
+            {relatedShows.map(related => (
+              <Link
+                key={related.slug}
+                href={`/show/${related.slug}`}
+                className="card p-3 flex items-center gap-3 hover:bg-surface-raised/80 transition-colors group"
+              >
+                <div className="w-10 h-10 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                  {related.images?.thumbnail ? (
+                    <img
+                      src={related.images.thumbnail}
+                      alt={`${related.title} Broadway ${related.type}`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-lg">🎭</div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-white truncate group-hover:text-brand transition-colors">
+                    {related.title}
+                  </p>
+                  {related.criticScore?.score && (
+                    <p className="text-xs text-gray-500">{Math.round(related.criticScore.score)}/100</p>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
