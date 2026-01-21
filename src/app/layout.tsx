@@ -42,35 +42,45 @@ export default function RootLayout({
       <head>
         <link rel="canonical" href={BASE_URL} />
       </head>
-      <body className="font-sans min-h-screen">
-        <header className="border-b border-gray-700/50 bg-surface-raised/95 backdrop-blur-sm sticky top-0 z-50">
+      <body className="min-h-screen font-sans">
+        <header className="glass sticky top-0 z-50">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-14 sm:h-16">
-              <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group">
-                <span className="text-lg sm:text-2xl font-bold text-white">Broadway</span>
-                <span className="text-lg sm:text-2xl font-bold text-brand group-hover:text-brand-hover transition">Metascore</span>
+            <div className="flex items-center justify-between h-16 sm:h-18">
+              <Link href="/" className="flex items-center gap-0.5 group">
+                <span className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Broadway</span>
+                <span className="text-xl sm:text-2xl font-extrabold text-gradient tracking-tight">Score</span>
               </Link>
-              <div className="flex items-center gap-1 sm:gap-2">
-                <Link href="/" className="btn-ghost text-sm">
+              <div className="flex items-center gap-1">
+                <Link href="/" className="nav-link nav-link-active">
                   Shows
                 </Link>
-                <Link href="/methodology" className="btn-ghost text-sm">
+                <Link href="/methodology" className="nav-link hidden sm:block">
                   How It Works
                 </Link>
               </div>
             </div>
           </nav>
         </header>
-        <main className="min-h-[calc(100vh-180px)]">{children}</main>
-        <footer className="border-t border-gray-700/50 mt-8 sm:mt-12 py-6 sm:py-8 text-center text-gray-400 text-xs sm:text-sm px-4">
-          <p className="max-w-xl mx-auto">Broadway Metascore aggregates critic reviews, audience ratings, and community discussion.</p>
-          <p className="mt-2">
-            All ratings and reviews belong to their respective sources.{' '}
-            <Link href="/methodology" className="text-brand hover:underline">
-              See methodology
-            </Link>
-            .
-          </p>
+        <main className="min-h-[calc(100vh-200px)]">{children}</main>
+        <footer className="border-t border-white/5 mt-12 sm:mt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-0.5">
+                <span className="text-lg font-bold text-white">Broadway</span>
+                <span className="text-lg font-bold text-gradient">Score</span>
+              </div>
+              <div className="flex items-center gap-6 text-sm text-gray-400">
+                <Link href="/methodology" className="hover:text-white transition-colors">
+                  Methodology
+                </Link>
+                <span className="text-gray-600">|</span>
+                <span>Data from critics, audiences & Reddit</span>
+              </div>
+            </div>
+            <p className="mt-6 pt-6 border-t border-white/5 text-center text-xs text-gray-500">
+              All ratings and reviews belong to their respective sources.
+            </p>
+          </div>
         </footer>
       </body>
     </html>
