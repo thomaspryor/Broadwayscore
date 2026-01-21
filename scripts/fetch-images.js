@@ -21,6 +21,10 @@ const RETRY_DELAY = 2000;
 const DEBUG = process.argv.includes('--debug');
 
 // TodayTix show IDs for Broadway shows
+// Hardcoded fallback images - these will be populated when found
+// Run with --debug to see raw API responses for troubleshooting
+const FALLBACK_IMAGES = {};
+
 const TODAYTIX_SHOWS = {
   'wicked': { id: 1, slug: 'wicked' },
   'chicago': { id: 22, slug: 'chicago' },
@@ -41,7 +45,7 @@ const TODAYTIX_SHOWS = {
   'oh-mary': { id: 37743, slug: 'oh-mary' },
   'operation-mincemeat': { id: 42735, slug: 'operation-mincemeat-on-broadway' },
   'bug': { id: 45086, slug: 'bug-on-broadway' },
-  'harry-potter': { id: 1377, slug: 'harry-potter-and-the-cursed-child' },
+  'harry-potter': { id: 13709, slug: 'harry-potter-and-the-cursed-child-on-broadway' },
   'mamma-mia': { id: 43887, slug: 'mamma-mia-on-broadway' },
   'stranger-things': { id: 41967, slug: 'stranger-things-the-first-shadow-on-broadway' },
 };
@@ -244,19 +248,43 @@ function formatImageUrls(baseUrl) {
 async function fetchShowImage(showSlug, showInfo) {
   console.log(`\n📽️  ${showSlug}`);
 
-  // Method 1: Try TodayTix API
+  // Method 1: Try TodayTix API v2
   const apiUrl = `https://api.todaytix.com/api/v2/shows/${showInfo.id}`;
-  console.log(`   API: ${apiUrl}`);
+  console.log(`   API v2: ${apiUrl}`);
 
   try {
     const apiData = await fetchJson(apiUrl);
+    if (DEBUG) {
+      console.log(`   DEBUG: API response keys: ${Object.keys(apiData || {}).join(', ')}`);
+      const jsonStr = JSON.stringify(apiData);
+      const ctfMatch = jsonStr.match(/ctfassets\.net[^"\\]*/);
+      if (ctfMatch) console.log(`   DEBUG: Found ctfassets pattern: ${ctfMatch[0].substring(0, 80)}`);
+    }
     const imageUrl = extractImageFromApi(apiData);
     if (imageUrl) {
-      console.log(`   ✓ Found via API: ${imageUrl.substring(0, 60)}...`);
+      console.log(`   ✓ Found via API v2: ${imageUrl.substring(0, 60)}...`);
       return formatImageUrls(imageUrl);
     }
   } catch (err) {
-    console.log(`   ⚠ API failed: ${err.message}`);
+    console.log(`   ⚠ API v2 failed: ${err.message}`);
+  }
+
+  // Method 1b: Try TodayTix API v3
+  const apiV3Url = `https://api.todaytix.com/api/v3/shows/${showInfo.id}`;
+  console.log(`   API v3: ${apiV3Url}`);
+
+  try {
+    const apiData = await fetchJson(apiV3Url);
+    if (DEBUG) {
+      console.log(`   DEBUG: API v3 response keys: ${Object.keys(apiData || {}).join(', ')}`);
+    }
+    const imageUrl = extractImageFromApi(apiData);
+    if (imageUrl) {
+      console.log(`   ✓ Found via API v3: ${imageUrl.substring(0, 60)}...`);
+      return formatImageUrls(imageUrl);
+    }
+  } catch (err) {
+    console.log(`   ⚠ API v3 failed: ${err.message}`);
   }
 
   // Method 2: Try HTML scraping
@@ -276,17 +304,47 @@ async function fetchShowImage(showSlug, showInfo) {
 
   // Method 3: Try alternate API endpoint
   const altApiUrl = `https://content-service.todaytix.com/content/shows/${showInfo.id}`;
-  console.log(`   Alt API: ${altApiUrl}`);
+  console.log(`   Content API: ${altApiUrl}`);
 
   try {
     const altData = await fetchJson(altApiUrl);
     const imageUrl = extractImageFromApi(altData);
     if (imageUrl) {
-      console.log(`   ✓ Found via Alt API: ${imageUrl.substring(0, 60)}...`);
+      console.log(`   ✓ Found via Content API: ${imageUrl.substring(0, 60)}...`);
       return formatImageUrls(imageUrl);
     }
   } catch (err) {
-    console.log(`   ⚠ Alt API failed: ${err.message}`);
+    console.log(`   ⚠ Content API failed: ${err.message}`);
+  }
+
+  // Method 3b: Try TodayTix show details endpoint
+  const detailsUrl = `https://api.todaytix.com/api/v2/shows/${showInfo.id}/details`;
+  console.log(`   Details API: ${detailsUrl}`);
+
+  try {
+    const detailsData = await fetchJson(detailsUrl);
+    const imageUrl = extractImageFromApi(detailsData);
+    if (imageUrl) {
+      console.log(`   ✓ Found via Details API: ${imageUrl.substring(0, 60)}...`);
+      return formatImageUrls(imageUrl);
+    }
+  } catch (err) {
+    console.log(`   ⚠ Details API failed: ${err.message}`);
+  }
+
+  // Method 3c: Try TodayTix media endpoint
+  const mediaUrl = `https://api.todaytix.com/api/v2/shows/${showInfo.id}/media`;
+  console.log(`   Media API: ${mediaUrl}`);
+
+  try {
+    const mediaData = await fetchJson(mediaUrl);
+    const imageUrl = extractImageFromApi(mediaData);
+    if (imageUrl) {
+      console.log(`   ✓ Found via Media API: ${imageUrl.substring(0, 60)}...`);
+      return formatImageUrls(imageUrl);
+    }
+  } catch (err) {
+    console.log(`   ⚠ Media API failed: ${err.message}`);
   }
 
   // Method 4: Try Broadway.com
@@ -323,8 +381,111 @@ async function fetchShowImage(showSlug, showInfo) {
     console.log(`   ⚠ Playbill failed: ${err.message}`);
   }
 
+  // Method 6: Try TheaterMania
+  const theaterManiaSlug = showSlug.replace(/-/g, '-');
+  const theaterManiaUrl = `https://www.theatermania.com/shows/broadway/${theaterManiaSlug}`;
+  console.log(`   TheaterMania: ${theaterManiaUrl}`);
+
+  try {
+    const html = await fetchPage(theaterManiaUrl);
+    const imageUrl = extractImageFromHtml(html);
+    if (imageUrl) {
+      console.log(`   ✓ Found via TheaterMania: ${imageUrl.substring(0, 60)}...`);
+      return formatImageUrls(imageUrl);
+    }
+  } catch (err) {
+    console.log(`   ⚠ TheaterMania failed: ${err.message}`);
+  }
+
+  // Method 7: Try TodayTix with just ID (no slug)
+  const simplePageUrl = `https://www.todaytix.com/nyc/shows/${showInfo.id}`;
+  console.log(`   TodayTix (ID only): ${simplePageUrl}`);
+
+  try {
+    const html = await fetchPage(simplePageUrl);
+    const imageUrl = extractImageFromHtml(html);
+    if (imageUrl) {
+      console.log(`   ✓ Found via TodayTix ID: ${imageUrl.substring(0, 60)}...`);
+      return formatImageUrls(imageUrl);
+    }
+  } catch (err) {
+    console.log(`   ⚠ TodayTix ID failed: ${err.message}`);
+  }
+
+  // Method 8: Try TodayTix GraphQL API
+  console.log(`   TodayTix GraphQL API...`);
+  try {
+    const graphqlData = await fetchTodayTixGraphQL(showInfo.id);
+    const imageUrl = extractImageFromApi(graphqlData);
+    if (imageUrl) {
+      console.log(`   ✓ Found via GraphQL: ${imageUrl.substring(0, 60)}...`);
+      return formatImageUrls(imageUrl);
+    }
+  } catch (err) {
+    console.log(`   ⚠ GraphQL failed: ${err.message}`);
+  }
+
+  // Method 9: Use hardcoded fallback if available
+  if (FALLBACK_IMAGES[showSlug]) {
+    console.log(`   ⚠ Using hardcoded fallback image`);
+    return formatImageUrls(FALLBACK_IMAGES[showSlug]);
+  }
+
   console.log(`   ✗ No image found from any source`);
   return null;
+}
+
+function fetchTodayTixGraphQL(showId) {
+  return new Promise((resolve, reject) => {
+    const query = JSON.stringify({
+      operationName: 'GetShow',
+      variables: { showId: showId },
+      query: `query GetShow($showId: Int!) {
+        show(id: $showId) {
+          id
+          name
+          images { type file { url } }
+          heroImageUrl
+          posterImageUrl
+        }
+      }`
+    });
+
+    const options = {
+      hostname: 'api.todaytix.com',
+      path: '/graphql',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+        'Accept': 'application/json',
+        'Content-Length': Buffer.byteLength(query),
+      },
+      timeout: 15000,
+    };
+
+    const req = https.request(options, (response) => {
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          resolve(parsed?.data || parsed);
+        } catch (e) {
+          reject(new Error('Invalid JSON'));
+        }
+      });
+    });
+
+    req.on('error', reject);
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('Request timeout'));
+    });
+
+    req.write(query);
+    req.end();
+  });
 }
 
 function updateShowsJson(imageResults) {
