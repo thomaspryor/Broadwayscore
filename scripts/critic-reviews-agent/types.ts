@@ -42,6 +42,10 @@ export interface OutletConfig {
   scoreFormat: 'letter' | 'stars' | 'numeric' | 'text_bucket' | 'thumb';
   maxScale?: number;
   reviewUrlPattern?: RegExp;
+  // For direct outlet fetching
+  searchUrl?: (showTitle: string) => string; // URL to search for show reviews
+  reviewsSection?: string; // CSS selector or section identifier for reviews
+  enabled?: boolean; // Whether to include in direct fetching (default: true)
 }
 
 // Configuration for an aggregator source

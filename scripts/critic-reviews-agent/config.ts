@@ -22,6 +22,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['New York Times', 'NYTimes', 'NY Times', 'nytimes.com'],
     domain: 'nytimes.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.nytimes.com/search?query=${encodeURIComponent(title + ' theater review')}&sort=newest`,
   },
   {
     id: 'WASHPOST',
@@ -30,6 +31,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['Washington Post', 'WashPost', 'washingtonpost.com'],
     domain: 'washingtonpost.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.washingtonpost.com/search/?query=${encodeURIComponent(title + ' broadway review')}`,
   },
   {
     id: 'LATIMES',
@@ -38,6 +40,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['LA Times', 'L.A. Times', 'latimes.com'],
     domain: 'latimes.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.latimes.com/search?q=${encodeURIComponent(title + ' broadway review')}`,
   },
   {
     id: 'WSJ',
@@ -46,6 +49,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['Wall Street Journal', 'WSJ', 'wsj.com'],
     domain: 'wsj.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.wsj.com/search?query=${encodeURIComponent(title + ' theater review')}`,
   },
   {
     id: 'AP',
@@ -54,6 +58,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['AP', 'AP News', 'apnews.com'],
     domain: 'apnews.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://apnews.com/search?q=${encodeURIComponent(title + ' broadway review')}`,
   },
   {
     id: 'VARIETY',
@@ -62,6 +67,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['variety.com'],
     domain: 'variety.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://variety.com/?s=${encodeURIComponent(title + ' review')}&post_type=review`,
   },
   {
     id: 'THR',
@@ -70,6 +76,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['Hollywood Reporter', 'THR', 'hollywoodreporter.com'],
     domain: 'hollywoodreporter.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.hollywoodreporter.com/c/reviews/?s=${encodeURIComponent(title)}`,
   },
   {
     id: 'VULT',
@@ -78,6 +85,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['vulture.com'],
     domain: 'vulture.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.vulture.com/search?q=${encodeURIComponent(title + ' review')}`,
   },
   {
     id: 'GUARDIAN',
@@ -87,6 +95,7 @@ export const OUTLETS: OutletConfig[] = [
     domain: 'theguardian.com',
     scoreFormat: 'stars',
     maxScale: 5,
+    searchUrl: (title) => `https://www.theguardian.com/stage/search?q=${encodeURIComponent(title + ' review')}`,
   },
   {
     id: 'TIMEOUTNY',
@@ -96,6 +105,7 @@ export const OUTLETS: OutletConfig[] = [
     domain: 'timeout.com',
     scoreFormat: 'stars',
     maxScale: 5,
+    searchUrl: (title) => `https://www.timeout.com/newyork/search?q=${encodeURIComponent(title)}&type=theater`,
   },
   {
     id: 'BWAYNEWS',
@@ -104,6 +114,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['broadwaynews.com'],
     domain: 'broadwaynews.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://broadwaynews.com/?s=${encodeURIComponent(title + ' review')}`,
   },
 
   // ===== TIER 2: Regional papers, trades, theatre outlets =====
@@ -114,6 +125,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['chicagotribune.com'],
     domain: 'chicagotribune.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.chicagotribune.com/search/${encodeURIComponent(title + ' broadway review')}/`,
   },
   {
     id: 'USATODAY',
@@ -122,6 +134,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['usatoday.com'],
     domain: 'usatoday.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.usatoday.com/search/?q=${encodeURIComponent(title + ' broadway review')}`,
   },
   {
     id: 'NYDN',
@@ -130,6 +143,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['NY Daily News', 'Daily News', 'nydailynews.com'],
     domain: 'nydailynews.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.nydailynews.com/search/${encodeURIComponent(title + ' theater review')}/`,
   },
   {
     id: 'NYP',
@@ -138,6 +152,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['NY Post', 'nypost.com'],
     domain: 'nypost.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://nypost.com/?s=${encodeURIComponent(title + ' review')}`,
   },
   {
     id: 'WRAP',
@@ -146,6 +161,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['TheWrap', 'thewrap.com'],
     domain: 'thewrap.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.thewrap.com/?s=${encodeURIComponent(title + ' review')}`,
   },
   {
     id: 'EW',
@@ -154,6 +170,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['EW', 'ew.com'],
     domain: 'ew.com',
     scoreFormat: 'letter',
+    searchUrl: (title) => `https://ew.com/?s=${encodeURIComponent(title + ' broadway review')}`,
   },
   {
     id: 'INDIEWIRE',
@@ -162,6 +179,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['indiewire.com'],
     domain: 'indiewire.com',
     scoreFormat: 'letter',
+    searchUrl: (title) => `https://www.indiewire.com/?s=${encodeURIComponent(title + ' review')}`,
   },
   {
     id: 'DEADLINE',
@@ -170,6 +188,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['deadline.com'],
     domain: 'deadline.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://deadline.com/?s=${encodeURIComponent(title + ' review')}`,
   },
   {
     id: 'SLANT',
@@ -179,6 +198,7 @@ export const OUTLETS: OutletConfig[] = [
     domain: 'slantmagazine.com',
     scoreFormat: 'stars',
     maxScale: 4,
+    searchUrl: (title) => `https://www.slantmagazine.com/?s=${encodeURIComponent(title)}`,
   },
   {
     id: 'TDB',
@@ -187,6 +207,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['Daily Beast', 'thedailybeast.com'],
     domain: 'thedailybeast.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.thedailybeast.com/search?q=${encodeURIComponent(title + ' review')}`,
   },
   {
     id: 'OBSERVER',
@@ -195,6 +216,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['NY Observer', 'observer.com'],
     domain: 'observer.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://observer.com/?s=${encodeURIComponent(title + ' broadway')}`,
   },
   {
     id: 'NYTHTR',
@@ -203,6 +225,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['newyorktheater.me', 'NY Theater'],
     domain: 'newyorktheater.me',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://newyorktheater.me/?s=${encodeURIComponent(title + ' review')}`,
   },
   {
     id: 'NYTG',
@@ -211,6 +234,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['NY Theatre Guide', 'newyorktheatreguide.com'],
     domain: 'newyorktheatreguide.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.newyorktheatreguide.com/search?q=${encodeURIComponent(title + ' review')}`,
   },
   {
     id: 'NYSR',
@@ -219,6 +243,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['NY Stage Review', 'nystagereview.com'],
     domain: 'nystagereview.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://nystagereview.com/?s=${encodeURIComponent(title)}`,
   },
   {
     id: 'TMAN',
@@ -227,6 +252,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['Theater Mania', 'theatermania.com'],
     domain: 'theatermania.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.theatermania.com/search?q=${encodeURIComponent(title)}`,
   },
   {
     id: 'THLY',
@@ -235,6 +261,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['theatrely.com'],
     domain: 'theatrely.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.theatrely.com/?s=${encodeURIComponent(title)}`,
   },
   {
     id: 'BWAYJOURNAL',
@@ -243,6 +270,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['broadwayjournal.com'],
     domain: 'broadwayjournal.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://broadwayjournal.com/?s=${encodeURIComponent(title)}`,
   },
   {
     id: 'STAGEBUDDY',
@@ -251,6 +279,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['stagebuddy.com'],
     domain: 'stagebuddy.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://stagebuddy.com/?s=${encodeURIComponent(title)}`,
   },
 
   // ===== TIER 3: Smaller outlets, blogs =====
@@ -261,6 +290,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['Broadway World', 'broadwayworld.com'],
     domain: 'broadwayworld.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.broadwayworld.com/search/?q=${encodeURIComponent(title + ' review')}&searchtype=articles`,
   },
   {
     id: 'AMNY',
@@ -269,6 +299,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['amNY', 'amnewyork.com'],
     domain: 'amnewyork.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.amnewyork.com/?s=${encodeURIComponent(title + ' broadway')}`,
   },
   {
     id: 'CITI',
@@ -277,6 +308,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['cititour.com'],
     domain: 'cititour.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://cititour.com/?s=${encodeURIComponent(title)}`,
   },
   {
     id: 'CSCE',
@@ -286,6 +318,7 @@ export const OUTLETS: OutletConfig[] = [
     domain: 'culturesauce.com',
     scoreFormat: 'stars',
     maxScale: 5,
+    searchUrl: (title) => `https://culturesauce.com/?s=${encodeURIComponent(title)}`,
   },
   {
     id: 'FRONTMEZZ',
@@ -294,6 +327,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['Front Mezzanine', 'frontmezzjunkies.com'],
     domain: 'frontmezzjunkies.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://frontmezzjunkies.com/?s=${encodeURIComponent(title)}`,
   },
   {
     id: 'THERECS',
@@ -302,6 +336,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['therecs.com'],
     domain: 'therecs.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://therecs.com/?s=${encodeURIComponent(title)}`,
   },
   {
     id: 'OMC',
@@ -311,6 +346,7 @@ export const OUTLETS: OutletConfig[] = [
     domain: '1minutecritic.com',
     scoreFormat: 'stars',
     maxScale: 5,
+    searchUrl: (title) => `https://1minutecritic.com/?s=${encodeURIComponent(title)}`,
   },
   {
     id: 'TALKIN',
@@ -319,6 +355,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['Talkin Broadway', 'talkinbroadway.com'],
     domain: 'talkinbroadway.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://www.talkinbroadway.com/search?q=${encodeURIComponent(title)}`,
   },
   {
     id: 'BWAYBOX',
@@ -327,6 +364,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['Broadway Box', 'thebroadwaybox.com'],
     domain: 'thebroadwaybox.com',
     scoreFormat: 'text_bucket',
+    enabled: false, // Not a review site
   },
   {
     id: 'BWAYBLOG',
@@ -335,6 +373,7 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['Broadway Blog', 'thebroadwayblog.com'],
     domain: 'thebroadwayblog.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://thebroadwayblog.com/?s=${encodeURIComponent(title)}`,
   },
   {
     id: 'PLAYBILL',
@@ -343,8 +382,27 @@ export const OUTLETS: OutletConfig[] = [
     aliases: ['playbill.com'],
     domain: 'playbill.com',
     scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://playbill.com/searchpage#checks_q=${encodeURIComponent(title)}`,
   },
 ];
+
+// ===========================================
+// OUTLET HELPER FUNCTIONS
+// ===========================================
+
+/**
+ * Get all outlets that have search URLs configured
+ */
+export function getSearchableOutlets(): OutletConfig[] {
+  return OUTLETS.filter(outlet => outlet.searchUrl && outlet.enabled !== false);
+}
+
+/**
+ * Get outlets by tier
+ */
+export function getOutletsByTier(tier: 1 | 2 | 3): OutletConfig[] {
+  return OUTLETS.filter(outlet => outlet.tier === tier);
+}
 
 // ===========================================
 // RATING CONVERSION MAPS

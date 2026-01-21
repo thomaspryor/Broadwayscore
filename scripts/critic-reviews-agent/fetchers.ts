@@ -9,8 +9,8 @@
  * Always verify fetched data before merging.
  */
 
-import { RawReview } from './types';
-import { findOutletConfig } from './config';
+import { RawReview, OutletConfig } from './types';
+import { findOutletConfig, getSearchableOutlets, OUTLETS } from './config';
 
 // ===========================================
 // HTTP FETCH UTILITIES
@@ -538,5 +538,389 @@ export function createManualReview(data: {
     maxScale: data.maxScale,
     excerpt: data.excerpt,
     designation: data.designation,
+  };
+}
+
+// ===========================================
+// DIRECT OUTLET FETCHING
+// ===========================================
+
+/**
+ * Search result from an outlet search page
+ */
+export interface OutletSearchResult {
+  outletId: string;
+  outletName: string;
+  url: string;
+  title: string;
+  snippet?: string;
+  date?: string;
+}
+
+/**
+ * Parse search results from a generic search page
+ * Looks for article links that might be reviews
+ */
+export function parseSearchResults(
+  html: string,
+  outlet: OutletConfig,
+  showTitle: string
+): OutletSearchResult[] {
+  const results: OutletSearchResult[] = [];
+  const showTitleLower = showTitle.toLowerCase();
+
+  // Common patterns for search result items
+  const articlePatterns = [
+    /<article[^>]*>([\s\S]*?)<\/article>/gi,
+    /<div[^>]*class="[^"]*(?:result|item|post|article)[^"]*"[^>]*>([\s\S]*?)<\/div>/gi,
+    /<li[^>]*class="[^"]*(?:result|item|post)[^"]*"[^>]*>([\s\S]*?)<\/li>/gi,
+  ];
+
+  for (const pattern of articlePatterns) {
+    let match;
+    while ((match = pattern.exec(html)) !== null) {
+      const block = match[1] || match[0];
+
+      // Extract URL
+      const urlMatch = block.match(/href="([^"]+)"/i);
+      if (!urlMatch) continue;
+      const url = urlMatch[1];
+
+      // Skip if URL doesn't look like it's from this outlet's domain
+      if (outlet.domain && !url.includes(outlet.domain) && !url.startsWith('/')) continue;
+
+      // Extract title
+      const titleMatch = block.match(/<h[1-6][^>]*>([^<]+)<\/h[1-6]>/i) ||
+        block.match(/<a[^>]*>([^<]+)<\/a>/i);
+      if (!titleMatch) continue;
+      const title = extractText(titleMatch[1]);
+
+      // Check if title mentions the show (basic relevance filter)
+      if (!title.toLowerCase().includes(showTitleLower.split(' ')[0])) continue;
+
+      // Check if it looks like a review
+      const isReview = /review/i.test(title) || /review/i.test(block);
+
+      if (isReview || title.toLowerCase().includes(showTitleLower)) {
+        // Extract snippet/description
+        const snippetMatch = block.match(/<p[^>]*>([^<]+)<\/p>/i);
+        const snippet = snippetMatch ? extractText(snippetMatch[1]) : undefined;
+
+        // Extract date
+        const dateMatch = block.match(/(\d{4}-\d{2}-\d{2})/) ||
+          block.match(/<time[^>]*>([^<]+)<\/time>/i);
+        const date = dateMatch ? extractText(dateMatch[1]) : undefined;
+
+        // Make URL absolute if relative
+        let absoluteUrl = url;
+        if (url.startsWith('/') && outlet.domain) {
+          absoluteUrl = `https://${outlet.domain}${url}`;
+        }
+
+        results.push({
+          outletId: outlet.id,
+          outletName: outlet.name,
+          url: absoluteUrl,
+          title,
+          snippet,
+          date,
+        });
+      }
+    }
+  }
+
+  return results;
+}
+
+/**
+ * Fetch reviews from all configured outlets directly
+ */
+export async function fetchFromAllOutlets(
+  showTitle: string,
+  options: {
+    verbose?: boolean;
+    timeout?: number;
+    tiers?: (1 | 2 | 3)[];
+    concurrency?: number;
+  } = {}
+): Promise<{
+  reviews: RawReview[];
+  searchResults: OutletSearchResult[];
+  errors: string[];
+}> {
+  const {
+    verbose = false,
+    timeout = 15000,
+    tiers = [1, 2, 3],
+    concurrency = 5,
+  } = options;
+
+  const reviews: RawReview[] = [];
+  const searchResults: OutletSearchResult[] = [];
+  const errors: string[] = [];
+
+  // Get all searchable outlets for requested tiers
+  const outlets = getSearchableOutlets().filter(o => tiers.includes(o.tier));
+
+  if (verbose) {
+    console.log(`\nSearching ${outlets.length} outlets for "${showTitle}"...`);
+  }
+
+  // Process outlets in batches for controlled concurrency
+  for (let i = 0; i < outlets.length; i += concurrency) {
+    const batch = outlets.slice(i, i + concurrency);
+
+    const batchPromises = batch.map(async (outlet) => {
+      if (!outlet.searchUrl) return;
+
+      const searchUrl = outlet.searchUrl(showTitle);
+      if (verbose) {
+        console.log(`  Searching ${outlet.name}...`);
+      }
+
+      try {
+        const html = await fetchWithRetry(searchUrl, {
+          timeout,
+          maxRetries: 2, // Fewer retries for speed
+        });
+
+        const results = parseSearchResults(html, outlet, showTitle);
+
+        if (results.length > 0) {
+          searchResults.push(...results);
+          if (verbose) {
+            console.log(`    Found ${results.length} potential reviews at ${outlet.name}`);
+          }
+        }
+      } catch (error) {
+        // Only log errors in verbose mode - many will fail for legitimate reasons
+        if (verbose) {
+          console.log(`    ${outlet.name}: ${(error as Error).message}`);
+        }
+        errors.push(`${outlet.name}: ${(error as Error).message}`);
+      }
+    });
+
+    await Promise.all(batchPromises);
+  }
+
+  // Now fetch the actual review pages for found results
+  if (searchResults.length > 0 && verbose) {
+    console.log(`\nFetching ${searchResults.length} potential review pages...`);
+  }
+
+  for (const result of searchResults.slice(0, 20)) { // Limit to avoid too many requests
+    try {
+      const { review, error } = await fetchDirectReview(result.url, result.outletName);
+      if (review) {
+        reviews.push(review);
+      }
+      if (error && verbose) {
+        console.log(`    Error fetching ${result.outletName}: ${error}`);
+      }
+    } catch (error) {
+      if (verbose) {
+        console.log(`    Error fetching ${result.url}: ${error}`);
+      }
+    }
+  }
+
+  return { reviews, searchResults, errors };
+}
+
+// ===========================================
+// WEB SEARCH DISCOVERY
+// ===========================================
+
+/**
+ * Discovered review from web search
+ */
+export interface DiscoveredReview {
+  url: string;
+  title: string;
+  outlet: string;
+  snippet?: string;
+  isKnownOutlet: boolean;
+  outletConfig?: OutletConfig;
+}
+
+/**
+ * Search the web for additional reviews not in our outlet list
+ * This uses a generic search to find reviews we might have missed
+ */
+export async function discoverAdditionalReviews(
+  showTitle: string,
+  options: {
+    verbose?: boolean;
+    existingUrls?: string[];
+  } = {}
+): Promise<{
+  discovered: DiscoveredReview[];
+  searchQueries: string[];
+}> {
+  const { verbose = false, existingUrls = [] } = options;
+  const discovered: DiscoveredReview[] = [];
+  const searchQueries: string[] = [];
+
+  // Build search queries
+  const queries = [
+    `"${showTitle}" broadway review`,
+    `"${showTitle}" theater review 2025`,
+    `"${showTitle}" musical review`,
+  ];
+
+  if (verbose) {
+    console.log('\nSearching for additional reviews...');
+    console.log(`Queries: ${queries.join(', ')}`);
+  }
+
+  // Note: Actual web search would require an API (Google Custom Search, Bing, etc.)
+  // For now, this function returns the queries and is designed to be extended
+  // The CLI will prompt the user to manually check these searches
+
+  searchQueries.push(...queries);
+
+  return { discovered, searchQueries };
+}
+
+/**
+ * Check if a URL belongs to a known outlet
+ */
+export function identifyOutletFromUrl(url: string): {
+  isKnown: boolean;
+  outlet?: OutletConfig;
+  domain: string;
+} {
+  try {
+    const urlObj = new URL(url);
+    const domain = urlObj.hostname.replace(/^www\./, '');
+
+    const outlet = OUTLETS.find(o => {
+      if (o.domain && domain.includes(o.domain.replace(/^www\./, ''))) {
+        return true;
+      }
+      return false;
+    });
+
+    return {
+      isKnown: !!outlet,
+      outlet,
+      domain,
+    };
+  } catch {
+    return {
+      isKnown: false,
+      domain: url,
+    };
+  }
+}
+
+// ===========================================
+// COMPREHENSIVE FETCH
+// ===========================================
+
+export interface ComprehensiveFetchOptions {
+  sources?: ('aggregators' | 'outlets' | 'websearch')[];
+  verbose?: boolean;
+  timeout?: number;
+  tiers?: (1 | 2 | 3)[];
+}
+
+export interface ComprehensiveFetchResult {
+  reviews: RawReview[];
+  searchResults: OutletSearchResult[];
+  webSearchQueries: string[];
+  errors: string[];
+  summary: {
+    aggregatorReviews: number;
+    outletReviews: number;
+    potentialReviews: number;
+  };
+}
+
+/**
+ * Comprehensive fetch from all sources
+ */
+export async function fetchComprehensive(
+  showTitle: string,
+  showSlug: string,
+  options: ComprehensiveFetchOptions = {}
+): Promise<ComprehensiveFetchResult> {
+  const {
+    sources = ['aggregators', 'outlets'],
+    verbose = false,
+    timeout = 15000,
+    tiers = [1, 2, 3],
+  } = options;
+
+  const allReviews: RawReview[] = [];
+  const allSearchResults: OutletSearchResult[] = [];
+  const allErrors: string[] = [];
+  let webSearchQueries: string[] = [];
+
+  let aggregatorReviews = 0;
+  let outletReviews = 0;
+
+  // 1. Fetch from aggregators
+  if (sources.includes('aggregators')) {
+    if (verbose) console.log('\n=== Fetching from Aggregators ===');
+    const { reviews, errors } = await fetchReviewsForShow(showTitle, showSlug, {
+      sources: ['broadwayworld', 'didtheylikeit', 'showscore'],
+      verbose,
+      timeout,
+    });
+    aggregatorReviews = reviews.length;
+    allReviews.push(...reviews);
+    allErrors.push(...errors);
+  }
+
+  // 2. Fetch from all outlets directly
+  if (sources.includes('outlets')) {
+    if (verbose) console.log('\n=== Searching All Outlets ===');
+    const { reviews, searchResults, errors } = await fetchFromAllOutlets(showTitle, {
+      verbose,
+      timeout,
+      tiers,
+    });
+    outletReviews = reviews.length;
+    allReviews.push(...reviews);
+    allSearchResults.push(...searchResults);
+    allErrors.push(...errors);
+  }
+
+  // 3. Web search for additional reviews
+  if (sources.includes('websearch')) {
+    if (verbose) console.log('\n=== Web Search Discovery ===');
+    const existingUrls = allReviews.map(r => r.url).filter(Boolean) as string[];
+    const { discovered, searchQueries } = await discoverAdditionalReviews(showTitle, {
+      verbose,
+      existingUrls,
+    });
+
+    // Add discovered reviews
+    for (const d of discovered) {
+      if (d.outletConfig) {
+        allReviews.push({
+          source: 'websearch',
+          outletName: d.outlet,
+          url: d.url,
+          excerpt: d.snippet,
+        });
+      }
+    }
+
+    webSearchQueries = searchQueries;
+  }
+
+  return {
+    reviews: allReviews,
+    searchResults: allSearchResults,
+    webSearchQueries,
+    errors: allErrors,
+    summary: {
+      aggregatorReviews,
+      outletReviews,
+      potentialReviews: allSearchResults.length,
+    },
   };
 }

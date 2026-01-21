@@ -33,8 +33,14 @@ import * as path from 'path';
 import { RawReview, NormalizedReview, AgentResult } from './types';
 import { normalizeReview, normalizeReviews } from './normalizer';
 import { deduplicateReviews, mergeWithExisting, validateReviews } from './deduper';
-import { fetchReviewsForShow, createManualReview } from './fetchers';
-import { OUTLETS, findOutletConfig, scoreToBucket, scoreToThumb } from './config';
+import {
+  fetchReviewsForShow,
+  createManualReview,
+  fetchComprehensive,
+  fetchFromAllOutlets,
+  OutletSearchResult,
+} from './fetchers';
+import { OUTLETS, findOutletConfig, scoreToBucket, scoreToThumb, getSearchableOutlets } from './config';
 
 // ===========================================
 // FILE PATHS
@@ -101,16 +107,22 @@ async function processShow(
     sources?: string[];
     verbose?: boolean;
     dryRun?: boolean;
+    comprehensive?: boolean;
   } = {}
-): Promise<AgentResult> {
-  const { sources = ['broadwayworld', 'didtheylikeit', 'showscore'], verbose = false, dryRun = false } = options;
+): Promise<AgentResult & { searchResults?: OutletSearchResult[]; webSearchQueries?: string[] }> {
+  const {
+    sources = ['broadwayworld', 'didtheylikeit', 'showscore'],
+    verbose = false,
+    dryRun = false,
+    comprehensive = false,
+  } = options;
 
   console.log(`\n${'='.repeat(60)}`);
   console.log(`Processing: ${show.title}`);
   console.log(`Show ID: ${show.id}`);
   console.log(`${'='.repeat(60)}`);
 
-  const result: AgentResult = {
+  const result: AgentResult & { searchResults?: OutletSearchResult[]; webSearchQueries?: string[] } = {
     showId: show.id,
     showTitle: show.title,
     reviewsFound: [],
@@ -121,19 +133,63 @@ async function processShow(
     sources: sources,
   };
 
-  // Fetch reviews from sources
-  console.log(`\nFetching from: ${sources.join(', ')}`);
-  const { reviews: rawReviews, errors } = await fetchReviewsForShow(
-    show.title,
-    show.slug,
-    { sources: sources as any[], verbose }
-  );
+  let rawReviews: RawReview[] = [];
+  let searchResults: OutletSearchResult[] = [];
+  let webSearchQueries: string[] = [];
 
-  result.errors.push(...errors);
+  if (comprehensive) {
+    // Comprehensive fetch: aggregators + all outlets + web search
+    console.log(`\nComprehensive fetch from ${getSearchableOutlets().length} outlets...`);
+    const fetchResult = await fetchComprehensive(show.title, show.slug, {
+      sources: ['aggregators', 'outlets', 'websearch'],
+      verbose,
+      tiers: [1, 2, 3],
+    });
 
-  if (errors.length > 0) {
-    console.log(`\nFetch errors:`);
-    for (const error of errors) {
+    rawReviews = fetchResult.reviews;
+    searchResults = fetchResult.searchResults;
+    webSearchQueries = fetchResult.webSearchQueries;
+    result.errors.push(...fetchResult.errors);
+
+    console.log(`\nFetch Summary:`);
+    console.log(`  - From aggregators: ${fetchResult.summary.aggregatorReviews}`);
+    console.log(`  - From outlets: ${fetchResult.summary.outletReviews}`);
+    console.log(`  - Potential reviews found: ${fetchResult.summary.potentialReviews}`);
+
+    if (searchResults.length > 0) {
+      result.searchResults = searchResults;
+      console.log(`\nPotential review pages found:`);
+      for (const sr of searchResults.slice(0, 10)) {
+        console.log(`  - ${sr.outletName}: ${sr.title}`);
+        console.log(`    ${sr.url}`);
+      }
+      if (searchResults.length > 10) {
+        console.log(`  ... and ${searchResults.length - 10} more`);
+      }
+    }
+
+    if (webSearchQueries.length > 0) {
+      result.webSearchQueries = webSearchQueries;
+      console.log(`\nWeb searches to find additional reviews:`);
+      for (const query of webSearchQueries) {
+        console.log(`  - https://www.google.com/search?q=${encodeURIComponent(query)}`);
+      }
+    }
+  } else {
+    // Standard fetch from aggregators only
+    console.log(`\nFetching from: ${sources.join(', ')}`);
+    const { reviews, errors } = await fetchReviewsForShow(
+      show.title,
+      show.slug,
+      { sources: sources as any[], verbose }
+    );
+    rawReviews = reviews;
+    result.errors.push(...errors);
+  }
+
+  if (result.errors.length > 0 && verbose) {
+    console.log(`\nFetch errors (${result.errors.length}):`);
+    for (const error of result.errors.slice(0, 5)) {
       console.log(`  - ${error}`);
     }
   }
@@ -329,6 +385,7 @@ interface CliArgs {
   verbose?: boolean;
   dryRun?: boolean;
   manualFile?: string;
+  comprehensive?: boolean;
   help?: boolean;
 }
 
@@ -354,6 +411,8 @@ function parseArgs(argv: string[]): CliArgs {
       args.dryRun = true;
     } else if (arg === '--manual') {
       args.manualFile = argv[++i];
+    } else if (arg === '--comprehensive' || arg === '-c') {
+      args.comprehensive = true;
     }
   }
 
@@ -361,6 +420,7 @@ function parseArgs(argv: string[]): CliArgs {
 }
 
 function printHelp(): void {
+  const outletCount = getSearchableOutlets().length;
   console.log(`
 Broadway Critic Reviews Agent
 
@@ -372,14 +432,18 @@ Options:
   --all, -a            Process all open shows
   --report, -r         Generate a report of existing data
   --sources <list>     Comma-separated sources (broadwayworld,didtheylikeit,showscore)
+  --comprehensive, -c  Search ALL ${outletCount} configured outlets + web search
   --manual <file>      Process manual entries from a JSON file
   --verbose, -v        Enable verbose output
   --dry-run, -n        Don't write changes to files
   --help, -h           Show this help message
 
 Examples:
-  # Fetch reviews for Two Strangers
-  npx ts-node scripts/critic-reviews-agent/index.ts --show two-strangers-bway-2025
+  # Fetch reviews for a show (aggregators only)
+  npx ts-node scripts/critic-reviews-agent/index.ts --show bug-2025
+
+  # Comprehensive search across all outlets
+  npx ts-node scripts/critic-reviews-agent/index.ts --show bug-2025 --comprehensive --verbose
 
   # Fetch from specific sources only
   npx ts-node scripts/critic-reviews-agent/index.ts --show two-strangers-bway-2025 --sources broadwayworld
@@ -468,6 +532,7 @@ async function main(): Promise<void> {
         sources: args.sources,
         verbose: args.verbose,
         dryRun: args.dryRun,
+        comprehensive: args.comprehensive,
       });
       allResults.push(result);
 
