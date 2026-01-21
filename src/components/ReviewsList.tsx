@@ -170,9 +170,9 @@ function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
             )}
           </div>
           {review.pullQuote && (
-            <blockquote className="mt-2 text-sm text-gray-400 italic border-l-2 border-brand/30 pl-3 group-hover:border-brand/50 transition-colors">
-              &ldquo;{review.pullQuote}&rdquo;
-            </blockquote>
+            <p className="mt-2 text-sm text-gray-400 border-l-2 border-white/10 pl-3 group-hover:border-white/20 transition-colors">
+              {review.pullQuote}
+            </p>
           )}
         </div>
       </div>
