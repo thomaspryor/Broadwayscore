@@ -224,7 +224,7 @@ export default function HomePage() {
           Broadway<span className="text-gradient">MetaScores</span>
         </h1>
         <p className="text-gray-400 text-base sm:text-lg">
-          Critic scores aggregated from top publications.
+          Every show. Every review. One score.
         </p>
       </div>
 
