@@ -240,16 +240,16 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                           <span className="text-xs text-gray-500">
                             {formatDate(review.publishDate)}
                           </span>
-                          {review.isInferred && (
-                            <span className="text-xs text-yellow-500">(inferred)</span>
+                          {review.designation && (
+                            <span className="text-xs text-green-500">({review.designation.replace('_', ' ')})</span>
                           )}
                         </div>
                       </div>
                       <div className="text-right flex-shrink-0">
-                        <div className="font-bold text-lg" style={{ color: getScoreColor(review.mappedScore) }}>
-                          {review.mappedScore}
+                        <div className="font-bold text-lg" style={{ color: getScoreColor(review.reviewMetaScore) }}>
+                          {review.reviewMetaScore}
                         </div>
-                        <div className="text-xs text-gray-500">{review.originalRating}</div>
+                        <div className="text-xs text-gray-500">base: {review.assignedScore}</div>
                       </div>
                     </div>
                     {review.pullQuote && (
