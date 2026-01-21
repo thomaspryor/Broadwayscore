@@ -23,7 +23,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     title: `${show.title} - Critic Score & Reviews`,
     description,
     openGraph: {
-      title: `${show.title} - Broadway Score`,
+      title: `${show.title} - BroadwayMetaScores`,
       description,
       images: show.images?.hero ? [{ url: show.images.hero }] : undefined,
     },

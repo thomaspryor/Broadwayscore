@@ -221,7 +221,7 @@ export default function HomePage() {
       {/* Hero Header */}
       <div className="mb-8 sm:mb-10">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 tracking-tight">
-          Broadway <span className="text-gradient">Scores</span>
+          Broadway<span className="text-gradient">MetaScores</span>
         </h1>
         <p className="text-gray-400 text-base sm:text-lg">
           Critic scores aggregated from top publications.
@@ -243,20 +243,23 @@ export default function HomePage() {
       </div>
 
       {/* Filters & Sort */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <div className="filter-pills">
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-6 text-sm">
+        <div className="flex items-center gap-2">
+          <span className="text-gray-500">Status:</span>
           {(['open', 'all', 'closed'] as const).map((status) => (
             <button
               key={status}
               onClick={() => setStatusFilter(status)}
-              className={statusFilter === status ? 'filter-pill-active' : 'filter-pill-inactive'}
+              className={`px-2 py-1 rounded transition-colors ${
+                statusFilter === status ? 'text-brand' : 'text-gray-400 hover:text-white'
+              }`}
             >
               {status === 'all' ? 'All' : status === 'open' ? 'Now Playing' : 'Closed'}
             </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-2">
           <span className="text-gray-500">Sort:</span>
           <button
             onClick={() => handleSort('criticScore')}

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'How It Works - BroadwayScore',
+  title: 'How It Works - BroadwayMetaScores',
   description: 'How we calculate Broadway show scores from critic reviews, audience ratings, and community buzz.',
 };
 
@@ -26,7 +26,7 @@ export default function MethodologyPage() {
         <section className="card p-5 sm:p-6">
           <h2 className="text-xl font-bold text-white mb-4">Overview</h2>
           <p className="text-gray-300 mb-4">
-            BroadwayScore aggregates three types of reception data to provide a comprehensive view of how a show is being received:
+            BroadwayMetaScores aggregates three types of reception data to provide a comprehensive view of how a show is being received:
           </p>
           <ul className="space-y-3 text-gray-300">
             <li className="flex items-start gap-3">
