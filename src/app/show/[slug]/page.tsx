@@ -320,48 +320,50 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap gap-3 mb-8">
-          {/* Ticket Links */}
-          {show.ticketLinks?.map((link, i) => (
-            <a
-              key={i}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary flex items-center gap-2"
-            >
-              {link.platform}
-              {link.priceFrom && <span className="opacity-80">from ${link.priceFrom}</span>}
-              <ExternalLinkIcon />
-            </a>
-          ))}
+        {(show.ticketLinks?.length || show.officialUrl || show.trailerUrl) && (
+          <div className="flex flex-wrap gap-3 mb-8">
+            {/* Ticket Links */}
+            {show.ticketLinks?.map((link, i) => (
+              <a
+                key={i}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary flex items-center gap-2"
+              >
+                {link.platform}
+                {link.priceFrom && <span className="opacity-80">from ${link.priceFrom}</span>}
+                <ExternalLinkIcon />
+              </a>
+            ))}
 
-          {/* Official Website */}
-          {show.officialUrl && (
-            <a
-              href={show.officialUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
-            >
-              <GlobeIcon />
-              Official Site
-            </a>
-          )}
+            {/* Official Website */}
+            {show.officialUrl && (
+              <a
+                href={show.officialUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
+              >
+                <GlobeIcon />
+                Official Site
+              </a>
+            )}
 
-          {/* Trailer */}
-          {show.trailerUrl && (
-            <a
-              href={show.trailerUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
-            >
-              <PlayIcon />
-              Trailer
-            </a>
-          )}
-        </div>
+            {/* Trailer */}
+            {show.trailerUrl && (
+              <a
+                href={show.trailerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
+              >
+                <PlayIcon />
+                Trailer
+              </a>
+            )}
+          </div>
+        )}
 
         {/* Synopsis */}
         {show.synopsis && (
