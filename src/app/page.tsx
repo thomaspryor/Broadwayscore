@@ -2,71 +2,40 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { getAllShows, ComputedShow } from '@/lib/data';
+import Image from 'next/image';
+import { getAllShows } from '@/lib/data';
 
-type SortField = 'criticScore' | 'title' | 'openingDate';
+type SortField = 'score' | 'title' | 'openingDate';
 type SortDirection = 'asc' | 'desc';
-type StatusFilter = 'all' | 'open' | 'closed' | 'previews';
+type StatusFilter = 'all' | 'open' | 'closed';
 
-function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm' | 'md' | 'lg' | 'xl' }) {
-  const sizeClass = {
-    sm: 'score-badge-sm',
-    md: 'score-badge-md',
-    lg: 'score-badge-lg',
-    xl: 'score-badge-xl',
-  }[size];
+function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm' | 'md' | 'lg' }) {
+  const sizeClasses = {
+    sm: 'w-10 h-10 text-sm',
+    md: 'w-12 h-12 text-lg',
+    lg: 'w-16 h-16 text-2xl',
+  };
 
   if (score === undefined || score === null) {
     return (
-      <div className={`score-badge ${sizeClass} score-none`}>
+      <div className={`${sizeClasses[size]} bg-gray-700 text-gray-500 rounded-lg flex items-center justify-center font-bold`}>
         —
       </div>
     );
   }
 
-  const colorClass = score >= 70 ? 'score-high' : score >= 50 ? 'score-medium' : 'score-low';
+  const colorClass = score >= 70 ? 'bg-green-500' : score >= 50 ? 'bg-yellow-500' : 'bg-red-500';
+  const textColor = score >= 50 && score < 70 ? 'text-gray-900' : 'text-white';
 
   return (
-    <div className={`score-badge ${sizeClass} ${colorClass}`}>
+    <div className={`${sizeClasses[size]} ${colorClass} ${textColor} rounded-lg flex items-center justify-center font-bold`}>
       {score}
     </div>
   );
 }
 
-function StatusChip({ status }: { status: string }) {
-  const chipClass = {
-    open: 'chip-open',
-    closed: 'chip-closed',
-    previews: 'chip-previews',
-  }[status] || 'chip-closed';
-
-  const label = {
-    open: 'Open',
-    closed: 'Closed',
-    previews: 'Previews',
-  }[status] || status;
-
-  return <span className={`chip ${chipClass}`}>{label}</span>;
-}
-
-function ConfidenceBadge({ level }: { level?: string }) {
-  if (!level) return null;
-
-  const className = {
-    high: 'confidence-high',
-    medium: 'confidence-medium',
-    low: 'confidence-low',
-  }[level] || 'confidence-low';
-
-  return (
-    <span className={`confidence-badge ${className}`}>
-      {level}
-    </span>
-  );
-}
-
 export default function HomePage() {
-  const [sortField, setSortField] = useState<SortField>('criticScore');
+  const [sortField, setSortField] = useState<SortField>('score');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('open');
   const [searchQuery, setSearchQuery] = useState('');
@@ -96,7 +65,7 @@ export default function HomePage() {
       let bVal: string | number | null;
 
       switch (sortField) {
-        case 'criticScore':
+        case 'score':
           aVal = a.criticScore?.score ?? -1;
           bVal = b.criticScore?.score ?? -1;
           break;
@@ -127,154 +96,123 @@ export default function HomePage() {
       setSortDirection(d => d === 'asc' ? 'desc' : 'asc');
     } else {
       setSortField(field);
-      setSortDirection('desc');
+      setSortDirection(field === 'title' ? 'asc' : 'desc');
     }
   };
-
-  const SortHeader = ({ field, label, className = '' }: { field: SortField; label: string; className?: string }) => (
-    <button
-      onClick={() => handleSort(field)}
-      className={`flex items-center gap-1 hover:text-white transition text-xs font-semibold uppercase tracking-wider ${sortField === field ? 'text-brand' : 'text-gray-400'} ${className}`}
-    >
-      <span>{label}</span>
-      {sortField === field && <span className="text-brand">{sortDirection === 'asc' ? '↑' : '↓'}</span>}
-    </button>
-  );
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       {/* Header */}
-      <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 text-balance">Broadway Show Scores</h1>
-        <p className="text-gray-400 text-sm sm:text-base">
-          Aggregated critic reviews for Broadway productions.
+      <div className="mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">Broadway Metascore</h1>
+        <p className="text-gray-400 text-sm">
+          Critic reviews aggregated for Broadway shows
         </p>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <input
           type="text"
-          placeholder="Search shows or venues..."
+          placeholder="Search shows..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="search-input"
+          className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-green-500"
         />
-        <div className="filter-pills">
+        <div className="flex gap-2">
           {(['open', 'all', 'closed'] as const).map((status) => (
             <button
               key={status}
               onClick={() => setStatusFilter(status)}
-              className={statusFilter === status ? 'filter-pill-active' : 'filter-pill-inactive'}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                statusFilter === status
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+              }`}
             >
-              {status === 'all' ? 'All Shows' : status === 'open' ? 'Now Playing' : 'Closed'}
+              {status === 'all' ? 'All' : status === 'open' ? 'Now Playing' : 'Closed'}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Score Legend */}
-      <div className="flex flex-wrap items-center gap-3 sm:gap-6 mb-4 text-xs sm:text-sm text-gray-400">
-        <span className="hidden sm:inline">Score scale:</span>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-score-high"></div>
-          <span>70+ Good</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-score-medium"></div>
-          <span>50-69 Mixed</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-score-low"></div>
-          <span>&lt;50 Poor</span>
-        </div>
+      {/* Sort Options */}
+      <div className="flex items-center gap-4 mb-4 text-sm">
+        <span className="text-gray-500">Sort by:</span>
+        {[
+          { field: 'score' as const, label: 'Score' },
+          { field: 'title' as const, label: 'Title' },
+          { field: 'openingDate' as const, label: 'Opening Date' },
+        ].map(({ field, label }) => (
+          <button
+            key={field}
+            onClick={() => handleSort(field)}
+            className={`transition ${sortField === field ? 'text-green-400' : 'text-gray-400 hover:text-white'}`}
+          >
+            {label}
+            {sortField === field && (
+              <span className="ml-1">{sortDirection === 'asc' ? '↑' : '↓'}</span>
+            )}
+          </button>
+        ))}
       </div>
 
-      {/* Desktop Table */}
-      <div className="hidden md:block card overflow-hidden">
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>
-                <SortHeader field="title" label="Show" />
-              </th>
-              <th className="text-center">
-                <SortHeader field="criticScore" label="Critics Score" className="justify-center" />
-              </th>
-              <th className="text-center">Reviews</th>
-              <th>Status</th>
-              <th>Confidence</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredAndSortedShows.map((show) => (
-              <tr key={show.id}>
-                <td>
-                  <Link href={`/show/${show.slug}`} className="block group">
-                    <div className="font-medium text-white group-hover:text-brand transition">
-                      {show.title}
-                    </div>
-                    <div className="text-sm text-gray-400">{show.venue}</div>
-                  </Link>
-                </td>
-                <td>
-                  <div className="flex justify-center">
-                    <Link href={`/show/${show.slug}`}>
-                      <ScoreBadge score={show.criticScore?.score} />
-                    </Link>
-                  </div>
-                </td>
-                <td className="text-center text-gray-400 text-sm">
-                  {show.criticScore?.reviewCount ?? '—'}
-                </td>
-                <td>
-                  <StatusChip status={show.status} />
-                </td>
-                <td>
-                  <ConfidenceBadge level={show.confidence?.level} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Mobile Cards */}
-      <div className="md:hidden space-y-3">
+      {/* Show List */}
+      <div className="space-y-2">
         {filteredAndSortedShows.map((show) => (
           <Link
             key={show.id}
             href={`/show/${show.slug}`}
-            className="card-interactive block p-4"
+            className="flex items-center gap-4 p-3 bg-gray-800/50 hover:bg-gray-800 rounded-lg transition group"
           >
-            <div className="flex items-start gap-4">
-              <ScoreBadge score={show.criticScore?.score} size="lg" />
-              <div className="flex-1 min-w-0">
-                <div className="font-medium text-white leading-tight">{show.title}</div>
-                <div className="text-sm text-gray-400 mt-0.5">{show.venue}</div>
-                <div className="flex flex-wrap items-center gap-2 mt-2">
-                  <StatusChip status={show.status} />
-                  <ConfidenceBadge level={show.confidence?.level} />
-                </div>
-                {show.criticScore && (
-                  <div className="text-xs text-gray-500 mt-2">
-                    {show.criticScore.reviewCount} reviews
-                  </div>
-                )}
+            {/* Thumbnail */}
+            {show.images?.thumbnail ? (
+              <div className="relative w-16 h-16 rounded overflow-hidden flex-shrink-0">
+                <Image
+                  src={show.images.thumbnail}
+                  alt={show.title}
+                  fill
+                  className="object-cover"
+                />
               </div>
+            ) : (
+              <div className="w-16 h-16 bg-gray-700 rounded flex-shrink-0" />
+            )}
+
+            {/* Score */}
+            <ScoreBadge score={show.criticScore?.score} />
+
+            {/* Info */}
+            <div className="flex-1 min-w-0">
+              <div className="font-medium text-white group-hover:text-green-400 transition truncate">
+                {show.title}
+              </div>
+              <div className="text-sm text-gray-500 truncate">
+                {show.venue}
+                {show.criticScore && ` • ${show.criticScore.reviewCount} reviews`}
+              </div>
+            </div>
+
+            {/* Status */}
+            <div className={`text-xs px-2 py-1 rounded flex-shrink-0 ${
+              show.status === 'open'
+                ? 'bg-green-500/20 text-green-400'
+                : 'bg-gray-700 text-gray-500'
+            }`}>
+              {show.status === 'open' ? 'Open' : 'Closed'}
             </div>
           </Link>
         ))}
       </div>
 
       {filteredAndSortedShows.length === 0 && (
-        <div className="card text-center py-12 text-gray-400">
-          No shows match your search.
+        <div className="text-center py-12 text-gray-500">
+          No shows found.
         </div>
       )}
 
-      <div className="mt-6 text-sm text-gray-500">
-        Showing {filteredAndSortedShows.length} of {shows.length} shows
+      <div className="mt-6 text-sm text-gray-600">
+        {filteredAndSortedShows.length} show{filteredAndSortedShows.length !== 1 ? 's' : ''}
       </div>
     </div>
   );

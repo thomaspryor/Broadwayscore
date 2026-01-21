@@ -28,6 +28,12 @@ import {
 // TYPES
 // ===========================================
 
+export interface ShowImages {
+  hero?: string;        // Full-width hero image (1920x1080 or similar)
+  thumbnail?: string;   // Square thumbnail (400x400)
+  poster?: string;      // Poster image (2:3 ratio)
+}
+
 export interface RawShow {
   id: string;
   title: string;
@@ -39,6 +45,7 @@ export interface RawShow {
   type: string;
   runtime: string;
   intermissions: number;
+  images?: ShowImages;
 }
 
 export interface RawReview {
@@ -97,6 +104,7 @@ export interface ComputedReview {
   weightedScore: number;        // reviewMetaScore × tierWeight
   designation?: string;
   pullQuote?: string;
+  originalRating?: string;      // Original rating format (e.g., "4/5 stars", "B+", "Positive")
 }
 
 export interface ComputedAudience extends RawAudience {
@@ -145,6 +153,7 @@ export interface ComputedShow {
   status: string;
   type: string;
   runtime: string;
+  images?: ShowImages;
   criticScore: CriticScoreResult | null;
   audienceScore: AudienceScoreResult | null;
   buzzScore: BuzzScoreResult | null;
@@ -275,6 +284,7 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
       weightedScore,
       designation: review.designation,
       pullQuote: review.pullQuote,
+      originalRating: review.originalRating,
     };
   });
 
@@ -489,6 +499,7 @@ export function computeShowData(
     status: show.status,
     type: show.type,
     runtime: show.runtime,
+    images: show.images,
     criticScore,
     audienceScore: null,
     buzzScore: null,
