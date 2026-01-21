@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getShowBySlug, getAllShowSlugs, ComputedShow } from '@/lib/data';
+import StickyScoreHeader from '@/components/StickyScoreHeader';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -209,6 +210,90 @@ function CriticsPickBadge() {
   );
 }
 
+function OutletLogo({ outlet }: { outlet: string }) {
+  const outletLower = outlet.toLowerCase();
+
+  // New York Times - iconic T logo
+  if (outletLower.includes('new york times') || outletLower === 'nyt') {
+    return (
+      <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+        <span className="text-black font-serif font-bold text-lg leading-none">T</span>
+      </div>
+    );
+  }
+
+  // Vulture - V
+  if (outletLower.includes('vulture')) {
+    return (
+      <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
+        <span className="text-white font-bold text-sm leading-none">V</span>
+      </div>
+    );
+  }
+
+  // Variety - V
+  if (outletLower.includes('variety')) {
+    return (
+      <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center flex-shrink-0">
+        <span className="text-white font-bold text-sm leading-none">V</span>
+      </div>
+    );
+  }
+
+  // Hollywood Reporter - THR
+  if (outletLower.includes('hollywood reporter')) {
+    return (
+      <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0 border border-white/20">
+        <span className="text-white font-bold text-[10px] leading-none">THR</span>
+      </div>
+    );
+  }
+
+  // NY Post
+  if (outletLower.includes('ny post') || outletLower.includes('new york post')) {
+    return (
+      <div className="w-8 h-8 rounded-full bg-red-700 flex items-center justify-center flex-shrink-0">
+        <span className="text-white font-bold text-[10px] leading-none">POST</span>
+      </div>
+    );
+  }
+
+  // Entertainment Weekly - EW
+  if (outletLower.includes('entertainment weekly')) {
+    return (
+      <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center flex-shrink-0">
+        <span className="text-white font-bold text-xs leading-none">EW</span>
+      </div>
+    );
+  }
+
+  // TimeOut
+  if (outletLower.includes('timeout') || outletLower.includes('time out')) {
+    return (
+      <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center flex-shrink-0">
+        <span className="text-white font-bold text-[10px] leading-none">TO</span>
+      </div>
+    );
+  }
+
+  // TheaterMania
+  if (outletLower.includes('theatermania')) {
+    return (
+      <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center flex-shrink-0">
+        <span className="text-white font-bold text-[10px] leading-none">TM</span>
+      </div>
+    );
+  }
+
+  // Default - first letter
+  const firstLetter = outlet.charAt(0).toUpperCase();
+  return (
+    <div className="w-8 h-8 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0 border border-white/10">
+      <span className="text-gray-300 font-bold text-sm leading-none">{firstLetter}</span>
+    </div>
+  );
+}
+
 function isNewShow(openingDate: string): boolean {
   const opening = new Date(openingDate);
   const now = new Date();
@@ -311,6 +396,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
+
+      {/* Sticky Score Header */}
+      <StickyScoreHeader title={show.title} score={score} />
 
       {/* Hero Image */}
       {show.images?.hero && (
@@ -433,21 +521,31 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <div className="space-y-4">
               {show.criticScore.reviews.map((review, i) => (
                 <div key={i} className="border-b border-white/5 pb-4 last:border-0 last:pb-0">
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3">
+                    {/* Outlet Logo */}
+                    <OutletLogo outlet={review.outlet} />
+
+                    {/* Review Content */}
                     <div className="min-w-0 flex-1">
-                      <a
-                        href={review.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-semibold text-white hover:text-brand transition-colors"
-                      >
-                        {review.outlet}
-                      </a>
-                      {review.criticName && (
-                        <span className="text-gray-500 text-sm ml-2">by {review.criticName}</span>
-                      )}
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <a
+                            href={review.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-semibold text-white hover:text-brand transition-colors"
+                          >
+                            {review.outlet}
+                          </a>
+                          {review.criticName && (
+                            <span className="text-gray-500 text-sm ml-2">by {review.criticName}</span>
+                          )}
+                        </div>
+                        <div className="flex-shrink-0 text-xl font-bold" style={{ color: getScoreColor(review.reviewMetaScore) }}>
+                          {review.reviewMetaScore}
+                        </div>
+                      </div>
                       <div className="flex flex-wrap items-center gap-2 mt-1">
-                        <TierBadge tier={review.tier} />
                         <span className="text-xs text-gray-500">{formatDate(review.publishDate)}</span>
                         {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
                         {review.designation && review.designation !== 'Critics_Pick' && (
@@ -456,16 +554,13 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                           </span>
                         )}
                       </div>
-                    </div>
-                    <div className="flex-shrink-0 text-xl font-bold" style={{ color: getScoreColor(review.reviewMetaScore) }}>
-                      {review.reviewMetaScore}
+                      {review.pullQuote && (
+                        <blockquote className="mt-2 text-sm text-gray-400 italic border-l-2 border-brand/30 pl-3">
+                          &ldquo;{review.pullQuote}&rdquo;
+                        </blockquote>
+                      )}
                     </div>
                   </div>
-                  {review.pullQuote && (
-                    <blockquote className="mt-3 text-sm text-gray-400 italic border-l-2 border-brand/30 pl-3">
-                      &ldquo;{review.pullQuote}&rdquo;
-                    </blockquote>
-                  )}
                 </div>
               ))}
             </div>
