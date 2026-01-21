@@ -1,8 +1,9 @@
 // Scoring Configuration - Version controlled methodology
+// Based on user's Google Sheet methodology
 // Change this file to update scoring rules site-wide
 
-export const METHODOLOGY_VERSION = "1.0.0";
-export const METHODOLOGY_DATE = "2026-01-20";
+export const METHODOLOGY_VERSION = "2.0.0";
+export const METHODOLOGY_DATE = "2026-01-21";
 
 // ===========================================
 // COMPONENT WEIGHTS (must sum to 1.0)
@@ -16,31 +17,65 @@ export const COMPONENT_WEIGHTS = {
 // ===========================================
 // OUTLET TIER DEFINITIONS & WEIGHTS
 // ===========================================
-export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; weight: number }> = {
-  // Tier 1: Major national publications (1.5x weight)
-  'The New York Times': { tier: 1, weight: 1.5 },
-  'Vulture': { tier: 1, weight: 1.5 },
-  'Variety': { tier: 1, weight: 1.5 },
-  'The Hollywood Reporter': { tier: 1, weight: 1.5 },
-  'Time Out New York': { tier: 1, weight: 1.5 },
-  'The Washington Post': { tier: 1, weight: 1.5 },
+export const TIER_WEIGHTS = {
+  1: 1.0,
+  2: 0.85,
+  3: 0.70,
+} as const;
 
-  // Tier 2: Major theatre-focused outlets (1.0x weight)
-  'TheaterMania': { tier: 2, weight: 1.0 },
-  'Broadway News': { tier: 2, weight: 1.0 },
-  'BroadwayWorld': { tier: 2, weight: 1.0 },
-  'New York Magazine': { tier: 2, weight: 1.0 },
-  'Entertainment Weekly': { tier: 2, weight: 1.0 },
-  'The Guardian': { tier: 2, weight: 1.0 },
-  'Associated Press': { tier: 2, weight: 1.0 },
-  'New York Post': { tier: 2, weight: 1.0 },
-  'amNewYork': { tier: 2, weight: 1.0 },
+export const DEFAULT_TIER = 3 as const;
 
-  // Tier 3: Smaller outlets (0.5x weight)
-  // Any unlisted outlet defaults to tier 3
+// Outlet ID → Tier mapping
+export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; scoreFormat: string; maxScale?: number }> = {
+  // Tier 1: Major national publications & top culture sites
+  'NYT': { tier: 1, name: 'The New York Times', scoreFormat: 'text_bucket' },
+  'WASHPOST': { tier: 1, name: 'The Washington Post', scoreFormat: 'text_bucket' },
+  'LATIMES': { tier: 1, name: 'Los Angeles Times', scoreFormat: 'text_bucket' },
+  'WSJ': { tier: 1, name: 'The Wall Street Journal', scoreFormat: 'text_bucket' },
+  'AP': { tier: 1, name: 'Associated Press', scoreFormat: 'text_bucket' },
+  'VARIETY': { tier: 1, name: 'Variety', scoreFormat: 'text_bucket' },
+  'THR': { tier: 1, name: 'The Hollywood Reporter', scoreFormat: 'text_bucket' },
+  'VULT': { tier: 1, name: 'Vulture', scoreFormat: 'text_bucket' },
+  'GUARDIAN': { tier: 1, name: 'The Guardian', scoreFormat: 'stars', maxScale: 5 },
+  'TIMEOUTNY': { tier: 1, name: 'Time Out New York', scoreFormat: 'stars', maxScale: 5 },
+  'BWAYNEWS': { tier: 1, name: 'Broadway News', scoreFormat: 'text_bucket' },
+
+  // Tier 2: Regional papers, trades, theatre-specific outlets
+  'CHTRIB': { tier: 2, name: 'Chicago Tribune', scoreFormat: 'text_bucket' },
+  'USATODAY': { tier: 2, name: 'USA Today', scoreFormat: 'text_bucket' },
+  'NYDN': { tier: 2, name: 'New York Daily News', scoreFormat: 'text_bucket' },
+  'NYP': { tier: 2, name: 'New York Post', scoreFormat: 'text_bucket' },
+  'WRAP': { tier: 2, name: 'The Wrap', scoreFormat: 'text_bucket' },
+  'EW': { tier: 2, name: 'Entertainment Weekly', scoreFormat: 'letter' },
+  'INDIEWIRE': { tier: 2, name: 'IndieWire', scoreFormat: 'text_bucket' },
+  'DEADLINE': { tier: 2, name: 'Deadline', scoreFormat: 'text_bucket' },
+  'SLANT': { tier: 2, name: 'Slant Magazine', scoreFormat: 'stars', maxScale: 4 },
+  'TDB': { tier: 2, name: 'The Daily Beast', scoreFormat: 'text_bucket' },
+  'OBSERVER': { tier: 2, name: 'Observer', scoreFormat: 'text_bucket' },
+  'NYTHTR': { tier: 2, name: 'New York Theater', scoreFormat: 'text_bucket' },
+  'NYTG': { tier: 2, name: 'New York Theatre Guide', scoreFormat: 'text_bucket' },
+  'NYSR': { tier: 2, name: 'New York Stage Review', scoreFormat: 'text_bucket' },
+  'TMAN': { tier: 2, name: 'TheaterMania', scoreFormat: 'text_bucket' },
+  'THLY': { tier: 2, name: 'Theatrely', scoreFormat: 'text_bucket' },
+
+  // Tier 3: Smaller outlets, blogs, niche sites
+  'AMNY': { tier: 3, name: 'amNewYork', scoreFormat: 'text_bucket' },
+  'CITI': { tier: 3, name: 'Cititour', scoreFormat: 'text_bucket' },
+  'CSCE': { tier: 3, name: 'Culture Sauce', scoreFormat: 'stars', maxScale: 5 },
+  'FRONTMEZZ': { tier: 3, name: 'Front Mezz Junkies', scoreFormat: 'text_bucket' },
+  'THERECS': { tier: 3, name: 'The Recs', scoreFormat: 'text_bucket' },
+  'OMC': { tier: 3, name: 'One Minute Critic', scoreFormat: 'stars', maxScale: 5 },
+  'BWW': { tier: 3, name: 'BroadwayWorld', scoreFormat: 'text_bucket' },
 };
 
-export const DEFAULT_TIER_WEIGHT = 0.5;
+// ===========================================
+// DESIGNATION BUMPS (added to base score)
+// ===========================================
+export const DESIGNATION_BUMPS: Record<string, number> = {
+  'Critics_Pick': 3,      // NYT Critics' Pick
+  'Critics_Choice': 2,    // Time Out Critic's Choice
+  'Recommended': 2,       // Guardian Pick of the Week
+};
 
 // ===========================================
 // RATING NORMALIZATION MAPPINGS
@@ -48,23 +83,47 @@ export const DEFAULT_TIER_WEIGHT = 0.5;
 
 // Letter grades → 0-100
 export const LETTER_GRADE_MAP: Record<string, number> = {
-  'A+': 98, 'A': 95, 'A-': 92,
-  'B+': 88, 'B': 85, 'B-': 82,
-  'C+': 78, 'C': 75, 'C-': 72,
-  'D+': 68, 'D': 65, 'D-': 62,
-  'F': 50,
+  'A+': 100,
+  'A': 95,
+  'A-': 90,
+  'B+': 85,
+  'B': 80,
+  'B-': 75,
+  'C+': 70,
+  'C': 65,
+  'C-': 60,
+  'D+': 55,
+  'D': 50,
+  'D-': 45,
+  'F': 30,
 };
 
-// Sentiment keywords → 0-100 (used when no explicit rating)
-export const SENTIMENT_MAP: Record<string, number> = {
-  'rave': 95,
-  'positive': 80,
-  'mixed-positive': 65,
-  'mixed': 55,
-  'mixed-negative': 45,
-  'negative': 30,
-  'pan': 15,
+// Sentiment bucket → 0-100
+export const BUCKET_SCORE_MAP: Record<string, number> = {
+  'Rave': 90,
+  'Positive': 82,
+  'mixed-positive': 72,
+  'mixed-neutral': 65,
+  'Mixed': 65,  // Alias
+  'mixed-negative': 58,
+  'Negative': 48,
+  'Pan': 30,
 };
+
+// Thumb value → 0-100
+export const THUMB_SCORE_MAP: Record<string, number> = {
+  'Up': 80,
+  'Flat': 60,
+  'Down': 35,
+};
+
+// ===========================================
+// STAR RATING CONVERSION
+// ===========================================
+// Convert star ratings to 0-100 scale
+export function convertStarRating(stars: number, maxStars: number): number {
+  return Math.round((stars / maxStars) * 100);
+}
 
 // ===========================================
 // AUDIENCE PLATFORM WEIGHTS
@@ -84,11 +143,11 @@ export const AUDIENCE_MIN_REVIEWS = 50;
 // ===========================================
 export const BUZZ_CONFIG = {
   // Volume scoring
-  baselineThreads: 10,       // Expected threads for "average" buzz
-  volumeMaxScore: 50,        // Max points from volume
+  baselineThreads: 10,
+  volumeMaxScore: 50,
 
   // Sentiment scoring
-  sentimentMaxScore: 50,     // Max points from sentiment
+  sentimentMaxScore: 50,
   sentimentValues: {
     positive: 50,
     mixed: 25,
@@ -104,28 +163,45 @@ export const BUZZ_CONFIG = {
 };
 
 // ===========================================
-// CONFIDENCE RULES
+// CONFIDENCE RULES (based on review count)
 // ===========================================
+export const CONFIDENCE_THRESHOLDS = {
+  high: 15,   // 15+ reviews
+  medium: 6,  // 6+ reviews
+  // Below 6 = low
+};
+
 export const CONFIDENCE_RULES = {
   high: {
-    minCriticReviews: 10,
+    minCriticReviews: 15,
     minTier1Reviews: 3,
     minAudiencePlatforms: 2,
   },
   medium: {
-    minCriticReviews: 5,
+    minCriticReviews: 6,
     minTier1Reviews: 1,
     minAudiencePlatforms: 1,
   },
-  // Below medium thresholds = low
 };
 
 // ===========================================
-// INFERRED SCORE PENALTIES
+// CRITIC SCORE LABEL THRESHOLDS
 // ===========================================
-export const INFERRED_PENALTY = 0.5; // 50% weight for inferred scores
+export const CRITIC_LABEL_THRESHOLDS = {
+  'Rave': 85,
+  'Positive': 70,
+  'Mixed': 50,
+  'Negative': 0,
+};
+
+export function getCriticLabel(score: number): string {
+  if (score >= 85) return 'Rave';
+  if (score >= 70) return 'Positive';
+  if (score >= 50) return 'Mixed';
+  return 'Negative';
+}
 
 // ===========================================
 // DIVERGENCE THRESHOLDS
 // ===========================================
-export const AUDIENCE_DIVERGENCE_THRESHOLD = 20; // Points difference to trigger warning
+export const AUDIENCE_DIVERGENCE_THRESHOLD = 20;
