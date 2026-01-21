@@ -24,7 +24,11 @@ const DEBUG = process.argv.includes('--debug');
 // Hardcoded fallback images - these will be populated when found
 // Run with --debug to see raw API responses for troubleshooting
 const FALLBACK_IMAGES = {
-  'harry-potter': 'https://images.ctfassets.net/6pezt69ih962/7DkPjyhwUJBllOdMPllkYT/253ff4da66b108f69fb1d26d64ce53bf/TT-109547-017703-TodayTix-480x720.jpg',
+  'harry-potter': {
+    hero: 'https://s1.ticketm.net/dam/a/f51/7134553e-a0a1-45ef-9e48-f66fdfb03f51_RETINA_PORTRAIT_3_2.jpg',
+    thumbnail: 'https://s1.ticketm.net/dam/a/f51/7134553e-a0a1-45ef-9e48-f66fdfb03f51_RETINA_PORTRAIT_3_2.jpg',
+    poster: 'https://images.ctfassets.net/6pezt69ih962/7DkPjyhwUJBllOdMPllkYT/253ff4da66b108f69fb1d26d64ce53bf/TT-109547-017703-TodayTix-480x720.jpg',
+  },
 };
 
 const TODAYTIX_SHOWS = {
@@ -430,7 +434,13 @@ async function fetchShowImage(showSlug, showInfo) {
   // Method 9: Use hardcoded fallback if available
   if (FALLBACK_IMAGES[showSlug]) {
     console.log(`   ⚠ Using hardcoded fallback image`);
-    return formatImageUrls(FALLBACK_IMAGES[showSlug]);
+    const fallback = FALLBACK_IMAGES[showSlug];
+    // If fallback is already an object with hero/thumbnail/poster, return as-is
+    if (typeof fallback === 'object' && fallback.hero) {
+      return fallback;
+    }
+    // Otherwise treat as a single URL
+    return formatImageUrls(fallback);
   }
 
   console.log(`   ✗ No image found from any source`);
