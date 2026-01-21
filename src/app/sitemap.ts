@@ -1,12 +1,14 @@
 import { MetadataRoute } from 'next';
-import { getAllShowSlugs, getShowBySlug } from '@/lib/data';
+import { getAllShowSlugs, getShowBySlug, getAllTheaters, getAllDirectors } from '@/lib/data';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const showSlugs = getAllShowSlugs();
+  const theaters = getAllTheaters();
+  const directors = getAllDirectors();
 
-  // Prioritize open shows higher than closed shows
+  // Show pages - prioritize open shows
   const showPages = showSlugs.map((slug) => {
     const show = getShowBySlug(slug);
     const isOpen = show?.status === 'open';
@@ -18,6 +20,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: isOpen ? 0.9 : 0.6,
     };
   });
+
+  // Best category pages
+  const categoryPages = ['musicals', 'plays', 'all'].map((category) => ({
+    url: `${BASE_URL}/best/${category}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }));
+
+  // Theater pages
+  const theaterPages = theaters.map((theater) => ({
+    url: `${BASE_URL}/theater/${theater.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
+
+  // Director pages
+  const directorPages = directors.map((director) => ({
+    url: `${BASE_URL}/director/${director.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
 
   return [
     {
@@ -32,6 +58,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.5,
     },
+    ...categoryPages,
     ...showPages,
+    ...theaterPages,
+    ...directorPages,
   ];
 }
