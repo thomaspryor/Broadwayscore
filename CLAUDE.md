@@ -54,7 +54,8 @@ data/
   buzz.json       # (Future) Social buzz data
 
 scripts/
-  fetch-images.js # Fetches show images from TodayTix CDN
+  fetch-images.js       # Fetches show images from TodayTix CDN
+  update-show-status.js # Auto-updates show statuses (closing dates)
 ```
 
 ### Show Schema (shows.json)
@@ -99,7 +100,23 @@ node scripts/fetch-images.js
 ```
 Outputs JSON with hero/thumbnail/poster URLs for shows.json
 
-### 4. Future Features
+### 4. Data Freshness
+Run locally to auto-update show statuses:
+```bash
+node scripts/update-show-status.js
+```
+- Checks TodayTix for closing date changes
+- Auto-marks shows as closed when past closing date
+- Updates shows.json with changes found
+
+### 5. SEO (Implemented)
+- JSON-LD structured data with ticket offers, cast, ratings
+- Dynamic meta tags per show (title with score, Twitter cards)
+- Sitemap.xml auto-generated with show prioritization
+- Robots.txt configured
+- Configurable BASE_URL via `NEXT_PUBLIC_SITE_URL` env var
+
+### 6. Future Features
 - Audience scores integration
 - Comparison views
 - Historical tracking
