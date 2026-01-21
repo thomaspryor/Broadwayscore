@@ -47,14 +47,48 @@ data/
 - Two Strangers has complete data (16 reviews) as proof of concept
 - Other shows have partial/placeholder data
 - Scoring engine is fully implemented and config-driven
+- **Critic Reviews Agent implemented** (see below)
+
+## Critic Reviews Agent
+
+A data agent for fetching, normalizing, and managing critic reviews.
+
+### Quick Commands
+```bash
+npm run reviews:report              # Data coverage report
+npm run reviews:fetch -- --show <id> # Fetch for one show
+npm run reviews:all                 # Fetch for all shows
+npm run reviews:fetch -- --manual <file> # Import manual entries
+```
+
+### Key Features
+- Multi-source fetching (BroadwayWorld, DidTheyLikeIt, Show-Score)
+- Rating normalization (stars, letters, buckets → 0-100)
+- Deduplication and merging
+- Idempotent (running twice gives same results)
+- Manual entry support for reviews that can't be fetched
+
+### Agent Files
+```
+scripts/critic-reviews-agent/
+├── index.ts        # CLI entry point
+├── config.ts       # Outlets, tiers, normalization rules
+├── normalizer.ts   # Rating conversion logic
+├── deduper.ts      # Deduplication & merging
+├── fetchers.ts     # Web scraping utilities
+└── README.md       # Full documentation
+```
+
+### Manual Data Entry
+See `data/manual-reviews-template.json` for the entry format.
 
 ## Next Steps / Parallel Workstreams
 
-### 1. Data Agent (high priority)
-Build automation to fetch/gather review data for all shows:
-- Scrape critic reviews from aggregators (BroadwayWorld, DidTheyLikeIt, Show-Score)
-- Parse and normalize ratings to assignedScores
-- Identify outlet tier from source
+### 1. Data Population (high priority)
+Use the critic reviews agent to populate data:
+- Run agent for all shows to attempt auto-fetch
+- Manually add reviews that can't be scraped
+- Verify data quality with `npm run reviews:report`
 
 ### 2. UI Polish
 - Mobile responsiveness improvements
@@ -68,9 +102,17 @@ Build automation to fetch/gather review data for all shows:
 
 ## Commands
 ```bash
+# Development
 npm run dev      # Development server
 npm run build    # Production build
 npm run lint     # Lint check
+
+# Data Agent
+npm run reviews:report   # Data coverage report
+npm run reviews:all      # Fetch reviews for all shows
+npm run reviews:fetch -- --show <id>     # Fetch for specific show
+npm run reviews:fetch -- --manual <file> # Import manual entries
+npm run reviews:fetch -- --dry-run       # Preview without writing
 ```
 
 ## Branch Strategy
