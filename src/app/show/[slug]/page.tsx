@@ -258,60 +258,101 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
       {/* Sticky Score Header */}
       <StickyScoreHeader title={show.title} score={score} />
 
-      {/* Hero Image */}
+      {/* Hero Background - subtle backdrop */}
       {show.images?.hero && (
-        <div className="relative h-56 sm:h-72 lg:h-96 -mt-16 sm:-mt-18">
+        <div className="relative h-40 sm:h-48 lg:h-56 -mt-16 sm:-mt-18 overflow-hidden">
           <img
             src={show.images.hero}
-            alt={show.title}
-            className="w-full h-full object-cover object-top"
+            alt=""
+            className="w-full h-full object-cover object-center blur-sm scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-surface/60 via-surface/80 to-surface" />
         </div>
       )}
 
-      <div className={`max-w-3xl mx-auto px-4 sm:px-6 ${show.images?.hero ? '-mt-24 relative z-10' : 'py-8'}`}>
+      <div className={`max-w-3xl mx-auto px-4 sm:px-6 ${show.images?.hero ? '-mt-32 sm:-mt-36 relative z-10' : 'py-8'}`}>
         {/* Back Link */}
-        <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">
+        <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-4 transition-colors">
           <BackArrow />
           All Shows
         </Link>
 
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-6 mb-8">
-          {/* Score Badge */}
-          <div className="flex-shrink-0 text-center">
-            <ScoreBadge score={score} size="xl" />
-            {score && (
-              <div className="mt-2">
-                <ScoreLabel score={score} />
+        {/* Header with Poster Card */}
+        <div className="flex gap-4 sm:gap-6 mb-8">
+          {/* Poster Card */}
+          <div className="flex-shrink-0">
+            <div className="relative w-28 sm:w-36 lg:w-44 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
+              {show.images?.poster ? (
+                <img
+                  src={show.images.poster}
+                  alt={show.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : show.images?.thumbnail ? (
+                <img
+                  src={show.images.thumbnail}
+                  alt={show.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : show.images?.hero ? (
+                <img
+                  src={show.images.hero}
+                  alt={show.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                  <span className="text-4xl text-gray-600">🎭</span>
+                </div>
+              )}
+              {/* Score badge overlay on poster */}
+              <div className="absolute -bottom-2 -right-2">
+                <ScoreBadge score={score} size="md" />
               </div>
-            )}
-            {show.criticScore && (
-              <p className="text-xs text-gray-500 mt-1">
-                {show.criticScore.reviewCount} reviews
-              </p>
-            )}
+            </div>
           </div>
 
           {/* Title & Meta */}
-          <div className="flex-1">
+          <div className="flex-1 min-w-0 pt-2 sm:pt-4">
             <div className="flex flex-wrap items-center gap-2 mb-1">
               <TypeTag type={show.type} />
               {isNewShow(show.openingDate) && <NewBadge />}
-            </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
-              {show.title}
-            </h1>
-            <div className="flex flex-wrap items-center gap-2 mt-2 text-gray-400 text-sm">
-              <span className="text-gray-300">{show.venue}</span>
-              <span className="text-gray-600">•</span>
-              <span>{show.runtime}</span>
-              <span className="text-gray-600">•</span>
               <StatusChip status={show.status} />
             </div>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight">
+              {show.title}
+            </h1>
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-gray-400 text-sm">
+              <span className="text-gray-300">{show.venue}</span>
+              <span className="text-gray-600 hidden sm:inline">•</span>
+              <span className="hidden sm:inline">{show.runtime}</span>
+            </div>
+
+            {/* Score Label and Reviews - desktop */}
+            {score && (
+              <div className="hidden sm:flex items-center gap-3 mt-4">
+                <ScoreLabel score={score} />
+                {show.criticScore && (
+                  <span className="text-sm text-gray-500">
+                    Based on {show.criticScore.reviewCount} reviews
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Score Label - mobile only */}
+        {score && (
+          <div className="flex items-center gap-3 mb-6 sm:hidden">
+            <ScoreLabel score={score} />
+            {show.criticScore && (
+              <span className="text-sm text-gray-500">
+                {show.criticScore.reviewCount} reviews
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Action Buttons */}
         {(show.ticketLinks?.length || show.officialUrl || show.trailerUrl) && (
