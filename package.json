@@ -7,8 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "agent:update": "npx ts-node scripts/agent-update.ts",
-    "agent:report": "npx ts-node scripts/agent-update.ts"
+    "agent:update": "npx ts-node --project scripts/tsconfig.json scripts/agent-update.ts",
+    "agent:report": "npx ts-node --project scripts/tsconfig.json scripts/agent-update.ts",
+    "reviews:fetch": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts",
+    "reviews:report": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts --report",
+    "reviews:show": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts --show",
+    "reviews:all": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts --all"
   },
   "dependencies": {
     "next": "14.2.3",
@@ -24,6 +28,7 @@
     "eslint-config-next": "14.2.3",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   }
 }
