@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getShowBySlug, getAllShowSlugs, ComputedShow } from '@/lib/data';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
+import AnimatedScoreDistribution from '@/components/AnimatedScoreDistribution';
+import ReviewsList from '@/components/ReviewsList';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -96,12 +98,6 @@ function formatDate(dateStr: string): string {
   });
 }
 
-function getScoreColor(score: number): string {
-  if (score >= 70) return '#10b981';
-  if (score >= 50) return '#f59e0b';
-  return '#ef4444';
-}
-
 function BackArrow() {
   return (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,127 +166,39 @@ function NewBadge() {
 function ScoreLabel({ score }: { score: number }) {
   const roundedScore = Math.round(score);
   let label: string;
-  let className: string;
+  let bgClass: string;
+  let textClass: string;
 
   if (roundedScore >= 90) {
     label = 'Must See!';
-    className = 'text-score-high';
+    bgClass = 'bg-score-high/20';
+    textClass = 'text-score-high';
   } else if (roundedScore >= 80) {
     label = 'Excellent';
-    className = 'text-score-high';
+    bgClass = 'bg-score-high/20';
+    textClass = 'text-score-high';
   } else if (roundedScore >= 70) {
     label = 'Great';
-    className = 'text-score-high';
+    bgClass = 'bg-score-high/20';
+    textClass = 'text-score-high';
   } else if (roundedScore >= 60) {
     label = 'Good';
-    className = 'text-score-medium';
+    bgClass = 'bg-score-medium/20';
+    textClass = 'text-score-medium';
   } else if (roundedScore >= 50) {
     label = 'Mixed';
-    className = 'text-score-medium';
+    bgClass = 'bg-score-medium/20';
+    textClass = 'text-score-medium';
   } else {
     label = 'Poor';
-    className = 'text-score-low';
+    bgClass = 'bg-score-low/20';
+    textClass = 'text-score-low';
   }
 
   return (
-    <span className={`text-sm font-semibold ${className}`}>
+    <span className={`inline-block px-3 py-1 rounded-full text-sm font-bold uppercase tracking-wide ${bgClass} ${textClass}`}>
       {label}
     </span>
-  );
-}
-
-function CriticsPickBadge() {
-  return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 text-xs font-bold">
-      <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-      </svg>
-      Critics Pick
-    </span>
-  );
-}
-
-function OutletLogo({ outlet }: { outlet: string }) {
-  const outletLower = outlet.toLowerCase();
-
-  // New York Times - iconic T logo
-  if (outletLower.includes('new york times') || outletLower === 'nyt') {
-    return (
-      <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-        <span className="text-black font-serif font-bold text-lg leading-none">T</span>
-      </div>
-    );
-  }
-
-  // Vulture - V
-  if (outletLower.includes('vulture')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
-        <span className="text-white font-bold text-sm leading-none">V</span>
-      </div>
-    );
-  }
-
-  // Variety - V
-  if (outletLower.includes('variety')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center flex-shrink-0">
-        <span className="text-white font-bold text-sm leading-none">V</span>
-      </div>
-    );
-  }
-
-  // Hollywood Reporter - THR
-  if (outletLower.includes('hollywood reporter')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0 border border-white/20">
-        <span className="text-white font-bold text-[10px] leading-none">THR</span>
-      </div>
-    );
-  }
-
-  // NY Post
-  if (outletLower.includes('ny post') || outletLower.includes('new york post')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-red-700 flex items-center justify-center flex-shrink-0">
-        <span className="text-white font-bold text-[10px] leading-none">POST</span>
-      </div>
-    );
-  }
-
-  // Entertainment Weekly - EW
-  if (outletLower.includes('entertainment weekly')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center flex-shrink-0">
-        <span className="text-white font-bold text-xs leading-none">EW</span>
-      </div>
-    );
-  }
-
-  // TimeOut
-  if (outletLower.includes('timeout') || outletLower.includes('time out')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center flex-shrink-0">
-        <span className="text-white font-bold text-[10px] leading-none">TO</span>
-      </div>
-    );
-  }
-
-  // TheaterMania
-  if (outletLower.includes('theatermania')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center flex-shrink-0">
-        <span className="text-white font-bold text-[10px] leading-none">TM</span>
-      </div>
-    );
-  }
-
-  // Default - first letter
-  const firstLetter = outlet.charAt(0).toUpperCase();
-  return (
-    <div className="w-8 h-8 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0 border border-white/10">
-      <span className="text-gray-300 font-bold text-sm leading-none">{firstLetter}</span>
-    </div>
   );
 }
 
@@ -305,56 +213,6 @@ function getGoogleMapsUrl(address: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
-function ScoreDistribution({ reviews }: { reviews: { reviewMetaScore: number }[] }) {
-  const high = reviews.filter(r => r.reviewMetaScore >= 70).length;
-  const medium = reviews.filter(r => r.reviewMetaScore >= 50 && r.reviewMetaScore < 70).length;
-  const low = reviews.filter(r => r.reviewMetaScore < 50).length;
-  const total = reviews.length;
-
-  if (total === 0) return null;
-
-  const highPct = Math.round((high / total) * 100);
-  const mediumPct = Math.round((medium / total) * 100);
-  const lowPct = Math.round((low / total) * 100);
-
-  return (
-    <div className="mb-5 space-y-2">
-      {/* Positive */}
-      <div className="flex items-center gap-3">
-        <span className="text-xs text-gray-400 w-16">Positive</span>
-        <div className="flex-1 h-2 bg-surface-overlay rounded-full overflow-hidden">
-          <div
-            className="bg-score-high h-full rounded-full"
-            style={{ width: `${highPct}%` }}
-          />
-        </div>
-        <span className="text-xs text-gray-400 w-10 text-right">{highPct}%</span>
-      </div>
-      {/* Mixed */}
-      <div className="flex items-center gap-3">
-        <span className="text-xs text-gray-400 w-16">Mixed</span>
-        <div className="flex-1 h-2 bg-surface-overlay rounded-full overflow-hidden">
-          <div
-            className="bg-score-medium h-full rounded-full"
-            style={{ width: `${mediumPct}%` }}
-          />
-        </div>
-        <span className="text-xs text-gray-400 w-10 text-right">{mediumPct}%</span>
-      </div>
-      {/* Negative */}
-      <div className="flex items-center gap-3">
-        <span className="text-xs text-gray-400 w-16">Negative</span>
-        <div className="flex-1 h-2 bg-surface-overlay rounded-full overflow-hidden">
-          <div
-            className="bg-score-low h-full rounded-full"
-            style={{ width: `${lowPct}%` }}
-          />
-        </div>
-        <span className="text-xs text-gray-400 w-10 text-right">{lowPct}%</span>
-      </div>
-    </div>
-  );
-}
 
 // JSON-LD structured data for SEO
 function generateStructuredData(show: ComputedShow) {
@@ -516,54 +374,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               <span className="text-sm text-gray-500">{show.criticScore.reviewCount} reviews</span>
             </div>
 
-            <ScoreDistribution reviews={show.criticScore.reviews} />
+            <AnimatedScoreDistribution reviews={show.criticScore.reviews} />
 
-            <div className="space-y-4">
-              {show.criticScore.reviews.map((review, i) => (
-                <div key={i} className="border-b border-white/5 pb-4 last:border-0 last:pb-0">
-                  <div className="flex items-start gap-3">
-                    {/* Outlet Logo */}
-                    <OutletLogo outlet={review.outlet} />
-
-                    {/* Review Content */}
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <a
-                            href={review.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-semibold text-white hover:text-brand transition-colors"
-                          >
-                            {review.outlet}
-                          </a>
-                          {review.criticName && (
-                            <span className="text-gray-500 text-sm ml-2">by {review.criticName}</span>
-                          )}
-                        </div>
-                        <div className="flex-shrink-0 text-xl font-bold" style={{ color: getScoreColor(review.reviewMetaScore) }}>
-                          {review.reviewMetaScore}
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap items-center gap-2 mt-1">
-                        <span className="text-xs text-gray-500">{formatDate(review.publishDate)}</span>
-                        {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
-                        {review.designation && review.designation !== 'Critics_Pick' && (
-                          <span className="text-xs text-score-high font-medium">
-                            {review.designation.replace('_', ' ')}
-                          </span>
-                        )}
-                      </div>
-                      {review.pullQuote && (
-                        <blockquote className="mt-2 text-sm text-gray-400 italic border-l-2 border-brand/30 pl-3">
-                          &ldquo;{review.pullQuote}&rdquo;
-                        </blockquote>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <ReviewsList reviews={show.criticScore.reviews} initialCount={5} />
           </div>
         )}
 

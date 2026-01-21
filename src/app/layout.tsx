@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Link from 'next/link';
+import ScrollToTop from '@/components/ScrollToTop';
 
 const BASE_URL = 'https://thomaspryor.github.io/Broadwayscore';
 
@@ -110,6 +111,7 @@ export default function RootLayout({
           </div>
         </footer>
         <BottomNav />
+        <ScrollToTop />
       </body>
     </html>
   );
