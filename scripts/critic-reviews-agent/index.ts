@@ -40,6 +40,12 @@ import {
   fetchFromAllOutlets,
   OutletSearchResult,
 } from './fetchers';
+import {
+  searchForReviews,
+  toRawReviews,
+  SearchAPIConfig,
+  ParsedReviewFromSearch,
+} from './search-fetcher';
 import { OUTLETS, findOutletConfig, scoreToBucket, scoreToThumb, getSearchableOutlets } from './config';
 
 // ===========================================
@@ -108,13 +114,17 @@ async function processShow(
     verbose?: boolean;
     dryRun?: boolean;
     comprehensive?: boolean;
+    search?: boolean;
+    searchApiConfig?: SearchAPIConfig;
   } = {}
-): Promise<AgentResult & { searchResults?: OutletSearchResult[]; webSearchQueries?: string[] }> {
+): Promise<AgentResult & { searchResults?: OutletSearchResult[]; webSearchQueries?: string[]; parsedSearchReviews?: ParsedReviewFromSearch[] }> {
   const {
     sources = ['broadwayworld', 'didtheylikeit', 'showscore'],
     verbose = false,
     dryRun = false,
     comprehensive = false,
+    search = false,
+    searchApiConfig,
   } = options;
 
   console.log(`\n${'='.repeat(60)}`);
@@ -122,7 +132,7 @@ async function processShow(
   console.log(`Show ID: ${show.id}`);
   console.log(`${'='.repeat(60)}`);
 
-  const result: AgentResult & { searchResults?: OutletSearchResult[]; webSearchQueries?: string[] } = {
+  const result: AgentResult & { searchResults?: OutletSearchResult[]; webSearchQueries?: string[]; parsedSearchReviews?: ParsedReviewFromSearch[] } = {
     showId: show.id,
     showTitle: show.title,
     reviewsFound: [],
@@ -136,8 +146,47 @@ async function processShow(
   let rawReviews: RawReview[] = [];
   let searchResults: OutletSearchResult[] = [];
   let webSearchQueries: string[] = [];
+  let parsedSearchReviews: ParsedReviewFromSearch[] = [];
 
-  if (comprehensive) {
+  // Search API mode - use web search to find reviews
+  if (search && searchApiConfig) {
+    console.log(`\nUsing Search API (${searchApiConfig.provider})...`);
+    try {
+      const searchResult = await searchForReviews(show.title, {
+        apiConfig: searchApiConfig,
+        verbose,
+        maxResults: 30,
+      });
+
+      parsedSearchReviews = searchResult.reviews;
+      rawReviews = toRawReviews(searchResult.reviews);
+      webSearchQueries = searchResult.queries;
+      result.errors.push(...searchResult.errors);
+
+      console.log(`\nSearch Results:`);
+      console.log(`  - Total reviews found: ${parsedSearchReviews.length}`);
+      console.log(`  - Known outlets: ${parsedSearchReviews.filter(r => r.isKnownOutlet).length}`);
+      console.log(`  - New outlets discovered: ${parsedSearchReviews.filter(r => !r.isKnownOutlet).length}`);
+
+      if (verbose && parsedSearchReviews.length > 0) {
+        console.log(`\nReviews found:`);
+        for (const review of parsedSearchReviews.slice(0, 15)) {
+          const tier = review.tier ? `T${review.tier}` : 'T?';
+          console.log(`  ${review.isKnownOutlet ? '✓' : '?'} ${review.outlet} (${tier}): ${review.sentiment || 'unknown'}`);
+          if (review.criticName) console.log(`    by ${review.criticName}`);
+          console.log(`    ${review.url}`);
+        }
+        if (parsedSearchReviews.length > 15) {
+          console.log(`  ... and ${parsedSearchReviews.length - 15} more`);
+        }
+      }
+
+      result.parsedSearchReviews = parsedSearchReviews;
+    } catch (error) {
+      result.errors.push(`Search API error: ${(error as Error).message}`);
+      console.error(`Search API error: ${(error as Error).message}`);
+    }
+  } else if (comprehensive) {
     // Comprehensive fetch: aggregators + all outlets + web search
     console.log(`\nComprehensive fetch from ${getSearchableOutlets().length} outlets...`);
     const fetchResult = await fetchComprehensive(show.title, show.slug, {
@@ -386,6 +435,8 @@ interface CliArgs {
   dryRun?: boolean;
   manualFile?: string;
   comprehensive?: boolean;
+  search?: boolean; // Use search API instead of direct scraping
+  searchProvider?: 'serpapi' | 'brave';
   help?: boolean;
 }
 
@@ -413,6 +464,10 @@ function parseArgs(argv: string[]): CliArgs {
       args.manualFile = argv[++i];
     } else if (arg === '--comprehensive' || arg === '-c') {
       args.comprehensive = true;
+    } else if (arg === '--search') {
+      args.search = true;
+    } else if (arg === '--search-provider') {
+      args.searchProvider = argv[++i] as 'serpapi' | 'brave';
     }
   }
 
@@ -433,13 +488,22 @@ Options:
   --report, -r         Generate a report of existing data
   --sources <list>     Comma-separated sources (broadwayworld,didtheylikeit,showscore)
   --comprehensive, -c  Search ALL ${outletCount} configured outlets + web search
+  --search             Use search API instead of direct scraping (more reliable)
+  --search-provider    Search API provider: serpapi (default) or brave
   --manual <file>      Process manual entries from a JSON file
   --verbose, -v        Enable verbose output
   --dry-run, -n        Don't write changes to files
   --help, -h           Show this help message
 
+Environment Variables:
+  SERPAPI_KEY          API key for SerpAPI (serpapi.com) - Google search results
+  BRAVE_API_KEY        API key for Brave Search API (brave.com/search/api)
+
 Examples:
-  # Fetch reviews for a show (aggregators only)
+  # Fetch reviews using search API (recommended)
+  SERPAPI_KEY=xxx npx ts-node scripts/critic-reviews-agent/index.ts --show bug-2025 --search
+
+  # Fetch reviews for a show (direct scraping - may be blocked)
   npx ts-node scripts/critic-reviews-agent/index.ts --show bug-2025
 
   # Comprehensive search across all outlets
@@ -448,8 +512,8 @@ Examples:
   # Fetch from specific sources only
   npx ts-node scripts/critic-reviews-agent/index.ts --show two-strangers-bway-2025 --sources broadwayworld
 
-  # Process all shows with verbose output
-  npx ts-node scripts/critic-reviews-agent/index.ts --all --verbose
+  # Process all shows with search API
+  SERPAPI_KEY=xxx npx ts-node scripts/critic-reviews-agent/index.ts --all --search --verbose
 
   # Generate report only
   npx ts-node scripts/critic-reviews-agent/index.ts --report
@@ -523,6 +587,34 @@ async function main(): Promise<void> {
     process.exit(0);
   }
 
+  // Build search API config if search mode is enabled
+  let searchApiConfig: SearchAPIConfig | undefined;
+  if (args.search) {
+    const provider = args.searchProvider || 'serpapi';
+    let apiKey: string | undefined;
+
+    if (provider === 'serpapi') {
+      apiKey = process.env.SERPAPI_KEY;
+      if (!apiKey) {
+        console.error('Error: SERPAPI_KEY environment variable is required for search mode.');
+        console.log('Get an API key at: https://serpapi.com');
+        console.log('Usage: SERPAPI_KEY=xxx npm run reviews:fetch -- --show bug-2025 --search');
+        process.exit(1);
+      }
+    } else if (provider === 'brave') {
+      apiKey = process.env.BRAVE_API_KEY;
+      if (!apiKey) {
+        console.error('Error: BRAVE_API_KEY environment variable is required for Brave search.');
+        console.log('Get an API key at: https://brave.com/search/api');
+        console.log('Usage: BRAVE_API_KEY=xxx npm run reviews:fetch -- --show bug-2025 --search --search-provider brave');
+        process.exit(1);
+      }
+    }
+
+    searchApiConfig = { provider, apiKey };
+    console.log(`\nSearch mode enabled (provider: ${provider})`);
+  }
+
   // Process shows
   const allResults: AgentResult[] = [];
 
@@ -533,6 +625,8 @@ async function main(): Promise<void> {
         verbose: args.verbose,
         dryRun: args.dryRun,
         comprehensive: args.comprehensive,
+        search: args.search,
+        searchApiConfig,
       });
       allResults.push(result);
 

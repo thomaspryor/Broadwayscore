@@ -231,7 +231,9 @@ export function deduplicateReviews(
   // Convert to sorted array for consistent output
   const deduplicated = Array.from(reviewMap.values()).sort((a, b) => {
     // Sort by: outlet tier (implied by ID ordering), then outlet ID, then critic name
-    const outletCompare = a.outletId.localeCompare(b.outletId);
+    const outletIdA = a.outletId || a.outlet || '';
+    const outletIdB = b.outletId || b.outlet || '';
+    const outletCompare = outletIdA.localeCompare(outletIdB);
     if (outletCompare !== 0) return outletCompare;
 
     const criticA = a.criticName || '';
