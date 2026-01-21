@@ -169,23 +169,23 @@ function ScoreLabel({ score }: { score: number }) {
   let bgClass: string;
   let textClass: string;
 
-  if (roundedScore >= 90) {
+  if (roundedScore >= 85) {
     label = 'Must See!';
     bgClass = 'bg-score-high/20';
     textClass = 'text-score-high';
-  } else if (roundedScore >= 80) {
+  } else if (roundedScore >= 75) {
     label = 'Excellent';
     bgClass = 'bg-score-high/20';
     textClass = 'text-score-high';
-  } else if (roundedScore >= 70) {
+  } else if (roundedScore >= 65) {
     label = 'Great';
     bgClass = 'bg-score-high/20';
     textClass = 'text-score-high';
-  } else if (roundedScore >= 60) {
+  } else if (roundedScore >= 55) {
     label = 'Good';
     bgClass = 'bg-score-medium/20';
     textClass = 'text-score-medium';
-  } else if (roundedScore >= 50) {
+  } else if (roundedScore >= 45) {
     label = 'Mixed';
     bgClass = 'bg-score-medium/20';
     textClass = 'text-score-medium';
