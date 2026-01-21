@@ -42,9 +42,11 @@ import {
 } from './fetchers';
 import {
   searchForReviews,
+  searchPrioritized,
   toRawReviews,
   SearchAPIConfig,
   ParsedReviewFromSearch,
+  PrioritizedSearchResult,
 } from './search-fetcher';
 import { OUTLETS, findOutletConfig, scoreToBucket, scoreToThumb, getSearchableOutlets } from './config';
 
@@ -148,36 +150,41 @@ async function processShow(
   let webSearchQueries: string[] = [];
   let parsedSearchReviews: ParsedReviewFromSearch[] = [];
 
-  // Search API mode - use web search to find reviews
+  // Search API mode - use prioritized web search to find reviews
+  // Order: 1) Aggregators (DTLI, Show-Score, BWW) → 2) Outlets → 3) Web search
   if (search && searchApiConfig) {
-    console.log(`\nUsing Search API (${searchApiConfig.provider})...`);
+    console.log(`\nUsing Prioritized Search API (${searchApiConfig.provider})...`);
+    console.log(`Order: Aggregators → Outlets → Web Search`);
     try {
-      const searchResult = await searchForReviews(show.title, {
+      const searchResult = await searchPrioritized(show.title, {
         apiConfig: searchApiConfig,
         verbose,
-        maxResults: 30,
+        maxResults: 20,
       });
 
-      parsedSearchReviews = searchResult.reviews;
-      rawReviews = toRawReviews(searchResult.reviews);
+      parsedSearchReviews = searchResult.allReviews;
+      rawReviews = toRawReviews(searchResult.allReviews);
       webSearchQueries = searchResult.queries;
       result.errors.push(...searchResult.errors);
 
-      console.log(`\nSearch Results:`);
-      console.log(`  - Total reviews found: ${parsedSearchReviews.length}`);
+      console.log(`\nSearch Results Summary:`);
+      console.log(`  - From aggregators (DTLI, Show-Score, BWW): ${searchResult.summary.fromAggregators}`);
+      console.log(`  - From outlets (NYT, Variety, etc.): ${searchResult.summary.fromOutlets}`);
+      console.log(`  - From web search: ${searchResult.summary.fromWebSearch}`);
+      console.log(`  - Total unique reviews: ${searchResult.summary.total}`);
       console.log(`  - Known outlets: ${parsedSearchReviews.filter(r => r.isKnownOutlet).length}`);
       console.log(`  - New outlets discovered: ${parsedSearchReviews.filter(r => !r.isKnownOutlet).length}`);
 
       if (verbose && parsedSearchReviews.length > 0) {
         console.log(`\nReviews found:`);
-        for (const review of parsedSearchReviews.slice(0, 15)) {
+        for (const review of parsedSearchReviews.slice(0, 20)) {
           const tier = review.tier ? `T${review.tier}` : 'T?';
           console.log(`  ${review.isKnownOutlet ? '✓' : '?'} ${review.outlet} (${tier}): ${review.sentiment || 'unknown'}`);
           if (review.criticName) console.log(`    by ${review.criticName}`);
           console.log(`    ${review.url}`);
         }
-        if (parsedSearchReviews.length > 15) {
-          console.log(`  ... and ${parsedSearchReviews.length - 15} more`);
+        if (parsedSearchReviews.length > 20) {
+          console.log(`  ... and ${parsedSearchReviews.length - 20} more`);
         }
       }
 
