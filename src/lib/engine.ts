@@ -1,27 +1,27 @@
 // Scoring Engine - Computes all scores from raw data using config
-// This is the core calculation engine that powers the site
+// Based on user's Google Sheet methodology
 //
 // REPEATABILITY GUARANTEE:
 // - Same input data + same config = same output scores (deterministic)
 // - No randomness, no time-based variations in scoring
 // - All calculations use explicit, documented formulas
-// - Sorting is stable (by secondary keys when primary keys are equal)
-// - Config changes are versioned and auditable
 
 import {
   METHODOLOGY_VERSION,
   METHODOLOGY_DATE,
   COMPONENT_WEIGHTS,
   OUTLET_TIERS,
-  DEFAULT_TIER_WEIGHT,
+  TIER_WEIGHTS,
+  DEFAULT_TIER,
+  DESIGNATION_BUMPS,
   LETTER_GRADE_MAP,
-  SENTIMENT_MAP,
+  BUCKET_SCORE_MAP,
+  THUMB_SCORE_MAP,
   AUDIENCE_PLATFORM_WEIGHTS,
-  AUDIENCE_MIN_REVIEWS,
   BUZZ_CONFIG,
-  CONFIDENCE_RULES,
-  INFERRED_PENALTY,
+  CONFIDENCE_THRESHOLDS,
   AUDIENCE_DIVERGENCE_THRESHOLD,
+  getCriticLabel,
 } from '@/config/scoring';
 
 // ===========================================
@@ -43,11 +43,17 @@ export interface RawShow {
 
 export interface RawReview {
   showId: string;
+  outletId?: string;
   outlet: string;
   criticName?: string;
-  originalRating: string;
   url: string;
   publishDate: string;
+  // New fields from spreadsheet methodology
+  assignedScore?: number;          // Manual 0-100 score
+  originalRating?: string;         // e.g., "B+", "3 stars", "4/5"
+  bucket?: string;                 // Rave, Positive, Mixed, Negative, Pan
+  thumb?: string;                  // Up, Flat, Down
+  designation?: string;            // Critics_Pick, Critics_Choice, etc.
   pullQuote?: string;
 }
 
@@ -75,11 +81,22 @@ export interface RawBuzzThread {
   summary?: string;
 }
 
-export interface ComputedReview extends RawReview {
+export interface ComputedReview {
+  showId: string;
+  outletId: string;
+  outlet: string;
+  criticName?: string;
+  url: string;
+  publishDate: string;
   tier: 1 | 2 | 3;
-  weight: number;
-  mappedScore: number;
-  isInferred: boolean;
+  tierWeight: number;
+  assignedScore: number;
+  bucketScore?: number;
+  thumbScore?: number;
+  reviewMetaScore: number;      // The score used for averaging
+  weightedScore: number;        // reviewMetaScore × tierWeight
+  designation?: string;
+  pullQuote?: string;
 }
 
 export interface ComputedAudience extends RawAudience {
@@ -88,9 +105,11 @@ export interface ComputedAudience extends RawAudience {
 }
 
 export interface CriticScoreResult {
-  score: number;
+  score: number;                // Simple average of reviewMetaScores
+  weightedScore: number;        // Weighted average using tier weights
   reviewCount: number;
   tier1Count: number;
+  label: string;                // Rave, Positive, Mixed, Negative
   reviews: ComputedReview[];
 }
 
@@ -117,7 +136,6 @@ export interface ConfidenceResult {
 }
 
 export interface ComputedShow {
-  // Metadata
   id: string;
   title: string;
   slug: string;
@@ -127,57 +145,70 @@ export interface ComputedShow {
   status: string;
   type: string;
   runtime: string;
-
-  // Computed scores
   criticScore: CriticScoreResult | null;
   audienceScore: AudienceScoreResult | null;
   buzzScore: BuzzScoreResult | null;
   metascore: number | null;
-
-  // Confidence
   confidence: ConfidenceResult;
-
-  // Methodology version
   methodologyVersion: string;
   methodologyDate: string;
   computedAt: string;
 }
 
 // ===========================================
-// RATING NORMALIZATION
+// HELPER: GET OUTLET CONFIG
 // ===========================================
 
-export function normalizeRating(rating: string): { score: number; isInferred: boolean } {
-  const normalized = rating.trim().toLowerCase();
+function getOutletConfig(outletId?: string, outletName?: string) {
+  // Try by ID first
+  if (outletId && OUTLET_TIERS[outletId]) {
+    return { ...OUTLET_TIERS[outletId], id: outletId };
+  }
+  // Fallback to name lookup
+  if (outletName) {
+    for (const [id, config] of Object.entries(OUTLET_TIERS)) {
+      if (config.name.toLowerCase() === outletName.toLowerCase()) {
+        return { ...config, id };
+      }
+    }
+  }
+  // Default tier 3
+  return {
+    tier: DEFAULT_TIER as 1 | 2 | 3,
+    name: outletName || 'Unknown',
+    scoreFormat: 'text_bucket',
+    id: outletId || 'UNKNOWN',
+  };
+}
 
-  // Star ratings: "4/5", "3.5/5", "4 out of 5"
-  const starMatch = normalized.match(/^(\d+\.?\d*)\s*(?:\/|out of)\s*(\d+)/);
-  if (starMatch) {
-    const [, value, max] = starMatch;
-    return { score: Math.round((parseFloat(value) / parseFloat(max)) * 100), isInferred: false };
+// ===========================================
+// HELPER: PARSE RATING TO SCORE
+// ===========================================
+
+function parseOriginalRating(rating: string): number | null {
+  const normalized = rating.trim();
+
+  // Letter grades (B+, A-, etc.)
+  const upperRating = normalized.toUpperCase();
+  if (LETTER_GRADE_MAP[upperRating] !== undefined) {
+    return LETTER_GRADE_MAP[upperRating];
   }
 
-  // Letter grades
-  const upperRating = rating.trim().toUpperCase();
-  if (LETTER_GRADE_MAP[upperRating] !== undefined) {
-    return { score: LETTER_GRADE_MAP[upperRating], isInferred: false };
+  // Star ratings: "4/5", "3.5/5", "3 stars"
+  const starMatch = normalized.match(/^(\d+\.?\d*)\s*(?:\/\s*(\d+)|stars?)/i);
+  if (starMatch) {
+    const value = parseFloat(starMatch[1]);
+    const max = starMatch[2] ? parseFloat(starMatch[2]) : 5;
+    return Math.round((value / max) * 100);
   }
 
   // Percentage
   const percentMatch = normalized.match(/^(\d+)\s*%?$/);
   if (percentMatch) {
-    return { score: Math.min(100, parseInt(percentMatch[1])), isInferred: false };
+    return Math.min(100, parseInt(percentMatch[1]));
   }
 
-  // Sentiment keywords (inferred)
-  for (const [sentiment, score] of Object.entries(SENTIMENT_MAP)) {
-    if (normalized.includes(sentiment.toLowerCase())) {
-      return { score, isInferred: true };
-    }
-  }
-
-  // Default fallback
-  return { score: 50, isInferred: true };
+  return null;
 }
 
 // ===========================================
@@ -188,39 +219,84 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
   if (reviews.length === 0) return null;
 
   const computedReviews: ComputedReview[] = reviews.map(review => {
-    const outletConfig = OUTLET_TIERS[review.outlet];
-    const tier = outletConfig?.tier ?? 3;
-    const baseWeight = outletConfig?.weight ?? DEFAULT_TIER_WEIGHT;
+    const outletConfig = getOutletConfig(review.outletId, review.outlet);
+    const tier = outletConfig.tier;
+    const tierWeight = TIER_WEIGHTS[tier];
 
-    const { score: mappedScore, isInferred } = normalizeRating(review.originalRating);
-    const weight = baseWeight * (isInferred ? INFERRED_PENALTY : 1);
+    // Determine the review score
+    // Priority: assignedScore > originalRating > bucket > thumb
+    let assignedScore: number;
+    let bucketScore: number | undefined;
+    let thumbScore: number | undefined;
+
+    if (review.assignedScore !== undefined) {
+      assignedScore = review.assignedScore;
+    } else if (review.originalRating) {
+      const parsed = parseOriginalRating(review.originalRating);
+      assignedScore = parsed ?? 50;
+    } else {
+      assignedScore = 50; // Default
+    }
+
+    // Get bucket and thumb scores for reference/averaging
+    if (review.bucket) {
+      bucketScore = BUCKET_SCORE_MAP[review.bucket];
+    }
+    if (review.thumb) {
+      thumbScore = THUMB_SCORE_MAP[review.thumb];
+    }
+
+    // Calculate reviewMetaScore
+    // If we have both assigned score and a mapped score, average them
+    // Otherwise use the assigned score directly
+    let reviewMetaScore = assignedScore;
+
+    // Apply designation bump if applicable
+    if (review.designation && DESIGNATION_BUMPS[review.designation]) {
+      reviewMetaScore = Math.min(100, reviewMetaScore + DESIGNATION_BUMPS[review.designation]);
+    }
+
+    // Calculate weighted score
+    const weightedScore = reviewMetaScore * tierWeight;
 
     return {
-      ...review,
+      showId: review.showId,
+      outletId: outletConfig.id,
+      outlet: review.outlet,
+      criticName: review.criticName,
+      url: review.url,
+      publishDate: review.publishDate,
       tier,
-      weight,
-      mappedScore,
-      isInferred,
+      tierWeight,
+      assignedScore,
+      bucketScore,
+      thumbScore,
+      reviewMetaScore,
+      weightedScore,
+      designation: review.designation,
+      pullQuote: review.pullQuote,
     };
   });
 
-  // Weighted average
-  let weightedSum = 0;
-  let totalWeight = 0;
+  // Calculate scores
+  // Simple average (MetaScore_v1)
+  const simpleSum = computedReviews.reduce((sum, r) => sum + r.reviewMetaScore, 0);
+  const simpleScore = Math.round((simpleSum / computedReviews.length) * 100) / 100;
 
-  for (const review of computedReviews) {
-    weightedSum += review.mappedScore * review.weight;
-    totalWeight += review.weight;
-  }
+  // Weighted average (Weighted_MetaScore)
+  const weightedSum = computedReviews.reduce((sum, r) => sum + r.weightedScore, 0);
+  const totalWeight = computedReviews.reduce((sum, r) => sum + r.tierWeight, 0);
+  const weightedScore = Math.round((weightedSum / totalWeight) * 100) / 100;
 
-  const score = Math.round(weightedSum / totalWeight);
   const tier1Count = computedReviews.filter(r => r.tier === 1).length;
 
   return {
-    score,
+    score: simpleScore,
+    weightedScore,
     reviewCount: reviews.length,
     tier1Count,
-    reviews: computedReviews.sort((a, b) => a.tier - b.tier || b.mappedScore - a.mappedScore),
+    label: getCriticLabel(simpleScore),
+    reviews: computedReviews.sort((a, b) => a.tier - b.tier || b.reviewMetaScore - a.reviewMetaScore),
   };
 }
 
@@ -232,7 +308,6 @@ export function computeAudienceScore(audienceData: RawAudience[]): AudienceScore
   if (audienceData.length === 0) return null;
 
   const computedPlatforms: ComputedAudience[] = audienceData.map(platform => {
-    // Normalize to 0-100
     const mappedScore = Math.round((platform.averageRating / platform.maxRating) * 100);
     const weight = AUDIENCE_PLATFORM_WEIGHTS[platform.platform] ?? AUDIENCE_PLATFORM_WEIGHTS['other'];
 
@@ -243,7 +318,6 @@ export function computeAudienceScore(audienceData: RawAudience[]): AudienceScore
     };
   });
 
-  // Weighted average
   let weightedSum = 0;
   let totalWeight = 0;
   let totalReviewCount = 0;
@@ -256,13 +330,12 @@ export function computeAudienceScore(audienceData: RawAudience[]): AudienceScore
 
   const score = Math.round(weightedSum / totalWeight);
 
-  // Check for divergence
   let divergenceWarning: string | undefined;
   if (computedPlatforms.length >= 2) {
     const scores = computedPlatforms.map(p => p.mappedScore);
     const maxDiff = Math.max(...scores) - Math.min(...scores);
     if (maxDiff > AUDIENCE_DIVERGENCE_THRESHOLD) {
-      divergenceWarning = `Platform scores vary by ${maxDiff} points. Individual scores shown for transparency.`;
+      divergenceWarning = `Platform scores vary by ${maxDiff} points.`;
     }
   }
 
@@ -283,13 +356,11 @@ export function computeBuzzScore(threads: RawBuzzThread[]): BuzzScoreResult | nu
 
   const { baselineThreads, volumeMaxScore, sentimentMaxScore, sentimentValues, stalenessThresholdDays, stalenessPenalty: penaltyAmount } = BUZZ_CONFIG;
 
-  // Volume score (0-50)
   const totalEngagement = threads.reduce((sum, t) => sum + t.upvotes + t.commentCount, 0);
   const volumeRatio = Math.min(2, threads.length / baselineThreads);
   const engagementBonus = Math.min(10, Math.log10(totalEngagement + 1) * 3);
   const volumeScore = Math.round(Math.min(volumeMaxScore, (volumeRatio * 20) + engagementBonus));
 
-  // Sentiment score (0-50)
   let sentimentSum = 0;
   let sentimentWeight = 0;
 
@@ -302,7 +373,6 @@ export function computeBuzzScore(threads: RawBuzzThread[]): BuzzScoreResult | nu
 
   const sentimentScore = Math.round(sentimentWeight > 0 ? sentimentSum / sentimentWeight : 25);
 
-  // Staleness check
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - stalenessThresholdDays);
   const recentThreads = threads.filter(t => new Date(t.date) >= cutoffDate);
@@ -310,18 +380,8 @@ export function computeBuzzScore(threads: RawBuzzThread[]): BuzzScoreResult | nu
 
   const totalScore = Math.max(0, volumeScore + sentimentScore - stalenessPenalty);
 
-  // Generate notes
-  const volumeNote = volumeScore >= 35
-    ? 'High activity level'
-    : volumeScore >= 20
-    ? 'Moderate activity level'
-    : 'Limited recent activity';
-
-  const sentimentNote = sentimentScore >= 35
-    ? 'Predominantly positive sentiment'
-    : sentimentScore >= 20
-    ? 'Mixed sentiment'
-    : 'Predominantly negative sentiment';
+  const volumeNote = volumeScore >= 35 ? 'High activity level' : volumeScore >= 20 ? 'Moderate activity level' : 'Limited recent activity';
+  const sentimentNote = sentimentScore >= 35 ? 'Predominantly positive sentiment' : sentimentScore >= 20 ? 'Mixed sentiment' : 'Predominantly negative sentiment';
 
   return {
     score: totalScore,
@@ -357,14 +417,12 @@ export function computeMetascore(
 
   if (scores.length === 0) return null;
 
-  // Normalize weights
   const totalWeight = scores.reduce((sum, s) => sum + s.weight, 0);
   const normalizedScores = scores.map(s => ({
     value: s.value,
     weight: s.weight / totalWeight,
   }));
 
-  // Weighted average
   return Math.round(normalizedScores.reduce((sum, s) => sum + s.value * s.weight, 0));
 }
 
@@ -378,67 +436,28 @@ export function assessConfidence(
   showStatus: string
 ): ConfidenceResult {
   const reasons: string[] = [];
-  let score = 0;
 
-  // Critic data
-  if (criticScore) {
-    if (criticScore.reviewCount >= CONFIDENCE_RULES.high.minCriticReviews &&
-        criticScore.tier1Count >= CONFIDENCE_RULES.high.minTier1Reviews) {
-      score += 3;
-    } else if (criticScore.reviewCount >= CONFIDENCE_RULES.medium.minCriticReviews) {
-      score += 2;
-      reasons.push(`${criticScore.reviewCount} critic reviews (${CONFIDENCE_RULES.high.minCriticReviews}+ preferred)`);
-    } else {
-      score += 1;
-      reasons.push(`Only ${criticScore.reviewCount} critic reviews`);
+  if (!criticScore) {
+    return { level: 'low', reasons: ['No critic reviews'] };
+  }
+
+  const reviewCount = criticScore.reviewCount;
+
+  if (reviewCount >= CONFIDENCE_THRESHOLDS.high) {
+    if (criticScore.tier1Count >= 2) {
+      return { level: 'high', reasons: [`${reviewCount} reviews including ${criticScore.tier1Count} Tier 1`] };
     }
-
-    // Inferred penalty
-    const inferredCount = criticScore.reviews.filter(r => r.isInferred).length;
-    if (inferredCount > criticScore.reviewCount / 2) {
-      score -= 1;
-      reasons.push('Many scores inferred from sentiment');
-    }
-  } else {
-    reasons.push('No critic data');
+    reasons.push(`${reviewCount} reviews but only ${criticScore.tier1Count} Tier 1`);
+    return { level: 'high', reasons };
   }
 
-  // Audience data
-  if (audienceScore) {
-    if (audienceScore.platforms.length >= CONFIDENCE_RULES.high.minAudiencePlatforms &&
-        !audienceScore.divergenceWarning) {
-      score += 2;
-    } else if (audienceScore.platforms.length >= CONFIDENCE_RULES.medium.minAudiencePlatforms) {
-      score += 1;
-      if (audienceScore.divergenceWarning) {
-        reasons.push('Audience platforms show divergent scores');
-      }
-    }
-  } else {
-    reasons.push('No audience data');
+  if (reviewCount >= CONFIDENCE_THRESHOLDS.medium) {
+    reasons.push(`${reviewCount} reviews (${CONFIDENCE_THRESHOLDS.high}+ preferred)`);
+    return { level: 'medium', reasons };
   }
 
-  // Show status
-  if (showStatus === 'previews') {
-    score -= 1;
-    reasons.push('Show still in previews');
-  }
-
-  // Determine level
-  let level: 'high' | 'medium' | 'low';
-  if (score >= 4) {
-    level = 'high';
-  } else if (score >= 2) {
-    level = 'medium';
-  } else {
-    level = 'low';
-  }
-
-  if (level === 'high' && reasons.length === 0) {
-    reasons.push('Comprehensive data across multiple sources');
-  }
-
-  return { level, reasons };
+  reasons.push(`Only ${reviewCount} reviews`);
+  return { level: 'low', reasons };
 }
 
 // ===========================================
@@ -459,8 +478,9 @@ export function computeShowData(
   const audienceScore = computeAudienceScore(showAudience);
   const buzzScore = computeBuzzScore(showBuzz);
 
+  // Use weighted critic score for metascore calculation
   const metascore = computeMetascore(
-    criticScore?.score ?? null,
+    criticScore?.weightedScore ?? null,
     audienceScore?.score ?? null,
     buzzScore?.score ?? null
   );
@@ -497,13 +517,15 @@ export function getMethodologyConfig() {
     version: METHODOLOGY_VERSION,
     date: METHODOLOGY_DATE,
     componentWeights: COMPONENT_WEIGHTS,
+    tierWeights: TIER_WEIGHTS,
     outletTiers: OUTLET_TIERS,
     letterGradeMap: LETTER_GRADE_MAP,
-    sentimentMap: SENTIMENT_MAP,
+    bucketScoreMap: BUCKET_SCORE_MAP,
+    thumbScoreMap: THUMB_SCORE_MAP,
+    designationBumps: DESIGNATION_BUMPS,
     audiencePlatformWeights: AUDIENCE_PLATFORM_WEIGHTS,
     buzzConfig: BUZZ_CONFIG,
-    confidenceRules: CONFIDENCE_RULES,
-    inferredPenalty: INFERRED_PENALTY,
+    confidenceThresholds: CONFIDENCE_THRESHOLDS,
     divergenceThreshold: AUDIENCE_DIVERGENCE_THRESHOLD,
   };
 }
