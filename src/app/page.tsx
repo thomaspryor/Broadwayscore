@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { getAllShows, ComputedShow } from '@/lib/data';
 
 type SortField = 'criticScore' | 'title' | 'openingDate';
@@ -11,24 +10,26 @@ type StatusFilter = 'all' | 'open' | 'closed' | 'previews';
 
 function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm' | 'md' | 'lg' }) {
   const sizeClass = {
-    sm: 'w-10 h-10 text-sm rounded-lg',
-    md: 'w-12 h-12 text-lg rounded-xl',
-    lg: 'w-16 h-16 text-2xl rounded-xl',
+    sm: 'w-11 h-11 text-lg rounded-lg',
+    md: 'w-14 h-14 text-2xl rounded-xl',
+    lg: 'w-16 h-16 text-3xl rounded-xl',
   }[size];
 
   if (score === undefined || score === null) {
     return (
-      <div className={`score-badge ${sizeClass} score-none`}>
+      <div className={`score-badge ${sizeClass} score-none font-bold`}>
         —
       </div>
     );
   }
 
-  const colorClass = score >= 70 ? 'score-high' : score >= 50 ? 'score-medium' : 'score-low';
+  // Round to whole number for cleaner display
+  const roundedScore = Math.round(score);
+  const colorClass = roundedScore >= 70 ? 'score-high' : roundedScore >= 50 ? 'score-medium' : 'score-low';
 
   return (
-    <div className={`score-badge ${sizeClass} ${colorClass}`}>
-      {score}
+    <div className={`score-badge ${sizeClass} ${colorClass} font-bold`}>
+      {roundedScore}
     </div>
   );
 }
@@ -49,6 +50,42 @@ function StatusChip({ status }: { status: string }) {
   return <span className={`chip ${chipClass}`}>{label}</span>;
 }
 
+function TypeTag({ type }: { type: string }) {
+  const config: Record<string, { label: string; className: string }> = {
+    musical: { label: 'Musical', className: 'bg-purple-500/20 text-purple-400 border-purple-500/20' },
+    play: { label: 'Play', className: 'bg-blue-500/20 text-blue-400 border-blue-500/20' },
+    revival: { label: 'Revival', className: 'bg-amber-500/20 text-amber-400 border-amber-500/20' },
+  };
+
+  const { label, className } = config[type] || { label: type, className: 'bg-gray-500/20 text-gray-400 border-gray-500/20' };
+
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wide border ${className}`}>
+      {label}
+    </span>
+  );
+}
+
+function NewBadge() {
+  return (
+    <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-brand/20 text-brand text-[10px] font-bold uppercase tracking-wide">
+      New
+    </span>
+  );
+}
+
+function isNewShow(openingDate: string): boolean {
+  const opening = new Date(openingDate);
+  const now = new Date();
+  const daysSinceOpening = (now.getTime() - opening.getTime()) / (1000 * 60 * 60 * 24);
+  return daysSinceOpening <= 60 && daysSinceOpening >= 0; // Within last 60 days
+}
+
+function formatOpeningDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+}
+
 function SearchIcon() {
   return (
     <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,8 +94,9 @@ function SearchIcon() {
   );
 }
 
-function ShowCard({ show, index }: { show: ComputedShow; index: number }) {
+function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: number; hideStatus: boolean }) {
   const score = show.criticScore?.score;
+  const isNew = isNewShow(show.openingDate);
 
   return (
     <Link
@@ -83,23 +121,30 @@ function ShowCard({ show, index }: { show: ComputedShow; index: number }) {
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-white group-hover:text-brand transition-colors truncate">
-          {show.title}
-        </h3>
+        <div className="flex items-center gap-2">
+          <h3 className="font-semibold text-white group-hover:text-brand transition-colors truncate">
+            {show.title}
+          </h3>
+          {isNew && <NewBadge />}
+        </div>
         <p className="text-sm text-gray-500 mt-0.5 truncate">{show.venue}</p>
-        <div className="flex items-center gap-2 mt-2">
-          <StatusChip status={show.status} />
-          {show.criticScore && (
-            <span className="text-xs text-gray-500">
-              {show.criticScore.reviewCount} reviews
-            </span>
-          )}
+        <div className="flex flex-wrap items-center gap-2 mt-2">
+          <TypeTag type={show.type} />
+          {!hideStatus && <StatusChip status={show.status} />}
+          <span className="text-xs text-gray-600">
+            Opened {formatOpeningDate(show.openingDate)}
+          </span>
         </div>
       </div>
 
       {/* Score */}
-      <div className="flex-shrink-0 flex items-center">
+      <div className="flex-shrink-0 flex flex-col items-center justify-center">
         <ScoreBadge score={score} size="lg" />
+        {show.criticScore && (
+          <span className="text-[10px] text-gray-500 mt-1">
+            {show.criticScore.reviewCount} reviews
+          </span>
+        )}
       </div>
     </Link>
   );
@@ -168,12 +213,15 @@ export default function HomePage() {
     }
   };
 
+  // Hide status chip when it would be redundant (matches current filter)
+  const shouldHideStatus = statusFilter !== 'all';
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       {/* Hero Header */}
       <div className="mb-8 sm:mb-10">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 tracking-tight">
-          Broadway <span className="text-gradient">Scores</span>
+          Broadway<span className="text-gradient">MetaScores</span>
         </h1>
         <p className="text-gray-400 text-base sm:text-lg">
           Critic scores aggregated from top publications.
@@ -195,20 +243,23 @@ export default function HomePage() {
       </div>
 
       {/* Filters & Sort */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <div className="filter-pills">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm">
+        <div className="flex items-center gap-2">
+          <span className="text-gray-500">Status:</span>
           {(['open', 'all', 'closed'] as const).map((status) => (
             <button
               key={status}
               onClick={() => setStatusFilter(status)}
-              className={statusFilter === status ? 'filter-pill-active' : 'filter-pill-inactive'}
+              className={`px-2 py-1 rounded transition-colors ${
+                statusFilter === status ? 'text-brand' : 'text-gray-400 hover:text-white'
+              }`}
             >
               {status === 'all' ? 'All' : status === 'open' ? 'Now Playing' : 'Closed'}
             </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-2">
           <span className="text-gray-500">Sort:</span>
           <button
             onClick={() => handleSort('criticScore')}
@@ -221,6 +272,12 @@ export default function HomePage() {
             className={`px-2 py-1 rounded ${sortField === 'title' ? 'text-brand' : 'text-gray-400 hover:text-white'}`}
           >
             A-Z {sortField === 'title' && (sortDirection === 'asc' ? '↑' : '↓')}
+          </button>
+          <button
+            onClick={() => handleSort('openingDate')}
+            className={`px-2 py-1 rounded ${sortField === 'openingDate' ? 'text-brand' : 'text-gray-400 hover:text-white'}`}
+          >
+            Date {sortField === 'openingDate' && (sortDirection === 'desc' ? '↓' : '↑')}
           </button>
         </div>
       </div>
@@ -244,18 +301,31 @@ export default function HomePage() {
       {/* Show List */}
       <div className="space-y-3">
         {filteredAndSortedShows.map((show, index) => (
-          <ShowCard key={show.id} show={show} index={index} />
+          <ShowCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} />
         ))}
       </div>
 
       {filteredAndSortedShows.length === 0 && (
-        <div className="card text-center py-12">
-          <div className="text-gray-500">No shows match your search.</div>
+        <div className="card text-center py-16 px-6">
+          <div className="w-16 h-16 rounded-full bg-surface-overlay mx-auto mb-4 flex items-center justify-center">
+            <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold text-white mb-2">No shows found</h3>
+          <p className="text-gray-500 mb-6 max-w-sm mx-auto">
+            {searchQuery
+              ? `No shows match "${searchQuery}". Try adjusting your search or filters.`
+              : 'No shows match your current filters.'}
+          </p>
           <button
             onClick={() => { setSearchQuery(''); setStatusFilter('all'); }}
-            className="mt-3 text-brand hover:text-brand-hover transition-colors text-sm font-medium"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-pill bg-brand/10 text-brand hover:bg-brand/20 transition-colors text-sm font-semibold"
           >
-            Clear filters
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Reset filters
           </button>
         </div>
       )}
