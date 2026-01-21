@@ -41,110 +41,181 @@
       ],
       "cast": [
         { "name": "Sam Tutty", "role": "Dougal" },
-        { "name": "Dujonna Gift", "role": "Robin" }
+        { "name": "Christiani Pitts", "role": "Robin" }
       ],
       "creativeTeam": [
         { "name": "Jim Barne", "role": "Music & Lyrics" },
         { "name": "Kit Buchan", "role": "Book" },
-        { "name": "Tim Jackson", "role": "Director" },
-        { "name": "Lizzi Gee", "role": "Choreographer" }
+        { "name": "Tim Jackson", "role": "Director & Choreographer" }
       ]
     },
     {
-      "id": "cabaret-2024",
-      "title": "Cabaret at the Kit Kat Club",
-      "slug": "cabaret-2024",
-      "venue": "August Wilson Theatre",
-      "openingDate": "2024-04-21",
+      "id": "maybe-happy-ending-2024",
+      "title": "Maybe Happy Ending",
+      "slug": "maybe-happy-ending",
+      "venue": "Belasco Theatre",
+      "openingDate": "2024-11-12",
       "closingDate": null,
       "status": "open",
-      "type": "revival",
-      "runtime": "2h 30m",
-      "intermissions": 0
+      "type": "musical",
+      "runtime": "2h 15m",
+      "intermissions": 1,
+      "synopsis": "In a future where robots have become obsolete, two helper-bots discover what it means to be human through an unexpected connection. Winner of six 2025 Tony Awards including Best Musical.",
+      "ageRecommendation": "Ages 10+",
+      "tags": ["Musical", "Romance", "Tony Winner", "New"],
+      "officialUrl": "https://maybehappyending.com",
+      "theaterAddress": "111 W 44th St, New York, NY 10036",
+      "cast": [
+        { "name": "Darren Criss", "role": "Oliver" },
+        { "name": "Helen J. Shen", "role": "Claire" }
+      ],
+      "creativeTeam": [
+        { "name": "Will Aronson", "role": "Music" },
+        { "name": "Hue Park", "role": "Book & Lyrics" },
+        { "name": "Michael Arden", "role": "Director" }
+      ]
     },
     {
       "id": "the-outsiders-2024",
       "title": "The Outsiders",
-      "slug": "the-outsiders-2024",
+      "slug": "the-outsiders",
       "venue": "Bernard B. Jacobs Theatre",
       "openingDate": "2024-04-11",
       "closingDate": null,
       "status": "open",
       "type": "musical",
-      "runtime": "2h 30m",
-      "intermissions": 1
-    },
-    {
-      "id": "stereophonic-2024",
-      "title": "Stereophonic",
-      "slug": "stereophonic-2024",
-      "venue": "John Golden Theatre",
-      "openingDate": "2024-04-19",
-      "closingDate": null,
-      "status": "open",
-      "type": "play",
-      "runtime": "3h 10m",
-      "intermissions": 1
+      "runtime": "2h 25m",
+      "intermissions": 1,
+      "synopsis": "Based on S.E. Hinton's classic novel, this electrifying new musical follows the Greasers and Socs in 1967 Tulsa as they navigate loyalty, love, and the struggle to belong. Winner of the 2024 Tony Award for Best Musical.",
+      "ageRecommendation": "Ages 12+",
+      "tags": ["Musical", "Drama", "Tony Winner"],
+      "officialUrl": "https://outsidersmusical.com",
+      "theaterAddress": "242 W 45th St, New York, NY 10036",
+      "creativeTeam": [
+        { "name": "Jamestown Revival", "role": "Music & Lyrics" },
+        { "name": "Adam Rapp", "role": "Book" },
+        { "name": "Danya Taymor", "role": "Director" }
+      ]
     },
     {
       "id": "hells-kitchen-2024",
       "title": "Hell's Kitchen",
-      "slug": "hells-kitchen-2024",
+      "slug": "hells-kitchen",
       "venue": "Shubert Theatre",
       "openingDate": "2024-04-20",
+      "closingDate": "2026-02-22",
+      "status": "open",
+      "type": "musical",
+      "runtime": "2h 30m",
+      "intermissions": 1,
+      "synopsis": "A new musical featuring the songs of 16-time Grammy Award winner Alicia Keys. Set in 1990s New York, a 17-year-old girl dreams of a life beyond her Hell's Kitchen block.",
+      "ageRecommendation": "Ages 12+",
+      "tags": ["Musical", "Drama", "Jukebox"],
+      "officialUrl": "https://hellskitchen.com",
+      "theaterAddress": "225 W 44th St, New York, NY 10036",
+      "creativeTeam": [
+        { "name": "Alicia Keys", "role": "Music & Lyrics" },
+        { "name": "Kristoffer Diaz", "role": "Book" },
+        { "name": "Michael Greif", "role": "Director" }
+      ]
+    },
+    {
+      "id": "operation-mincemeat-2025",
+      "title": "Operation Mincemeat",
+      "slug": "operation-mincemeat",
+      "venue": "John Golden Theatre",
+      "openingDate": "2025-03-20",
+      "closingDate": null,
+      "status": "open",
+      "type": "musical",
+      "runtime": "2h 40m",
+      "intermissions": 1,
+      "synopsis": "The Olivier Award-winning Best New Musical tells the outrageous true story of the WWII plot to fool Hitler with a corpse, fake documents, and an idealistic intelligence team.",
+      "ageRecommendation": "Ages 10+",
+      "tags": ["Musical", "Comedy", "Historical", "Olivier Winner"],
+      "officialUrl": "https://operationbroadway.com",
+      "theaterAddress": "252 W 45th St, New York, NY 10036",
+      "creativeTeam": [
+        { "name": "SpitLip", "role": "Book, Music & Lyrics" },
+        { "name": "Robert Hastie", "role": "Director" }
+      ]
+    },
+    {
+      "id": "oh-mary-2024",
+      "title": "Oh, Mary!",
+      "slug": "oh-mary",
+      "venue": "Lyceum Theatre",
+      "openingDate": "2024-07-11",
+      "closingDate": "2026-07-05",
+      "status": "open",
+      "type": "play",
+      "runtime": "1h 20m",
+      "intermissions": 0,
+      "synopsis": "Cole Escola's uproarious comedy imagines Mary Todd Lincoln as a miserable, hard-drinking woman who dreams of becoming a cabaret star while her husband prepares for that fateful night at Ford's Theatre.",
+      "ageRecommendation": "Ages 16+",
+      "tags": ["Play", "Comedy", "LGBTQ+"],
+      "officialUrl": "https://ohmaryplay.com",
+      "theaterAddress": "149 W 45th St, New York, NY 10036",
+      "cast": [
+        { "name": "Jinkx Monsoon", "role": "Mary Todd Lincoln" }
+      ],
+      "creativeTeam": [
+        { "name": "Cole Escola", "role": "Playwright" },
+        { "name": "Sam Pinkleton", "role": "Director" }
+      ]
+    },
+    {
+      "id": "the-great-gatsby-2024",
+      "title": "The Great Gatsby",
+      "slug": "the-great-gatsby",
+      "venue": "Broadway Theatre",
+      "openingDate": "2024-04-25",
       "closingDate": null,
       "status": "open",
       "type": "musical",
       "runtime": "2h 30m",
-      "intermissions": 1
+      "intermissions": 1,
+      "synopsis": "F. Scott Fitzgerald's iconic novel roars to life in this dazzling new musical. Jay Gatsby throws lavish parties in pursuit of his lost love, Daisy Buchanan, in the glittering Jazz Age.",
+      "ageRecommendation": "Ages 12+",
+      "tags": ["Musical", "Drama", "Classic"],
+      "officialUrl": "https://broadwaygatsby.com",
+      "theaterAddress": "1681 Broadway, New York, NY 10019",
+      "cast": [
+        { "name": "Jeremy Jordan", "role": "Jay Gatsby" },
+        { "name": "Michael Maliakel", "role": "Nick Carraway" },
+        { "name": "Samantha Pauly", "role": "Jordan Baker" }
+      ],
+      "creativeTeam": [
+        { "name": "Jason Howland", "role": "Music" },
+        { "name": "Nathan Tysen", "role": "Lyrics" },
+        { "name": "Kait Kerrigan", "role": "Book" },
+        { "name": "Marc Bruni", "role": "Director" }
+      ]
     },
     {
-      "id": "water-for-elephants-2024",
-      "title": "Water for Elephants",
-      "slug": "water-for-elephants-2024",
-      "venue": "Imperial Theatre",
-      "openingDate": "2024-03-21",
-      "closingDate": null,
+      "id": "bug-2026",
+      "title": "Bug",
+      "slug": "bug",
+      "venue": "Samuel J. Friedman Theatre",
+      "openingDate": "2026-01-08",
+      "closingDate": "2026-02-22",
       "status": "open",
-      "type": "musical",
-      "runtime": "2h 30m",
-      "intermissions": 1
-    },
-    {
-      "id": "maybe-happy-ending-2024",
-      "title": "Maybe Happy Ending",
-      "slug": "maybe-happy-ending-2024",
-      "venue": "Belasco Theatre",
-      "openingDate": "2024-11-21",
-      "closingDate": null,
-      "status": "open",
-      "type": "musical",
-      "runtime": "2h 15m",
-      "intermissions": 1
-    },
-    {
-      "id": "suffs-2024",
-      "title": "Suffs",
-      "slug": "suffs-2024",
-      "venue": "Music Box Theatre",
-      "openingDate": "2024-04-18",
-      "closingDate": "2025-01-05",
-      "status": "closed",
-      "type": "musical",
-      "runtime": "2h 45m",
-      "intermissions": 1
-    },
-    {
-      "id": "the-notebook-2024",
-      "title": "The Notebook",
-      "slug": "the-notebook-2024",
-      "venue": "Gerald Schoenfeld Theatre",
-      "openingDate": "2024-03-14",
-      "closingDate": "2024-12-15",
-      "status": "closed",
-      "type": "musical",
-      "runtime": "2h 20m",
-      "intermissions": 1
+      "type": "play",
+      "runtime": "2h",
+      "intermissions": 1,
+      "synopsis": "Tracy Letts' psychological thriller makes its Broadway premiere. In a seedy Oklahoma motel, an unexpected romance between a lonely waitress and mysterious drifter twists into paranoia and delusion.",
+      "ageRecommendation": "Ages 17+",
+      "tags": ["Play", "Thriller", "New"],
+      "officialUrl": "https://bugonbroadway.com",
+      "theaterAddress": "261 W 47th St, New York, NY 10036",
+      "cast": [
+        { "name": "Carrie Coon", "role": "Agnes White" },
+        { "name": "Namir Smallwood", "role": "Peter Evans" }
+      ],
+      "creativeTeam": [
+        { "name": "Tracy Letts", "role": "Playwright" },
+        { "name": "David Cromer", "role": "Director" }
+      ]
     },
     {
       "id": "wicked-2003",
@@ -156,7 +227,17 @@
       "status": "open",
       "type": "musical",
       "runtime": "2h 45m",
-      "intermissions": 1
+      "intermissions": 1,
+      "synopsis": "The untold story of the Witches of Oz. Long before Dorothy arrives, Elphaba and Glinda meet as sorcery students and form an unlikely friendship that will change the land of Oz forever.",
+      "ageRecommendation": "Ages 8+",
+      "tags": ["Musical", "Fantasy", "Classic"],
+      "officialUrl": "https://wickedthemusical.com",
+      "theaterAddress": "222 W 51st St, New York, NY 10019",
+      "creativeTeam": [
+        { "name": "Stephen Schwartz", "role": "Music & Lyrics" },
+        { "name": "Winnie Holzman", "role": "Book" },
+        { "name": "Joe Mantello", "role": "Director" }
+      ]
     },
     {
       "id": "hamilton-2015",
@@ -168,7 +249,17 @@
       "status": "open",
       "type": "musical",
       "runtime": "2h 55m",
-      "intermissions": 1
+      "intermissions": 1,
+      "synopsis": "The story of America's Founding Father Alexander Hamilton, an immigrant from the West Indies who became George Washington's right-hand man and the nation's first Treasury Secretary.",
+      "ageRecommendation": "Ages 10+",
+      "tags": ["Musical", "Historical", "Hip-Hop", "Tony Winner"],
+      "officialUrl": "https://hamiltonmusical.com",
+      "theaterAddress": "226 W 46th St, New York, NY 10036",
+      "creativeTeam": [
+        { "name": "Lin-Manuel Miranda", "role": "Book, Music & Lyrics" },
+        { "name": "Thomas Kail", "role": "Director" },
+        { "name": "Andy Blankenbuehler", "role": "Choreographer" }
+      ]
     },
     {
       "id": "the-lion-king-1997",
@@ -180,7 +271,18 @@
       "status": "open",
       "type": "musical",
       "runtime": "2h 30m",
-      "intermissions": 1
+      "intermissions": 1,
+      "synopsis": "Disney's award-winning musical brings the African savanna to Broadway with stunning puppetry and masks. Young Simba must embrace his destiny to become king after tragedy strikes the Pride Lands.",
+      "ageRecommendation": "Ages 6+",
+      "tags": ["Musical", "Family", "Disney", "Tony Winner"],
+      "officialUrl": "https://lionking.com",
+      "theaterAddress": "200 W 45th St, New York, NY 10036",
+      "creativeTeam": [
+        { "name": "Elton John", "role": "Music" },
+        { "name": "Tim Rice", "role": "Lyrics" },
+        { "name": "Roger Allers & Irene Mecchi", "role": "Book" },
+        { "name": "Julie Taymor", "role": "Director" }
+      ]
     },
     {
       "id": "chicago-1996",
@@ -192,7 +294,18 @@
       "status": "open",
       "type": "revival",
       "runtime": "2h 30m",
-      "intermissions": 1
+      "intermissions": 1,
+      "synopsis": "Set in the legendary city during the roaring twenties, Chicago tells the story of Roxie Hart, a housewife who murders her lover and convinces her husband to take the fall. The longest-running American musical in Broadway history.",
+      "ageRecommendation": "Ages 13+",
+      "tags": ["Musical", "Revival", "Classic", "Tony Winner"],
+      "officialUrl": "https://chicagothemusical.com",
+      "theaterAddress": "219 W 49th St, New York, NY 10019",
+      "creativeTeam": [
+        { "name": "John Kander", "role": "Music" },
+        { "name": "Fred Ebb", "role": "Lyrics" },
+        { "name": "Fred Ebb & Bob Fosse", "role": "Book" },
+        { "name": "Walter Bobbie", "role": "Director" }
+      ]
     },
     {
       "id": "moulin-rouge-2019",
@@ -204,7 +317,17 @@
       "status": "open",
       "type": "musical",
       "runtime": "2h 35m",
-      "intermissions": 1
+      "intermissions": 1,
+      "synopsis": "Enter a world of splendor and romance, of eye-popping excess, of glitz, grandeur and glory! A world where Bohemians and aristocrats rub elbows and revel in electrifying enchantment.",
+      "ageRecommendation": "Ages 12+",
+      "tags": ["Musical", "Jukebox", "Romance", "Tony Winner"],
+      "officialUrl": "https://moulinrougemusical.com",
+      "theaterAddress": "302 W 45th St, New York, NY 10036",
+      "creativeTeam": [
+        { "name": "John Logan", "role": "Book" },
+        { "name": "Alex Timbers", "role": "Director" },
+        { "name": "Sonya Tayeh", "role": "Choreographer" }
+      ]
     },
     {
       "id": "aladdin-2014",
@@ -216,7 +339,18 @@
       "status": "open",
       "type": "musical",
       "runtime": "2h 30m",
-      "intermissions": 1
+      "intermissions": 1,
+      "synopsis": "Disney's thrilling adaptation of the animated classic. From the producer of The Lion King comes the story of a street-smart young man who discovers a magic lamp and genie.",
+      "ageRecommendation": "Ages 6+",
+      "tags": ["Musical", "Family", "Disney"],
+      "officialUrl": "https://aladdinthemusical.com",
+      "theaterAddress": "214 W 42nd St, New York, NY 10036",
+      "creativeTeam": [
+        { "name": "Alan Menken", "role": "Music" },
+        { "name": "Howard Ashman, Tim Rice & Chad Beguelin", "role": "Lyrics" },
+        { "name": "Chad Beguelin", "role": "Book" },
+        { "name": "Casey Nicholaw", "role": "Director & Choreographer" }
+      ]
     },
     {
       "id": "hadestown-2019",
@@ -228,6 +362,225 @@
       "status": "open",
       "type": "musical",
       "runtime": "2h 30m",
+      "intermissions": 1,
+      "synopsis": "Welcome to Hadestown, where a song can change your fate. This acclaimed new musical by Anaïs Mitchell intertwines two mythic tales — that of Orpheus and Eurydice, and King Hades and his wife Persephone.",
+      "ageRecommendation": "Ages 10+",
+      "tags": ["Musical", "Mythology", "Tony Winner"],
+      "officialUrl": "https://hadestown.com",
+      "theaterAddress": "219 W 48th St, New York, NY 10036",
+      "creativeTeam": [
+        { "name": "Anaïs Mitchell", "role": "Book, Music & Lyrics" },
+        { "name": "Rachel Chavkin", "role": "Director" },
+        { "name": "David Neumann", "role": "Choreographer" }
+      ]
+    },
+    {
+      "id": "mj-2022",
+      "title": "MJ The Musical",
+      "slug": "mj",
+      "venue": "Neil Simon Theatre",
+      "openingDate": "2022-02-01",
+      "closingDate": null,
+      "status": "open",
+      "type": "musical",
+      "runtime": "2h 30m",
+      "intermissions": 1,
+      "synopsis": "The story of Michael Jackson, centering around the making of his 1992 Dangerous World Tour, revealing the creative mind and collaborative spirit that catapulted him into legendary status.",
+      "ageRecommendation": "Ages 8+",
+      "tags": ["Musical", "Jukebox", "Biography"],
+      "officialUrl": "https://mjthemusical.com",
+      "theaterAddress": "250 W 52nd St, New York, NY 10019",
+      "creativeTeam": [
+        { "name": "Lynn Nottage", "role": "Book" },
+        { "name": "Christopher Wheeldon", "role": "Director & Choreographer" }
+      ]
+    },
+    {
+      "id": "six-2021",
+      "title": "SIX",
+      "slug": "six",
+      "venue": "Lena Horne Theatre",
+      "openingDate": "2021-10-03",
+      "closingDate": null,
+      "status": "open",
+      "type": "musical",
+      "runtime": "1h 20m",
+      "intermissions": 0,
+      "synopsis": "The six wives of Henry VIII take the mic to tell their own stories and reclaim their identities in this electrifying pop concert musical.",
+      "ageRecommendation": "Ages 10+",
+      "tags": ["Musical", "Pop", "Historical", "Tony Winner"],
+      "officialUrl": "https://sixonbroadway.com",
+      "theaterAddress": "256 W 47th St, New York, NY 10036",
+      "creativeTeam": [
+        { "name": "Toby Marlow & Lucy Moss", "role": "Book, Music & Lyrics" },
+        { "name": "Lucy Moss & Jamie Armitage", "role": "Directors" }
+      ]
+    },
+    {
+      "id": "book-of-mormon-2011",
+      "title": "The Book of Mormon",
+      "slug": "book-of-mormon",
+      "venue": "Eugene O'Neill Theatre",
+      "openingDate": "2011-03-24",
+      "closingDate": null,
+      "status": "open",
+      "type": "musical",
+      "runtime": "2h 30m",
+      "intermissions": 1,
+      "synopsis": "From the creators of South Park comes this hilarious musical about two mismatched Mormon missionaries sent to spread the word in a remote Ugandan village.",
+      "ageRecommendation": "Ages 17+",
+      "tags": ["Musical", "Comedy", "Tony Winner"],
+      "officialUrl": "https://bookofmormonbroadway.com",
+      "theaterAddress": "230 W 49th St, New York, NY 10019",
+      "creativeTeam": [
+        { "name": "Trey Parker, Robert Lopez & Matt Stone", "role": "Book, Music & Lyrics" },
+        { "name": "Trey Parker & Casey Nicholaw", "role": "Directors" }
+      ]
+    },
+    {
+      "id": "and-juliet-2022",
+      "title": "& Juliet",
+      "slug": "and-juliet",
+      "venue": "Stephen Sondheim Theatre",
+      "openingDate": "2022-11-17",
+      "closingDate": null,
+      "status": "open",
+      "type": "musical",
+      "runtime": "2h 30m",
+      "intermissions": 1,
+      "synopsis": "What if Juliet's story didn't end in tragedy? This joyful jukebox musical featuring Max Martin's iconic pop hits reimagines Shakespeare's heroine as she writes her own destiny.",
+      "ageRecommendation": "Ages 10+",
+      "tags": ["Musical", "Jukebox", "Comedy"],
+      "officialUrl": "https://andjulietbroadway.com",
+      "theaterAddress": "124 W 43rd St, New York, NY 10036",
+      "creativeTeam": [
+        { "name": "David West Read", "role": "Book" },
+        { "name": "Max Martin", "role": "Music & Lyrics" },
+        { "name": "Luke Sheppard", "role": "Director" }
+      ]
+    },
+    {
+      "id": "harry-potter-2021",
+      "title": "Harry Potter and the Cursed Child",
+      "slug": "harry-potter",
+      "venue": "Lyric Theatre",
+      "openingDate": "2021-12-07",
+      "closingDate": null,
+      "status": "open",
+      "type": "play",
+      "runtime": "2h 50m",
+      "intermissions": 1,
+      "synopsis": "Nineteen years after Harry's original adventure, he's now a Ministry of Magic employee while his son Albus struggles with the family legacy at Hogwarts.",
+      "ageRecommendation": "Ages 10+",
+      "tags": ["Play", "Fantasy", "Family"],
+      "officialUrl": "https://harrypottertheplay.com",
+      "theaterAddress": "214 W 43rd St, New York, NY 10036",
+      "creativeTeam": [
+        { "name": "Jack Thorne", "role": "Playwright" },
+        { "name": "John Tiffany", "role": "Director" }
+      ]
+    },
+    {
+      "id": "mamma-mia-2025",
+      "title": "Mamma Mia!",
+      "slug": "mamma-mia",
+      "venue": "Winter Garden Theatre",
+      "openingDate": "2025-08-14",
+      "closingDate": null,
+      "status": "open",
+      "type": "musical",
+      "runtime": "2h 30m",
+      "intermissions": 1,
+      "synopsis": "ABBA's hits tell the story of a young woman's search for her birth father on a Greek island paradise. A sunny, funny tale of love, laughter and friendship.",
+      "ageRecommendation": "Ages 8+",
+      "tags": ["Musical", "Jukebox", "Comedy"],
+      "officialUrl": "https://mammamiabroadway.com",
+      "theaterAddress": "1634 Broadway, New York, NY 10019",
+      "creativeTeam": [
+        { "name": "ABBA (Benny Andersson & Björn Ulvaeus)", "role": "Music & Lyrics" },
+        { "name": "Catherine Johnson", "role": "Book" },
+        { "name": "Phyllida Lloyd", "role": "Director" }
+      ]
+    },
+    {
+      "id": "stranger-things-2024",
+      "title": "Stranger Things: The First Shadow",
+      "slug": "stranger-things",
+      "venue": "Marquis Theatre",
+      "openingDate": "2024-11-22",
+      "closingDate": null,
+      "status": "open",
+      "type": "play",
+      "runtime": "2h 50m",
+      "intermissions": 1,
+      "synopsis": "Hawkins, 1959: A regular American town where nothing strange happens. Until a young student arrives, fleeing the horrors of childhood, and everything changes. The prequel to the hit Netflix series.",
+      "ageRecommendation": "Ages 12+",
+      "tags": ["Play", "Thriller", "Sci-Fi"],
+      "officialUrl": "https://strangerthingsonstage.com",
+      "theaterAddress": "210 W 46th St, New York, NY 10036",
+      "creativeTeam": [
+        { "name": "Kate Trefry", "role": "Playwright" },
+        { "name": "Stephen Daldry", "role": "Director" }
+      ]
+    },
+    {
+      "id": "cabaret-2024",
+      "title": "Cabaret at the Kit Kat Club",
+      "slug": "cabaret-2024",
+      "venue": "August Wilson Theatre",
+      "openingDate": "2024-04-21",
+      "closingDate": "2025-09-21",
+      "status": "closed",
+      "type": "revival",
+      "runtime": "2h 30m",
+      "intermissions": 0
+    },
+    {
+      "id": "stereophonic-2024",
+      "title": "Stereophonic",
+      "slug": "stereophonic",
+      "venue": "John Golden Theatre",
+      "openingDate": "2024-04-19",
+      "closingDate": "2025-01-12",
+      "status": "closed",
+      "type": "play",
+      "runtime": "3h 10m",
+      "intermissions": 1
+    },
+    {
+      "id": "water-for-elephants-2024",
+      "title": "Water for Elephants",
+      "slug": "water-for-elephants",
+      "venue": "Imperial Theatre",
+      "openingDate": "2024-03-21",
+      "closingDate": "2024-12-08",
+      "status": "closed",
+      "type": "musical",
+      "runtime": "2h 30m",
+      "intermissions": 1
+    },
+    {
+      "id": "suffs-2024",
+      "title": "Suffs",
+      "slug": "suffs",
+      "venue": "Music Box Theatre",
+      "openingDate": "2024-04-18",
+      "closingDate": "2025-01-05",
+      "status": "closed",
+      "type": "musical",
+      "runtime": "2h 45m",
+      "intermissions": 1
+    },
+    {
+      "id": "the-notebook-2024",
+      "title": "The Notebook",
+      "slug": "the-notebook",
+      "venue": "Gerald Schoenfeld Theatre",
+      "openingDate": "2024-03-14",
+      "closingDate": "2024-12-15",
+      "status": "closed",
+      "type": "musical",
+      "runtime": "2h 20m",
       "intermissions": 1
     }
   ]
