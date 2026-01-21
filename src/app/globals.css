@@ -5,63 +5,216 @@
 @layer base {
   html {
     @apply antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-surface text-gray-100;
+  }
+
+  /* Smooth scrolling for anchor links */
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 @layer components {
+  /* Card component */
+  .card {
+    @apply bg-surface-raised rounded-card shadow-card;
+  }
+
+  .card-interactive {
+    @apply card transition-all duration-200;
+  }
+
+  .card-interactive:hover {
+    @apply shadow-card-hover bg-surface-overlay/50;
+  }
+
+  /* Score badges */
   .score-badge {
-    @apply inline-flex items-center justify-center w-12 h-12 rounded-lg font-bold text-lg;
+    @apply inline-flex items-center justify-center rounded-badge font-bold;
   }
 
-  .score-badge-high {
-    @apply bg-green-500 text-white;
+  .score-badge-sm {
+    @apply w-10 h-10 text-score-sm;
   }
 
-  .score-badge-medium {
-    @apply bg-yellow-500 text-gray-900;
+  .score-badge-md {
+    @apply w-12 h-12 text-score-md;
   }
 
-  .score-badge-low {
-    @apply bg-red-500 text-white;
+  .score-badge-lg {
+    @apply w-16 h-16 text-score-lg;
   }
 
-  .score-badge-none {
-    @apply bg-gray-600 text-gray-400;
+  .score-badge-xl {
+    @apply w-20 h-20 text-score-xl;
   }
 
-  .status-chip {
-    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+  .score-high {
+    @apply bg-score-high text-white;
   }
 
-  .status-previews {
-    @apply bg-purple-500/20 text-purple-300;
+  .score-medium {
+    @apply bg-score-medium text-gray-900;
   }
 
-  .status-opened {
-    @apply bg-green-500/20 text-green-300;
+  .score-low {
+    @apply bg-score-low text-white;
   }
 
-  .status-closing {
-    @apply bg-yellow-500/20 text-yellow-300;
+  .score-none {
+    @apply bg-gray-700 text-gray-500;
   }
 
-  .status-closed {
-    @apply bg-gray-500/20 text-gray-400;
+  /* Status chips */
+  .chip {
+    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold tracking-wide uppercase;
   }
 
+  .chip-open {
+    @apply bg-status-open-bg text-status-open;
+  }
+
+  .chip-closed {
+    @apply bg-status-closed-bg text-status-closed;
+  }
+
+  .chip-previews {
+    @apply bg-status-previews-bg text-status-previews;
+  }
+
+  /* Confidence badges */
   .confidence-badge {
-    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+    @apply chip;
   }
 
   .confidence-high {
-    @apply bg-green-500/20 text-green-300;
+    @apply bg-score-high-bg text-score-high;
   }
 
   .confidence-medium {
-    @apply bg-yellow-500/20 text-yellow-300;
+    @apply bg-score-medium-bg text-score-medium;
   }
 
   .confidence-low {
-    @apply bg-red-500/20 text-red-300;
+    @apply bg-score-low-bg text-score-low;
+  }
+
+  /* Button styles */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-badge font-medium transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand text-white hover:bg-brand-hover;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-gray-400 hover:text-white hover:bg-surface-overlay;
+  }
+
+  .btn-active {
+    @apply btn bg-brand text-white;
+  }
+
+  /* Filter pills (horizontal scroll on mobile) */
+  .filter-pills {
+    @apply flex gap-2 overflow-x-auto pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .filter-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-pill {
+    @apply px-4 py-2 rounded-badge transition-all whitespace-nowrap text-sm font-medium;
+  }
+
+  .filter-pill-active {
+    @apply filter-pill bg-brand text-white;
+  }
+
+  .filter-pill-inactive {
+    @apply filter-pill bg-surface-raised text-gray-400 hover:text-white;
+  }
+
+  /* Search input */
+  .search-input {
+    @apply w-full px-4 py-3 bg-surface-raised border border-gray-700 rounded-badge text-white placeholder-gray-500 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all;
+  }
+
+  /* Table styles */
+  .data-table {
+    @apply w-full;
+  }
+
+  .data-table thead {
+    @apply bg-surface;
+  }
+
+  .data-table th {
+    @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400;
+  }
+
+  .data-table tbody {
+    @apply divide-y divide-gray-700/50;
+  }
+
+  .data-table tr {
+    @apply transition-colors duration-150;
+  }
+
+  .data-table tbody tr:hover {
+    @apply bg-surface-overlay/30;
+  }
+
+  .data-table td {
+    @apply px-4 py-4;
+  }
+
+  /* Score breakdown grid */
+  .score-grid {
+    @apply grid grid-cols-3 gap-4;
+  }
+
+  .score-grid-item {
+    @apply text-center;
+  }
+
+  .score-grid-label {
+    @apply text-xs text-gray-500 uppercase tracking-wide mb-1;
+  }
+
+  .score-grid-value {
+    @apply font-bold text-white;
+  }
+
+  /* Section spacing */
+  .section {
+    @apply py-section;
+  }
+
+  /* Mobile touch targets */
+  @media (max-width: 640px) {
+    .btn, .filter-pill {
+      @apply min-h-[44px];
+    }
+  }
+}
+
+@layer utilities {
+  /* Text utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Focus visible styles */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
   }
 }
