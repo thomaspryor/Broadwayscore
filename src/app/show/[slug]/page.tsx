@@ -260,13 +260,13 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
       {/* Hero Image */}
       {show.images?.hero && (
-        <div className="relative h-48 sm:h-64 lg:h-80 -mt-16 sm:-mt-18">
+        <div className="relative h-56 sm:h-72 lg:h-96 -mt-16 sm:-mt-18">
           <img
             src={show.images.hero}
             alt={show.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-top"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/50 to-transparent" />
         </div>
       )}
 
