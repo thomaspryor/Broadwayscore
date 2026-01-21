@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Link from 'next/link';
 
-const BASE_URL = 'https://thomaspryor.github.io/Broadwayscore';
+// Use environment variable for easy domain changes, fallback to Vercel URL
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
