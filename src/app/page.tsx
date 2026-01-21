@@ -109,7 +109,7 @@ function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: numb
         {show.images?.thumbnail ? (
           <img
             src={show.images.thumbnail}
-            alt={show.title}
+            alt={`${show.title} - Broadway ${show.type} at ${show.venue}`}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (

@@ -156,7 +156,7 @@ export default function DirectorPage({ params }: { params: { slug: string } }) {
                     {show.images?.thumbnail ? (
                       <img
                         src={show.images.thumbnail}
-                        alt={`${show.title} poster`}
+                        alt={`${show.title} - Broadway ${show.type} directed by ${director.name}`}
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -203,7 +203,7 @@ export default function DirectorPage({ params }: { params: { slug: string } }) {
                     {show.images?.thumbnail ? (
                       <img
                         src={show.images.thumbnail}
-                        alt={`${show.title} poster`}
+                        alt={`${show.title} - Broadway ${show.type} directed by ${director.name}`}
                         className="w-full h-full object-cover"
                       />
                     ) : (
