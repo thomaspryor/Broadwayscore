@@ -384,6 +384,25 @@ export const OUTLETS: OutletConfig[] = [
     scoreFormat: 'text_bucket',
     searchUrl: (title) => `https://playbill.com/searchpage#checks_q=${encodeURIComponent(title)}`,
   },
+  {
+    id: 'JITNEY',
+    name: 'The Jitney',
+    tier: 3,
+    aliases: ['Jitney Books', 'jitneybooks.com'],
+    domain: 'jitneybooks.com',
+    scoreFormat: 'stars',
+    maxScale: 5,
+    searchUrl: (title) => `https://jitneybooks.com/?s=${encodeURIComponent(title)}`,
+  },
+  {
+    id: 'STGCNMA',
+    name: 'Stage and Cinema',
+    tier: 3,
+    aliases: ['Stage & Cinema', 'stageandcinema.com'],
+    domain: 'stageandcinema.com',
+    scoreFormat: 'text_bucket',
+    searchUrl: (title) => `https://stageandcinema.com/?s=${encodeURIComponent(title)}`,
+  },
 ];
 
 // ===========================================
