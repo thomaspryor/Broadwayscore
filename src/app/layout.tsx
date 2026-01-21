@@ -1,7 +1,14 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import Link from 'next/link';
 import ScrollToTop from '@/components/ScrollToTop';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 const BASE_URL = 'https://thomaspryor.github.io/Broadwayscore';
 
@@ -70,7 +77,7 @@ export default function RootLayout({
       <head>
         <link rel="canonical" href={BASE_URL} />
       </head>
-      <body className="min-h-screen font-sans pb-16 sm:pb-0">
+      <body className={`${inter.className} min-h-screen pb-16 sm:pb-0`}>
         <header className="glass sticky top-0 z-50">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16 sm:h-18">
