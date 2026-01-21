@@ -23,7 +23,9 @@ const DEBUG = process.argv.includes('--debug');
 // TodayTix show IDs for Broadway shows
 // Hardcoded fallback images - these will be populated when found
 // Run with --debug to see raw API responses for troubleshooting
-const FALLBACK_IMAGES = {};
+const FALLBACK_IMAGES = {
+  'harry-potter': 'https://images.ctfassets.net/6pezt69ih962/7DkPjyhwUJBllOdMPllkYT/253ff4da66b108f69fb1d26d64ce53bf/TT-109547-017703-TodayTix-480x720.jpg',
+};
 
 const TODAYTIX_SHOWS = {
   'wicked': { id: 1, slug: 'wicked' },
