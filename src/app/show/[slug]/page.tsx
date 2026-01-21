@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getShowBySlug, getAllShowSlugs, ComputedShow } from '@/lib/data';
+import { generateShowSchema, generateBreadcrumbSchema } from '@/lib/seo';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import AnimatedScoreDistribution from '@/components/AnimatedScoreDistribution';
 import ReviewsList from '@/components/ReviewsList';
@@ -238,28 +239,16 @@ function getGoogleMapsUrl(address: string): string {
 }
 
 
-// JSON-LD structured data for SEO
-function generateStructuredData(show: ComputedShow) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'TheaterEvent',
-    name: show.title,
-    location: {
-      '@type': 'PerformingArtsTheater',
-      name: show.venue,
-      address: show.theaterAddress || 'New York, NY',
-    },
-    startDate: show.openingDate,
-    ...(show.closingDate && { endDate: show.closingDate }),
-    ...(show.images?.hero && { image: show.images.hero }),
-    aggregateRating: show.criticScore?.score ? {
-      '@type': 'AggregateRating',
-      ratingValue: show.criticScore.score,
-      bestRating: 100,
-      worstRating: 0,
-      reviewCount: show.criticScore.reviewCount,
-    } : undefined,
-  };
+// Generate all structured data for the page (TheaterEvent + BreadcrumbList)
+function generateAllStructuredData(show: ComputedShow) {
+  const showSchema = generateShowSchema(show);
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: 'Shows', url: `${BASE_URL}/#shows` },
+    { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
+  ]);
+
+  return [showSchema, breadcrumbSchema];
 }
 
 export default function ShowPage({ params }: { params: { slug: string } }) {
@@ -269,11 +258,12 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  const structuredData = generateStructuredData(show);
+  const structuredData = generateAllStructuredData(show);
   const score = show.criticScore?.score;
 
   return (
     <>
+      {/* Enhanced JSON-LD: TheaterEvent with Reviews + BreadcrumbList */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
