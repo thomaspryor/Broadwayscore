@@ -12,6 +12,8 @@ interface Review {
   tier: 1 | 2 | 3;
   reviewMetaScore: number;
   designation?: string;
+  quote?: string;
+  summary?: string;
   pullQuote?: string;
 }
 
@@ -169,7 +171,17 @@ function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
               </span>
             )}
           </div>
-          {review.pullQuote && (
+          {review.quote && (
+            <blockquote className="mt-2 text-sm text-gray-300 italic border-l-2 border-brand/30 pl-3 group-hover:border-brand/50 transition-colors">
+              &ldquo;{review.quote}&rdquo;
+            </blockquote>
+          )}
+          {review.summary && !review.quote && (
+            <p className="mt-2 text-sm text-gray-400 border-l-2 border-white/10 pl-3 group-hover:border-white/20 transition-colors">
+              {review.summary}
+            </p>
+          )}
+          {review.pullQuote && !review.quote && !review.summary && (
             <p className="mt-2 text-sm text-gray-400 border-l-2 border-white/10 pl-3 group-hover:border-white/20 transition-colors">
               {review.pullQuote}
             </p>
