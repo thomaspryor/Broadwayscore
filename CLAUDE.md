@@ -55,32 +55,52 @@ A data agent for fetching, normalizing, and managing critic reviews.
 
 ### Quick Commands
 ```bash
+npm run reviews:status              # See which shows need reviews
+npm run reviews:validate <show-id>  # Validate a show's reviews
 npm run reviews:report              # Data coverage report
-npm run reviews:fetch -- --show <id> # Fetch for one show
-npm run reviews:all                 # Fetch for all shows
-npm run reviews:fetch -- --manual <file> # Import manual entries
 ```
 
-### Key Features
-- Multi-source fetching (BroadwayWorld, DidTheyLikeIt, Show-Score)
-- Rating normalization (stars, letters, buckets → 0-100)
-- Deduplication and merging
-- Idempotent (running twice gives same results)
-- Manual entry support for reviews that can't be fetched
+### Collecting Reviews for a Show
+
+When asked to "collect reviews for [Show Name]", follow this workflow:
+
+**Phase 1: Discovery** - Search all 3 aggregators:
+1. DTLI (didtheylikeit.com) - Get review count & positive/mixed/negative breakdown
+2. Show-Score - Get list of outlets (ignore the % score, that's audience)
+3. BroadwayWorld Review Roundup - Get additional outlets
+
+**Phase 2: Rating Collection** - For each outlet found:
+- Search for the actual star/letter rating (don't guess from snippets!)
+- Convert to 0-100: 5★=100, 4★=80, 3★=60, 2★=40, 1★=20
+- Assign bucket: 85+=Rave, 70-84=Positive, 50-69=Mixed, <50=Pan
+
+**Phase 3: Report** - Generate a report showing:
+- All reviews found with scores
+- Cross-check against DTLI count
+- Calculated metrics (average, % positive)
+- Present for human review BEFORE committing
+
+**Phase 4: Write** - After human approval:
+- Add to data/reviews.json (and shows.json if new show)
+- Run validation: `npm run reviews:validate <show-id>`
+- Commit with descriptive message
+
+See `scripts/critic-reviews-agent/collect-reviews.md` for full workflow details.
+
+### Outlet Tiers
+- **Tier 1** (1.0): NYT, Vulture, Variety, Time Out, Hollywood Reporter, Washington Post, AP
+- **Tier 2** (0.85): NY Post, TheaterMania, EW, Chicago Tribune, NYTG, NYSR, The Wrap, Observer, Daily Beast
+- **Tier 3** (0.70): Theatrely, Culture Sauce, One Minute Critic, Cititour, blogs
 
 ### Agent Files
 ```
 scripts/critic-reviews-agent/
-├── index.ts        # CLI entry point
-├── config.ts       # Outlets, tiers, normalization rules
-├── normalizer.ts   # Rating conversion logic
-├── deduper.ts      # Deduplication & merging
-├── fetchers.ts     # Web scraping utilities
-└── README.md       # Full documentation
+├── collect-reviews.md  # Full collection workflow
+├── status.ts          # Shows needing reviews
+├── validate.ts        # Validation script
+├── config.ts          # Outlets, tiers, normalization rules
+└── README.md          # Documentation
 ```
-
-### Manual Data Entry
-See `data/manual-reviews-template.json` for the entry format.
 
 ## Next Steps / Parallel Workstreams
 

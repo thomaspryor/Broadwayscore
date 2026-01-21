@@ -12,7 +12,9 @@
     "reviews:fetch": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts",
     "reviews:report": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts --report",
     "reviews:show": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts --show",
-    "reviews:all": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts --all"
+    "reviews:all": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts --all",
+    "reviews:status": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/status.ts",
+    "reviews:validate": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/validate.ts"
   },
   "dependencies": {
     "next": "14.2.3",
