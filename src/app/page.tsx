@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { getAllShows, ComputedShow } from '@/lib/data';
 
 type SortField = 'criticScore' | 'title' | 'openingDate';
@@ -13,7 +12,7 @@ function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm'
   const sizeClass = {
     sm: 'w-10 h-10 text-sm rounded-lg',
     md: 'w-12 h-12 text-lg rounded-xl',
-    lg: 'w-16 h-16 text-2xl rounded-xl',
+    lg: 'w-14 h-14 text-xl rounded-xl',
   }[size];
 
   if (score === undefined || score === null) {
@@ -24,11 +23,13 @@ function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm'
     );
   }
 
-  const colorClass = score >= 70 ? 'score-high' : score >= 50 ? 'score-medium' : 'score-low';
+  // Round to whole number for cleaner display
+  const roundedScore = Math.round(score);
+  const colorClass = roundedScore >= 70 ? 'score-high' : roundedScore >= 50 ? 'score-medium' : 'score-low';
 
   return (
     <div className={`score-badge ${sizeClass} ${colorClass}`}>
-      {score}
+      {roundedScore}
     </div>
   );
 }
@@ -49,6 +50,42 @@ function StatusChip({ status }: { status: string }) {
   return <span className={`chip ${chipClass}`}>{label}</span>;
 }
 
+function TypeTag({ type }: { type: string }) {
+  const config: Record<string, { label: string; className: string }> = {
+    musical: { label: 'Musical', className: 'bg-purple-500/20 text-purple-400 border-purple-500/20' },
+    play: { label: 'Play', className: 'bg-blue-500/20 text-blue-400 border-blue-500/20' },
+    revival: { label: 'Revival', className: 'bg-amber-500/20 text-amber-400 border-amber-500/20' },
+  };
+
+  const { label, className } = config[type] || { label: type, className: 'bg-gray-500/20 text-gray-400 border-gray-500/20' };
+
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wide border ${className}`}>
+      {label}
+    </span>
+  );
+}
+
+function NewBadge() {
+  return (
+    <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-brand/20 text-brand text-[10px] font-bold uppercase tracking-wide">
+      New
+    </span>
+  );
+}
+
+function isNewShow(openingDate: string): boolean {
+  const opening = new Date(openingDate);
+  const now = new Date();
+  const daysSinceOpening = (now.getTime() - opening.getTime()) / (1000 * 60 * 60 * 24);
+  return daysSinceOpening <= 60 && daysSinceOpening >= 0; // Within last 60 days
+}
+
+function formatOpeningDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+}
+
 function SearchIcon() {
   return (
     <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,8 +94,9 @@ function SearchIcon() {
   );
 }
 
-function ShowCard({ show, index }: { show: ComputedShow; index: number }) {
+function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: number; hideStatus: boolean }) {
   const score = show.criticScore?.score;
+  const isNew = isNewShow(show.openingDate);
 
   return (
     <Link
@@ -83,23 +121,30 @@ function ShowCard({ show, index }: { show: ComputedShow; index: number }) {
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-white group-hover:text-brand transition-colors truncate">
-          {show.title}
-        </h3>
+        <div className="flex items-center gap-2">
+          <h3 className="font-semibold text-white group-hover:text-brand transition-colors truncate">
+            {show.title}
+          </h3>
+          {isNew && <NewBadge />}
+        </div>
         <p className="text-sm text-gray-500 mt-0.5 truncate">{show.venue}</p>
-        <div className="flex items-center gap-2 mt-2">
-          <StatusChip status={show.status} />
-          {show.criticScore && (
-            <span className="text-xs text-gray-500">
-              {show.criticScore.reviewCount} reviews
-            </span>
-          )}
+        <div className="flex flex-wrap items-center gap-2 mt-2">
+          <TypeTag type={show.type} />
+          {!hideStatus && <StatusChip status={show.status} />}
+          <span className="text-xs text-gray-600">
+            Opened {formatOpeningDate(show.openingDate)}
+          </span>
         </div>
       </div>
 
       {/* Score */}
-      <div className="flex-shrink-0 flex items-center">
+      <div className="flex-shrink-0 flex flex-col items-center justify-center">
         <ScoreBadge score={score} size="lg" />
+        {show.criticScore && (
+          <span className="text-[10px] text-gray-500 mt-1">
+            {show.criticScore.reviewCount} reviews
+          </span>
+        )}
       </div>
     </Link>
   );
@@ -168,6 +213,9 @@ export default function HomePage() {
     }
   };
 
+  // Hide status chip when it would be redundant (matches current filter)
+  const shouldHideStatus = statusFilter !== 'all';
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       {/* Hero Header */}
@@ -222,6 +270,12 @@ export default function HomePage() {
           >
             A-Z {sortField === 'title' && (sortDirection === 'asc' ? '↑' : '↓')}
           </button>
+          <button
+            onClick={() => handleSort('openingDate')}
+            className={`px-2 py-1 rounded ${sortField === 'openingDate' ? 'text-brand' : 'text-gray-400 hover:text-white'}`}
+          >
+            Date {sortField === 'openingDate' && (sortDirection === 'desc' ? '↓' : '↑')}
+          </button>
         </div>
       </div>
 
@@ -244,7 +298,7 @@ export default function HomePage() {
       {/* Show List */}
       <div className="space-y-3">
         {filteredAndSortedShows.map((show, index) => (
-          <ShowCard key={show.id} show={show} index={index} />
+          <ShowCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} />
         ))}
       </div>
 
