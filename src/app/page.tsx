@@ -303,13 +303,26 @@ export default function HomePage() {
       </div>
 
       {filteredAndSortedShows.length === 0 && (
-        <div className="card text-center py-12">
-          <div className="text-gray-500">No shows match your search.</div>
+        <div className="card text-center py-16 px-6">
+          <div className="w-16 h-16 rounded-full bg-surface-overlay mx-auto mb-4 flex items-center justify-center">
+            <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold text-white mb-2">No shows found</h3>
+          <p className="text-gray-500 mb-6 max-w-sm mx-auto">
+            {searchQuery
+              ? `No shows match "${searchQuery}". Try adjusting your search or filters.`
+              : 'No shows match your current filters.'}
+          </p>
           <button
             onClick={() => { setSearchQuery(''); setStatusFilter('all'); }}
-            className="mt-3 text-brand hover:text-brand-hover transition-colors text-sm font-medium"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-pill bg-brand/10 text-brand hover:bg-brand/20 transition-colors text-sm font-semibold"
           >
-            Clear filters
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Reset filters
           </button>
         </div>
       )}
