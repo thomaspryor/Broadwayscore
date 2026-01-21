@@ -45,7 +45,7 @@ const TODAYTIX_SHOWS = {
   'oh-mary': { id: 37743, slug: 'oh-mary' },
   'operation-mincemeat': { id: 42735, slug: 'operation-mincemeat-on-broadway' },
   'bug': { id: 45086, slug: 'bug-on-broadway' },
-  'harry-potter': { id: 1377, slug: 'harry-potter-and-the-cursed-child' },
+  'harry-potter': { id: 13709, slug: 'harry-potter-and-the-cursed-child-on-broadway' },
   'mamma-mia': { id: 43887, slug: 'mamma-mia-on-broadway' },
   'stranger-things': { id: 41967, slug: 'stranger-things-the-first-shadow-on-broadway' },
 };
