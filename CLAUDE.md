@@ -48,14 +48,16 @@ Each review has:
 
 ```
 data/
-  shows.json      # Show metadata with full details
-  reviews.json    # Critic reviews with scores and original ratings
-  audience.json   # (Future) Audience scores
-  buzz.json       # (Future) Social buzz data
+  shows.json            # Show metadata with full details
+  reviews.json          # Critic reviews with scores and original ratings
+  new-shows-pending.json # Auto-generated: new shows awaiting review data
+  audience.json         # (Future) Audience scores
+  buzz.json             # (Future) Social buzz data
 
 scripts/
   fetch-images.js       # Fetches show images from TodayTix CDN
   update-show-status.js # Auto-updates show statuses (closing dates)
+  discover-new-shows.js # Discovers new Broadway shows from TodayTix
 ```
 
 ### Show Schema (shows.json)
@@ -100,17 +102,27 @@ node scripts/fetch-images.js
 ```
 Outputs JSON with hero/thumbnail/poster URLs for shows.json
 
-### 4. Data Freshness (Automated)
+### 4. Data Freshness & Discovery (Automated)
 **GitHub Action:** `.github/workflows/update-show-status.yml`
 - Runs automatically every Monday at 6 AM UTC
 - Can be triggered manually via GitHub Actions UI
-- Checks TodayTix for closing date changes
-- Auto-marks shows as closed when past closing date
-- Commits changes to shows.json and triggers redeploy
 
-Manual run:
+**What it does:**
+1. **Status Updates** - Checks TodayTix for closing dates, auto-marks shows as closed
+2. **New Show Discovery** - Scans TodayTix for new Broadway shows not in our database
+3. **Auto-add Shows** - Adds new shows to shows.json with basic metadata
+4. **Create Issues** - Opens GitHub issue for new shows needing review data
+5. **Trigger Data Agent** - Attempts to trigger `gather-reviews.yml` workflow
+
+**GitHub Action:** `.github/workflows/gather-reviews.yml`
+- Triggered automatically when new shows are discovered
+- Can be triggered manually with comma-separated show slugs
+- Placeholder for review data gathering logic (integrate with data agent)
+
+Manual runs:
 ```bash
-node scripts/update-show-status.js
+node scripts/update-show-status.js    # Check status changes
+node scripts/discover-new-shows.js    # Find new shows
 ```
 
 ### 5. SEO (Implemented)
