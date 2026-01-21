@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getAllShows, ComputedShow } from '@/lib/data';
 
-type SortField = 'metascore' | 'criticScore' | 'audienceScore' | 'buzzScore' | 'title' | 'openingDate';
+type SortField = 'criticScore' | 'title' | 'openingDate';
 type SortDirection = 'asc' | 'desc';
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews';
 
@@ -66,7 +66,7 @@ function ConfidenceBadge({ level }: { level?: string }) {
 }
 
 export default function HomePage() {
-  const [sortField, setSortField] = useState<SortField>('metascore');
+  const [sortField, setSortField] = useState<SortField>('criticScore');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('open');
   const [searchQuery, setSearchQuery] = useState('');
@@ -96,21 +96,9 @@ export default function HomePage() {
       let bVal: string | number | null;
 
       switch (sortField) {
-        case 'metascore':
-          aVal = a.metascore ?? -1;
-          bVal = b.metascore ?? -1;
-          break;
         case 'criticScore':
           aVal = a.criticScore?.score ?? -1;
           bVal = b.criticScore?.score ?? -1;
-          break;
-        case 'audienceScore':
-          aVal = a.audienceScore?.score ?? -1;
-          bVal = b.audienceScore?.score ?? -1;
-          break;
-        case 'buzzScore':
-          aVal = a.buzzScore?.score ?? -1;
-          bVal = b.buzzScore?.score ?? -1;
           break;
         case 'title':
           aVal = a.title.toLowerCase();
@@ -154,12 +142,12 @@ export default function HomePage() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       {/* Header */}
       <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 text-balance">Broadway Show Scores</h1>
         <p className="text-gray-400 text-sm sm:text-base">
-          Aggregated critic reviews, audience ratings, and community buzz for Broadway productions.
+          Aggregated critic reviews for Broadway productions.
         </p>
       </div>
 
@@ -211,17 +199,9 @@ export default function HomePage() {
                 <SortHeader field="title" label="Show" />
               </th>
               <th className="text-center">
-                <SortHeader field="metascore" label="Overall" className="justify-center" />
+                <SortHeader field="criticScore" label="Critics Score" className="justify-center" />
               </th>
-              <th className="text-center">
-                <SortHeader field="criticScore" label="Critics" className="justify-center" />
-              </th>
-              <th className="text-center">
-                <SortHeader field="audienceScore" label="Audience" className="justify-center" />
-              </th>
-              <th className="text-center">
-                <SortHeader field="buzzScore" label="Buzz" className="justify-center" />
-              </th>
+              <th className="text-center">Reviews</th>
               <th>Status</th>
               <th>Confidence</th>
             </tr>
@@ -240,24 +220,12 @@ export default function HomePage() {
                 <td>
                   <div className="flex justify-center">
                     <Link href={`/show/${show.slug}`}>
-                      <ScoreBadge score={show.metascore} />
+                      <ScoreBadge score={show.criticScore?.score} />
                     </Link>
                   </div>
                 </td>
-                <td>
-                  <div className="flex justify-center">
-                    <ScoreBadge score={show.criticScore?.score} size="sm" />
-                  </div>
-                </td>
-                <td>
-                  <div className="flex justify-center">
-                    <ScoreBadge score={show.audienceScore?.score} size="sm" />
-                  </div>
-                </td>
-                <td>
-                  <div className="flex justify-center">
-                    <ScoreBadge score={show.buzzScore?.score} size="sm" />
-                  </div>
+                <td className="text-center text-gray-400 text-sm">
+                  {show.criticScore?.reviewCount ?? '—'}
                 </td>
                 <td>
                   <StatusChip status={show.status} />
@@ -280,7 +248,7 @@ export default function HomePage() {
             className="card-interactive block p-4"
           >
             <div className="flex items-start gap-4">
-              <ScoreBadge score={show.metascore} size="lg" />
+              <ScoreBadge score={show.criticScore?.score} size="lg" />
               <div className="flex-1 min-w-0">
                 <div className="font-medium text-white leading-tight">{show.title}</div>
                 <div className="text-sm text-gray-400 mt-0.5">{show.venue}</div>
@@ -288,20 +256,11 @@ export default function HomePage() {
                   <StatusChip status={show.status} />
                   <ConfidenceBadge level={show.confidence?.level} />
                 </div>
-              </div>
-            </div>
-            <div className="score-grid mt-4 pt-4 border-t border-gray-700/50">
-              <div className="score-grid-item">
-                <div className="score-grid-label">Critics</div>
-                <div className="score-grid-value">{show.criticScore?.score ?? '—'}</div>
-              </div>
-              <div className="score-grid-item">
-                <div className="score-grid-label">Audience</div>
-                <div className="score-grid-value">{show.audienceScore?.score ?? '—'}</div>
-              </div>
-              <div className="score-grid-item">
-                <div className="score-grid-label">Buzz</div>
-                <div className="score-grid-value">{show.buzzScore?.score ?? '—'}</div>
+                {show.criticScore && (
+                  <div className="text-xs text-gray-500 mt-2">
+                    {show.criticScore.reviewCount} reviews
+                  </div>
+                )}
               </div>
             </div>
           </Link>

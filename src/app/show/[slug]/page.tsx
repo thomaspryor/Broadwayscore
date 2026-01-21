@@ -12,12 +12,12 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const show = getShowBySlug(params.slug);
   if (!show) return { title: 'Show Not Found' };
 
-  const description = show.metascore
-    ? `${show.title} has a Metascore of ${show.metascore}. Critics: ${show.criticScore?.score ?? 'N/A'}, Audience: ${show.audienceScore?.score ?? 'N/A'}, Buzz: ${show.buzzScore?.score ?? 'N/A'}.`
+  const description = show.criticScore
+    ? `${show.title} has a Critics Score of ${show.criticScore.score} based on ${show.criticScore.reviewCount} reviews.`
     : `Reviews and scores for ${show.title} on Broadway.`;
 
   return {
-    title: `${show.title} Reviews & Metascore`,
+    title: `${show.title} Reviews & Score`,
     description,
     openGraph: {
       title: `${show.title} - Broadway Metascore`,
@@ -135,12 +135,12 @@ function generateStructuredData(show: ComputedShow) {
     },
     startDate: show.openingDate,
     ...(show.closingDate && { endDate: show.closingDate }),
-    aggregateRating: show.metascore ? {
+    aggregateRating: show.criticScore ? {
       '@type': 'AggregateRating',
-      ratingValue: show.metascore,
+      ratingValue: show.criticScore.score,
       bestRating: 100,
       worstRating: 0,
-      ratingCount: (show.criticScore?.reviewCount ?? 0) + (show.audienceScore?.totalReviewCount ?? 0),
+      ratingCount: show.criticScore.reviewCount,
     } : undefined,
   };
 }
@@ -161,7 +161,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
           <Link href="/" className="text-green-400 hover:text-green-300 text-sm mb-4 inline-block">
@@ -187,194 +187,94 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         </div>
 
         {/* Score Overview */}
-        <div className="bg-gray-800 rounded-xl p-4 sm:p-6 mb-6 sm:mb-8">
-          <div className="grid grid-cols-4 gap-2 sm:gap-6 justify-items-center">
-            <ScoreBadge score={show.metascore} label="Overall" size="lg" />
-            <ScoreBadge score={show.criticScore?.score} label="Critics" size="md" />
-            <ScoreBadge score={show.audienceScore?.score} label="Audience" size="md" />
-            <ScoreBadge score={show.buzzScore?.score} label="Buzz" size="md" />
+        <div className="bg-gray-800 rounded-xl p-6 sm:p-8 mb-6 sm:mb-8">
+          <div className="flex flex-col items-center">
+            <ScoreBadge score={show.criticScore?.score} label="Critics Score" size="lg" />
+
+            {show.criticScore && (
+              <div className="mt-4 text-sm text-gray-400">
+                Based on {show.criticScore.reviewCount} critic reviews
+                {show.criticScore.tier1Count > 0 && ` (${show.criticScore.tier1Count} Tier 1)`}
+              </div>
+            )}
+
+            {show.criticScore?.label && (
+              <div className={`mt-2 px-3 py-1 rounded-full text-sm font-medium ${
+                show.criticScore.label === 'Rave' ? 'bg-green-500/20 text-green-300' :
+                show.criticScore.label === 'Positive' ? 'bg-green-500/20 text-green-300' :
+                show.criticScore.label === 'Mixed' ? 'bg-yellow-500/20 text-yellow-300' :
+                'bg-red-500/20 text-red-300'
+              }`}>
+                {show.criticScore.label}
+              </div>
+            )}
           </div>
 
-          {show.metascore !== null && (
-            <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-700 text-xs sm:text-sm text-gray-400 text-center">
-              Weights: Critics 50% • Audience 35% • Buzz 15% • Methodology v{METHODOLOGY_VERSION}
-            </div>
-          )}
-
           {show.confidence && (
-            <div className="mt-4 flex justify-center">
+            <div className="mt-6 flex justify-center">
               <ConfidenceBadge level={show.confidence.level} reasons={show.confidence.reasons} />
             </div>
           )}
         </div>
 
-        {/* Score Details Grid */}
-        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8">
-          {/* Critic Reviews */}
-          {show.criticScore && (
-            <div className="bg-gray-800 rounded-xl p-4 sm:p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg sm:text-xl font-bold text-white">Critic Reviews</h2>
-                <div className="text-xs sm:text-sm text-gray-400">
-                  {show.criticScore.reviewCount} reviews
-                </div>
-              </div>
-              <div className="space-y-3 sm:space-y-4 max-h-[400px] sm:max-h-[500px] overflow-y-auto">
-                {show.criticScore.reviews.map((review, i) => (
-                  <div key={i} className="border-b border-gray-700 pb-3 sm:pb-4 last:border-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0 flex-1">
-                        <a
-                          href={review.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-medium text-white hover:text-green-400 transition text-sm sm:text-base"
-                        >
-                          {review.outlet}
-                        </a>
-                        {review.criticName && (
-                          <span className="text-gray-400 text-xs sm:text-sm ml-2">by {review.criticName}</span>
-                        )}
-                        <div className="flex flex-wrap items-center gap-2 mt-1">
-                          <TierBadge tier={review.tier} />
-                          <span className="text-xs text-gray-500">
-                            {formatDate(review.publishDate)}
-                          </span>
-                          {review.designation && (
-                            <span className="text-xs text-green-500">({review.designation.replace('_', ' ')})</span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="text-right flex-shrink-0">
-                        <div className="font-bold text-lg" style={{ color: getScoreColor(review.reviewMetaScore) }}>
-                          {review.reviewMetaScore}
-                        </div>
-                        <div className="text-xs text-gray-500">base: {review.assignedScore}</div>
-                      </div>
-                    </div>
-                    {review.pullQuote && (
-                      <blockquote className="mt-2 text-xs sm:text-sm text-gray-400 italic border-l-2 border-gray-600 pl-3">
-                        &ldquo;{review.pullQuote}&rdquo;
-                      </blockquote>
-                    )}
-                  </div>
-                ))}
+        {/* Critic Reviews */}
+        {show.criticScore && (
+          <div className="bg-gray-800 rounded-xl p-4 sm:p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg sm:text-xl font-bold text-white">Critic Reviews</h2>
+              <div className="text-xs sm:text-sm text-gray-400">
+                {show.criticScore.reviewCount} reviews
               </div>
             </div>
-          )}
-
-          {/* Audience Scores */}
-          {show.audienceScore && (
-            <div className="bg-gray-800 rounded-xl p-4 sm:p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg sm:text-xl font-bold text-white">Audience Scores</h2>
-                <div className="text-xs sm:text-sm text-gray-400">
-                  {show.audienceScore.totalReviewCount.toLocaleString()} reviews
-                </div>
-              </div>
-
-              {show.audienceScore.divergenceWarning && (
-                <div className="mb-4 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-yellow-300 text-xs sm:text-sm">
-                  {show.audienceScore.divergenceWarning}
-                </div>
-              )}
-
-              <div className="space-y-4">
-                {show.audienceScore.platforms.map((platform, i) => (
-                  <div key={i} className="bg-gray-700/50 rounded-lg p-3 sm:p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-medium text-white text-sm sm:text-base">{platform.platformName}</div>
-                        <div className="text-xs sm:text-sm text-gray-400">
-                          {platform.averageRating} / {platform.maxRating}
-                          {platform.reviewCount && ` • ${platform.reviewCount.toLocaleString()} reviews`}
-                        </div>
-                      </div>
-                      <div className="text-xl sm:text-2xl font-bold" style={{ color: getScoreColor(platform.mappedScore) }}>
-                        {platform.mappedScore}
-                      </div>
-                    </div>
-                    {platform.url && (
+            <div className="space-y-3 sm:space-y-4">
+              {show.criticScore.reviews.map((review, i) => (
+                <div key={i} className="border-b border-gray-700 pb-3 sm:pb-4 last:border-0">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
                       <a
-                        href={platform.url}
+                        href={review.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs text-green-400 hover:underline mt-2 inline-block"
+                        className="font-medium text-white hover:text-green-400 transition text-sm sm:text-base"
                       >
-                        View on {platform.platformName} →
+                        {review.outlet}
                       </a>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Buzz Section */}
-        {show.buzzScore && (
-          <div className="bg-gray-800 rounded-xl p-4 sm:p-6 mt-6 sm:mt-8">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg sm:text-xl font-bold text-white">Community Buzz</h2>
-              <div className="text-xs sm:text-sm text-gray-400">
-                Score: {show.buzzScore.score}
-              </div>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-4 mb-6">
-              <div className="bg-gray-700/50 rounded-lg p-3 sm:p-4">
-                <div className="text-xs sm:text-sm text-gray-400 uppercase tracking-wide mb-1">Volume</div>
-                <div className="text-xl sm:text-2xl font-bold text-white">{show.buzzScore.volumeScore}/50</div>
-                <div className="text-xs sm:text-sm text-gray-400 mt-1">{show.buzzScore.volumeNote}</div>
-              </div>
-              <div className="bg-gray-700/50 rounded-lg p-3 sm:p-4">
-                <div className="text-xs sm:text-sm text-gray-400 uppercase tracking-wide mb-1">Sentiment</div>
-                <div className="text-xl sm:text-2xl font-bold text-white">{show.buzzScore.sentimentScore}/50</div>
-                <div className="text-xs sm:text-sm text-gray-400 mt-1">{show.buzzScore.sentimentNote}</div>
-              </div>
-            </div>
-
-            {show.buzzScore.stalenessPenalty && (
-              <div className="mb-4 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-yellow-300 text-xs sm:text-sm">
-                -{show.buzzScore.stalenessPenalty} point staleness penalty applied (older discussions)
-              </div>
-            )}
-
-            <h3 className="text-base sm:text-lg font-medium text-white mb-3">Recent Discussions</h3>
-            <div className="space-y-3">
-              {show.buzzScore.threads.slice(0, 5).map((thread, i) => (
-                <a
-                  key={i}
-                  href={thread.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block bg-gray-700/30 hover:bg-gray-700/50 rounded-lg p-3 sm:p-4 transition"
-                >
-                  <div className="flex items-start justify-between gap-3 sm:gap-4">
-                    <div className="min-w-0 flex-1">
-                      <div className="text-white font-medium text-sm sm:text-base line-clamp-2">{thread.title}</div>
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1 text-xs sm:text-sm text-gray-400">
-                        <span>{thread.subreddit || thread.platform}</span>
-                        <span>•</span>
-                        <span>{formatDate(thread.date)}</span>
-                        <span>•</span>
-                        <span className={
-                          thread.sentiment === 'positive' ? 'text-green-400' :
-                          thread.sentiment === 'negative' ? 'text-red-400' :
-                          'text-yellow-400'
-                        }>
-                          {thread.sentiment}
+                      {review.criticName && (
+                        <span className="text-gray-400 text-xs sm:text-sm ml-2">by {review.criticName}</span>
+                      )}
+                      <div className="flex flex-wrap items-center gap-2 mt-1">
+                        <TierBadge tier={review.tier} />
+                        <span className="text-xs text-gray-500">
+                          {formatDate(review.publishDate)}
                         </span>
+                        {review.designation && (
+                          <span className="text-xs text-green-500">({review.designation.replace('_', ' ')})</span>
+                        )}
                       </div>
                     </div>
-                    <div className="text-right text-xs sm:text-sm text-gray-400 whitespace-nowrap flex-shrink-0">
-                      <div>↑ {thread.upvotes}</div>
-                      <div>{thread.commentCount} comments</div>
+                    <div className="text-right flex-shrink-0">
+                      <div className="font-bold text-lg" style={{ color: getScoreColor(review.reviewMetaScore) }}>
+                        {review.reviewMetaScore}
+                      </div>
+                      {review.assignedScore !== review.reviewMetaScore && (
+                        <div className="text-xs text-gray-500">base: {review.assignedScore}</div>
+                      )}
                     </div>
                   </div>
-                </a>
+                  {review.pullQuote && (
+                    <blockquote className="mt-2 text-xs sm:text-sm text-gray-400 italic border-l-2 border-gray-600 pl-3">
+                      &ldquo;{review.pullQuote}&rdquo;
+                    </blockquote>
+                  )}
+                </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {!show.criticScore && (
+          <div className="bg-gray-800 rounded-xl p-6 text-center text-gray-400">
+            No critic reviews yet.
           </div>
         )}
 
