@@ -4,29 +4,47 @@ A data agent for fetching, normalizing, and managing critic reviews for Broadway
 
 ## Features
 
+- **Search API Integration**: Uses web search APIs (SerpAPI, Brave) for reliable review discovery
 - **Multi-Source Fetching**: Pulls reviews from BroadwayWorld, DidTheyLikeIt, Show-Score
 - **Rating Normalization**: Converts various rating formats (stars, letters, buckets) to 0-100 scale
 - **Deduplication**: Identifies and merges duplicate reviews from different sources
 - **Consistency**: Running twice produces identical results (idempotent)
 - **Manual Entry Support**: Add reviews that can't be automatically fetched
+- **Claude Code Integration**: Can be driven directly by Claude Code for automated data collection
 
 ## Quick Start
 
+### Option 1: Search API (Recommended)
+Uses a web search API to find reviews - more reliable than direct scraping.
+
 ```bash
-# Generate a report of current data
-npm run reviews:report
+# Get a free API key from https://serpapi.com (100 searches/month free)
+export SERPAPI_KEY=your_api_key
 
 # Fetch reviews for a specific show
-npm run reviews:fetch -- --show two-strangers-bway-2025
+npm run reviews:fetch -- --show bug-2025 --search --verbose
 
 # Fetch for all open shows
-npm run reviews:all
-
-# Dry run (preview changes without writing)
-npm run reviews:fetch -- --show cabaret-2024 --dry-run --verbose
+npm run reviews:all -- --search
 ```
 
-## Commands
+### Option 2: Direct Scraping (May be blocked)
+```bash
+# Fetch reviews for a specific show (direct scraping)
+npm run reviews:fetch -- --show two-strangers-bway-2025
+
+# Comprehensive search across all outlets
+npm run reviews:fetch -- --show cabaret-2024 --comprehensive --verbose
+```
+
+### Option 3: Claude Code Integration
+Ask Claude Code to fetch reviews directly:
+```
+"Fetch reviews for Bug using web search and add them to reviews.json"
+```
+Claude Code will use its WebSearch capability to find reviews and populate the data.
+
+## Command Reference
 
 | Command | Description |
 |---------|-------------|
@@ -42,11 +60,21 @@ npm run reviews:fetch -- --show cabaret-2024 --dry-run --verbose
 | `--show, -s <id>` | Process a specific show by ID or slug |
 | `--all, -a` | Process all shows with status "open" |
 | `--report, -r` | Generate report only, no fetching |
+| `--search` | **Use search API** instead of direct scraping (recommended) |
+| `--search-provider` | Search provider: `serpapi` (default) or `brave` |
+| `--comprehensive, -c` | Search all configured outlets + web search |
 | `--sources <list>` | Comma-separated sources: `broadwayworld,didtheylikeit,showscore` |
 | `--manual <file>` | JSON file with manual review entries |
 | `--verbose, -v` | Enable detailed logging |
 | `--dry-run, -n` | Preview changes without writing files |
 | `--help, -h` | Show help message |
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `SERPAPI_KEY` | API key for [SerpAPI](https://serpapi.com) - Google search results |
+| `BRAVE_API_KEY` | API key for [Brave Search API](https://brave.com/search/api) |
 
 ## Rating Normalization
 
@@ -153,13 +181,14 @@ Smaller outlets:
 
 ```
 scripts/critic-reviews-agent/
-├── index.ts        # CLI entry point
-├── types.ts        # TypeScript type definitions
-├── config.ts       # Outlets, tiers, normalization rules
-├── normalizer.ts   # Rating conversion logic
-├── deduper.ts      # Deduplication & merging
-├── fetchers.ts     # Web scraping utilities
-└── README.md       # This file
+├── index.ts          # CLI entry point
+├── types.ts          # TypeScript type definitions
+├── config.ts         # Outlets, tiers, normalization rules
+├── normalizer.ts     # Rating conversion logic
+├── deduper.ts        # Deduplication & merging
+├── fetchers.ts       # Direct web scraping utilities
+├── search-fetcher.ts # Search API integration (SerpAPI, Brave)
+└── README.md         # This file
 ```
 
 ## Output
