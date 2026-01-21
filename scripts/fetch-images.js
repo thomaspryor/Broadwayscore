@@ -323,8 +323,105 @@ async function fetchShowImage(showSlug, showInfo) {
     console.log(`   ⚠ Playbill failed: ${err.message}`);
   }
 
+  // Method 6: Try TheaterMania
+  const theaterManiaSlug = showSlug.replace(/-/g, '-');
+  const theaterManiaUrl = `https://www.theatermania.com/shows/broadway/${theaterManiaSlug}`;
+  console.log(`   TheaterMania: ${theaterManiaUrl}`);
+
+  try {
+    const html = await fetchPage(theaterManiaUrl);
+    const imageUrl = extractImageFromHtml(html);
+    if (imageUrl) {
+      console.log(`   ✓ Found via TheaterMania: ${imageUrl.substring(0, 60)}...`);
+      return formatImageUrls(imageUrl);
+    }
+  } catch (err) {
+    console.log(`   ⚠ TheaterMania failed: ${err.message}`);
+  }
+
+  // Method 7: Try TodayTix with just ID (no slug)
+  const simplePageUrl = `https://www.todaytix.com/nyc/shows/${showInfo.id}`;
+  console.log(`   TodayTix (ID only): ${simplePageUrl}`);
+
+  try {
+    const html = await fetchPage(simplePageUrl);
+    const imageUrl = extractImageFromHtml(html);
+    if (imageUrl) {
+      console.log(`   ✓ Found via TodayTix ID: ${imageUrl.substring(0, 60)}...`);
+      return formatImageUrls(imageUrl);
+    }
+  } catch (err) {
+    console.log(`   ⚠ TodayTix ID failed: ${err.message}`);
+  }
+
+  // Method 8: Try TodayTix GraphQL API
+  console.log(`   TodayTix GraphQL API...`);
+  try {
+    const graphqlData = await fetchTodayTixGraphQL(showInfo.id);
+    const imageUrl = extractImageFromApi(graphqlData);
+    if (imageUrl) {
+      console.log(`   ✓ Found via GraphQL: ${imageUrl.substring(0, 60)}...`);
+      return formatImageUrls(imageUrl);
+    }
+  } catch (err) {
+    console.log(`   ⚠ GraphQL failed: ${err.message}`);
+  }
+
   console.log(`   ✗ No image found from any source`);
   return null;
+}
+
+function fetchTodayTixGraphQL(showId) {
+  return new Promise((resolve, reject) => {
+    const query = JSON.stringify({
+      operationName: 'GetShow',
+      variables: { showId: showId },
+      query: `query GetShow($showId: Int!) {
+        show(id: $showId) {
+          id
+          name
+          images { type file { url } }
+          heroImageUrl
+          posterImageUrl
+        }
+      }`
+    });
+
+    const options = {
+      hostname: 'api.todaytix.com',
+      path: '/graphql',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+        'Accept': 'application/json',
+        'Content-Length': Buffer.byteLength(query),
+      },
+      timeout: 15000,
+    };
+
+    const req = https.request(options, (response) => {
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          resolve(parsed?.data || parsed);
+        } catch (e) {
+          reject(new Error('Invalid JSON'));
+        }
+      });
+    });
+
+    req.on('error', reject);
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('Request timeout'));
+    });
+
+    req.write(query);
+    req.end();
+  });
 }
 
 function updateShowsJson(imageResults) {
