@@ -112,5 +112,124 @@ export function getDataStats() {
   };
 }
 
+/**
+ * Get shows by type (musical, play)
+ */
+export function getShowsByType(type: 'musical' | 'play'): ComputedShow[] {
+  return getAllShows().filter(show => show.type === type);
+}
+
+/**
+ * Get shows by theater/venue
+ */
+export function getShowsByTheater(theater: string): ComputedShow[] {
+  return getAllShows().filter(show =>
+    show.venue.toLowerCase() === theater.toLowerCase()
+  );
+}
+
+/**
+ * Get all unique theaters
+ */
+export function getAllTheaters(): { name: string; slug: string; showCount: number }[] {
+  const theaterMap = new Map<string, number>();
+
+  getAllShows().forEach(show => {
+    const count = theaterMap.get(show.venue) || 0;
+    theaterMap.set(show.venue, count + 1);
+  });
+
+  return Array.from(theaterMap.entries())
+    .map(([name, showCount]) => ({
+      name,
+      slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, ''),
+      showCount,
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * Get theater by slug
+ */
+export function getTheaterBySlug(slug: string): { name: string; slug: string; shows: ComputedShow[] } | undefined {
+  const theaters = getAllTheaters();
+  const theater = theaters.find(t => t.slug === slug);
+
+  if (!theater) return undefined;
+
+  return {
+    name: theater.name,
+    slug: theater.slug,
+    shows: getShowsByTheater(theater.name),
+  };
+}
+
+/**
+ * Get all unique directors
+ */
+export function getAllDirectors(): { name: string; slug: string; showCount: number }[] {
+  const directorMap = new Map<string, number>();
+
+  getAllShows().forEach(show => {
+    const directors = show.creativeTeam?.filter(
+      member => member.role.toLowerCase().includes('director')
+    ) || [];
+
+    directors.forEach(director => {
+      const count = directorMap.get(director.name) || 0;
+      directorMap.set(director.name, count + 1);
+    });
+  });
+
+  return Array.from(directorMap.entries())
+    .map(([name, showCount]) => ({
+      name,
+      slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, ''),
+      showCount,
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * Get director by slug
+ */
+export function getDirectorBySlug(slug: string): { name: string; slug: string; shows: ComputedShow[] } | undefined {
+  const directors = getAllDirectors();
+  const director = directors.find(d => d.slug === slug);
+
+  if (!director) return undefined;
+
+  const shows = getAllShows().filter(show =>
+    show.creativeTeam?.some(
+      member => member.role.toLowerCase().includes('director') &&
+                member.name === director.name
+    )
+  );
+
+  return {
+    name: director.name,
+    slug: director.slug,
+    shows,
+  };
+}
+
+/**
+ * Get top shows by category (for "Best of" pages)
+ */
+export function getTopShowsByCategory(category: 'musicals' | 'plays' | 'all', limit = 10): ComputedShow[] {
+  let shows = getAllShows();
+
+  if (category === 'musicals') {
+    shows = shows.filter(s => s.type === 'musical');
+  } else if (category === 'plays') {
+    shows = shows.filter(s => s.type === 'play');
+  }
+
+  return shows
+    .filter(s => s.metascore !== null && s.metascore !== undefined)
+    .sort((a, b) => (b.metascore ?? 0) - (a.metascore ?? 0))
+    .slice(0, limit);
+}
+
 // Export types
 export type { ComputedShow };
