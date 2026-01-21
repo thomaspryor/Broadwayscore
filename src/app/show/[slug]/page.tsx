@@ -293,11 +293,14 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   <span className="text-4xl text-gray-600">🎭</span>
                 </div>
               )}
-              {/* Score badge overlay on poster */}
-              <div className="absolute -bottom-2 -right-2">
+            </div>
+            {/* Score badge below poster */}
+            {score !== undefined && score !== null && (
+              <div className="mt-3 flex flex-col items-center">
+                <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Metascore</span>
                 <ScoreBadge score={score} size="md" />
               </div>
-            </div>
+            )}
           </div>
 
           {/* Title & Meta */}
