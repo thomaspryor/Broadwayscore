@@ -510,3 +510,205 @@ export function parseManualSearchResults(input: string): SearchResult[] {
     });
   }
 }
+
+// ===========================================
+// PRIORITIZED SEARCH (Aggregators → Outlets → Web)
+// ===========================================
+
+/**
+ * Aggregator sites that collect reviews
+ */
+const AGGREGATORS = [
+  { name: 'Did They Like It', domain: 'didtheylikeit.com', searchPattern: 'site:didtheylikeit.com' },
+  { name: 'Show-Score', domain: 'show-score.com', searchPattern: 'site:show-score.com' },
+  { name: 'BroadwayWorld', domain: 'broadwayworld.com', searchPattern: 'site:broadwayworld.com reviews' },
+];
+
+export interface PrioritizedSearchResult {
+  aggregatorReviews: ParsedReviewFromSearch[];
+  outletReviews: ParsedReviewFromSearch[];
+  webSearchReviews: ParsedReviewFromSearch[];
+  allReviews: ParsedReviewFromSearch[];
+  rawResults: SearchResult[];
+  queries: string[];
+  errors: string[];
+  summary: {
+    fromAggregators: number;
+    fromOutlets: number;
+    fromWebSearch: number;
+    total: number;
+  };
+}
+
+/**
+ * Search for reviews in prioritized order:
+ * 1. Aggregators (DidTheyLikeIt, Show-Score, BroadwayWorld)
+ * 2. Individual outlets (NYT, Variety, etc.)
+ * 3. General web search
+ */
+export async function searchPrioritized(
+  showTitle: string,
+  options: SearchFetchOptions
+): Promise<PrioritizedSearchResult> {
+  const { apiConfig, verbose = false, maxResults = 20 } = options;
+
+  const aggregatorReviews: ParsedReviewFromSearch[] = [];
+  const outletReviews: ParsedReviewFromSearch[] = [];
+  const webSearchReviews: ParsedReviewFromSearch[] = [];
+  const rawResults: SearchResult[] = [];
+  const queries: string[] = [];
+  const errors: string[] = [];
+  const seenUrls = new Set<string>();
+
+  if (verbose) {
+    console.log(`\n${'='.repeat(50)}`);
+    console.log(`PRIORITIZED SEARCH: "${showTitle}"`);
+    console.log(`${'='.repeat(50)}`);
+  }
+
+  // Helper to execute search
+  const executeSearch = async (query: string): Promise<SearchResult[]> => {
+    queries.push(query);
+    try {
+      if (apiConfig.provider === 'serpapi' && apiConfig.apiKey) {
+        return await searchWithSerpAPI(query, apiConfig.apiKey, { num: maxResults });
+      } else if (apiConfig.provider === 'brave' && apiConfig.apiKey) {
+        return await searchWithBrave(query, apiConfig.apiKey, { count: maxResults });
+      }
+      return [];
+    } catch (error) {
+      errors.push(`Search error: ${(error as Error).message}`);
+      return [];
+    }
+  };
+
+  // =============================================
+  // STEP 1: Search Aggregators
+  // =============================================
+  if (verbose) console.log(`\n[STEP 1] Searching aggregators...`);
+
+  for (const agg of AGGREGATORS) {
+    const query = `${agg.searchPattern} "${showTitle}" broadway`;
+    if (verbose) console.log(`  Searching ${agg.name}...`);
+
+    const results = await executeSearch(query);
+    rawResults.push(...results);
+
+    // Parse reviews from aggregator results
+    for (const result of results) {
+      if (seenUrls.has(result.url)) continue;
+
+      // Aggregator pages often list multiple reviews in snippets
+      // Extract what we can from the search result
+      const parsed = parseSearchResult(result, showTitle);
+      if (parsed) {
+        seenUrls.add(result.url);
+        aggregatorReviews.push(parsed);
+      }
+    }
+
+    if (verbose) console.log(`    Found ${results.length} results`);
+  }
+
+  // =============================================
+  // STEP 2: Search Individual Outlets
+  // =============================================
+  if (verbose) console.log(`\n[STEP 2] Searching individual outlets...`);
+
+  // Key outlets to search directly
+  const keyOutlets = [
+    { name: 'New York Times', pattern: 'site:nytimes.com theater review' },
+    { name: 'Variety', pattern: 'site:variety.com legit review' },
+    { name: 'Vulture', pattern: 'site:vulture.com review' },
+    { name: 'Hollywood Reporter', pattern: 'site:hollywoodreporter.com review' },
+    { name: 'Washington Post', pattern: 'site:washingtonpost.com theater review' },
+    { name: 'Time Out', pattern: 'site:timeout.com theater review' },
+    { name: 'Deadline', pattern: 'site:deadline.com review' },
+    { name: 'TheaterMania', pattern: 'site:theatermania.com review' },
+    { name: 'Playbill', pattern: 'site:playbill.com review' },
+  ];
+
+  for (const outlet of keyOutlets) {
+    const query = `${outlet.pattern} "${showTitle}"`;
+    const results = await executeSearch(query);
+    rawResults.push(...results);
+
+    for (const result of results) {
+      if (seenUrls.has(result.url)) continue;
+
+      const parsed = parseSearchResult(result, showTitle);
+      if (parsed) {
+        seenUrls.add(result.url);
+        outletReviews.push(parsed);
+      }
+    }
+  }
+
+  if (verbose) console.log(`  Found ${outletReviews.length} outlet reviews`);
+
+  // =============================================
+  // STEP 3: General Web Search
+  // =============================================
+  if (verbose) console.log(`\n[STEP 3] General web search for additional reviews...`);
+
+  const webQueries = [
+    `"${showTitle}" broadway review 2026`,
+    `"${showTitle}" broadway critic review`,
+    `"${showTitle}" theater review opening night`,
+  ];
+
+  for (const query of webQueries) {
+    const results = await executeSearch(query);
+    rawResults.push(...results);
+
+    for (const result of results) {
+      if (seenUrls.has(result.url)) continue;
+
+      const parsed = parseSearchResult(result, showTitle);
+      if (parsed) {
+        seenUrls.add(result.url);
+        webSearchReviews.push(parsed);
+      }
+    }
+  }
+
+  if (verbose) console.log(`  Found ${webSearchReviews.length} additional reviews`);
+
+  // Combine all reviews
+  const allReviews = [...aggregatorReviews, ...outletReviews, ...webSearchReviews];
+
+  // Sort by tier (known outlets first)
+  allReviews.sort((a, b) => {
+    if (a.isKnownOutlet !== b.isKnownOutlet) return a.isKnownOutlet ? -1 : 1;
+    if (a.tier && b.tier && a.tier !== b.tier) return a.tier - b.tier;
+    return a.outlet.localeCompare(b.outlet);
+  });
+
+  const summary = {
+    fromAggregators: aggregatorReviews.length,
+    fromOutlets: outletReviews.length,
+    fromWebSearch: webSearchReviews.length,
+    total: allReviews.length,
+  };
+
+  if (verbose) {
+    console.log(`\n${'='.repeat(50)}`);
+    console.log(`SEARCH COMPLETE`);
+    console.log(`  From aggregators: ${summary.fromAggregators}`);
+    console.log(`  From outlets: ${summary.fromOutlets}`);
+    console.log(`  From web search: ${summary.fromWebSearch}`);
+    console.log(`  Total unique: ${summary.total}`);
+    console.log(`${'='.repeat(50)}`);
+  }
+
+  return {
+    aggregatorReviews,
+    outletReviews,
+    webSearchReviews,
+    allReviews,
+    rawResults,
+    queries,
+    errors,
+    summary,
+  };
+}
