@@ -117,6 +117,117 @@ function ExternalLinkIcon() {
   );
 }
 
+function MapPinIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  );
+}
+
+function PlayIcon() {
+  return (
+    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7z" />
+    </svg>
+  );
+}
+
+function GlobeIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+    </svg>
+  );
+}
+
+function TypeTag({ type }: { type: string }) {
+  const config: Record<string, { label: string; className: string }> = {
+    musical: { label: 'Musical', className: 'bg-purple-500/20 text-purple-400 border-purple-500/20' },
+    play: { label: 'Play', className: 'bg-blue-500/20 text-blue-400 border-blue-500/20' },
+    revival: { label: 'Revival', className: 'bg-amber-500/20 text-amber-400 border-amber-500/20' },
+  };
+
+  const { label, className } = config[type] || { label: type, className: 'bg-gray-500/20 text-gray-400 border-gray-500/20' };
+
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium uppercase tracking-wide border ${className}`}>
+      {label}
+    </span>
+  );
+}
+
+function NewBadge() {
+  return (
+    <span className="inline-flex items-center px-2 py-0.5 rounded bg-brand/20 text-brand text-xs font-bold uppercase tracking-wide">
+      New
+    </span>
+  );
+}
+
+function isNewShow(openingDate: string): boolean {
+  const opening = new Date(openingDate);
+  const now = new Date();
+  const daysSinceOpening = (now.getTime() - opening.getTime()) / (1000 * 60 * 60 * 24);
+  return daysSinceOpening <= 60 && daysSinceOpening >= 0;
+}
+
+function getGoogleMapsUrl(address: string): string {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+}
+
+function ScoreDistribution({ reviews }: { reviews: { reviewMetaScore: number }[] }) {
+  const high = reviews.filter(r => r.reviewMetaScore >= 70).length;
+  const medium = reviews.filter(r => r.reviewMetaScore >= 50 && r.reviewMetaScore < 70).length;
+  const low = reviews.filter(r => r.reviewMetaScore < 50).length;
+  const total = reviews.length;
+
+  if (total === 0) return null;
+
+  return (
+    <div className="flex items-center gap-3 mb-5">
+      <div className="flex-1 h-2 bg-surface-overlay rounded-full overflow-hidden flex">
+        {high > 0 && (
+          <div
+            className="bg-score-high h-full"
+            style={{ width: `${(high / total) * 100}%` }}
+            title={`${high} positive`}
+          />
+        )}
+        {medium > 0 && (
+          <div
+            className="bg-score-medium h-full"
+            style={{ width: `${(medium / total) * 100}%` }}
+            title={`${medium} mixed`}
+          />
+        )}
+        {low > 0 && (
+          <div
+            className="bg-score-low h-full"
+            style={{ width: `${(low / total) * 100}%` }}
+            title={`${low} negative`}
+          />
+        )}
+      </div>
+      <div className="flex items-center gap-2 text-xs text-gray-500">
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-score-high"></span>
+          {high}
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-score-medium"></span>
+          {medium}
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-score-low"></span>
+          {low}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 // JSON-LD structured data for SEO
 function generateStructuredData(show: ComputedShow) {
   return {
@@ -191,6 +302,10 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
           {/* Title & Meta */}
           <div className="flex-1">
+            <div className="flex flex-wrap items-center gap-2 mb-1">
+              <TypeTag type={show.type} />
+              {isNewShow(show.openingDate) && <NewBadge />}
+            </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
               {show.title}
             </h1>
@@ -204,24 +319,49 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
         </div>
 
-        {/* Ticket Links */}
-        {show.ticketLinks && show.ticketLinks.length > 0 && (
-          <div className="flex flex-wrap gap-3 mb-8">
-            {show.ticketLinks.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary flex items-center gap-2"
-              >
-                {link.platform}
-                {link.priceFrom && <span className="opacity-80">from ${link.priceFrom}</span>}
-                <ExternalLinkIcon />
-              </a>
-            ))}
-          </div>
-        )}
+        {/* Action Buttons */}
+        <div className="flex flex-wrap gap-3 mb-8">
+          {/* Ticket Links */}
+          {show.ticketLinks?.map((link, i) => (
+            <a
+              key={i}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary flex items-center gap-2"
+            >
+              {link.platform}
+              {link.priceFrom && <span className="opacity-80">from ${link.priceFrom}</span>}
+              <ExternalLinkIcon />
+            </a>
+          ))}
+
+          {/* Official Website */}
+          {show.officialUrl && (
+            <a
+              href={show.officialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
+            >
+              <GlobeIcon />
+              Official Site
+            </a>
+          )}
+
+          {/* Trailer */}
+          {show.trailerUrl && (
+            <a
+              href={show.trailerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
+            >
+              <PlayIcon />
+              Trailer
+            </a>
+          )}
+        </div>
 
         {/* Synopsis */}
         {show.synopsis && (
@@ -230,45 +370,15 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
-        {/* Cast & Creative */}
-        {(show.cast || show.creativeTeam) && (
-          <div className="grid sm:grid-cols-2 gap-6 mb-8">
-            {show.cast && show.cast.length > 0 && (
-              <div className="card p-5">
-                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Cast</h2>
-                <ul className="space-y-2">
-                  {show.cast.map((member, i) => (
-                    <li key={i} className="flex justify-between text-sm">
-                      <span className="text-white font-medium">{member.name}</span>
-                      <span className="text-gray-500">{member.role}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {show.creativeTeam && show.creativeTeam.length > 0 && (
-              <div className="card p-5">
-                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Creative Team</h2>
-                <ul className="space-y-2">
-                  {show.creativeTeam.map((member, i) => (
-                    <li key={i} className="flex justify-between text-sm">
-                      <span className="text-white font-medium">{member.name}</span>
-                      <span className="text-gray-500">{member.role}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        )}
-
         {/* Critic Reviews */}
         {show.criticScore && show.criticScore.reviews.length > 0 && (
           <div className="card p-5 sm:p-6 mb-8">
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
               <span className="text-sm text-gray-500">{show.criticScore.reviewCount} reviews</span>
             </div>
+
+            <ScoreDistribution reviews={show.criticScore.reviews} />
 
             <div className="space-y-4">
               {show.criticScore.reviews.map((review, i) => (
@@ -311,6 +421,38 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
+        {/* Cast & Creative */}
+        {(show.cast || show.creativeTeam) && (
+          <div className="grid sm:grid-cols-2 gap-6 mb-8">
+            {show.cast && show.cast.length > 0 && (
+              <div className="card p-5">
+                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Cast</h2>
+                <ul className="space-y-2">
+                  {show.cast.map((member, i) => (
+                    <li key={i} className="flex justify-between text-sm">
+                      <span className="text-white font-medium">{member.name}</span>
+                      <span className="text-gray-500">{member.role}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {show.creativeTeam && show.creativeTeam.length > 0 && (
+              <div className="card p-5">
+                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Creative Team</h2>
+                <ul className="space-y-2">
+                  {show.creativeTeam.map((member, i) => (
+                    <li key={i} className="flex justify-between text-sm">
+                      <span className="text-white font-medium">{member.name}</span>
+                      <span className="text-gray-500">{member.role}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Show Details */}
         <div className="card p-5 mb-8">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Details</h2>
@@ -341,9 +483,23 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 <dd className="text-white mt-0.5">{show.ageRecommendation}</dd>
               </div>
             )}
-            <div>
+            <div className="col-span-2">
               <dt className="text-gray-500">Theater</dt>
-              <dd className="text-white mt-0.5">{show.venue}</dd>
+              <dd className="text-white mt-0.5">
+                {show.theaterAddress ? (
+                  <a
+                    href={getGoogleMapsUrl(show.theaterAddress)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 hover:text-brand transition-colors"
+                  >
+                    <MapPinIcon />
+                    {show.venue} — {show.theaterAddress}
+                  </a>
+                ) : (
+                  show.venue
+                )}
+              </dd>
             </div>
           </dl>
         </div>
