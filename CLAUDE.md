@@ -145,34 +145,17 @@ npm run build    # Production build
 npm run lint     # Lint check
 ```
 
-## Deployment (Vercel - Primary)
+## Deployment (Vercel)
 
-**Production URL:** Set in Vercel Dashboard (will be broadwaymetascore.com)
-**Preview URLs:** Auto-generated for each branch push
+**How it works:** Claude pushes code → Vercel auto-deploys. No manual steps needed.
 
-### Vercel Setup
-1. Connected to GitHub repo `thomaspryor/Broadwayscore`
-2. Auto-deploys on every push to any branch
-3. Production branch: `main`
+**Production URL:** https://broadwaymetascore.com (once custom domain configured)
 
-### Environment Variables (Vercel Dashboard → Settings → Environment Variables)
-```
-NEXT_PUBLIC_SITE_URL=https://broadwaymetascore.com
-```
+### One-time Vercel Setup
+1. Vercel Dashboard → Settings → Git → Production Branch: `claude/broadway-metascore-site-8jjx7`
+2. Vercel Dashboard → Settings → Environment Variables:
+   - `NEXT_PUBLIC_SITE_URL` = `https://broadwaymetascore.com`
+3. Vercel Dashboard → Settings → Domains → Add `broadwaymetascore.com`
 
-### Custom Domain Setup
-1. Vercel Dashboard → Settings → Domains
-2. Add `broadwaymetascore.com`
-3. Configure DNS: Add CNAME record pointing to `cname.vercel-dns.com`
-
-### Manual Deployment
-Vercel deploys automatically on git push. No manual steps needed.
-
-### GitHub Pages (Secondary)
-- Deploys from `gh-pages` branch via GitHub Action
-- URL: https://thomaspryor.github.io/Broadwayscore/
-
-## Branch Strategy
-- `main` - Production branch (Vercel production)
-- `claude/...` - Feature branches (Vercel preview URLs)
-- Push to `main` triggers production deployment
+### That's it!
+Every push from Claude auto-deploys to production. No GitHub PRs or local terminal needed.
