@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'How It Works - BroadwayMetaScores',
-  description: 'How we calculate Broadway show scores from critic reviews, audience ratings, and community buzz.',
+  description: 'How we calculate Broadway show scores from aggregated critic reviews.',
 };
 
 export default function MethodologyPage() {
@@ -25,23 +25,9 @@ export default function MethodologyPage() {
         {/* Overview */}
         <section className="card p-5 sm:p-6">
           <h2 className="text-xl font-bold text-white mb-4">Overview</h2>
-          <p className="text-gray-300 mb-4">
-            BroadwayMetaScores aggregates three types of reception data to provide a comprehensive view of how a show is being received:
+          <p className="text-gray-300">
+            BroadwayMetaScores aggregates professional critic reviews to calculate a weighted average score for each Broadway show. Reviews are sourced from major publications and weighted by outlet tier to reflect their influence and reach.
           </p>
-          <ul className="space-y-3 text-gray-300">
-            <li className="flex items-start gap-3">
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand/20 text-brand text-xs font-bold flex-shrink-0">50</span>
-              <div><strong className="text-white">Critic Score</strong> — Aggregated professional reviews weighted by outlet tier</div>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex-shrink-0">35</span>
-              <div><strong className="text-white">Audience Score</strong> — Aggregated audience ratings from platforms like Show-Score</div>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold flex-shrink-0">15</span>
-              <div><strong className="text-white">Buzz Score</strong> — Community discussion volume and sentiment from Reddit</div>
-            </li>
-          </ul>
         </section>
 
         {/* Score Labels */}
@@ -219,120 +205,32 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        {/* Audience Score */}
-        <section className="card p-5 sm:p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Audience Score</h2>
-          <p className="text-gray-300 mb-4">
-            Audience scores aggregate ratings from multiple platforms:
-          </p>
-
-          <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
-            <div className="space-y-3 text-sm">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-300">Show-Score</span>
-                <span className="text-brand font-medium">50% weight</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-300">Google Reviews</span>
-                <span className="text-brand font-medium">30% weight</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-300">Mezzanine / Other</span>
-                <span className="text-brand font-medium">20% weight</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-4 p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-            <p className="text-yellow-300 text-sm">
-              <strong>Note:</strong> When platforms differ by more than 20 points, we display individual platform scores for transparency.
-            </p>
-          </div>
-        </section>
-
-        {/* Buzz Score */}
-        <section className="card p-5 sm:p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Buzz Score</h2>
-          <p className="text-gray-300 mb-4">
-            Buzz measures community discussion activity and sentiment, primarily from Reddit (r/Broadway, r/musicals).
-          </p>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
-              <h3 className="font-semibold text-white mb-2">Volume (0–50 pts)</h3>
-              <ul className="text-sm text-gray-300 space-y-1">
-                <li>• Thread count in last 14–30 days</li>
-                <li>• Total engagement (upvotes + comments)</li>
-                <li>• Compared against baseline activity</li>
-              </ul>
-            </div>
-            <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
-              <h3 className="font-semibold text-white mb-2">Sentiment (0–50 pts)</h3>
-              <ul className="text-sm text-gray-300 space-y-1">
-                <li>• Per-thread sentiment analysis</li>
-                <li>• Weighted by engagement</li>
-                <li>• Positive=50, Mixed=25, Negative=0</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="mt-4 p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-            <p className="text-yellow-300 text-sm">
-              <strong>Staleness Penalty:</strong> If more than half of tracked threads are older than 30 days, a 10-point penalty is applied.
-            </p>
-          </div>
-        </section>
-
-        {/* Overall Formula */}
-        <section className="card p-5 sm:p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Overall Score Formula</h2>
-          <p className="text-gray-300 mb-4">
-            The overall score combines all three components:
-          </p>
-
-          <div className="bg-surface-overlay rounded-lg p-4 border border-white/5 text-center">
-            <code className="text-sm sm:text-base">
-              <span className="text-white">Overall</span>
-              <span className="text-gray-500"> = </span>
-              <span className="text-brand">(Critic × 0.50)</span>
-              <span className="text-gray-500"> + </span>
-              <span className="text-purple-400">(Audience × 0.35)</span>
-              <span className="text-gray-500"> + </span>
-              <span className="text-yellow-400">(Buzz × 0.15)</span>
-            </code>
-          </div>
-
-          <p className="text-gray-500 mt-4 text-sm">
-            If any component is missing, weights are redistributed among available components proportionally.
-          </p>
-        </section>
-
         {/* Confidence */}
         <section className="card p-5 sm:p-6">
           <h2 className="text-xl font-bold text-white mb-4">Confidence Rating</h2>
           <p className="text-gray-300 mb-4">
-            Each score includes a confidence indicator based on data quality:
+            Each score includes a confidence indicator based on review coverage:
           </p>
 
           <div className="space-y-3">
             <div className="flex items-start gap-4 p-3 rounded-lg bg-score-high/10 border border-score-high/20">
               <span className="px-2 py-0.5 rounded bg-score-high/20 text-score-high text-xs font-medium flex-shrink-0">High</span>
               <div className="text-gray-300 text-sm">
-                15+ critic reviews with 3+ from Tier 1 outlets, audience data from 2+ platforms
+                15+ critic reviews with 3+ from Tier 1 outlets
               </div>
             </div>
 
             <div className="flex items-start gap-4 p-3 rounded-lg bg-score-medium/10 border border-score-medium/20">
               <span className="px-2 py-0.5 rounded bg-score-medium/20 text-score-medium text-xs font-medium flex-shrink-0">Medium</span>
               <div className="text-gray-300 text-sm">
-                6–14 critic reviews with at least 1 Tier 1 outlet, audience data from 1+ platform
+                6–14 critic reviews with at least 1 Tier 1 outlet
               </div>
             </div>
 
             <div className="flex items-start gap-4 p-3 rounded-lg bg-score-low/10 border border-score-low/20">
               <span className="px-2 py-0.5 rounded bg-score-low/20 text-score-low text-xs font-medium flex-shrink-0">Low</span>
               <div className="text-gray-300 text-sm">
-                Fewer than 6 critic reviews, show in previews, or limited data sources
+                Fewer than 6 critic reviews or show still in previews
               </div>
             </div>
           </div>
@@ -352,10 +250,6 @@ export default function MethodologyPage() {
             <li className="flex items-start gap-2">
               <span className="text-brand">•</span>
               <span>Outlet tiers and weights are clearly documented above</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-brand">•</span>
-              <span>Platform-specific audience scores are shown alongside the aggregate</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-brand">•</span>

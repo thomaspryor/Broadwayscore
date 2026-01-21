@@ -10,14 +10,14 @@ type StatusFilter = 'all' | 'open' | 'closed' | 'previews';
 
 function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm' | 'md' | 'lg' }) {
   const sizeClass = {
-    sm: 'w-10 h-10 text-sm rounded-lg',
-    md: 'w-12 h-12 text-lg rounded-xl',
-    lg: 'w-14 h-14 text-xl rounded-xl',
+    sm: 'w-11 h-11 text-lg rounded-lg',
+    md: 'w-14 h-14 text-2xl rounded-xl',
+    lg: 'w-16 h-16 text-3xl rounded-xl',
   }[size];
 
   if (score === undefined || score === null) {
     return (
-      <div className={`score-badge ${sizeClass} score-none`}>
+      <div className={`score-badge ${sizeClass} score-none font-bold`}>
         —
       </div>
     );
@@ -28,7 +28,7 @@ function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm'
   const colorClass = roundedScore >= 70 ? 'score-high' : roundedScore >= 50 ? 'score-medium' : 'score-low';
 
   return (
-    <div className={`score-badge ${sizeClass} ${colorClass}`}>
+    <div className={`score-badge ${sizeClass} ${colorClass} font-bold`}>
       {roundedScore}
     </div>
   );
@@ -243,7 +243,7 @@ export default function HomePage() {
       </div>
 
       {/* Filters & Sort */}
-      <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-6 text-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm">
         <div className="flex items-center gap-2">
           <span className="text-gray-500">Status:</span>
           {(['open', 'all', 'closed'] as const).map((status) => (

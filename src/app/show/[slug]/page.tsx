@@ -32,14 +32,14 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
 function ScoreBadge({ score, size = 'lg' }: { score?: number | null; size?: 'md' | 'lg' | 'xl' }) {
   const sizeClasses = {
-    md: 'w-14 h-14 text-xl rounded-xl',
-    lg: 'w-20 h-20 text-3xl rounded-2xl',
-    xl: 'w-24 h-24 text-4xl rounded-2xl',
+    md: 'w-14 h-14 text-2xl rounded-xl',
+    lg: 'w-20 h-20 text-4xl rounded-2xl',
+    xl: 'w-24 h-24 text-5xl rounded-2xl',
   };
 
   if (score === undefined || score === null) {
     return (
-      <div className={`${sizeClasses[size]} bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold`}>
+      <div className={`${sizeClasses[size]} bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-extrabold`}>
         —
       </div>
     );
@@ -54,7 +54,7 @@ function ScoreBadge({ score, size = 'lg' }: { score?: number | null; size?: 'md'
     : 'bg-score-low text-white shadow-[0_4px_16px_rgba(239,68,68,0.4)]';
 
   return (
-    <div className={`${sizeClasses[size]} ${colorClass} flex items-center justify-center font-bold`}>
+    <div className={`${sizeClasses[size]} ${colorClass} flex items-center justify-center font-extrabold`}>
       {roundedScore}
     </div>
   );
