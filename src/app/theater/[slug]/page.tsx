@@ -170,7 +170,7 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
                 {theater.currentShow.images?.thumbnail ? (
                   <img
                     src={theater.currentShow.images.thumbnail}
-                    alt={`${theater.currentShow.title} poster`}
+                    alt={`${theater.currentShow.title} - now playing at ${theater.name}`}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -221,7 +221,7 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
                     {show.images?.thumbnail ? (
                       <img
                         src={show.images.thumbnail}
-                        alt={`${show.title} poster`}
+                        alt={`${show.title} - previously at ${theater.name}`}
                         className="w-full h-full object-cover"
                       />
                     ) : (
