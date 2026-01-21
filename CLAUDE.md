@@ -100,14 +100,18 @@ node scripts/fetch-images.js
 ```
 Outputs JSON with hero/thumbnail/poster URLs for shows.json
 
-### 4. Data Freshness
-Run locally to auto-update show statuses:
+### 4. Data Freshness (Automated)
+**GitHub Action:** `.github/workflows/update-show-status.yml`
+- Runs automatically every Monday at 6 AM UTC
+- Can be triggered manually via GitHub Actions UI
+- Checks TodayTix for closing date changes
+- Auto-marks shows as closed when past closing date
+- Commits changes to shows.json and triggers redeploy
+
+Manual run:
 ```bash
 node scripts/update-show-status.js
 ```
-- Checks TodayTix for closing date changes
-- Auto-marks shows as closed when past closing date
-- Updates shows.json with changes found
 
 ### 5. SEO (Implemented)
 - JSON-LD structured data with ticket offers, cast, ratings
