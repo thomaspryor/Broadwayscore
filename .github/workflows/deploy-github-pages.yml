@@ -1,4 +1,8 @@
-name: Deploy to GitHub Pages
+# ============================================================
+# SECONDARY DEPLOYMENT - GitHub Pages (legacy backup)
+# PRIMARY DEPLOYMENT is Vercel (auto-deploys on push, no action needed)
+# ============================================================
+name: Deploy to GitHub Pages (Secondary)
 
 on:
   push:
