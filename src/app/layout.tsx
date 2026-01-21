@@ -3,7 +3,7 @@ import './globals.css';
 import Link from 'next/link';
 
 // Use environment variable for easy domain changes, fallback to Vercel URL
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -49,7 +49,7 @@ export default function RootLayout({
             <div className="flex items-center justify-between h-16 sm:h-18">
               <Link href="/" className="flex items-center gap-0.5 group">
                 <span className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Broadway</span>
-                <span className="text-xl sm:text-2xl font-extrabold text-gradient tracking-tight">Score</span>
+                <span className="text-xl sm:text-2xl font-extrabold text-gradient tracking-tight">MetaScore</span>
               </Link>
               <div className="flex items-center gap-1">
                 <Link href="/" className="nav-link nav-link-active">
@@ -68,7 +68,7 @@ export default function RootLayout({
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-0.5">
                 <span className="text-lg font-bold text-white">Broadway</span>
-                <span className="text-lg font-bold text-gradient">Score</span>
+                <span className="text-lg font-bold text-gradient">MetaScore</span>
               </div>
               <div className="flex items-center gap-6 text-sm text-gray-400">
                 <Link href="/methodology" className="hover:text-white transition-colors">
