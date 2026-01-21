@@ -40,33 +40,6 @@ export const metadata: Metadata = {
   },
 };
 
-function BottomNav() {
-  return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-surface-dark/95 backdrop-blur-lg border-t border-white/10 sm:hidden">
-      <div className="flex items-center justify-around h-16">
-        <Link href="/" className="flex flex-col items-center gap-1 px-4 py-2 text-gray-400 hover:text-brand active:text-brand transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-          </svg>
-          <span className="text-[10px] font-medium">Shows</span>
-        </Link>
-        <Link href="/#search" className="flex flex-col items-center gap-1 px-4 py-2 text-gray-400 hover:text-brand active:text-brand transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <span className="text-[10px] font-medium">Search</span>
-        </Link>
-        <Link href="/methodology" className="flex flex-col items-center gap-1 px-4 py-2 text-gray-400 hover:text-brand active:text-brand transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span className="text-[10px] font-medium">Info</span>
-        </Link>
-      </div>
-    </nav>
-  );
-}
-
 export default function RootLayout({
   children,
 }: {
@@ -77,7 +50,7 @@ export default function RootLayout({
       <head>
         <link rel="canonical" href={BASE_URL} />
       </head>
-      <body className={`${inter.className} min-h-screen pb-16 sm:pb-0`}>
+      <body className={`${inter.className} min-h-screen`}>
         <header className="glass sticky top-0 z-50">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16 sm:h-18">
@@ -117,7 +90,6 @@ export default function RootLayout({
             </p>
           </div>
         </footer>
-        <BottomNav />
         <ScrollToTop />
       </body>
     </html>
