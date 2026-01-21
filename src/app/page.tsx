@@ -101,7 +101,7 @@ function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: numb
   return (
     <Link
       href={`/show/${show.slug}`}
-      className="group card-interactive flex gap-4 p-4 animate-in"
+      className="group card-interactive flex gap-4 p-4 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       style={{ animationDelay: `${index * 30}ms` }}
     >
       {/* Thumbnail */}
@@ -224,12 +224,12 @@ export default function HomePage() {
           Broadway<span className="text-gradient">MetaScores</span>
         </h1>
         <p className="text-gray-400 text-base sm:text-lg">
-          Critic scores aggregated from top publications.
+          Every show. Every review. One score.
         </p>
       </div>
 
       {/* Search */}
-      <div className="relative mb-6">
+      <div id="search" className="relative mb-6 scroll-mt-24">
         <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
           <SearchIcon />
         </div>
@@ -238,7 +238,7 @@ export default function HomePage() {
           placeholder="Search shows..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="search-input pl-12"
+          className="search-input pl-12 focus-visible:outline-none"
         />
       </div>
 
@@ -286,7 +286,7 @@ export default function HomePage() {
       <div className="flex items-center gap-6 mb-6 text-xs text-gray-500">
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-score-high"></div>
-          <span>70+ Great</span>
+          <span>70+ Favorable</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-score-medium"></div>
@@ -294,7 +294,7 @@ export default function HomePage() {
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-score-low"></div>
-          <span>&lt;50 Poor</span>
+          <span>&lt;50 Unfavorable</span>
         </div>
       </div>
 
