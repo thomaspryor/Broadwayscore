@@ -1,25 +1,11 @@
 # Broadway Metascore Project Context
 
-## User Preferences (IMPORTANT - READ FIRST)
-
-### The user is non-technical and often on mobile
-- **NEVER ask the user to run terminal commands** - they don't have easy access to a computer
-- **NEVER suggest manual steps** - automate everything possible
-- **Use Vercel for deployment** - just push code, Vercel auto-deploys
-- **Use GitHub Actions for automation** - scheduled tasks, data updates, etc.
-
-### Automation is required
-- When Claude pushes code → Vercel deploys automatically. No user action needed.
-- Weekly GitHub Actions update show statuses and discover new shows automatically
-- If something needs network access Claude can't do, create a GitHub Action to do it
-- Fix scripts when they fail - don't ask the user to manually handle failures
-- This should be a **self-updating system** that runs without user intervention
-
-### What to avoid
-- Don't ask user to run `npm`, `node`, `git` or any terminal commands
-- Don't ask user to manually fetch data, copy URLs, or edit files
-- Don't suggest "run this locally" - find an automated solution instead
-- Don't create PRs that need manual merging - push directly to the deployment branch
+## User Preferences (IMPORTANT)
+- **NEVER suggest manual steps** if automation is possible. Always write scripts, create GitHub Actions, or implement code solutions instead.
+- If a task requires network access Claude can't perform, write a script the user can run locally with a single command.
+- When scripts fail for some items, fix the script or add retry logic - don't ask the user to manually fetch data.
+- Automate everything: data fetching, image URLs, status updates, deployments.
+- The user is not technical. They are often on their phone, away from a computer. Do NOT ask them to run things in terminal.
 
 ## Project Overview
 A website that aggregates Broadway show reviews and calculates composite "metascores" similar to Metacritic, but for Broadway shows.
