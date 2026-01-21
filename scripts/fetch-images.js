@@ -38,12 +38,12 @@ const TODAYTIX_SHOWS = {
   'the-great-gatsby': { id: 38749, slug: 'the-great-gatsby-on-broadway' },
   'maybe-happy-ending': { id: 41018, slug: 'maybe-happy-ending-on-broadway' },
   'two-strangers': { id: 45002, slug: 'two-strangers-carry-a-cake-across-new-york' },
-  'oh-mary': { id: 38371, slug: 'oh-mary' },
-  'operation-mincemeat': { id: 42680, slug: 'operation-mincemeat' },
-  'bug': { id: 44892, slug: 'bug' },
+  'oh-mary': { id: 38371, slug: 'oh-mary-on-broadway' },
+  'operation-mincemeat': { id: 42735, slug: 'operation-mincemeat-on-broadway' },
+  'bug': { id: 45086, slug: 'bug-on-broadway' },
   'harry-potter': { id: 1377, slug: 'harry-potter-and-the-cursed-child' },
-  'mamma-mia': { id: 42850, slug: 'mamma-mia' },
-  'stranger-things': { id: 40958, slug: 'stranger-things-the-first-shadow' },
+  'mamma-mia': { id: 43887, slug: 'mamma-mia-on-broadway' },
+  'stranger-things': { id: 41967, slug: 'stranger-things-the-first-shadow-on-broadway' },
 };
 
 function sleep(ms) {
