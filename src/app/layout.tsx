@@ -8,23 +8,23 @@ const BASE_URL = 'https://thomaspryor.github.io/Broadwayscore';
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'Broadway Metascore - Aggregated Broadway Show Ratings',
-    template: '%s | Broadway Metascore',
+    default: 'BroadwayMetaScores - Aggregated Broadway Show Ratings',
+    template: '%s | BroadwayMetaScores',
   },
   description: 'Comprehensive Broadway show ratings combining critic reviews, audience scores, and community buzz. Find the best shows on Broadway with transparent, data-driven scores.',
   keywords: ['Broadway', 'theater', 'musicals', 'reviews', 'ratings', 'metascore', 'critic reviews', 'audience scores'],
-  authors: [{ name: 'Broadway Metascore' }],
+  authors: [{ name: 'BroadwayMetaScores' }],
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: BASE_URL,
-    siteName: 'Broadway Metascore',
-    title: 'Broadway Metascore - Aggregated Broadway Show Ratings',
+    siteName: 'BroadwayMetaScores',
+    title: 'BroadwayMetaScores - Aggregated Broadway Show Ratings',
     description: 'Comprehensive Broadway show ratings combining critic reviews, audience scores, and community buzz.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Broadway Metascore',
+    title: 'BroadwayMetaScores',
     description: 'Aggregated Broadway show ratings from critics, audiences, and community buzz.',
   },
   robots: {
@@ -74,9 +74,9 @@ export default function RootLayout({
         <header className="glass sticky top-0 z-50">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16 sm:h-18">
-              <Link href="/" className="flex items-center gap-0.5 group">
+              <Link href="/" className="flex items-center group">
                 <span className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Broadway</span>
-                <span className="text-xl sm:text-2xl font-extrabold text-gradient tracking-tight">Score</span>
+                <span className="text-xl sm:text-2xl font-extrabold text-gradient tracking-tight">MetaScores</span>
               </Link>
               <div className="hidden sm:flex items-center gap-1">
                 <Link href="/" className="nav-link nav-link-active">
@@ -93,9 +93,9 @@ export default function RootLayout({
         <footer className="border-t border-white/5 mt-12 sm:mt-16 hidden sm:block">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-0.5">
+              <div className="flex items-center">
                 <span className="text-lg font-bold text-white">Broadway</span>
-                <span className="text-lg font-bold text-gradient">Score</span>
+                <span className="text-lg font-bold text-gradient">MetaScores</span>
               </div>
               <div className="flex items-center gap-6 text-sm text-gray-400">
                 <Link href="/methodology" className="hover:text-white transition-colors">
