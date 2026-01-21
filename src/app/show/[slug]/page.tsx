@@ -29,7 +29,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     keywords: [show.title, show.venue, 'Broadway', 'tickets', 'reviews', ...(show.tags || [])],
     openGraph: {
       type: 'website',
-      title: `${show.title}${scoreText} - BroadwayScore`,
+      title: `${show.title}${scoreText} - BroadwayMetaScore`,
       description,
       images: show.images?.hero ? [{
         url: show.images.hero,
@@ -37,7 +37,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
         height: 1080,
         alt: show.title,
       }] : undefined,
-      siteName: 'BroadwayScore',
+      siteName: 'BroadwayMetaScore',
     },
     twitter: {
       card: 'summary_large_image',
@@ -133,7 +133,7 @@ function ExternalLinkIcon() {
   );
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
 
 // JSON-LD structured data for SEO - generates rich results in Google
 function generateStructuredData(show: ComputedShow) {

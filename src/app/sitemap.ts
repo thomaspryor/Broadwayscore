@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { getAllShowSlugs, getShowBySlug } from '@/lib/data';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const showSlugs = getAllShowSlugs();
