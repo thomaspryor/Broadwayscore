@@ -471,21 +471,13 @@ export function computeShowData(
   buzzThreads: RawBuzzThread[]
 ): ComputedShow {
   const showReviews = reviews.filter(r => r.showId === show.id);
-  const showAudience = audienceData.filter(a => a.showId === show.id);
-  const showBuzz = buzzThreads.filter(t => t.showId === show.id);
 
   const criticScore = computeCriticScore(showReviews);
-  const audienceScore = computeAudienceScore(showAudience);
-  const buzzScore = computeBuzzScore(showBuzz);
 
-  // Use weighted critic score for metascore calculation
-  const metascore = computeMetascore(
-    criticScore?.weightedScore ?? null,
-    audienceScore?.score ?? null,
-    buzzScore?.score ?? null
-  );
+  // V1: metascore = critic score (audience/buzz coming later)
+  const metascore = criticScore?.score ? Math.round(criticScore.score) : null;
 
-  const confidence = assessConfidence(criticScore, audienceScore, show.status);
+  const confidence = assessConfidence(criticScore, null, show.status);
 
   return {
     id: show.id,
@@ -498,8 +490,8 @@ export function computeShowData(
     type: show.type,
     runtime: show.runtime,
     criticScore,
-    audienceScore,
-    buzzScore,
+    audienceScore: null,
+    buzzScore: null,
     metascore,
     confidence,
     methodologyVersion: METHODOLOGY_VERSION,
