@@ -258,19 +258,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
       {/* Sticky Score Header */}
       <StickyScoreHeader title={show.title} score={score} />
 
-      {/* Hero Background - subtle backdrop */}
-      {show.images?.hero && (
-        <div className="relative h-40 sm:h-48 lg:h-56 -mt-16 sm:-mt-18 overflow-hidden">
-          <img
-            src={show.images.hero}
-            alt=""
-            className="w-full h-full object-cover object-center blur-sm scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface/60 via-surface/80 to-surface" />
-        </div>
-      )}
-
-      <div className={`max-w-3xl mx-auto px-4 sm:px-6 ${show.images?.hero ? '-mt-32 sm:-mt-36 relative z-10' : 'py-8'}`}>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
         {/* Back Link */}
         <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-4 transition-colors">
           <BackArrow />
