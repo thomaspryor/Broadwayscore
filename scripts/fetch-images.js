@@ -18,6 +18,8 @@ const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 2000;
 
+const DEBUG = process.argv.includes('--debug');
+
 // TodayTix show IDs for Broadway shows
 const TODAYTIX_SHOWS = {
   'wicked': { id: 1, slug: 'wicked' },
@@ -287,7 +289,41 @@ async function fetchShowImage(showSlug, showInfo) {
     console.log(`   ⚠ Alt API failed: ${err.message}`);
   }
 
-  console.log(`   ✗ No image found`);
+  // Method 4: Try Broadway.com
+  const broadwaySlug = showSlug.replace(/-/g, '');
+  const broadwayUrl = `https://www.broadway.com/shows/${showInfo.slug || showSlug}/`;
+  console.log(`   Broadway.com: ${broadwayUrl}`);
+
+  try {
+    const html = await fetchPage(broadwayUrl);
+    const imageUrl = extractImageFromHtml(html);
+    if (imageUrl) {
+      console.log(`   ✓ Found via Broadway.com: ${imageUrl.substring(0, 60)}...`);
+      return formatImageUrls(imageUrl);
+    }
+  } catch (err) {
+    console.log(`   ⚠ Broadway.com failed: ${err.message}`);
+  }
+
+  // Method 5: Try Playbill
+  const playbillUrl = `https://playbill.com/production/${showSlug}`;
+  console.log(`   Playbill: ${playbillUrl}`);
+
+  try {
+    const html = await fetchPage(playbillUrl);
+    // Playbill uses different image patterns
+    const imgMatch = html.match(/https:\/\/bsp-static\.playbill\.com\/[^"'\s]+\.(jpg|jpeg|png|webp)/i) ||
+                     html.match(/<meta[^>]*property=["']og:image["'][^>]*content=["']([^"']+)["']/i);
+    if (imgMatch) {
+      const imageUrl = imgMatch[1] || imgMatch[0];
+      console.log(`   ✓ Found via Playbill: ${imageUrl.substring(0, 60)}...`);
+      return formatImageUrls(imageUrl);
+    }
+  } catch (err) {
+    console.log(`   ⚠ Playbill failed: ${err.message}`);
+  }
+
+  console.log(`   ✗ No image found from any source`);
   return null;
 }
 
