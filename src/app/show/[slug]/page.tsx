@@ -166,6 +166,49 @@ function NewBadge() {
   );
 }
 
+function ScoreLabel({ score }: { score: number }) {
+  const roundedScore = Math.round(score);
+  let label: string;
+  let className: string;
+
+  if (roundedScore >= 90) {
+    label = 'Must See!';
+    className = 'text-score-high';
+  } else if (roundedScore >= 80) {
+    label = 'Excellent';
+    className = 'text-score-high';
+  } else if (roundedScore >= 70) {
+    label = 'Great';
+    className = 'text-score-high';
+  } else if (roundedScore >= 60) {
+    label = 'Good';
+    className = 'text-score-medium';
+  } else if (roundedScore >= 50) {
+    label = 'Mixed';
+    className = 'text-score-medium';
+  } else {
+    label = 'Poor';
+    className = 'text-score-low';
+  }
+
+  return (
+    <span className={`text-sm font-semibold ${className}`}>
+      {label}
+    </span>
+  );
+}
+
+function CriticsPickBadge() {
+  return (
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 text-xs font-bold">
+      <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+      </svg>
+      Critics Pick
+    </span>
+  );
+}
+
 function isNewShow(openingDate: string): boolean {
   const opening = new Date(openingDate);
   const now = new Date();
@@ -185,44 +228,44 @@ function ScoreDistribution({ reviews }: { reviews: { reviewMetaScore: number }[]
 
   if (total === 0) return null;
 
+  const highPct = Math.round((high / total) * 100);
+  const mediumPct = Math.round((medium / total) * 100);
+  const lowPct = Math.round((low / total) * 100);
+
   return (
-    <div className="flex items-center gap-3 mb-5">
-      <div className="flex-1 h-2 bg-surface-overlay rounded-full overflow-hidden flex">
-        {high > 0 && (
+    <div className="mb-5 space-y-2">
+      {/* Positive */}
+      <div className="flex items-center gap-3">
+        <span className="text-xs text-gray-400 w-16">Positive</span>
+        <div className="flex-1 h-2 bg-surface-overlay rounded-full overflow-hidden">
           <div
-            className="bg-score-high h-full"
-            style={{ width: `${(high / total) * 100}%` }}
-            title={`${high} positive`}
+            className="bg-score-high h-full rounded-full"
+            style={{ width: `${highPct}%` }}
           />
-        )}
-        {medium > 0 && (
-          <div
-            className="bg-score-medium h-full"
-            style={{ width: `${(medium / total) * 100}%` }}
-            title={`${medium} mixed`}
-          />
-        )}
-        {low > 0 && (
-          <div
-            className="bg-score-low h-full"
-            style={{ width: `${(low / total) * 100}%` }}
-            title={`${low} negative`}
-          />
-        )}
+        </div>
+        <span className="text-xs text-gray-400 w-10 text-right">{highPct}%</span>
       </div>
-      <div className="flex items-center gap-2 text-xs text-gray-500">
-        <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-score-high"></span>
-          {high}
-        </span>
-        <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-score-medium"></span>
-          {medium}
-        </span>
-        <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-score-low"></span>
-          {low}
-        </span>
+      {/* Mixed */}
+      <div className="flex items-center gap-3">
+        <span className="text-xs text-gray-400 w-16">Mixed</span>
+        <div className="flex-1 h-2 bg-surface-overlay rounded-full overflow-hidden">
+          <div
+            className="bg-score-medium h-full rounded-full"
+            style={{ width: `${mediumPct}%` }}
+          />
+        </div>
+        <span className="text-xs text-gray-400 w-10 text-right">{mediumPct}%</span>
+      </div>
+      {/* Negative */}
+      <div className="flex items-center gap-3">
+        <span className="text-xs text-gray-400 w-16">Negative</span>
+        <div className="flex-1 h-2 bg-surface-overlay rounded-full overflow-hidden">
+          <div
+            className="bg-score-low h-full rounded-full"
+            style={{ width: `${lowPct}%` }}
+          />
+        </div>
+        <span className="text-xs text-gray-400 w-10 text-right">{lowPct}%</span>
       </div>
     </div>
   );
@@ -291,10 +334,15 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-6 mb-8">
           {/* Score Badge */}
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 text-center">
             <ScoreBadge score={score} size="xl" />
+            {score && (
+              <div className="mt-2">
+                <ScoreLabel score={score} />
+              </div>
+            )}
             {show.criticScore && (
-              <p className="text-center text-xs text-gray-500 mt-2">
+              <p className="text-xs text-gray-500 mt-1">
                 {show.criticScore.reviewCount} reviews
               </p>
             )}
@@ -398,10 +446,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                       {review.criticName && (
                         <span className="text-gray-500 text-sm ml-2">by {review.criticName}</span>
                       )}
-                      <div className="flex items-center gap-2 mt-1">
+                      <div className="flex flex-wrap items-center gap-2 mt-1">
                         <TierBadge tier={review.tier} />
                         <span className="text-xs text-gray-500">{formatDate(review.publishDate)}</span>
-                        {review.designation && (
+                        {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
+                        {review.designation && review.designation !== 'Critics_Pick' && (
                           <span className="text-xs text-score-high font-medium">
                             {review.designation.replace('_', ' ')}
                           </span>
