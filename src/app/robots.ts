@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
 
 export default function robots(): MetadataRoute.Robots {
   return {

@@ -7,7 +7,7 @@ import {
   getAllTheaterSlugs,
 } from '@/lib/data';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const showSlugs = getAllShowSlugs();
@@ -62,6 +62,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     // Best-of lists - high priority discovery pages
     ...bestOfPages,
+    // Index pages - good for SEO crawling
+    {
+      url: `${BASE_URL}/director`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/theater`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
     // Show pages - core content
     ...showPages,
     // Director pages
