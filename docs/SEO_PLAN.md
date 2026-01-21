@@ -1,8 +1,8 @@
 # Broadway Metascore: SEO & Discovery Master Plan
 
-## Current State (Phase 1 Complete)
+## Current State (Phases 1, 2, 3 Complete)
 
-### Implemented
+### Phase 1: Technical SEO Foundation (Complete)
 - [x] Dynamic BASE_URL using environment variable
 - [x] Canonical URLs on all pages via Next.js metadata API
 - [x] Enhanced meta titles with scores for better CTR
@@ -11,12 +11,27 @@
 - [x] Robots.txt properly configured
 - [x] JSON-LD TheaterEvent schema with AggregateRating
 
+### Phase 2: Rich Structured Data (Complete)
+- [x] BreadcrumbList schema on all pages
+- [x] Review schema with individual critic reviews
+- [x] Offer/Ticket schema with pricing
+- [x] Person schema for directors
+- [x] PerformingArtsTheater schema for venues
+- [x] ItemList schema for best-of pages
+
+### Phase 3: Content Expansion (Complete)
+- [x] Best-of list pages (`/best/[category]`)
+  - musicals, plays, new-shows, highest-rated, family, comedy, drama
+- [x] Director pages (`/director/[slug]`)
+- [x] Theater pages (`/theater/[slug]`)
+- [x] All new pages in sitemap with appropriate priorities
+
 ---
 
-## Phase 2: Rich Structured Data
+## Phase 2: Rich Structured Data (Reference)
 
 ### 2.1 BreadcrumbList Schema
-**Impact:** Enables breadcrumb rich snippets in Google
+**Status:** Implemented
 ```
 Home > Shows > [Show Title]
 Home > Directors > [Director Name]
@@ -24,26 +39,25 @@ Home > Theaters > [Theater Name]
 ```
 
 ### 2.2 Review Schema (Individual Critics)
-**Impact:** Enables star ratings and review snippets in search results
-- Add `Review` schema for each critic review
-- Include: reviewer name, publication, rating, review excerpt
-- Links to existing `AggregateRating`
+**Status:** Implemented
+- Individual critic reviews with score, publication, date
+- Links to AggregateRating
 
 ### 2.3 Organization Schema
-**Impact:** Establishes site identity in Knowledge Graph
+**Status:** Available in src/lib/seo.ts (can add to layout)
 - BroadwayMetaScores as `Organization`
 - Logo, URL, social profiles
 
 ### 2.4 Offer/Ticket Schema
-**Impact:** Enables "Get Tickets" rich results
+**Status:** Implemented
 - `Offer` schema with ticket pricing
 - Link to TodayTix, Telecharge, etc.
 - Show price ranges and availability
 
 ### 2.5 Person Schema (for Directors, Cast)
-**Impact:** Entity linking for people pages
+**Status:** Implemented
 - Directors with `Person` schema
-- Cast members with roles
+- Cast members included in TheaterEvent
 
 ---
 
