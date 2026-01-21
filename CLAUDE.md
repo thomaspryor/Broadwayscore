@@ -1,8 +1,16 @@
 # Broadway Metascore Project Context
 
+## ⚠️ CRITICAL: NO LOCAL DEVELOPMENT ⚠️
+**THE USER DOES NOT RUN ANYTHING LOCALLY. EVERYTHING DEPLOYS VIA VERCEL.**
+- **NEVER** ask the user to run commands locally (no `npm run`, no `node scripts/`, no `git pull && ...`)
+- **NEVER** ask the user to test locally or check localhost
+- All changes go live automatically when pushed to GitHub → Vercel auto-deploys
+- If you need to run a script, push the code and let Vercel/GitHub Actions handle it
+- The user's workflow: YOU push code → Vercel deploys → Changes are live
+
 ## User Preferences (IMPORTANT)
 - **NEVER suggest manual steps** if automation is possible. Always write scripts, create GitHub Actions, or implement code solutions instead.
-- If a task requires network access Claude can't perform, write a script the user can run locally with a single command.
+- **NEVER ask user to run anything locally** - they don't have a local dev environment set up. Push and let Vercel deploy.
 - When scripts fail for some items, fix the script or add retry logic - don't ask the user to manually fetch data.
 - Automate everything: data fetching, image URLs, status updates, deployments.
 
