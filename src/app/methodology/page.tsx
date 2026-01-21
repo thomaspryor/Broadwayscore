@@ -1,8 +1,19 @@
 import Link from 'next/link';
+import { Metadata } from 'next';
 
-export const metadata = {
-  title: 'How It Works - BroadwayMetaScores',
-  description: 'How we calculate Broadway show scores from aggregated critic reviews.',
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
+
+export const metadata: Metadata = {
+  title: 'How It Works - Scoring Methodology',
+  description: 'Learn how BroadwayMetaScores calculates critic scores from aggregated reviews. Our transparent methodology uses weighted averages based on outlet tier.',
+  alternates: {
+    canonical: `${BASE_URL}/methodology`,
+  },
+  openGraph: {
+    title: 'How BroadwayMetaScores Works',
+    description: 'Our transparent scoring methodology for aggregating Broadway critic reviews.',
+    url: `${BASE_URL}/methodology`,
+  },
 };
 
 export default function MethodologyPage() {

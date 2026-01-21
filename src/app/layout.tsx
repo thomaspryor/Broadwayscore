@@ -10,7 +10,7 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-const BASE_URL = 'https://thomaspryor.github.io/Broadwayscore';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -37,6 +37,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  alternates: {
+    canonical: BASE_URL,
   },
 };
 
@@ -74,9 +77,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="canonical" href={BASE_URL} />
-      </head>
       <body className={`${inter.className} min-h-screen pb-16 sm:pb-0`}>
         <header className="glass sticky top-0 z-50">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
