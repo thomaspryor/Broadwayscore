@@ -34,6 +34,22 @@ export interface ShowImages {
   poster?: string;      // Poster image (2:3 ratio)
 }
 
+export interface TicketLink {
+  platform: string;     // TodayTix, Telecharge, Official, etc.
+  url: string;
+  priceFrom?: number;   // Starting price in dollars
+}
+
+export interface CastMember {
+  name: string;
+  role: string;         // Character name or "Ensemble"
+}
+
+export interface CreativeMember {
+  name: string;
+  role: string;         // Director, Book, Music, Lyrics, Choreographer, etc.
+}
+
 export interface RawShow {
   id: string;
   title: string;
@@ -46,6 +62,16 @@ export interface RawShow {
   runtime: string;
   intermissions: number;
   images?: ShowImages;
+  // New fields
+  synopsis?: string;
+  ageRecommendation?: string;  // e.g., "Ages 12+", "All ages"
+  ticketLinks?: TicketLink[];
+  officialUrl?: string;
+  trailerUrl?: string;
+  cast?: CastMember[];
+  creativeTeam?: CreativeMember[];
+  tags?: string[];             // Musical, Comedy, Romance, New, etc.
+  theaterAddress?: string;
 }
 
 export interface RawReview {
@@ -153,7 +179,19 @@ export interface ComputedShow {
   status: string;
   type: string;
   runtime: string;
+  intermissions?: number;
   images?: ShowImages;
+  // New fields
+  synopsis?: string;
+  ageRecommendation?: string;
+  ticketLinks?: TicketLink[];
+  officialUrl?: string;
+  trailerUrl?: string;
+  cast?: CastMember[];
+  creativeTeam?: CreativeMember[];
+  tags?: string[];
+  theaterAddress?: string;
+  // Scores
   criticScore: CriticScoreResult | null;
   audienceScore: AudienceScoreResult | null;
   buzzScore: BuzzScoreResult | null;
@@ -499,7 +537,19 @@ export function computeShowData(
     status: show.status,
     type: show.type,
     runtime: show.runtime,
+    intermissions: show.intermissions,
     images: show.images,
+    // Pass through new fields
+    synopsis: show.synopsis,
+    ageRecommendation: show.ageRecommendation,
+    ticketLinks: show.ticketLinks,
+    officialUrl: show.officialUrl,
+    trailerUrl: show.trailerUrl,
+    cast: show.cast,
+    creativeTeam: show.creativeTeam,
+    tags: show.tags,
+    theaterAddress: show.theaterAddress,
+    // Scores
     criticScore,
     audienceScore: null,
     buzzScore: null,
