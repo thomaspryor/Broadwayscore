@@ -101,7 +101,7 @@ function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: numb
   return (
     <Link
       href={`/show/${show.slug}`}
-      className="group card-interactive flex gap-4 p-4 animate-in"
+      className="group card-interactive flex gap-4 p-4 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       style={{ animationDelay: `${index * 30}ms` }}
     >
       {/* Thumbnail */}
