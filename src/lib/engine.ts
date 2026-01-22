@@ -87,7 +87,9 @@ export interface RawReview {
   bucket?: string;                 // Rave, Positive, Mixed, Negative, Pan
   thumb?: string;                  // Up, Flat, Down
   designation?: string;            // Critics_Pick, Critics_Choice, etc.
-  pullQuote?: string;
+  quote?: string;                  // Direct quote from the review
+  summary?: string;                // Third-person summary of the review
+  pullQuote?: string;              // Legacy field - use quote/summary instead
 }
 
 export interface RawAudience {
@@ -129,7 +131,9 @@ export interface ComputedReview {
   reviewMetaScore: number;      // The score used for averaging
   weightedScore: number;        // reviewMetaScore × tierWeight
   designation?: string;
-  pullQuote?: string;
+  quote?: string;               // Direct quote from the review
+  summary?: string;             // Third-person summary of the review
+  pullQuote?: string;           // Legacy field
   originalRating?: string;      // Original rating format (e.g., "4/5 stars", "B+", "Positive")
 }
 
@@ -321,6 +325,8 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
       reviewMetaScore,
       weightedScore,
       designation: review.designation,
+      quote: review.quote,
+      summary: review.summary,
       pullQuote: review.pullQuote,
       originalRating: review.originalRating,
     };
