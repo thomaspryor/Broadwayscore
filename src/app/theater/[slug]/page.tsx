@@ -30,7 +30,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       title: `${theater.name} - Broadway Theater`,
       description,
       url: canonicalUrl,
-      type: 'place',
+      type: 'website',
     },
     twitter: {
       card: 'summary',
