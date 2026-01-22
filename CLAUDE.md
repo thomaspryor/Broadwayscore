@@ -16,19 +16,35 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - Create/update GitHub Actions for automation
 - If something truly requires local execution, create a GitHub Action to do it
 
-### 2. Vercel is Primary - NOT GitHub Pages
-**Production site: Vercel** (auto-deploys when Claude pushes code)
+### 2. Vercel Deployment - CRITICAL
+**Production site: Vercel** (auto-deploys when code is pushed)
 
 | Platform | Status | URL |
 |----------|--------|-----|
 | **Vercel** | ✅ PRIMARY | https://broadwayscore.vercel.app |
 | GitHub Pages | ⚠️ Secondary/Legacy | https://thomaspryor.github.io/Broadwayscore/ |
 
+**⚠️ IMPORTANT: Vercel deploys from the PRODUCTION BRANCH, not just any branch!**
+
+**Production branch:** `claude/broadway-metascore-site-8jjx7`
+
 **Deployment workflow:**
 ```
-Claude pushes to branch → Vercel auto-deploys → Done
+1. Claude makes changes on assigned branch
+2. Claude merges changes INTO the production branch (not the other way around)
+3. Claude pushes the production branch
+4. Vercel auto-deploys from production branch → Done
 ```
-No PRs. No manual steps. No GitHub Pages deployment needed.
+
+**NEVER:**
+- ❌ Ask user to "create a PR" or "merge via GitHub"
+- ❌ Talk about GitHub PRs, merges, or GitHub UI
+- ❌ Push only to a feature branch and expect Vercel to deploy it
+
+**ALWAYS:**
+- ✅ Merge your changes into `claude/broadway-metascore-site-8jjx7`
+- ✅ Push directly to production branch if you have permission
+- ✅ If permission denied, resolve conflicts on your branch first, then ask user to merge ONE time
 
 ### 3. Automate Everything
 - ❌ Don't ask user to manually fetch data
