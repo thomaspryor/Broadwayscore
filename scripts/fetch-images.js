@@ -23,7 +23,13 @@ const DEBUG = process.argv.includes('--debug');
 // TodayTix show IDs for Broadway shows
 // Hardcoded fallback images - these will be populated when found
 // Run with --debug to see raw API responses for troubleshooting
-const FALLBACK_IMAGES = {};
+const FALLBACK_IMAGES = {
+  'harry-potter': {
+    hero: 'https://s1.ticketm.net/dam/a/f51/7134553e-a0a1-45ef-9e48-f66fdfb03f51_RETINA_PORTRAIT_3_2.jpg',
+    thumbnail: 'https://s1.ticketm.net/dam/a/f51/7134553e-a0a1-45ef-9e48-f66fdfb03f51_RETINA_PORTRAIT_3_2.jpg',
+    poster: 'https://images.ctfassets.net/6pezt69ih962/7DkPjyhwUJBllOdMPllkYT/253ff4da66b108f69fb1d26d64ce53bf/TT-109547-017703-TodayTix-480x720.jpg',
+  },
+};
 
 const TODAYTIX_SHOWS = {
   'wicked': { id: 1, slug: 'wicked' },
@@ -157,30 +163,58 @@ function fetchPage(url, retries = MAX_RETRIES) {
 
 function extractImageFromApi(data) {
   // Try different paths in the API response
+  // PRIORITIZE POSTER type images over HERO (posters are promotional images, hero are often production photos)
   try {
-    // Path 1: data.show.images
+    // Path 1: data.show.images - POSTER first, then HERO
     if (data?.data?.show?.images?.length > 0) {
-      const img = data.data.show.images.find(i => i.type === 'HERO' || i.type === 'POSTER') || data.data.show.images[0];
+      // First look for POSTER type specifically
+      let img = data.data.show.images.find(i => i.type === 'POSTER');
+      // If no POSTER, look for images with "poster" in the URL
+      if (!img) {
+        img = data.data.show.images.find(i => i.file?.url?.toLowerCase().includes('poster'));
+      }
+      // Then try HERO as fallback
+      if (!img) {
+        img = data.data.show.images.find(i => i.type === 'HERO');
+      }
+      // Finally, any image
+      if (!img) {
+        img = data.data.show.images[0];
+      }
       if (img?.file?.url) return img.file.url;
     }
 
-    // Path 2: data.show.heroImageUrl
+    // Path 2: data.posterImageUrl FIRST (prefer poster over hero)
+    if (data?.data?.show?.posterImageUrl) {
+      return data.data.show.posterImageUrl;
+    }
+
+    // Path 3: data.show.heroImageUrl (fallback)
     if (data?.data?.show?.heroImageUrl) {
       return data.data.show.heroImageUrl;
     }
 
-    // Path 3: data.images array directly
+    // Path 4: data.images array directly - POSTER first
     if (data?.images?.length > 0) {
-      const img = data.images.find(i => i.type === 'HERO' || i.type === 'POSTER') || data.images[0];
+      let img = data.images.find(i => i.type === 'POSTER');
+      if (!img) {
+        img = data.images.find(i => i.file?.url?.toLowerCase().includes('poster') || i.url?.toLowerCase().includes('poster'));
+      }
+      if (!img) {
+        img = data.images.find(i => i.type === 'HERO');
+      }
+      if (!img) {
+        img = data.images[0];
+      }
       if (img?.file?.url) return img.file.url;
       if (img?.url) return img.url;
     }
 
-    // Path 4: data.heroImageUrl
-    if (data?.heroImageUrl) return data.heroImageUrl;
-
-    // Path 5: data.posterImageUrl
+    // Path 5: data.posterImageUrl FIRST (prefer poster over hero)
     if (data?.posterImageUrl) return data.posterImageUrl;
+
+    // Path 6: data.heroImageUrl (fallback)
+    if (data?.heroImageUrl) return data.heroImageUrl;
 
     // Path 6: Look for any ctfassets URL in the response
     const jsonStr = JSON.stringify(data);
@@ -428,7 +462,13 @@ async function fetchShowImage(showSlug, showInfo) {
   // Method 9: Use hardcoded fallback if available
   if (FALLBACK_IMAGES[showSlug]) {
     console.log(`   ⚠ Using hardcoded fallback image`);
-    return formatImageUrls(FALLBACK_IMAGES[showSlug]);
+    const fallback = FALLBACK_IMAGES[showSlug];
+    // If fallback is already an object with hero/thumbnail/poster, return as-is
+    if (typeof fallback === 'object' && fallback.hero) {
+      return fallback;
+    }
+    // Otherwise treat as a single URL
+    return formatImageUrls(fallback);
   }
 
   console.log(`   ✗ No image found from any source`);

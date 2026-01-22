@@ -7,6 +7,9 @@ on:
       - 'scripts/fetch-images.js'
       - 'data/shows.json'
 
+permissions:
+  contents: write
+
 jobs:
   fetch-images:
     runs-on: ubuntu-latest
