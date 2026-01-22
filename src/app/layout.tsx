@@ -10,7 +10,7 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -43,6 +43,16 @@ export const metadata: Metadata = {
   },
 };
 
+// Organization schema for search engine knowledge panel
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'BroadwayMetaScores',
+  url: BASE_URL,
+  description: 'Aggregated Broadway show ratings from professional critics. Find the best shows on Broadway based on weighted critic review scores.',
+  sameAs: [],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -51,6 +61,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen pb-16 sm:pb-0`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
         <header className="glass sticky top-0 z-50">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16 sm:h-18">
