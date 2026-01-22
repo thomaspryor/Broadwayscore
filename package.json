@@ -14,7 +14,8 @@
     "reviews:show": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts --show",
     "reviews:all": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts --all",
     "reviews:status": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/status.ts",
-    "reviews:validate": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/validate.ts"
+    "reviews:validate": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/validate.ts",
+    "reviews:verify": "npx ts-node --project scripts/tsconfig.json scripts/verify-reviews.ts"
   },
   "dependencies": {
     "next": "14.2.3",
