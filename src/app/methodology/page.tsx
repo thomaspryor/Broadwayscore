@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
 
 export const metadata: Metadata = {
   title: 'How It Works - Scoring Methodology',
@@ -16,9 +16,54 @@ export const metadata: Metadata = {
   },
 };
 
+// FAQ Schema for rich snippets in search results
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'How are Broadway show scores calculated?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'BroadwayMetaScores aggregates professional critic reviews and calculates a weighted average score. Reviews from major outlets like The New York Times (Tier 1) have full weight, while smaller publications have slightly reduced weights.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What critics are included in the scores?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'We include reviews from major publications including The New York Times, Variety, The Hollywood Reporter, Vulture, The Guardian, Time Out, and many more. Critics are organized into three tiers based on reach and influence.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How often are scores updated?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Scores are updated as new reviews are published. For new shows, we continuously add reviews during the first few weeks after opening night.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What do the score ranges mean?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Scores of 85+ indicate "Must See" universal acclaim, 75-84 is "Excellent", 65-74 is "Great", 55-64 is "Good", 45-54 is "Mixed", and below 45 is "Poor".',
+      },
+    },
+  ],
+};
+
 export default function MethodologyPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
       <div className="mb-8">
         <Link href="/" className="text-brand hover:text-brand-hover text-sm mb-4 inline-flex items-center gap-1 transition-colors">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -274,6 +319,7 @@ export default function MethodologyPage() {
           <p>Methodology Version 2.0.0 — Last updated January 2026</p>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
