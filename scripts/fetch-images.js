@@ -295,19 +295,25 @@ function formatImageUrls(imageData) {
   thumbnailUrl = thumbnailUrl || fallbackUrl;
 
   // Helper to add Contentful params
-  const addParams = (url, width, height, fit = 'pad', quality = 90) => {
+  const addParams = (url, width, height, fit = 'pad', quality = 90, focus = null) => {
     if (url.includes('ctfassets.net')) {
-      return `${url}?w=${width}&h=${height}&fit=${fit}&q=${quality}&bg=rgb:1a1a1a`;
+      let params = `w=${width}&h=${height}&fit=${fit}&q=${quality}`;
+      if (focus && fit === 'fill') {
+        params += `&f=${focus}`;
+      }
+      if (fit === 'pad') {
+        params += '&bg=rgb:1a1a1a';
+      }
+      return `${url}?${params}`;
     }
     return url;
   };
 
   // Format each image type with appropriate dimensions and fit strategy
-  // Use 'pad' instead of 'fill' to avoid cropping - adds letterboxing if needed
   return {
-    hero: addParams(heroUrl, 1920, 1080, 'pad', 90),        // Landscape 16:9
-    thumbnail: addParams(thumbnailUrl, 400, 400, 'pad', 80), // Square 1:1
-    poster: addParams(posterUrl, 600, 900, 'pad', 85),       // Portrait 2:3
+    hero: addParams(heroUrl, 1920, 1080, 'pad', 90),              // Landscape 16:9 - use pad to preserve full image
+    thumbnail: addParams(thumbnailUrl, 400, 400, 'fill', 80, 'center'), // Square 1:1 - smart crop from center
+    poster: addParams(posterUrl, 600, 900, 'fill', 85, 'center'),       // Portrait 2:3 - smart crop from center
   };
 }
 
