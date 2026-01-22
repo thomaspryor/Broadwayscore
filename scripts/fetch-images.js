@@ -163,60 +163,71 @@ function fetchPage(url, retries = MAX_RETRIES) {
 
 function extractImageFromApi(data) {
   // Try different paths in the API response
-  // PRIORITIZE POSTER type images over HERO (posters are promotional images, hero are often production photos)
+  // Return an object with separate URLs for different image types when possible
   try {
-    // Path 1: data.show.images - POSTER first, then HERO
+    const result = { poster: null, hero: null, thumbnail: null };
+
+    // Path 1: data.show.images array - extract POSTER and HERO separately
     if (data?.data?.show?.images?.length > 0) {
-      // First look for POSTER type specifically
-      let img = data.data.show.images.find(i => i.type === 'POSTER');
-      // If no POSTER, look for images with "poster" in the URL
-      if (!img) {
-        img = data.data.show.images.find(i => i.file?.url?.toLowerCase().includes('poster'));
+      const images = data.data.show.images;
+
+      // Look for POSTER type (usually square or portrait)
+      const posterImg = images.find(i => i.type === 'POSTER');
+      if (posterImg?.file?.url) result.poster = posterImg.file.url;
+
+      // Look for HERO type (usually landscape banner)
+      const heroImg = images.find(i => i.type === 'HERO');
+      if (heroImg?.file?.url) result.hero = heroImg.file.url;
+
+      // Look for THUMBNAIL type
+      const thumbImg = images.find(i => i.type === 'THUMBNAIL' || i.type === 'SQUARE');
+      if (thumbImg?.file?.url) result.thumbnail = thumbImg.file.url;
+
+      // If we found at least poster or hero, return the result
+      if (result.poster || result.hero) {
+        return result;
       }
-      // Then try HERO as fallback
-      if (!img) {
-        img = data.data.show.images.find(i => i.type === 'HERO');
+
+      // Fallback: use first image for everything
+      if (images[0]?.file?.url) {
+        return images[0].file.url;
       }
-      // Finally, any image
-      if (!img) {
-        img = data.data.show.images[0];
-      }
-      if (img?.file?.url) return img.file.url;
     }
 
-    // Path 2: data.posterImageUrl FIRST (prefer poster over hero)
-    if (data?.data?.show?.posterImageUrl) {
-      return data.data.show.posterImageUrl;
+    // Path 2: Check for separate posterImageUrl and heroImageUrl
+    if (data?.data?.show?.posterImageUrl || data?.data?.show?.heroImageUrl) {
+      result.poster = data.data.show.posterImageUrl;
+      result.hero = data.data.show.heroImageUrl;
+      if (result.poster || result.hero) return result;
     }
 
-    // Path 3: data.show.heroImageUrl (fallback)
-    if (data?.data?.show?.heroImageUrl) {
-      return data.data.show.heroImageUrl;
-    }
-
-    // Path 4: data.images array directly - POSTER first
+    // Path 3: data.images array directly
     if (data?.images?.length > 0) {
-      let img = data.images.find(i => i.type === 'POSTER');
-      if (!img) {
-        img = data.images.find(i => i.file?.url?.toLowerCase().includes('poster') || i.url?.toLowerCase().includes('poster'));
-      }
-      if (!img) {
-        img = data.images.find(i => i.type === 'HERO');
-      }
-      if (!img) {
-        img = data.images[0];
-      }
-      if (img?.file?.url) return img.file.url;
-      if (img?.url) return img.url;
+      const images = data.images;
+
+      const posterImg = images.find(i => i.type === 'POSTER');
+      if (posterImg?.file?.url) result.poster = posterImg.file.url;
+      if (posterImg?.url) result.poster = posterImg.url;
+
+      const heroImg = images.find(i => i.type === 'HERO');
+      if (heroImg?.file?.url) result.hero = heroImg.file.url;
+      if (heroImg?.url) result.hero = heroImg.url;
+
+      if (result.poster || result.hero) return result;
+
+      // Fallback to first image
+      if (images[0]?.file?.url) return images[0].file.url;
+      if (images[0]?.url) return images[0].url;
     }
 
-    // Path 5: data.posterImageUrl FIRST (prefer poster over hero)
-    if (data?.posterImageUrl) return data.posterImageUrl;
+    // Path 4: Direct posterImageUrl / heroImageUrl
+    if (data?.posterImageUrl || data?.heroImageUrl) {
+      result.poster = data.posterImageUrl;
+      result.hero = data.heroImageUrl;
+      if (result.poster || result.hero) return result;
+    }
 
-    // Path 6: data.heroImageUrl (fallback)
-    if (data?.heroImageUrl) return data.heroImageUrl;
-
-    // Path 6: Look for any ctfassets URL in the response
+    // Path 5: Look for any ctfassets URL in the response
     const jsonStr = JSON.stringify(data);
     const ctfMatch = jsonStr.match(/https:\/\/images\.ctfassets\.net\/[^"\\]+/);
     if (ctfMatch) return ctfMatch[0];
@@ -262,21 +273,42 @@ function extractImageFromHtml(html) {
   return null;
 }
 
-function formatImageUrls(baseUrl) {
-  if (!baseUrl) return null;
+function formatImageUrls(imageData) {
+  if (!imageData) return null;
 
-  // Clean up URL
-  const cleanUrl = baseUrl.split('?')[0];
-
-  if (cleanUrl.includes('ctfassets.net')) {
-    return {
-      hero: `${cleanUrl}?w=1920&h=1080&fit=fill&q=90`,
-      thumbnail: `${cleanUrl}?w=400&h=400&fit=fill&q=80`,
-      poster: `${cleanUrl}?w=600&h=900&fit=fill&q=85`,
-    };
+  // If imageData is a string (single URL), convert to object
+  if (typeof imageData === 'string') {
+    imageData = { hero: imageData, poster: null, thumbnail: null };
   }
 
-  return { hero: baseUrl, thumbnail: baseUrl, poster: baseUrl };
+  // Extract URLs and clean them
+  let heroUrl = imageData.hero ? imageData.hero.split('?')[0] : null;
+  let posterUrl = imageData.poster ? imageData.poster.split('?')[0] : null;
+  let thumbnailUrl = imageData.thumbnail ? imageData.thumbnail.split('?')[0] : null;
+
+  // Fallback: if we only have one type, use it for all
+  const fallbackUrl = heroUrl || posterUrl || thumbnailUrl;
+  if (!fallbackUrl) return null;
+
+  heroUrl = heroUrl || fallbackUrl;
+  posterUrl = posterUrl || fallbackUrl;
+  thumbnailUrl = thumbnailUrl || fallbackUrl;
+
+  // Helper to add Contentful params
+  const addParams = (url, width, height, fit = 'pad', quality = 90) => {
+    if (url.includes('ctfassets.net')) {
+      return `${url}?w=${width}&h=${height}&fit=${fit}&q=${quality}&bg=rgb:1a1a1a`;
+    }
+    return url;
+  };
+
+  // Format each image type with appropriate dimensions and fit strategy
+  // Use 'pad' instead of 'fill' to avoid cropping - adds letterboxing if needed
+  return {
+    hero: addParams(heroUrl, 1920, 1080, 'pad', 90),        // Landscape 16:9
+    thumbnail: addParams(thumbnailUrl, 400, 400, 'pad', 80), // Square 1:1
+    poster: addParams(posterUrl, 600, 900, 'pad', 85),       // Portrait 2:3
+  };
 }
 
 async function fetchShowImage(showSlug, showInfo) {
@@ -484,9 +516,13 @@ function fetchTodayTixGraphQL(showId) {
         show(id: $showId) {
           id
           name
-          images { type file { url } }
+          images {
+            type
+            file { url }
+          }
           heroImageUrl
           posterImageUrl
+          thumbnailImageUrl
         }
       }`
     });
