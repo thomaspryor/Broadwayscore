@@ -1,0 +1,50 @@
+{
+  "_meta": {
+    "description": "Master list of Broadway critic outlets for comprehensive review collection",
+    "lastUpdated": "2026-01-21"
+  },
+  "tier1": [
+    { "id": "NYT", "name": "The New York Times", "domain": "nytimes.com", "critics": ["Jesse Green", "Maya Phillips", "Elisabeth Vincentelli"] },
+    { "id": "VULT", "name": "Vulture", "domain": "vulture.com", "critics": ["Sara Holdren", "Helen Shaw", "Jackson McHenry"] },
+    { "id": "VARIETY", "name": "Variety", "domain": "variety.com", "critics": ["Naveen Kumar", "Frank Rizzo", "Bob Verini"] },
+    { "id": "TIMEOUT", "name": "Time Out New York", "domain": "timeout.com", "critics": ["Adam Feldman"] },
+    { "id": "THR", "name": "The Hollywood Reporter", "domain": "hollywoodreporter.com", "critics": ["Lovia Gyarkye", "David Rooney"] },
+    { "id": "WASHPOST", "name": "The Washington Post", "domain": "washingtonpost.com", "critics": ["Peter Marks"] },
+    { "id": "GUARDIAN", "name": "The Guardian", "domain": "theguardian.com", "critics": ["Alexis Soloski"] },
+    { "id": "AP", "name": "Associated Press", "domain": "apnews.com", "critics": ["Mark Kennedy"] },
+    { "id": "WSJ", "name": "The Wall Street Journal", "domain": "wsj.com", "critics": ["Charles Isherwood"] },
+    { "id": "BWAYNEWS", "name": "Broadway News", "domain": "broadwaynews.com", "critics": ["Charles Isherwood"] }
+  ],
+  "tier2": [
+    { "id": "DEADLINE", "name": "Deadline", "domain": "deadline.com", "critics": ["Greg Evans"] },
+    { "id": "WRAP", "name": "The Wrap", "domain": "thewrap.com", "critics": ["Robert Hofler"] },
+    { "id": "NYDN", "name": "New York Daily News", "domain": "nydailynews.com", "critics": ["Chris Jones", "Joe Dziemianowicz"] },
+    { "id": "NYP", "name": "New York Post", "domain": "nypost.com", "critics": ["Johnny Oleksinski"] },
+    { "id": "ROLLSTONE", "name": "Rolling Stone", "domain": "rollingstone.com", "critics": ["David Browne"] },
+    { "id": "TMAN", "name": "TheaterMania", "domain": "theatermania.com", "critics": ["Zachary Stewart", "Dan Rubins"] },
+    { "id": "THLY", "name": "Theatrely", "domain": "theatrely.com", "critics": ["Juan A. Ramirez", "Andrew Martini"] },
+    { "id": "TDB", "name": "The Daily Beast", "domain": "thedailybeast.com", "critics": ["Tim Teeman"] },
+    { "id": "NYSR", "name": "New York Stage Review", "domain": "nystagereview.com", "critics": ["Frank Scheck", "Elysa Gardner", "Jesse Oxfeld", "David Finkle", "Michael Sommers", "Roma Torre"] },
+    { "id": "NYTG", "name": "New York Theatre Guide", "domain": "newyorktheatreguide.com", "critics": ["Ayanna Prescod", "Caroline Cao", "Joe Dziemianowicz"] },
+    { "id": "OBSERVER", "name": "Observer", "domain": "observer.com", "critics": ["David Cote"] },
+    { "id": "EW", "name": "Entertainment Weekly", "domain": "ew.com", "critics": ["Dalton Ross", "Shania Russell"] },
+    { "id": "INDIEWIRE", "name": "IndieWire", "domain": "indiewire.com", "critics": ["Naveen Kumar"] },
+    { "id": "FORWARD", "name": "The Forward", "domain": "forward.com", "critics": ["PJ Grisar"] },
+    { "id": "CHTRIB", "name": "Chicago Tribune", "domain": "chicagotribune.com", "critics": ["Chris Jones"] }
+  ],
+  "tier3": [
+    { "id": "NYTHTR", "name": "New York Theater", "domain": "newyorktheater.me", "critics": ["Jonathan Mandell"] },
+    { "id": "CITI", "name": "Cititour", "domain": "cititour.com", "critics": ["Brian Scott Lipton"] },
+    { "id": "CSCE", "name": "Culture Sauce", "domain": "culturesauce.com", "critics": ["Thom Geier"] },
+    { "id": "STGCNMA", "name": "Stage and Cinema", "domain": "stageandcinema.com", "critics": [] },
+    { "id": "OMC", "name": "One Minute Critic", "domain": "1minutecritic.com", "critics": ["Matthew Wexler"] },
+    { "id": "FRONTMEZZ", "name": "Front Mezz Junkies", "domain": "frontmezzjunkies.com", "critics": ["Ross"] },
+    { "id": "TALKINBWAY", "name": "Talkin' Broadway", "domain": "talkinbroadway.com", "critics": [] },
+    { "id": "AMNY", "name": "amNewYork", "domain": "amny.com", "critics": ["Matt Windman"] },
+    { "id": "BILLBOARD", "name": "Billboard", "domain": "billboard.com", "critics": [] },
+    { "id": "USATODAY", "name": "USA Today", "domain": "usatoday.com", "critics": [] },
+    { "id": "NBC", "name": "NBC News", "domain": "nbcnews.com", "critics": [] },
+    { "id": "ARTSFUSE", "name": "The Arts Fuse", "domain": "artsfuse.org", "critics": [] },
+    { "id": "JITNEY", "name": "The Jitney", "domain": "jitneybooks.com", "critics": [] }
+  ]
+}
