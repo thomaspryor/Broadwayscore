@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "scrapingbee": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.scrapingbee.com/mcp?api_key=${SCRAPINGBEE_API_KEY}"
+      ],
+      "env": {
+        "SCRAPINGBEE_API_KEY": ""
+      }
+    }
+  }
+}
