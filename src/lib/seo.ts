@@ -2,7 +2,7 @@
 
 import { ComputedShow } from './engine';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
 
 // Organization Schema - Site identity
 export function generateOrganizationSchema() {

@@ -7,7 +7,7 @@ import StickyScoreHeader from '@/components/StickyScoreHeader';
 import AnimatedScoreDistribution from '@/components/AnimatedScoreDistribution';
 import ReviewsList from '@/components/ReviewsList';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));

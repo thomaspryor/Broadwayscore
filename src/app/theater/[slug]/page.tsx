@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { getTheaterBySlug, getAllTheaterSlugs } from '@/lib/data';
 import { generateBreadcrumbSchema, generateTheaterSchema } from '@/lib/seo';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
 
 export function generateStaticParams() {
   return getAllTheaterSlugs().map((slug) => ({ slug }));
