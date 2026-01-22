@@ -5,7 +5,6 @@ import { getShowBySlug, getAllShowSlugs, ComputedShow } from '@/lib/data';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import AnimatedScoreDistribution from '@/components/AnimatedScoreDistribution';
 import ReviewsList from '@/components/ReviewsList';
-import ScoreBadge from '@/components/ScoreBadge';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -29,6 +28,35 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       images: show.images?.hero ? [{ url: show.images.hero }] : undefined,
     },
   };
+}
+
+function ScoreBadge({ score, size = 'lg' }: { score?: number | null; size?: 'md' | 'lg' | 'xl' }) {
+  const sizeClasses = {
+    md: 'w-14 h-14 text-2xl rounded-xl',
+    lg: 'w-20 h-20 text-4xl rounded-2xl',
+    xl: 'w-24 h-24 text-5xl rounded-2xl',
+  };
+
+  if (score === undefined || score === null) {
+    return (
+      <div className={`${sizeClasses[size]} bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-extrabold`}>
+        —
+      </div>
+    );
+  }
+
+  const roundedScore = Math.round(score);
+  const colorClass = roundedScore >= 70
+    ? 'bg-score-high text-white shadow-[0_4px_16px_rgba(16,185,129,0.4)]'
+    : roundedScore >= 50
+    ? 'bg-score-medium text-gray-900 shadow-[0_4px_16px_rgba(245,158,11,0.4)]'
+    : 'bg-score-low text-white shadow-[0_4px_16px_rgba(239,68,68,0.4)]';
+
+  return (
+    <div className={`${sizeClasses[size]} ${colorClass} flex items-center justify-center font-extrabold`}>
+      {roundedScore}
+    </div>
+  );
 }
 
 function StatusChip({ status }: { status: string }) {
@@ -266,7 +294,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               )}
               {/* Score badge overlay on poster */}
               <div className="absolute -bottom-2 -right-2">
-                <ScoreBadge score={score} size="md" showRing={false} />
+                <ScoreBadge score={score} size="md" />
               </div>
             </div>
           </div>

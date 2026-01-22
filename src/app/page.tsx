@@ -3,11 +3,35 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getAllShows, ComputedShow } from '@/lib/data';
-import ScoreBadge from '@/components/ScoreBadge';
 
 type SortField = 'criticScore' | 'title' | 'openingDate';
 type SortDirection = 'asc' | 'desc';
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews';
+
+function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm' | 'md' | 'lg' }) {
+  const sizeClass = {
+    sm: 'w-11 h-11 text-lg rounded-lg',
+    md: 'w-14 h-14 text-2xl rounded-xl',
+    lg: 'w-16 h-16 text-3xl rounded-xl',
+  }[size];
+
+  if (score === undefined || score === null) {
+    return (
+      <div className={`score-badge ${sizeClass} score-none font-bold`}>
+        —
+      </div>
+    );
+  }
+
+  const roundedScore = Math.round(score);
+  const colorClass = roundedScore >= 70 ? 'score-high' : roundedScore >= 50 ? 'score-medium' : 'score-low';
+
+  return (
+    <div className={`score-badge ${sizeClass} ${colorClass} font-bold`}>
+      {roundedScore}
+    </div>
+  );
+}
 
 function StatusChip({ status }: { status: string }) {
   const chipClass = {
@@ -218,42 +242,44 @@ export default function HomePage() {
         />
       </div>
 
-      {/* Filters */}
-      <div className="mb-4">
-        <div className="filter-pills">
+      {/* Filters & Sort */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm">
+        <div className="flex items-center gap-2">
+          <span className="text-gray-500">Status:</span>
           {(['open', 'all', 'closed'] as const).map((status) => (
             <button
               key={status}
               onClick={() => setStatusFilter(status)}
-              className={statusFilter === status ? 'filter-pill-active' : 'filter-pill-inactive'}
+              className={`px-2 py-1 rounded transition-colors ${
+                statusFilter === status ? 'text-brand' : 'text-gray-400 hover:text-white'
+              }`}
             >
-              {status === 'all' ? 'All Shows' : status === 'open' ? 'Now Playing' : 'Closed'}
+              {status === 'all' ? 'All' : status === 'open' ? 'Now Playing' : 'Closed'}
             </button>
           ))}
         </div>
-      </div>
 
-      {/* Sort */}
-      <div className="flex items-center gap-2 mb-6 text-sm">
-        <span className="text-gray-500">Sort by:</span>
-        <button
-          onClick={() => handleSort('criticScore')}
-          className={`px-3 py-1.5 rounded-lg transition-colors ${sortField === 'criticScore' ? 'bg-white/10 text-white' : 'text-gray-400 hover:text-white'}`}
-        >
-          Score {sortField === 'criticScore' && (sortDirection === 'desc' ? '↓' : '↑')}
-        </button>
-        <button
-          onClick={() => handleSort('title')}
-          className={`px-3 py-1.5 rounded-lg transition-colors ${sortField === 'title' ? 'bg-white/10 text-white' : 'text-gray-400 hover:text-white'}`}
-        >
-          A-Z {sortField === 'title' && (sortDirection === 'asc' ? '↑' : '↓')}
-        </button>
-        <button
-          onClick={() => handleSort('openingDate')}
-          className={`px-3 py-1.5 rounded-lg transition-colors ${sortField === 'openingDate' ? 'bg-white/10 text-white' : 'text-gray-400 hover:text-white'}`}
-        >
-          Date {sortField === 'openingDate' && (sortDirection === 'desc' ? '↓' : '↑')}
-        </button>
+        <div className="flex items-center gap-2">
+          <span className="text-gray-500">Sort:</span>
+          <button
+            onClick={() => handleSort('criticScore')}
+            className={`px-2 py-1 rounded ${sortField === 'criticScore' ? 'text-brand' : 'text-gray-400 hover:text-white'}`}
+          >
+            Score {sortField === 'criticScore' && (sortDirection === 'desc' ? '↓' : '↑')}
+          </button>
+          <button
+            onClick={() => handleSort('title')}
+            className={`px-2 py-1 rounded ${sortField === 'title' ? 'text-brand' : 'text-gray-400 hover:text-white'}`}
+          >
+            A-Z {sortField === 'title' && (sortDirection === 'asc' ? '↑' : '↓')}
+          </button>
+          <button
+            onClick={() => handleSort('openingDate')}
+            className={`px-2 py-1 rounded ${sortField === 'openingDate' ? 'text-brand' : 'text-gray-400 hover:text-white'}`}
+          >
+            Date {sortField === 'openingDate' && (sortDirection === 'desc' ? '↓' : '↑')}
+          </button>
+        </div>
       </div>
 
       {/* Score Legend */}

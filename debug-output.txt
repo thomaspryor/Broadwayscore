@@ -1,0 +1,114 @@
+Broadway Metascore Image Fetcher
+================================
+Mode: AUTO-UPDATE shows.json
+
+
+📽️  wicked
+   API: https://api.todaytix.com/api/v2/shows/1
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/1lcQYDVMkTKsxKaQTt...
+
+📽️  chicago
+   API: https://api.todaytix.com/api/v2/shows/22
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/5tavViEkwtgCwYVOhR...
+
+📽️  the-lion-king
+   API: https://api.todaytix.com/api/v2/shows/42
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/20JbwcyfTKefeounu0...
+
+📽️  aladdin
+   API: https://api.todaytix.com/api/v2/shows/105
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/1XmnTVfLKO0DYjasW0...
+
+📽️  book-of-mormon
+   API: https://api.todaytix.com/api/v2/shows/127
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/3dnKgNoU6R8vKgpXgy...
+
+📽️  hamilton
+   API: https://api.todaytix.com/api/v2/shows/384
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/1pYzhGpYcpbasqXvOf...
+
+📽️  hadestown
+   API: https://api.todaytix.com/api/v2/shows/14748
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/t09ycMZvQ674f7dJ12...
+
+📽️  moulin-rouge
+   API: https://api.todaytix.com/api/v2/shows/15911
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/5WOyzD6VmmtuvGFJoV...
+
+📽️  six
+   API: https://api.todaytix.com/api/v2/shows/20737
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/5GitG8n9EJB8EKEqU9...
+
+📽️  mj
+   API: https://api.todaytix.com/api/v2/shows/23379
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/m7Pq32ZM887jDNbPXw...
+
+📽️  and-juliet
+   API: https://api.todaytix.com/api/v2/shows/25598
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/1pePhHDlaO3Ll7GWC0...
+
+📽️  the-outsiders
+   API: https://api.todaytix.com/api/v2/shows/34093
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/4k2gPWw9iR99KSUoR3...
+
+📽️  hells-kitchen
+   API: https://api.todaytix.com/api/v2/shows/37579
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/2tnPnN9n2rh9DS8Z49...
+
+📽️  the-great-gatsby
+   API: https://api.todaytix.com/api/v2/shows/38749
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/CC1GEZL2J69RvNjOia...
+
+📽️  maybe-happy-ending
+   API: https://api.todaytix.com/api/v2/shows/41018
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/2RTBxHCd5kl0TNJpYY...
+
+📽️  two-strangers
+   API: https://api.todaytix.com/api/v2/shows/45002
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/6Vhi7cGlV0eeFcNx11...
+
+📽️  oh-mary
+   API: https://api.todaytix.com/api/v2/shows/37743
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/4zbcjgKVEjMqH95SVS...
+
+📽️  operation-mincemeat
+   API: https://api.todaytix.com/api/v2/shows/42735
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/6p6TvEYSo15T9KAMmG...
+
+📽️  bug
+   API: https://api.todaytix.com/api/v2/shows/45086
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/5gW3ZYxAvxe77MsU6J...
+
+📽️  harry-potter
+   API: https://api.todaytix.com/api/v2/shows/1377
+   HTML: https://www.todaytix.com/nyc/shows/1377-harry-potter-and-the-cursed-child
+   ⚠ HTML failed: HTTP 404
+   Alt API: https://content-service.todaytix.com/content/shows/1377
+   ⚠ Alt API failed: HTTP 403
+   Broadway.com: https://www.broadway.com/shows/harry-potter-and-the-cursed-child/
+   ⚠ Broadway.com failed: HTTP 404
+   Playbill: https://playbill.com/production/harry-potter
+   ⚠ Playbill failed: HTTP 404
+   ✗ No image found from any source
+
+📽️  mamma-mia
+   API: https://api.todaytix.com/api/v2/shows/43887
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/3vH6kVRmlcOnzVfYGF...
+
+📽️  stranger-things
+   API: https://api.todaytix.com/api/v2/shows/41967
+   ✓ Found via API: https://images.ctfassets.net/6pezt69ih962/79kOvZoGMIvolshDhf...
+
+
+================================
+Summary
+================================
+✓ Success: 21 shows
+✗ Failed: 1 shows
+  Failed shows: harry-potter
+
+Raw results saved to: /Users/tompryor/Broadwayscore/scripts/image-urls.json
+
+✓ Updated 21 shows in shows.json
+
+⚠️  Some shows failed. Re-running may help.
