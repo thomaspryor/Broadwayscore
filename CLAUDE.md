@@ -1,40 +1,61 @@
 # Broadway Metascore Project Context
 
-## ⚠️ CRITICAL: NO LOCAL DEVELOPMENT ⚠️
-**THE USER DOES NOT RUN ANYTHING LOCALLY. EVERYTHING DEPLOYS VIA VERCEL.**
-- **NEVER** ask the user to run commands locally (no `npm run`, no `node scripts/`, no `git pull && ...`)
-- **NEVER** ask the user to test locally or check localhost
-- All changes go live automatically when pushed to GitHub → Vercel auto-deploys
-- If you need to run a script, push the code and let Vercel/GitHub Actions handle it
-- The user's workflow: YOU push code → Vercel deploys → Changes are live
+## ⚠️ CRITICAL RULES - READ FIRST ⚠️
 
-## User Preferences (IMPORTANT)
-- **NEVER suggest manual steps** if automation is possible. Always write scripts, create GitHub Actions, or implement code solutions instead.
-- **NEVER ask user to run anything locally** - they don't have a local dev environment set up. Push and let Vercel deploy.
-- When scripts fail for some items, fix the script or add retry logic - don't ask the user to manually fetch data.
-- Automate everything: data fetching, image URLs, status updates, deployments.
+### 1. NEVER Ask User to Run Local Commands
+The user is **non-technical and often on their phone**. They cannot run terminal commands.
+
+❌ **NEVER say any of these:**
+- "Run this locally: `npm install`"
+- "Execute this in your terminal"
+- "Run `node scripts/...`"
+- "You can test with `npm run dev`"
+
+✅ **Instead:**
+- Make code changes and push to Git
+- Create/update GitHub Actions for automation
+- If something truly requires local execution, create a GitHub Action to do it
+
+### 2. Vercel is Primary - NOT GitHub Pages
+**Production site: Vercel** (auto-deploys when Claude pushes code)
+
+| Platform | Status | URL |
+|----------|--------|-----|
+| **Vercel** | ✅ PRIMARY | https://broadwayscore.vercel.app |
+| GitHub Pages | ⚠️ Secondary/Legacy | https://thomaspryor.github.io/Broadwayscore/ |
+
+**Deployment workflow:**
+```
+Claude pushes to branch → Vercel auto-deploys → Done
+```
+No PRs. No manual steps. No GitHub Pages deployment needed.
+
+### 3. Automate Everything
+- ❌ Don't ask user to manually fetch data
+- ❌ Don't suggest "you could manually update..."
+- ✅ Write scripts that run via GitHub Actions
+- ✅ Create automation for any recurring task
+
+---
 
 ## Project Overview
-A website that aggregates Broadway show reviews and calculates composite "metascores" similar to Metacritic, but for Broadway shows.
 
-**Live Sites:**
-- **Production (Vercel):** https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app
-- **GitHub Pages:** https://thomaspryor.github.io/Broadwayscore/
+A website aggregating Broadway show reviews into composite "metascores" (like Metacritic for Broadway).
 
 **Tech Stack:** Next.js 14, TypeScript, Tailwind CSS, static export
 
 ## Current State (January 2026)
 
 ### What's Working
-- **22 Broadway shows** with full metadata (synopsis, cast, creative team, venues, etc.)
-- **Critics-only scoring** (V1 simplified approach - no audience/buzz yet)
+- **22 Broadway shows** with full metadata (synopsis, cast, creative team, venues)
+- **Critics-only scoring** (V1 approach)
 - **Two Strangers** has complete review data (16 critic reviews) as proof of concept
-- **TodayTix-inspired UI** with card layout, hero images, show details pages
+- **TodayTix-inspired UI** with card layout, hero images, show detail pages
 - **External CDN images** from Contentful (TodayTix's CDN)
 
 ### Shows Database
-- 17 currently open shows (including new additions: Bug, Oh Mary!, Operation Mincemeat, etc.)
-- 5 closed shows tracked (Stereophonic, Cabaret, Water for Elephants, etc.)
+- 17 currently open shows
+- 5 closed shows tracked
 - Full metadata: synopsis, cast, creative team, tags, age recommendations, theater addresses
 
 ## Scoring Methodology (V1 - Critics Only)
@@ -44,8 +65,8 @@ A website that aggregates Broadway show reviews and calculates composite "metasc
 - Tier-weighted average of critic reviews
 
 ### Critic Score Calculation
-- **Tier 1 outlets** (NYT, Vulture, Variety, etc.): weight 1.0
-- **Tier 2 outlets** (TheaterMania, NY Post, etc.): weight 0.85
+- **Tier 1 outlets** (NYT, Vulture, Variety): weight 1.0
+- **Tier 2 outlets** (TheaterMania, NY Post): weight 0.85
 - **Tier 3 outlets** (blogs, smaller sites): weight 0.70
 
 Each review has:
@@ -62,16 +83,11 @@ Each review has:
 
 ```
 data/
-  shows.json            # Show metadata with full details
-  reviews.json          # Critic reviews with scores and original ratings
-  new-shows-pending.json # Auto-generated: new shows awaiting review data
-  audience.json         # (Future) Audience scores
-  buzz.json             # (Future) Social buzz data
-
-scripts/
-  fetch-images.js       # Fetches show images from TodayTix CDN
-  update-show-status.js # Auto-updates show statuses (closing dates)
-  discover-new-shows.js # Discovers new Broadway shows from TodayTix
+  shows.json              # Show metadata with full details
+  reviews.json            # Critic reviews with scores and original ratings
+  new-shows-pending.json  # Auto-generated: new shows awaiting review data
+  audience.json           # (Future) Audience scores
+  buzz.json               # (Future) Social buzz data
 ```
 
 ### Show Schema (shows.json)
@@ -93,77 +109,61 @@ scripts/
 - `src/app/page.tsx` - Homepage with show grid
 - `src/app/show/[slug]/page.tsx` - Individual show pages
 - `src/config/scoring.ts` - Scoring rules, tier weights, outlet mappings
-- `scripts/fetch-images.js` - Image URL fetcher (run locally)
 
-## Parallel Workstreams
+## Automation (GitHub Actions)
 
-### 1. Data Agent (in progress)
-Building automation to fetch/gather review data for all shows:
-- Scrape critic reviews from aggregators
-- Parse and normalize ratings to assignedScores
-- Identify outlet tier from source
+All automation runs via GitHub Actions - no local commands needed.
 
-### 2. UI Polish (in progress)
-- Mobile responsiveness
-- Score breakdown visualizations
-- Review list improvements
-- Show filtering/search
+### `.github/workflows/update-show-status.yml`
+- **Runs:** Every Monday at 6 AM UTC (or manually via GitHub UI)
+- **Does:** Updates show statuses, discovers new shows, auto-adds to database
 
-### 3. Image Fetching
-Run locally to get CDN URLs for all shows:
-```bash
-node scripts/fetch-images.js
-```
-Outputs JSON with hero/thumbnail/poster URLs for shows.json
+### `.github/workflows/gather-reviews.yml`
+- **Runs:** When new shows discovered (or manually triggered)
+- **Does:** Gathers review data for shows
 
-### 4. Data Freshness & Discovery (Automated)
-**GitHub Action:** `.github/workflows/update-show-status.yml`
-- Runs automatically every Monday at 6 AM UTC
-- Can be triggered manually via GitHub Actions UI
+### `.github/workflows/fetch-images.yml`
+- **Runs:** When triggered
+- **Does:** Fetches show images from TodayTix CDN
 
-**What it does:**
-1. **Status Updates** - Checks TodayTix for closing dates, auto-marks shows as closed
-2. **New Show Discovery** - Scans TodayTix for new Broadway shows not in our database
-3. **Auto-add Shows** - Adds new shows to shows.json with basic metadata
-4. **Create Issues** - Opens GitHub issue for new shows needing review data
-5. **Trigger Data Agent** - Attempts to trigger `gather-reviews.yml` workflow
+## Deployment
 
-**GitHub Action:** `.github/workflows/gather-reviews.yml`
-- Triggered automatically when new shows are discovered
-- Can be triggered manually with comma-separated show slugs
-- Placeholder for review data gathering logic (integrate with data agent)
+### How It Works (Vercel)
+1. Claude makes changes and pushes to `claude/broadway-metascore-site-8jjx7`
+2. Vercel detects the push and auto-builds
+3. Site is live within ~1 minute
 
-Manual runs:
-```bash
-node scripts/update-show-status.js    # Check status changes
-node scripts/discover-new-shows.js    # Find new shows
-```
+**That's it.** No PRs, no approvals, no manual deployment steps.
 
-### 5. SEO (Implemented)
+### Vercel Configuration (already set up)
+- Production Branch: `claude/broadway-metascore-site-8jjx7`
+- Auto-deploy: Enabled
+- Build Command: `npm run build`
+
+## Completed Features
+
+### UI & Design
+- TodayTix-inspired card layout with hero images
+- Mobile-responsive with bottom navigation
+- Show filtering by status (Open/Closed)
+- Search functionality
+- Score badges with color coding
+- Methodology page explaining scoring
+
+### Data & Automation
+- 22+ Broadway shows with full metadata
+- Automated image fetching via GitHub Action
+- Weekly automated status updates
+- New show discovery automation
+
+### SEO
 - JSON-LD structured data with ticket offers, cast, ratings
-- Dynamic meta tags per show (title with score, Twitter cards)
-- Sitemap.xml auto-generated with show prioritization
+- Dynamic meta tags per show
+- Sitemap.xml auto-generated
 - Robots.txt configured
-- Configurable BASE_URL via `NEXT_PUBLIC_SITE_URL` env var
 
-### 6. Future Features
+## Future Features
 - Audience scores integration
 - Comparison views
 - Historical tracking
-- Custom domain setup
-
-## Commands
-```bash
-npm run dev      # Development server (localhost:3000)
-npm run build    # Production build
-npm run lint     # Lint check
-```
-
-## Deployment
-- **Vercel**: Auto-deploys from feature branches
-- **GitHub Pages**: Deploys from gh-pages branch
-
-## Branch Strategy
-- Feature branches: `claude/...`
-- Vercel auto-deploys preview URLs for each branch
-- Merge to trigger production deployment
+- Custom domain setup (broadwaymetascore.com)

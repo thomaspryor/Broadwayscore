@@ -1,35 +1,45 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import Link from 'next/link';
+import ScrollToTop from '@/components/ScrollToTop';
 
-// Use environment variable for easy domain changes, fallback to Vercel URL
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore.com';
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'Broadway Metascore - Aggregated Broadway Show Ratings',
-    template: '%s | Broadway Metascore',
+    default: 'BroadwayMetaScores - Aggregated Broadway Show Ratings',
+    template: '%s | BroadwayMetaScores',
   },
-  description: 'Comprehensive Broadway show ratings combining critic reviews, audience scores, and community buzz. Find the best shows on Broadway with transparent, data-driven scores.',
-  keywords: ['Broadway', 'theater', 'musicals', 'reviews', 'ratings', 'metascore', 'critic reviews', 'audience scores'],
-  authors: [{ name: 'Broadway Metascore' }],
+  description: 'Aggregated Broadway show ratings from top critics. Find the best shows on Broadway with transparent, data-driven metascores.',
+  keywords: ['Broadway', 'theater', 'musicals', 'reviews', 'ratings', 'metascore', 'critic reviews'],
+  authors: [{ name: 'BroadwayMetaScores' }],
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: BASE_URL,
-    siteName: 'Broadway Metascore',
-    title: 'Broadway Metascore - Aggregated Broadway Show Ratings',
-    description: 'Comprehensive Broadway show ratings combining critic reviews, audience scores, and community buzz.',
+    siteName: 'BroadwayMetaScores',
+    title: 'BroadwayMetaScores - Aggregated Broadway Show Ratings',
+    description: 'Aggregated Broadway show ratings from top critics. Transparent, data-driven metascores.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Broadway Metascore',
-    description: 'Aggregated Broadway show ratings from critics, audiences, and community buzz.',
+    title: 'BroadwayMetaScores',
+    description: 'Aggregated Broadway show ratings from top critics.',
   },
   robots: {
     index: true,
     follow: true,
+  },
+  alternates: {
+    canonical: BASE_URL,
   },
 };
 
@@ -40,22 +50,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="canonical" href={BASE_URL} />
-      </head>
-      <body className="min-h-screen font-sans">
+      <body className={`${inter.className} min-h-screen pb-16 sm:pb-0`}>
         <header className="glass sticky top-0 z-50">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16 sm:h-18">
-              <Link href="/" className="flex items-center gap-0.5 group">
+              <Link href="/" className="flex items-center group rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface">
                 <span className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Broadway</span>
-                <span className="text-xl sm:text-2xl font-extrabold text-gradient tracking-tight">Score</span>
+                <span className="text-xl sm:text-2xl font-extrabold text-gradient tracking-tight">MetaScores</span>
               </Link>
-              <div className="flex items-center gap-1">
-                <Link href="/" className="nav-link nav-link-active">
+              <div className="hidden sm:flex items-center gap-1">
+                <Link href="/" className="nav-link nav-link-active rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
                   Shows
                 </Link>
-                <Link href="/methodology" className="nav-link hidden sm:block">
+                <Link href="/methodology" className="nav-link rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
                   How It Works
                 </Link>
               </div>
@@ -63,19 +70,19 @@ export default function RootLayout({
           </nav>
         </header>
         <main className="min-h-[calc(100vh-200px)]">{children}</main>
-        <footer className="border-t border-white/5 mt-12 sm:mt-16">
+        <footer className="border-t border-white/5 mt-12 sm:mt-16 hidden sm:block">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-0.5">
+              <div className="flex items-center">
                 <span className="text-lg font-bold text-white">Broadway</span>
-                <span className="text-lg font-bold text-gradient">Score</span>
+                <span className="text-lg font-bold text-gradient">MetaScores</span>
               </div>
               <div className="flex items-center gap-6 text-sm text-gray-400">
                 <Link href="/methodology" className="hover:text-white transition-colors">
                   Methodology
                 </Link>
                 <span className="text-gray-600">|</span>
-                <span>Data from critics, audiences & Reddit</span>
+                <span>Aggregated critic reviews</span>
               </div>
             </div>
             <p className="mt-6 pt-6 border-t border-white/5 text-center text-xs text-gray-500">
@@ -83,6 +90,7 @@ export default function RootLayout({
             </p>
           </div>
         </footer>
+        <ScrollToTop />
       </body>
     </html>
   );
