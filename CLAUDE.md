@@ -36,6 +36,14 @@ No PRs. No manual steps. No GitHub Pages deployment needed.
 - ✅ Write scripts that run via GitHub Actions
 - ✅ Create automation for any recurring task
 
+### 4. NEVER Guess or Fake Data
+- ❌ **NEVER** give approximate ranges like "~7-9 reviews" - there's always a specific number
+- ❌ **NEVER** claim to have verified something you couldn't actually access
+- ❌ **NEVER** make up numbers when a source is blocked/unavailable
+- ✅ If you can't access a source, say "I cannot access [source] - getting 403 error"
+- ✅ If you don't know, say "I don't know" - don't guess
+- ✅ Always fetch and verify actual data before reporting numbers
+
 ---
 
 ## Project Overview
