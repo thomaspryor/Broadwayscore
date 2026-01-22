@@ -1,0 +1,44 @@
+name: Verify Review Counts
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+jobs:
+  verify-reviews:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run review verification
+        run: npm run reviews:verify > verification-results.txt 2>&1
+        continue-on-error: true
+
+      - name: Display results
+        run: cat verification-results.txt
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-verification-results
+          path: |
+            verification-results.txt
+            debug-html/
+          retention-days: 30
+
+      - name: Create summary
+        run: |
+          echo "## Review Verification Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          cat verification-results.txt >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Download the full results and HTML files from the workflow artifacts." >> $GITHUB_STEP_SUMMARY
