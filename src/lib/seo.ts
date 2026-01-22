@@ -102,7 +102,7 @@ export function generateShowSchema(show: ComputedShow) {
     schema.review = reviews.slice(0, 10).map(review => generateReviewSchema({
       outlet: review.outlet,
       criticName: review.criticName,
-      score: review.mappedScore,
+      score: review.assignedScore,
       url: review.url,
       publishDate: review.publishDate,
       excerpt: review.quote,
