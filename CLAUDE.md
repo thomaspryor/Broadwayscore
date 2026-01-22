@@ -90,8 +90,8 @@ A website aggregating Broadway show reviews into composite "metascores" (like Me
 
 ### Critic Score Calculation
 - **Tier 1 outlets** (NYT, Vulture, Variety): weight 1.0
-- **Tier 2 outlets** (TheaterMania, NY Post): weight 0.85
-- **Tier 3 outlets** (blogs, smaller sites): weight 0.70
+- **Tier 2 outlets** (TheaterMania, NY Post): weight 0.70
+- **Tier 3 outlets** (blogs, smaller sites): weight 0.40
 
 Each review has:
 - `assignedScore` (0-100) - normalized score

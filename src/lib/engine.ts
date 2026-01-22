@@ -529,7 +529,7 @@ export function computeShowData(
   const criticScore = computeCriticScore(showReviews);
 
   // V1: metascore = critic score (audience/buzz coming later)
-  const metascore = criticScore?.score ? Math.round(criticScore.score) : null;
+  const metascore = criticScore?.weightedScore ? Math.round(criticScore.weightedScore) : null;
 
   const confidence = assessConfidence(criticScore, null, show.status);
 

@@ -160,7 +160,7 @@ export default function MethodologyPage() {
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-2 py-0.5 rounded bg-gray-500/20 text-gray-400 text-xs font-medium">Tier 2</span>
-                <span className="text-gray-400 text-sm">Weight: 0.85×</span>
+                <span className="text-gray-400 text-sm">Weight: 0.70×</span>
               </div>
               <p className="text-gray-300 text-sm">
                 NY Post, NY Daily News, TheaterMania, Entertainment Weekly, Deadline, The Wrap, IndieWire, Observer, Slant, Chicago Tribune, USA Today, NY Stage Review, NY Theatre Guide
@@ -170,7 +170,7 @@ export default function MethodologyPage() {
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-2 py-0.5 rounded bg-surface text-gray-500 text-xs font-medium">Tier 3</span>
-                <span className="text-gray-400 text-sm">Weight: 0.70×</span>
+                <span className="text-gray-400 text-sm">Weight: 0.40×</span>
               </div>
               <p className="text-gray-300 text-sm">
                 BroadwayWorld, amNewYork, Front Mezz Junkies, Culture Sauce, and other smaller outlets/blogs
