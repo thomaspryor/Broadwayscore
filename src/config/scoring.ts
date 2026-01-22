@@ -19,8 +19,8 @@ export const COMPONENT_WEIGHTS = {
 // ===========================================
 export const TIER_WEIGHTS = {
   1: 1.0,
-  2: 0.85,
-  3: 0.70,
+  2: 0.70,
+  3: 0.40,
 } as const;
 
 export const DEFAULT_TIER = 3 as const;
