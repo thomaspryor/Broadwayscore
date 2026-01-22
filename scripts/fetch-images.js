@@ -248,9 +248,20 @@ function extractImageFromHtml(html) {
   const twitterMatch = html.match(/<meta[^>]*name=["']twitter:image["'][^>]*content=["']([^"']+)["']/i);
   if (twitterMatch && twitterMatch[1].includes('ctfassets.net')) return twitterMatch[1];
 
-  // Pattern 3: Any Contentful image URL in the page
+  // Pattern 3: Any Contentful image URL in the page - PRIORITIZE POSTER IMAGES
   const ctfMatches = html.match(/https:\/\/images\.ctfassets\.net\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+\/[^"'\s<>]+\.(jpg|jpeg|png|webp)/gi);
   if (ctfMatches && ctfMatches.length > 0) {
+    // Prioritize poster/square images over landscape banners
+    // Look for images with poster dimensions in filename (480x720, 600x900, etc)
+    const posterImages = ctfMatches.filter(url =>
+      url.includes('480x720') || url.includes('600x900') || url.includes('TodayTix-480x720') ||
+      url.includes('_Poster') || url.includes('-Poster') || url.includes('poster')
+    );
+    if (posterImages.length > 0) {
+      return posterImages[0];
+    }
+
+    // Otherwise return longest URL (usually has most detail)
     const sorted = ctfMatches.sort((a, b) => b.length - a.length);
     return sorted[0];
   }
@@ -291,8 +302,19 @@ function formatImageUrls(imageData) {
   if (!fallbackUrl) return null;
 
   heroUrl = heroUrl || fallbackUrl;
-  posterUrl = posterUrl || fallbackUrl;
-  thumbnailUrl = thumbnailUrl || fallbackUrl;
+
+  // Try to construct poster/thumbnail URLs by replacing dimensions in filename
+  if (!posterUrl && fallbackUrl.includes('1440x580')) {
+    posterUrl = fallbackUrl.replace('1440x580', '480x720');
+  } else {
+    posterUrl = posterUrl || fallbackUrl;
+  }
+
+  if (!thumbnailUrl && fallbackUrl.includes('1440x580')) {
+    thumbnailUrl = fallbackUrl.replace('1440x580', '480x720');
+  } else {
+    thumbnailUrl = thumbnailUrl || fallbackUrl;
+  }
 
   // Helper to add Contentful params
   const addParams = (url, width, height, fit = 'pad', quality = 90, focus = null) => {
