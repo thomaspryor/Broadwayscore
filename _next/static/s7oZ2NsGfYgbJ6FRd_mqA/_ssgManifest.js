@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Fbest\u002F[category]","\u002Fdata\u002F[slug]","\u002Fdirector\u002F[slug]","\u002Fshow\u002F[slug]","\u002Ftheater\u002F[slug]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
