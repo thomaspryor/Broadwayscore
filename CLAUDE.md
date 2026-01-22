@@ -52,6 +52,14 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - ✅ Write scripts that run via GitHub Actions
 - ✅ Create automation for any recurring task
 
+### 4. NEVER Guess or Fake Data
+- ❌ **NEVER** give approximate ranges like "~7-9 reviews" - there's always a specific number
+- ❌ **NEVER** claim to have verified something you couldn't actually access
+- ❌ **NEVER** make up numbers when a source is blocked/unavailable
+- ✅ If you can't access a source, say "I cannot access [source] - getting 403 error"
+- ✅ If you don't know, say "I don't know" - don't guess
+- ✅ Always fetch and verify actual data before reporting numbers
+
 ---
 
 ## Project Overview
@@ -179,7 +187,7 @@ The review aggregator sites (DTLI, Show-Score, BroadwayWorld) block standard web
 **Setup (one-time):**
 1. Get free API key (1,000 credits): https://www.scrapingbee.com/
 2. Edit `.mcp.json` in the project root - replace `YOUR_API_KEY_HERE` with your actual key
-3. Restart Claude Code to load the MCP server
+3. **Start a NEW Claude Code session** (MCP servers only load at startup, not hot-reloaded)
 
 **Usage:**
 Once configured, use the `scrapingbee_get_page_html` tool to fetch aggregator pages:
