@@ -163,7 +163,7 @@ The review aggregator sites (DTLI, Show-Score, BroadwayWorld) block standard web
 **Setup (one-time):**
 1. Get free API key (1,000 credits): https://www.scrapingbee.com/
 2. Edit `.mcp.json` in the project root - replace `YOUR_API_KEY_HERE` with your actual key
-3. Restart Claude Code to load the MCP server
+3. **Start a NEW Claude Code session** (MCP servers only load at startup, not hot-reloaded)
 
 **Usage:**
 Once configured, use the `scrapingbee_get_page_html` tool to fetch aggregator pages:
