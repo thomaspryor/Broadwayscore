@@ -172,6 +172,25 @@ All automation runs via GitHub Actions - no local commands needed.
 - Weekly automated status updates
 - New show discovery automation
 
+### MCP Setup for Review Aggregators
+
+The review aggregator sites (DTLI, Show-Score, BroadwayWorld) block standard web requests. To access them, we use the ScrapingBee MCP server.
+
+**Setup (one-time):**
+1. Get free API key (1,000 credits): https://www.scrapingbee.com/
+2. Edit `.mcp.json` in the project root - replace `YOUR_API_KEY_HERE` with your actual key
+3. Restart Claude Code to load the MCP server
+
+**Usage:**
+Once configured, use the `scrapingbee_get_page_html` tool to fetch aggregator pages:
+```
+- didtheylikeit.com/shows/[show-name]/ → Get review count breakdown (thumbs up/flat/down)
+- show-score.com/broadway-shows/[show] → Get full critic review list with outlets
+- broadwayworld.com review roundups → Get additional outlets
+```
+
+**Important:** Always cross-check our review count against these 3 aggregators before finalizing a show's reviews.
+
 ### SEO
 - JSON-LD structured data with ticket offers, cast, ratings
 - Dynamic meta tags per show
