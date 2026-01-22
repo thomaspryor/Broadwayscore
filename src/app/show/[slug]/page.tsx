@@ -1,7 +1,13 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow } from '@/lib/data';
+import { getShowBySlug, getAllShowSlugs, ComputedShow, getTheaterBySlug, getAllShows } from '@/lib/data';
+import { generateShowSchema, generateBreadcrumbSchema } from '@/lib/seo';
+import StickyScoreHeader from '@/components/StickyScoreHeader';
+import AnimatedScoreDistribution from '@/components/AnimatedScoreDistribution';
+import ReviewsList from '@/components/ReviewsList';
+
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -12,63 +18,69 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!show) return { title: 'Show Not Found' };
 
   const score = show.criticScore?.score;
-  const scoreText = score ? ` (Score: ${score}/100)` : '';
-  const reviewText = show.criticScore?.reviewCount ? ` Based on ${show.criticScore.reviewCount} critic reviews.` : '';
+  const roundedScore = score ? Math.round(score) : null;
+  const reviewCount = show.criticScore?.reviewCount || 0;
 
-  const description = show.synopsis
-    ? `${show.synopsis.slice(0, 150)}...${scoreText}`
-    : `${show.title} at ${show.venue}.${scoreText}${reviewText}`;
+  // Enhanced title with score for better CTR
+  const title = roundedScore
+    ? `${show.title} Reviews | ${roundedScore}/100 Critic Score`
+    : `${show.title} - Broadway Reviews & Ratings`;
 
-  const title = score
-    ? `${show.title} - Score: ${score} | Broadway Reviews`
-    : `${show.title} - Broadway Reviews & Tickets`;
+  // Enhanced description with call-to-action
+  const description = roundedScore
+    ? `${show.title} has a ${roundedScore}/100 critic score based on ${reviewCount} reviews. See what critics are saying about this Broadway ${show.type}.`
+    : `Read critic reviews and ratings for ${show.title} on Broadway at ${show.venue}.`;
+
+  const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
 
   return {
     title,
     description,
-    keywords: [show.title, show.venue, 'Broadway', 'tickets', 'reviews', ...(show.tags || [])],
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
-      type: 'website',
-      title: `${show.title}${scoreText} - BroadwayScore`,
+      title: `${show.title} - BroadwayMetaScores`,
       description,
-      images: show.images?.hero ? [{
-        url: show.images.hero,
-        width: 1920,
-        height: 1080,
-        alt: show.title,
-      }] : undefined,
-      siteName: 'BroadwayScore',
+      url: canonicalUrl,
+      type: 'article',
+      images: show.images?.hero ? [{ url: show.images.hero, width: 1200, height: 630, alt: `${show.title} Broadway show` }] : undefined,
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${show.title}${scoreText}`,
-      description: description.slice(0, 200),
+      title: roundedScore ? `${show.title} - ${roundedScore}/100` : show.title,
+      description,
       images: show.images?.hero ? [show.images.hero] : undefined,
-    },
-    alternates: {
-      canonical: `${BASE_URL}/show/${show.slug}`,
     },
   };
 }
 
 function ScoreBadge({ score, size = 'lg' }: { score?: number | null; size?: 'md' | 'lg' | 'xl' }) {
   const sizeClasses = {
-    md: 'w-14 h-14 text-xl rounded-xl',
-    lg: 'w-20 h-20 text-3xl rounded-2xl',
-    xl: 'w-24 h-24 text-4xl rounded-2xl',
+    md: 'w-14 h-14 text-2xl rounded-xl',
+    lg: 'w-20 h-20 text-4xl rounded-2xl',
+    xl: 'w-24 h-24 text-5xl rounded-2xl',
   };
 
-  const colorClass = score === undefined || score === null
-    ? 'bg-surface-overlay text-gray-500 border border-white/10'
-    : score >= 70
+  if (score === undefined || score === null) {
+    return (
+      <div className={`${sizeClasses[size]} bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-extrabold`}>
+        —
+      </div>
+    );
+  }
+
+  // Round to whole number for cleaner display
+  const roundedScore = Math.round(score);
+  const colorClass = roundedScore >= 70
     ? 'bg-score-high text-white shadow-[0_4px_16px_rgba(16,185,129,0.4)]'
-    : score >= 50
+    : roundedScore >= 50
     ? 'bg-score-medium text-gray-900 shadow-[0_4px_16px_rgba(245,158,11,0.4)]'
     : 'bg-score-low text-white shadow-[0_4px_16px_rgba(239,68,68,0.4)]';
 
   return (
-    <div className={`${sizeClasses[size]} ${colorClass} flex items-center justify-center font-bold`}>
-      {score ?? '—'}
+    <div className={`${sizeClasses[size]} ${colorClass} flex items-center justify-center font-extrabold`}>
+      {roundedScore}
     </div>
   );
 }
@@ -111,12 +123,6 @@ function formatDate(dateStr: string): string {
   });
 }
 
-function getScoreColor(score: number): string {
-  if (score >= 70) return '#10b981';
-  if (score >= 50) return '#f59e0b';
-  return '#ef4444';
-}
-
 function BackArrow() {
   return (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,89 +139,116 @@ function ExternalLinkIcon() {
   );
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore.com';
+function MapPinIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  );
+}
 
-// JSON-LD structured data for SEO - generates rich results in Google
-function generateStructuredData(show: ComputedShow) {
-  // Main event schema
-  const eventData: Record<string, unknown> = {
-    '@context': 'https://schema.org',
-    '@type': 'TheaterEvent',
-    name: show.title,
-    description: show.synopsis,
-    url: `${BASE_URL}/show/${show.slug}`,
-    location: {
-      '@type': 'PerformingArtsTheater',
-      name: show.venue,
-      address: {
-        '@type': 'PostalAddress',
-        streetAddress: show.theaterAddress?.split(',')[0] || show.venue,
-        addressLocality: 'New York',
-        addressRegion: 'NY',
-        addressCountry: 'US',
-      },
-    },
-    startDate: show.openingDate,
-    eventStatus: show.status === 'open' ? 'https://schema.org/EventScheduled' : 'https://schema.org/EventCancelled',
-    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+function PlayIcon() {
+  return (
+    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7z" />
+    </svg>
+  );
+}
+
+function GlobeIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+    </svg>
+  );
+}
+
+function TypeTag({ type }: { type: string }) {
+  const config: Record<string, { label: string; className: string }> = {
+    musical: { label: 'Musical', className: 'bg-purple-500/20 text-purple-400 border-purple-500/20' },
+    play: { label: 'Play', className: 'bg-blue-500/20 text-blue-400 border-blue-500/20' },
+    revival: { label: 'Revival', className: 'bg-amber-500/20 text-amber-400 border-amber-500/20' },
   };
 
-  if (show.closingDate) {
-    eventData.endDate = show.closingDate;
+  const { label, className } = config[type] || { label: type, className: 'bg-gray-500/20 text-gray-400 border-gray-500/20' };
+
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium uppercase tracking-wide border ${className}`}>
+      {label}
+    </span>
+  );
+}
+
+function NewBadge() {
+  return (
+    <span className="inline-flex items-center px-2 py-0.5 rounded bg-brand/20 text-brand text-xs font-bold uppercase tracking-wide">
+      New
+    </span>
+  );
+}
+
+function ScoreLabel({ score }: { score: number }) {
+  const roundedScore = Math.round(score);
+  let label: string;
+  let bgClass: string;
+  let textClass: string;
+
+  if (roundedScore >= 85) {
+    label = 'Must See!';
+    bgClass = 'bg-score-high/20';
+    textClass = 'text-score-high';
+  } else if (roundedScore >= 75) {
+    label = 'Excellent';
+    bgClass = 'bg-score-high/20';
+    textClass = 'text-score-high';
+  } else if (roundedScore >= 65) {
+    label = 'Great';
+    bgClass = 'bg-score-high/20';
+    textClass = 'text-score-high';
+  } else if (roundedScore >= 55) {
+    label = 'Good';
+    bgClass = 'bg-score-medium/20';
+    textClass = 'text-score-medium';
+  } else if (roundedScore >= 45) {
+    label = 'Mixed';
+    bgClass = 'bg-score-medium/20';
+    textClass = 'text-score-medium';
+  } else {
+    label = 'Poor';
+    bgClass = 'bg-score-low/20';
+    textClass = 'text-score-low';
   }
 
-  if (show.images?.hero) {
-    eventData.image = [show.images.hero, show.images.poster, show.images.thumbnail].filter(Boolean);
-  }
+  return (
+    <span className={`inline-block px-3 py-1 rounded-full text-sm font-bold uppercase tracking-wide ${bgClass} ${textClass}`}>
+      {label}
+    </span>
+  );
+}
 
-  // Add aggregate rating if we have reviews
-  if (show.criticScore?.score) {
-    eventData.aggregateRating = {
-      '@type': 'AggregateRating',
-      ratingValue: show.criticScore.score,
-      bestRating: 100,
-      worstRating: 0,
-      reviewCount: show.criticScore.reviewCount,
-      ratingCount: show.criticScore.reviewCount,
-    };
-  }
+function isNewShow(openingDate: string): boolean {
+  const opening = new Date(openingDate);
+  const now = new Date();
+  const daysSinceOpening = (now.getTime() - opening.getTime()) / (1000 * 60 * 60 * 24);
+  return daysSinceOpening <= 60 && daysSinceOpening >= 0;
+}
 
-  // Add ticket offers for rich results
-  if (show.ticketLinks && show.ticketLinks.length > 0) {
-    eventData.offers = show.ticketLinks.map((link) => ({
-      '@type': 'Offer',
-      url: link.url,
-      price: link.priceFrom || 0,
-      priceCurrency: 'USD',
-      availability: show.status === 'open' ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
-      validFrom: show.openingDate,
-      seller: {
-        '@type': 'Organization',
-        name: link.platform,
-      },
-    }));
-  }
+function getGoogleMapsUrl(address: string): string {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+}
 
-  // Add performers (cast)
-  if (show.cast && show.cast.length > 0) {
-    eventData.performer = show.cast.map((member) => ({
-      '@type': 'Person',
-      name: member.name,
-    }));
-  }
 
-  // Add organizer (creative team / production)
-  if (show.creativeTeam && show.creativeTeam.length > 0) {
-    const director = show.creativeTeam.find((m) => m.role.toLowerCase().includes('director'));
-    if (director) {
-      eventData.director = {
-        '@type': 'Person',
-        name: director.name,
-      };
-    }
-  }
+// Generate all structured data for the page (TheaterEvent + BreadcrumbList)
+function generateAllStructuredData(show: ComputedShow) {
+  const showSchema = generateShowSchema(show);
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: 'Shows', url: `${BASE_URL}/#shows` },
+    { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
+  ]);
 
-  return eventData;
+  return [showSchema, breadcrumbSchema];
 }
 
 export default function ShowPage({ params }: { params: { slug: string } }) {
@@ -225,134 +258,171 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  const structuredData = generateStructuredData(show);
+  const structuredData = generateAllStructuredData(show);
   const score = show.criticScore?.score;
 
   return (
     <>
+      {/* Enhanced JSON-LD: TheaterEvent with Reviews + BreadcrumbList */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      {/* Sticky Score Header */}
+      <StickyScoreHeader title={show.title} score={score} />
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
         {/* Back Link */}
-        <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">
+        <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-4 transition-colors">
           <BackArrow />
           All Shows
         </Link>
 
-        {/* Main Header - Poster Layout */}
-        <div className="flex flex-col md:flex-row gap-6 md:gap-8 mb-8">
-          {/* Poster Image */}
-          <div className="flex-shrink-0 relative">
-            {show.images?.poster ? (
-              <div className="relative">
+        {/* Header with Poster Card */}
+        <div className="flex gap-4 sm:gap-6 mb-8">
+          {/* Poster Card */}
+          <div className="flex-shrink-0">
+            <div className="relative w-28 sm:w-36 lg:w-44 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
+              {show.images?.poster ? (
                 <img
                   src={show.images.poster}
-                  alt={show.title}
-                  className="w-48 md:w-56 rounded-lg shadow-2xl object-cover aspect-[2/3]"
+                  alt={`${show.title} Broadway ${show.type} poster - now playing at ${show.venue}`}
+                  className="w-full h-full object-cover"
                 />
-                {/* Score Badge Overlay */}
-                <div className="absolute -bottom-3 -right-3">
-                  <ScoreBadge score={score} size="lg" />
+              ) : show.images?.thumbnail ? (
+                <img
+                  src={show.images.thumbnail}
+                  alt={`${show.title} Broadway ${show.type} - now playing at ${show.venue}`}
+                  className="w-full h-full object-cover"
+                />
+              ) : show.images?.hero ? (
+                <img
+                  src={show.images.hero}
+                  alt={`${show.title} Broadway ${show.type} - now playing at ${show.venue}`}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                  <span className="text-4xl text-gray-600">🎭</span>
                 </div>
+              )}
+            </div>
+            {/* Score badge below poster */}
+            {score !== undefined && score !== null && (
+              <div className="mt-3 flex flex-col items-center">
+                <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Metascore</span>
+                <ScoreBadge score={score} size="md" />
               </div>
-            ) : (
-              <div className="w-48 md:w-56 aspect-[2/3] bg-surface-card rounded-lg flex items-center justify-center">
-                <span className="text-4xl">🎭</span>
-              </div>
-            )}
-            {show.criticScore && (
-              <p className="text-center text-xs text-gray-500 mt-4">
-                {show.criticScore.reviewCount} reviews
-              </p>
             )}
           </div>
 
-          {/* Show Info */}
-          <div className="flex-1">
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-3">
-              {show.type && (
-                <span className="px-3 py-1 bg-surface-overlay text-gray-300 text-xs font-medium rounded-full uppercase">
-                  {show.type}
-                </span>
-              )}
+          {/* Title & Meta */}
+          <div className="flex-1 min-w-0 pt-2 sm:pt-4">
+            <div className="flex flex-wrap items-center gap-2 mb-1">
+              <TypeTag type={show.type} />
+              {isNewShow(show.openingDate) && <NewBadge />}
               <StatusChip status={show.status} />
             </div>
-
-            {/* Title */}
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight mb-3">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight">
               {show.title}
             </h1>
-
-            {/* Meta */}
-            <div className="flex flex-wrap items-center gap-2 text-gray-400 text-sm mb-4">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-gray-400 text-sm">
               <span className="text-gray-300">{show.venue}</span>
-              <span className="text-gray-600">•</span>
-              <span>{show.runtime}</span>
+              <span className="text-gray-600 hidden sm:inline">•</span>
+              <span className="hidden sm:inline">{show.runtime}</span>
             </div>
 
-            {/* Score Label */}
-            {score !== undefined && score !== null && (
-              <div className="flex items-center gap-2 mb-4">
-                <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                  score >= 70 ? 'bg-score-high/20 text-score-high' :
-                  score >= 50 ? 'bg-score-medium/20 text-score-medium' :
-                  'bg-score-low/20 text-score-low'
-                }`}>
-                  {score >= 70 ? 'GREAT' : score >= 50 ? 'MIXED' : 'POOR'}
-                </span>
-                <span className="text-gray-400 text-sm">Based on {show.criticScore?.reviewCount} reviews</span>
-              </div>
-            )}
-
-            {/* Ticket Links */}
-            {show.ticketLinks && show.ticketLinks.length > 0 && (
-              <div className="flex flex-wrap gap-3 mb-4">
-                {show.ticketLinks.map((link, i) => (
-                  <a
-                    key={i}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-primary flex items-center gap-2"
-                  >
-                    {link.platform}
-                    {link.priceFrom && <span className="opacity-80">from ${link.priceFrom}</span>}
-                    <ExternalLinkIcon />
-                  </a>
-                ))}
-                {show.officialUrl && (
-                  <a
-                    href={show.officialUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-secondary flex items-center gap-2"
-                  >
-                    <span>🌐</span> Official Site
-                  </a>
-                )}
-                {show.trailerUrl && (
-                  <a
-                    href={show.trailerUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-secondary flex items-center gap-2"
-                  >
-                    <span>▶</span> Trailer
-                  </a>
+            {/* Score Label and Reviews - desktop */}
+            {score && (
+              <div className="hidden sm:flex items-center gap-3 mt-4">
+                <ScoreLabel score={score} />
+                {show.criticScore && (
+                  <span className="text-sm text-gray-500">
+                    Based on {show.criticScore.reviewCount} reviews
+                  </span>
                 )}
               </div>
             )}
           </div>
         </div>
 
+        {/* Score Label - mobile only */}
+        {score && (
+          <div className="flex items-center gap-3 mb-6 sm:hidden">
+            <ScoreLabel score={score} />
+            {show.criticScore && (
+              <span className="text-sm text-gray-500">
+                {show.criticScore.reviewCount} reviews
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Action Buttons */}
+        {(show.ticketLinks?.length || show.officialUrl || show.trailerUrl) && (
+          <div className="flex flex-wrap gap-3 mb-8">
+            {/* Ticket Links */}
+            {show.ticketLinks?.map((link, i) => (
+              <a
+                key={i}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary flex items-center gap-2"
+              >
+                {link.platform}
+                {link.priceFrom && <span className="opacity-80">from ${link.priceFrom}</span>}
+                <ExternalLinkIcon />
+              </a>
+            ))}
+
+            {/* Official Website */}
+            {show.officialUrl && (
+              <a
+                href={show.officialUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
+              >
+                <GlobeIcon />
+                Official Site
+              </a>
+            )}
+
+            {/* Trailer */}
+            {show.trailerUrl && (
+              <a
+                href={show.trailerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
+              >
+                <PlayIcon />
+                Trailer
+              </a>
+            )}
+          </div>
+        )}
+
         {/* Synopsis */}
         {show.synopsis && (
           <div className="mb-8">
             <p className="text-gray-300 leading-relaxed">{show.synopsis}</p>
+          </div>
+        )}
+
+        {/* Critic Reviews */}
+        {show.criticScore && show.criticScore.reviews.length > 0 && (
+          <div className="card p-5 sm:p-6 mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
+              <span className="text-sm text-gray-500">{show.criticScore.reviewCount} reviews</span>
+            </div>
+
+            <AnimatedScoreDistribution reviews={show.criticScore.reviews} />
+
+            <ReviewsList reviews={show.criticScore.reviews} initialCount={5} />
           </div>
         )}
 
@@ -388,55 +458,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
-        {/* Critic Reviews */}
-        {show.criticScore && show.criticScore.reviews.length > 0 && (
-          <div className="card p-5 sm:p-6 mb-8">
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
-              <span className="text-sm text-gray-500">{show.criticScore.reviewCount} reviews</span>
-            </div>
-
-            <div className="space-y-4">
-              {show.criticScore.reviews.map((review, i) => (
-                <div key={i} className="border-b border-white/5 pb-4 last:border-0 last:pb-0">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0 flex-1">
-                      <a
-                        href={review.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-semibold text-white hover:text-brand transition-colors"
-                      >
-                        {review.outlet}
-                      </a>
-                      {review.criticName && (
-                        <span className="text-gray-500 text-sm ml-2">by {review.criticName}</span>
-                      )}
-                      <div className="flex items-center gap-2 mt-1">
-                        <TierBadge tier={review.tier} />
-                        <span className="text-xs text-gray-500">{formatDate(review.publishDate)}</span>
-                        {review.designation && (
-                          <span className="text-xs text-score-high font-medium">
-                            {review.designation.replace('_', ' ')}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex-shrink-0 text-xl font-bold" style={{ color: getScoreColor(review.reviewMetaScore) }}>
-                      {review.reviewMetaScore}
-                    </div>
-                  </div>
-                  {review.pullQuote && (
-                    <blockquote className="mt-3 text-sm text-gray-400 italic border-l-2 border-brand/30 pl-3">
-                      &ldquo;{review.pullQuote}&rdquo;
-                    </blockquote>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Show Details */}
         <div className="card p-5 mb-8">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Details</h2>
@@ -467,12 +488,29 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 <dd className="text-white mt-0.5">{show.ageRecommendation}</dd>
               </div>
             )}
-            <div>
+            <div className="col-span-2">
               <dt className="text-gray-500">Theater</dt>
-              <dd className="text-white mt-0.5">{show.venue}</dd>
+              <dd className="text-white mt-0.5">
+                {show.theaterAddress ? (
+                  <a
+                    href={getGoogleMapsUrl(show.theaterAddress)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 hover:text-brand transition-colors"
+                  >
+                    <MapPinIcon />
+                    {show.venue} — {show.theaterAddress}
+                  </a>
+                ) : (
+                  show.venue
+                )}
+              </dd>
             </div>
           </dl>
         </div>
+
+        {/* Internal Links - SEO & Discovery */}
+        <InternalLinks show={show} />
 
         {/* Footer */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
@@ -482,5 +520,114 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         </div>
       </div>
     </>
+  );
+}
+
+// Internal linking component for SEO
+function InternalLinks({ show }: { show: ComputedShow }) {
+  // Get director info
+  const director = show.creativeTeam?.find(m =>
+    m.role.toLowerCase().includes('director') &&
+    !m.role.toLowerCase().includes('music director')
+  );
+  const directorSlug = director?.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+  // Get other shows at this theater
+  const theaterSlug = show.venue.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const theater = getTheaterBySlug(theaterSlug);
+  const otherShowsAtTheater = theater?.allShows.filter(s => s.slug !== show.slug && s.status === 'open').slice(0, 3) || [];
+
+  // Get related shows by tags
+  const allShows = getAllShows();
+  const showTags = show.tags?.map(t => t.toLowerCase()) || [];
+  const relatedShows = allShows
+    .filter(s =>
+      s.slug !== show.slug &&
+      s.status === 'open' &&
+      s.tags?.some(t => showTags.includes(t.toLowerCase()))
+    )
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .slice(0, 4);
+
+  if (!director && otherShowsAtTheater.length === 0 && relatedShows.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-6 border-t border-white/5 pt-6 mt-6">
+      {/* Director Link */}
+      {director && directorSlug && (
+        <div>
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            More from the Director
+          </h3>
+          <Link
+            href={`/director/${directorSlug}`}
+            className="inline-flex items-center gap-2 text-brand hover:text-brand-hover transition-colors"
+          >
+            <span className="font-medium">{director.name}</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
+      )}
+
+      {/* Theater Link */}
+      {theater && (
+        <div>
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            More at {show.venue}
+          </h3>
+          <Link
+            href={`/theater/${theaterSlug}`}
+            className="inline-flex items-center gap-2 text-brand hover:text-brand-hover transition-colors"
+          >
+            <span className="font-medium">View theater page</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
+      )}
+
+      {/* Related Shows */}
+      {relatedShows.length > 0 && (
+        <div>
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            You Might Also Like
+          </h3>
+          <div className="grid grid-cols-2 gap-3">
+            {relatedShows.map(related => (
+              <Link
+                key={related.slug}
+                href={`/show/${related.slug}`}
+                className="card p-3 flex items-center gap-3 hover:bg-surface-raised/80 transition-colors group"
+              >
+                <div className="w-10 h-10 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                  {related.images?.thumbnail ? (
+                    <img
+                      src={related.images.thumbnail}
+                      alt={`${related.title} Broadway ${related.type}`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-lg">🎭</div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-white truncate group-hover:text-brand transition-colors">
+                    {related.title}
+                  </p>
+                  {related.criticScore?.score && (
+                    <p className="text-xs text-gray-500">{Math.round(related.criticScore.score)}/100</p>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
