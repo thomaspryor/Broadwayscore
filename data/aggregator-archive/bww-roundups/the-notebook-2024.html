@@ -23,14 +23,17 @@
 </script>
 
     
-                    <title>Review Roundup: HADESTOWN Opens On Broadway- What Did The Critics Think? </title>
+                    <title>Review Roundup: THE NOTEBOOK Opens On Broadway </title>
           <meta name="sppc-site-verification" content="7b427ebce326f82c28d2344fb76fec2b" />
 
     
           
-                    <meta name="description" content="Following record-breaking runs at New York Theatre Workshop and Canada's Citadel Theatre, and the National Theatre, the new musical Hadestown opens on Broadway tonight. ">
-          <meta property="fb:app_id" content="139648586265"/><meta property="og:description" content="Following record-breaking runs at New York Theatre Workshop and Canada's Citadel Theatre, and the National Theatre, the new musical Hadestown opens on Broadway tonight." /><meta property="og:title" content="Review Roundup: HADESTOWN Opens On Broadway- What Did The Critics Think? " /><meta property="og:type" content="article" /><meta property="og:image" content="https://cloudimages.broadwayworld.com/columnpic10/680B541AC2E-D536-47DC-940CA49D6A7CB82D.jpg" /><meta property="og:image:url" content="https://cloudimages.broadwayworld.com/columnpic10/680B541AC2E-D536-47DC-940CA49D6A7CB82D.jpg" /><meta property="og:image:width" content="1250" /><meta property="og:image:height" content="625" /><meta property="og:site_name" content="BroadwayWorld.com" /><meta property="og:url" content="https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417" /><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@broadwayworld"><meta name="twitter:title" content="Review Roundup: HADESTOWN Opens On Broadway- What Did The Critics Think? "><meta name="twitter:description" content="Following record-breaking runs at New York Theatre Workshop and Canada's Citadel Theatre, and the National Theatre, the new musical Hadestown opens on Broadway tonight."><meta name="twitter:image" content="https://cloudimages.broadwayworld.com/columnpic10/680B541AC2E-D536-47DC-940CA49D6A7CB82D.jpg"><meta property="article:publisher" content="https://www.facebook.com/BroadwayWorld" /><meta name="author" content="A.A. Cristi"><meta name="category" content="Broadway">
-          <link rel="canonical" href="https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417">
+                    <meta name="description" content="Read reviews for the Broadway premiere of the epic love story, The Notebook, opening on Broadway tonight!
+ ">
+          <meta property="fb:app_id" content="139648586265"/><meta property="og:description" content="Read reviews for the Broadway premiere of the epic love story, The Notebook, opening on Broadway tonight!
+" /><meta property="og:title" content="Review Roundup: THE NOTEBOOK Opens On Broadway " /><meta property="og:type" content="article" /><meta property="og:image" content="https://cloudimages.broadwayworld.com/columnpiccloud/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-1710446163.jpg" /><meta property="og:image:url" content="https://cloudimages.broadwayworld.com/columnpiccloud/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-1710446163.jpg" /><meta property="og:image:width" content="1250" /><meta property="og:image:height" content="625" /><meta property="og:site_name" content="BroadwayWorld.com" /><meta property="og:url" content="https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314" /><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@broadwayworld"><meta name="twitter:title" content="Review Roundup: THE NOTEBOOK Opens On Broadway "><meta name="twitter:description" content="Read reviews for the Broadway premiere of the epic love story, The Notebook, opening on Broadway tonight!
+"><meta name="twitter:image" content="https://cloudimages.broadwayworld.com/columnpiccloud/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-1710446163.jpg"><meta property="article:publisher" content="https://www.facebook.com/BroadwayWorld" /><meta name="author" content="A.A. Cristi"><meta name="category" content="Broadway">
+          <link rel="canonical" href="https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314">
            
           <link rel="alternate" type="application/rss+xml" title="BroadwayWorld RSS Feed" href="https://www.broadwayworld.com/feed_all_bway.cfm" />
 
@@ -104,9 +107,9 @@ googletag.defineSlot('/106293300/BWW_Desktop_Sidebar_Bottom',  [[300,250]], 'div
       googletag.defineSlot('/106293300/NEW300D', [300, 250], 'div-gpt-ad-1442371043694-5').addService(googletag.pubads());
     
 
-    googletag.pubads().setTargeting('Region','Broadway');            googletag.pubads().setTargeting('Shows','HADESTOWN');googletag.pubads().setTargeting('Shows','HADESTOWN');googletag.pubads().setTargeting('Shows','HADESTOWN');
+    googletag.pubads().setTargeting('Region','Broadway');            
       googletag.pubads().setTargeting('page','article');
-                  googletag.pubads().setTargeting('page','musicals');
+                  
                     
 
 
@@ -116,10 +119,20 @@ googletag.defineSlot('/106293300/BWW_Desktop_Sidebar_Bottom',  [[300,250]], 'div
                                     googletag.pubads().setTargeting('page','review');        
 
             
-                  googletag.pubads().setTargeting("interests", ["Two Strangers (Carry a Cake Across New York)","The Great Gatsby","Marjorie Prime","Moulin Rouge!","The Outsiders","& Juliet","SIX (Boleyn Tour)","MJ the Musical","The Book of Mormon","Bug","Hadestown"]);
-        
-        googletag.pubads().setTargeting('pagecount', '0');
+                
+    let pageCount = sessionStorage.getItem('pageCount');
 
+pageCount = pageCount ? parseInt(pageCount) : 0;
+
+let referrer = document.referrer;
+
+if (referrer.includes("google")) {
+    googletag.pubads().setTargeting('pagecount', '0');
+} else if (pageCount <= 1) {
+    googletag.pubads().setTargeting('pagecount', '1');
+} else {
+    googletag.pubads().setTargeting('pagecount', '2');
+}
     googletag.pubads().collapseEmptyDivs();
             googletag.pubads().enableSingleRequest();
 
@@ -137,17 +150,18 @@ googletag.defineSlot('/106293300/BWW_Desktop_Sidebar_Bottom',  [[300,250]], 'div
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "Review Roundup: HADESTOWN Opens On Broadway- What Did The Critics Think?",
+  "headline": "Review Roundup: THE NOTEBOOK Opens On Broadway",
 
-  "url": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
-  "description": "Following record-breaking runs at New York Theatre Workshop and Canada&#039;s Citadel Theatre, and the National Theatre, the new musical Hadestown opens on Broadway tonight.",
+  "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314",
+  "description": "Read reviews for the Broadway premiere of the epic love story, The Notebook, opening on Broadway tonight!
+",
   "isAccessibleForFree": true,
-  "articleBody": "Following record-breaking runs at New York Theatre Workshop, Canada's Citadel Theatre, and the National Theatre, the new musical Hadestown opens on Broadway tonight. In the warmth of summertime, songwriter Orpheus and his muse Eurydice are living it up and falling in love. But as winter approaches, reality sets in: these young dreamers can't survive on songs alone. Tempted by the promise of plenty, Eurydice is lured to the depths of industrial Hadestown. On a quest to save her, Orpheus journeys to the underworld where their trust in each other is put to a final test. Written by celebrated singer-songwriter Anaïs Mitchell and developed with innovative director and Tony Award® nominee Rachel Chavkin, the cast of Hadestown is led by the acclaimed actors from its sold-out run at London's National Theatre: Reeve Carney, André De Shields, Amber Gray, Eva Noblezada, and Patrick Page. They are joined by Jewelle Blackman, Yvette Gonzalez-Nacer, and Kay Trinidad as the Fates. The Workers Chorus is played by Afra Hines, Timothy Hughes, John Krause, Kimberly Marable, and Ahmad Simmons. The full cast also includes swings Malcolm Armwood, T. Oliver Reid, Jessie Shelton, and Khaila Wilcoxon. Directed by Rachel Chavkin, with set design by Rachel Hauck, costume design by Michael Krass, lighting design by Bradley King, sound design by Nevin Steinberg and Jessica Paz, choreography by David Neumann, musical direction and vocal arrangements by Liam Robinson, orchestrations and arrangements by Michael Chorneyand Todd Sickafoose, with Ken Cerniglia as dramaturg. Ben Brantley, The New York Times: The gods, or more likely Ms. Chavkin and her creative team, have saved \"Hadestown\" on its way uptown - via Edmonton and London - by turning it into something very much warmer, if not yet ideally warm. The story is clearer, the songs express that story more directly and the larger themes arise from it naturally rather than demanding immediate attention like overeager undergraduates. Michael Dale, BroadwayWorld: If the story loses steam a bit in the second act, the storytelling doesn't, and at the center of Hadestown is the theme of why we repeat the songs and stories that we've heard and sung countless times before. As she did with her excellent staging of NATASHA, PIERRE & THE GREAT COMET OF 1812, Chavkin turns her cast into an irresistible community of storytelling entertainers, carrying on their traditions even after they've taken their bows. Working with a turntable floor, she and choreographer David Neumann create a striking array of visuals, particularly when a group of hanging lamps appear to be choreographed as they swing above the audience. Adam Feldman, Time Out New York: Here's my advice: Go to hell. And by hell, of course, I mean Hadestown, Anaïs Mitchell's fizzy, moody, thrilling new Broadway musical. Ostensibly, at least, the show is a modern retelling of the ancient Greek myth of Orpheus and Eurydice: Boy meets girl, boy loses girl, boy goes to the land of the dead in hopes of retrieving girl, boy loses girl again. \"It's an old song,\" sings our narrator, the messenger god Hermes (André De Shields, a master of arch razzle-dazzle). \"And we're gonna sing it again.\" But it's the newness of Mitchell's musical account-and Rachel Chavkin's gracefully dynamic staging-that bring this old story to quivering life. Chris Jones, The NY Daily News: America's on the road to hell - better jump right off, my children. Too dangerous to look back. Instead, try and find the cracks in that famous wall we're building. That's pretty much the message of \"Hadestown,\" the thrillingly alarmist new Broadway musical with the score that feels like it comes from somewhere deep in the American gut. Now an eye-popping, mythological blend of steampunk, \"Westworld\" and Bourbon St. anarchy, this dystopian tuner has its origins in a 2010 concept album, a folk opera of sorts, by the remarkable singer-songwriter Anaïs Mitchell. Sara Holdren, Vulture: Hadestown has arrived on Broadway. Like so many of its mythic antecedents, it's the product of much metamorphosis, and its current manifestation feels lush, vigorous, and formally exciting, not to mention, in certain moments, witchily prescient. Matt Windman, amNY: Directed by Rachel Chavkin (\"Natasha, Pierre & The Great Comet of 1812\"), \"Hadestown\" contains a stunning visual design evoking both a New Orleans barroom scene and a smoldering mechanical underworld, complemented by the motion of turntables, a rollicking band, bold performances and expressive dance choreography. Whereas the previous Off-Broadway production was performed in the round, no impact has been lost in the transition to a traditional proscenium theater. The score - which contains airy folk-pop for the lovers and a livelier jazz idiom for the denizens of the underworld - comes off as distinctive and authentic by Broadway standards. Many of the songs are reflective in nature, which leads to some slow points, especially in Act Two. But, more often than not, \"Hadestown\" is exciting, compelling and beautiful. David Cote, The Observer: Silver fox André De Shields lends his funky-grandpa vibe to the narration-heavy role of Hermes. Big-voiced Eva Noblezada is pluck personified as a waifish Eurydice. Fitting for the god of the underworld, Patrick Page's basso profundo seems to issue from the lower basement. And, as Persephone, Amber Grey dials her devil-may-care hootchie-mama routine to 11, ensuring her eventual transfiguration as Eartha Kitt on Broadway one day. Less fruitful is Reeve Carney's Orpheus, conceived as a socially awkward art savant. Laying on the Dear Evan Hansen too thick, Carney's neurodiverse Orpheus (lots of gaping, arms hanging limply, fingers twitching) is a misfire. The survivor of Spider-Man: Turn Off the Dark remains a bit generic, despite sweet looks and a pretty pop falsetto. Hadestown needs a stronger injection of sexually charged romance. Johnny Oleksinski, The New York Post: Yes, composer Anaïs Mitchell's musical retelling of the Orpheus and Eurydice myth, which opened Wednesday on Broadway, sounds pleasant and looks more expensive than it did in 2016 at New York Theatre Workshop. But this classic tale of love - he looks back, she gets trapped in the underworld for all eternity - is still too slick and sterile for us to give a damn about her damnation. Marilyn Stasio, Variety: \"Hadestown\" triggered a lot of buzz when this wholly American show (which came to the stage by way of a concept album) premiered at Off Broadway's New York Theatre Workshop in 2016. Arriving on Broadway with its earthly delights more or less intact, this perfectly heavenly musical - with book, music and lyrics by Anaïs Mitchell - should stick around for a while. David Rooney, The Hollywood Reporter: In \"Road to Hell,\" the exhilarating opening number of the utterly fabulous Hadestown, Hermes, the conductor of souls into the afterlife, invites us to \"Ride that train to the end of the line.\" He's played with seductive authority and knowing humor by the eternally elegant Andre De Shields, outfitted like a superfly pimp in a flashy silver suit, and it's hard to imagine anyone resisting his call. He sells a ticket to a bewitching journey that pays off at every turn. Greg Evans, Deadline: Written by the immensely talented singer-songwriter Anaïs Mitchell - the musical began life as folk opera concept album, then was developed at New York Theatre Workshop - Hadestown is brought to remarkable life by director Rachel Chavkin, who does for the Quarter and hell what she did for Tolstoy's Russia with 2016's equally fine Natasha, Pierre & the Great Comet of 1812. Terry Techout, The Wall Street Journal: While the stage version of \"Hadestown\" is longer and considerably more elaborate than the 2010 concept album, it still bears the mark of its origins, and therein lies its chief flaw. Ms. Mitchell's songs are beautiful but undramatic-the score runs mainly to slow and medium tempos-which means that the overall narrative pace can feel a bit sluggish, enthralling though it is from moment to moment. Even at its frequent best, \"Hadestown\" plays more like a song cycle than a stage show. I won't pretend that this isn't a problem, but Rachel Chavkin's endlessly varied direction and David Neumann's dances, all of them fully integrated into the staging, help to keep things on the move, as does Rachel Hauck's turntable-and-trap-door set. Thom Geier, TheWrap: Chavkin, her production team and cast are working at the top of their form - and they go a long way to masking some of the show's shortcomings. Mitchell is a better composer than a lyricist, alas, and sometimes leans too heavily on De Shields' narration to advance the plot instead of her occasionally repetitive songs. And the fact remains that there's just not much story here - not nearly enough for a two and a half hour show. Will Hermes, Rolling Stone: This chilling scene remains the centerpiece of Hadestown, a love story and class-struggle parable based on the Orpheus myth that arrives on the same Broadway stage Bruce Springsteen worked for 14 months prior. The cast has changed from Mitchell's original LP (where Bon Iver's Justin Vernon, The Low Anthem's Ben Knox Miller and activist folk hero Ani DiFranco joined Mitchell and Brown in the leads). But the work's musical integrity and proletariat spirit remains largely intact. Tim Teeman, Daily Beast: Hadestown has so much fun telling, as it puts it, this \"sad tale\" that even though this retelling of a well-trodden Greek myth feels slight, it also makes for a joyful performance. Anaïs Mitchell's musical, which opens on Broadway tonight at the Walter Kerr Theatre (to September 1), is delicious to look at and listen to-truly, my new earworm is \"Way Down Hadestown\"-even if its story is as wan as its central couple. Michael Sommers, New York Stage Review: A new Broadway musical that takes audiences to hell and back, Hadestown looks and sounds terrific, and yet it lacks something vital. Drawn from a classical Greek legend, the musical somehow reminds me of a handsome ancient statue that is missing its head. Elysa Gardner, New York Stage Review: For starters, Mitchell is a gifted tunesmith, and lyricist, who approaches musical theater with a clear, infectious sense of wonder. Her melodic savvy, if not entirely consistent over a run time of nearly two and a half hours with little spoken dialogue, is buttressed by an ear for piercing, haunting harmonies, abetted here by musical director and vocal arranger Liam Robinson. Moreover, Mitchell and, to her credit, Chavkin have mined a beautiful and theatrically resonant tale from their source material. If there are traces of the pretensions that marred Natasha in this heavily stylized production, the director and her lavishly talented design team remain in service to the story, which ties together the myths of Orpheus and Eurydice, respectively played by Reeve Carney and Eva Noblezada, and Hades and Persephone, played by Patrick Page and Amber Gray. Jessica Derschowitz, Entertainment Weekly: As far as tales as old as time go, the stories of Greek mythology are pretty high up there, those epic stories of gods and men that have been told for thousands of years and inspired countless adaptations. But there's little that feels old or stately about the way those stories - those old songs, those sad songs - are told in Hadestown, which makes its Broadway bow Thursday with a journey to the underworld that feels like it sprung forth as something entirely new. Christopher Kelly, NJ.com: Still, if this is your first visit to \"Hadestown,\" it's likely to be a satisfying one. Mitchell and director Rachel Chavkin (\"Natasha, Pierre and the Great Comet of 1812\") do an impressive job updating an oft-recounted myth; in this telling, Orpheus (Reeve Carney) falls in love with Eurydice (Eva Noblezada), who in turn flees to Hadestown after its ruler Hades (Patrick Page, whose basso profundo is the stuff of nightmares and/or action movie trailers) promises to end her hunger. The actors are all excellent, with one standing slightly above the rest: In the role of Hades' queen Persephone, the extraordinary Amber Grey (who originated the role off Broadway) gives us a kind of Hellenistic Age Real Housewife, both garishly funny and romantically yearning.",
+  "articleBody": "Did Broadway's newest musical tear-jerker move the critics? Read reviews for the Broadway premiere of the epic love story, The Notebook, opening on Broadway tonight!    Based on the bestselling novel by Nicholas Sparks that inspired the iconic film, The Notebook – which opens tonight at Broadway’s Schoenfeld Theatre – features music and lyrics by multiplatinum singer-songwriter Ingrid Michaelson and a book by playwright Bekah Brunstetter. Produced by Kevin McCollum and Kurt Deutsch, The Notebook is directed by Michael Greif and Schele Williams, with choreography by Katie Spelman.  The cast of The Notebook features Tony Award-winner Maryann Plunkett as Older Allie, Dorian Harewood as Older Noah, Joy Woods as Middle Allie, Ryan Vasquez as Middle Noah, Jordan Tyson as Younger Allie, John Cardoza as Younger Noah, Andréa Burns as Mother/Nurse Lori, Carson Stewart as Johnny/Fin. Playing various roles are Yassmin Alers, Alex Benoit, Chase Del Rey, Hillary Fisher, Jerome Harmann-Hardeman, Dorcas Leung, Happy McPartlin, Juliette Ojeda, Kim Onah, Charles E. Wallace and Charlie Webb. In the play, Allie and Noah, two people from different worlds, share a lifetime of love despite the forces that threaten to pull them apart in a deeply moving portrait of the enduring power of love. Based on the book that has sold millions of copies worldwide and a film that is one of the highest-grossing romantic dramas of all-time, the musical adaptation of The Notebook comes to Broadway following a critically acclaimed world premiere engagement at Chicago Shakespeare Theater in the fall of 2022.      Jesse Green, The New York Times: When songs provide so little information, barely differentiating the characters let alone advancing the plot, a musical tends to sag. And when a musical has gone to some trouble to accommodate those songs — the movie of “The Notebook” runs two hours, the show hardly 20 minutes more — the trade-offs are of the nose-versus-face variety.     Mark Kennedy, Associated Press : The bombastic musical that opened Thursday at the Gerald Schoenfeld Theatre is about a love for the ages but has understated songs by Ingrid Michaelson, who offers coffee house vibes instead of passion’s thunder. The book by Bekah Brunstetter loses gas well before it’s over and piles on the melodrama.     Chris Jones, The New York Daily News: There are two main reasons why this show works. Most important is the songwriter Ingrid Michaelson, who might be a Broadway newcomer, but whose lyrics eschew the mawkish pitfalls in favor of simple, direct communication of intense but familiar emotions through melody and song.     Emlyn Travis, Entertainment Weekly: Everyone's heard of The Notebook. Whether it’s through reading Nicholas Sparks’ best-selling debut novel or its 2004 blockbuster adaptation starring Ryan Gosling and Rachel McAdams, most can recall some semblance of Noah and Allie’s whirlwind romance — or, at the very least, their propensity for arguing and dramatic kisses in the rain. Now, The Notebook is leaping off the page and onto the stage in a poignant new musical that is, without a doubt, its finest adaptation yet.      Gloria Oladipo, The Guardian: Dementia is a horrifically flattening illness. But it is difficult to sustain the show’s over two hour runtime on the question of reconciliation. The musical’s use of interracial casting is also frustrating. Younger and middle Allie are both Black, while older Allie is white. The Noahs are cast in a similar fashion. The issues with casting isn’t a problem of believability, but consistency. It’s strange why the racial unity in casting is interrupted, especially with no discernible dramatic choice. Sympathizers will waive off the choice as negligible, a side effect of race-blind casting. But race isn’t a minor detail, especially with swaths of the play taking place right before and after the Vietnam war – well into the civil rights era. The Notebook musical hasn’t lost its romantic magic, by any means. But without the equally touching music and a fleshing out of its core courtship, it’s a story that remains underwritten.     Johnny Oleksinki, The New York Post: While the cast of “The Notebook” sings and dances up onstage at the Gerald Schoenfeld Theatre, there is an even more dramatic performance going on in the seats. The sniffle chorus. Ingrid Michaelson’s musical, which opened Thursday night on Broadway is, of course, based on Nicholas Sparks’ weepy 1996 romance novel that was made into a popular movie starring a young Ryan Gosling and Rachel McAdams. Like Pavlov’s pups, millennials habitually sob during that 2004 film, and the production has seized upon its teary reputation by selling branded tissue boxes. During the final 10 minutes, the noses are deafening.     Naveen Kumar, The Washington Post: Instead, Brunstetter’s book, which spreads thin as it flits back and forth through a half-century, resists delineating the central pair with much of any identifying detail. Allie still likes to paint and Noah is good with lumber, but an effort to maximize their relatability winds up sacrificing their flesh and blood. The roles can be played by different actors because there’s nothing very particular about either character. The result is anodyne — and lacks the erotic charge of an attraction with distinct flavor set against a recognizable world.     Charles Isherwood, The Wall Street Journal: Nevertheless, the comparative simplicity of the teary tale at its center—love at first sight strikes boy and girl like lightning, they are separated for a decade, and then the couple reunites for a striding-into-the-sunset happy ending (before age and illness impinge)—left me dry-eyed and occasionally tempted to check my watch. This may put me in the minority, given the story’s proven success in other mediums, but for all its sweetness and polish “The Notebook” never rises to truly transporting heights—except when Ms. Plunkett, as the heroine, Allie, in her later years, and Dorian Harewood, as her husband, Noah, are the focus.     Greg Evans, Deadline: Played out mostly on a nursing home set by David Zinn and Brett J. Banakis that manages to be both attractive and suitably off-putting (Noah’s renovated antibellum farmhouse hits nostalgic notes without summoning unwelcome ghosts), The Notebook gets to its final pages – or very nearly so - without letting its manipulations become too overbearing (more about that “nearly so” in a moment), yet it never approaches the finer works of nearly everyone involved (director Greif gave us Next To Normal and Dear Evan Hansen). The wonderful Plunkett nails the confusion and panic of dementia from the get-go, meaning she has little place to go. Woods, as Middle Ally, breaks through the musical sameness with the production’s unequivocal showstopper (“My Days”), though her musical theater brassiness seems to have no counterpart in either the character’s younger and older versions.     Erin Strecker, IndieWire: And boy, are there lows. It’s a great credit to the production that as the horrors of dementia come into focus the show doesn’t fully drown in the tears (SO many tears!) of audience members. Instead, we’re left with a soft landing of sorts, thanks to the restrained, emotional performances of Harewood and Plunkett, melding the hopelessness of a disease with the hope that must come through in some way in all musicals — even the tragedies. If fans are left wishing they’d gotten a bit more time with people they’ve grown to care about, well, don’t we all.     Robert Hofler, The Wrap: Brunstetter’s script advises that the sets (by David Zinn and Brett J. Banakis) and costumes (by Paloma Young) “feel timeless.” That approach sometimes works for a classic tragedy, but a melodrama like “The Notebook” needs context. In this musical, the only thing keeping Allie and Noah apart is her rather uppity parents (Andrea Burns and Charles E. Wallace). Ingrid Michaelson’s score is middle-of-the-road pop. It’s pleasant. It’s easy on the ears. It’s not in any way what this musical needs to be, which is soaring and romantic.     Juan A. Ramirez, Theatrely: A shrug from a tear-stained shoulder is certainly not the worst way to exit a musical, so even if The Notebook isn’t reinventing any wheels, it turns them with earnest, somehow not-too-sentimental, precision.     Adam Feldman, Time Out New York: And yet: As much as I rolled my eyes at The Notebook, I can’t deny that they sometimes welled up. In this version, it’s the older Noah and Allie—whom Brunstetter draws with the most care, free from the fetters of plot, and around whom Michaelson writes her most touching music—who get to you. Plunkett’s truthfulness pierces through the sentimentality, and there’s something elemental in the combination of love and loss that this pair embodies. As Younger Noah says of Allie’s painting: “It’s sadness and it’s joy, right?” At its best, The Notebook finds a way to deliver both, if only in shorthand.      Dan Rubins, Slant Magazine: Because writing for character means writing in distinct voices, there’s a thin line in musical theater songwriting between the simple and the simplistic: Unlike her gratifyingly accessible pop music, Michaelson’s score here falls on the wrong side too much of the time. That’s a shame, because, in revisiting the story, Michaelson and book writer Bekah Brunstetter have laid out the structure for a thoughtful adaptation that improves upon both the book and the film adaptation.     Jonathan Mandell, New York Theater:  “The Notebook: The Musical” will probably not be the same kind of star-making vehicle, but it is uniformly well-cast, with several memorable performances. The story is cleverly adapted by librettist Bekah Brunstetter, who seems almost as much guided by the TV series “This Is Us” (where she worked as a writer and producer) as by Sparks’ novel. And singer-songwriter Ingrid Michaelson, in her Broadway songwriting debut, delivers almost two dozen  largely folk and country-inflected melodies, most of them lovely, if blandly so; only a few stand out. Little in this musical may soar, but, given the potential of the material for over-the-top melodrama, the relatively low-key approach is part of the show’s appeal.     Roma Torre, New York Stage Review: It was only a matter of time before a stage adaptation of The Notebook came to fruition. Based on Nicholas Sparks’ best selling novel, the popular 2004 film starring Rachel McAdams and Ryan Gosling is a romantic (if rather schmaltzy) stunner. There is naturally a built-in audience for this musical, clamoring to know if it’s as good as the movie and how does it compare? And for those new to the tear-jerker story of Allie and Noah from opposite sides of the tracks, does it still resonate at all? The answer to that last question is most certainly yes, it does resonate.  I think you’d have to hail from another planet not to feel something for these appealing characters. By the resounding sniffles heard throughout the audience, it most certainly succeeded on that front. And yet, despite some lovely songs and excellent performances, the musical is missing some keynotes.     Steven Suskin, New York Stage Review: This is one of those musicals that some viewers will love vociferously while others, inevitably, espouse a decidedly contradictory view. There is enough quality entertainment on hand, especially from the performers, to provide viewers with a thoroughly watchable two-and-a-half hours. In normal Broadway seasons, when full-scale original musicals can be counted on a hand’s worth of fingers, these attributes might be enough to place The Notebook in the Tony winner’s circle, or at least in contention. But based on the 2023-24 musicals which have opened thus far and those which have already been seen in pre-Broadway mountings, one might predict that The Notebook will fall far above the worst but not in league with the best.     Sara Holdren, Vu: If I had to take bets on how many actual tears The Notebook The Musical manages to jerk — well, I wouldn’t advise anyone to bring a bucket. With prosaic direction and a strangely heavy and sterile aesthetic sense that feels, despite Schele Williams’s presence as a co-director, all too similar to Michael Greif’s other productions this season, as well as a surprisingly beige slate of songs by the folk-pop artist Ingrid Michaelson, the show disappears from memory almost moment to moment. It’s almost enough to make one want to reference the half of the story’s plot that deals with dementia.     Kyle Turner, New York Theatre Guide: This compelling conceit gets weakened by a flat book and lyrics. Brunstetter and Michaelson aim for simplicity, but lyrics like a repeated “sadness and joy” fail to illuminate Noah and Allie's depth of character. The Notebook: The Musical can only compensate so much with Michaelson's strumming music, with repetitions that are pleasant but melt together, and some songs become indistinguishable from each other. Occasionally, a flourish in John Clancy and Carmel Dean's orchestrations grabs the attention.     Frank Rizzo, Variety: As for the production, the staging by Michael Greif (“Dear Evan Hansen,” “Next to Normal”) and Schele Williams (“The Wiz”) feels, for all its intention of intimacy, contrived and unsurprising. For a while the cross-cutting of the three couples haunting each other is intriguing but soon Katie Spelman’s choreography of past and future lives ever-circling each other simply becomes a dizzying one-note effect. The cross-racial casting of couples nicely underscores the universality of the romance and the ease of imaginative leaps in musical theater.        Average Rating: 55.0% {   \"@context\":\"https://schema.org\",   \"@type\":\"LiveBlogPosting\",   \"@id\":\"/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314\",   \"about\":{     \"@type\":\"Event\",     \"startDate\":\"2024-03-14T08:56:05-05:00\",          \"name\":\"Review Roundup: THE NOTEBOOK Opens On Broadway\",            \"eventAttendanceMode\": \"https://schema.org/OnlineEventAttendanceMode\",       \"location\": {         \"@type\": \"VirtualLocation\",         \"url\": \"/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314\"         }     },   \"coverageStartTime\":\"2024-03-14T08:56:05-05:00\",      \"coverageEndTime\":\"2024-03-14T11:56:05-05:00\",   \"headline\":\"Review Roundup: THE NOTEBOOK Opens On Broadway\",      \"description\":\"Read reviews for the Broadway premiere of the epic love story, The Notebook, opening on Broadway tonight! \",   \"liveBlogUpdate\":[     {       \"@type\":\"BlogPosting\",       \"headline\":\"The New York Times - ‘The Notebook’ Review: A Musical Tear-Jerker or Just All Wet?\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"When songs provide so little information, barely differentiating the characters let alone advancing the plot, a musical tends to sag. And when a musical has gone to some trouble to accommodate those songs — the movie of “The Notebook” runs two hours, the show hardly 20 minutes more — the trade-offs are of the nose-versus-face variety.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"Associated Press  - Theater Review: Without Gosling or geese, Broadway’s ‘The Notebook’ goes for the guts, without guile\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"The bombastic musical that opened Thursday at the Gerald Schoenfeld Theatre is about a love for the ages but has understated songs by Ingrid Michaelson, who offers coffee house vibes instead of passion’s thunder. The book by Bekah Brunstetter loses gas well before it’s over and piles on the melodrama.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"The New York Daily News -  The Notebook is an unexpectedly sophisticated tear-jerker\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"There are two main reasons why this show works. Most important is the songwriter Ingrid Michaelson, who might be a Broadway newcomer, but whose lyrics eschew the mawkish pitfalls in favor of simple, direct communication of intense but familiar emotions through melody and song. \"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"Entertainment Weekly - The Notebook review: Nicholas Sparks' novel leaps off the page and onto the stage in emotional new musical\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"Everyone's heard of The Notebook. Whether it’s through reading Nicholas Sparks’ best-selling debut novel or its 2004 blockbuster adaptation starring Ryan Gosling and Rachel McAdams, most can recall some semblance of Noah and Allie’s whirlwind romance — or, at the very least, their propensity for arguing and dramatic kisses in the rain. Now, The Notebook is leaping off the page and onto the stage in a poignant new musical that is, without a doubt, its finest adaptation yet. \"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"The Guardian - The Notebook review – hit romance lands on Broadway a little underwritten\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"Dementia is a horrifically flattening illness. But it is difficult to sustain the show’s over two hour runtime on the question of reconciliation. The musical’s use of interracial casting is also frustrating. Younger and middle Allie are both Black, while older Allie is white. The Noahs are cast in a similar fashion. The issues with casting isn’t a problem of believability, but consistency. It’s strange why the racial unity in casting is interrupted, especially with no discernible dramatic choice. Sympathizers will waive off the choice as negligible, a side effect of race-blind casting. But race isn’t a minor detail, especially with swaths of the play taking place right before and after the Vietnam war – well into the civil rights era. The Notebook musical hasn’t lost its romantic magic, by any means. But without the equally touching music and a fleshing out of its core courtship, it’s a story that remains underwritten.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"The New York Post - ‘The Notebook’ review: Broadway musical doesn’t match the film’s sweep\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"While the cast of “The Notebook” sings and dances up onstage at the Gerald Schoenfeld Theatre, there is an even more dramatic performance going on in the seats. The sniffle chorus. Ingrid Michaelson’s musical, which opened Thursday night on Broadway is, of course, based on Nicholas Sparks’ weepy 1996 romance novel that was made into a popular movie starring a young Ryan Gosling and Rachel McAdams. Like Pavlov’s pups, millennials habitually sob during that 2004 film, and the production has seized upon its teary reputation by selling branded tissue boxes. During the final 10 minutes, the noses are deafening.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"The Washington Post - ‘The Notebook’ musical might make you cry, but that’s about it\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"Instead, Brunstetter’s book, which spreads thin as it flits back and forth through a half-century, resists delineating the central pair with much of any identifying detail. Allie still likes to paint and Noah is good with lumber, but an effort to maximize their relatability winds up sacrificing their flesh and blood. The roles can be played by different actors because there’s nothing very particular about either character. The result is anodyne — and lacks the erotic charge of an attraction with distinct flavor set against a recognizable world.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"The Wall Street Journal - ‘The Notebook’ Review: A Melodrama Becomes a Musical\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"Nevertheless, the comparative simplicity of the teary tale at its center—love at first sight strikes boy and girl like lightning, they are separated for a decade, and then the couple reunites for a striding-into-the-sunset happy ending (before age and illness impinge)—left me dry-eyed and occasionally tempted to check my watch. This may put me in the minority, given the story’s proven success in other mediums, but for all its sweetness and polish “The Notebook” never rises to truly transporting heights—except when Ms. Plunkett, as the heroine, Allie, in her later years, and Dorian Harewood, as her husband, Noah, are the focus.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"Deadline - ‘The Notebook’ Broadway Review: Romantic Saga Takes Another Step In Sentimental Journey\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"Played out mostly on a nursing home set by David Zinn and Brett J. Banakis that manages to be both attractive and suitably off-putting (Noah’s renovated antibellum farmhouse hits nostalgic notes without summoning unwelcome ghosts), The Notebook gets to its final pages – or very nearly so - without letting its manipulations become too overbearing (more about that “nearly so” in a moment), yet it never approaches the finer works of nearly everyone involved (director Greif gave us Next To Normal and Dear Evan Hansen). The wonderful Plunkett nails the confusion and panic of dementia from the get-go, meaning she has little place to go. Woods, as Middle Ally, breaks through the musical sameness with the production’s unequivocal showstopper (“My Days”), though her musical theater brassiness seems to have no counterpart in either the character’s younger and older versions.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"IndieWire - ‘The Notebook’ on Broadway Is a Smart Model for How to Adapt a Beloved Movie\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"And boy, are there lows. It’s a great credit to the production that as the horrors of dementia come into focus the show doesn’t fully drown in the tears (SO many tears!) of audience members. Instead, we’re left with a soft landing of sorts, thanks to the restrained, emotional performances of Harewood and Plunkett, melding the hopelessness of a disease with the hope that must come through in some way in all musicals — even the tragedies. If fans are left wishing they’d gotten a bit more time with people they’ve grown to care about, well, don’t we all.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"The Wrap - ‘The Notebook’ Broadway Review: Ryan Gosling and Rachel McAdams Are Sorely Missed\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"Brunstetter’s script advises that the sets (by David Zinn and Brett J. Banakis) and costumes (by Paloma Young) “feel timeless.” That approach sometimes works for a classic tragedy, but a melodrama like “The Notebook” needs context. In this musical, the only thing keeping Allie and Noah apart is her rather uppity parents (Andrea Burns and Charles E. Wallace). Ingrid Michaelson’s score is middle-of-the-road pop. It’s pleasant. It’s easy on the ears. It’s not in any way what this musical needs to be, which is soaring and romantic.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"Theatrely - THE NOTEBOOK Brings Heartfelt Passion To Broadway — Review\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"A shrug from a tear-stained shoulder is certainly not the worst way to exit a musical, so even if The Notebook isn’t reinventing any wheels, it turns them with earnest, somehow not-too-sentimental, precision.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"Time Out New York - The Notebook\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"And yet: As much as I rolled my eyes at The Notebook, I can’t deny that they sometimes welled up. In this version, it’s the older Noah and Allie—whom Brunstetter draws with the most care, free from the fetters of plot, and around whom Michaelson writes her most touching music—who get to you. Plunkett’s truthfulness pierces through the sentimentality, and there’s something elemental in the combination of love and loss that this pair embodies. As Younger Noah says of Allie’s painting: “It’s sadness and it’s joy, right?” At its best, The Notebook finds a way to deliver both, if only in shorthand. \"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"Slant Magazine - The Notebook Review: On Stage, a Nicholas Sparks Adaptation Held Captive by Its Clichés\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"Because writing for character means writing in distinct voices, there’s a thin line in musical theater songwriting between the simple and the simplistic: Unlike her gratifyingly accessible pop music, Michaelson’s score here falls on the wrong side too much of the time. That’s a shame, because, in revisiting the story, Michaelson and book writer Bekah Brunstetter have laid out the structure for a thoughtful adaptation that improves upon both the book and the film adaptation.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"New York Theater - The Notebook Broadway Review\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \" “The Notebook: The Musical” will probably not be the same kind of star-making vehicle, but it is uniformly well-cast, with several memorable performances. The story is cleverly adapted by librettist Bekah Brunstetter, who seems almost as much guided by the TV series “This Is Us” (where she worked as a writer and producer) as by Sparks’ novel. And singer-songwriter Ingrid Michaelson, in her Broadway songwriting debut, delivers almost two dozen  largely folk and country-inflected melodies, most of them lovely, if blandly so; only a few stand out. Little in this musical may soar, but, given the potential of the material for over-the-top melodrama, the relatively low-key approach is part of the show’s appeal.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"New York Stage Review - THE NOTEBOOK: A MUSICAL ROMANCE MADE FOR FANS TO LOVE\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"It was only a matter of time before a stage adaptation of The Notebook came to fruition. Based on Nicholas Sparks’ best selling novel, the popular 2004 film starring Rachel McAdams and Ryan Gosling is a romantic (if rather schmaltzy) stunner. There is naturally a built-in audience for this musical, clamoring to know if it’s as good as the movie and how does it compare? And for those new to the tear-jerker story of Allie and Noah from opposite sides of the tracks, does it still resonate at all? The answer to that last question is most certainly yes, it does resonate.  I think you’d have to hail from another planet not to feel something for these appealing characters. By the resounding sniffles heard throughout the audience, it most certainly succeeded on that front. And yet, despite some lovely songs and excellent performances, the musical is missing some keynotes.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"New York Stage Review - THE NOTEBOOK: JUST ANOTHER LOVE STORY, WITH KLEENEX\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"This is one of those musicals that some viewers will love vociferously while others, inevitably, espouse a decidedly contradictory view. There is enough quality entertainment on hand, especially from the performers, to provide viewers with a thoroughly watchable two-and-a-half hours. In normal Broadway seasons, when full-scale original musicals can be counted on a hand’s worth of fingers, these attributes might be enough to place The Notebook in the Tony winner’s circle, or at least in contention. But based on the 2023-24 musicals which have opened thus far and those which have already been seen in pre-Broadway mountings, one might predict that The Notebook will fall far above the worst but not in league with the best.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"Vu - Love and Brains, Dull and Sharp: The Notebook and The Effect\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"If I had to take bets on how many actual tears The Notebook The Musical manages to jerk — well, I wouldn’t advise anyone to bring a bucket. With prosaic direction and a strangely heavy and sterile aesthetic sense that feels, despite Schele Williams’s presence as a co-director, all too similar to Michael Greif’s other productions this season, as well as a surprisingly beige slate of songs by the folk-pop artist Ingrid Michaelson, the show disappears from memory almost moment to moment. It’s almost enough to make one want to reference the half of the story’s plot that deals with dementia.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"New York Theatre Guide - 'The Notebook' review — a trip down memory lane on stage and off\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"This compelling conceit gets weakened by a flat book and lyrics. Brunstetter and Michaelson aim for simplicity, but lyrics like a repeated “sadness and joy” fail to illuminate Noah and Allie's depth of character. The Notebook: The Musical can only compensate so much with Michaelson's strumming music, with repetitions that are pleasant but melt together, and some songs become indistinguishable from each other. Occasionally, a flourish in John Clancy and Carmel Dean's orchestrations grabs the attention.\"     },           {       \"@type\":\"BlogPosting\",       \"headline\":\"Variety - ‘The Notebook’ Review: Broadway Musical of the Popular Romance Hits All-Too-Familiar Notes\",       \"datePublished\":\"2024-05-30T10:29:45-05:00\",         \"articleBody\": \"As for the production, the staging by Michael Greif (“Dear Evan Hansen,” “Next to Normal”) and Schele Williams (“The Wiz”) feels, for all its intention of intimacy, contrived and unsurprising. For a while the cross-cutting of the three couples haunting each other is intriguing but soon Katie Spelman’s choreography of past and future lives ever-circling each other simply becomes a dizzying one-note effect. The cross-racial casting of couples nicely underscores the universality of the romance and the ease of imaginative leaps in musical theater.\"     }             ] }",
 
-"keywords": "hadestown, musical, broadway, theatre, york, orpheus, mitchell, rachel, chavkin, songs",
-  "mainEntityOfPage": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
-  "thumbnailUrl": "https://cloudimages.broadwayworld.com/columnpic10/680B541AC2E-D536-47DC-940CA49D6A7CB82D.jpg",
-  "image": "https://cloudimages.broadwayworld.com/columnpic10/680B541AC2E-D536-47DC-940CA49D6A7CB82D.jpg",
+"keywords": "notebook, musical, broadway, noah, typeblogposting, datepublished20240530t1029450500, articlebody, review, allie, york",
+  "mainEntityOfPage": "https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314",
+  "thumbnailUrl": "https://cloudimages.broadwayworld.com/columnpiccloud/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-1710446163.jpg",
+  "image": "https://cloudimages.broadwayworld.com/columnpiccloud/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-1710446163.jpg",
   "publisher": {
     "@type": "NewsMediaOrganization",
     "name": "BroadwayWorld.com",
@@ -159,9 +173,9 @@ googletag.defineSlot('/106293300/BWW_Desktop_Sidebar_Bottom',  [[300,250]], 'div
       "height": "60"
     }
   },
-  "datePublished": "2019-04-17T20:11:26-04:00",
-  "dateModified": "2019-04-17T20:11:26-04:00",
-  "dateCreated": "2019-04-17T20:11:26-04:00",
+  "datePublished": "2024-03-14T20:56:05-04:00",
+  "dateModified": "2024-03-14T20:56:05-04:00",
+  "dateCreated": "2024-03-14T20:56:05-04:00",
   "articleSection": "Broadway",
   "author": [
     {
@@ -1433,12 +1447,12 @@ border-width: 0px !important;
 
         <div class="container">
       		 <div class="article-header" >
-       				<h1 class="weight-700"> Review Roundup: HADESTOWN Opens On Broadway- What Did The Critics Think? </h1>
+       				<h1 class="weight-700"> Review Roundup: THE NOTEBOOK Opens On Broadway </h1>
 
-
+<p>Based on the bestselling novel by Nicholas Sparks that inspired the iconic film, The Notebook opens tonight at Broadway’s Schoenfeld Theatre.</p>
 
 			<div class="d-flex date">
-			<span>By:  <a  itemprop="url"  rel="author" href="/author/AA-Cristi">A.A. Cristi</a></span>             <span>  Apr. 17, 2019</span>
+			<span>By:  <a  itemprop="url"  rel="author" href="/author/AA-Cristi">A.A. Cristi</a></span>             <span>  Mar. 14, 2024</span>
 			</div>
 			</div>
 				
@@ -1544,7 +1558,7 @@ border-width: 0px !important;
 			      
 			    
 
-<img src="https://cloud.broadwayworld.com/pixel-article.cfm?id=1938548&hot=332678&headline=1" style="display:none;" id="pxl" height="0" width="0" alt="pixeltracker" >
+<img src="https://cloud.broadwayworld.com/pixel-article.cfm?id=2297909&hot=334654&headline=1" style="display:none;" id="pxl" height="0" width="0" alt="pixeltracker" >
 
 
 
@@ -1570,23 +1584,40 @@ border-width: 0px !important;
 
 
 
-   
-    			   
+           
+  
+        
+    
+<img
+  src="https://cloudimages2.broadwayworld.com/columnpiccloud/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-1710446163.jpg?format=auto&width=1492"
+  srcset="https://cloudimages2.broadwayworld.com/columnpiccloud/336-Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-1710446163.jpg?format=auto&width=335 335w, https://cloudimages2.broadwayworld.com/columnpiccloud/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-1710446163.jpg?format=auto&width=1599 1599w, https://cloudimages2.broadwayworld.com/columnpiccloud/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-1710446163.jpg?format=auto&width=1600 1600w"
+  sizes="100vw"
+  style="max-width:100%; height:auto; aspect-ratio:746/373; display:block;"
+  width="746"
+  height="373"
+  alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image"
+  loading="eager"
+  fetchpriority="high"
+>
+
+
+
+  			   
 
 			   
 			 <div id="top-social" class="sharing-social" style="margin-top:2px;padding-top:px;">
-                <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417" aria-label="facebook" style="margin-right: 8px;">
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314" aria-label="facebook" style="margin-right: 8px;">
 <svg style="fill:#4267b2;" xmlns="http://www.w3.org/2000/svg" alt="facebook share" width="24" height="24" viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
 
 </a>
-                <a href="https://twitter.com/intent/tweet?text=Review+Roundup%3A+HADESTOWN+Opens+On+Broadway-+What+Did+The+Critics+Think%3F+&amp;url=https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417" aria-label="twitter" style="margin-right: 8px;">
+                <a href="https://twitter.com/intent/tweet?text=Review+Roundup%3A+THE+NOTEBOOK+Opens+On+Broadway+&amp;url=https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314" aria-label="twitter" style="margin-right: 8px;">
 <svg  style="fill:#1ab1ea;" xmlns="http://www.w3.org/2000/svg" alt="twitter share" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0v24h24v-24h-24zm18.862 9.237c.208 4.617-3.235 9.765-9.33 9.765-1.854 0-3.579-.543-5.032-1.475 1.742.205 3.48-.278 4.86-1.359-1.437-.027-2.649-.976-3.066-2.28.515.098 1.021.069 1.482-.056-1.579-.317-2.668-1.739-2.633-3.26.442.246.949.394 1.486.411-1.461-.977-1.875-2.907-1.016-4.383 1.619 1.986 4.038 3.293 6.766 3.43-.479-2.053 1.079-4.03 3.198-4.03.944 0 1.797.398 2.396 1.037.748-.147 1.451-.42 2.085-.796-.245.767-.766 1.41-1.443 1.816.664-.08 1.297-.256 1.885-.517-.44.656-.997 1.234-1.638 1.697z"/></svg>                </a>
                 
                 
 
 
                 
-                <a href="mailto:?subject=Review Roundup: HADESTOWN Opens On Broadway- What Did The Critics Think? &amp;body=https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417" aria-label="email" style="margin-right: 8px;">
+                <a href="mailto:?subject=Review Roundup: THE NOTEBOOK Opens On Broadway &amp;body=https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314" aria-label="email" style="margin-right: 8px;">
                 <svg xmlns="http://www.w3.org/2000/svg" alt="email share" width="24" height="24" viewBox="0 0 24 24">
   <path 
    
@@ -1647,7 +1678,9 @@ border-width: 0px !important;
 
 		
 		
-		 <p><img alt="Review Roundup: HADESTOWN Opens On Broadway- What Did The Critics Think?  Image" title="Review Roundup: HADESTOWN Opens On Broadway- What Did The Critics Think? " height="187" src="https://cloudimages2.broadwayworld.com/columnpic10/2B541AC2E-D536-47DC-940CA49D6A7CB82D.jpg?format=auto&width=1400" align="left" width="250"></p><aside>      	
+		 <p>Did Broadway&#39;s newest musical tear-jerker move the critics? Read reviews for the Broadway premiere of the epic love story, The Notebook, opening on Broadway tonight!<br />
+&nbsp;&nbsp;<br />
+Based on the bestselling novel by Nicholas Sparks that inspired the iconic film, The Notebook &ndash; which opens tonight at Broadway&rsquo;s Schoenfeld Theatre &ndash; features music and lyrics by multiplatinum singer-songwriter <a target="newwinddow" href="/people/Ingrid-Michaelson/">Ingrid Michaelson</a> and a book by playwright <a target="newwinddow" href="/people/Bekah-Brunstetter/">Bekah Brunstetter</a>. Produced by <a target="newwinddow" href="/people/Kevin-McCollum/">Kevin McCollum</a> and <a target="newwinddow" href="/people/Kurt-Deutsch/">Kurt Deutsch</a>, The Notebook is directed by <a target="newwinddow" href="/people/Michael-Greif/">Michael Greif</a>&nbsp;and <a target="newwinddow" href="/people/Schele-Williams/">Schele Williams</a>, with choreography by <a target="newwinddow" href="/people/Katie-Spelman/">Katie Spelman</a>.&nbsp;</p><aside>      	
 <div class="nobreak">
      <div class="row message-latest-news" style="background-color:#000000;padding:5px;margin-bottom:10px;border-top-width:0px;margin-top: -2px;margin-left: -15px;padding-bottom: 0px;"> 
   
@@ -1699,71 +1732,368 @@ border-width: 0px !important;
 	 </div></div>
 </aside>
 
-<p>Following record-breaking runs at New York Theatre Workshop, Canada's Citadel Theatre, and the <a target="newwinddow" href="/people/National-Theatre/">National Theatre</a>, the new musical <a target="newwinddow" href="/shows/Hadestown-332678.html">Hadestown</a> opens on Broadway tonight.</p>
+<p>The cast of The Notebook features Tony Award-winner <a target="newwinddow" href="/people/Maryann-Plunkett/">Maryann Plunkett</a> as Older Allie, <a target="newwinddow" href="/people/Dorian-Harewood/">Dorian Harewood</a> as Older Noah, <a target="newwinddow" href="/people/Joy-Woods/">Joy Woods</a> as Middle Allie, <a target="newwinddow" href="/people/Ryan-Vasquez/">Ryan Vasquez</a> as Middle Noah, <a target="newwinddow" href="/people/Jordan-Tyson/">Jordan Tyson</a> as Younger Allie, <a target="newwinddow" href="/people/John-Cardoza/">John Cardoza</a> as Younger Noah, Andr&eacute;a Burns as Mother/Nurse Lori, <a target="newwinddow" href="/people/Carson-Stewart/">Carson Stewart</a> as Johnny/Fin. Playing various roles are <a target="newwinddow" href="/people/Yassmin-Alers/">Yassmin Alers</a>, <a target="newwinddow" href="/people/Alex-Benoit/">Alex Benoit</a>, <a target="newwinddow" href="/people/Chase-Del-Rey/">Chase Del Rey</a>, <a target="newwinddow" href="/people/Hillary-Fisher/">Hillary Fisher</a>, <a target="newwinddow" href="/people/Jerome-Harmann-Hardeman/">Jerome Harmann-Hardeman</a>, <a target="newwinddow" href="/people/Dorcas-Leung/">Dorcas Leung</a>, <a target="newwinddow" href="/people/Happy-McPartlin/">Happy McPartlin</a>, <a target="newwinddow" href="/people/Juliette-Ojeda/">Juliette Ojeda</a>, <a target="newwinddow" href="/people/Kim-Onah/">Kim Onah</a>, <a target="newwinddow" href="/people/Charles-E-Wallace/">Charles E. Wallace</a> and <a target="newwinddow" href="/people/Charlie-Webb/">Charlie Webb</a>.</p>
 
-<p>In the warmth of summertime, songwriter Orpheus and his muse Eurydice are living it up and falling in love. But as winter approaches, reality sets in: these young dreamers can't survive on songs alone. Tempted by the promise of plenty, Eurydice is lured to the depths of industrial <a target="newwinddow" href="/shows/Hadestown-332677.html">Hadestown</a>. On a quest to save her, Orpheus journeys to the underworld where their trust in each other is put to a final test.</p>
-
-<p>Written by celebrated singer-songwriter Ana&iuml;s Mitchell and developed with innovative director and Tony Award&reg; nominee <a target="newwinddow" href="/people/Rachel-Chavkin/">Rachel Chavkin</a>, the cast of <a target="newwinddow" href="/shows/Hadestown-332678.html">Hadestown</a> is led by the acclaimed actors from its sold-out run at London's <a target="newwinddow" href="/people/National-Theatre/">National Theatre</a>: <a target="newwinddow" href="/people/Reeve-Carney/">Reeve Carney</a>, Andr&eacute; De Shields, <a target="newwinddow" href="/people/Amber-Gray/">Amber Gray</a>, <a target="newwinddow" href="/people/Eva-Noblezada/">Eva Noblezada</a>, and <a target="newwinddow" href="/people/Patrick-Page/">Patrick Page</a>. They are joined by <a target="newwinddow" href="/people/Jewelle-Blackman/">Jewelle Blackman</a>, <a target="newwinddow" href="/people/Yvette-Gonzalez-Nacer/">Yvette Gonzalez-Nacer</a>, and <a target="newwinddow" href="/people/Kay-Trinidad/">Kay Trinidad</a> as the Fates. The Workers Chorus is played by <a target="newwinddow" href="/people/Afra-Hines/">Afra Hines</a>, <a target="newwinddow" href="/people/Timothy-Hughes/">Timothy Hughes</a>, <a target="newwinddow" href="/people/John-Krause/">John Krause</a>, <a target="newwinddow" href="/people/Kimberly-Marable/">Kimberly Marable</a>, and <a target="newwinddow" href="/people/Ahmad-Simmons/">Ahmad Simmons</a>. The full cast also includes swings <a target="newwinddow" href="/people/Malcolm-Armwood/">Malcolm Armwood</a>, <a target="newwinddow" href="/people/T-Oliver-Reid/">T. Oliver Reid</a>, <a target="newwinddow" href="/people/Jessie-Shelton/">Jessie Shelton</a>, and <a target="newwinddow" href="/people/Khaila-Wilcoxon/">Khaila Wilcoxon</a>.</p><div id="ezoic-pub-ad-placeholder-668"> </div>
+<p>In the play, Allie and Noah, two people from different worlds, share a lifetime of love despite the forces that threaten to pull them apart in a deeply moving portrait of the enduring power of love. Based on the book that has sold millions of copies worldwide and a film that is one of the highest-grossing romantic dramas of all-time, the musical adaptation of The Notebook comes to Broadway following a critically acclaimed world premiere engagement at <a target="newwinddow" href="/people/Chicago-Shakespeare-Theater/">Chicago Shakespeare Theater</a> in the fall of 2022.&nbsp;</p><div id="ezoic-pub-ad-placeholder-668"> </div>
     <!-- End Ezoic - Article Insertion 1 - under_page_title -->
 
-<p>Directed by <a target="newwinddow" href="/people/Rachel-Chavkin/">Rachel Chavkin</a>, with set design by <a target="newwinddow" href="/people/Rachel-Hauck/">Rachel Hauck</a>, costume design by <a target="newwinddow" href="/people/Michael-Krass/">Michael Krass</a>, lighting design by <a target="newwinddow" href="/people/Bradley-King/">Bradley King</a>, sound design by <a target="newwinddow" href="/people/Nevin-Steinberg/">Nevin Steinberg</a> and <a target="newwinddow" href="/people/Jessica-Paz/">Jessica Paz</a>, choreography by <a target="newwinddow" href="/people/David-Neuman/">David Neuman</a>n, musical direction and vocal arrangements by <a target="newwinddow" href="/people/Liam-Robinson/">Liam Robinson</a>, orchestrations and arrangements by <a target="newwinddow" href="/people/Michael-Chorney/">Michael Chorney</a>and <a target="newwinddow" href="/people/Todd-Sickafoose/">Todd Sickafoose</a>, with <a target="newwinddow" href="/people/Ken-Cerniglia/">Ken Cerniglia</a> as dramaturg.</p>
 
-<hr><p>Ben Brantley, <a target="newwinddow" href="https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitchell.html?smtyp=cur&amp;smid=tw-nytimesarts" target="_blank">The New York Times</a>: The gods, or more likely Ms. Chavkin and her creative team, have saved "Hadestown" on its way uptown - via Edmonton and London - by turning it into something very much warmer, if not yet ideally warm. The story is clearer, the songs express that story more directly and the larger themes arise from it naturally rather than demanding immediate attention like overeager undergraduates.</p>
-
-<p>Michael Dale, <a target="newwinddow" href="/article/BWW-Review-New-Orleans-Gets-Mythological-in-Anas-Mitchells-Exhilarating-Bluesy-Folk-Opera-HADESTOWN-20190418" target="_blank">BroadwayWorld</a>: If the story loses steam a bit in the second act, the storytelling doesn't, and at the center of Hadestown is the theme of why we repeat the songs and stories that we've heard and sung countless times before. As she did with her excellent staging of NATASHA, PIERRE &amp; THE GREAT COMET OF 1812, Chavkin turns her cast into an irresistible community of storytelling entertainers, carrying on their traditions even after they've taken their bows. Working with a turntable floor, she and choreographer David Neumann create a striking array of visuals, particularly when a group of hanging lamps appear to be choreographed as they swing above the audience.</p><!-- Ezoic - Article Insertion 2 - mid_content -->
+			
+			
+			<p>	
+  
+ <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/dislike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Down"  >Jesse Green, <a target="newwinddow" href="https://www.nytimes.com/2024/03/14/theater/the-notebook-review-broadway-musical.html" target="_new">The New York Times:</a> When songs provide so little information, barely differentiating the characters let alone advancing the plot, a musical tends to sag. And when a musical has gone to some trouble to accommodate those songs — the movie of “The Notebook” runs two hours, the show hardly 20 minutes more — the trade-offs are of the nose-versus-face variety.</p>
+			
+			
+			<p>	
+  
+ <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/dislike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Down"  >Mark Kennedy, <a target="newwinddow" href="https://apnews.com/article/notebook-musical-broadway-review-75ff86fdfa180065618c886e5e0891d3" target="_new">Associated Press :</a> The bombastic musical that opened Thursday at the Gerald Schoenfeld Theatre is about a love for the ages but has understated songs by Ingrid Michaelson, who offers coffee house vibes instead of passion’s thunder. The book by Bekah Brunstetter loses gas well before it’s over and piles on the melodrama.</p>
+			
+			
+			<p>	<img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/like-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Up" >
+  
+ Chris Jones, <a target="newwinddow" href="https://www.nydailynews.com/2024/03/14/broadway-review-the-notebook-is-an-unexpectedly-sophisticated-tearjerker/" target="_new">The New York Daily News:</a> There are two main reasons why this show works. Most important is the songwriter Ingrid Michaelson, who might be a Broadway newcomer, but whose lyrics eschew the mawkish pitfalls in favor of simple, direct communication of intense but familiar emotions through melody and song.
+</p><!-- Ezoic - Article Insertion 2 - mid_content -->
     <div id="ezoic-pub-ad-placeholder-669"> </div>
     <!-- End Ezoic - Article Insertion 2 - mid_content -->
-
-<p><a target="newwinddow" href="/people/Adam-Feldman/">Adam Feldman</a>, <a target="newwinddow" href="https://www.timeout.com/newyork/theater/hadestown-review-broadway" target="_blank">Time Out New York</a>: Here's my advice: Go to hell. And by hell, of course, I mean Hadestown, Ana&iuml;s Mitchell's fizzy, moody, thrilling new Broadway musical. Ostensibly, at least, the show is a modern retelling of the ancient Greek myth of Orpheus and Eurydice: Boy meets girl, boy loses girl, boy goes to the land of the dead in hopes of retrieving girl, boy loses girl again. "It's an old song," sings our narrator, the messenger god Hermes (Andr&eacute; De Shields, a master of arch razzle-dazzle). "And we're gonna sing it again." But it's the newness of Mitchell's musical account-and <a target="newwinddow" href="/people/Rachel-Chavkin/">Rachel Chavkin</a>'s gracefully dynamic staging-that bring this old story to quivering life.</p>
-
-<p>Chris Jones, <a target="newwinddow" href="https://www.nydailynews.com/entertainment/broadway/ny-jones-review-hadestown-broadway-20190418-24muagsknrcxxdft7hwt3w7lue-story.html" target="_blank">The NY Daily News</a>: America's on the road to hell - better jump right off, my children. Too dangerous to look back. Instead, try and find the cracks in that famous wall we're building. That's pretty much the message of "Hadestown," the thrillingly alarmist new Broadway musical with the score that feels like it comes from somewhere deep in the American gut. Now an eye-popping, mythological blend of steampunk, "Westworld" and Bourbon St. anarchy, this dystopian tuner has its origins in a 2010 concept album, a folk opera of sorts, by the remarkable singer-songwriter Ana&iuml;s Mitchell.</p><!-- Ezoic - Article Insertion 3 - long_content -->
+			
+			
+			<p>	<img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/like-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Up" >
+  
+ Emlyn Travis, <a target="newwinddow" href="https://ew.com/the-notebook-musical-review-nicholas-sparks-broadway-8609026" target="_new">Entertainment Weekly:</a> Everyone's heard of The Notebook. Whether it’s through reading Nicholas Sparks’ best-selling debut novel or its 2004 blockbuster adaptation starring Ryan Gosling and Rachel McAdams, most can recall some semblance of Noah and Allie’s whirlwind romance — or, at the very least, their propensity for arguing and dramatic kisses in the rain. Now, The Notebook is leaping off the page and onto the stage in a poignant new musical that is, without a doubt, its finest adaptation yet. </p>
+			
+			
+			<p>	
+  <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/midlike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Sideways" >
+ Gloria Oladipo, <a target="newwinddow" href="https://www.theguardian.com/stage/2024/mar/14/the-notebook-review-broadway" target="_new">The Guardian:</a> Dementia is a horrifically flattening illness. But it is difficult to sustain the show’s over two hour runtime on the question of reconciliation. The musical’s use of interracial casting is also frustrating. Younger and middle Allie are both Black, while older Allie is white. The Noahs are cast in a similar fashion. The issues with casting isn’t a problem of believability, but consistency. It’s strange why the racial unity in casting is interrupted, especially with no discernible dramatic choice. Sympathizers will waive off the choice as negligible, a side effect of race-blind casting. But race isn’t a minor detail, especially with swaths of the play taking place right before and after the Vietnam war – well into the civil rights era. The Notebook musical hasn’t lost its romantic magic, by any means. But without the equally touching music and a fleshing out of its core courtship, it’s a story that remains underwritten.</p><!-- Ezoic - Article Insertion 3 - long_content -->
     <div id="ezoic-pub-ad-placeholder-670"></div>
     <!-- End Ezoic - Article Insertion 3 - long_content -->
-
-<p>Sara Holdren, <a target="newwinddow" href="https://www.vulture.com/2019/04/hadestown-is-a-songwriting-and-storytelling-tour-de-force.html" target="_blank">Vulture</a>: Hadestown has arrived on Broadway. Like so many of its mythic antecedents, it's the product of much metamorphosis, and its current manifestation feels lush, vigorous, and formally exciting, not to mention, in certain moments, witchily prescient.</p>
-
-<p>Matt Windman, <a target="newwinddow" href="https://www.amny.com/entertainment/hadestown-review-1.29924932" target="_blank">amNY</a>: Directed by Rachel Chavkin ("Natasha, Pierre &amp; The Great Comet of 1812"), "Hadestown" contains a stunning visual design evoking both a New Orleans barroom scene and a smoldering mechanical underworld, complemented by the motion of turntables, a rollicking band, bold performances and expressive dance choreography. Whereas the previous Off-Broadway production was performed in the round, no impact has been lost in the transition to a traditional proscenium theater. The score - which contains airy folk-pop for the lovers and a livelier jazz idiom for the denizens of the underworld - comes off as distinctive and authentic by Broadway standards. Many of the songs are reflective in nature, which leads to some slow points, especially in Act Two. But, more often than not, "Hadestown" is exciting, compelling and beautiful.</p><!-- Ezoic - Article Insertion 4 - longer_content -->
+			
+			
+			<p>	
+  
+ <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/dislike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Down"  >Johnny Oleksinki, <a target="newwinddow" href="https://nypost.com/2024/03/14/entertainment/the-notebook-review-broadway-musical-doesnt-match-films-sweep/" target="_new">The New York Post:</a> While the cast of “The Notebook” sings and dances up onstage at the Gerald Schoenfeld Theatre, there is an even more dramatic performance going on in the seats. The sniffle chorus. Ingrid Michaelson’s musical, which opened Thursday night on Broadway is, of course, based on Nicholas Sparks’ weepy 1996 romance novel that was made into a popular movie starring a young Ryan Gosling and Rachel McAdams. Like Pavlov’s pups, millennials habitually sob during that 2004 film, and the production has seized upon its teary reputation by selling branded tissue boxes. During the final 10 minutes, the noses are deafening.</p>
+			
+			
+			<p>	
+  <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/midlike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Sideways" >
+ Naveen Kumar, <a target="newwinddow" href="https://www.washingtonpost.com/entertainment/theater/2024/03/14/the-notebook-review-broadway-musical/" target="_new">The Washington Post:</a> Instead, Brunstetter’s book, which spreads thin as it flits back and forth through a half-century, resists delineating the central pair with much of any identifying detail. Allie still likes to paint and Noah is good with lumber, but an effort to maximize their relatability winds up sacrificing their flesh and blood. The roles can be played by different actors because there’s nothing very particular about either character. The result is anodyne — and lacks the erotic charge of an attraction with distinct flavor set against a recognizable world.</p><!-- Ezoic - Article Insertion 4 - longer_content -->
     <div id="ezoic-pub-ad-placeholder-671"></div>
     <!-- End Ezoic - Article Insertion 4 - longer_content -->
-
-<p>David Cote, <a target="newwinddow" href="https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-on-broadway-review/" target="_blank">The Observer</a>: Silver fox Andr&eacute; De Shields lends his funky-grandpa vibe to the narration-heavy role of Hermes. Big-voiced Eva Noblezada is pluck personified as a waifish Eurydice. Fitting for the god of the underworld, Patrick Page's basso profundo seems to issue from the lower basement. And, as Persephone, Amber Grey dials her devil-may-care hootchie-mama routine to 11, ensuring her eventual transfiguration as Eartha Kitt on Broadway one day. Less fruitful is Reeve Carney's Orpheus, conceived as a socially awkward art savant. Laying on the Dear Evan Hansen too thick, Carney's neurodiverse Orpheus (lots of gaping, arms hanging limply, fingers twitching) is a misfire. The survivor of Spider-Man: Turn Off the Dark remains a bit generic, despite sweet looks and a pretty pop falsetto. Hadestown needs a stronger injection of sexually charged romance.</p>
-
-<p>Johnny Oleksinski, <a target="newwinddow" href="https://nypost.com/2019/04/17/hadestown-review-broadway-douses-the-fires-of-hell-with-folk-music/" target="_blank">The New York Post</a>: Yes, composer Ana&iuml;s Mitchell's musical retelling of the Orpheus and Eurydice myth, which opened Wednesday on Broadway, sounds pleasant and looks more expensive than it did in 2016 at New York Theatre Workshop. But this classic tale of love - he looks back, she gets trapped in the underworld for all eternity - is still too slick and sterile for us to give a damn about her damnation.</p><!-- Ezoic - Article Insertion 5 - longer_content -->
+			
+			
+			<p>	
+  <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/midlike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Sideways" >
+ Charles Isherwood, <a target="newwinddow" href="https://www.wsj.com/articles/the-notebook-review-broadway-musical-nicholas-sparks-ingrid-michaelson-46fd2416" target="_new">The Wall Street Journal:</a> Nevertheless, the comparative simplicity of the teary tale at its center—love at first sight strikes boy and girl like lightning, they are separated for a decade, and then the couple reunites for a striding-into-the-sunset happy ending (before age and illness impinge)—left me dry-eyed and occasionally tempted to check my watch. This may put me in the minority, given the story’s proven success in other mediums, but for all its sweetness and polish “The Notebook” never rises to truly transporting heights—except when Ms. Plunkett, as the heroine, Allie, in her later years, and Dorian Harewood, as her husband, Noah, are the focus.</p>
+			
+			
+			<p>	
+  <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/midlike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Sideways" >
+ Greg Evans, <a target="newwinddow" href="https://deadline.com/2024/03/the-notebook-broadway-review-1235857614/" target="_new">Deadline:</a> Played out mostly on a nursing home set by David Zinn and Brett J. Banakis that manages to be both attractive and suitably off-putting (Noah’s renovated antibellum farmhouse hits nostalgic notes without summoning unwelcome ghosts), The Notebook gets to its final pages – or very nearly so - without letting its manipulations become too overbearing (more about that “nearly so” in a moment), yet it never approaches the finer works of nearly everyone involved (director Greif gave us Next To Normal and Dear Evan Hansen). The wonderful Plunkett nails the confusion and panic of dementia from the get-go, meaning she has little place to go. Woods, as Middle Ally, breaks through the musical sameness with the production’s unequivocal showstopper (“My Days”), though her musical theater brassiness seems to have no counterpart in either the character’s younger and older versions.</p><!-- Ezoic - Article Insertion 5 - longer_content -->
     <div id="ezoic-pub-ad-placeholder-678"></div>
     <!-- End Ezoic - Article Insertion 5 - longer_content -->
-
-<p>Marilyn Stasio, <a target="newwinddow" href="https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191646/" target="_blank">Variety</a>: "<a target="newwinddow" href="https://variety.com/t/hadestown/">Hadestown</a>" triggered <a target="newwinddow" href="https://variety.com/2016/legit/reviews/hadestown-review-1201782036/">a lot of buzz</a> when this wholly American show (which came to the stage by way of a concept album) premiered at Off <a target="newwinddow" href="https://variety.com/t/broadway/">Broadway</a>'s New York Theatre Workshop in 2016. Arriving on <a target="newwinddow" href="https://variety.com/2019/legit/news/beetlejuice-broadway-writers-taboo-1203184490/">Broadway</a> with its earthly delights more or less intact, this perfectly heavenly musical - with book, music and lyrics by Ana&iuml;s Mitchell - should stick around for a while.</p>
-
-<p>David Rooney, <a target="newwinddow" href="https://www.hollywoodreporter.com/review/hadestown-theater-review-1202512" target="_blank">The Hollywood Reporter</a>: In "Road to Hell," the exhilarating opening number of the utterly fabulous Hadestown, Hermes, the conductor of souls into the afterlife, invites us to "Ride that train to the end of the line." He's played with seductive authority and knowing humor by the eternally elegant Andre De Shields, outfitted like a superfly pimp in a flashy silver suit, and it's hard to imagine anyone resisting his call. He sells a ticket to a bewitching journey that pays off at every turn.</p><!-- Ezoic - Article Insertion 6 - longer_content -->
+			
+			
+			<p>	<img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/like-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Up" >
+  
+ Erin Strecker, <a target="newwinddow" href="https://www.indiewire.com/criticism/culture/the-notebook-broadway-musical-review-1234964639/" target="_new">IndieWire:</a> And boy, are there lows. It’s a great credit to the production that as the horrors of dementia come into focus the show doesn’t fully drown in the tears (SO many tears!) of audience members. Instead, we’re left with a soft landing of sorts, thanks to the restrained, emotional performances of Harewood and Plunkett, melding the hopelessness of a disease with the hope that must come through in some way in all musicals — even the tragedies. If fans are left wishing they’d gotten a bit more time with people they’ve grown to care about, well, don’t we all.</p>
+			
+			
+			<p>	
+  
+ <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/dislike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Down"  >Robert Hofler, <a target="newwinddow" href="https://www.thewrap.com/the-notebook-broadway-review-ingrid-michaelson/" target="_new">The Wrap:</a> Brunstetter’s script advises that the sets (by David Zinn and Brett J. Banakis) and costumes (by Paloma Young) “feel timeless.” That approach sometimes works for a classic tragedy, but a melodrama like “The Notebook” needs context. In this musical, the only thing keeping Allie and Noah apart is her rather uppity parents (Andrea Burns and Charles E. Wallace). Ingrid Michaelson’s score is middle-of-the-road pop. It’s pleasant. It’s easy on the ears. It’s not in any way what this musical needs to be, which is soaring and romantic.</p><!-- Ezoic - Article Insertion 6 - longer_content -->
     <div id="ezoic-pub-ad-placeholder-679"></div>
     <!-- End Ezoic - Article Insertion 6 - longer_content -->
-
-<p>Greg Evans, <a target="newwinddow" href="https://deadline.com/2019/04/hadestown-broadway-review-anais-mitchell-rachel-chavkin-reeve-carney-1202597073/" target="_blank">Deadline</a>: Written by the immensely talented singer-songwriter Ana&iuml;s Mitchell - the musical began life as folk opera concept album, then was developed at New York Theatre Workshop - Hadestown is brought to remarkable life by director Rachel Chavkin, who does for the Quarter and hell what she did for Tolstoy's Russia with 2016's equally fine Natasha, Pierre &amp; the Great Comet of 1812.</p>
-
-<p>Terry Techout,<a target="newwinddow" href="https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-11555547401" target="_blank"> The Wall Street Journal</a>: While the stage version of "Hadestown" is longer and considerably more elaborate than the 2010 concept album, it still bears the mark of its origins, and therein lies its chief flaw. Ms. Mitchell's songs are beautiful but undramatic-the score runs mainly to slow and medium tempos-which means that the overall narrative pace can feel a bit sluggish, enthralling though it is from moment to moment. Even at its frequent best, "Hadestown" plays more like a song cycle than a stage show. I won't pretend that this isn't a problem, but Rachel Chavkin's endlessly varied direction and David Neumann's dances, all of them fully integrated into the staging, help to keep things on the move, as does Rachel Hauck's turntable-and-trap-door set.</p><!-- Ezoic - Article Insertion 7 - longer_content -->
+			
+			
+			<p>	
+  <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/midlike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Sideways" >
+ Juan A. Ramirez, <a target="newwinddow" href="https://www.theatrely.com/post/the-notebook-brings-heartfelt-passion-to-broadway-review" target="_new">Theatrely:</a> A shrug from a tear-stained shoulder is certainly not the worst way to exit a musical, so even if The Notebook isn’t reinventing any wheels, it turns them with earnest, somehow not-too-sentimental, precision.</p>
+			
+			
+			<p>	
+  <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/midlike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Sideways" >
+ Adam Feldman, <a target="newwinddow" href="https://www.timeout.com/newyork/theater/the-notebook-broadway-musical-review" target="_new">Time Out New York:</a> And yet: As much as I rolled my eyes at The Notebook, I can’t deny that they sometimes welled up. In this version, it’s the older Noah and Allie—whom Brunstetter draws with the most care, free from the fetters of plot, and around whom Michaelson writes her most touching music—who get to you. Plunkett’s truthfulness pierces through the sentimentality, and there’s something elemental in the combination of love and loss that this pair embodies. As Younger Noah says of Allie’s painting: “It’s sadness and it’s joy, right?” At its best, The Notebook finds a way to deliver both, if only in shorthand. </p><!-- Ezoic - Article Insertion 7 - longer_content -->
     <div id="ezoic-pub-ad-placeholder-680"></div>
     <!-- End Ezoic - Article Insertion 7 - longer_content -->
-
-<p>Thom Geier, <a target="newwinddow" href="https://www.thewrap.com/hadestown-broadway-review-anais-mitchell-musical-orpheus-eurydice-trump/" target="_blank">TheWrap</a>: Chavkin, her production team and cast are working at the top of their form - and they go a long way to masking some of the show's shortcomings. Mitchell is a better composer than a lyricist, alas, and sometimes leans too heavily on De Shields' narration to advance the plot instead of her occasionally repetitive songs. And the fact remains that there's just not much story here - not nearly enough for a two and a half hour show.</p>
-
-<p>Will Hermes, <a target="newwinddow" href="https://www.rollingstone.com/culture/culture-features/hadestown-broadway-anais-mitchell-musical-review-822688/" target="_blank">Rolling Stone</a>: This chilling scene remains the centerpiece of <em>Hadestown</em>, a love story and class-struggle parable based on the Orpheus myth that arrives on the same Broadway stage Bruce Springsteen worked for 14 months prior. The cast has changed from Mitchell's original LP (where Bon<a target="newwinddow" href="https://www.rollingstone.com/t/bon-iver/"> </a>Iver's Justin Vernon, The Low Anthem's Ben Knox Miller and activist folk hero Ani<a target="newwinddow" href="https://www.rollingstone.com/t/ani-difranco/"> </a>DiFranco joined Mitchell and Brown in the leads). But the work's musical integrity and proletariat spirit remains largely intact.</p><!-- Ezoic - Article Insertion 9 Mobile - incontent_6 -->
+			
+			
+			<p>	
+  <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/midlike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Sideways" >
+ Dan Rubins, <a target="newwinddow" href="https://www.slantmagazine.com/theater/the-notebook-review-broadway/" target="_new">Slant Magazine:</a> Because writing for character means writing in distinct voices, there’s a thin line in musical theater songwriting between the simple and the simplistic: Unlike her gratifyingly accessible pop music, Michaelson’s score here falls on the wrong side too much of the time. That’s a shame, because, in revisiting the story, Michaelson and book writer Bekah Brunstetter have laid out the structure for a thoughtful adaptation that improves upon both the book and the film adaptation.</p>
+			
+			
+			<p>	<img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/like-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Up" >
+  
+ Jonathan Mandell, <a target="newwinddow" href="https://newyorktheater.me/2024/03/14/the-notebook-broadway-review/" target="_new">New York Theater:</a>  “The Notebook: The Musical” will probably not be the same kind of star-making vehicle, but it is uniformly well-cast, with several memorable performances. The story is cleverly adapted by librettist Bekah Brunstetter, who seems almost as much guided by the TV series “This Is Us” (where she worked as a writer and producer) as by Sparks’ novel. And singer-songwriter Ingrid Michaelson, in her Broadway songwriting debut, delivers almost two dozen  largely folk and country-inflected melodies, most of them lovely, if blandly so; only a few stand out. Little in this musical may soar, but, given the potential of the material for over-the-top melodrama, the relatively low-key approach is part of the show’s appeal.</p><!-- Ezoic - Article Insertion 9 Mobile - incontent_6 -->
     <div id="ezoic-pub-ad-placeholder-154"></div>
     <!-- End Ezoic - Article Insertion 9 Mobile - incontent_6 -->
-
-<p>Tim Teeman, <a target="newwinddow" href="https://www.thedailybeast.com/hadestown-the-broadway-musical-that-takes-its-sweet-sounding-time-going-to-hell-and-back?source=articles&amp;via=rss&amp;utm_source=dlvr.it&amp;utm_medium=twitter" target="_blank">Daily Beast</a>: Hadestown has so much fun telling, as it puts it, this "sad tale" that even though this retelling of a well-trodden Greek myth feels slight, it also makes for a joyful performance. Ana&iuml;s Mitchell's musical, which opens on Broadway tonight at the Walter Kerr Theatre (to September 1), is delicious to look at and listen to-truly, my new earworm is "Way Down Hadestown"-even if its story is as wan as its central couple.</p>
-
-<p>Michael Sommers, <a target="newwinddow" href="http://nystagereview.com/2019/04/17/hadestown-red-hot-and-bluesy-score-fuels-a-trip-to-hell-and-back/" target="_blank">New York Stage Review</a>: A new Broadway musical that takes audiences to hell and back, Hadestown looks and sounds terrific, and yet it lacks something vital. Drawn from a classical Greek legend, the musical somehow reminds me of a handsome ancient statue that is missing its head.</p>
-
-<p>Elysa Gardner, <a target="newwinddow" href="http://nystagereview.com/2019/04/17/hadestown-anais-mitchells-myths-and-hymns-from-way-downtown/" target="_blank">New York Stage Review</a>: For starters, Mitchell is a gifted tunesmith, and lyricist, who approaches musical theater with a clear, infectious sense of wonder. Her melodic savvy, if not entirely consistent over a run time of nearly two and a half hours with little spoken dialogue, is buttressed by an ear for piercing, haunting harmonies, abetted here by musical director and vocal arranger Liam Robinson. Moreover, Mitchell and, to her credit, Chavkin have mined a beautiful and theatrically resonant tale from their source material. If there are traces of the pretensions that marred <em>Natasha</em> in this heavily stylized production, the director and her lavishly talented design team remain in service to the story, which ties together the myths of Orpheus and Eurydice, respectively played by Reeve Carney and Eva Noblezada, and Hades and Persephone, played by Patrick Page and Amber Gray.</p><!-- Ezoic - Article Insertion 10 Mobile - incontent_7 -->
+			
+			
+			<p>	
+  <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/midlike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Sideways" >
+ Roma Torre, <a target="newwinddow" href="https://nystagereview.com/2024/03/14/the-notebook-a-musical-romance-made-for-fans-to-love/" target="_new">New York Stage Review:</a> It was only a matter of time before a stage adaptation of The Notebook came to fruition. Based on Nicholas Sparks’ best selling novel, the popular 2004 film starring Rachel McAdams and Ryan Gosling is a romantic (if rather schmaltzy) stunner. There is naturally a built-in audience for this musical, clamoring to know if it’s as good as the movie and how does it compare? And for those new to the tear-jerker story of Allie and Noah from opposite sides of the tracks, does it still resonate at all? The answer to that last question is most certainly yes, it does resonate.  I think you’d have to hail from another planet not to feel something for these appealing characters. By the resounding sniffles heard throughout the audience, it most certainly succeeded on that front. And yet, despite some lovely songs and excellent performances, the musical is missing some keynotes.</p><!-- Ezoic - Article Insertion 10 Mobile - incontent_7 -->
     <div id="ezoic-pub-ad-placeholder-156"></div>
     <!-- End Ezoic - Article Insertion 10 Mobile - incontent_7 -->
-
-<p>Jessica Derschowitz, <a target="newwinddow" href="https://ew.com/theater-reviews/2019/04/17/hadestown-review/" target="_blank">Entertainment Weekly</a>: As far as tales as old as time go, the stories of Greek mythology are pretty high up there, those epic stories of gods and men that have been told for thousands of years and inspired countless adaptations. But there's little that feels old or stately about the way those stories - those old songs, those sad songs - are told in Hadestown, which makes its Broadway bow Thursday with a journey to the underworld that feels like it sprung forth as something entirely new.</p>
-
-<div class="nobreak"><p>Christopher Kelly, <a target="newwinddow" href="https://www.nj.com/entertainment/2019/04/hadestown-review-this-devilish-new-musical-looks-poised-for-tonys-victory.html" target="_blank">NJ.com</a>: Still, if this is your first visit to "Hadestown," it's likely to be a satisfying one. Mitchell and director Rachel Chavkin ("Natasha, Pierre and the Great Comet of 1812") do an impressive job updating an oft-recounted myth; in this telling, Orpheus (Reeve Carney) falls in love with Eurydice (Eva Noblezada), who in turn flees to Hadestown after its ruler Hades (Patrick Page, whose basso profundo is the stuff of nightmares and/or action movie trailers) promises to end her hunger. The actors are all excellent, with one standing slightly above the rest: In the role of Hades' queen Persephone, the extraordinary Amber Grey (who originated the role off Broadway) gives us a kind of Hellenistic Age Real Housewife, both garishly funny and romantically yearning.</p></div><!-- Ezoic - Article Insertion 11 Mobile - incontent_8 -->
+			
+			
+			<p>	
+  <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/midlike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Sideways" >
+ Steven Suskin, <a target="newwinddow" href="https://nystagereview.com/2024/03/14/the-notebook-just-another-love-story-with-kleenex/" target="_new">New York Stage Review:</a> This is one of those musicals that some viewers will love vociferously while others, inevitably, espouse a decidedly contradictory view. There is enough quality entertainment on hand, especially from the performers, to provide viewers with a thoroughly watchable two-and-a-half hours. In normal Broadway seasons, when full-scale original musicals can be counted on a hand’s worth of fingers, these attributes might be enough to place The Notebook in the Tony winner’s circle, or at least in contention. But based on the 2023-24 musicals which have opened thus far and those which have already been seen in pre-Broadway mountings, one might predict that The Notebook will fall far above the worst but not in league with the best.</p>
+			
+			
+			<p>	
+  <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/midlike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Sideways" >
+ Sara Holdren, <a target="newwinddow" href="https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html" target="_new">Vu:</a> If I had to take bets on how many actual tears The Notebook The Musical manages to jerk — well, I wouldn’t advise anyone to bring a bucket. With prosaic direction and a strangely heavy and sterile aesthetic sense that feels, despite Schele Williams’s presence as a co-director, all too similar to Michael Greif’s other productions this season, as well as a surprisingly beige slate of songs by the folk-pop artist Ingrid Michaelson, the show disappears from memory almost moment to moment. It’s almost enough to make one want to reference the half of the story’s plot that deals with dementia.</p><!-- Ezoic - Article Insertion 11 Mobile - incontent_8 -->
     <div id="ezoic-pub-ad-placeholder-157"></div>
     <!-- End Ezoic - Article Insertion 11 Mobile - incontent_8 -->
+			
+			
+			<p>	
+  <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/midlike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Sideways" >
+ Kyle Turner, <a target="newwinddow" href="https://www.newyorktheatreguide.com/reviews/the-notebook-broadway-review-ingrid-michaelson" target="_new">New York Theatre Guide:</a> This compelling conceit gets weakened by a flat book and lyrics. Brunstetter and Michaelson aim for simplicity, but lyrics like a repeated “sadness and joy” fail to illuminate Noah and Allie's depth of character. The Notebook: The Musical can only compensate so much with Michaelson's strumming music, with repetitions that are pleasant but melt together, and some songs become indistinguishable from each other. Occasionally, a flourish in John Clancy and Carmel Dean's orchestrations grabs the attention.</p>
+			
+			
+			<div class="nobreak"><p>	
+  <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/midlike-button-icon.png?format=auto&width=1400" style="width:55px;padding:0px;float:left;margin-right:10px;" alt="Thumbs Sideways" >
+ Frank Rizzo, <a target="newwinddow" href="https://variety.com/2024/legit/reviews/the-notebook-review-broadway-musical-1235939025/" target="_new">Variety:</a> As for the production, the staging by Michael Greif (“Dear Evan Hansen,” “Next to Normal”) and Schele Williams (“The Wiz”) feels, for all its intention of intimacy, contrived and unsurprising. For a while the cross-cutting of the three couples haunting each other is intriguing but soon Katie Spelman’s choreography of past and future lives ever-circling each other simply becomes a dizzying one-note effect. The cross-racial casting of couples nicely underscores the universality of the romance and the ease of imaginative leaps in musical theater.</p></div><!-- Ezoic - Article Insertion 12 Mobile - incontent_9 -->
+    <div id="ezoic-pub-ad-placeholder-161"></div>
+    <!-- End Ezoic - Article Insertion 12 Mobile - incontent_9 -->
+			
+			
 
+<Center>	<div style="width:300px;HEIGHT:67PX;background-color:black;color:white;    PADDING-LEFT: 6PX;
+    padding-right: 6px;  ">		
+
+	 
+	
+  <img alt="Review Roundup: THE NOTEBOOK Opens On Broadway  Image" src="https://cloudimages2.broadwayworld.com/midlike-button-icon.png?format=auto&width=1400" style="width:55px;margin-top:10px;float:right;margin-right:10px;" alt="Thumbs Sideways" >
+ 
+	
+		<BR>Average Rating:
+		55.0%
+		
+	</div>	<br>
+	</center>
+			
+			
+			
+			<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"LiveBlogPosting",
+  "@id":"/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314",
+  "about":{
+    "@type":"Event",
+    "startDate":"2024-03-14T08:56:05-05:00",
+    
+    "name":"Review Roundup: THE NOTEBOOK Opens On Broadway",
+    
+      "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+      "location": {
+        "@type": "VirtualLocation",
+        "url": "/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314"
+        }
+ 
+  },
+  "coverageStartTime":"2024-03-14T08:56:05-05:00",
+  
+  "coverageEndTime":"2024-03-14T11:56:05-05:00",
+  "headline":"Review Roundup: THE NOTEBOOK Opens On Broadway",
+  
+
+
+
+
+  "description":"Read reviews for the Broadway premiere of the epic love story, The Notebook, opening on Broadway tonight!
+",
+  "liveBlogUpdate":[
+    {
+      "@type":"BlogPosting",
+      "headline":"The New York Times - ‘The Notebook’ Review: A Musical Tear-Jerker or Just All Wet?",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "When songs provide so little information, barely differentiating the characters let alone advancing the plot, a musical tends to sag. And when a musical has gone to some trouble to accommodate those songs — the movie of “The Notebook” runs two hours, the show hardly 20 minutes more — the trade-offs are of the nose-versus-face variety."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"Associated Press  - Theater Review: Without Gosling or geese, Broadway’s ‘The Notebook’ goes for the guts, without guile",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "The bombastic musical that opened Thursday at the Gerald Schoenfeld Theatre is about a love for the ages but has understated songs by Ingrid Michaelson, who offers coffee house vibes instead of passion’s thunder. The book by Bekah Brunstetter loses gas well before it’s over and piles on the melodrama."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"The New York Daily News - 
+The Notebook is an unexpectedly sophisticated tear-jerker",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "There are two main reasons why this show works. Most important is the songwriter Ingrid Michaelson, who might be a Broadway newcomer, but whose lyrics eschew the mawkish pitfalls in favor of simple, direct communication of intense but familiar emotions through melody and song.
+"
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"Entertainment Weekly - The Notebook review: Nicholas Sparks' novel leaps off the page and onto the stage in emotional new musical",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "Everyone's heard of The Notebook. Whether it’s through reading Nicholas Sparks’ best-selling debut novel or its 2004 blockbuster adaptation starring Ryan Gosling and Rachel McAdams, most can recall some semblance of Noah and Allie’s whirlwind romance — or, at the very least, their propensity for arguing and dramatic kisses in the rain. Now, The Notebook is leaping off the page and onto the stage in a poignant new musical that is, without a doubt, its finest adaptation yet. "
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"The Guardian - The Notebook review – hit romance lands on Broadway a little underwritten",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "Dementia is a horrifically flattening illness. But it is difficult to sustain the show’s over two hour runtime on the question of reconciliation. The musical’s use of interracial casting is also frustrating. Younger and middle Allie are both Black, while older Allie is white. The Noahs are cast in a similar fashion. The issues with casting isn’t a problem of believability, but consistency. It’s strange why the racial unity in casting is interrupted, especially with no discernible dramatic choice. Sympathizers will waive off the choice as negligible, a side effect of race-blind casting. But race isn’t a minor detail, especially with swaths of the play taking place right before and after the Vietnam war – well into the civil rights era. The Notebook musical hasn’t lost its romantic magic, by any means. But without the equally touching music and a fleshing out of its core courtship, it’s a story that remains underwritten."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"The New York Post - ‘The Notebook’ review: Broadway musical doesn’t match the film’s sweep",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "While the cast of “The Notebook” sings and dances up onstage at the Gerald Schoenfeld Theatre, there is an even more dramatic performance going on in the seats. The sniffle chorus. Ingrid Michaelson’s musical, which opened Thursday night on Broadway is, of course, based on Nicholas Sparks’ weepy 1996 romance novel that was made into a popular movie starring a young Ryan Gosling and Rachel McAdams. Like Pavlov’s pups, millennials habitually sob during that 2004 film, and the production has seized upon its teary reputation by selling branded tissue boxes. During the final 10 minutes, the noses are deafening."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"The Washington Post - ‘The Notebook’ musical might make you cry, but that’s about it",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "Instead, Brunstetter’s book, which spreads thin as it flits back and forth through a half-century, resists delineating the central pair with much of any identifying detail. Allie still likes to paint and Noah is good with lumber, but an effort to maximize their relatability winds up sacrificing their flesh and blood. The roles can be played by different actors because there’s nothing very particular about either character. The result is anodyne — and lacks the erotic charge of an attraction with distinct flavor set against a recognizable world."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"The Wall Street Journal - ‘The Notebook’ Review: A Melodrama Becomes a Musical",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "Nevertheless, the comparative simplicity of the teary tale at its center—love at first sight strikes boy and girl like lightning, they are separated for a decade, and then the couple reunites for a striding-into-the-sunset happy ending (before age and illness impinge)—left me dry-eyed and occasionally tempted to check my watch. This may put me in the minority, given the story’s proven success in other mediums, but for all its sweetness and polish “The Notebook” never rises to truly transporting heights—except when Ms. Plunkett, as the heroine, Allie, in her later years, and Dorian Harewood, as her husband, Noah, are the focus."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"Deadline - ‘The Notebook’ Broadway Review: Romantic Saga Takes Another Step In Sentimental Journey",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "Played out mostly on a nursing home set by David Zinn and Brett J. Banakis that manages to be both attractive and suitably off-putting (Noah’s renovated antibellum farmhouse hits nostalgic notes without summoning unwelcome ghosts), The Notebook gets to its final pages – or very nearly so - without letting its manipulations become too overbearing (more about that “nearly so” in a moment), yet it never approaches the finer works of nearly everyone involved (director Greif gave us Next To Normal and Dear Evan Hansen). The wonderful Plunkett nails the confusion and panic of dementia from the get-go, meaning she has little place to go. Woods, as Middle Ally, breaks through the musical sameness with the production’s unequivocal showstopper (“My Days”), though her musical theater brassiness seems to have no counterpart in either the character’s younger and older versions."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"IndieWire - ‘The Notebook’ on Broadway Is a Smart Model for How to Adapt a Beloved Movie",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "And boy, are there lows. It’s a great credit to the production that as the horrors of dementia come into focus the show doesn’t fully drown in the tears (SO many tears!) of audience members. Instead, we’re left with a soft landing of sorts, thanks to the restrained, emotional performances of Harewood and Plunkett, melding the hopelessness of a disease with the hope that must come through in some way in all musicals — even the tragedies. If fans are left wishing they’d gotten a bit more time with people they’ve grown to care about, well, don’t we all."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"The Wrap - ‘The Notebook’ Broadway Review: Ryan Gosling and Rachel McAdams Are Sorely Missed",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "Brunstetter’s script advises that the sets (by David Zinn and Brett J. Banakis) and costumes (by Paloma Young) “feel timeless.” That approach sometimes works for a classic tragedy, but a melodrama like “The Notebook” needs context. In this musical, the only thing keeping Allie and Noah apart is her rather uppity parents (Andrea Burns and Charles E. Wallace). Ingrid Michaelson’s score is middle-of-the-road pop. It’s pleasant. It’s easy on the ears. It’s not in any way what this musical needs to be, which is soaring and romantic."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"Theatrely - THE NOTEBOOK Brings Heartfelt Passion To Broadway — Review",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "A shrug from a tear-stained shoulder is certainly not the worst way to exit a musical, so even if The Notebook isn’t reinventing any wheels, it turns them with earnest, somehow not-too-sentimental, precision."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"Time Out New York - The Notebook",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "And yet: As much as I rolled my eyes at The Notebook, I can’t deny that they sometimes welled up. In this version, it’s the older Noah and Allie—whom Brunstetter draws with the most care, free from the fetters of plot, and around whom Michaelson writes her most touching music—who get to you. Plunkett’s truthfulness pierces through the sentimentality, and there’s something elemental in the combination of love and loss that this pair embodies. As Younger Noah says of Allie’s painting: “It’s sadness and it’s joy, right?” At its best, The Notebook finds a way to deliver both, if only in shorthand. "
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"Slant Magazine - The Notebook Review: On Stage, a Nicholas Sparks Adaptation Held Captive by Its Clichés",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "Because writing for character means writing in distinct voices, there’s a thin line in musical theater songwriting between the simple and the simplistic: Unlike her gratifyingly accessible pop music, Michaelson’s score here falls on the wrong side too much of the time. That’s a shame, because, in revisiting the story, Michaelson and book writer Bekah Brunstetter have laid out the structure for a thoughtful adaptation that improves upon both the book and the film adaptation."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"New York Theater - The Notebook Broadway Review",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": " “The Notebook: The Musical” will probably not be the same kind of star-making vehicle, but it is uniformly well-cast, with several memorable performances. The story is cleverly adapted by librettist Bekah Brunstetter, who seems almost as much guided by the TV series “This Is Us” (where she worked as a writer and producer) as by Sparks’ novel. And singer-songwriter Ingrid Michaelson, in her Broadway songwriting debut, delivers almost two dozen  largely folk and country-inflected melodies, most of them lovely, if blandly so; only a few stand out. Little in this musical may soar, but, given the potential of the material for over-the-top melodrama, the relatively low-key approach is part of the show’s appeal."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"New York Stage Review - THE NOTEBOOK: A MUSICAL ROMANCE MADE FOR FANS TO LOVE",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "It was only a matter of time before a stage adaptation of The Notebook came to fruition. Based on Nicholas Sparks’ best selling novel, the popular 2004 film starring Rachel McAdams and Ryan Gosling is a romantic (if rather schmaltzy) stunner. There is naturally a built-in audience for this musical, clamoring to know if it’s as good as the movie and how does it compare? And for those new to the tear-jerker story of Allie and Noah from opposite sides of the tracks, does it still resonate at all? The answer to that last question is most certainly yes, it does resonate.  I think you’d have to hail from another planet not to feel something for these appealing characters. By the resounding sniffles heard throughout the audience, it most certainly succeeded on that front. And yet, despite some lovely songs and excellent performances, the musical is missing some keynotes."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"New York Stage Review - THE NOTEBOOK: JUST ANOTHER LOVE STORY, WITH KLEENEX",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "This is one of those musicals that some viewers will love vociferously while others, inevitably, espouse a decidedly contradictory view. There is enough quality entertainment on hand, especially from the performers, to provide viewers with a thoroughly watchable two-and-a-half hours. In normal Broadway seasons, when full-scale original musicals can be counted on a hand’s worth of fingers, these attributes might be enough to place The Notebook in the Tony winner’s circle, or at least in contention. But based on the 2023-24 musicals which have opened thus far and those which have already been seen in pre-Broadway mountings, one might predict that The Notebook will fall far above the worst but not in league with the best."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"Vu - Love and Brains, Dull and Sharp: The Notebook and The Effect",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "If I had to take bets on how many actual tears The Notebook The Musical manages to jerk — well, I wouldn’t advise anyone to bring a bucket. With prosaic direction and a strangely heavy and sterile aesthetic sense that feels, despite Schele Williams’s presence as a co-director, all too similar to Michael Greif’s other productions this season, as well as a surprisingly beige slate of songs by the folk-pop artist Ingrid Michaelson, the show disappears from memory almost moment to moment. It’s almost enough to make one want to reference the half of the story’s plot that deals with dementia."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"New York Theatre Guide - 'The Notebook' review — a trip down memory lane on stage and off",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "This compelling conceit gets weakened by a flat book and lyrics. Brunstetter and Michaelson aim for simplicity, but lyrics like a repeated “sadness and joy” fail to illuminate Noah and Allie's depth of character. The Notebook: The Musical can only compensate so much with Michaelson's strumming music, with repetitions that are pleasant but melt together, and some songs become indistinguishable from each other. Occasionally, a flourish in John Clancy and Carmel Dean's orchestrations grabs the attention."
+    },
+    
+     {
+      "@type":"BlogPosting",
+      "headline":"Variety - ‘The Notebook’ Review: Broadway Musical of the Popular Romance Hits All-Too-Familiar Notes",
+      "datePublished":"2024-05-30T10:29:45-05:00",
+ 
+
+      "articleBody": "As for the production, the staging by Michael Greif (“Dear Evan Hansen,” “Next to Normal”) and Schele Williams (“The Wiz”) feels, for all its intention of intimacy, contrived and unsurprising. For a while the cross-cutting of the three couples haunting each other is intriguing but soon Katie Spelman’s choreography of past and future lives ever-circling each other simply becomes a dizzying one-note effect. The cross-racial casting of couples nicely underscores the universality of the romance and the ease of imaginative leaps in musical theater."
+    }
+    
+    
+  ]
+}
+</script>
 
 
 
@@ -1868,33 +2198,94 @@ border-width: 0px !important;
      
     
 
-        
-        
-       
-<div style="text-align:center; padding: 15px;">
-  <a 
-   
-    href="https://cloud.broadwayworld.com/rec/tt.cfm?fromlink=1938548&clickedshow=332678&regid=&articlelink=https://ticketmaster.evyy.net/c/2299526/264167/4272?u=https%3A%2F%2Fwww.ticketmaster.com%2Fhadestown-ny-tickets%2Fartist%2F2580967" 
-    target="_blank"
-    style="align-items: center; justify-content: center; text-decoration: none; background-color: #024DDF; color: white; font-size: clamp(10pt, 2vw, 12pt); font-weight: bold; padding: 20px 15px 20px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;"
-  >
-    <img 
-      src="https://cloudimages.broadwayworld.com/Ticketmaster_Icon_Darkmode_NoBackground.svg" 
-      alt="Ticketmaster" 
-      style="height: 44px; margin-right: 10px;"
-    >
-    <span>Buy Tickets to Hadestown</span>
-  </a>
-</div>
-<br>
-<!-- Ezoic - incontent_41 - incontent_41 -->
-<div id="ezoic-pub-ad-placeholder-194"></div>
-<!-- End Ezoic - incontent_41 - incontent_41 -->
+    
 
 
-  
+    
+	      <div class="photos-slider hot-week pt-40">
+			      <div class="section-tittle">
+                <h3>Opening Night Coverage</h3>
+              </div> 
+			  		  <div id="carouselExampleDark" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+  	
+  	
+    <div class="carousel-item active">
 
+      <div class="col-md-6 photo-slide" style="width:100%;">
+			  <a href="/article/Photos-THE-NOTEBOOK-Cast-Takes-Opening-Night-Bows-20240315" class="title-16">
+                  <img style="width:100%;height:auto;" src="https://cloudimages.broadwayworld.com/columnpiccloud/Photos-THE-NOTEBOOK-Opening-Night-Bows--1710503728.jpg" alt="Photos: THE NOTEBOOK Cast Takes Opening Night Bows Photo">
+               <br>Photos: THE NOTEBOOK Cast Takes Opening Night Bows</a>
+	
+        </div>
+    </div>
+
+    <div class="carousel-item ">
+
+      <div class="col-md-6 photo-slide" style="width:100%;">
+			  <a href="/article/Video-Go-Inside-Opening-Night-of-THE-NOTEBOOK-20240315" class="title-16">
+                  <img style="width:100%;height:auto;" src="https://cloudimages.broadwayworld.com/columnpiccloud/Video-THE-NOTEBOOK-1710501668.jpg" alt="Video: Go Inside Opening Night of THE NOTEBOOK Photo">
+               <br>Video: Go Inside Opening Night of THE NOTEBOOK</a>
+	
+        </div>
+    </div>
+
+    <div class="carousel-item ">
+
+      <div class="col-md-6 photo-slide" style="width:100%;">
+			  <a href="/article/Photos-THE-NOTEBOOK-Cast-Creative-Team-Walk-the-Red-Carpet-on-Opening-Night-20240316" class="title-16">
+                  <img style="width:100%;height:auto;" src="https://cloudimages.broadwayworld.com/columnpiccloud/Photos-Check-out-THE-NOTEBOOK-cast-creative-walk-the-red-carpet-on-Opening-Night--1710544762.jpg" alt="Photos: THE NOTEBOOK Cast & Creative Team Walk the Red Carpet on Opening Night Photo">
+               <br>Photos: THE NOTEBOOK Cast &amp; Creative Team Walk the Red Carpet on Opening Night</a>
+	
+        </div>
+    </div>
+
+    <div class="carousel-item ">
+
+      <div class="col-md-6 photo-slide" style="width:100%;">
+			  <a href="/article/Photos-On-the-Red-Carpet-at-Opening-Night-of-THE-NOTEBOOK-20240318" class="title-16">
+                  <img style="width:100%;height:auto;" src="https://cloudimages.broadwayworld.com/columnpiccloud/Photos-Go-inside-THE-NOTEBOOK-VIP-Arrivals-on-Opening-Night--1710723083.jpg" alt="Photos: On the Red Carpet at Opening Night of THE NOTEBOOK Photo">
+               <br>Photos: On the Red Carpet at Opening Night of THE NOTEBOOK</a>
+	
+        </div>
+    </div>
+
+    <div class="carousel-item ">
+
+      <div class="col-md-6 photo-slide" style="width:100%;">
+			  <a href="/article/Photos-Inside-THE-NOTEBOOK-Opening-Night-Party-20240318" class="title-16">
+                  <img style="width:100%;height:auto;" src="https://cloudimages.broadwayworld.com/columnpiccloud/Photos-EXCLUSIVE-Go-Inside-THE-NOTEBOOK-Opening-Night-Party--1710729637.jpg" alt="Photos: Inside THE NOTEBOOK Opening Night Party Photo">
+               <br>Photos: Inside THE NOTEBOOK Opening Night Party</a>
+	
+        </div>
+    </div>
+
+    <div class="carousel-item ">
+
+      <div class="col-md-6 photo-slide" style="width:100%;">
+			  <a href="/article/Video-Stars-Walk-the-Opening-Night-Red-Carpet-for-THE-NOTEBOOK-20240328" class="title-16">
+                  <img style="width:100%;height:auto;" src="https://cloudimages.broadwayworld.com/columnpiccloud/Video-THE-NOTEBOOK-1711627340.jpg" alt="Video: Stars Walk the Opening Night Red Carpet for THE NOTEBOOK Photo">
+               <br>Video: Stars Walk the Opening Night Red Carpet for THE NOTEBOOK</a>
+	
+        </div>
+    </div>
+
+
+
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+  </div>
+		</div>
 		
+		
+				
 
 
 
@@ -1967,14 +2358,14 @@ border-width: 0px !important;
     <div style="background-color:darkred; color:#fff; font-size:12px; font-weight:bold; padding:6px 20px; border-bottom-left-radius:4px; border-bottom-right-radius:4px;">
         Deals from <img src="https://cloudimages.broadwayworld.com/promos/TicketmasterHorizontalDarkmode.png" style="width:125px;height:auto;margin-top:-4px;margin-left:3px;" alt="Ticketmaster">
       </div>
-      <a target="_new" href="https://cloud.broadwayworld.com/rec/ticketcentralclick.cfm?tcid=335836&amp;spot=articlebottom2" class="d-block flex-grow-1" style="text-decoration:none;">
-        <img src="https://cloudimages2.broadwayworld.com/columnpiccloud/-DEATH-OF-A-SALESMAN-RETURNS-TO-BROADWAY-THIS-SPRING-STARRING-NATHAN-LANE-AND-LAURIE-METCALF-DIRECTED-BY-JOE-MANTELLO-1764590853.jpg?format=auto&amp;width=1600&amp;format=auto&amp;width=300" class="img-fluid"
-             alt="Death of a Salesman" style="width:100%; height:auto; display:block;">
+      <a target="_new" href="https://cloud.broadwayworld.com/rec/ticketcentralclick.cfm?tcid=335646&amp;spot=articlebottom2" class="d-block flex-grow-1" style="text-decoration:none;">
+        <img src="https://cloudimages2.broadwayworld.com/columnpiccloud/CATS-THE-JELLICLE-BALL-Releases-Runway-Seating--1768903529.jpg?format=auto&amp;width=1600&amp;format=auto&amp;width=300" class="img-fluid"
+             alt="CATS: The Jellicle Ball" style="width:100%; height:auto; display:block;">
         <div style="padding-left:20px; padding-top:0; padding-right:10px; padding-bottom:8px;">
-          <p class="title-16 mt-0 mb-2" style="font-weight:normal; font-size:16px; margin-top:0;">Death of a Salesman</p>
+          <p class="title-16 mt-0 mb-2" style="font-weight:normal; font-size:16px; margin-top:0;">CATS: The Jellicle Ball</p>
           <div>
             <span class="tm-button-dark" style="display:inline-block; background:#000; color:#fff; padding:8px 12px; text-decoration:none; border-radius:6px; font-weight:bold; font-size:14px;">
-              Buy Tickets from $89.00            </span>
+              Buy Tickets from $77.00            </span>
           </div>
         </div>
       </a>
@@ -2226,14 +2617,14 @@ function trackArticleClick(abTestName, abTestVariant, sortMethod, articleId, art
 <div class="recommended-grid">
       <div class="recommended-item">
       <a href="https://www.broadwayworld.com/myshows/">
-        <img src="https://cloudimages2.broadwayworld.com/myshows/Ragtime-335506-3703-1767978212.jpg?format=auto&width=200" alt="Ragtime" loading="lazy">
+        <img src="https://cloudimages2.broadwayworld.com/myshows/Aladdin-330623-29537-1753345384.jpg?format=auto&width=200" alt="Aladdin" loading="lazy">
                   <div class="rating">
-            <div class="rating-stars" style="display:flex;gap:2px;justify-content:center;" aria-label="Rating: 4.5 out of 5"><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18">
+            <div class="rating-stars" style="display:flex;gap:2px;justify-content:center;" aria-label="Rating: 3.5 out of 5"><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18">
           <defs><linearGradient id="half-grad"><stop offset="50%" stop-color="#FFD700"/><stop offset="50%" stop-color="#ccc"/></linearGradient></defs>
           <polygon fill="url(#half-grad)" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/>
-        </svg></div>            <span class="rating-count">115 ratings</span>
+        </svg><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#ccc" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg></div>            <span class="rating-count">134 ratings</span>
           </div>
-                <h3>Ragtime</h3>
+                <h3>Aladdin</h3>
       </a>
     </div>
       <div class="recommended-item">
@@ -2250,26 +2641,26 @@ function trackArticleClick(abTestName, abTestVariant, sortMethod, articleId, art
     </div>
       <div class="recommended-item">
       <a href="https://www.broadwayworld.com/myshows/">
-        <img src="https://cloudimages2.broadwayworld.com/myshows/Six-333248-30754-1753345693.jpg?format=auto&width=200" alt="Six" loading="lazy">
+        <img src="https://cloudimages2.broadwayworld.com/myshows/Hadestown-332678-30095-1753345484.jpg?format=auto&width=200" alt="Hadestown" loading="lazy">
                   <div class="rating">
             <div class="rating-stars" style="display:flex;gap:2px;justify-content:center;" aria-label="Rating: 4.5 out of 5"><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18">
           <defs><linearGradient id="half-grad"><stop offset="50%" stop-color="#FFD700"/><stop offset="50%" stop-color="#ccc"/></linearGradient></defs>
           <polygon fill="url(#half-grad)" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/>
-        </svg></div>            <span class="rating-count">174 ratings</span>
+        </svg></div>            <span class="rating-count">257 ratings</span>
           </div>
-                <h3>Six</h3>
+                <h3>Hadestown</h3>
       </a>
     </div>
       <div class="recommended-item">
       <a href="https://www.broadwayworld.com/myshows/">
-        <img src="https://cloudimages2.broadwayworld.com/myshows/The_Lion_King-5600-2463-1753346145.jpg?format=auto&width=200" alt="The Lion King" loading="lazy">
+        <img src="https://cloudimages2.broadwayworld.com/myshows/Just_in_Time-335291-32269-1744352042.jpg?format=auto&width=200" alt="Just in Time" loading="lazy">
                   <div class="rating">
             <div class="rating-stars" style="display:flex;gap:2px;justify-content:center;" aria-label="Rating: 4.5 out of 5"><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18"><polygon fill="#FFD700" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/></svg><svg viewBox="0 0 24 24" width="18" height="18">
           <defs><linearGradient id="half-grad"><stop offset="50%" stop-color="#FFD700"/><stop offset="50%" stop-color="#ccc"/></linearGradient></defs>
           <polygon fill="url(#half-grad)" points="12,2 15,9 23,9.5 17,15 19,23 12,19 5,23 7,15 1,9.5 9,9"/>
         </svg></div>            <span class="rating-count">163 ratings</span>
           </div>
-                <h3>The Lion King</h3>
+                <h3>Just in Time</h3>
       </a>
     </div>
   </div>
@@ -2343,16 +2734,16 @@ top: 28px;
        
      
      
-        <a href="https://www.broadwayworld.com/article/Video-Paulo-Szot-Performs-His-Kiss-the-Riot-in-HADESTOWN-20260120">
-            <img loading="lazy" src="https://cloudimages.broadwayworld.com/columnpiccloud/200200-c694ebdfdc9ca1a11365c448ae3becb3.jpg?format=auto&width=110" style="height:auto;>" alt="Video: Paulo Szot Performs His Kiss, the Riot in HADESTOWN Photo">
+        <a href="https://www.broadwayworld.com/article/DOG-DAY-AFTERNOON-Adds-John-Ortiz-Jessica-Hecht-and-Spencer-Garrett-To-Cast-20260121">
+            <img loading="lazy" src="https://cloudimages.broadwayworld.com/columnpiccloud/300-c8db5d11f38f6c5b506133d36d17c7e5.jpg?format=auto&width=110" style="height:auto;>" alt="DOG DAY AFTERNOON Adds John Ortiz, Jessica Hecht, and Spencer Garrett To Cast Photo">
         </a>
         
     </div>
     <div class="right-cap" >
         
             
-        <a href="https://www.broadwayworld.com/article/Video-Paulo-Szot-Performs-His-Kiss-the-Riot-in-HADESTOWN-20260120">Video: Paulo Szot Performs 'His Kiss, the Riot' in HADESTOWN</a><br>
-        <p>Hadestown has released a new video of Tony Away winner Paulo Szot performing “His Kiss, the Riot” as Hades. Watch the video here!</p>
+        <a href="https://www.broadwayworld.com/article/DOG-DAY-AFTERNOON-Adds-John-Ortiz-Jessica-Hecht-and-Spencer-Garrett-To-Cast-20260121">DOG DAY AFTERNOON Adds John Ortiz, Jessica Hecht, and Spencer Garrett To Cast</a><br>
+        <p>Drama Desk Award nominee John Ortiz (Jesus Hopped the A Train), three-time Tony Award nominee Jessica Hecht (Eureka Day) and SAG Award nominee Spencer Garrett (Once Upon A Time in Hollywood) will join Emmy Award winner Jon Bernthal and two-time Emmy Award winner Ebon Moss-Bachrach in DOG DAY AFTERNOON.</p>
       
     </div>
 </div>
@@ -2368,16 +2759,16 @@ top: 28px;
        
      
      
-        <a href="https://www.broadwayworld.com/article/Listen-Gloria-Onitiri-Sings-Our-Lady-of-the-Underground-in-New-Single-From-HADESTOWN-20260116">
-            <img loading="lazy" src="https://cloudimages.broadwayworld.com/columnpiccloud/200200-0a5b1ded9421437ceaa3b6fdb099cc68.jpg?format=auto&width=110" style="height:auto;>" alt="Listen: Gloria Onitiri Sings Our Lady of the Underground From HADESTOWN Photo">
+        <a href="https://www.broadwayworld.com/article/Paul-Rudd-and-Nick-Jonas-Musical-Comedy-POWER-BALLAD-to-Premiere-at-Dublin-Film-Festival-20260121">
+            <img loading="lazy" src="https://cloudimages.broadwayworld.com/columnpiccloud/200200-ae24c35872e6e434c96044bcc6c2ac40.jpg?format=auto&width=110" style="height:auto;>" alt="POWER BALLAD Musical Comedy to Premiere at Dublin Film Festival Photo">
         </a>
         
     </div>
     <div class="right-cap" >
         
             
-        <a href="https://www.broadwayworld.com/article/Listen-Gloria-Onitiri-Sings-Our-Lady-of-the-Underground-in-New-Single-From-HADESTOWN-20260116">Listen: Gloria Onitiri Sings 'Our Lady of the Underground' From HADESTOWN</a><br>
-        <p>An all new single, “Our Lady of the Underground”, had been released from Hadestown. The track features Gloria Onitiri, who performed the role of Persephone in the Original West End company. Listen here!</p>
+        <a href="https://www.broadwayworld.com/article/Paul-Rudd-and-Nick-Jonas-Musical-Comedy-POWER-BALLAD-to-Premiere-at-Dublin-Film-Festival-20260121">POWER BALLAD Musical Comedy to Premiere at Dublin Film Festival</a><br>
+        <p>Power Ballad, the new musical comedy starring Paul Rudd and Nick Jonas, will hold its world premiere this spring at the Dublin International Film Festival, ahead of its forthcoming theatrical release.</p>
       
     </div>
 </div>
@@ -2393,16 +2784,16 @@ top: 28px;
        
      
      
-        <a href="https://www.broadwayworld.com/article/Joshua-Colley-J-Harrison-Ghee-Jordan-Tyson-and-More-to-Join-HADESTOWN-20260114">
-            <img loading="lazy" src="https://cloudimages.broadwayworld.com/columnpiccloud/200200-d972d65926c1d32345287895a2fb6bb1.jpg?format=auto&width=110" style="height:auto;>" alt="Joshua Colley, J. Harrison Ghee and More to Join HADESTOWN Photo">
+        <a href="https://www.broadwayworld.com/article/Hot-Tickets-of-the-Week-CHICAGO-HELLS-KITCHEN-More-20260121">
+            <img loading="lazy" src="https://cloudimages.broadwayworld.com/columnpiccloud/200200-6d7ed0f1555cb9d4626d5eb6da0ec3af.jpg?format=auto&width=110" style="height:auto;>" alt="Hot Tickets of the Week: CHICAGO, HELLS KITCHEN &amp; More Photo">
         </a>
         
     </div>
     <div class="right-cap" >
         
             
-        <a href="https://www.broadwayworld.com/article/Joshua-Colley-J-Harrison-Ghee-Jordan-Tyson-and-More-to-Join-HADESTOWN-20260114">Joshua Colley, J. Harrison Ghee and More to Join HADESTOWN</a><br>
-        <p>Hadestown will welcome an all new principal cast to Broadway. The company will feature Disney Channel and Broadway star Joshua Colley as ‘Orpheus,’ and more.</p>
+        <a href="https://www.broadwayworld.com/article/Hot-Tickets-of-the-Week-CHICAGO-HELLS-KITCHEN-More-20260121">Hot Tickets of the Week: CHICAGO, HELL'S KITCHEN & More</a><br>
+        <p>Ready to see your next Broadway show? Of course you are! Let BroadwayWorld and Ticketmaster be your guide to which plays and musicals are the most buzz-worthy this week. Check out the shows we recommend that you should snag tickets (and a great deal!) to right now.</p>
       
     </div>
 </div>
@@ -2418,16 +2809,16 @@ top: 28px;
        
      
      
-        <a href="https://www.broadwayworld.com/article/Video-Rebecca-Naomi-Jones-Sings-Our-Lady-of-the-Underground-in-HADESTOWN-20251210">
-            <img loading="lazy" src="https://cloudimages.broadwayworld.com/columnpiccloud/200200-ddb2d8dd5cad83d4e3eb843fa983253e.jpg?format=auto&width=110" style="height:auto;>" alt="Video: Rebecca Naomi Jones Sings Our Lady of the Underground in HADESTOWN Photo">
+        <a href="https://www.broadwayworld.com/article/LEGALLY-BLONDE-Prequel-Series-ELLE-Sets-Summer-Premiere-20260121">
+            <img loading="lazy" src="https://cloudimages.broadwayworld.com/columnpiccloud/200200-fde0136748fad12631e2a45bb7acdef1.jpg?format=auto&width=110" style="height:auto;>" alt="LEGALLY BLONDE Prequel Series ELLE Sets Summer Premiere Photo">
         </a>
         
     </div>
     <div class="right-cap" >
         
             
-        <a href="https://www.broadwayworld.com/article/Video-Rebecca-Naomi-Jones-Sings-Our-Lady-of-the-Underground-in-HADESTOWN-20251210">Video: Rebecca Naomi Jones Sings 'Our Lady of the Underground' in HADESTOWN</a><br>
-        <p>As Rebecca Naomi Jones begins her final week in Hadestown on Broadway, watch her performance 'Our Lady of the Underground' in the hit musical. Watch a video of her as 'Persephone' before her last bow on Sunday.</p>
+        <a href="https://www.broadwayworld.com/article/LEGALLY-BLONDE-Prequel-Series-ELLE-Sets-Summer-Premiere-20260121">LEGALLY BLONDE Prequel Series ELLE Sets Summer Premiere</a><br>
+        <p>Elle, the highly anticipated Legally Blonde prequel series from Hello Sunshine and Amazon MGM Studios, will premiere on Prime Video on July 1. A second season of the series is already on the way.</p>
       
     </div>
 </div>
@@ -2442,37 +2833,7 @@ top: 28px;
    
                           
              
-             
-			  <div class="author-area row">
-    <div class="section-tittle">
-      <h3 class="y-color">BWW Merch Shop - Shirts, Mugs, Phone Cases & More</h3>
-    </div>
-
-    <div class="d-flex flex-row flex-nowrap overflow-auto w-100" style="gap: 16px; padding: 20px;">
-              <div class="single" style="min-width: 22%; flex: 0 0 auto;">
-          <a href="https://broadwayworldshop.com/products/hadestown-logo-hat" target="_blank" class="title-16" style="text-decoration:none;">
-            <img loading="lazy" src="https://cloudimages.broadwayworld.com/storepics/300-store1145.jpg" alt="Buy a Hadestown Logo Hat" style="width: 100%;max-width:200px;height:auto;"><br>
-            Hadestown Logo Hat          </a>
-        </div>
-                <div class="single" style="min-width: 22%; flex: 0 0 auto;">
-          <a href="https://broadwayworldshop.com/products/reusable-tote-bag-1" target="_blank" class="title-16" style="text-decoration:none;">
-            <img loading="lazy" src="https://cloudimages.broadwayworld.com/storepics/300-store396.jpg" alt="Buy a Hadestown Reusable Tote Bag" style="width: 100%;max-width:200px;height:auto;"><br>
-            Hadestown Reusable Tote Bag          </a>
-        </div>
-                <div class="single" style="min-width: 22%; flex: 0 0 auto;">
-          <a href="https://broadwayworldshop.com/products/hadestown-flower-necklace" target="_blank" class="title-16" style="text-decoration:none;">
-            <img loading="lazy" src="https://cloudimages.broadwayworld.com/storepics/300-store670.jpg" alt="Buy a Hadestown Flower Necklace" style="width: 100%;max-width:200px;height:auto;"><br>
-            Hadestown Flower Necklace          </a>
-        </div>
-                <div class="single" style="min-width: 22%; flex: 0 0 auto;">
-          <a href="https://broadwayworldshop.com/products/way-down-hadestown-keychain" target="_blank" class="title-16" style="text-decoration:none;">
-            <img loading="lazy" src="https://cloudimages.broadwayworld.com/storepics/300-store508-1769073577.jpg" alt="Buy a Hadestown Way Down Hadestown Keychain" style="width: 100%;max-width:200px;height:auto;"><br>
-            Hadestown Way Down Hadestown Keychain          </a>
-        </div>
-            </div>
-  </div>
-
-			  
+              
 			  
 			  
 			   
@@ -2542,15 +2903,13 @@ top: 28px;
   <div class='sticky-social' id='sticky-social'>
     <div class='sticky-social-close'><button id="foxCloseBtn" onclick="closestickysocial();">X</button></div>
     <div class='sticky-social-content'>
-      <div class="share-text" style="background-color:#024DDF;color:white;border-radius:4px;color:white;padding-right:6px;padding-left:6px;padding-top:2px;padding-bottom:2px;font-size:9pt;margin-top:3px;">
-<a rel="nofollow" href="https://cloud.broadwayworld.com/rec/tt.cfm?fromlink=1938548&clickedshow=332678&regid=1&articlelink=https://ticketmaster.evyy.net/c/2299526/264167/4272?u=https%3A%2F%2Fwww.ticketmaster.com%2Fhadestown-ny-tickets%2Fartist%2F2580967" target="_blank" style="text-decoration: none;color:white;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'tickets'});">Get Tickets</a></div>      <div class="social-icons" style="text-align:center;">
+          <div class="social-icons" style="text-align:center;">
           
          
           <div style="max-width:85px;" class="showboxdesktop">
                     
-                    <a href="/shows/Hadestown-332678/current-cast" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'info'});">
-                        <img loading="lazy" src="https://cloudimages2.broadwayworld.com/logos/3CABDDFB-27DE-40C1-911D016BD07A775B.jpg?format=auto&width=85" style="width:85px;padding:0px;border-width: 1px;height:auto;border-style: solid;" alt="Hadestown Show Information">
-
+                    <a href="/shows/The-Notebook-334654.html" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'info'});">
+                   
 
                     
  
@@ -2562,18 +2921,9 @@ top: 28px;
 
                                           <b style="font-size:8pt;">Get Info</b></div></a>
                     
-                        
-                          <a rel="nofollow" href="https://cloud.broadwayworld.com/rec/tt.cfm?fromlink=1938548&clickedshow=332678&regid=1&articlelink=https://ticketmaster.evyy.net/c/2299526/264167/4272?u=https%3A%2F%2Fwww.ticketmaster.com%2Fhadestown-ny-tickets%2Fartist%2F2580967" target="_blank" style="text-decoration: none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'tickets'});">
-
-                           <div style="width:100%;background-color:#024DDF;color:white;padding:10px;font-size:9pt;" onmouseover="this.style.background='#b20223';" onmouseout="this.style.background='black';">
-
-                              <svg alt="Get Tickets" style="fill:#ffffff;margin-top:3px;width:20px;padding-left:3px;float:left;padding-right:5px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M400 208v96H176v-96h224m24-48H152c-13.255 0-24 10.745-24 24v144c0 13.255 10.745 24 24 24h272c13.255 0 24-10.745 24-24V184c0-13.255-10.745-24-24-24zm144 56h8V112c0-26.51-21.49-48-48-48H48C21.49 64 0 85.49 0 112v104h8c22.091 0 40 17.909 40 40s-17.909 40-40 40H0v104c0 26.51 21.49 48 48 48h480c26.51 0 48-21.49 48-48V296h-8c-22.091 0-40-17.909-40-40s17.909-40 40-40zm-40-38.372c-28.47 14.59-48 44.243-48 78.372s19.53 63.782 48 78.372V400H48v-65.628c28.471-14.59 48-44.243 48-78.372s-19.529-63.782-48-78.372V112h480v65.628z"/></svg>
-<b style="line-height:14pt;font-size:9pt;">Buy Tix</b>
-   </small>
-</div></a>
-                                                                        
+                                                                    
              
-                              <a href="/shows/Hadestown-332678/current-cast" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'cast'});">
+                              <a href="/shows/The-Notebook-334654/cast" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'cast'});">
                               <div style="width:100%;background-color:black;color:white;padding:10px;font-size:9pt;" onmouseover="this.style.background='#b20223';" onmouseout="this.style.background='black';">
 
 
@@ -2584,13 +2934,13 @@ top: 28px;
 
                                                                 
                                 
-                                <a href="/shows/photos.php?showid=332678" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'photos'});">
+                                <a href="/shows/photos.php?showid=334654" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'photos'});">
                               <div style="width:100%;background-color:black;color:white;padding:10px;font-size:9pt;" onmouseover="this.style.background='#b20223';" onmouseout="this.style.background='black';">
                                     <svg  alt="Production Information" style="fill:#ffffff;margin-top:3px;width:20px;padding-left:3px;float:left;padding-right:5px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M154 80H38c-3.3 0-6-2.7-6-6V38c0-3.3 2.7-6 6-6h116c3.3 0 6 2.7 6 6v36c0 3.3-2.7 6-6 6zm358 0v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48h136l33.6-44.8C226.7 39.1 240.9 32 256 32h208c26.5 0 48 21.5 48 48zm-48 64H48v288h416V144zm0-64H256l-12 16h220V80zm-88 208c0-66.2-53.8-120-120-120s-120 53.8-120 120 53.8 120 120 120 120-53.8 120-120zm-48 0c0 39.7-32.3 72-72 72s-72-32.3-72-72 32.3-72 72-72 72 32.3 72 72zm-96 0c0-13.2 10.8-24 24-24 8.8 0 16-7.2 16-16s-7.2-16-16-16c-30.9 0-56 25.1-56 56 0 8.8 7.2 16 16 16s16-7.2 16-16z"/></svg>
                                     <b style="font-size:9pt;">Photos</b></div></a>
                                   
                                 
-  <a href="/shows/multimedia.php?showid=332678" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'videos'});">
+  <a href="/shows/multimedia.php?showid=334654" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'videos'});">
                             <div style="width:100%;background-color:black;color:white;padding:10px;font-size:9pt;" onmouseover="this.style.background='#b20223';" onmouseout="this.style.background='black';">
                                         <svg  alt="Video Information" style="fill:#ffffff;margin-top:3px;width:20px;padding-left:3px;float:left;padding-right:5px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M543.9 96c-6.2 0-12.5 1.8-18.2 5.7L416 170.1v-58.3c0-26.4-23.2-47.8-51.8-47.8H51.8C23.2 64 0 85.4 0 111.8v288.4C0 426.6 23.2 448 51.8 448h312.4c28.6 0 51.8-21.4 51.8-47.8v-58.3l109.7 68.3c5.7 4 12.1 5.7 18.2 5.7 16.6 0 32.1-13 32.1-31.5V127.5C576 109 560.5 96 543.9 96zM368 200v198.9c-.6.4-1.8 1.1-3.8 1.1H51.8c-2 0-3.2-.6-3.8-1.1V113.1c.6-.4 1.8-1.1 3.8-1.1h312.4c2 0 3.2.6 3.8 1.1V200zm160 155.2l-112-69.8v-58.7l112-69.8v198.3z"/></svg><b style="font-size:9pt;">Videos</b></div></a>
 
@@ -2598,46 +2948,27 @@ top: 28px;
 
       
              
-                                
-        
-          <a href="https://broadwayworldshop.com/collections/hadestown" style="text-decoration:none;" target=_new onclick="gtag('event', 'click', {'event_category':'article','event_label':'merch'});">
-                            <div style="width:100%;background-color:black;color:white;padding:10px;font-size:9pt;" onmouseover="this.style.background='#b20223';" onmouseout="this.style.background='black';">
-                                       <svg style="fill:#ffffff;margin-top:3px;width:20px;padding-left:3px;float:left;padding-right:5px;" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 335.302 335.302" style="enable-background:new 0 0 335.302 335.302;" xml:space="preserve">
-<g>
-	<path d="M319.555,0h-42.422c-12.278,0-23.913,8.69-27.063,20.558L233.956,81H14.814c-4.089,0-7.811,1.67-10.479,4.614
-		c-2.668,2.944-3.916,6.831-3.515,10.901l11.405,115.809C13.011,220.298,20.17,227,28.182,227h183.423
-		c7.753,0,15.413-6.066,17.438-13.551l21.406-79.26c0.593-1.066,1.068-2.061,1.395-3.295L278.672,30h40.884c8.284,0,15-6.716,15-15
-		S327.84,0,319.555,0z"/>
-	<path d="M221.17,257h-202c-8.284,0-15,6.716-15,15s6.716,15,15,15h8.781c-2.128,4.416-3.321,9.364-3.321,14.585
-		c0,18.591,15.125,33.717,33.718,33.717c18.591,0,33.717-15.125,33.717-33.717c0-5.221-1.193-10.169-3.321-14.585h66.737
-		c-2.128,4.416-3.321,9.364-3.321,14.585c0,18.591,15.125,33.717,33.717,33.717s33.718-15.125,33.718-33.717
-		c0-5.221-1.193-10.169-3.321-14.585h4.898c8.284,0,15-6.716,15-15S229.454,257,221.17,257z"/>
-</g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg><b style="font-size:9pt">Merch</b></div></a>
-
-
-        
-        
+                        
         
 
              
           </div>
-                      <a name="share link on twitter" href="https://x.com/intent/tweet?text=Review+Roundup%3A+HADESTOWN+Opens+On+Broadway-+What+Did+The+Critics+Think%3F+&amp;url=https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417" onclick="gtag('event', 'click', {
+                      <a name="share link on twitter" href="https://x.com/intent/tweet?text=Review+Roundup%3A+THE+NOTEBOOK+Opens+On+Broadway+&amp;url=https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314" onclick="gtag('event', 'click', {
             'event_category': 'social', 'event_label':'twitterscroll'});" style="margin-right:6px;" target="_blank" ><svg alt="Share to X" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="fill:#00;height:25px;">
   <path d="M415.31,98.35,284.87,256,415.31,413.65H355.2L256,299.35,156.8,413.65H96.69L227.13,256,96.69,98.35h60.11L256,212.65,355.2,98.35h60.11Z"/>
 </svg>
 </a>
-        <a name="share link on facebook" style="margin-right:8px;" href="https://www.facebook.com/sharer/sharer.php?u=https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417" target="_blank" onclick="gtag('event', 'click', {
+        <a name="share link on facebook" style="margin-right:8px;" href="https://www.facebook.com/sharer/sharer.php?u=https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314" target="_blank" onclick="gtag('event', 'click', {
           'event_category': 'social', 'event_label':'facebookscroll'});" ><svg alt="Share to Facebook" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="fill:#00;height:25px;margin-bottom:10px;"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.78H157.08V256h60.17v-54.86c0-60.28 37.22-93.06 92.38-93.06 26.5 0 51.67 5.11 51.67 5.11v56.16h-28.95c-28.62 0-37.41 17.97-37.41 36.97V256h62.78l-9.67 71.78h-53.11v173.22C413.31 482.38 504 379.78 504 256z"/></svg></a>
 
-<a title="Email Article" style="margin-left:4px;" href="mailto:?body=Check%20out%20this%20link:%20https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417" target="_blank" onclick="gtag('event', 'click', {'event_category': 'social', 'event_label':'email'});">
+<a title="Email Article" style="margin-left:4px;" href="mailto:?body=Check%20out%20this%20link:%20https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314" target="_blank" onclick="gtag('event', 'click', {'event_category': 'social', 'event_label':'email'});">
     
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/></svg>
     
 </a>
 
 <a title="Share on Reddit" 
-   href="https://www.reddit.com/submit?url=https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417" 
+   href="https://www.reddit.com/submit?url=https://www.broadwayworld.com/article/Review-Roundup-THE-NOTEBOOK-Opens-On-Broadway-20240314" 
    target="_blank" 
    style="margin-left:4px;"
    onclick="gtag('event', 'click', {'event_category': 'social', 'event_label':'reddit'});">
@@ -2692,8 +3023,7 @@ function uuidv4(){
 const fbEventId = uuidv4();
 
 const topicParams = {
-  show_name: "Hadestown",
-    type: "MU",
+  show_name: "The Notebook",
       region: "Broadway"
 };
 
@@ -2835,14 +3165,13 @@ fbq('trackCustom','TheatreTopicView', topicParams, {eventID: fbEventId});
      
      
 
-<a href="/shows/Hadestown-332678.html" style="text-decoration:none;color:black;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'info'});">
-<img src="https://cloudimages2.broadwayworld.com/logos/3CABDDFB-27DE-40C1-911D016BD07A775B.jpg?format=auto&width=600" class="responsive-logo-side" style="padding:0px;border-width:1px;border-style: solid;height:auto;" alt="Hadestown Show Information"></a>
+<a href="/shows/The-Notebook-334654.html" style="text-decoration:none;color:black;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'info'});">
 </td>
 </tr>
 <Td style="background-color:black;margin:0px;padding:0px;">
 
 <Table style="width:100%;border-width:0px;border-style:solid;border-color:white;"><tr><Td>
-<a href="/shows/Hadestown-332678.html" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'info'});">
+<a href="/shows/The-Notebook-334654.html" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'info'});">
 
 <div style="width:100%;background-color:black;color:white;padding:10px;font-size:9pt;" onmouseover="this.style.background='#b20223';" onmouseout="this.style.background='black';">
 <svg alt="Get More Info on this show" style="fill:#ffffff;margin-top:3px;width:18px;padding-left:0px;float:left;" 
@@ -2855,36 +3184,29 @@ fbq('trackCustom','TheatreTopicView', topicParams, {eventID: fbEventId});
 </div></a>
                     
                     </td><td>
-<a rel="nofollow" href="https://data.broadwayworld.com/rec/tt.cfm?fromlink=1938548&clickedshow=332678&regid=1&articlelink=https://ticketmaster.evyy.net/c/2299526/264167/4272?u=https%3A%2F%2Fwww.ticketmaster.com%2Fhadestown-ny-tickets%2Fartist%2F2580967" target="_blank" style="text-decoration: none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'tickets'});">
-<div style="width:100%;background-color:black;color:white;padding:10px;font-size:9pt;" onmouseover="this.style.background='#b20223';" onmouseout="this.style.background='black';">
-<svg alt="Get Tickets" style="fill:#ffffff;margin-top:3px;width:20px;padding-left:3px;float:left;padding-right:5px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M400 208v96H176v-96h224m24-48H152c-13.255 0-24 10.745-24 24v144c0 13.255 10.745 24 24 24h272c13.255 0 24-10.745 24-24V184c0-13.255-10.745-24-24-24zm144 56h8V112c0-26.51-21.49-48-48-48H48C21.49 64 0 85.49 0 112v104h8c22.091 0 40 17.909 40 40s-17.909 40-40 40H0v104c0 26.51 21.49 48 48 48h480c26.51 0 48-21.49 48-48V296h-8c-22.091 0-40-17.909-40-40s17.909-40 40-40zm-40-38.372c-28.47 14.59-48 44.243-48 78.372s19.53 63.782 48 78.372V400H48v-65.628c28.471-14.59 48-44.243 48-78.372s-19.529-63.782-48-78.372V112h480v65.628z"/></svg>
-<b style="line-height:14pt;font-size:9pt;">Get Tickets</b></small>
-</div></a>
-                                                        </td></tr><tr><td>
+                            </td></tr><tr><td>
                 
              
-<a href="/shows/Hadestown-332678/current-cast" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'cast'});">
+<a href="/shows/The-Notebook-334654/cast" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'cast'});">
 <div style="width:100%;background-color:black;color:white;padding:10px;font-size:9pt;" onmouseover="this.style.background='#b20223';" onmouseout="this.style.background='black';">
 
 
 <svg alt="Show Cast" style="fill:#ffffff;margin-top:3px;width:20px;padding-left:3px;float:left;padding-right:5px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M544 224c44.2 0 80-35.8 80-80s-35.8-80-80-80-80 35.8-80 80 35.8 80 80 80zm0-112c17.6 0 32 14.4 32 32s-14.4 32-32 32-32-14.4-32-32 14.4-32 32-32zM96 224c44.2 0 80-35.8 80-80s-35.8-80-80-80-80 35.8-80 80 35.8 80 80 80zm0-112c17.6 0 32 14.4 32 32s-14.4 32-32 32-32-14.4-32-32 14.4-32 32-32zm396.4 210.9c-27.5-40.8-80.7-56-127.8-41.7-14.2 4.3-29.1 6.7-44.7 6.7s-30.5-2.4-44.7-6.7c-47.1-14.3-100.3.8-127.8 41.7-12.4 18.4-19.6 40.5-19.6 64.3V432c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48v-44.8c.2-23.8-7-45.9-19.4-64.3zM464 432H176v-44.8c0-36.4 29.2-66.2 65.4-67.2 25.5 10.6 51.9 16 78.6 16 26.7 0 53.1-5.4 78.6-16 36.2 1 65.4 30.7 65.4 67.2V432zm92-176h-24c-17.3 0-33.4 5.3-46.8 14.3 13.4 10.1 25.2 22.2 34.4 36.2 3.9-1.4 8-2.5 12.3-2.5h24c19.8 0 36 16.2 36 36 0 13.2 10.8 24 24 24s24-10.8 24-24c.1-46.3-37.6-84-83.9-84zm-236 0c61.9 0 112-50.1 112-112S381.9 32 320 32 208 82.1 208 144s50.1 112 112 112zm0-176c35.3 0 64 28.7 64 64s-28.7 64-64 64-64-28.7-64-64 28.7-64 64-64zM154.8 270.3c-13.4-9-29.5-14.3-46.8-14.3H84c-46.3 0-84 37.7-84 84 0 13.2 10.8 24 24 24s24-10.8 24-24c0-19.8 16.2-36 36-36h24c4.4 0 8.5 1.1 12.3 2.5 9.3-14 21.1-26.1 34.5-36.2z"/></svg><b style="font-size:9pt;">Cast</b></div></a>
 
                                                                 </td><Td>
-<a href="/shows/photos.php?showid=332678" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'photos'});">
+<a href="/shows/photos.php?showid=334654" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'photos'});">
 <div style="width:100%;background-color:black;color:white;padding:10px;font-size:9pt;" onmouseover="this.style.background='#b20223';" onmouseout="this.style.background='black';">
 <svg  alt="Production Information" style="fill:#ffffff;margin-top:3px;width:20px;padding-left:3px;float:left;padding-right:5px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M154 80H38c-3.3 0-6-2.7-6-6V38c0-3.3 2.7-6 6-6h116c3.3 0 6 2.7 6 6v36c0 3.3-2.7 6-6 6zm358 0v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48h136l33.6-44.8C226.7 39.1 240.9 32 256 32h208c26.5 0 48 21.5 48 48zm-48 64H48v288h416V144zm0-64H256l-12 16h220V80zm-88 208c0-66.2-53.8-120-120-120s-120 53.8-120 120 53.8 120 120 120 120-53.8 120-120zm-48 0c0 39.7-32.3 72-72 72s-72-32.3-72-72 32.3-72 72-72 72 32.3 72 72zm-96 0c0-13.2 10.8-24 24-24 8.8 0 16-7.2 16-16s-7.2-16-16-16c-30.9 0-56 25.1-56 56 0 8.8 7.2 16 16 16s16-7.2 16-16z"/></svg>
 <b style="font-size:9pt;">Photos</b></div></a>
                                   </td></tr><tr><Td>
                                 
-<a href="/shows/multimedia.php?showid=332678" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'videos'});">
+<a href="/shows/multimedia.php?showid=334654" style="text-decoration:none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'videos'});">
 <div style="width:100%;background-color:black;color:white;padding:10px;font-size:9pt;" onmouseover="this.style.background='#b20223';" onmouseout="this.style.background='black';">
 <svg  alt="Video Information" style="fill:#ffffff;margin-top:3px;width:20px;padding-left:3px;float:left;padding-right:5px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M543.9 96c-6.2 0-12.5 1.8-18.2 5.7L416 170.1v-58.3c0-26.4-23.2-47.8-51.8-47.8H51.8C23.2 64 0 85.4 0 111.8v288.4C0 426.6 23.2 448 51.8 448h312.4c28.6 0 51.8-21.4 51.8-47.8v-58.3l109.7 68.3c5.7 4 12.1 5.7 18.2 5.7 16.6 0 32.1-13 32.1-31.5V127.5C576 109 560.5 96 543.9 96zM368 200v198.9c-.6.4-1.8 1.1-3.8 1.1H51.8c-2 0-3.2-.6-3.8-1.1V113.1c.6-.4 1.8-1.1 3.8-1.1h312.4c2 0 3.2.6 3.8 1.1V200zm160 155.2l-112-69.8v-58.7l112-69.8v198.3z"/></svg><b style="font-size:9pt;">Videos</b></div></a>
 
                                   </td><Td>
 
-             
-        
-<a href="https://broadwayworldshop.com/collections/hadestown" style="text-decoration:none;" target=_new onclick="gtag('event', 'click', {'event_category':'article','event_label':'merch'});">
+  <a href="https://bway.world/ydbt5" style="text-decoration:none;" target=_new onclick="gtag('event', 'click', {'event_category':'article','event_label':'merch'});">
 <div style="width:100%;background-color:black;color:white;padding:10px;font-size:9pt;" onmouseover="this.style.background='#b20223';" onmouseout="this.style.background='black';">
 <svg style="fill:#ffffff;margin-top:3px;width:20px;padding-left:3px;float:left;padding-right:5px;" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 335.302 335.302" style="enable-background:new 0 0 335.302 335.302;" xml:space="preserve">
@@ -2892,10 +3214,11 @@ fbq('trackCustom','TheatreTopicView', topicParams, {eventID: fbEventId});
 
 <path d="M319.555,0h-42.422c-12.278,0-23.913,8.69-27.063,20.558L233.956,81H14.814c-4.089,0-7.811,1.67-10.479,4.614 c-2.668,2.944-3.916,6.831-3.515,10.901l11.405,115.809C13.011,220.298,20.17,227,28.182,227h183.423 c7.753,0,15.413-6.066,17.438-13.551l21.406-79.26c0.593-1.066,1.068-2.061,1.395-3.295L278.672,30h40.884c8.284,0,15-6.716,15-15 S327.84,0,319.555,0z"/>
 <path d="M221.17,257h-202c-8.284,0-15,6.716-15,15s6.716,15,15,15h8.781c-2.128,4.416-3.321,9.364-3.321,14.585 c0,18.591,15.125,33.717,33.718,33.717c18.591,0,33.717-15.125,33.717-33.717c0-5.221-1.193-10.169-3.321-14.585h66.737 c-2.128,4.416-3.321,9.364-3.321,14.585c0,18.591,15.125,33.717,33.717,33.717s33.718-15.125,33.718-33.717 c0-5.221-1.193-10.169-3.321-14.585h4.898c8.284,0,15-6.716,15-15S229.454,257,221.17,257z"/>
-</g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg><b style="font-size:9pt">Shop Merch</b></div></a>
+</g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg><b style="font-size:9pt">Cast Recording</b></div></a>
+                          
                                   </td></tr></table>
 
-<a rel="nofollow" href="https://data.broadwayworld.com/rec/tt.cfm?fromlink=1938548&clickedshow=332678&regid=1&articlelink=https://ticketmaster.evyy.net/c/2299526/264167/4272?u=https%3A%2F%2Fwww.ticketmaster.com%2Fhadestown-ny-tickets%2Fartist%2F2580967" target="_blank" style="text-decoration: none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'tickets'});">
+<a rel="nofollow" href="https://data.broadwayworld.com/rec/tt.cfm?fromlink=2297909&clickedshow=334654&regid=1&articlelink=" target="_blank" style="text-decoration: none;" onclick="gtag('event', 'click', {'event_category':'article','event_label':'tickets'});">
  <div class="tixponsor" style="
     display: block;
     background-color: #024DDF;
@@ -3076,7 +3399,7 @@ fbq('trackCustom','TheatreTopicView', topicParams, {eventID: fbEventId});
 
                 
                     <a target="_new" 
-                       href="https://data.broadwayworld.com/rec/ticketcentralclick.cfm?tcid=8"
+                       href="https://data.broadwayworld.com/rec/ticketcentralclick.cfm?tcid=7"
                        style="font-weight:normal; font-size:14px; color:#333;">
                         
                         
@@ -3084,7 +3407,7 @@ fbq('trackCustom','TheatreTopicView', topicParams, {eventID: fbEventId});
                              style="height:auto; width:100%; margin-bottom:5px;" 
                              loading="lazy" 
                              alt="Ticket Central" 
-                             src="https://cloudimages2.broadwayworld.com/ticketcentral/1737556232_1.png?format=auto&width=365?format=auto&width=300"
+                             src="https://cloudimages2.broadwayworld.com/ticketcentral/1737556216_2.jpg?format=auto&width=365?format=auto&width=300"
                              width="145"
                              height="97">
                     </a>
@@ -3386,7 +3709,7 @@ cursor: pointer;">Discounts <img src="https://cloudimages.broadwayworld.com/bwor
             
             <li class="nav-item"> <form action="https://www.broadwayworld.com/submitnewsedit.cfm"                   
    method="post">
-  <input name="editid" type="hidden" value="1938548">
+  <input name="editid" type="hidden" value="2297909">
     <a href="#" style="background-color:#292929;color:#ffb5b5;padding: 0;
 border: none;"  onclick="this.parentNode.submit();"> Report Error</a>
 </form>       </li>     
@@ -3729,7 +4052,7 @@ function uuidv4(){
 const fbEventId = uuidv4();
 
 // Build topicParams with all available variables
-const topicParams = {"region":"Broadway","show_name":"Hadestown","type":"MU"};
+const topicParams = {"region":"Broadway","show_name":"The Notebook"};
 
 // Only track if fbq is available and hasn't been tracked yet for this page
 if (window.fbq && typeof window.fbq === 'function') {
@@ -3764,7 +4087,7 @@ async function sha256Hex(s){
       fbc,
       ...(em ? { em } : {}),
             client_ip_address: "67.86.135.34",
-                  client_user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+                  client_user_agent: "Mozilla/5.0",
           },
     events: [
       { name: 'PageView', params: {} },
@@ -3786,7 +4109,7 @@ async function sha256Hex(s){
   <img height="1" width="1" style="display:none"
        src="https://www.facebook.com/tr?id=128124764529976&ev=PageView&noscript=1"/>
 </noscript>
-  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c227197cb308ce3',t:'MTc2OTEyMDQ3OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c22919a0c93a68b',t:'MTc2OTEyMTc5MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
 
 
