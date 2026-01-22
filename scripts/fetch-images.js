@@ -586,9 +586,27 @@ function fetchTodayTixGraphQL(showId) {
 
 function updateShowsJson(imageResults) {
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
+
+  // Load curated images to avoid overwriting them
+  const CURATED_JSON_PATH = path.join(__dirname, '..', 'data', 'curated-images.json');
+  let curatedShows = [];
+  try {
+    const curatedData = JSON.parse(fs.readFileSync(CURATED_JSON_PATH, 'utf8'));
+    curatedShows = Object.keys(curatedData.images || {});
+  } catch (e) {
+    // No curated images file, proceed normally
+  }
+
   let updatedCount = 0;
+  let skippedCount = 0;
 
   for (const show of showsData.shows) {
+    // Skip shows that have curated images
+    if (curatedShows.includes(show.slug)) {
+      skippedCount++;
+      continue;
+    }
+
     if (imageResults[show.slug]) {
       show.images = imageResults[show.slug];
       updatedCount++;
@@ -597,6 +615,11 @@ function updateShowsJson(imageResults) {
 
   showsData._meta.lastUpdated = new Date().toISOString().split('T')[0];
   fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
+
+  if (skippedCount > 0) {
+    console.log(`\nℹ️  Skipped ${skippedCount} shows with curated images`);
+  }
+
   return updatedCount;
 }
 
