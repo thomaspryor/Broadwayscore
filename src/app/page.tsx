@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { getAllShows, ComputedShow } from '@/lib/data';
 
@@ -73,29 +73,31 @@ function NewBadge() {
   );
 }
 
-function isNewShow(openingDate: string): boolean {
+// Calculate if show is new based on reference date to avoid hydration mismatch
+function isNewShow(openingDate: string, referenceDate: Date): boolean {
   const opening = new Date(openingDate);
-  const now = new Date();
-  const daysSinceOpening = (now.getTime() - opening.getTime()) / (1000 * 60 * 60 * 24);
+  const daysSinceOpening = (referenceDate.getTime() - opening.getTime()) / (1000 * 60 * 60 * 24);
   return daysSinceOpening <= 60 && daysSinceOpening >= 0; // Within last 60 days
 }
 
+// Use UTC-based formatting to avoid timezone-related hydration mismatch
 function formatOpeningDate(dateStr: string): string {
   const date = new Date(dateStr);
-  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
 function SearchIcon() {
   return (
-    <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
     </svg>
   );
 }
 
-function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: number; hideStatus: boolean }) {
+function ShowCard({ show, index, hideStatus, currentDate }: { show: ComputedShow; index: number; hideStatus: boolean; currentDate: Date | null }) {
   const score = show.criticScore?.score;
-  const isNew = isNewShow(show.openingDate);
+  const isNew = currentDate ? isNewShow(show.openingDate, currentDate) : false;
 
   return (
     <Link
@@ -108,11 +110,15 @@ function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: numb
         {show.images?.thumbnail ? (
           <img
             src={show.images.thumbnail}
-            alt={`${show.title} - Broadway ${show.type} at ${show.venue}`}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            width={80}
+            height={80}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-2xl">
+          <div className="w-full h-full flex items-center justify-center text-gray-600 text-2xl" aria-hidden="true">
             🎭
           </div>
         )}
@@ -154,6 +160,13 @@ export default function HomePage() {
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('open');
   const [searchQuery, setSearchQuery] = useState('');
+  // Use state for current date to avoid hydration mismatch (server vs client time)
+  const [currentDate, setCurrentDate] = useState<Date | null>(null);
+
+  useEffect(() => {
+    // Set current date only on client to avoid hydration mismatch
+    setCurrentDate(new Date());
+  }, []);
 
   const shows = useMemo(() => getAllShows(), []);
 
@@ -229,27 +242,31 @@ export default function HomePage() {
       </div>
 
       {/* Search */}
-      <div id="search" className="relative mb-6 scroll-mt-24">
+      <div id="search" className="relative mb-6 scroll-mt-24" role="search">
+        <label htmlFor="show-search" className="sr-only">Search Broadway shows</label>
         <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
           <SearchIcon />
         </div>
         <input
-          type="text"
+          id="show-search"
+          type="search"
           placeholder="Search shows..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="search-input pl-12 focus-visible:outline-none"
+          autoComplete="off"
         />
       </div>
 
       {/* Filters & Sort */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm">
-        <div className="flex items-center gap-2">
-          <span className="text-gray-500">Status:</span>
+        <div className="flex items-center gap-2" role="group" aria-label="Filter by status">
+          <span className="text-gray-500" id="status-filter-label">Status:</span>
           {(['open', 'all', 'closed'] as const).map((status) => (
             <button
               key={status}
               onClick={() => setStatusFilter(status)}
+              aria-pressed={statusFilter === status}
               className={`px-2 py-1 rounded transition-colors ${
                 statusFilter === status ? 'text-brand' : 'text-gray-400 hover:text-white'
               }`}
@@ -259,22 +276,25 @@ export default function HomePage() {
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-gray-500">Sort:</span>
+        <div className="flex items-center gap-2" role="group" aria-label="Sort shows">
+          <span className="text-gray-500" id="sort-label">Sort:</span>
           <button
             onClick={() => handleSort('criticScore')}
+            aria-pressed={sortField === 'criticScore'}
             className={`px-2 py-1 rounded ${sortField === 'criticScore' ? 'text-brand' : 'text-gray-400 hover:text-white'}`}
           >
             Score {sortField === 'criticScore' && (sortDirection === 'desc' ? '↓' : '↑')}
           </button>
           <button
             onClick={() => handleSort('title')}
+            aria-pressed={sortField === 'title'}
             className={`px-2 py-1 rounded ${sortField === 'title' ? 'text-brand' : 'text-gray-400 hover:text-white'}`}
           >
             A-Z {sortField === 'title' && (sortDirection === 'asc' ? '↑' : '↓')}
           </button>
           <button
             onClick={() => handleSort('openingDate')}
+            aria-pressed={sortField === 'openingDate'}
             className={`px-2 py-1 rounded ${sortField === 'openingDate' ? 'text-brand' : 'text-gray-400 hover:text-white'}`}
           >
             Date {sortField === 'openingDate' && (sortDirection === 'desc' ? '↓' : '↑')}
@@ -299,16 +319,16 @@ export default function HomePage() {
       </div>
 
       {/* Show List */}
-      <div className="space-y-3">
+      <div className="space-y-3" role="list" aria-label="Broadway shows">
         {filteredAndSortedShows.map((show, index) => (
-          <ShowCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} />
+          <ShowCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} currentDate={currentDate} />
         ))}
       </div>
 
       {filteredAndSortedShows.length === 0 && (
-        <div className="card text-center py-16 px-6">
+        <div className="card text-center py-16 px-6" role="status" aria-live="polite">
           <div className="w-16 h-16 rounded-full bg-surface-overlay mx-auto mb-4 flex items-center justify-center">
-            <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -322,7 +342,7 @@ export default function HomePage() {
             onClick={() => { setSearchQuery(''); setStatusFilter('all'); }}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-pill bg-brand/10 text-brand hover:bg-brand/20 transition-colors text-sm font-semibold"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
             Reset filters

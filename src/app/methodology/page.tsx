@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
 
 export const metadata: Metadata = {
   title: 'How It Works - Scoring Methodology',

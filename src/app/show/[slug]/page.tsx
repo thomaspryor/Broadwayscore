@@ -88,17 +88,16 @@ function TierBadge({ tier }: { tier: number }) {
   );
 }
 
+// Use UTC-based formatting to avoid timezone-related hydration mismatch
 function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
+  const date = new Date(dateStr);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 }
 
 function BackArrow() {
   return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
     </svg>
   );
@@ -106,7 +105,7 @@ function BackArrow() {
 
 function ExternalLinkIcon() {
   return (
-    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
     </svg>
   );
@@ -114,7 +113,7 @@ function ExternalLinkIcon() {
 
 function MapPinIcon() {
   return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>
@@ -123,7 +122,7 @@ function MapPinIcon() {
 
 function PlayIcon() {
   return (
-    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M8 5v14l11-7z" />
     </svg>
   );
@@ -131,7 +130,7 @@ function PlayIcon() {
 
 function GlobeIcon() {
   return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
     </svg>
   );
@@ -226,28 +225,25 @@ function ScoreBreakdownBar({ reviews }: { reviews: ReviewForBreakdown[] }) {
   const negativePct = Math.round((negative / total) * 100);
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2" role="img" aria-label={`Review breakdown: ${positive} positive, ${mixed} mixed, ${negative} negative out of ${total} total reviews`}>
       {/* Bar */}
-      <div className="h-3 rounded-full overflow-hidden flex bg-surface-overlay">
+      <div className="h-3 rounded-full overflow-hidden flex bg-surface-overlay" aria-hidden="true">
         {positivePct > 0 && (
           <div
             className="bg-score-high h-full"
             style={{ width: `${positivePct}%` }}
-            title={`${positive} positive`}
           />
         )}
         {mixedPct > 0 && (
           <div
             className="bg-score-medium h-full"
             style={{ width: `${mixedPct}%` }}
-            title={`${mixed} mixed`}
           />
         )}
         {negativePct > 0 && (
           <div
             className="bg-score-low h-full"
             style={{ width: `${negativePct}%` }}
-            title={`${negative} negative`}
           />
         )}
       </div>
@@ -255,19 +251,19 @@ function ScoreBreakdownBar({ reviews }: { reviews: ReviewForBreakdown[] }) {
       <div className="flex items-center gap-4 text-xs">
         {positive > 0 && (
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-score-high" />
+            <div className="w-3 h-3 rounded-sm bg-score-high" aria-hidden="true" />
             <span className="text-gray-400">{positive} Positive</span>
           </div>
         )}
         {mixed > 0 && (
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-score-medium" />
+            <div className="w-3 h-3 rounded-sm bg-score-medium" aria-hidden="true" />
             <span className="text-gray-400">{mixed} Mixed</span>
           </div>
         )}
         {negative > 0 && (
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-score-low" />
+            <div className="w-3 h-3 rounded-sm bg-score-low" aria-hidden="true" />
             <span className="text-gray-400">{negative} Negative</span>
           </div>
         )}
@@ -287,36 +283,47 @@ function MetascoreSection({ score, reviewCount, reviews }: { score: number; revi
     : 'bg-score-low text-white';
 
   return (
-    <div className="card p-5 sm:p-6 mb-6">
+    <section className="card p-5 sm:p-6 mb-6" aria-labelledby="metascore-heading">
       <div className="flex items-start gap-4 sm:gap-6 mb-4">
         {/* Large Score Badge */}
-        <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}>
-          <span className="text-4xl sm:text-5xl font-extrabold">{roundedScore}</span>
+        <div
+          className={`w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}
+          role="meter"
+          aria-valuenow={roundedScore}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`Metascore: ${roundedScore} out of 100 - ${sentimentLabel}`}
+        >
+          <span className="text-4xl sm:text-5xl font-extrabold" aria-hidden="true">{roundedScore}</span>
         </div>
 
         {/* Metascore Label and Sentiment */}
         <div className="flex-1 pt-1">
-          <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Metascore</div>
+          <h2 id="metascore-heading" className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Metascore</h2>
           <div className={`text-lg sm:text-xl font-bold ${colorClass}`}>{sentimentLabel}</div>
           <a
             href="#critic-reviews"
             className="text-sm text-gray-500 hover:text-brand transition-colors mt-1 inline-block"
           >
-            Based on {reviewCount} Critic Reviews
+            Based on {reviewCount} Critic Review{reviewCount !== 1 ? 's' : ''}
           </a>
         </div>
       </div>
 
       {/* Score Breakdown Bar */}
       <ScoreBreakdownBar reviews={reviews} />
-    </div>
+    </section>
   );
 }
 
+// Calculate if show is new - uses UTC to avoid timezone hydration issues
 function isNewShow(openingDate: string): boolean {
   const opening = new Date(openingDate);
+  // Use a fixed reference point based on UTC date for consistency
   const now = new Date();
-  const daysSinceOpening = (now.getTime() - opening.getTime()) / (1000 * 60 * 60 * 24);
+  const todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const openingUTC = Date.UTC(opening.getUTCFullYear(), opening.getUTCMonth(), opening.getUTCDate());
+  const daysSinceOpening = (todayUTC - openingUTC) / (1000 * 60 * 60 * 24);
   return daysSinceOpening <= 60 && daysSinceOpening >= 0;
 }
 
