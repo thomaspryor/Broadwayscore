@@ -39,19 +39,19 @@ const config: Config = {
           overlay: '#2a2a38',
           elevated: '#32323f',
         },
-        // Brand - TodayTix-inspired coral/hot pink
+        // Brand - Muted gold for prestigious feel
         brand: {
-          DEFAULT: '#ff6b6b',
-          hover: '#ff5252',
-          light: '#ff8a8a',
-          muted: 'rgba(255, 107, 107, 0.2)',
+          DEFAULT: '#d4a574',
+          hover: '#c4956a',
+          light: '#e4b584',
+          muted: 'rgba(212, 165, 116, 0.2)',
         },
         // Accent colors for variety
         accent: {
-          coral: '#ff6b6b',
-          pink: '#ff4d8d',
+          gold: '#d4a574',
+          cream: '#f5e6d3',
           purple: '#a855f7',
-          gold: '#fbbf24',
+          warm: '#b8956a',
         },
         // Status colors
         status: {
@@ -82,12 +82,12 @@ const config: Config = {
       boxShadow: {
         'card': '0 2px 8px -2px rgba(0, 0, 0, 0.5), 0 1px 2px -1px rgba(0, 0, 0, 0.4)',
         'card-hover': '0 8px 24px -4px rgba(0, 0, 0, 0.6), 0 4px 8px -2px rgba(0, 0, 0, 0.5)',
-        'glow': '0 0 20px rgba(255, 107, 107, 0.3)',
-        'glow-sm': '0 0 10px rgba(255, 107, 107, 0.2)',
+        'glow': '0 0 20px rgba(212, 165, 116, 0.3)',
+        'glow-sm': '0 0 10px rgba(212, 165, 116, 0.2)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-brand': 'linear-gradient(135deg, #ff6b6b 0%, #ff4d8d 100%)',
+        'gradient-brand': 'linear-gradient(135deg, #d4a574 0%, #b8956a 100%)',
         'gradient-dark': 'linear-gradient(180deg, #1a1a24 0%, #0f0f14 100%)',
       },
       animation: {

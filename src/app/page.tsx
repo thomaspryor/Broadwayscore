@@ -34,32 +34,30 @@ function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm'
 }
 
 function StatusChip({ status }: { status: string }) {
-  const chipClass = {
-    open: 'chip-open',
-    closed: 'chip-closed',
-    previews: 'chip-previews',
-  }[status] || 'chip-closed';
-
   const label = {
     open: 'Now Playing',
     closed: 'Closed',
     previews: 'In Previews',
   }[status] || status;
 
-  return <span className={`chip ${chipClass}`}>{label}</span>;
+  const colorClass = {
+    open: 'text-emerald-500',
+    closed: 'text-gray-500',
+    previews: 'text-purple-400',
+  }[status] || 'text-gray-500';
+
+  return (
+    <span className={`text-[11px] font-medium uppercase tracking-wider ${colorClass}`}>
+      {label}
+    </span>
+  );
 }
 
 function TypeTag({ type }: { type: string }) {
-  const config: Record<string, { label: string; className: string }> = {
-    musical: { label: 'Musical', className: 'bg-purple-500/20 text-purple-400 border-purple-500/20' },
-    play: { label: 'Play', className: 'bg-blue-500/20 text-blue-400 border-blue-500/20' },
-    revival: { label: 'Revival', className: 'bg-amber-500/20 text-amber-400 border-amber-500/20' },
-  };
-
-  const { label, className } = config[type] || { label: type, className: 'bg-gray-500/20 text-gray-400 border-gray-500/20' };
+  const label = type.charAt(0).toUpperCase() + type.slice(1);
 
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wide border ${className}`}>
+    <span className="text-[11px] font-medium uppercase tracking-wider text-gray-500">
       {label}
     </span>
   );
@@ -67,7 +65,7 @@ function TypeTag({ type }: { type: string }) {
 
 function NewBadge() {
   return (
-    <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-brand/20 text-brand text-[10px] font-bold uppercase tracking-wide">
+    <span className="text-[11px] font-bold uppercase tracking-wider text-brand">
       New
     </span>
   );
