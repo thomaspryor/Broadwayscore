@@ -58,7 +58,7 @@ function ScoreBadge({ score, size = 'lg' }: { score?: number | null; size?: 'md'
   );
 }
 
-// Status badge - square-ish, subtle background with accent color
+// Status pill - subtle background with accent color
 function StatusBadge({ status }: { status: string }) {
   const label = {
     open: 'NOW PLAYING',
@@ -73,7 +73,7 @@ function StatusBadge({ status }: { status: string }) {
   }[status] || 'bg-gray-500/15 text-gray-400';
 
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
       {label}
     </span>
   );
@@ -141,7 +141,7 @@ function GlobeIcon() {
   );
 }
 
-// Format pill - fully rounded, outline style
+// Format pill - outline style
 function FormatPill({ type }: { type: string }) {
   const isMusical = type === 'musical' || type === 'revival';
   const label = isMusical ? 'MUSICAL' : 'PLAY';
@@ -150,13 +150,13 @@ function FormatPill({ type }: { type: string }) {
     : 'border-blue-500/50 text-blue-400';
 
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide border ${colorClass}`}>
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide border ${colorClass}`}>
       {label}
     </span>
   );
 }
 
-// Production pill - rounded rectangle, solid muted fill
+// Production pill - solid muted fill
 function ProductionPill({ isRevival }: { isRevival: boolean }) {
   const label = isRevival ? 'REVIVAL' : 'ORIGINAL';
   const colorClass = isRevival
@@ -164,7 +164,7 @@ function ProductionPill({ isRevival }: { isRevival: boolean }) {
     : 'bg-gray-500/20 text-gray-400';
 
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
       {label}
     </span>
   );
