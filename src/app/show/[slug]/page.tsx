@@ -59,16 +59,20 @@ function ScoreBadge({ score, size = 'lg' }: { score?: number | null; size?: 'md'
 }
 
 function StatusChip({ status }: { status: string }) {
-  const config: Record<string, { label: string; className: string }> = {
-    open: { label: 'Now Playing', className: 'bg-status-open-bg text-status-open border-status-open/20' },
-    closed: { label: 'Closed', className: 'bg-status-closed-bg text-status-closed border-status-closed/20' },
-    previews: { label: 'In Previews', className: 'bg-status-previews-bg text-status-previews border-status-previews/20' },
-  };
+  const label = {
+    open: 'NOW PLAYING',
+    closed: 'CLOSED',
+    previews: 'IN PREVIEWS',
+  }[status] || status.toUpperCase();
 
-  const { label, className } = config[status] || { label: status, className: 'bg-status-closed-bg text-status-closed border-status-closed/20' };
+  const colorClass = {
+    open: 'text-emerald-500',
+    closed: 'text-gray-500',
+    previews: 'text-purple-400',
+  }[status] || 'text-gray-500';
 
   return (
-    <span className={`inline-flex items-center px-3 py-1 rounded-pill text-xs font-semibold uppercase tracking-wide border ${className}`}>
+    <span className={`text-[11px] font-medium uppercase tracking-wider ${colorClass}`}>
       {label}
     </span>
   );
@@ -136,26 +140,30 @@ function GlobeIcon() {
   );
 }
 
-function TypeTag({ type }: { type: string }) {
-  const config: Record<string, { label: string; className: string }> = {
-    musical: { label: 'Musical', className: 'bg-purple-500/20 text-purple-400 border-purple-500/20' },
-    play: { label: 'Play', className: 'bg-blue-500/20 text-blue-400 border-blue-500/20' },
-    revival: { label: 'Revival', className: 'bg-amber-500/20 text-amber-400 border-amber-500/20' },
-  };
-
-  const { label, className } = config[type] || { label: type, className: 'bg-gray-500/20 text-gray-400 border-gray-500/20' };
+function TypeTag({ type, isRevival }: { type: string; isRevival?: boolean }) {
+  // Show base type: MUSICAL or PLAY
+  const baseType = type === 'revival' ? 'musical' : type;
+  const label = baseType.toUpperCase();
 
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium uppercase tracking-wide border ${className}`}>
-      {label}
+    <span className="text-[11px] font-medium uppercase tracking-wider text-gray-500">
+      {isRevival ? 'REVIVAL' : label}
+    </span>
+  );
+}
+
+function RevivalTag() {
+  return (
+    <span className="text-[11px] font-medium uppercase tracking-wider text-amber-500">
+      REVIVAL
     </span>
   );
 }
 
 function NewBadge() {
   return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded bg-brand/20 text-brand text-xs font-bold uppercase tracking-wide">
-      New
+    <span className="text-[11px] font-bold uppercase tracking-wider text-brand">
+      NEW
     </span>
   );
 }
@@ -418,6 +426,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <div className="flex-1 min-w-0 pt-2 sm:pt-4">
             <div className="flex flex-wrap items-center gap-2 mb-1">
               <TypeTag type={show.type} />
+              {show.type === 'revival' && <RevivalTag />}
               {isNewShow(show.openingDate) && <NewBadge />}
               <StatusChip status={show.status} />
             </div>
