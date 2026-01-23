@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getAllShows, ComputedShow } from '@/lib/data';
 
@@ -33,51 +33,55 @@ function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm'
   );
 }
 
-function StatusChip({ status }: { status: string }) {
+// Status badge - square-ish, subtle background with accent color
+function StatusBadge({ status }: { status: string }) {
   const label = {
-    open: 'Now Playing',
-    closed: 'Closed',
-    previews: 'In Previews',
-  }[status] || status;
+    open: 'NOW PLAYING',
+    closed: 'CLOSED',
+    previews: 'IN PREVIEWS',
+  }[status] || status.toUpperCase();
 
   const colorClass = {
-    open: 'text-emerald-500',
-    closed: 'text-gray-500',
-    previews: 'text-purple-400',
-  }[status] || 'text-gray-500';
+    open: 'bg-emerald-500/15 text-emerald-400',
+    closed: 'bg-gray-500/15 text-gray-400',
+    previews: 'bg-purple-500/15 text-purple-400',
+  }[status] || 'bg-gray-500/15 text-gray-400';
 
   return (
-    <span className={`text-[11px] font-medium uppercase tracking-wider ${colorClass}`}>
+    <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
       {label}
     </span>
   );
 }
 
-function TypeTag({ type }: { type: string }) {
-  // On homepage, only show MUSICAL or PLAY (revival is a modifier shown on detail page)
-  const baseType = type === 'revival' ? 'musical' : type;
-  const label = baseType.toUpperCase();
+// Format pill - fully rounded, outline style
+function FormatPill({ type }: { type: string }) {
+  // Derive base format: musical or play
+  const isMusical = type === 'musical' || type === 'revival';
+  const label = isMusical ? 'MUSICAL' : 'PLAY';
+  const colorClass = isMusical
+    ? 'border-purple-500/50 text-purple-400'
+    : 'border-blue-500/50 text-blue-400';
 
   return (
-    <span className="text-[11px] font-medium uppercase tracking-wider text-gray-500">
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide border ${colorClass}`}>
       {label}
     </span>
   );
 }
 
-function NewBadge() {
+// Production pill - rounded rectangle, solid muted fill
+function ProductionPill({ isRevival }: { isRevival: boolean }) {
+  const label = isRevival ? 'REVIVAL' : 'ORIGINAL';
+  const colorClass = isRevival
+    ? 'bg-amber-500/20 text-amber-400'
+    : 'bg-gray-500/20 text-gray-400';
+
   return (
-    <span className="text-[11px] font-bold uppercase tracking-wider text-brand">
-      New
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
+      {label}
     </span>
   );
-}
-
-// Calculate if show is new based on reference date to avoid hydration mismatch
-function isNewShow(openingDate: string, referenceDate: Date): boolean {
-  const opening = new Date(openingDate);
-  const daysSinceOpening = (referenceDate.getTime() - opening.getTime()) / (1000 * 60 * 60 * 24);
-  return daysSinceOpening <= 60 && daysSinceOpening >= 0; // Within last 60 days
 }
 
 // Use UTC-based formatting to avoid timezone-related hydration mismatch
@@ -95,9 +99,9 @@ function SearchIcon() {
   );
 }
 
-function ShowCard({ show, index, hideStatus, currentDate }: { show: ComputedShow; index: number; hideStatus: boolean; currentDate: Date | null }) {
+function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: number; hideStatus: boolean }) {
   const score = show.criticScore?.score;
-  const isNew = currentDate ? isNewShow(show.openingDate, currentDate) : false;
+  const isRevival = show.type === 'revival';
 
   return (
     <Link
@@ -126,19 +130,14 @@ function ShowCard({ show, index, hideStatus, currentDate }: { show: ComputedShow
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-white group-hover:text-brand transition-colors truncate">
-            {show.title}
-          </h3>
-          {isNew && <NewBadge />}
-        </div>
+        <h3 className="font-semibold text-white group-hover:text-brand transition-colors truncate">
+          {show.title}
+        </h3>
         <p className="text-sm text-gray-500 mt-0.5 truncate">{show.venue}</p>
-        <div className="flex flex-wrap items-center gap-2 mt-2">
-          <TypeTag type={show.type} />
-          {!hideStatus && <StatusChip status={show.status} />}
-          <span className="text-xs text-gray-600">
-            Opened {formatOpeningDate(show.openingDate)}
-          </span>
+        <div className="flex flex-wrap items-center gap-1.5 mt-2">
+          <FormatPill type={show.type} />
+          <ProductionPill isRevival={isRevival} />
+          {!hideStatus && <StatusBadge status={show.status} />}
         </div>
       </div>
 
@@ -160,13 +159,6 @@ export default function HomePage() {
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('open');
   const [searchQuery, setSearchQuery] = useState('');
-  // Use state for current date to avoid hydration mismatch (server vs client time)
-  const [currentDate, setCurrentDate] = useState<Date | null>(null);
-
-  useEffect(() => {
-    // Set current date only on client to avoid hydration mismatch
-    setCurrentDate(new Date());
-  }, []);
 
   const shows = useMemo(() => getAllShows(), []);
 
@@ -321,7 +313,7 @@ export default function HomePage() {
       {/* Show List */}
       <div className="space-y-3" role="list" aria-label="Broadway shows">
         {filteredAndSortedShows.map((show, index) => (
-          <ShowCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} currentDate={currentDate} />
+          <ShowCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} />
         ))}
       </div>
 

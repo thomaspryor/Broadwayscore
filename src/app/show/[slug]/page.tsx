@@ -58,7 +58,8 @@ function ScoreBadge({ score, size = 'lg' }: { score?: number | null; size?: 'md'
   );
 }
 
-function StatusChip({ status }: { status: string }) {
+// Status badge - square-ish, subtle background with accent color
+function StatusBadge({ status }: { status: string }) {
   const label = {
     open: 'NOW PLAYING',
     closed: 'CLOSED',
@@ -66,13 +67,13 @@ function StatusChip({ status }: { status: string }) {
   }[status] || status.toUpperCase();
 
   const colorClass = {
-    open: 'text-emerald-500',
-    closed: 'text-gray-500',
-    previews: 'text-purple-400',
-  }[status] || 'text-gray-500';
+    open: 'bg-emerald-500/15 text-emerald-400',
+    closed: 'bg-gray-500/15 text-gray-400',
+    previews: 'bg-purple-500/15 text-purple-400',
+  }[status] || 'bg-gray-500/15 text-gray-400';
 
   return (
-    <span className={`text-[11px] font-medium uppercase tracking-wider ${colorClass}`}>
+    <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
       {label}
     </span>
   );
@@ -140,33 +141,35 @@ function GlobeIcon() {
   );
 }
 
-function TypeTag({ type, isRevival }: { type: string; isRevival?: boolean }) {
-  // Show base type: MUSICAL or PLAY
-  const baseType = type === 'revival' ? 'musical' : type;
-  const label = baseType.toUpperCase();
+// Format pill - fully rounded, outline style
+function FormatPill({ type }: { type: string }) {
+  const isMusical = type === 'musical' || type === 'revival';
+  const label = isMusical ? 'MUSICAL' : 'PLAY';
+  const colorClass = isMusical
+    ? 'border-purple-500/50 text-purple-400'
+    : 'border-blue-500/50 text-blue-400';
 
   return (
-    <span className="text-[11px] font-medium uppercase tracking-wider text-gray-500">
-      {isRevival ? 'REVIVAL' : label}
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide border ${colorClass}`}>
+      {label}
     </span>
   );
 }
 
-function RevivalTag() {
+// Production pill - rounded rectangle, solid muted fill
+function ProductionPill({ isRevival }: { isRevival: boolean }) {
+  const label = isRevival ? 'REVIVAL' : 'ORIGINAL';
+  const colorClass = isRevival
+    ? 'bg-amber-500/20 text-amber-400'
+    : 'bg-gray-500/20 text-gray-400';
+
   return (
-    <span className="text-[11px] font-medium uppercase tracking-wider text-amber-500">
-      REVIVAL
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
+      {label}
     </span>
   );
 }
 
-function NewBadge() {
-  return (
-    <span className="text-[11px] font-bold uppercase tracking-wider text-brand">
-      NEW
-    </span>
-  );
-}
 
 function ScoreLabel({ score }: { score: number }) {
   const roundedScore = Math.round(score);
@@ -324,17 +327,6 @@ function MetascoreSection({ score, reviewCount, reviews }: { score: number; revi
   );
 }
 
-// Calculate if show is new - uses UTC to avoid timezone hydration issues
-function isNewShow(openingDate: string): boolean {
-  const opening = new Date(openingDate);
-  // Use a fixed reference point based on UTC date for consistency
-  const now = new Date();
-  const todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-  const openingUTC = Date.UTC(opening.getUTCFullYear(), opening.getUTCMonth(), opening.getUTCDate());
-  const daysSinceOpening = (todayUTC - openingUTC) / (1000 * 60 * 60 * 24);
-  return daysSinceOpening <= 60 && daysSinceOpening >= 0;
-}
-
 function getGoogleMapsUrl(address: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
@@ -424,11 +416,10 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
           {/* Title & Meta */}
           <div className="flex-1 min-w-0 pt-2 sm:pt-4">
-            <div className="flex flex-wrap items-center gap-2 mb-1">
-              <TypeTag type={show.type} />
-              {show.type === 'revival' && <RevivalTag />}
-              {isNewShow(show.openingDate) && <NewBadge />}
-              <StatusChip status={show.status} />
+            <div className="flex flex-wrap items-center gap-1.5 mb-2">
+              <FormatPill type={show.type} />
+              <ProductionPill isRevival={show.type === 'revival'} />
+              <StatusBadge status={show.status} />
             </div>
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight">
               {show.title}
