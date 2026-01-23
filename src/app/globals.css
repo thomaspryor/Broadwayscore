@@ -27,14 +27,18 @@
   /* Card component - more depth and polish */
   .card {
     @apply bg-surface-raised rounded-card shadow-card border border-white/5;
+    contain: layout style; /* CSS containment for better rendering performance */
   }
 
   .card-interactive {
-    @apply card transition-all duration-300 ease-out;
+    @apply card;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out;
+    will-change: transform; /* Hint to browser for GPU acceleration */
   }
 
   .card-interactive:hover {
-    @apply shadow-card-hover bg-surface-overlay border-white/10 -translate-y-0.5;
+    @apply shadow-card-hover bg-surface-overlay border-white/10;
+    transform: translateY(-2px); /* Use transform for GPU acceleration */
   }
 
   /* Premium card variant with subtle gradient */
@@ -307,13 +311,19 @@
     text-wrap: balance;
   }
 
+  /* Content visibility for long lists - skip rendering off-screen items */
+  .content-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 100px;
+  }
+
   .focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
   }
 
-  /* Glassmorphism utility */
+  /* Glassmorphism utility - use smaller blur for better performance */
   .glass {
-    @apply bg-surface-raised/80 backdrop-blur-md border border-white/10;
+    @apply bg-surface-raised/90 backdrop-blur-sm border border-white/10;
   }
 
   /* Subtle shine effect */

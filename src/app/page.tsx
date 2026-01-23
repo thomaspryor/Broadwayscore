@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, memo } from 'react';
 import Link from 'next/link';
 import { getAllShows, ComputedShow } from '@/lib/data';
 
@@ -98,7 +98,7 @@ function SearchIcon() {
   );
 }
 
-function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: number; hideStatus: boolean }) {
+const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: number; hideStatus: boolean }) {
   const score = show.criticScore?.score;
   const isRevival = show.type === 'revival';
 
@@ -108,8 +108,8 @@ function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: numb
       className="group card-interactive flex gap-4 p-4 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       style={{ animationDelay: `${index * 30}ms` }}
     >
-      {/* Thumbnail */}
-      <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay">
+      {/* Thumbnail - fixed aspect ratio prevents CLS */}
+      <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay aspect-square">
         {show.images?.thumbnail ? (
           <img
             src={show.images.thumbnail}
@@ -118,7 +118,8 @@ function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: numb
             loading="lazy"
             width={80}
             height={80}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            decoding="async"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 will-change-transform"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-600 text-2xl" aria-hidden="true">
@@ -154,7 +155,7 @@ function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: numb
       </div>
     </Link>
   );
-}
+});
 
 export default function HomePage() {
   const [sortField, setSortField] = useState<SortField>('criticScore');
