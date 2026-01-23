@@ -160,8 +160,8 @@ function FormatPill({ type }: { type: string }) {
 function ProductionPill({ isRevival }: { isRevival: boolean }) {
   const label = isRevival ? 'REVIVAL' : 'ORIGINAL';
   const colorClass = isRevival
-    ? 'bg-amber-500/20 text-amber-400'
-    : 'bg-gray-500/20 text-gray-400';
+    ? 'bg-gray-500/20 text-gray-400'
+    : 'bg-amber-500/20 text-amber-400';
 
   return (
     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
@@ -501,7 +501,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
-              <span className="text-sm text-gray-500">{show.criticScore.reviewCount} reviews</span>
+              <span className="text-sm text-gray-400 font-medium">{show.criticScore.reviewCount} reviews</span>
             </div>
 
             <ReviewsList reviews={show.criticScore.reviews} initialCount={5} />
