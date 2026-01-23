@@ -157,19 +157,19 @@ function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
 
         {/* Content */}
         <div className="min-w-0 flex-1">
-          {/* Outlet name + Date row */}
-          <div className="flex items-center justify-between gap-2 mb-1">
-            <div className="flex items-center gap-2">
+          {/* Outlet name + Badge + Date row */}
+          <div className="flex items-center justify-between gap-2 mb-1 flex-nowrap">
+            <div className="flex items-center gap-2 min-w-0">
               <OutletLogo outlet={review.outlet} />
-              <span className="font-bold text-white text-base">{review.outlet}</span>
+              <span className="font-bold text-white text-base truncate">{review.outlet}</span>
               {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
               {review.designation && review.designation !== 'Critics_Pick' && (
-                <span className="text-xs text-score-high font-medium">
+                <span className="text-xs text-score-high font-medium whitespace-nowrap">
                   {review.designation.replace('_', ' ')}
                 </span>
               )}
             </div>
-            <span className="text-xs text-gray-500 flex-shrink-0">{formatDate(review.publishDate)}</span>
+            <span className="text-xs text-gray-500 flex-shrink-0 whitespace-nowrap">{formatDate(review.publishDate)}</span>
           </div>
 
           {/* Quote/Summary */}
