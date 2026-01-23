@@ -1,7 +1,7 @@
 # Missing Review URLs Report
 
 Generated: 2026-01-23
-Total missing: 22 URLs
+Total missing: 21 URLs
 
 ---
 
@@ -58,10 +58,6 @@ Total missing: 22 URLs
 
 - **The Book of Mormon** - Rating: Rave
 
-### New York Sun (1 missing)
-
-- **Just in Time** - Rating: Positive
-
 ---
 
 ## Missing URLs by Show
@@ -111,10 +107,6 @@ Total missing: 22 URLs
 
 - **New York Post** - Rating: Positive
 
-### Just in Time (1 missing)
-
-- **New York Sun** - Rating: Positive
-
 ---
 
 ## Summary
@@ -133,7 +125,6 @@ Total missing: 22 URLs
 | Observer | 1 |
 | Vulture | 1 |
 | Deadline | 1 |
-| New York Sun | 1 |
 
 ### Shows with most missing URLs:
 
@@ -147,4 +138,3 @@ Total missing: 22 URLs
 | Hamilton | 2 |
 | Aladdin | 2 |
 | Harry Potter and the Cursed Child | 1 |
-| Just in Time | 1 |
