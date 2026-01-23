@@ -592,11 +592,32 @@ function fetchTodayTixGraphQL(showId) {
   });
 }
 
+function isCleanUrl(url) {
+  // A "clean" URL is one without query parameters - these are manually set and should be preserved
+  if (!url || typeof url !== 'string') return false;
+  return url.includes('ctfassets.net') && !url.includes('?');
+}
+
+function hasCleanImages(images) {
+  // Check if show has any manually-set clean URLs that should be preserved
+  if (!images || typeof images !== 'object') return false;
+  return isCleanUrl(images.hero) || isCleanUrl(images.thumbnail) || isCleanUrl(images.poster);
+}
+
 function updateShowsJson(imageResults) {
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
   let updatedCount = 0;
+  let skippedCount = 0;
 
   for (const show of showsData.shows) {
+    // IMPORTANT: Skip shows that have manually-set clean URLs (no query params)
+    // These were manually curated and should NOT be overwritten
+    if (hasCleanImages(show.images)) {
+      console.log(`   ⏭️  Skipping ${show.slug} - has manually-set clean URLs`);
+      skippedCount++;
+      continue;
+    }
+
     if (imageResults[show.slug]) {
       show.images = imageResults[show.slug];
       updatedCount++;
@@ -605,6 +626,11 @@ function updateShowsJson(imageResults) {
 
   showsData._meta.lastUpdated = new Date().toISOString().split('T')[0];
   fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
+
+  if (skippedCount > 0) {
+    console.log(`\n⏭️  Preserved ${skippedCount} shows with manually-set images`);
+  }
+
   return updatedCount;
 }
 
