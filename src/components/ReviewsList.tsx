@@ -138,54 +138,75 @@ function CriticsPickBadge() {
   );
 }
 
+function ExternalLinkIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+    </svg>
+  );
+}
+
 function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
   return (
     <div className={`${isLast ? '' : 'border-b border-white/5 pb-4'} group`}>
       <div className="flex items-start gap-3">
-        <OutletLogo outlet={review.outlet} />
+        {/* Score on LEFT - Metacritic style */}
+        <div className={`flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center text-lg font-bold ${getScoreClasses(review.reviewMetaScore)}`}>
+          {review.reviewMetaScore}
+        </div>
+
+        {/* Content */}
         <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-2">
-            <div>
-              <a
-                href={review.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-white hover:text-brand transition-colors"
-              >
-                {review.outlet}
-              </a>
-              {review.criticName && (
-                <span className="text-gray-500 text-sm ml-2">by {review.criticName}</span>
-              )}
-            </div>
-            <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-base font-bold transition-transform group-hover:scale-105 ${getScoreClasses(review.reviewMetaScore)}`}>
-              {review.reviewMetaScore}
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-2 mt-1">
-            <span className="text-xs text-gray-500">{formatDate(review.publishDate)}</span>
+          {/* Date at TOP */}
+          <div className="flex items-center gap-2 text-xs text-gray-500 mb-1">
+            <span>{formatDate(review.publishDate)}</span>
             {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
             {review.designation && review.designation !== 'Critics_Pick' && (
-              <span className="text-xs text-score-high font-medium">
+              <span className="text-score-high font-medium">
                 {review.designation.replace('_', ' ')}
               </span>
             )}
           </div>
+
+          {/* Outlet name - prominent */}
+          <div className="flex items-center gap-2 mb-1">
+            <OutletLogo outlet={review.outlet} />
+            <span className="font-bold text-white text-base">{review.outlet}</span>
+          </div>
+
+          {/* Quote/Summary */}
           {review.quote && (
-            <blockquote className="mt-2 text-sm text-gray-300 italic border-l-2 border-brand/30 pl-3 group-hover:border-brand/50 transition-colors">
+            <p className="text-sm text-gray-300 leading-relaxed mb-2">
               &ldquo;{review.quote}&rdquo;
-            </blockquote>
+            </p>
           )}
           {review.summary && !review.quote && (
-            <p className="mt-2 text-sm text-gray-400 border-l-2 border-white/10 pl-3 group-hover:border-white/20 transition-colors">
+            <p className="text-sm text-gray-400 leading-relaxed mb-2">
               {review.summary}
             </p>
           )}
           {review.pullQuote && !review.quote && !review.summary && (
-            <p className="mt-2 text-sm text-gray-400 border-l-2 border-white/10 pl-3 group-hover:border-white/20 transition-colors">
+            <p className="text-sm text-gray-400 leading-relaxed mb-2">
               {review.pullQuote}
             </p>
           )}
+
+          {/* Author at BOTTOM + Full Review link */}
+          <div className="flex items-center justify-between mt-2">
+            {review.criticName && (
+              <span className="text-sm text-gray-500">By {review.criticName}</span>
+            )}
+            {!review.criticName && <span />}
+            <a
+              href={review.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-brand hover:text-brand-hover transition-colors uppercase tracking-wide"
+            >
+              Full Review
+              <ExternalLinkIcon className="w-3 h-3" />
+            </a>
+          </div>
         </div>
       </div>
     </div>

@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getShowBySlug, getAllShowSlugs, ComputedShow } from '@/lib/data';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
-import AnimatedScoreDistribution from '@/components/AnimatedScoreDistribution';
 import ReviewsList from '@/components/ReviewsList';
 
 export function generateStaticParams() {
@@ -201,6 +200,119 @@ function ScoreLabel({ score }: { score: number }) {
   );
 }
 
+function getSentimentLabel(score: number): { label: string; colorClass: string } {
+  const roundedScore = Math.round(score);
+  if (roundedScore >= 81) return { label: 'Universal Acclaim', colorClass: 'text-score-high' };
+  if (roundedScore >= 61) return { label: 'Generally Favorable Reviews', colorClass: 'text-score-high' };
+  if (roundedScore >= 40) return { label: 'Mixed or Average Reviews', colorClass: 'text-score-medium' };
+  if (roundedScore >= 20) return { label: 'Generally Unfavorable Reviews', colorClass: 'text-score-low' };
+  return { label: 'Overwhelming Dislike', colorClass: 'text-score-low' };
+}
+
+interface ReviewForBreakdown {
+  reviewMetaScore: number;
+}
+
+function ScoreBreakdownBar({ reviews }: { reviews: ReviewForBreakdown[] }) {
+  const positive = reviews.filter(r => r.reviewMetaScore >= 70).length;
+  const mixed = reviews.filter(r => r.reviewMetaScore >= 50 && r.reviewMetaScore < 70).length;
+  const negative = reviews.filter(r => r.reviewMetaScore < 50).length;
+  const total = reviews.length;
+
+  if (total === 0) return null;
+
+  const positivePct = Math.round((positive / total) * 100);
+  const mixedPct = Math.round((mixed / total) * 100);
+  const negativePct = Math.round((negative / total) * 100);
+
+  return (
+    <div className="space-y-2">
+      {/* Bar */}
+      <div className="h-3 rounded-full overflow-hidden flex bg-surface-overlay">
+        {positivePct > 0 && (
+          <div
+            className="bg-score-high h-full"
+            style={{ width: `${positivePct}%` }}
+            title={`${positive} positive`}
+          />
+        )}
+        {mixedPct > 0 && (
+          <div
+            className="bg-score-medium h-full"
+            style={{ width: `${mixedPct}%` }}
+            title={`${mixed} mixed`}
+          />
+        )}
+        {negativePct > 0 && (
+          <div
+            className="bg-score-low h-full"
+            style={{ width: `${negativePct}%` }}
+            title={`${negative} negative`}
+          />
+        )}
+      </div>
+      {/* Legend */}
+      <div className="flex items-center gap-4 text-xs">
+        {positive > 0 && (
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-score-high" />
+            <span className="text-gray-400">{positive} Positive</span>
+          </div>
+        )}
+        {mixed > 0 && (
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-score-medium" />
+            <span className="text-gray-400">{mixed} Mixed</span>
+          </div>
+        )}
+        {negative > 0 && (
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-score-low" />
+            <span className="text-gray-400">{negative} Negative</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function MetascoreSection({ score, reviewCount, reviews }: { score: number; reviewCount: number; reviews: ReviewForBreakdown[] }) {
+  const roundedScore = Math.round(score);
+  const { label: sentimentLabel, colorClass } = getSentimentLabel(score);
+
+  const scoreColorClass = roundedScore >= 70
+    ? 'bg-score-high text-white'
+    : roundedScore >= 50
+    ? 'bg-score-medium text-gray-900'
+    : 'bg-score-low text-white';
+
+  return (
+    <div className="card p-5 sm:p-6 mb-6">
+      <div className="flex items-start gap-4 sm:gap-6 mb-4">
+        {/* Large Score Badge */}
+        <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}>
+          <span className="text-4xl sm:text-5xl font-extrabold">{roundedScore}</span>
+        </div>
+
+        {/* Metascore Label and Sentiment */}
+        <div className="flex-1 pt-1">
+          <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Metascore</div>
+          <div className={`text-lg sm:text-xl font-bold ${colorClass}`}>{sentimentLabel}</div>
+          <a
+            href="#critic-reviews"
+            className="text-sm text-gray-500 hover:text-brand transition-colors mt-1 inline-block"
+          >
+            Based on {reviewCount} Critic Reviews
+          </a>
+        </div>
+      </div>
+
+      {/* Score Breakdown Bar */}
+      <ScoreBreakdownBar reviews={reviews} />
+    </div>
+  );
+}
+
 function isNewShow(openingDate: string): boolean {
   const opening = new Date(openingDate);
   const now = new Date();
@@ -265,9 +377,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         </Link>
 
         {/* Header with Poster Card */}
-        <div className="flex gap-4 sm:gap-6 mb-8">
+        <div className="flex gap-4 sm:gap-6 mb-6">
           {/* Poster Card */}
-          <div className="flex-shrink-0 relative w-28 sm:w-36 lg:w-44">
+          <div className="flex-shrink-0 w-28 sm:w-36 lg:w-44">
             <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
               {show.images?.poster ? (
                 <img
@@ -293,10 +405,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 </div>
               )}
             </div>
-            {/* Score badge overlay on poster */}
-            <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4">
-              <ScoreBadge score={score} size="md" />
-            </div>
           </div>
 
           {/* Title & Meta */}
@@ -314,31 +422,16 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               <span className="text-gray-600 hidden sm:inline">•</span>
               <span className="hidden sm:inline">{show.runtime}</span>
             </div>
-
-            {/* Score Label and Reviews - desktop */}
-            {score && (
-              <div className="hidden sm:flex items-center gap-3 mt-4">
-                <ScoreLabel score={score} />
-                {show.criticScore && (
-                  <span className="text-sm text-gray-500">
-                    Based on {show.criticScore.reviewCount} reviews
-                  </span>
-                )}
-              </div>
-            )}
           </div>
         </div>
 
-        {/* Score Label - mobile only */}
-        {score && (
-          <div className="flex items-center gap-3 mb-6 sm:hidden">
-            <ScoreLabel score={score} />
-            {show.criticScore && (
-              <span className="text-sm text-gray-500">
-                {show.criticScore.reviewCount} reviews
-              </span>
-            )}
-          </div>
+        {/* Metascore Section */}
+        {score && show.criticScore && (
+          <MetascoreSection
+            score={score}
+            reviewCount={show.criticScore.reviewCount}
+            reviews={show.criticScore.reviews}
+          />
         )}
 
         {/* Action Buttons */}
@@ -396,13 +489,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Critic Reviews */}
         {show.criticScore && show.criticScore.reviews.length > 0 && (
-          <div className="card p-5 sm:p-6 mb-8">
+          <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
               <span className="text-sm text-gray-500">{show.criticScore.reviewCount} reviews</span>
             </div>
-
-            <AnimatedScoreDistribution reviews={show.criticScore.reviews} />
 
             <ReviewsList reviews={show.criticScore.reviews} initialCount={5} />
           </div>
