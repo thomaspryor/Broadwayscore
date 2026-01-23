@@ -426,6 +426,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </h1>
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-gray-400 text-sm">
               <span className="text-gray-300">{show.venue}</span>
+              <span className="text-gray-600">•</span>
+              <span>Opened {formatDate(show.openingDate)}</span>
               <span className="text-gray-600 hidden sm:inline">•</span>
               <span className="hidden sm:inline">{show.runtime}</span>
             </div>

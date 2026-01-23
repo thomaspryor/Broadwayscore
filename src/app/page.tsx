@@ -137,6 +137,9 @@ function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: numb
           <FormatPill type={show.type} />
           <ProductionPill isRevival={isRevival} />
           {!hideStatus && <StatusBadge status={show.status} />}
+          <span className="text-[10px] text-gray-500">
+            Opened {formatOpeningDate(show.openingDate)}
+          </span>
         </div>
       </div>
 
