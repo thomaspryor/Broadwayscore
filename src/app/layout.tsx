@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 function BottomNav() {
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-lg border-t border-white/10 sm:hidden"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-surface/98 backdrop-blur-sm border-t border-white/10 sm:hidden"
       aria-label="Mobile navigation"
     >
       <div className="flex items-center justify-around h-16">
@@ -72,6 +72,24 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="canonical" href={BASE_URL} />
+        {/* Preload Inter font for faster text rendering */}
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
+        {/* Preconnect to image CDN for faster image loading */}
+        <link rel="preconnect" href="https://images.ctfassets.net" />
+        <link rel="dns-prefetch" href="https://images.ctfassets.net" />
       </head>
       <body className="min-h-screen font-sans pb-16 sm:pb-0">
         {/* Skip Link for keyboard navigation */}
@@ -81,7 +99,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <header className="glass sticky top-0 z-50">
+        <header className="sticky top-0 z-50 bg-surface-raised/95 backdrop-blur-sm border-b border-white/10">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16 sm:h-18">
               <Link href="/" className="flex items-center group">
