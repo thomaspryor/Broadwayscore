@@ -268,30 +268,32 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         <div className="flex gap-4 sm:gap-6 mb-8">
           {/* Poster Card */}
           <div className="flex-shrink-0">
-            <div className="relative w-28 sm:w-36 lg:w-44 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
-              {show.images?.poster ? (
-                <img
-                  src={show.images.poster}
-                  alt={show.title}
-                  className="w-full h-full object-cover"
-                />
-              ) : show.images?.thumbnail ? (
-                <img
-                  src={show.images.thumbnail}
-                  alt={show.title}
-                  className="w-full h-full object-cover"
-                />
-              ) : show.images?.hero ? (
-                <img
-                  src={show.images.hero}
-                  alt={show.title}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                  <span className="text-4xl text-gray-600">🎭</span>
-                </div>
-              )}
+            <div className="relative w-28 sm:w-36 lg:w-44">
+              <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
+                {show.images?.poster ? (
+                  <img
+                    src={show.images.poster}
+                    alt={show.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : show.images?.thumbnail ? (
+                  <img
+                    src={show.images.thumbnail}
+                    alt={show.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : show.images?.hero ? (
+                  <img
+                    src={show.images.hero}
+                    alt={show.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                    <span className="text-4xl text-gray-600">🎭</span>
+                  </div>
+                )}
+              </div>
               {/* Score badge overlay on poster */}
               <div className="absolute -bottom-2 -right-2">
                 <ScoreBadge score={score} size="md" />
