@@ -73,8 +73,8 @@ function FormatPill({ type }: { type: string }) {
 function ProductionPill({ isRevival }: { isRevival: boolean }) {
   const label = isRevival ? 'REVIVAL' : 'ORIGINAL';
   const colorClass = isRevival
-    ? 'bg-amber-500/20 text-amber-400'
-    : 'bg-gray-500/20 text-gray-400';
+    ? 'bg-gray-500/20 text-gray-400'
+    : 'bg-amber-500/20 text-amber-400';
 
   return (
     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
@@ -147,7 +147,7 @@ function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: numb
       <div className="flex-shrink-0 flex flex-col items-center justify-center">
         <ScoreBadge score={score} size="lg" />
         {show.criticScore && (
-          <span className="text-[10px] text-gray-500 mt-1">
+          <span className="text-xs text-gray-400 mt-1 font-medium">
             {show.criticScore.reviewCount} reviews
           </span>
         )}
