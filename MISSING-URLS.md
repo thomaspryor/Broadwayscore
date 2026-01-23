@@ -1,7 +1,7 @@
 # Missing Review URLs Report
 
 Generated: 2026-01-23
-Total missing: 37 URLs
+Total missing: 36 URLs
 
 ---
 
@@ -60,10 +60,6 @@ Total missing: 37 URLs
 ### IndieWire (1 missing)
 
 - **Bug** - Rating: Rave
-
-### New York Theatre Guide (1 missing)
-
-- **SIX** - Rating: 5/5
 
 ### Cititour (1 missing)
 
@@ -172,10 +168,6 @@ Total missing: 37 URLs
 
 - **IndieWire** - Rating: Rave
 
-### SIX (1 missing)
-
-- **New York Theatre Guide** - Rating: 5/5
-
 ### Harry Potter and the Cursed Child (1 missing)
 
 - **New York Post** - Rating: Positive
@@ -201,7 +193,6 @@ Total missing: 37 URLs
 | Entertainment Weekly | 2 |
 | The Daily Beast | 2 |
 | IndieWire | 1 |
-| New York Theatre Guide | 1 |
 | Cititour | 1 |
 | The New Yorker | 1 |
 | Chicago Tribune | 1 |
@@ -227,6 +218,5 @@ Total missing: 37 URLs
 | Aladdin | 2 |
 | Just in Time | 2 |
 | Bug | 1 |
-| SIX | 1 |
 | Harry Potter and the Cursed Child | 1 |
 | The Queen of Versailles | 1 |
