@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 
 interface Review {
   showId: string;
@@ -145,7 +145,7 @@ function ExternalLinkIcon({ className }: { className?: string }) {
   );
 }
 
-function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
+const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
   const scoreLabel = review.reviewMetaScore >= 70 ? 'Positive' : review.reviewMetaScore >= 50 ? 'Mixed' : 'Negative';
 
   return (
@@ -218,7 +218,7 @@ function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
       </div>
     </article>
   );
-}
+});
 
 export default function ReviewsList({ reviews, initialCount = 5 }: ReviewsListProps) {
   const [isExpanded, setIsExpanded] = useState(false);

@@ -385,25 +385,37 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Header with Poster Card */}
         <div className="flex gap-4 sm:gap-6 mb-6">
-          {/* Poster Card */}
+          {/* Poster Card - fetchpriority high for LCP optimization */}
           <div className="flex-shrink-0 w-28 sm:w-36 lg:w-44">
             <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
               {show.images?.poster ? (
                 <img
                   src={show.images.poster}
                   alt={show.title}
+                  width={176}
+                  height={264}
+                  decoding="async"
+                  fetchPriority="high"
                   className="w-full h-full object-cover"
                 />
               ) : show.images?.thumbnail ? (
                 <img
                   src={show.images.thumbnail}
                   alt={show.title}
+                  width={176}
+                  height={264}
+                  decoding="async"
+                  fetchPriority="high"
                   className="w-full h-full object-cover"
                 />
               ) : show.images?.hero ? (
                 <img
                   src={show.images.hero}
                   alt={show.title}
+                  width={176}
+                  height={264}
+                  decoding="async"
+                  fetchPriority="high"
                   className="w-full h-full object-cover"
                 />
               ) : (
