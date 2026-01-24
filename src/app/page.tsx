@@ -7,6 +7,7 @@ import { getAllShows, ComputedShow } from '@/lib/data';
 type SortField = 'criticScore' | 'title' | 'openingDate';
 type SortDirection = 'asc' | 'desc';
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews';
+type TypeFilter = 'all' | 'musicals' | 'plays';
 
 function ScoreBadge({ score, size = 'md', reviewCount }: { score?: number | null; size?: 'sm' | 'md' | 'lg'; reviewCount?: number }) {
   const sizeClass = {
@@ -179,7 +180,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
 
       {/* Score */}
       <div className="flex-shrink-0 flex flex-col items-center justify-center">
-        <ScoreBadge score={score} size="lg" />
+        <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} />
         {show.criticScore && (
           <span className="text-xs text-gray-400 mt-1 font-medium">
             {show.criticScore.reviewCount} reviews
@@ -194,6 +195,7 @@ export default function HomePage() {
   const [sortField, setSortField] = useState<SortField>('criticScore');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('open');
+  const [typeFilter, setTypeFilter] = useState<TypeFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   const shows = useMemo(() => getAllShows(), []);
@@ -204,6 +206,14 @@ export default function HomePage() {
 
     if (statusFilter !== 'all') {
       result = result.filter(show => show.status === statusFilter);
+    }
+
+    if (typeFilter !== 'all') {
+      if (typeFilter === 'musicals') {
+        result = result.filter(show => show.type === 'musical' || show.type === 'revival');
+      } else if (typeFilter === 'plays') {
+        result = result.filter(show => show.type === 'play');
+      }
     }
 
     if (searchQuery) {
@@ -243,7 +253,7 @@ export default function HomePage() {
     });
 
     return result;
-  }, [shows, sortField, sortDirection, statusFilter, searchQuery]);
+  }, [shows, sortField, sortDirection, statusFilter, typeFilter, searchQuery]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -286,7 +296,25 @@ export default function HomePage() {
         />
       </div>
 
-      {/* Filters & Sort */}
+      {/* Type Filter Pills */}
+      <div className="flex items-center gap-2 mb-4" role="group" aria-label="Filter by type">
+        {(['all', 'musicals', 'plays'] as const).map((type) => (
+          <button
+            key={type}
+            onClick={() => setTypeFilter(type)}
+            aria-pressed={typeFilter === type}
+            className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+              typeFilter === type
+                ? 'bg-brand text-white shadow-glow-sm'
+                : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
+            }`}
+          >
+            {type === 'all' ? 'All' : type === 'musicals' ? 'Musicals' : 'Plays'}
+          </button>
+        ))}
+      </div>
+
+      {/* Status & Sort Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm">
         <div className="flex items-center gap-2" role="group" aria-label="Filter by status">
           <span className="text-[11px] font-medium uppercase tracking-wider text-gray-500" id="status-filter-label">STATUS</span>
@@ -331,18 +359,26 @@ export default function HomePage() {
       </div>
 
       {/* Score Legend */}
-      <div className="flex items-center gap-6 mb-6 text-xs text-gray-500">
+      <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-gray-500">
+        <div className="flex items-center gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-score-high ring-1 ring-accent-gold/50"></div>
+          <span>85+ Must See</span>
+        </div>
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-score-high"></div>
-          <span>70+ Favorable</span>
+          <span>75-84 Great</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-score-medium"></div>
-          <span>50-69 Mixed</span>
+          <span>65-74 Good</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-orange-500"></div>
+          <span>55-64 Tepid</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-score-low"></div>
-          <span>&lt;50 Unfavorable</span>
+          <span>&lt;55 Skip</span>
         </div>
       </div>
 
