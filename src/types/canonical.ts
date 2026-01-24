@@ -72,7 +72,7 @@ export type OutletTier = 1 | 2 | 3;
 export type ConfidenceLevel = 'high' | 'medium' | 'low';
 
 /** Score bucket labels */
-export type ScoreBucket = 'must-see' | 'great' | 'good' | 'tepid' | 'skip' | 'pending';
+export type ScoreBucket = 'must-see' | 'recommended' | 'worth-seeing' | 'skippable' | 'stay-away' | 'pending';
 
 /** Thumb values from aggregators */
 export type ThumbValue = 'Up' | 'Flat' | 'Down';

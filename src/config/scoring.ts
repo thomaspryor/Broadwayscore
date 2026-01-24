@@ -188,19 +188,19 @@ export const CONFIDENCE_RULES = {
 // CRITIC SCORE LABEL THRESHOLDS
 // ===========================================
 export const CRITIC_LABEL_THRESHOLDS = {
-  'Must See': 85,
-  'Great': 75,
-  'Good': 65,
-  'Tepid': 55,
-  'Skip': 0,
+  'Must-See': 85,
+  'Recommended': 75,
+  'Worth Seeing': 65,
+  'Skippable': 55,
+  'Stay Away': 0,
 };
 
 export function getCriticLabel(score: number): string {
-  if (score >= 85) return 'Must See';
-  if (score >= 75) return 'Great';
-  if (score >= 65) return 'Good';
-  if (score >= 55) return 'Tepid';
-  return 'Skip';
+  if (score >= 85) return 'Must-See';
+  if (score >= 75) return 'Recommended';
+  if (score >= 65) return 'Worth Seeing';
+  if (score >= 55) return 'Skippable';
+  return 'Stay Away';
 }
 
 // ===========================================
