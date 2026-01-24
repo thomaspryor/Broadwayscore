@@ -44,6 +44,19 @@ interface GrossesData {
   shows: Record<string, ShowGrosses>;
 }
 
+interface BWWRowData {
+  show: string;
+  theater: string;
+  gross: number | null;
+  grossPrevWeek: number | null;
+  grossYoY: number | null;
+  atp: number | null;
+  attendance: number | null;
+  performances: number | null;
+  capacityPct: number | null;
+  capacityPctPrevWeek: number | null;
+}
+
 // Normalize show titles for matching
 function normalizeTitle(title: string): string {
   return title
@@ -52,6 +65,7 @@ function normalizeTitle(title: string): string {
     .replace(/[""]/g, '"')
     .replace(/&amp;/g, '&')
     .replace(/\s+/g, ' ')
+    .replace(/^the\s+/, '')
     .trim();
 }
 
@@ -78,7 +92,18 @@ function loadShows(): Map<string, string> {
     // Also add common variations
     const titleSlug = createSlug(show.title);
     showMap.set(titleSlug, show.slug);
+
+    // Add without "The" prefix
+    const withoutThe = show.title.replace(/^The\s+/i, '');
+    showMap.set(normalizeTitle(withoutThe), show.slug);
   }
+
+  // Manual mappings for BWW title variations
+  showMap.set(normalizeTitle('SIX: THE MUSICAL'), 'six');
+  showMap.set(normalizeTitle('SIX THE MUSICAL'), 'six');
+  showMap.set(normalizeTitle('& JULIET'), 'and-juliet');
+  showMap.set(normalizeTitle('ALADDIN'), 'aladdin');
+  showMap.set(normalizeTitle('ALL OUT: COMEDY ABOUT AMBITION'), 'all-out');  // if we add this show
 
   return showMap;
 }
@@ -100,6 +125,9 @@ function findMatchingSlug(bwwTitle: string, showMap: Map<string, string>): strin
 
   // Try partial matches for shows with subtitles
   for (const [key, slug] of showMap) {
+    // Skip very short keys to avoid false matches
+    if (key.length < 5) continue;
+
     if (normalized.includes(key) || key.includes(normalized)) {
       return slug;
     }
@@ -110,7 +138,7 @@ function findMatchingSlug(bwwTitle: string, showMap: Map<string, string>): strin
 
 // Parse currency string to number
 function parseCurrency(value: string | null | undefined): number | null {
-  if (!value) return null;
+  if (!value || value === '-') return null;
   const cleaned = value.replace(/[$,]/g, '');
   const num = parseFloat(cleaned);
   return isNaN(num) ? null : num;
@@ -118,7 +146,7 @@ function parseCurrency(value: string | null | undefined): number | null {
 
 // Parse percentage string to number
 function parsePercentage(value: string | null | undefined): number | null {
-  if (!value) return null;
+  if (!value || value === '-') return null;
   const cleaned = value.replace(/%/g, '');
   const num = parseFloat(cleaned);
   return isNaN(num) ? null : num;
@@ -126,7 +154,7 @@ function parsePercentage(value: string | null | undefined): number | null {
 
 // Parse number string
 function parseNumber(value: string | null | undefined): number | null {
-  if (!value) return null;
+  if (!value || value === '-') return null;
   const cleaned = value.replace(/,/g, '');
   const num = parseInt(cleaned, 10);
   return isNaN(num) ? null : num;
@@ -146,111 +174,72 @@ async function scrapeGrosses(): Promise<void> {
 
   try {
     console.log(`Fetching ${GROSSES_URL}...`);
-    await page.goto(GROSSES_URL, { waitUntil: 'networkidle', timeout: 60000 });
+    await page.goto(GROSSES_URL, { waitUntil: 'domcontentloaded', timeout: 90000 });
+    await page.waitForTimeout(5000);
 
-    // Wait for the table to load
-    await page.waitForSelector('table', { timeout: 30000 });
+    // Wait for the data to load
+    await page.waitForSelector('.all-gross-data .row', { timeout: 30000 });
 
-    // Extract the week ending date from the page
-    const weekEndingText = await page.$eval(
-      'h1, .page-title, [class*="title"]',
-      (el) => el.textContent || ''
-    ).catch(() => '');
-
-    const weekEndingMatch = weekEndingText.match(/(\d{1,2}\/\d{1,2}\/\d{2,4})/);
+    // Extract the week ending date from the page title
+    const title = await page.title();
+    const weekEndingMatch = title.match(/(\d{1,2}\/\d{1,2}\/\d{2,4})/);
     const weekEnding = weekEndingMatch ? weekEndingMatch[1] : new Date().toISOString().split('T')[0];
-
     console.log(`Week ending: ${weekEnding}`);
 
-    // Extract data from the grosses table
-    const tableData = await page.evaluate(() => {
-      const rows = document.querySelectorAll('table tbody tr');
-      const data: Array<{
-        show: string;
-        gross: string;
-        grossDiff: string;
-        potentialGross: string;
-        avgTicket: string;
-        topTicket: string;
-        seats: string;
-        perfs: string;
-        capacity: string;
-        capacityDiff: string;
-        previews: string;
-        theater: string;
-      }> = [];
+    // Extract data from all rows (skip header row which is :nth-child(2))
+    const tableData = await page.$$eval('.all-gross-data .row:not(:first-child):not(:nth-child(2))', (rows) => {
+      return rows.map((row) => {
+        const cells = row.querySelectorAll('.cell');
+        if (cells.length < 10) return null;
 
-      rows.forEach((row) => {
-        const cells = row.querySelectorAll('td');
-        if (cells.length >= 10) {
-          data.push({
-            show: cells[0]?.textContent?.trim() || '',
-            gross: cells[1]?.textContent?.trim() || '',
-            grossDiff: cells[2]?.textContent?.trim() || '',
-            potentialGross: cells[3]?.textContent?.trim() || '',
-            avgTicket: cells[4]?.textContent?.trim() || '',
-            topTicket: cells[5]?.textContent?.trim() || '',
-            seats: cells[6]?.textContent?.trim() || '',
-            perfs: cells[7]?.textContent?.trim() || '',
-            capacity: cells[8]?.textContent?.trim() || '',
-            capacityDiff: cells[9]?.textContent?.trim() || '',
-            previews: cells[10]?.textContent?.trim() || '',
-            theater: cells[11]?.textContent?.trim() || ''
-          });
-        }
-      });
+        // Cell 0: Show + Theater
+        const showTheater = cells[0]?.textContent?.trim() || '';
+        const [show, theater] = showTheater.split('\n').map(s => s.trim());
 
-      return data;
+        // Cell 1: Current gross (use .out span)
+        const gross = cells[1]?.querySelector('.out')?.textContent?.trim() || cells[1]?.textContent?.trim() || '';
+
+        // Cell 2: Previous week gross
+        const grossPrevWeek = cells[2]?.querySelector('.out')?.textContent?.trim() || cells[2]?.textContent?.trim() || '';
+
+        // Cell 3: Gross diff (skip)
+
+        // Cell 4: Last year gross
+        const grossYoY = cells[4]?.querySelector('.out')?.textContent?.trim() || cells[4]?.textContent?.trim() || '';
+
+        // Cell 5: Gross diff vs last year (skip)
+
+        // Cell 6: Avg ticket + top ticket (use .out for avg)
+        const atp = cells[6]?.querySelector('.out')?.textContent?.trim() || '';
+
+        // Cell 7: Attendance + capacity (use .out for attendance)
+        const attendance = cells[7]?.querySelector('.out')?.textContent?.trim() || '';
+
+        // Cell 8: Performances
+        const performances = cells[8]?.querySelector('.out')?.textContent?.trim() || cells[8]?.textContent?.trim() || '';
+
+        // Cell 9: Capacity % this week
+        const capacityPct = cells[9]?.querySelector('.value')?.textContent?.trim() || cells[9]?.textContent?.trim() || '';
+
+        // Cell 10: Capacity % last week
+        const capacityPctPrevWeek = cells[10]?.querySelector('.value')?.textContent?.trim() || cells[10]?.textContent?.trim() || '';
+
+        return {
+          show: show || '',
+          theater: theater || '',
+          gross,
+          grossPrevWeek,
+          grossYoY,
+          atp,
+          attendance,
+          performances,
+          capacityPct,
+          capacityPctPrevWeek
+        };
+      }).filter(Boolean);
     });
 
     console.log(`Found ${tableData.length} shows in table`);
-
-    // Try to get YoY data by navigating to the same week last year
-    // BroadwayWorld uses URL parameters like ?week=2025-01-19
-    const currentDate = new Date(weekEnding.replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2'));
-    const lastYearDate = new Date(currentDate);
-    lastYearDate.setFullYear(lastYearDate.getFullYear() - 1);
-    const lastYearWeek = `${lastYearDate.getFullYear()}-${String(lastYearDate.getMonth() + 1).padStart(2, '0')}-${String(lastYearDate.getDate()).padStart(2, '0')}`;
-
-    let yoyData: Map<string, { gross: number | null; capacity: number | null; atp: number | null }> = new Map();
-
-    try {
-      console.log(`Fetching YoY data for week ${lastYearWeek}...`);
-      await page.goto(`${GROSSES_URL}?week=${lastYearWeek}`, { waitUntil: 'networkidle', timeout: 60000 });
-      await page.waitForSelector('table', { timeout: 30000 });
-
-      const yoyTableData = await page.evaluate(() => {
-        const rows = document.querySelectorAll('table tbody tr');
-        const data: Array<{ show: string; gross: string; avgTicket: string; capacity: string }> = [];
-
-        rows.forEach((row) => {
-          const cells = row.querySelectorAll('td');
-          if (cells.length >= 10) {
-            data.push({
-              show: cells[0]?.textContent?.trim() || '',
-              gross: cells[1]?.textContent?.trim() || '',
-              avgTicket: cells[4]?.textContent?.trim() || '',
-              capacity: cells[8]?.textContent?.trim() || ''
-            });
-          }
-        });
-
-        return data;
-      });
-
-      for (const row of yoyTableData) {
-        const normalizedShow = normalizeTitle(row.show);
-        yoyData.set(normalizedShow, {
-          gross: parseCurrency(row.gross),
-          capacity: parsePercentage(row.capacity),
-          atp: parseCurrency(row.avgTicket)
-        });
-      }
-
-      console.log(`Found ${yoyData.size} shows in YoY data`);
-    } catch (error) {
-      console.warn('Could not fetch YoY data:', error);
-    }
 
     // Build the grosses data structure
     const grossesData: GrossesData = {
@@ -260,42 +249,29 @@ async function scrapeGrosses(): Promise<void> {
     };
 
     let matchedCount = 0;
-    let unmatchedShows: string[] = [];
+    const unmatchedShows: string[] = [];
 
     for (const row of tableData) {
+      if (!row) continue;
+
       const slug = findMatchingSlug(row.show, showMap);
 
       if (slug) {
         matchedCount++;
-        const normalizedShow = normalizeTitle(row.show);
-        const yoy = yoyData.get(normalizedShow);
-
-        // Calculate previous week values from diff percentages
-        const currentGross = parseCurrency(row.gross);
-        const grossDiffPct = parsePercentage(row.grossDiff);
-        const prevWeekGross = currentGross && grossDiffPct !== null
-          ? Math.round(currentGross / (1 + grossDiffPct / 100))
-          : null;
-
-        const currentCapacity = parsePercentage(row.capacity);
-        const capacityDiff = parsePercentage(row.capacityDiff);
-        const prevWeekCapacity = currentCapacity !== null && capacityDiff !== null
-          ? currentCapacity - capacityDiff
-          : null;
 
         grossesData.shows[slug] = {
           thisWeek: {
-            gross: currentGross,
-            grossPrevWeek: prevWeekGross,
-            grossYoY: yoy?.gross || null,
-            capacity: currentCapacity,
-            capacityPrevWeek: prevWeekCapacity,
-            capacityYoY: yoy?.capacity || null,
-            atp: parseCurrency(row.avgTicket),
+            gross: parseCurrency(row.gross),
+            grossPrevWeek: parseCurrency(row.grossPrevWeek),
+            grossYoY: parseCurrency(row.grossYoY),
+            capacity: parsePercentage(row.capacityPct),
+            capacityPrevWeek: parsePercentage(row.capacityPctPrevWeek),
+            capacityYoY: null, // Would need to scrape last year's page
+            atp: parseCurrency(row.atp),
             atpPrevWeek: null, // Not directly available
-            atpYoY: yoy?.atp || null,
-            attendance: parseNumber(row.seats),
-            performances: parseNumber(row.perfs)
+            atpYoY: null, // Would need to scrape last year's page
+            attendance: parseNumber(row.attendance),
+            performances: parseNumber(row.performances)
           },
           allTime: {
             gross: null, // Will be filled by IBDB scraper
@@ -304,6 +280,8 @@ async function scrapeGrosses(): Promise<void> {
           },
           lastUpdated: new Date().toISOString()
         };
+
+        console.log(`  ✓ ${row.show} → ${slug}`);
       } else {
         unmatchedShows.push(row.show);
       }
