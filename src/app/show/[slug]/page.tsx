@@ -30,12 +30,21 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-function ScoreBadge({ score, size = 'lg' }: { score?: number | null; size?: 'md' | 'lg' | 'xl' }) {
+function ScoreBadge({ score, size = 'lg', reviewCount }: { score?: number | null; size?: 'md' | 'lg' | 'xl'; reviewCount?: number }) {
   const sizeClasses = {
     md: 'w-14 h-14 text-2xl rounded-xl',
     lg: 'w-20 h-20 text-4xl rounded-2xl',
     xl: 'w-24 h-24 text-5xl rounded-2xl',
   };
+
+  // Show TBD if fewer than 5 reviews
+  if (reviewCount !== undefined && reviewCount < 5) {
+    return (
+      <div className={`${sizeClasses[size]} bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-extrabold`}>
+        TBD
+      </div>
+    );
+  }
 
   if (score === undefined || score === null) {
     return (
@@ -46,11 +55,24 @@ function ScoreBadge({ score, size = 'lg' }: { score?: number | null; size?: 'md'
   }
 
   const roundedScore = Math.round(score);
-  const colorClass = roundedScore >= 70
-    ? 'bg-score-high text-white shadow-[0_4px_16px_rgba(16,185,129,0.4)]'
-    : roundedScore >= 50
-    ? 'bg-score-medium text-gray-900 shadow-[0_4px_16px_rgba(245,158,11,0.4)]'
-    : 'bg-score-low text-white shadow-[0_4px_16px_rgba(239,68,68,0.4)]';
+  let colorClass: string;
+
+  if (roundedScore >= 85) {
+    // Must See - green with gold accent
+    colorClass = 'bg-score-high text-white shadow-[0_4px_16px_rgba(16,185,129,0.4)] ring-2 ring-accent-gold/50';
+  } else if (roundedScore >= 75) {
+    // Great - green
+    colorClass = 'bg-score-high text-white shadow-[0_4px_16px_rgba(16,185,129,0.4)]';
+  } else if (roundedScore >= 65) {
+    // Good - yellow
+    colorClass = 'bg-score-medium text-gray-900 shadow-[0_4px_16px_rgba(245,158,11,0.4)]';
+  } else if (roundedScore >= 55) {
+    // Tepid - orange
+    colorClass = 'bg-orange-500 text-white shadow-[0_4px_16px_rgba(249,115,22,0.4)]';
+  } else {
+    // Skip - red
+    colorClass = 'bg-score-low text-white shadow-[0_4px_16px_rgba(239,68,68,0.4)]';
+  }
 
   return (
     <div className={`${sizeClasses[size]} ${colorClass} flex items-center justify-center font-extrabold`}>
@@ -171,6 +193,14 @@ function ProductionPill({ isRevival }: { isRevival: boolean }) {
   );
 }
 
+// Limited Run badge - eye-catching for shows ending soon
+function LimitedRunBadge() {
+  return (
+    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-rose-500/15 text-rose-400 border border-rose-500/30">
+      LIMITED RUN
+    </span>
+  );
+}
 
 function ScoreLabel({ score }: { score: number }) {
   const roundedScore = Math.round(score);
@@ -179,27 +209,23 @@ function ScoreLabel({ score }: { score: number }) {
   let textClass: string;
 
   if (roundedScore >= 85) {
-    label = 'Must See!';
-    bgClass = 'bg-score-high/20';
+    label = 'Must See';
+    bgClass = 'bg-score-high/20 border border-accent-gold/50';
     textClass = 'text-score-high';
   } else if (roundedScore >= 75) {
-    label = 'Excellent';
-    bgClass = 'bg-score-high/20';
-    textClass = 'text-score-high';
-  } else if (roundedScore >= 65) {
     label = 'Great';
     bgClass = 'bg-score-high/20';
     textClass = 'text-score-high';
-  } else if (roundedScore >= 55) {
+  } else if (roundedScore >= 65) {
     label = 'Good';
     bgClass = 'bg-score-medium/20';
     textClass = 'text-score-medium';
-  } else if (roundedScore >= 45) {
-    label = 'Mixed';
-    bgClass = 'bg-score-medium/20';
-    textClass = 'text-score-medium';
+  } else if (roundedScore >= 55) {
+    label = 'Tepid';
+    bgClass = 'bg-orange-500/20';
+    textClass = 'text-orange-400';
   } else {
-    label = 'Poor';
+    label = 'Skip';
     bgClass = 'bg-score-low/20';
     textClass = 'text-score-low';
   }
@@ -213,11 +239,11 @@ function ScoreLabel({ score }: { score: number }) {
 
 function getSentimentLabel(score: number): { label: string; colorClass: string } {
   const roundedScore = Math.round(score);
-  if (roundedScore >= 81) return { label: 'Universal Acclaim', colorClass: 'text-score-high' };
-  if (roundedScore >= 61) return { label: 'Generally Favorable Reviews', colorClass: 'text-score-high' };
-  if (roundedScore >= 40) return { label: 'Mixed or Average Reviews', colorClass: 'text-score-medium' };
-  if (roundedScore >= 20) return { label: 'Generally Unfavorable Reviews', colorClass: 'text-score-low' };
-  return { label: 'Overwhelming Dislike', colorClass: 'text-score-low' };
+  if (roundedScore >= 85) return { label: 'Must See', colorClass: 'text-score-high' };
+  if (roundedScore >= 75) return { label: 'Great', colorClass: 'text-score-high' };
+  if (roundedScore >= 65) return { label: 'Good', colorClass: 'text-score-medium' };
+  if (roundedScore >= 55) return { label: 'Tepid', colorClass: 'text-orange-400' };
+  return { label: 'Skip', colorClass: 'text-score-low' };
 }
 
 interface ReviewForBreakdown {
@@ -284,18 +310,28 @@ function ScoreBreakdownBar({ reviews }: { reviews: ReviewForBreakdown[] }) {
   );
 }
 
-function MetascoreSection({ score, reviewCount, reviews }: { score: number; reviewCount: number; reviews: ReviewForBreakdown[] }) {
+function CriticScoreSection({ score, reviewCount, reviews }: { score: number; reviewCount: number; reviews: ReviewForBreakdown[] }) {
   const roundedScore = Math.round(score);
   const { label: sentimentLabel, colorClass } = getSentimentLabel(score);
 
-  const scoreColorClass = roundedScore >= 70
-    ? 'bg-score-high text-white'
-    : roundedScore >= 50
-    ? 'bg-score-medium text-gray-900'
-    : 'bg-score-low text-white';
+  // Show TBD if fewer than 5 reviews
+  const showTBD = reviewCount < 5;
+
+  let scoreColorClass: string;
+  if (roundedScore >= 85) {
+    scoreColorClass = 'bg-score-high text-white ring-2 ring-accent-gold/50';
+  } else if (roundedScore >= 75) {
+    scoreColorClass = 'bg-score-high text-white';
+  } else if (roundedScore >= 65) {
+    scoreColorClass = 'bg-score-medium text-gray-900';
+  } else if (roundedScore >= 55) {
+    scoreColorClass = 'bg-orange-500 text-white';
+  } else {
+    scoreColorClass = 'bg-score-low text-white';
+  }
 
   return (
-    <section className="card p-5 sm:p-6 mb-6" aria-labelledby="metascore-heading">
+    <section className="card p-5 sm:p-6 mb-6" aria-labelledby="critic-score-heading">
       <div className="flex items-start gap-4 sm:gap-6 mb-4">
         {/* Large Score Badge */}
         <div
@@ -304,14 +340,14 @@ function MetascoreSection({ score, reviewCount, reviews }: { score: number; revi
           aria-valuenow={roundedScore}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={`Metascore: ${roundedScore} out of 100 - ${sentimentLabel}`}
+          aria-label={`Critic Score: ${roundedScore} out of 100 - ${sentimentLabel}`}
         >
           <span className="text-4xl sm:text-5xl font-extrabold" aria-hidden="true">{roundedScore}</span>
         </div>
 
-        {/* Metascore Label and Sentiment */}
+        {/* Critic Score Label and Sentiment */}
         <div className="flex-1 pt-1">
-          <h2 id="metascore-heading" className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Metascore</h2>
+          <h2 id="critic-score-heading" className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Critic Score</h2>
           <div className={`text-lg sm:text-xl font-bold ${colorClass}`}>{sentimentLabel}</div>
           <a
             href="#critic-reviews"
@@ -434,6 +470,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <div className="flex flex-wrap items-center gap-1.5 mb-2">
               <FormatPill type={show.type} />
               <ProductionPill isRevival={show.type === 'revival'} />
+              {show.limitedRun && <LimitedRunBadge />}
               <StatusBadge status={show.status} />
             </div>
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight">
@@ -449,9 +486,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
         </div>
 
-        {/* Metascore Section */}
+        {/* Critic Score Section */}
         {score && show.criticScore && (
-          <MetascoreSection
+          <CriticScoreSection
             score={score}
             reviewCount={show.criticScore.reviewCount}
             reviews={show.criticScore.reviews}
