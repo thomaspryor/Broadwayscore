@@ -21,6 +21,12 @@ export interface ReviewTextFile {
   assignedScore: number | null;
   source?: string;
   sourceUrl?: string;
+  /** BWW Review Roundup thumb (if available) */
+  bwwThumb?: string;
+  /** DTLI thumb (if available) */
+  dtliThumb?: string;
+  /** Original rating string (e.g., "4/5", "B+") */
+  originalRating?: string;
 }
 
 /**
@@ -130,6 +136,36 @@ export interface ScoredReviewFile extends ReviewTextFile {
     inputTokens: number;
     outputTokens: number;
   };
+  /** Ensemble scoring data (when using dual-model approach) */
+  ensembleData?: {
+    claudeScore: number | null;
+    openaiScore: number | null;
+    scoreDelta: number;
+    thumbsMatch: boolean | null;
+    expectedThumb: 'Up' | 'Flat' | 'Down' | null;
+    needsReview: boolean;
+    needsReviewReasons: string[];
+  };
+}
+
+/**
+ * Ground truth review - has an actual numeric rating from the critic
+ */
+export interface GroundTruthReview {
+  showId: string;
+  outletId: string;
+  outlet: string;
+  criticName: string;
+  /** Original rating string (e.g., "4/5", "B+", "3.5 stars") */
+  originalRating: string;
+  /** Normalized score (0-100) from the original rating */
+  groundTruthScore: number;
+  /** Full review text */
+  fullText: string;
+  /** LLM-generated score (if scored) */
+  llmScore?: number;
+  /** Ensemble score (if ensemble scored) */
+  ensembleScore?: number;
 }
 
 // ========================================

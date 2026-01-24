@@ -17,17 +17,25 @@
  *   --calibrate           Run calibration analysis after scoring
  *   --validate            Run aggregator validation after scoring
  *   --model=<model>       Claude model to use (sonnet or haiku)
+ *   --ensemble            Use ensemble mode (Claude + OpenAI for triangulation)
+ *   --ground-truth        Run ground truth calibration against numeric ratings
  *   --rate-limit=N        Delay between API calls in ms (default: 100)
  *
  * Examples:
  *   # Score all unscored reviews for one show
  *   ANTHROPIC_API_KEY=sk-... npx ts-node scripts/llm-scoring/index.ts --show=cabaret-2024
  *
+ *   # Score with ensemble mode (Claude + OpenAI)
+ *   ANTHROPIC_API_KEY=sk-... OPENAI_API_KEY=sk-... npx ts-node scripts/llm-scoring/index.ts --ensemble --limit=10
+ *
  *   # Score all shows, run calibration and validation
  *   ANTHROPIC_API_KEY=sk-... npx ts-node scripts/llm-scoring/index.ts --all --calibrate --validate
  *
  *   # Dry run with verbose output
  *   ANTHROPIC_API_KEY=sk-... npx ts-node scripts/llm-scoring/index.ts --dry-run --verbose --limit=5
+ *
+ *   # Run ground truth calibration against numeric ratings
+ *   npx ts-node scripts/llm-scoring/index.ts --ground-truth
  *
  *   # Just run calibration (no scoring)
  *   npx ts-node scripts/llm-scoring/index.ts --calibrate-only
@@ -39,8 +47,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { ReviewScorer } from './scorer';
+import { EnsembleReviewScorer } from './ensemble-scorer';
 import { runCalibration } from './calibration';
 import { runValidation } from './validation';
+import { findGroundTruthReviews, calculateGroundTruthCalibration, printGroundTruthReport } from './ground-truth';
 import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './types';
 
 // ========================================
@@ -57,6 +67,8 @@ const RUNS_LOG_PATH = path.join(__dirname, '../../data/llm-scoring-runs.json');
 function parseArgs(): ScoringPipelineOptions & {
   calibrateOnly: boolean;
   validateOnly: boolean;
+  ensemble: boolean;
+  groundTruth: boolean;
 } {
   const args = process.argv.slice(2);
 
@@ -87,7 +99,9 @@ function parseArgs(): ScoringPipelineOptions & {
     runCalibration: args.includes('--calibrate'),
     runValidation: args.includes('--validate'),
     calibrateOnly: args.includes('--calibrate-only'),
-    validateOnly: args.includes('--validate-only')
+    validateOnly: args.includes('--validate-only'),
+    ensemble: args.includes('--ensemble'),
+    groundTruth: args.includes('--ground-truth')
   };
 }
 
@@ -180,19 +194,58 @@ async function main(): Promise<void> {
     return;
   }
 
-  // Check for API key
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
+  // Handle ground-truth calibration mode
+  if (options.groundTruth) {
+    const projectRoot = path.join(__dirname, '../..');
+    const reviewsJsonPath = path.join(projectRoot, 'data/reviews.json');
+    const reviewTextsDir = path.join(projectRoot, 'data/review-texts');
+
+    console.log('Finding ground truth reviews (with numeric ratings)...');
+    const groundTruth = findGroundTruthReviews(reviewsJsonPath, reviewTextsDir);
+    console.log(`Found ${groundTruth.length} reviews with numeric ratings\n`);
+
+    const result = calculateGroundTruthCalibration(groundTruth, options.ensemble);
+    printGroundTruthReport(result);
+
+    // Save results
+    const outputPath = path.join(projectRoot, 'data/ground-truth-calibration.json');
+    fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));
+    console.log(`\nResults saved to ${outputPath}`);
+    return;
+  }
+
+  // Check for API keys
+  const claudeApiKey = process.env.ANTHROPIC_API_KEY;
+  const openaiApiKey = process.env.OPENAI_API_KEY;
+
+  if (!claudeApiKey) {
     console.error('Error: ANTHROPIC_API_KEY environment variable not set');
     console.error('Usage: ANTHROPIC_API_KEY=sk-... npx ts-node scripts/llm-scoring/index.ts [options]');
     process.exit(1);
   }
 
-  // Initialize scorer
-  const scorer = new ReviewScorer(apiKey, {
-    model: options.model,
-    verbose: options.verbose
-  });
+  if (options.ensemble && !openaiApiKey) {
+    console.error('Error: OPENAI_API_KEY environment variable required for ensemble mode');
+    console.error('Usage: ANTHROPIC_API_KEY=... OPENAI_API_KEY=... npx ts-node scripts/llm-scoring/index.ts --ensemble');
+    process.exit(1);
+  }
+
+  // Initialize scorer (single or ensemble)
+  let scorer: ReviewScorer | EnsembleReviewScorer;
+
+  if (options.ensemble) {
+    scorer = new EnsembleReviewScorer(claudeApiKey, openaiApiKey!, {
+      claudeModel: options.model,
+      openaiModel: 'gpt-4o-mini',
+      verbose: options.verbose
+    });
+    console.log('Using ENSEMBLE mode (Claude + GPT-4o-mini)\n');
+  } else {
+    scorer = new ReviewScorer(claudeApiKey, {
+      model: options.model,
+      verbose: options.verbose
+    });
+  }
 
   // Get review files
   const allFiles = getAllReviewFiles(options.showId);
@@ -270,7 +323,12 @@ async function main(): Promise<void> {
         const bucket = result.scoredFile.llmScore.bucket;
         const confidence = result.scoredFile.llmScore.confidence;
 
-        console.log(`${score} (${bucket}, ${confidence})`);
+        // Show ensemble details if available
+        const ensembleInfo = result.scoredFile.ensembleData
+          ? ` [C:${result.scoredFile.ensembleData.claudeScore} O:${result.scoredFile.ensembleData.openaiScore}${result.scoredFile.ensembleData.needsReview ? ' ⚠️' : ''}]`
+          : '';
+
+        console.log(`${score} (${bucket}, ${confidence})${ensembleInfo}`);
         processed++;
       } else {
         console.log(`FAILED: ${result.error}`);
@@ -305,17 +363,49 @@ async function main(): Promise<void> {
   console.log(`Processed: ${processed}`);
   console.log(`Skipped: ${skipped}`);
   console.log(`Errors: ${errors}`);
-  console.log(`Tokens used: ${tokenUsage.total.toLocaleString()} (input: ${tokenUsage.input.toLocaleString()}, output: ${tokenUsage.output.toLocaleString()})`);
 
-  // Estimate cost (rough, based on public pricing)
-  const inputCostPer1M = options.model.includes('haiku') ? 0.80 : 3.00;
-  const outputCostPer1M = options.model.includes('haiku') ? 4.00 : 15.00;
-  const estimatedCost = (tokenUsage.input / 1_000_000) * inputCostPer1M +
-                        (tokenUsage.output / 1_000_000) * outputCostPer1M;
-  console.log(`Estimated cost: $${estimatedCost.toFixed(4)}`);
+  // Handle both single and ensemble scorer token usage
+  if ('claude' in tokenUsage) {
+    // Ensemble scorer
+    const ensembleUsage = tokenUsage as { claude: { input: number; output: number }; openai: { input: number; output: number }; total: number };
+    console.log(`Claude tokens: ${(ensembleUsage.claude.input + ensembleUsage.claude.output).toLocaleString()} (in: ${ensembleUsage.claude.input.toLocaleString()}, out: ${ensembleUsage.claude.output.toLocaleString()})`);
+    console.log(`OpenAI tokens: ${(ensembleUsage.openai.input + ensembleUsage.openai.output).toLocaleString()} (in: ${ensembleUsage.openai.input.toLocaleString()}, out: ${ensembleUsage.openai.output.toLocaleString()})`);
+
+    // Estimate cost
+    const claudeInputCost = options.model.includes('haiku') ? 0.80 : 3.00;
+    const claudeOutputCost = options.model.includes('haiku') ? 4.00 : 15.00;
+    const openaiInputCost = 0.15;  // gpt-4o-mini
+    const openaiOutputCost = 0.60;
+
+    const claudeCost = (ensembleUsage.claude.input / 1_000_000) * claudeInputCost +
+                       (ensembleUsage.claude.output / 1_000_000) * claudeOutputCost;
+    const openaiCost = (ensembleUsage.openai.input / 1_000_000) * openaiInputCost +
+                       (ensembleUsage.openai.output / 1_000_000) * openaiOutputCost;
+    console.log(`Estimated cost: $${(claudeCost + openaiCost).toFixed(4)} (Claude: $${claudeCost.toFixed(4)}, OpenAI: $${openaiCost.toFixed(4)})`);
+  } else {
+    // Single scorer
+    const singleUsage = tokenUsage as { input: number; output: number; total: number };
+    console.log(`Tokens used: ${singleUsage.total.toLocaleString()} (input: ${singleUsage.input.toLocaleString()}, output: ${singleUsage.output.toLocaleString()})`);
+
+    // Estimate cost
+    const inputCostPer1M = options.model.includes('haiku') ? 0.80 : 3.00;
+    const outputCostPer1M = options.model.includes('haiku') ? 4.00 : 15.00;
+    const estimatedCost = (singleUsage.input / 1_000_000) * inputCostPer1M +
+                          (singleUsage.output / 1_000_000) * outputCostPer1M;
+    console.log(`Estimated cost: $${estimatedCost.toFixed(4)}`);
+  }
 
   // Save run summary
   if (!options.dryRun) {
+    // Normalize token usage for summary
+    const normalizedTokenUsage = 'claude' in tokenUsage
+      ? {
+          input: (tokenUsage as any).claude.input + (tokenUsage as any).openai.input,
+          output: (tokenUsage as any).claude.output + (tokenUsage as any).openai.output,
+          total: (tokenUsage as any).total
+        }
+      : tokenUsage as { input: number; output: number; total: number };
+
     const summary: PipelineRunSummary = {
       startedAt,
       completedAt,
@@ -323,7 +413,7 @@ async function main(): Promise<void> {
       processed,
       skipped: allFiles.length - validFiles.length,
       errors,
-      tokensUsed: tokenUsage,
+      tokensUsed: normalizedTokenUsage,
       errorDetails
     };
 
@@ -374,17 +464,25 @@ Options:
   --calibrate-only      Only run calibration (no scoring)
   --validate-only       Only run validation (no scoring)
   --model=<model>       Claude model: sonnet (default) or haiku
+  --ensemble            Use ensemble mode (Claude + GPT-4o-mini for triangulation)
+  --ground-truth        Run ground truth calibration against numeric ratings
   --rate-limit=N        Delay between API calls in ms (default: 100)
 
 Examples:
   # Score all unscored reviews for one show
   ANTHROPIC_API_KEY=sk-... npx ts-node scripts/llm-scoring/index.ts --show=cabaret-2024
 
+  # Score with ensemble mode (Claude + OpenAI)
+  ANTHROPIC_API_KEY=sk-... OPENAI_API_KEY=sk-... npx ts-node scripts/llm-scoring/index.ts --ensemble --limit=10
+
   # Score all shows with calibration and validation
   ANTHROPIC_API_KEY=sk-... npx ts-node scripts/llm-scoring/index.ts --all --calibrate --validate
 
   # Dry run with verbose output
   ANTHROPIC_API_KEY=sk-... npx ts-node scripts/llm-scoring/index.ts --dry-run --verbose --limit=5
+
+  # Run ground truth calibration
+  npx ts-node scripts/llm-scoring/index.ts --ground-truth
 
   # Just run calibration analysis
   npx ts-node scripts/llm-scoring/index.ts --calibrate-only
