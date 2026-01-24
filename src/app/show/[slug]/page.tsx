@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow } from '@/lib/data';
+import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding } from '@/lib/data';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
+import BoxOfficeStats from '@/components/BoxOfficeStats';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -365,6 +366,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
   const structuredData = generateStructuredData(show);
   const score = show.criticScore?.score;
+  const grosses = getShowGrosses(params.slug);
+  const weekEnding = getGrossesWeekEnding();
 
   return (
     <>
@@ -519,6 +522,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <ReviewsList reviews={show.criticScore.reviews} initialCount={5} />
           </div>
         )}
+
+        {/* Box Office Stats */}
+        {grosses && <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />}
 
         {/* Cast & Creative */}
         {(show.cast || show.creativeTeam) && (

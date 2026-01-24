@@ -15,6 +15,7 @@ import showsData from '../../data/shows.json';
 import reviewsData from '../../data/reviews.json';
 import audienceData from '../../data/audience.json';
 import buzzData from '../../data/buzz.json';
+import grossesData from '../../data/grosses.json';
 
 // Type the imported data
 const shows: RawShow[] = showsData.shows as RawShow[];
@@ -335,6 +336,61 @@ export function getBestOfList(category: BestOfCategory): BestOfList | undefined 
  */
 export function getAllBestOfCategories(): BestOfCategory[] {
   return Object.keys(BEST_OF_CONFIG) as BestOfCategory[];
+}
+
+// ============================================
+// Box Office / Grosses Queries
+// ============================================
+
+export interface ShowGrosses {
+  thisWeek?: {
+    gross: number | null;
+    grossPrevWeek: number | null;
+    grossYoY: number | null;
+    capacity: number | null;
+    capacityPrevWeek: number | null;
+    capacityYoY: number | null;
+    atp: number | null;
+    atpPrevWeek: number | null;
+    atpYoY: number | null;
+    attendance: number | null;
+    performances: number | null;
+  };
+  allTime: {
+    gross: number | null;
+    performances: number | null;
+    attendance: number | null;
+  };
+  lastUpdated?: string;
+}
+
+interface GrossesFile {
+  lastUpdated: string;
+  weekEnding: string;
+  shows: Record<string, ShowGrosses>;
+}
+
+const grosses = grossesData as GrossesFile;
+
+/**
+ * Get box office data for a specific show by slug
+ */
+export function getShowGrosses(slug: string): ShowGrosses | undefined {
+  return grosses.shows[slug];
+}
+
+/**
+ * Get the week ending date for grosses data
+ */
+export function getGrossesWeekEnding(): string {
+  return grosses.weekEnding;
+}
+
+/**
+ * Get grosses last updated timestamp
+ */
+export function getGrossesLastUpdated(): string {
+  return grosses.lastUpdated;
 }
 
 // Export types
