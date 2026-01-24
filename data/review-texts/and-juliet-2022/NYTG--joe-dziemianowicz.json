@@ -9,8 +9,64 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"The action unfolds in Shakespeareâs era, but its heart and head are all about today...As in any jukebox musical, some tunes are wedged in, but others fit surprisingly well...Theatregoers out for a silly good time likely wonât care as they hum along with '& Juliet'.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 72,
   "source": "playwright-scraped",
   "dtliThumb": "Up",
-  "scrapedAt": "2026-01-23T05:35:00.000Z"
+  "scrapedAt": "2026-01-23T05:35:00.000Z",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 78,
+      "performances": 78,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "slim but cheeky and eager-to-entertain jukebox musical bursting with chart-toppers",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Theatregoers out for a silly good time likely won't care as they hum along with & Juliet",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's a mixed bag",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show entertaining with strong performances and production values but acknowledges significant script issues, ultimately suggesting it works for audiences seeking fun musical theater despite its flaws. | GPT-4o-mini: The review highlights both enjoyable elements and significant flaws, leading to a qualified recommendation for those seeking light entertainment.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:26:42.480Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,9 +9,65 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"While it doesn't rival the imagination or innovation of \"The Lion King,\"  the show's ebullient comic spirit should make it a popular hit. It's not the most sophisticated entertainment, but the target demographic won't mind at all.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "urlUpdated": "2026-01-23T05:30:05.962Z",
-  "fetchedAt": "2026-01-23T05:23:06.420Z"
+  "fetchedAt": "2026-01-23T05:23:06.420Z",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 70,
+      "performances": 83,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "But that shouldn't deter audiences from making this splashy Arabian Nights wish-fulfillment fantasy into a family-friendly hit",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this is sweet, silly fun. It's not the most sophisticated entertainment, but the target demographic won't mind at all",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The songs are tuneful, if not quite top-drawer",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic clearly recommends the show with qualified enthusiasm, praising the spectacle and performances while acknowledging it's not sophisticated - a solid mixed-positive recommendation for family audiences. | GPT-4o-mini: The review expresses clear enjoyment of the production's fun and performances, while acknowledging it lacks sophistication, leading to a strong but not unqualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:26:19.378Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

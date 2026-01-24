@@ -141,5 +141,116 @@
         "disagreementDetails": "DTLI: Up thumbs differ by 36% (ours: 80%, theirs: 44%)"
       }
     ]
+  },
+  {
+    "startedAt": "2026-01-24T04:26:06.204Z",
+    "completedAt": "2026-01-24T04:26:42.481Z",
+    "totalReviews": 1166,
+    "processed": 5,
+    "skipped": 970,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 25470,
+      "output": 3343,
+      "total": 28813
+    },
+    "errorDetails": [],
+    "calibration": {
+      "count": 9,
+      "mae": 4.89,
+      "rmse": 5.91,
+      "meanBias": -3.56,
+      "stdDev": 4.72,
+      "bucketAccuracy": 55.6,
+      "byConfidence": {
+        "high": {
+          "count": 5,
+          "mae": 5.2
+        },
+        "medium": {
+          "count": 4,
+          "mae": 4.5
+        },
+        "low": {
+          "count": 0,
+          "mae": 0
+        }
+      },
+      "byTier": {
+        "tier1": {
+          "count": 1,
+          "mae": 4,
+          "meanBias": 4
+        },
+        "tier2": {
+          "count": 4,
+          "mae": 4.5,
+          "meanBias": -4.5
+        },
+        "tier3": {
+          "count": 4,
+          "mae": 5.5,
+          "meanBias": -4.5
+        }
+      },
+      "outletBias": {}
+    },
+    "validation": [
+      {
+        "showId": "aladdin-2014",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 1,
+          "down": 0,
+          "total": 3
+        },
+        "dtliDistribution": {
+          "up": 3,
+          "flat": 1,
+          "down": 0,
+          "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "and-juliet-2022",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 2
+        },
+        "dtliDistribution": {
+          "up": 5,
+          "flat": 2,
+          "down": 0,
+          "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 1,
+          "down": 0,
+          "total": 5
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 3,
+          "down": 2,
+          "total": 9
+        },
+        "bwwDistribution": {
+          "up": 9,
+          "flat": 5,
+          "down": 0,
+          "total": 14
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "DTLI: Up thumbs differ by 36% (ours: 80%, theirs: 44%)"
+      }
+    ]
   }
 ]
