@@ -87,4 +87,7 @@ jobs:
           Triggered by: @${{ github.actor }}
 
           Co-Authored-By: Claude <noreply@anthropic.com>"
+
+          # Pull and rebase before pushing to handle concurrent changes
+          git pull --rebase origin ${{ github.ref_name }} || true
           git push
