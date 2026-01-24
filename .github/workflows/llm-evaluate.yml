@@ -1,0 +1,65 @@
+name: LLM Scoring Evaluation
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_size:
+        description: 'Number of reviews in test set'
+        required: false
+        default: '20'
+      stratify:
+        description: 'Stratify by outlet tier'
+        required: false
+        default: true
+        type: boolean
+
+env:
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: claude/broadway-metascore-site-8jjx7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run evaluation
+        run: |
+          ARGS="--test-size=${{ github.event.inputs.test_size }} --save-results --verbose"
+          if [ "${{ github.event.inputs.stratify }}" == "true" ]; then
+            ARGS="$ARGS --by-outlet"
+          fi
+          npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/evaluate.ts $ARGS
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-results
+          path: data/llm-evaluation-results.json
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/llm-evaluation-results.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: LLM evaluation results (n=${{ github.event.inputs.test_size }})
+
+            Co-Authored-By: Claude <noreply@anthropic.com>"
+            git pull --rebase origin claude/broadway-metascore-site-8jjx7 || true
+            git push
+          fi
