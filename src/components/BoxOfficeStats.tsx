@@ -130,6 +130,9 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
   const capacityWoW = grosses.thisWeek ? calcPercentChange(grosses.thisWeek.capacity, grosses.thisWeek.capacityPrevWeek) : null;
   const capacityYoY = grosses.thisWeek ? calcPercentChange(grosses.thisWeek.capacity, grosses.thisWeek.capacityYoY) : null;
 
+  const atpWoW = grosses.thisWeek ? calcPercentChange(grosses.thisWeek.atp, grosses.thisWeek.atpPrevWeek) : null;
+  const atpYoY = grosses.thisWeek ? calcPercentChange(grosses.thisWeek.atp, grosses.thisWeek.atpYoY) : null;
+
   return (
     <div className="card p-5 sm:p-6 mb-8">
       <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Box Office</h2>
@@ -156,6 +159,8 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
             <StatCard
               value={grosses.thisWeek.atp ? `$${grosses.thisWeek.atp.toFixed(0)}` : '—'}
               label="Avg Ticket"
+              wowChange={atpWoW}
+              yoyChange={atpYoY}
             />
           </div>
         </div>
