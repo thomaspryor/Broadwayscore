@@ -62,5 +62,84 @@
       "outletBias": {}
     },
     "validation": []
+  },
+  {
+    "startedAt": "2026-01-24T03:53:41.488Z",
+    "completedAt": "2026-01-24T03:54:10.163Z",
+    "totalReviews": 36,
+    "processed": 5,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 10889,
+      "output": 1773,
+      "total": 12662
+    },
+    "errorDetails": [],
+    "calibration": {
+      "count": 5,
+      "mae": 5.8,
+      "rmse": 6.77,
+      "meanBias": -5.8,
+      "stdDev": 3.49,
+      "bucketAccuracy": 80,
+      "byConfidence": {
+        "high": {
+          "count": 2,
+          "mae": 7.5
+        },
+        "medium": {
+          "count": 3,
+          "mae": 4.67
+        },
+        "low": {
+          "count": 0,
+          "mae": 0
+        }
+      },
+      "byTier": {
+        "tier1": {
+          "count": 0,
+          "mae": 0,
+          "meanBias": 0
+        },
+        "tier2": {
+          "count": 3,
+          "mae": 5.67,
+          "meanBias": -5.67
+        },
+        "tier3": {
+          "count": 2,
+          "mae": 6,
+          "meanBias": -6
+        }
+      },
+      "outletBias": {}
+    },
+    "validation": [
+      {
+        "showId": "two-strangers-bway-2025",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 1,
+          "down": 0,
+          "total": 5
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 3,
+          "down": 2,
+          "total": 9
+        },
+        "bwwDistribution": {
+          "up": 9,
+          "flat": 5,
+          "down": 0,
+          "total": 14
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "DTLI: Up thumbs differ by 36% (ours: 80%, theirs: 44%)"
+      }
+    ]
   }
 ]
