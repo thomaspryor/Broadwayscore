@@ -83,6 +83,15 @@ function ProductionPill({ isRevival }: { isRevival: boolean }) {
   );
 }
 
+// Limited Run badge - eye-catching for shows ending soon
+function LimitedRunBadge() {
+  return (
+    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-rose-500/15 text-rose-400 border border-rose-500/30">
+      LIMITED RUN
+    </span>
+  );
+}
+
 // Use UTC-based formatting to avoid timezone-related hydration mismatch
 function formatOpeningDate(dateStr: string): string {
   const date = new Date(dateStr);
@@ -137,6 +146,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
         <div className="flex flex-wrap items-center gap-1.5 mt-2">
           <FormatPill type={show.type} />
           <ProductionPill isRevival={isRevival} />
+          {show.limitedRun && <LimitedRunBadge />}
           {!hideStatus && <StatusBadge status={show.status} />}
           <span className="text-[10px] text-gray-500">
             Opened {formatOpeningDate(show.openingDate)}
