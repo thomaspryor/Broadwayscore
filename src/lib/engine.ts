@@ -65,6 +65,7 @@ export interface RawShow {
   // New fields
   synopsis?: string;
   ageRecommendation?: string;  // e.g., "Ages 12+", "All ages"
+  limitedRun?: boolean;        // true for shows with announced closing dates
   ticketLinks?: TicketLink[];
   officialUrl?: string;
   trailerUrl?: string;
@@ -188,6 +189,7 @@ export interface ComputedShow {
   // New fields
   synopsis?: string;
   ageRecommendation?: string;
+  limitedRun?: boolean;
   ticketLinks?: TicketLink[];
   officialUrl?: string;
   trailerUrl?: string;
@@ -548,6 +550,7 @@ export function computeShowData(
     // Pass through new fields
     synopsis: show.synopsis,
     ageRecommendation: show.ageRecommendation,
+    limitedRun: show.limitedRun,
     ticketLinks: show.ticketLinks,
     officialUrl: show.officialUrl,
     trailerUrl: show.trailerUrl,
