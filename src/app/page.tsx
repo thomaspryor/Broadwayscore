@@ -3,7 +3,7 @@
 import { useMemo, memo, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { getAllShows, ComputedShow, getDataStats, getBestOfList, getUpcomingShows } from '@/lib/data';
+import { getAllShows, ComputedShow, getDataStats, getUpcomingShows } from '@/lib/data';
 
 // URL parameter values
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'all';
@@ -204,21 +204,21 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
       className="group card-interactive flex gap-4 p-4 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       style={{ animationDelay: `${index * 30}ms` }}
     >
-      {/* Thumbnail - fixed aspect ratio prevents CLS */}
-      <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay aspect-square">
+      {/* Thumbnail - larger square image */}
+      <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-surface-overlay">
         {show.images?.thumbnail ? (
           <img
             src={show.images.thumbnail}
             alt=""
             aria-hidden="true"
             loading="lazy"
-            width={80}
-            height={80}
+            width={96}
+            height={96}
             decoding="async"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 will-change-transform"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-2xl" aria-hidden="true">
+          <div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl" aria-hidden="true">
             🎭
           </div>
         )}
@@ -226,21 +226,24 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-white group-hover:text-brand transition-colors truncate">
+        <h3 className="font-bold text-white text-lg group-hover:text-brand transition-colors truncate">
           {show.title}
         </h3>
-        <p className="text-sm text-gray-500 mt-0.5 truncate">{show.venue}</p>
+        <p className="text-sm text-gray-400 mt-0.5 truncate">
+          {show.venue}
+          <span className="text-gray-600 mx-1.5">·</span>
+          <span className="text-gray-500">
+            {formatOpeningDate(show.openingDate)}
+            {show.status === 'closed' && show.closingDate && (
+              <> – {formatOpeningDate(show.closingDate)}</>
+            )}
+          </span>
+        </p>
         <div className="flex flex-wrap items-center gap-1.5 mt-2">
           <FormatPill type={show.type} />
           <ProductionPill isRevival={isRevival} />
           {show.limitedRun && <LimitedRunBadge />}
           {!hideStatus && <StatusBadge status={show.status} />}
-          <span className="text-[10px] text-gray-500">
-            Opened {formatOpeningDate(show.openingDate)}
-            {show.status === 'closed' && show.closingDate && (
-              <> · Closed {formatOpeningDate(show.closingDate)}</>
-            )}
-          </span>
         </div>
       </div>
 
@@ -264,9 +267,9 @@ const MiniShowCard = memo(function MiniShowCard({ show }: { show: ComputedShow }
   return (
     <Link
       href={`/show/${show.slug}`}
-      className="flex-shrink-0 w-36 sm:w-40 group"
+      className="flex-shrink-0 w-28 sm:w-32 group"
     >
-      <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[3/4] mb-2">
+      <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[3/4] mb-1.5">
         {show.images?.poster || show.images?.thumbnail ? (
           <img
             src={show.images.poster || show.images.thumbnail}
@@ -276,16 +279,25 @@ const MiniShowCard = memo(function MiniShowCard({ show }: { show: ComputedShow }
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl" aria-hidden="true">
+          <div className="w-full h-full flex items-center justify-center text-gray-600 text-2xl" aria-hidden="true">
             🎭
           </div>
         )}
         {/* Score overlay */}
-        <div className="absolute bottom-2 right-2">
-          <ScoreBadge score={score} size="sm" reviewCount={show.criticScore?.reviewCount} />
+        <div className="absolute bottom-1.5 right-1.5">
+          <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
+            score === undefined || score === null ? 'bg-surface-overlay text-gray-400' :
+            score >= 85 ? 'bg-score-high text-white ring-1 ring-accent-gold/50' :
+            score >= 75 ? 'bg-score-high text-white' :
+            score >= 65 ? 'bg-score-medium text-gray-900' :
+            score >= 55 ? 'bg-orange-500 text-white' :
+            'bg-score-low text-white'
+          }`}>
+            {score !== undefined && score !== null ? Math.round(score) : '—'}
+          </div>
         </div>
       </div>
-      <h4 className="font-medium text-white text-sm group-hover:text-brand transition-colors line-clamp-2">
+      <h4 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-2 leading-tight">
         {show.title}
       </h4>
     </Link>
@@ -297,19 +309,19 @@ function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: Comp
   if (shows.length === 0) return null;
 
   return (
-    <section className="mb-8">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-bold text-white">{title}</h2>
+    <section className="mb-6">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-base font-bold text-white">{title}</h2>
         {viewAllHref && (
           <Link
             href={viewAllHref}
-            className="flex items-center gap-1 text-sm text-gray-400 hover:text-brand transition-colors"
+            className="flex items-center gap-1 text-xs text-gray-400 hover:text-brand transition-colors"
           >
             See all <ChevronRightIcon />
           </Link>
         )}
       </div>
-      <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+      <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
         {shows.map((show) => (
           <MiniShowCard key={show.id} show={show} />
         ))}
@@ -375,9 +387,34 @@ function HomePageInner() {
 
   const shows = useMemo(() => getAllShows(), []);
 
-  // Featured rows data
-  const bestMusicals = useMemo(() => getBestOfList('musicals')?.shows || [], []);
-  const bestPlays = useMemo(() => getBestOfList('plays')?.shows || [], []);
+  // Featured rows data - only shows opened in last 12 months
+  const twelveMonthsAgo = useMemo(() => {
+    const date = new Date();
+    date.setMonth(date.getMonth() - 12);
+    return date;
+  }, []);
+
+  const bestNewMusicals = useMemo(() => {
+    return shows
+      .filter(show => {
+        const isMusical = show.type === 'musical' || show.type === 'revival';
+        const openDate = new Date(show.openingDate);
+        return isMusical && show.status === 'open' && openDate >= twelveMonthsAgo && show.criticScore?.score;
+      })
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+      .slice(0, 10);
+  }, [shows, twelveMonthsAgo]);
+
+  const bestNewPlays = useMemo(() => {
+    return shows
+      .filter(show => {
+        const openDate = new Date(show.openingDate);
+        return show.type === 'play' && show.status === 'open' && openDate >= twelveMonthsAgo && show.criticScore?.score;
+      })
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+      .slice(0, 10);
+  }, [shows, twelveMonthsAgo]);
+
   const upcomingShows = useMemo(() => getUpcomingShows(), []);
 
   const filteredAndSortedShows = useMemo(() => {
@@ -448,13 +485,13 @@ function HomePageInner() {
 
       {/* Featured Rows */}
       <FeaturedRow
-        title="Best Musicals This Season"
-        shows={bestMusicals}
+        title="Best New Musicals of the Season"
+        shows={bestNewMusicals}
         viewAllHref="/?type=musical&sort=score_desc"
       />
       <FeaturedRow
-        title="Best Plays This Season"
-        shows={bestPlays}
+        title="Best New Plays of the Season"
+        shows={bestNewPlays}
         viewAllHref="/?type=play&sort=score_desc"
       />
       <FeaturedRow
