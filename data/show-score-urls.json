@@ -2,7 +2,7 @@
   "_meta": {
     "lastUpdated": "2026-01-23",
     "source": "Show Score Broadway section - manually mapped from shows.json",
-    "noDedicatedPage": [
+    "needsManualFetch": [
       "water-for-elephants-2024",
       "the-notebook-2024",
       "boop-2025",
@@ -10,7 +10,7 @@
       "just-in-time-2025",
       "moulin-rouge-2019"
     ],
-    "noDedicatedPageNote": "These shows redirect to /shows/all listing or other versions (moulin-rouge redirects to West End)"
+    "needsManualFetchNote": "Show Score blocks automated browsers - these pages exist but need manual HTML save"
   },
   "shows": {
     "two-strangers-bway-2025": "https://www.show-score.com/broadway-shows/two-strangers-carry-a-cake-across-new-york-broadway",
