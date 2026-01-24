@@ -55,7 +55,7 @@ export default function DataPage() {
                   <th className="px-3 py-2 text-left">Venue</th>
                   <th className="px-3 py-2 text-left">Status</th>
                   <th className="px-3 py-2 text-left">Opening</th>
-                  <th className="px-3 py-2 text-center">Metascore</th>
+                  <th className="px-3 py-2 text-center">Critic Score</th>
                   <th className="px-3 py-2 text-center">Critic</th>
                   <th className="px-3 py-2 text-center"># Reviews</th>
                   <th className="px-3 py-2 text-center">Audience</th>

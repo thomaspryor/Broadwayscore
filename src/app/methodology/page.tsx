@@ -50,7 +50,7 @@ const faqSchema = {
       name: 'What do the score ranges mean?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Scores of 85+ indicate "Must See" universal acclaim, 75-84 is "Excellent", 65-74 is "Great", 55-64 is "Good", 45-54 is "Mixed", and below 45 is "Poor".',
+        text: 'Scores of 85+ indicate "Must See" universal acclaim, 75-84 is "Great", 65-74 is "Good", 55-64 is "Tepid", and below 55 is "Skip". Shows with fewer than 5 reviews display "TBD" until more reviews are collected.',
       },
     },
   ],
@@ -90,49 +90,49 @@ export default function MethodologyPage() {
         <section className="card p-5 sm:p-6">
           <h2 className="text-xl font-bold text-white mb-4">Score Interpretation</h2>
           <p className="text-gray-300 mb-4">
-            Scores are labeled based on these thresholds:
+            Critic Scores are labeled based on these thresholds:
           </p>
           <div className="space-y-3">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-high flex items-center justify-center font-bold text-white text-sm">85+</div>
+              <div className="w-14 h-10 rounded-lg bg-score-high ring-2 ring-accent-gold/50 flex items-center justify-center font-bold text-white text-sm">85+</div>
               <div>
-                <span className="text-white font-medium">Must See!</span>
+                <span className="text-white font-medium">Must See</span>
                 <span className="text-gray-500 ml-2">— Universal acclaim</span>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="w-14 h-10 rounded-lg bg-score-high flex items-center justify-center font-bold text-white text-sm">75-84</div>
               <div>
-                <span className="text-white font-medium">Excellent</span>
+                <span className="text-white font-medium">Great</span>
                 <span className="text-gray-500 ml-2">— Strong praise</span>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-high flex items-center justify-center font-bold text-white text-sm">65-74</div>
+              <div className="w-14 h-10 rounded-lg bg-score-medium flex items-center justify-center font-bold text-gray-900 text-sm">65-74</div>
               <div>
-                <span className="text-white font-medium">Great</span>
+                <span className="text-white font-medium">Good</span>
                 <span className="text-gray-500 ml-2">— Generally favorable</span>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-medium flex items-center justify-center font-bold text-gray-900 text-sm">55-64</div>
+              <div className="w-14 h-10 rounded-lg bg-orange-500 flex items-center justify-center font-bold text-white text-sm">55-64</div>
               <div>
-                <span className="text-white font-medium">Good</span>
-                <span className="text-gray-500 ml-2">— More positive than negative</span>
+                <span className="text-white font-medium">Tepid</span>
+                <span className="text-gray-500 ml-2">— Mixed to lukewarm</span>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-medium flex items-center justify-center font-bold text-gray-900 text-sm">45-54</div>
+              <div className="w-14 h-10 rounded-lg bg-score-low flex items-center justify-center font-bold text-white text-sm">&lt;55</div>
               <div>
-                <span className="text-white font-medium">Mixed</span>
-                <span className="text-gray-500 ml-2">— Divided reception</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-low flex items-center justify-center font-bold text-white text-sm">&lt;45</div>
-              <div>
-                <span className="text-white font-medium">Poor</span>
+                <span className="text-white font-medium">Skip</span>
                 <span className="text-gray-500 ml-2">— Generally unfavorable</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-10 rounded-lg bg-surface-overlay border border-white/10 flex items-center justify-center font-bold text-gray-400 text-sm">TBD</div>
+              <div>
+                <span className="text-white font-medium">To Be Determined</span>
+                <span className="text-gray-500 ml-2">— Fewer than 5 reviews collected</span>
               </div>
             </div>
           </div>

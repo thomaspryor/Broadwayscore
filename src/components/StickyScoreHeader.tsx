@@ -36,17 +36,29 @@ export default function StickyScoreHeader({ title, score, showAfterPx = 200 }: S
   if (!isVisible) return null;
 
   const roundedScore = score ? Math.round(score) : null;
-  const scoreColorClass = roundedScore
-    ? roundedScore >= 70
-      ? 'bg-score-high'
-      : roundedScore >= 50
-      ? 'bg-score-medium'
-      : 'bg-score-low'
-    : 'bg-gray-600';
-  const scoreTextClass = roundedScore && roundedScore >= 50 && roundedScore < 70 ? 'text-gray-900' : 'text-white';
-  const scoreLabel = roundedScore
-    ? roundedScore >= 70 ? 'Favorable' : roundedScore >= 50 ? 'Mixed' : 'Unfavorable'
-    : '';
+  let scoreColorClass: string;
+  let scoreTextClass = 'text-white';
+  let scoreLabel = '';
+
+  if (roundedScore === null) {
+    scoreColorClass = 'bg-gray-600';
+  } else if (roundedScore >= 85) {
+    scoreColorClass = 'bg-score-high ring-2 ring-accent-gold/50';
+    scoreLabel = 'Must See';
+  } else if (roundedScore >= 75) {
+    scoreColorClass = 'bg-score-high';
+    scoreLabel = 'Great';
+  } else if (roundedScore >= 65) {
+    scoreColorClass = 'bg-score-medium';
+    scoreTextClass = 'text-gray-900';
+    scoreLabel = 'Good';
+  } else if (roundedScore >= 55) {
+    scoreColorClass = 'bg-orange-500';
+    scoreLabel = 'Tepid';
+  } else {
+    scoreColorClass = 'bg-score-low';
+    scoreLabel = 'Skip';
+  }
 
   return (
     <div
@@ -72,7 +84,7 @@ export default function StickyScoreHeader({ title, score, showAfterPx = 200 }: S
               aria-valuenow={roundedScore}
               aria-valuemin={0}
               aria-valuemax={100}
-              aria-label={`Metascore: ${roundedScore} - ${scoreLabel}`}
+              aria-label={`Critic Score: ${roundedScore} - ${scoreLabel}`}
             >
               <span className={`text-sm font-bold ${scoreTextClass}`} aria-hidden="true">{roundedScore}</span>
             </div>

@@ -188,17 +188,19 @@ export const CONFIDENCE_RULES = {
 // CRITIC SCORE LABEL THRESHOLDS
 // ===========================================
 export const CRITIC_LABEL_THRESHOLDS = {
-  'Rave': 85,
-  'Positive': 70,
-  'Mixed': 50,
-  'Negative': 0,
+  'Must See': 85,
+  'Great': 75,
+  'Good': 65,
+  'Tepid': 55,
+  'Skip': 0,
 };
 
 export function getCriticLabel(score: number): string {
-  if (score >= 85) return 'Rave';
-  if (score >= 70) return 'Positive';
-  if (score >= 50) return 'Mixed';
-  return 'Negative';
+  if (score >= 85) return 'Must See';
+  if (score >= 75) return 'Great';
+  if (score >= 65) return 'Good';
+  if (score >= 55) return 'Tepid';
+  return 'Skip';
 }
 
 // ===========================================
