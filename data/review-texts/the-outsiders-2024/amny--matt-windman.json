@@ -9,11 +9,67 @@
   "isFullReview": false,
   "dtliExcerpt": "discover things along with Ponyboy. Here, both the book and the songs tend to underestimate the audience’s intelligence. (This is surprising coming from Rapp, who is usually not afraid of ambiguity.) Matt Windman, amNY: At its best, “The Outsiders”(which is directed by Danya Taymor, “Pass Over”) is fresh and rambunctious, with an attractive period country-pop score by Jamestown Revival (Jonathan Clay and Zach Chance) and Justine Levine (with plainspoken lyrics and pulsating music reminiscent of Jason Robert Brown), well-executed choreography by Rick Kuperman and Jeff Kuperman (including both rock social dance and intense fight movement), and an industrial design scheme that is seamless and atmospheric. However, the book (by playwright Adam Rapp and Justine Levine), which stays dutifully true to the novel, has difficulty reconciling bursts of excitement with the plotting and character details of the novel, with Brody Grant (who looks far too mature to be playing the sensitive 14-year-ol",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 40,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:11:59.568Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
   "dtliThumb": "Meh",
-  "bwwExcerpt": "At its best, “The Outsiders”(which is directed by Danya Taymor, “Pass Over”) is fresh and rambunctious, with an attractive period country-pop score by Jamestown Revival (Jonathan Clay and Zach Chance) and Justine Levine (with plainspoken lyrics and pulsating music reminiscent of Jason Robert Brown),..."
+  "bwwExcerpt": "At its best, “The Outsiders”(which is directed by Danya Taymor, “Pass Over”) is fresh and rambunctious, with an attractive period country-pop score by Jamestown Revival (Jonathan Clay and Zach Chance) and Justine Levine (with plainspoken lyrics and pulsating music reminiscent of Jason Robert Brown),...",
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 30,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 20,
+      "performances": 40,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "sentimental solos that stop the show in its tracks",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "the show felt like a mechanical procession of plot progression and teen melodrama",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "has difficulty reconciling bursts of excitement with the plotting and character details",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers sustained criticism of the book, music, casting, and overall pacing with language like 'mechanical procession' and 'stops the show in its tracks,' indicating significant structural problems that make recommendation difficult. | GPT-4o-mini: The review expresses significant criticism of the book's execution and overall flow, indicating more problems than strengths and making it hard to recommend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:29:24.751Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 45,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

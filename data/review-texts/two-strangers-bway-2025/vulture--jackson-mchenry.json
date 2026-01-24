@@ -10,9 +10,65 @@
   "dtliExcerpt": "seems odd to interrupt that momentum with an intermission. But the second act brings a stark shift in tone, getting darker for a while before rebounding with great silliness and gratifying sympathy. Jackson McHenry, Vulture: As you grow, you do the hard work of parting with the vision of the world you had in your head. That’s a dynamic repeated throughout Two Strangers. Dougal is learning to give up both his idealized image of a foreign city and the relationship with his father he thinks he could re-ignite during this trip, and Robin learns to abandon the myth she’s telling herself about her own failure. When the show’s creators zero in on those feelings, something a lot more specific and wistful than a love story between two strangers, the piece comes alive. If only it stayed there. Dalton Ross, Entertainment Weekly: As for the stage itself, the design (also by Gilmour) consists of two towers of silver painted luggage of various sizes on a turntable. It’s not the most visually exciti",
   "showScoreExcerpt": "\"This cake isn’t fully baked...For its staging at the Longacre, with an unnecessary intermission that slams the brakes on the action, the director Tim Jackson has slathered the thing in the icing of sentiment and popped his cork\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "dtli",
   "dtliThumb": "Meh",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20250109",
-  "needsFullText": false
+  "needsFullText": false,
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the piece comes alive",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "If only it stayed there",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "If only it stayed there.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic identifies moments where the show works but expresses clear disappointment that these moments are fleeting, suggesting the overall experience is unsatisfying despite occasional bright spots. | GPT-4o-mini: The review indicates moments of life and specificity in the show but ultimately expresses disappointment that it does not maintain that quality, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:31:47.978Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

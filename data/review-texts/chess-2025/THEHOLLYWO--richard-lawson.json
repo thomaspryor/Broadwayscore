@@ -12,5 +12,61 @@
   "assignedScore": 62,
   "source": "reviews-json-stub",
   "needsFullText": false,
-  "fetchedAt": "2026-01-23T04:59:44.368Z"
+  "fetchedAt": "2026-01-23T04:59:44.368Z",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 68,
+      "performances": 74,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "sets a musical about the Cold War at garish, sometimes glorious, war with itself",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "a lumpy but often sweetly sonorous mess that many ardent fans love mostly for a handful of songs",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "some of the show's Brechtian self-awareness works quite well, giving Chess a giddy shiver of the prescient or the eternal",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges both successful elements (performances, some directorial choices) and significant problems (dated material, structural issues), with no clear recommendation emerging. | GPT-4o-mini: The review presents a mixed perspective, highlighting both engaging elements and significant flaws, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:59:32.357Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

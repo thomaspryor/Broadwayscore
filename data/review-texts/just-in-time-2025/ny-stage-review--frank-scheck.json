@@ -9,8 +9,64 @@
   "isFullReview": true,
   "bwwExcerpt": "It's the staging and the star's performance that truly elevate the evening, however. Alex Timbers' limber, imaginative direction uses the space fantastically.",
   "originalScore": "4/5",
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T18:00:00.000Z",
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 94,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes Just in Time such a blast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "delivers the sort of magnetic star turn that instantly becomes Broadway legend",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "book eventually succumbing to typical bio-musical choppiness in its second act",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic is clearly enthusiastic about the production despite some structural flaws, praising Groff's 'legendary' performance and calling it 'such a blast' while acknowledging book problems don't derail the overall positive experience. | GPT-4o-mini: The review highlights Groff's exceptional performance and the overall enjoyable experience, despite some structural weaknesses in the musical's book.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:06:38.912Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,64 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"The action unfolds in Shakespeareâs era, but its heart and head are all about today...As in any jukebox musical, some tunes are wedged in, but others fit surprisingly well...Theatregoers out for a silly good time likely wonât care as they hum along with '& Juliet'.\"",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 74,
   "source": "reviews-json-stub",
   "needsFullText": false,
-  "fetchedAt": "2026-01-23T04:54:06.862Z"
+  "fetchedAt": "2026-01-23T04:54:06.862Z",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 75,
+      "performances": 79,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Theatregoers out for a silly good time likely won't care as they hum along with & Juliet",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The early zippy energy is a big plus. Vibrant visuals are another",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the momentum sags whenever Anne and Will spar about the narrative — and they do it a lot",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant flaws in the book and pacing but praises performances, visuals, and energy, ultimately suggesting audiences seeking fun entertainment will enjoy it despite its problems. | GPT-4o-mini: The review presents a generally positive view of the production, highlighting its entertainment value and performances, despite some criticisms of the script and structure.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:52:10.939Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

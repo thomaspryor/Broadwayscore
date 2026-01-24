@@ -9,10 +9,66 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"This innovative show is shaping up to be just as much of a phenomenon uptown, playing in a Broadway house with four times the seating capacity, and to a more traditional but no less enthusiastic audience. That universal appeal to crossover audiences is one unmistakable sign of a groundbreaking show...Like any true landmark, 'Hamilton' stands up to repeated viewings. After six months, the show’s initial impact hasn’t dulled a bit; in fact, the qualities that made it so extraordinary the first time around are all the more striking.\"",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 89,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "urlUpdated": "2026-01-23T05:30:06.055Z",
   "fetchedAt": "2026-01-23T05:41:38.466Z",
-  "bwwExcerpt": "The wonderful dancing chorus seems to have more room to perform its leaps and bounds, and the individual characters have always been larger than life in the first place. In fact, Leslie Odom Jr. seems even more invested in the difficult character of Aaron Burr, really sinking his teeth into the frus..."
+  "bwwExcerpt": "The wonderful dancing chorus seems to have more room to perform its leaps and bounds, and the individual characters have always been larger than life in the first place. In fact, Leslie Odom Jr. seems even more invested in the difficult character of Aaron Burr, really sinking his teeth into the frus...",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "blazing inventiveness of Lin-Manuel Miranda's hip-hop musical tribute",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "universal appeal to crossover audiences is one unmistakable sign of a groundbreaking show",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "shaping up to be just as much of a phenomenon uptown",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language like 'blazing inventiveness', 'phenomenon', and 'groundbreaking show' with no significant reservations, indicating strong recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the production's innovative qualities and performances, indicating it as a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:03:34.155Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

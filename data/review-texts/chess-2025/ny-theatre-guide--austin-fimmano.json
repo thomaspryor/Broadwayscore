@@ -9,8 +9,64 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"For those who go to Broadway musicals hoping to hear actors perform songs so powerfully you get goosebumps, youâll find that three times over.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "playwright-scraped",
   "dtliThumb": "Up",
-  "scrapedAt": "2026-01-23T05:10:00.000Z"
+  "scrapedAt": "2026-01-23T05:10:00.000Z",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 68.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 85,
+      "performances": 90,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "But for those who go to Broadway musicals hoping to hear actors perform songs so powerfully you get goosebumps, you'll find that three times over",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Chess might not be for everyone: Diehard fans may bemoan the modern updates, while newcomers may get lost in the 2-hour-and-40-minute back-and-forth of plot",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Together and apart, the three of them had my audience cheering and whooping after nearly every song",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly recommends the show for musical theater fans who prioritize vocal performances, despite acknowledging significant flaws in the book and mixed success of updates. | GPT-4o-mini: The review praises the performances and music highly while acknowledging some shortcomings in the book and updates, leading to a strong recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:59:49.477Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

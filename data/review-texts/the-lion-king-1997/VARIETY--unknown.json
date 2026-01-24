@@ -12,5 +12,61 @@
   "assignedScore": 95,
   "source": "reviews-json-stub",
   "needsFullText": false,
-  "fetchedAt": "2026-01-23T05:10:28.459Z"
+  "fetchedAt": "2026-01-23T05:10:28.459Z",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "Simply said, Julie Taymor's staging of Disney's 'The Lion King' is a marvel, a theatrical achievement unrivaled in its beauty, brains and ingenuity",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "theatrical achievement unrivaled",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a marvel",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language like 'marvel', 'unrivaled theatrical achievement', and 'beauty, brains and ingenuity' with no caveats or criticisms, indicating an unqualified rave review. | GPT-4o-mini: The review expresses unqualified enthusiasm and superlative praise for the production, indicating it as a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:28:07.271Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -8,8 +8,64 @@
   "fullText": "This is an edited version of The Daily Beast’s review of the off-Broadway production of Stereophonic , which was published on Oct. 29, 2023. You know a piece of theater has done something right when, many days later, it is still provoking pin-pricks of intrigue, revelation, and mystery in one’s mind. And so it is with Stereophonic (Golden Theatre, booking to July 7) —one of the most original, stunningly designed, and technically dazzling plays in New York, newly transferred to Broadway following a rave-reviewed and received off-Broadway run at Playwrights Horizons last autumn. Stereophonic is a must-experience, rather than simply a must-see—and deserves to be a frontrunner at the soon-to-be announced Tony Award nominations. This critic’s only concern with the news of its deserved transfer was anything in its upscaling that could damage its earlier incarnation of theatrical perfection, particularly its ingenious stage design and innovative use of sound in telling the story of a dysfunctional, though brilliant, band trying to make an album. (My concern was needless: Stereophonic remains pretty damn fabulous.) Daniel Adjmi’s play is a tad over three hours, its script and focus ranging all over the place. People talk over one another, they lounge around, there is a lot of chatter intelligible only to those musos or lovers and friends of musos who spend large amounts of time in recording studios. Once you ease into its singular, almost fly-on-the-wall dramatic world, you’re mesmerized. How Ali Louis Bourzgui Became Broadway’s Breakout Star ‘DREAM COME TRUE’ Tim Teeman , Brett Bachman This play comes with wonderful music by Will Butler, formerly of Arcade Fire, with orchestrations by Butler and music director Justin Craig—thunderingly good punctuations to the action of a studio-bound ’70s rock band —with pronounced echoes of Fleetwood Mac , although director Daniel Aukin maintained it was not specifically about any one band in an interview with The New York Times —as they work on an album between July 1976 and June 1977. The first three acts are set in a recording studio in Sausalito, California , the final act in a recording studio in Los Angeles as the band sing, record, fight, have technical screw-ups and emotional blow-ups (and pass around a bag of cocaine). Thankfully, David Zinn’s set—so perfect it deserves every award—is as cleverly inviting and intimate on Broadway as it was off. We are facing a recording studio mixing desk room head on, then beyond that—separated by a sheet of soundproofed glass—the recording booth itself. The mid-’70s leaks from every pore of the room, with tapestry cushions, shag pile and globe-ish lamps (the just as ingenious lighting design is by Jiyoun Chang). Ryan Rumery’s astonishing sound design means we hear conversations not only in both arenas, but also realistically channeled from the studio, as the mixing room would hear it. Enver Chakartash’s flared, patterned, and bell-bottomed costumes and Robert Pickens and Katie Gell’s (lanky, bushy) wig and hair design are similarly era-nailing. Andrew R. Butler, left, and Eli Gelb in Stereophonic . Julieta Cervantes Rumery’s work is so accomplished, sound design actually becomes key to the play—the arguments, intimacies, the music are all filtered through it. It is so good it will make you realize how important sound design is. It will make you want to celebrate sound design, and wonder when it has been so recently distinctive on stage (Mikhail Fiksel’s work on Dana H. perhaps). In Stereophonic , the mixing desk is the province of amiable sound engineer Grover (Eli Gelb) and his nervy, always-in-retreat assistant Charlie (Andrew R. Butler). Grover has not been entirely honest about his bona fides, and whey-faced Charlie is so invisible no-one knows his name. Somehow Grover manages to get the necessary work done, despite the menacing ego (and occasionally vicious tongue) of lead vocalist Peter (Tom Pecinka— so good at being a psychologically controlling tyrant that your audience as ours may rumble with anger every time he turns his gaslight on). Peter is in a relationship with fellow lead vocalist Diana (Sarah Pidgeon), whom he cajoles, compliments, diminishes, and gaslights in a malign, controlling whirl of mutters and invective. Diana wants to forge her own path professionally and personally, and the most uncomfortable sequences of the play revolve around him trying to manipulate her into line. Another couple, Reg (Will Brill—excellent as a druggy, boozy British bass player) and keyboard and vocal artist Holly (Juliana Canfield), are, like Peter and Diana trying to figure out what they are to each other—Reg and Holly beginning the play as separated. Drummer Simon (Chris Stack) is away from his wife and children, and—in one extended sequence—having trouble with the instruments of his craft, with poor Grover trying to identify and resolve it as Simon’s impatience grows. The witty, barbed, sometimes expansive, sometimes stunted exchange...",
   "isFullReview": true,
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 94,
   "source": "reviews-json-stub",
   "needsFullText": false,
-  "fetchedAt": "2026-01-23T05:08:28.547Z"
+  "fetchedAt": "2026-01-23T05:08:28.547Z",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 81,
+      "music": 89,
+      "performances": 85,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stereophonic is a must-experience, rather than simply a must-see—and deserves to be a frontrunner at the soon-to-be announced Tony Award nominations",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "one of the most original, stunningly designed, and technically dazzling plays in New York",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Stereophonic remains pretty damn fabulous",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language throughout ('must-experience', 'theatrical perfection', 'pretty damn fabulous') with explicit Tony Award prediction and only minor quibbles about pacing. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's originality, design, and overall execution, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:23:35.662Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 93,
+    "openaiScore": 95,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

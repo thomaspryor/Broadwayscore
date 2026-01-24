@@ -8,8 +8,64 @@
   "fullText": "The two young women sitting directly in front of this critic were having the best time at Broadway musical & Juliet (Stephen Sondheim Theatre, booking to May 28, 2023) —seat-bopping throughout, and smiling delightedly. The two people behind loudly beheld that it was the worst thing they had seen on stage in a long time. In between both parties, this critic sat, feeling the contrasting passions of both. If you want a stage show that wears its admirably progressive politics proudly, if not convincingly, and features a panoply of pop songs whose tunes are immediately familiar—by five-time Grammy Award-winning songwriter/producer Max Martin —then this is the show for you. This critic found it mostly meh, despite having every Britney Spears , Backstreet Boys , Katy Perry , and Justin Timberlake bone in his body happily tweaked. The story felt flimsy and confusing, the singing fine but not wowing—but the delighted applause and whoops around him made it apparent others were buying into & Juliet very differently. The pop songs you know—including “Since U Been Gone,” “I Kissed a Girl,” and “Everybody (Backstreet’s Back)”—are plugged, sometimes cleverly, sometimes just-because-OK? , into the evolution of the musical’s double-headed plot. The main story is what if Juliet (Lorna Courtney) had not died after she and Romeo (Daniel J. Maldonado was standing in for Ben Jackson Walker at the performance this critic saw) imbibed poison and a sleeping potion in Shakespeare’s Romeo and Juliet ; what if she had woken up and carried on with the rest of her life? The story within a story is that this is the brainchild of Anne Hathaway (Betsy Wolfe), Shakespeare’s (Stark Sands) oft-ignored wife. The musical proposes it is not just history that has disregarded Anne, but Shakespeare himself. She tries to take over the direction and writing of the play, and observes the unfolding action with him. So, will Juliet find happiness and personal liberation, and can the Shakespeares find creative fulfillment, mutual respect, and rediscovered love? The musical veers clankily between taking these questions very seriously indeed, and yawning at them like-totally-over-it. (l to r) Lorna Courtney, Betsy Wolfe, Justin David Sullivan, Melanie La Barrie. Matthew Murphy & Juliet won a shedload of awards in London, and certainly the music and dancing are insistently dazzling. Its best parts are rooted in humor—its offhand jokes, asides, gestural feints and side-eye. (One returned-to joke about Anne Hathaway is especially funny.) It also strains between being juvenile and silly, and wanting to Say Something. Juliet is given a big go-girl liberation narrative, with the slight problem that she never seems that oppressed in the first place. Romeo is presented as more a vain doofus than misogynist fully deserving to reap whatever humiliation is coming his way. Her friend May (Justin David Sullivan), a non-binary character whose big song is “I’m Not a Girl, Not Yet a Woman,” features the performer singing “I’m not a girl” repeatedly—a plaintive negation that is not elaborated on in the character themselves. May is also given a romance storyline with François (Philippe Arroyo) lacking in any chemistry. It’s great, and overdue, to feature diverse characters on stage—and strong messages around identity are stitched into this script. But diversity should be about more than making clear what a character is—attention and care should be paid to who they are, or it can feel like un-nuanced box-ticking. May deserves more and better in & Juliet . Juliet also kinda likes François, and so a love triangle forms, but never really sparks into life. His dad Lance (Paulo Szot) is supposed to be a gruff, macho tyrant, but he and Juliet’s nurse Angélique (Melanie La Barrie, wonderful) share a connection and chemistry, and so his desire that François be a “real man” dissipates when he realizes that lurve is lurve. Waddyaknow, the big guy is really a pussycat, who just wants to dance. “ The musical really amounts to her stomping around for two and a half hours in a self-propelling strop about—well, what exactly? ” As does Juliet. The musical—with a neat twist for the end of act one—really amounts to her stomping around for two and a half hours in a self-propelling strop about... well, what exactly? Spoiler alert: she may well indeed come to the (excellent) conclusion that she doesn’t want or need to be with any man. But none of the men around her arouse much emotion at all, her parents seem awful but are not on stage that much, and so the whole show seems forced and overwrought as it searches for her destiny. Wherever she ends up, she has no visible opposition to merit her grand odyssey of “I’m-doing-this-my-way.” & Juliet knows what it wants to say. It knows its big message, but its characters feel cartoonish delivering it. Snack as heartily as you want on the poppy fun of & Juliet —but also be prepared to leave feeling like you haven’t really dented your appetite.",
   "isFullReview": true,
   "originalScore": null,
-  "assignedScore": 55,
+  "assignedScore": 52,
   "source": "reviews-json-stub",
   "needsFullText": false,
-  "fetchedAt": "2026-01-23T04:56:39.459Z"
+  "fetchedAt": "2026-01-23T04:56:39.459Z",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 70,
+      "performances": 60,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "This critic found it mostly meh",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The story felt flimsy and confusing, the singing fine but not wowing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Snack as heartily as you want on the poppy fun of & Juliet—but also be prepared to leave feeling like you haven't really dented your appetite",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critic explicitly states finding the show 'mostly meh' with significant structural criticisms about story and character development, though acknowledging some enjoyable musical elements and noting divided audience reactions. | GPT-4o-mini: The review presents a mixed perspective, highlighting some enjoyable aspects like the music and humor while criticizing the story and character development, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:52:22.904Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

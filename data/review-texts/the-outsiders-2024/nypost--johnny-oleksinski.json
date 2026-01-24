@@ -10,7 +10,63 @@
   "dtliExcerpt": "The song turns out to be representative of the entire shattering-yet-optimistic musical it’s part of. Driven by authenticity, earnestness, youth and ample heart, “The Outsiders” is very much an outsider itself.",
   "showScoreExcerpt": "\"The tender tune, accompanied by an acoustic guitar...it’s a moment of pure catharsis\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "shattering-yet-optimistic musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Driven by authenticity, earnestness, youth and ample heart",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Outsiders is very much an outsider itself",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review uses strong positive descriptors like 'shattering-yet-optimistic' and emphasizes authentic emotional qualities, suggesting clear recommendation despite the brief excerpt. | GPT-4o-mini: The review expresses a strong positive sentiment towards the musical's authenticity and emotional depth, suggesting a clear recommendation despite the lack of specific critiques.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:29:40.618Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -11,5 +11,61 @@
   "assignedScore": 82,
   "source": "reviews-json-stub",
   "needsFullText": false,
-  "fetchedAt": "2026-01-23T05:03:04.476Z"
+  "fetchedAt": "2026-01-23T05:03:04.476Z",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 81,
+      "music": null,
+      "performances": 85,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harrison's 80-minute play, directed with an eye on what matters most by Anne Kauffman, has a new urgency that sends your head spiraling in all kinds of directions",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Nixon and Burstein forge likable characters, focused on the vulnerability those of us close to 60 years old feel",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "I can't ever remember ever seeing a play whose impact felt so utterly different a decade later",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the play significantly more impactful and urgent than when first seen, praising the direction, performances, and the play's newfound relevance to current AI developments, with strong appreciation for the humanistic approach despite no explicit recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and direction while highlighting the play's timely themes, leading to a clear recommendation despite some reservations about the material's complexity.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:08:46.367Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

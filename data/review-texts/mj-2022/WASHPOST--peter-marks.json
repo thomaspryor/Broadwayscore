@@ -9,10 +9,66 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"That sordid history would not seem to have foretold a jukebox musical devoted to the upside of Jacksonâs genius â and certainly not by artists of the caliber of two-time Pulitzer winner Nottage (âRuined,â âSweatâ) and the celebrated ballet world fixture Wheeldon. The showâs decidedly selective memory may be off-putting to theatergoers appalled by the stories of Jacksonâs alleged misdeeds. Nevertheless, the creative teamâs painstaking work has resulted in a riveting, adrenaline rush of a show, propelled by remarkable dancing and a mesmerizing central performance by Myles Frost as the sleek, soft-spoken pop megastar.\"",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "waybackUrl": "http://web.archive.org/web/20220705105915/https://www.washingtonpost.com/theater-dance/2022/02/01/mj-michael-jackson-musical/",
   "fetchedAt": "2026-01-23T08:42:13.355Z",
-  "bwwExcerpt": "That sordid history would not seem to have foretold a jukebox musical devoted to the upside of Jackson's genius - and certainly not by artists of the caliber of two-time Pulitzer winner Nottage (\"Ruined,\" \"Sweat\") and the celebrated ballet world fixture Wheeldon. The show's decidedly selective memor..."
+  "bwwExcerpt": "That sordid history would not seem to have foretold a jukebox musical devoted to the upside of Jackson's genius - and certainly not by artists of the caliber of two-time Pulitzer winner Nottage (\"Ruined,\" \"Sweat\") and the celebrated ballet world fixture Wheeldon. The show's decidedly selective memor...",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 85,
+      "performances": 89,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "a riveting, adrenaline rush of a show, propelled by remarkable dancing and a mesmerizing central performance",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a dance musical of the first rank",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The show's decidedly selective memory may be off-putting to theatergoers appalled by the stories of Jackson's alleged misdeeds",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging the show's problematic subject matter and selective memory, the critic enthusiastically praises the performances, choreography, and overall theatrical experience as 'riveting' and 'first rank.' | GPT-4o-mini: The review expresses strong praise for the performances and production while acknowledging some concerns about the handling of Jackson's controversial history, leading to a positive overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:13:05.338Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

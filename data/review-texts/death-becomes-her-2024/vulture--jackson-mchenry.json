@@ -10,7 +10,63 @@
   "dtliExcerpt": "They leave us with a wink and meta-joke, a song about how they’ll never have an ending, but if they did, it might go a little like this … The conceit’s cleverly nipped and tucked, the work of fine theatrical plastic surgery, hard to dislike and ultimately—as a medical examiner might say of these women—without a heartbeat.",
   "showScoreExcerpt": "â...hard to dislike and ultimatelyâas a medical examiner might say of these womenâwithout a heartbeat.â",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "dtli",
-  "dtliThumb": "Meh"
+  "dtliThumb": "Meh",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": null,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "hard to dislike",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "without a heartbeat",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "cleverly nipped and tucked, the work of fine theatrical plastic surgery",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review uses the damning medical metaphor 'without a heartbeat' to suggest the show is technically competent but emotionally hollow, with only faint praise ('hard to dislike') that feels more dismissive than endorsing. | GPT-4o-mini: The review contains both positive and negative elements, suggesting a show that is clever but ultimately lacking emotional impact, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:02:17.821Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

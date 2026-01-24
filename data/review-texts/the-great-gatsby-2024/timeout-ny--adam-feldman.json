@@ -10,8 +10,64 @@
   "dtliExcerpt": "The Great Gatsby looks great. If you want production values, this adaptation of F. Scott Fitzgerald’s 1925 novel, directed by Marc Bruni, delivers more than any other new musical of the overstuffed Broadway season. It’s the Roaring Twenties, after all—now as well as then—so why not be loud? Let other shows make do with skeletal, functional multipurpose scenic design; these sets and projections, by Paul Tate de Poo III, offer grandly scaled Art Deco instead. Linda Cho’s costumes are Vegas shiny for the party people and elegant for the monied types. The production wears excess on its sleeveless flapper dresses.",
   "showScoreExcerpt": "“ ‘The Great Gatsby’ can be an entertaining night out on the town if you think of it less as a play and more as a night of dress-up...The beat goes on for those who ride the show’s current, eager to be borne back into the past.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425",
-  "dtliThumb": "Meh"
+  "dtliThumb": "Meh",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the central romance loses the edge that makes it so compelling",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "To audiences hungry for glitz this year, The Good Gatsby may be good enough",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "But will any of that matter where sales are concerned? Maybe not.",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic identifies significant flaws in the adaptation but suggests it might satisfy audiences seeking spectacle, landing in lukewarm mixed territory. | GPT-4o-mini: The review expresses disappointment in the adaptation's loss of compelling elements while suggesting it may still appeal to a certain audience, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:27:51.193Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,10 +9,66 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"Maybe Happy Ending [is] an exceptionally well-oiled and visually sublime production... Broadway newcomer Helen J. Shen shines as Claire... Director Michael Arden’s gorgeous staging makes the most of Dane Laffrey’s multilevel sets behind sliding panels and George Reeve’s floor-to-ceiling videos... Maybe Happy Ending has theatrical magic.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 88,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "waybackUrl": "http://web.archive.org/web/20250714091311/https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
   "fetchedAt": "2026-01-23T07:12:43.040Z",
-  "bwwExcerpt": "Director Michael Arden’s gorgeous staging makes the most of Dane Laffrey’s multilevel sets behind sliding panels and George Reeve’s floor-to-ceiling videos. As Oliver and Claire fall, it’s easy to do the same for the show. No maybe about it — Maybe Happy Ending has theatrical magic."
+  "bwwExcerpt": "Director Michael Arden’s gorgeous staging makes the most of Dane Laffrey’s multilevel sets behind sliding panels and George Reeve’s floor-to-ceiling videos. As Oliver and Claire fall, it’s easy to do the same for the show. No maybe about it — Maybe Happy Ending has theatrical magic.",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": 87,
+      "performances": 89,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "No maybe about it — Maybe Happy Ending has theatrical magic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "an exceptionally well-oiled and visually sublime production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Who could have imagined that a musical depicting romantic sparks between two robots would emerge as an emotional highlight of this Broadway season?",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong positive review with superlative language ('theatrical magic', 'emotional highlight of the season') and praise for all creative elements with no significant reservations. | GPT-4o-mini: The review expresses strong enthusiasm for the production, praising its emotional depth, performances, and overall execution, indicating it is a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:10:13.980Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

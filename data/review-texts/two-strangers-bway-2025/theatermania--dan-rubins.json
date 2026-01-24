@@ -10,7 +10,63 @@
   "dtliExcerpt": "But once the two are no longer strangers, the score, which most pointedly recalls Adam Gwon’s similarly small-scale tunes for Ordinary Days, loses its precision since there’s only so many positions available for Robin and Dougal to assume—frenemies, confidantes, will-they-won’t-theys—before the story starts to spin its wheels. Instead, there are too many novelty numbers about Christmas carols and Tinder swiping not really grounded in who these people are, plus wispy soliloquies that can only credibly inch each character forward. Two Strangers, spanning two days of personal growth in two hours and 20 minutes (including intermission), is both far too long for the audience’s attention and far too short for Dougal and Robin��s transformations.",
   "showScoreExcerpt": "\"Two Strangers, spanning two days of personal growth in two hours and 20 minutes (including intermission), is both far too long for the audience’s attention and far too short for Dougal and Robin’s transformations.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "dtli",
-  "dtliThumb": "Down"
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 45,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the score...loses its precision",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "too many novelty numbers...not really grounded in who these people are",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "both far too long for the audience's attention and far too short for...transformations",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic identifies fundamental structural problems with the show's pacing, character development, and musical coherence, with no redeeming qualities mentioned to counterbalance these significant flaws. | GPT-4o-mini: The review highlights significant issues with the story's pacing and character development, leading to a recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:31:37.175Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

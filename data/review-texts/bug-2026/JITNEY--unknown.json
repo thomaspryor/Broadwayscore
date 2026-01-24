@@ -11,5 +11,61 @@
   "assignedScore": 96,
   "source": "reviews-json-stub",
   "needsFullText": false,
-  "fetchedAt": "2026-01-23T04:58:43.589Z"
+  "fetchedAt": "2026-01-23T04:58:43.589Z",
+  "llmScore": {
+    "score": 96,
+    "confidence": "high",
+    "range": {
+      "low": 91,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": null,
+      "performances": 99,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "We give it five stars, a 96 out of 100",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "In 1996, Bug was a warning. In 2026, it's a mirror. This is not a feel-good night at the theater. It's raw, violent, sexy, and deeply American",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The performances are courageous, compelling, and traumatic. The chemistry and nuance between the actors are extraordinary",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly gives the show 5 stars and 96/100, calls it a 'mirror' for our times with extraordinary performances, uses superlative language throughout, and frames any warnings about content as part of its power rather than flaws. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its relevance, performances, and emotional impact, while acknowledging it may not appeal to everyone.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:56:48.670Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 96,
+    "openaiScore": 96,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

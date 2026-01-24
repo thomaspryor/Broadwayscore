@@ -8,8 +8,64 @@
   "fullText": "There's a throwaway line in Catherine Johnson's script for the ABBA jukebox musical Mamma Mia! that stuck with me after the final pair of '70s platform boots left the Winter Garden Theatre stage. When single mom Donna is unexpectedly reunited with her three former lovers (one of whom is likely her daughter's father) after 20 years, she claims to BFFs Tanya and Rosie that she has \"grown up\" and is no longer that carefree, promiscuous, and unguarded girl. Cue ultra-chic Tanya, who flicks a perfectly manicured hand and chides, \"Well, grow back down again!\"\n\nThat directive is key to Mamma Mia! at large, no? Leave rationality and the real world behind, it says, and step into a faraway paradise where falling hard and fast in love like a wide-eyed teenager always works out in the end, singing into a hairbrush with friends cures all of life's troubles, and backup singers will harmonize with your innermost thoughts whether you like it or not. That's the allure of Mamma Mia!, marketed as \"the ultimate feel-good show,\" and it still is nearly 25 years after the musical premiered. Cynicism has no place on this fantasy Greek island.\n\nLuckily, the first Broadway revival doesn't entirely coast on nostalgia for ABBA's absurdly earwormy discography (you will have at least one song still stuck in your head the next day) and the 2008 film. In fact, the talented actresses in Meryl Streep's, Christine Baranski's, and Julie Walters's screen roles sail away with this Broadway production so entirely, you won't be wanting for the screen stars (iconic as their performances are). Director Phyllida Lloyd's staging, featuring a compact set by Mark Thompson, often feels shrunken in this sprawling venue, but the \"Dynamos\" — Donna, Tanya, and Rosie, the third member of their decades-old friend group-slash-girl band — amply fill the space with megawatt performances that radiate joyful abandon.\n\nChristine Sherrill (Donna), Jalynn Steele (Tanya), and Carly Sakolove (Rosie) are the real-life dynamos in those roles. Sherrill is a natural showwoman with a deep well of emotion; she'd easily cast a spell over Madison Square Garden, never mind the Winter Garden, with \"Super Trouper\" and \"The Winner Takes It All.\" Steele, in Thompson's most arresting costumes — think an orange-feathered hat, sleek turquoise bodysuit, and orange zebra-print skirt — commands attention and authority, effortlessly turning drooling young men into playthings during \"Does Your Mother Know?\" And the scene-chewing Sakolove is an impeccable physical comedienne who earns hearty laughs during \"Take a Chance on Me.\"\n\nIn a time when it seems like Broadway shows open and close faster than you can say \"here we go again,\" it's reassuring, in a way, to see Mamma Mia! return. Like many jukebox musicals that came after it, the story's admittedly thin and rushed through in service of stuffing in as many tunes as possible.\n\nBut the fact that it's become such a beloved property anyway, spawning two (possibly three) movies and endless themed karaoke parties, feels like hope that art that's imperfect yet earnest — and original — can thrive even when times are tough. Perhaps especially then, when one of the only surefire balms is to dance and jive and have the time of your life.\n\nThe ABBA-scored musical is escapist, feather-light entertainment that still delivers on its 20-plus-year promise of pure fun. How can I resist ya, Mamma Mia!?",
   "isFullReview": true,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "playwright-scraped",
   "dtliThumb": "Up",
-  "scrapedAt": "2026-01-23T05:20:00.000Z"
+  "scrapedAt": "2026-01-23T05:20:00.000Z",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 88,
+      "performances": 89,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "The ABBA-scored musical is escapist, feather-light entertainment that still delivers on its 20-plus-year promise of pure fun. How can I resist ya, Mamma Mia!?",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the talented actresses... sail away with this Broadway production so entirely, you won't be wanting for the screen stars",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the story's admittedly thin and rushed through in service of stuffing in as many tunes as possible",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly recommends the show despite acknowledging its flaws, praising the performances enthusiastically and ending with an affectionate endorsement of its escapist entertainment value. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and the overall fun of the show, with only minor reservations about the script, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:07:58.464Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

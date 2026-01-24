@@ -10,7 +10,63 @@
   "dtliExcerpt": "In any case, the immensely cheering if not altogether surprising news is that “Harry Potter and the Cursed Child” 2.0 (or do I mean “.5”?) is every bit as rewarding as the original version.",
   "showScoreExcerpt": "\"Every bit as rewarding as the original version. My lack of surprise derives from the theatrical expertise, on every level, evinced by the creators of the two-part version...Potterheads may notice where subplots have been trimmed or eliminated, but the many-tentacled narrative remains virtually the same...And the production retains virtually all of the original’s bedazzlements, from wand battles to levitating Dementors, to quicksilver character transformations.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "immensely cheering",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "every bit as rewarding as the original version",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "not altogether surprising news",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic expresses clear enthusiasm with 'immensely cheering' and confirms the production maintains the quality of the original, indicating a solid positive recommendation despite being just an excerpt. | GPT-4o-mini: The review expresses strong positive sentiment towards the production, indicating it is rewarding and compares favorably to the original, suggesting a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:03:44.644Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

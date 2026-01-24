@@ -10,7 +10,63 @@
   "dtliExcerpt": "A diverting synthetic crossbreed of Moulin Rouge!, Something Rotten!, Mamma Mia! and Head Over Heels, this show delivers just what you’d expect. It is what it is: It gives you the hooks and it gets the ovations.",
   "showScoreExcerpt": "\"Its title notwithstanding, '& Juliet' barely takes time to define its heroine; it puts her at the center of the story and then makes her its least interesting character.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "dtli",
-  "dtliThumb": "Meh"
+  "dtliThumb": "Meh",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "delivers just what you'd expect",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "It is what it is",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "it gives you the hooks and it gets the ovations",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic describes the show as formulaic but effective, delivering expected entertainment value without enthusiasm or criticism - a shrug of qualified acceptance. | GPT-4o-mini: The review indicates a generally positive experience but lacks strong enthusiasm or specific praise, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:53:51.872Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

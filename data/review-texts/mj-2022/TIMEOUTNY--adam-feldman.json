@@ -9,9 +9,65 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"The dancers and singers of the ensemble, who double as secondary characters, are first-rate, and Wheeldon gives them a lot to do. Most of the songs are performed as rehearsals or flashbacks, which is to say as full-on production numbers. (Tracks from Jacksonâs 1995 album HIStory are cannily placed by Nottage as character moments.) Like Summer and The Cher Show before it, MJ uses three actors to play its central character at different ages. As the 1992 incarnation, Frost carries the bulk of the role, and not only nails Jacksonâs signature sound and movesâyes, of course thereâs a moonwalkâbut also his otherworldly affect: his diffident grandiosity, his mixture of grievance and mischief, his high and breathy way of talking (at once floaty and determined, like Diana Rossâs spoken-word section of âAinât No Mountain High Enoughâ).\"",
   "originalScore": "3/5",
-  "assignedScore": 60,
+  "assignedScore": 74,
   "source": "playwright-scraped",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:45:00.000Z",
-  "bwwExcerpt": "When the song is done, Michael speaks with an MTV reporter (Whitney Bashor) who has landed a rare interview with him. \"With respect, I wanna keep this about my music,\" he says. \"Is it really possible to separate your life from your music?\" she asks, preempting a question on many minds, and his reply..."
+  "bwwExcerpt": "When the song is done, Michael speaks with an MTV reporter (Whitney Bashor) who has landed a rare interview with him. \"With respect, I wanna keep this about my music,\" he says. \"Is it really possible to separate your life from your music?\" she asks, preempting a question on many minds, and his reply...",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 85,
+      "performances": 86,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "In and of itself, it is a deftly crafted jukebox nostalgia trip",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "I left the theater entertained, but not convinced I had really seen the man in the smoke and mirrors",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "The music and the dancing are sensational",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant artistic achievements (performances, music, choreography) and entertainment value while expressing reservations about the show's evasive approach to Jackson's controversies and sanitized portrayal. | GPT-4o-mini: The review expresses clear enjoyment of the music and performances while noting some reservations about the script and the handling of Jackson's complex legacy.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:12:46.781Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

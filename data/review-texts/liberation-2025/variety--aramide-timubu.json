@@ -8,9 +8,67 @@
   "fullText": "Home\n\n\tLegit\n\n\tReviews\n\n\tOct 28, 2025 7:00pm PT\t\n\n\t\t‘Liberation’ Broadway Review: An Impressive Memory Play That Delivers a Fresh and Frank Take on the Women’s Rights Movement \n\n\t\t\t\t\t\t\t\tBy \n\n\tAramide Tinubu\n\n\t\t\tPlus Icon\n\n\t\t\t\t\tAramide Tinubu\t\t\n\n\t\t\t\t\tLatest\n\n\tSophie Turner Is Exceptional in Prime Video’s Effective Heist Thriller &#8216;Steal': TV Review\n\n\t2 days ago\t\n\n\tRyan Murphy’s ‘The Beauty’ Isn't Perfect, but It’s Still a Pleasure: TV Review\n\n\t2 days ago\t\n\n\t&#8216;Starfleet Academy' Is a Joyous Entry Into &#8216;Star Trek's' Iconic Legacy: TV Review\n\n\t1 week ago\t\n\n\tSee All\n\n\tIt can be challenging to deliver something fresh and unique to the memory play genre. However, in writer Bess Wohl&#8216;s new Broadway show, \"Liberation,\" she manages to do just that.\n\n\tDirected by Whitney White, \"Liberation\" is set in the 1970s and in the present. In the years following the Civil Rights Movement, shepherded by Black Americans, women were fighting to find an equal place in society. Now, a half-century later, the American government is clawing back several hard-earned wins. Bridging the time periods, \"Liberation\" addresses what was and who we've become as a society. \n\n\t\t\t\t\tRelated Stories\t\t\n\n\t\t\t\t\tDisney Sees Brisk Ad Sales for Oscars While Spotlighting Live Shows (EXCLUSIVE)",
   "isFullReview": true,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 56,
   "source": "scraped",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028",
   "urlUpdated": "2026-01-23T05:22:35.143Z",
-  "scrapedAt": "2026-01-23T22:05:50.666Z"
+  "scrapedAt": "2026-01-23T22:05:50.666Z",
+  "llmScore": {
+    "score": 56,
+    "confidence": "low",
+    "range": {
+      "low": 27,
+      "high": 85
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "It can be challenging to deliver something fresh and unique to the memory play genre. However, in writer Bess Wohl's new Broadway show, 'Liberation,' she manages to do just that.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "shepherded by Black Americans, women were fighting to find an equal place in society",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "addresses what was and who we've become as a society",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This appears to be only the opening paragraphs of a review with mostly plot description and context-setting, lacking clear evaluative language or recommendation signals. | GPT-4o-mini: The review expresses strong appreciation for the originality and thematic depth of the play, indicating a clear recommendation despite lacking specific critiques. | Note: Models differed by 48 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:07:03.185Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": 80,
+    "scoreDelta": 48,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 48 points (Claude: 32, OpenAI: 80)"
+    ]
+  }
 }

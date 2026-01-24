@@ -9,8 +9,64 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"The real stars here are the songs, all from the catalogue of Max Martin and his collaborators...At its best, the show just does away with logic and gives you full-throated renditions of Martinâs more insistent anthems.\"",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 65,
   "source": "reviews-json-stub",
   "needsFullText": false,
-  "fetchedAt": "2026-01-23T04:56:44.667Z"
+  "fetchedAt": "2026-01-23T04:56:44.667Z",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 73,
+      "performances": 73,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "At times, such as when someone belts the chorus of 'Since U Been Gone' at you, it is impossible not to feel intoxicated",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "And it does, if incompletely",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "You'll have that ephemeral thrill of being alive on a dance floor & end up with a hangover",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show entertaining and energetic with strong musical moments but criticizes the plot coherence and corporate feel, ultimately describing it as a mixed experience with both thrills and disappointments. | GPT-4o-mini: The review presents a mix of enthusiasm for the musical's energy and performances, but also highlights significant flaws in the plot and emotional depth, leading to a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:52:46.151Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

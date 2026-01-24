@@ -9,7 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "Remember the first time you saw your favorite artist in concert? The tingling sensation that took over your body, the thrill of being in community with strangers, the expectation that your favorite songs will be performed. Going to Six feels exactly like that.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Going to Six feels exactly like that",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The tingling sensation that took over your body, the thrill of being in community with strangers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Remember the first time you saw your favorite artist in concert?",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses an extended metaphor comparing the show to seeing your favorite artist live, emphasizing visceral excitement and communal thrill, indicating strong enthusiasm and recommendation. | GPT-4o-mini: The review conveys strong enthusiasm and a sense of excitement comparable to a favorite concert, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:22:11.544Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

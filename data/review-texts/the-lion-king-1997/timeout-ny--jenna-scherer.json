@@ -9,7 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "In the opening number of The Lion King, director Julie Taymor created one of the most transporting visions ever seen in a Broadway show. A procession of African beasts of all shapes and sizes—flocks of birds, leaping gazelles, and towering giraffes—moves through the aisles, all interpreted via gorgeous, minutely detailed costumes and puppetry. This long-running New York City musical is based on the 1994 Disney animated flick about a Hamletesque lion who must win back his kingdom from the clutches of his evil uncle. Featuring a catchy score by Elton John and Tim Rice, Taymor’s adaptation is infused with additional spectacle and songs inspired by African culture.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "dtli",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": null,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the most transporting visions ever seen in a Broadway show",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "gorgeous, minutely detailed costumes and puppetry",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "catchy score by Elton John and Tim Rice",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for direction and visual spectacle with superlative language ('most transporting visions ever seen'), positive notes on music, and no negative elements mentioned. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's visual and thematic elements, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:28:25.384Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

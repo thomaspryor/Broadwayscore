@@ -9,8 +9,64 @@
   "isFullReview": true,
   "dtliExcerpt": "So we're made to side with Jackson - frustrating, but understandable enough. What do we learn about him? We hear of his being demanding during rehearsals, that he's \"going through a lot,\" that he had a tough life, but none of this is explored or even explained in any meaningful way. We've seen troubled backstories before, heard how exacting and uncompromising A-listers can be, so if MJ: The Musical is going to wash away the sins and focus on the person, at least bring something new to the table that matches the brilliance of his artistry.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T18:00:00.000Z",
-  "dtliThumb": "Down"
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 68,
+      "performances": 79,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "no amount of frosting could make this amoral mud pie any easier to swallow",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "I also cannot take away from the ensemble, which is uniformly terrific",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "blind worship is, at this point, grossly irresponsible",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising the performances and music's catchiness, the critic delivers a scathing moral condemnation of the show's whitewashing approach and concludes it's impossible to recommend with the 'amoral mud pie' metaphor. | GPT-4o-mini: The review expresses significant concerns about the show's narrative and moral implications while praising the performances, leading to a mixed-negative recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:14:07.753Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

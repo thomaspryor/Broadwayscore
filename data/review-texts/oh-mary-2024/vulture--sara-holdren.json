@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The most controversial cabaret in town might be happening at the August Wilson Theatre, but the best one is at the Lyceum. There, Cole Escola’s riotous, extremely faux-historical farce, Oh, Mary!, has begun its Broadway run, and long may it reign. Oh, Mary! took the West Village deliriously captive in its big gay pirate ship back in the spring, and while the wickedly clever Escola — who made their name first on YouTube playing wonderfully unhinged characters, then as a scene-stealer on shows like Search Party and Difficult People — is on record calling the uptown transfer “a mistake,” they and director Sam Pinkleton have wisely left funny enough alone. Really, far more than enough — Oh, Mary! is hilarious and, underneath the mayhem, both structurally rock solid and sneakily moving. It may be playing the palace now, but it’s confident enough in its own skin to have resisted any sort of unnecessary makeover.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Oh, Mary! is hilarious and, underneath the mayhem, both structurally rock solid and sneakily moving",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "confident enough in its own skin to have resisted any sort of unnecessary makeover",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Oh, Mary! is hilarious",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong positive language ('hilarious', 'rock solid', 'sneakily moving') with praise for both entertainment value and structural integrity, indicating clear recommendation despite no explicit directive. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong praise for the production's humor and structural integrity, indicating a must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:18:47.607Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

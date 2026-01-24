@@ -11,5 +11,61 @@
   "assignedScore": 82,
   "source": "scraped",
   "needsFullText": true,
-  "scrapedAt": "2026-01-23T21:59:57.361Z"
+  "scrapedAt": "2026-01-23T21:59:57.361Z",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 76,
+      "music": null,
+      "performances": 89,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mark Strong and Lesley Manville, giving two of this year's great performances, lead a brilliant cast",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Icke has taken a story this old and made it feel fresh",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Icke's pacing in this two-hour play is not always as brisk as one might like",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive review with superlative praise for performances and successful updating of classic material, with only minor pacing concerns as criticism. | GPT-4o-mini: The review highlights exceptional performances and a fresh take on the classic story, with only minor reservations about pacing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:16:30.486Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

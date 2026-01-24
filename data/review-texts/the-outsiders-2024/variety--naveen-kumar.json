@@ -9,10 +9,68 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"...takes a milder approach, peering under the hood of masculinity\"",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 45,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:12:05.517Z",
   "urlUpdated": "2026-01-23T05:34:29.693Z",
-  "bwwExcerpt": "The infatuation between Ponyboy and Cherry (Emma Pittman), which produces a couple of serviceable duets, feels perfunctory and fades into a melange of other conflicts. Hinton’s novel gallops with the muscular first-person voice of a tortured narrator, grabbing readers by the collar. “The Outsiders” ..."
+  "bwwExcerpt": "The infatuation between Ponyboy and Cherry (Emma Pittman), which produces a couple of serviceable duets, feels perfunctory and fades into a melange of other conflicts. Hinton’s novel gallops with the muscular first-person voice of a tortured narrator, grabbing readers by the collar. “The Outsiders” ...",
+  "llmScore": {
+    "score": 45,
+    "confidence": "low",
+    "range": {
+      "low": 30,
+      "high": 60
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Packs Heart and Soul but Little Punch",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Tough guys with a soft side have long held a firm grip on the American imagination",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "Broadway Musical Packs Heart and Soul but Little Punch",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The headline suggests the musical has emotional content but lacks impact or effectiveness, indicating a disappointing production despite good intentions. | GPT-4o-mini: The review suggests a balanced view with some positive aspects but ultimately indicates a lack of impact, leading to a mixed recommendation. | Note: Models differed by 20 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:30:12.663Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 55,
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 20 points (Claude: 35, OpenAI: 55)"
+    ]
+  }
 }

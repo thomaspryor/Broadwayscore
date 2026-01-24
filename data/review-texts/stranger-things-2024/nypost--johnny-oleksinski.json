@@ -9,7 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "Nothing is left unscathed. Jump-scare noises blow out your eardrums. Blinding lights and raining sparks make you crave Anna Wintour’s indoor sunglasses. And there’s so much billowing haze that on the evening I attended, a family in the front row sprinted up the aisle after five minutes as though their house had caught fire.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "dtli",
-  "dtliThumb": "Down"
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 20
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jump-scare noises blow out your eardrums",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "a family in the front row sprinted up the aisle after five minutes as though their house had caught fire",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Nothing is left unscathed",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review focuses entirely on overwhelming, unpleasant production elements that drove audience members to literally flee the theater, indicating a production that fails to engage audiences effectively. | GPT-4o-mini: The review is overwhelmingly negative, focusing on the discomfort and chaos of the production without any redeeming qualities.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:25:57.970Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

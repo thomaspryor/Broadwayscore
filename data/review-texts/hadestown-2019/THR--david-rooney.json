@@ -13,5 +13,61 @@
   "needsFullText": false,
   "urlUpdated": "2026-01-23T05:30:05.863Z",
   "fetchedAt": "2026-01-23T05:29:05.794Z",
-  "bwwExcerpt": "In \"Road to Hell,\" the exhilarating opening number of the utterly fabulous Hadestown, Hermes, the conductor of souls into the afterlife, invites us to \"Ride that train to the end of the line.\" He's played with seductive authority and knowing humor by the eternally elegant Andre De Shields, outfitted..."
+  "bwwExcerpt": "In \"Road to Hell,\" the exhilarating opening number of the utterly fabulous Hadestown, Hermes, the conductor of souls into the afterlife, invites us to \"Ride that train to the end of the line.\" He's played with seductive authority and knowing humor by the eternally elegant Andre De Shields, outfitted...",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 94,
+      "performances": 92,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "this beguiling, virtually sung-through musical is notable for the expressive beauty of its score, the dark imagination of its stage pictures and the clarity of its storytelling",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it arrives on Broadway with a furnace-like blast of creativity",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "utterly fabulous Hadestown",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses consistently enthusiastic language ('utterly fabulous', 'furnace-like blast of creativity', 'beguiling') with specific praise for all major elements and no meaningful reservations, indicating strong recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its creativity, performances, and musical quality.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:02:29.627Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

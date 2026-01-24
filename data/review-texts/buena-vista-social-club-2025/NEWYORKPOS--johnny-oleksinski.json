@@ -12,5 +12,61 @@
   "assignedScore": 82,
   "source": "reviews-json-stub",
   "needsFullText": false,
-  "fetchedAt": "2026-01-23T04:58:18.858Z"
+  "fetchedAt": "2026-01-23T04:58:18.858Z",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 90,
+      "performances": 81,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "So transportive are the intoxicating Cuban music and spirited dance that it's easy to forgive the show's rather wispy and cliched book",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The lush sights and sounds more than make up for all the burdensome exposition and Broadway-style one-liners",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I really felt whisked away — a feat many shows set in international locales fail to achieve",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Clear positive recommendation despite significant book flaws, with critic emphasizing that the exceptional music, dance, and production values overcome script weaknesses and create a transportive theatrical experience. | GPT-4o-mini: The review highlights the electrifying music and dance while acknowledging weaknesses in the book, leading to a strong overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:54:52.857Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

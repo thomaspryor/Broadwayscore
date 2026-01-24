@@ -10,7 +10,63 @@
   "dtliExcerpt": "It’s a darling gem of a show with a big heart and a captivating sideways sensibility. And in a Broadway assembly line churning with revivals and remakes, it’s a refreshing model of innovation.",
   "showScoreExcerpt": "\"The odd and simple premise of “Maybe Happy Ending” accomplishes something profound, in examining the nature of connection.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a darling gem of a show with a big heart and a captivating sideways sensibility",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it's a refreshing model of innovation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "in a Broadway assembly line churning with revivals and remakes",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise with gems like 'darling gem' and 'refreshing innovation' indicates clear enthusiasm and recommendation, though excerpt limits deeper analysis. | GPT-4o-mini: The review expresses strong enthusiasm and highlights the show's uniqueness and heart, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:11:43.687Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

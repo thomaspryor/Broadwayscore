@@ -10,7 +10,63 @@
   "dtliExcerpt": "Reid, Strong and Manville are transfixing as awful revelation after revelation comes to light. Strong’s nice guy gives way to brutishness and boiling blood, and Manville’s heretofore stalwart Jocasta crushingly crumples when the grotesque truth is finally revealed.",
   "showScoreExcerpt": "\"Most of the play takes place in real time in Oedipusâ sleek living room. And Icke puts a pulse-pounding clock onstage that counts down to the election results. But we all know itâs leading up to much more than that.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "dtli",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Reid, Strong and Manville are transfixing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Strong's nice guy gives way to brutishness and boiling blood",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Manville's heretofore stalwart Jocasta crushingly crumples when the grotesque truth is finally revealed",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for all three lead performances with vivid, admiring descriptions of their dramatic transformations, but limited excerpt provides no broader production assessment or explicit recommendation. | GPT-4o-mini: The review highlights the captivating performances of the actors, indicating a strong recommendation despite lacking details on the overall production quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:16:56.188Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 85,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "emeat, it&rsquo;s 1943, and the Allied Forces are on the ropes. Luckily, they&rsquo;ve got a trick up their sleeve. Well, not up their sleeve, per se, but rather inside the pocket of a stolen corpse. Jesse Green, The New York Times: I enjoyed ‘Operation Mincemeat’ well enough, but I would have enjoyed it much more if I thought that were true onstage. Charles Isherwood, The Wall Street Journal: But the limited run has been extended more than once, and the surprise sensation of the Broadway season has been the unabashedly silly ‘Oh, Mary!,’ which also lampoons history, albeit more cavalierly. Audiences are always receptive to flights into jubilant escapism—perhaps particularly now—and this plucky musical provides it in generous doses. Sara Holdren, Vulture: Operation Mincemeat isn’t exactly blazingly clever—the jokes fly thick and fast, and they tend toward broad grin-crackers rather than breathless zingers—but it overflows with good humor and heartfelt commitment… While some moments cer",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "dtli",
   "dtliThumb": "Meh",
   "designation": null,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250320",
-  "needsFullText": false
+  "needsFullText": false,
+  "llmScore": {
+    "score": 53,
+    "confidence": "high",
+    "range": {
+      "low": 45.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "diverting if irksome musical comedy",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "But is it funny?",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "will depend a lot on your answer to that question",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic calls the show 'diverting' but 'irksome' and questions whether it's funny, placing the recommendation entirely on audience taste without taking a clear stance. | GPT-4o-mini: The review presents a neutral stance with no clear recommendation, indicating that enjoyment may vary based on individual taste.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:20:22.015Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

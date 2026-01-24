@@ -10,11 +10,67 @@
   "dtliExcerpt": "Home Legit Reviews Mar 20, 2014 6:29pm PT Broadway Review: &#8216;Disney Aladdin&#8217; This super-costly extravaganza doesn&#039;t do justice to the movie, or to the spirit of the late Howard Ashman. By Marilyn Stasio Plus Icon Marilyn Stasio Theater Critic Latest &#8216;Bob Fosse&#8217;s Dancin&#8221; Review: A Rapturous Broadway Homage to a Great Choreographer 3 years ago ‘Pictures From Home’ Review: Nathan Lane Leads Well-Acted but Dull Broadway Play 3 years ago ‘The Collaboration’ Review: Paul Bettany and Jeremy Pope Play Art-World Icons on Broadway 3 years ago See All The magic-carpet ride is magical. The Cave of Wonders is wonderful. And yes, you&#8217;ll hear the tunes you loved in the 1992 movie. But the notion that &#8220; Disney Aladdin &#8221; somehow resurrects the spirit of the late Howard Ashman, who had the original inspiration for the movie and contributed most of its clever lyrics, is a joke. Restoring a person&#8217;s work without respecting his artistic sensibility is no tribute at all. If this super-costly Disney extravaganza doesn&#8217;t really represent Ashman&#8217;s artistic vision, whose vision does it reflect? Chad Beguelin (&#8220;Elf,&#8221; &#8220;The Wedding Singer&#8221;), who wrote the book and contributed new lyrics, obviously plays a significant role, as does Alan Menken, who scored the film and wrote new songs for the show. Even more so does helmer-choreographer Casey Nicholaw (&#8220;The Book of Mormon&#8221;), who stylistically turns the film&#8217;s romantic fairy-tale adventure into shtick comedy. blogherads.adq.push(function () { blogherads .defineSlot( 'medrec', 'gpt-variety-article-mid-article-uid0' ) .setTargeting( 'pos', [\"mid-article1\",\"mid-articleX\",\"mid\",\"mid-article\"] ) .setTargeting( 'viewable', 'yes' ) .setSubAdUnitPath(\"ros\\/mid-article\") .addSize([[300,250],[2,2],[300,251],[2,4],[4,2],[320,480],[620,366]]) .setClsOptimization(\"minsize\") ; }); Related Stories &#039;Euphoria&#039; Season 3 Trailer: Zendaya, Sydney Sweeney and Jacob Elordi Return as Rue Battles Drug Dealers, Cassie Becomes a Cam Girl and More",
   "showScoreExcerpt": "\"This super-costly extravaganza doesn't do justice to the movie, or to the spirit of the late Howard Ashman.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:53:57.762Z",
   "urlUpdated": "2026-01-23T05:12:15.038Z",
   "dtliThumb": "Meh",
-  "bwwExcerpt": "The magic-carpet ride is magical. The Cave of Wonders is wonderful. And yes, you'll hear the tunes you loved in the 1992 movie. But the notion that \"Disney Aladdin\" somehow resurrects the spirit of the late Howard Ashman, who had the original inspiration for the movie and contributed most of its cle..."
+  "bwwExcerpt": "The magic-carpet ride is magical. The Cave of Wonders is wonderful. And yes, you'll hear the tunes you loved in the 1992 movie. But the notion that \"Disney Aladdin\" somehow resurrects the spirit of the late Howard Ashman, who had the original inspiration for the movie and contributed most of its cle...",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": 65,
+      "performances": null,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "The magic-carpet ride is magical. The Cave of Wonders is wonderful. And yes, you'll hear the tunes you loved in the 1992 movie.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "But the notion that 'Disney Aladdin' somehow resurrects the spirit of the late Howard Ashman...is a joke.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "stylistically turns the film's romantic fairy-tale adventure into shtick comedy",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising spectacle and familiar music, the critic harshly condemns the show for betraying the original artistic vision and reducing it to cheap comedy. | GPT-4o-mini: The review is predominantly critical, focusing on the lack of respect for the original artistic vision and the production's comedic approach, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:52:04.729Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "“Hell’s Kitchen” has earned its place on Broadway: The revised show is thrilling from beginning to end, and easily stands out as one of the rare must-sees in a crowded season.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
-  "designation": "Critics_Pick"
+  "designation": "Critics_Pick",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "must-sees in a crowded season",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "thrilling from beginning to end",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "has earned its place on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong unqualified praise with superlatives like 'thrilling' and explicit 'must-see' recommendation, indicating clear enthusiasm without reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm and positions the show as a must-see, indicating a very strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:05:33.774Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
