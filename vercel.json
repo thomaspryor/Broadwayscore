@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.broadwaymetascore.com"
+        }
+      ],
+      "destination": "https://broadwaymetascore.com/$1",
+      "permanent": true
+    }
+  ]
+}
