@@ -10,8 +10,64 @@
   "dtliExcerpt": "Along with choreographer Camille A. Brown, whose dances burst with unrestrained youth and Manhattan chutzpah, the director gives Ninth Ave’s unique bustle energy without resorting to old cliches.  It’s a show that’s true to its city. And at the end, when the cast sings the lyric “concrete jungle where dreams are made of,” the crowd walks out into Times Square fully believing it.",
   "showScoreExcerpt": "\"It’s a show that’s true to its city.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HELLS-KITCHEN-Opens-on-Broadway-20240420",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a show that's true to its city",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the crowd walks out into Times Square fully believing it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It’s a show that’s true to its city.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt suggests the show successfully achieves its emotional goal and connects with audiences, but the brief nature of the quote makes it difficult to assess the critic's full recommendation. | GPT-4o-mini: The review conveys a strong sense of connection to the city and a positive emotional response from the audience, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:05:28.438Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

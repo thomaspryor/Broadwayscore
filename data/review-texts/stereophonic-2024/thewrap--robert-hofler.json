@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "(A version of this review was published when “Stereophonic” had its world premiere October 29, 2023 at Playwrights Horizons. The cast and the director remain the same.)\n\nSince the play is set in a recording studio in the 1970s, your mind may wander to the great films of that decade directed by Robert Altman. There’s the same overlapping dialogue, the same absence of segues between thoughts, much less conversations; and above all, there’s the spontaneity of life taking place before our very eyes in real time.\n\nAt their best, Altman’s films appear to be deliberately aimless while being absolutely riveting for anyone who embraces the Peeping Tom in all of us. That signature Altman style sums up much of David Adjmi’s intriguing new play, “Stereophonic,” which opened Sunday at the Golden Theatre after its world premiere last year at Playwrights Horizons.\n\nLike Altman before him, Adjmi takes his time. “Stereophonic” runs three hours with intermission, and along the way that appearance of randomness is observed, but there are occasional lapses. Adjmi is a playwright, after all, and occasionally he pushes his dialogue to make declarations that telegraph what his characters are thinking and feeling. Much better are those long, lazy moments (and there are a lot of them) where the five members of a rock band (think Fleetwood Mac) and two sound engineers attempt to record an album.\n\n\t\t\tRead Next\n\n\t\t\t&#039;Suffs&#039; Broadway Review: The Right, if Not Perfect, Show for Where We Are Now",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Rock-N-Roll-Drama-STEREOPHONIC-Opens-On-Broadway-20240419",
   "dtliThumb": "Up",
-  "scrapedAt": "2026-01-23T22:04:27.355Z"
+  "scrapedAt": "2026-01-23T22:04:27.355Z",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the very best plays to open last year Off Broadway and now this season on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Adjmi captures that claustrophobia and inability to communicate",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "one of the very best plays to open last year Off Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls it 'one of the very best plays' with strong superlative language, indicating clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the play, indicating it as one of the best, which aligns with a high recommendation score.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:25:03.190Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

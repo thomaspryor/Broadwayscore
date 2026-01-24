@@ -10,8 +10,64 @@
   "dtliExcerpt": "And in its new musical form — with a score and lyrics by the folk duo Zach Chance and Jonathan Clay, known as Jamestown Revival, along with Justin Levine — The Outsiders is taking a real swing at being the strongest entry in this season’s wave of singer-songwriter outings on Broadway. We’re living in a post–Sara Bareilles age: Ingrid Michaelson, PigPen Theatre Co., Shaina Taub, and Anaïs Mitchell are all currently waving at one other from around Times Square. But whether or not the same people who make catchy pop records can also craft a solid score is another question. Chance, Clay, and Levine can, and if The Outsiders sometimes traffics, perhaps unavoidably, in cliché, it makes up for it with the tenderness and muscle of not just its songs but its staging and performances.",
   "showScoreExcerpt": "\"The Outsiders is taking a real swing\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 78,
+      "performances": 78,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "sometimes traffics, perhaps unavoidably, in cliché",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "makes up for it with the tenderness and muscle of not just its songs but its staging and performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes up for it with the tenderness and muscle of not just its songs but its staging and performances.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges clichés but finds the musical elements, staging, and performances compensate with 'tenderness and muscle,' suggesting a qualified positive recommendation. | GPT-4o-mini: The review highlights strong performances and staging while acknowledging some clichés, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:30:17.668Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

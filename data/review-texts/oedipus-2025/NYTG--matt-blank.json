@@ -9,9 +9,65 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"This new adaptation is less about what will happen or how, and without that thrust, Icke's Oedipus struggles to find its meaning.\"",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 62,
   "source": "playwright-scraped",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T05:40:00.000Z",
-  "bwwExcerpt": "While the absence of real tension (besides that signaled by the countdown) is frustrating, Strong and Manville find dramatic urgency in their relationship, played as misplaced optimism (or is it opportunism?) and passionate drive. The clarity of their want for one another, and their shared desire to..."
+  "bwwExcerpt": "While the absence of real tension (besides that signaled by the countdown) is frustrating, Strong and Manville find dramatic urgency in their relationship, played as misplaced optimism (or is it opportunism?) and passionate drive. The clarity of their want for one another, and their shared desire to...",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 81,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strong and Manville's turns as Oedipus and Jocasta give this take on the Greek classic a grounded yet otherworldly sense of magnificent devastation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this adaptation also keeps the richness and terror of our modern political realities at arm's length",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Icke's Oedipus struggles to find its meaning",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the lead performances highly but finds significant flaws in the adaptation's approach to tension and meaning, resulting in qualified interest rather than a clear recommendation. | GPT-4o-mini: The review highlights strong performances but expresses significant concerns about the script and overall tension, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:15:48.416Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

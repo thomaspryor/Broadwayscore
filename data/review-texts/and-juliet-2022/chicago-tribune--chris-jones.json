@@ -9,7 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "This nonstop party-empowerment show gets its theme of feminist revisionist British history from “Six,” its Shakespearean humor from “Something Rotten,” its nonbinary savvy from “Head Over Heels,” and its collage-like spectacle from “Moulin Rouge.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "dtli",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "nonstop party-empowerment show",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "gets its theme of feminist revisionist British history from \"Six,\" its Shakespearean humor from \"Something Rotten\"",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "gets its theme of feminist revisionist British history from 'Six'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt describes the show's influences and energy level but provides no clear evaluative judgment or recommendation, making it impossible to determine the critic's actual opinion. | GPT-4o-mini: The review indicates a lively and entertaining production but lacks specific praise or criticism that would lead to a stronger recommendation. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:53:09.824Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 70,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

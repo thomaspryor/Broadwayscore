@@ -10,8 +10,64 @@
   "dtliExcerpt": "Icke’s Oedipus is continuously engaging and smart, and it is exceedingly well performed by a cast that also includes Teagle F. Bougere, Bhasker Patel and Ani Mesa-Perez as aides and employees. Where it runs up against a wall—as many modern adaptations of ancient texts do—is in trying to make the story function without gods and fates. The possibility of divine machinations is brought up in passing here and there, but inconclusively.",
   "showScoreExcerpt": "\"Ickeâs Oedipus is continuously engaging and smart... but where it runs up against a wall... is in trying to make the story function without gods and fates... I have never seen an Oedipus that truly wrecks.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Mark-Strong-and-Lesley-Manville-Star-in-OEDIPUS-on-Broadway-20251113",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the great Lesley Manville",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "creature of effortless fascination",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "confident, worldly, intelligent, practical passionate, sexually frank",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Highly enthusiastic praise for Lesley Manville's performance with rich, superlative language, but this excerpt focuses solely on one performance without broader show context. | GPT-4o-mini: The review highlights the captivating performance of Lesley Manville, indicating a strong recommendation for her portrayal, though it lacks broader context about the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:17:25.366Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

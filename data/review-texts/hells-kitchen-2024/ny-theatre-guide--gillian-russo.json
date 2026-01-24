@@ -9,8 +9,64 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"Alicia Keys musical is on fire with powerhouse performances\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "playwright-scraped",
   "dtliThumb": "Up",
-  "scrapedAt": "2026-01-23T05:00:00.000Z"
+  "scrapedAt": "2026-01-23T05:00:00.000Z",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": 93,
+      "performances": 92,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "In a marvelous Broadway debut, 21-year-old Maleah Joi Moon plays 17-year-old Ali",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Powerhouse vocal, acting, and dance performances turn the concrete jungle into a living, breathing soundscape filled with art and possibility",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "With none of these themes emerging as the dominant one, what emerges instead is a reminder of Keys' marvelous songwriting talent",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review expresses clear enthusiasm for the performances and music while acknowledging structural weaknesses in the book, ultimately celebrating the show's emotional impact and vocal showcase. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and the integration of Alicia Keys' music, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:05:22.472Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

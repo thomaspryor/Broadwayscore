@@ -9,8 +9,64 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"Unfortunately, all that momentum is eventually stymied due to the inevitable conflict that by law must arrive between any couple in a romantic comedy. \"",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 79,
   "source": "reviews-json-stub",
   "needsFullText": false,
-  "fetchedAt": "2026-01-23T05:12:21.930Z"
+  "fetchedAt": "2026-01-23T05:12:21.930Z",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 74,
+      "music": 84,
+      "performances": 89,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "absolutely charming two-hander about seemingly opposites from opposite sides of the pond finding common ground and connection",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Tutty is an absolute star in the role, displaying boisterous enthusiasm as well as a tender naivete",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Unfortunately, all that momentum is eventually stymied due to the inevitable conflict... nothing in the second act quite matches the thrilling discovery of the first",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoys and recommends the show despite acknowledging structural weaknesses in Act Two, praising performances, music, and overall charm with enthusiasm that outweighs the criticisms. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall charm of the show, with minor reservations about the second act.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:31:07.907Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

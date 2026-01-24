@@ -9,8 +9,64 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"For a light, frothy evening out, this immersive show is your ticket, but don’t expect anything to last longer than the bubbles in the champagne they’re selling. Try reading the book.\"",
   "originalScore": null,
-  "assignedScore": 70,
+  "assignedScore": 64,
   "source": "reviews-json-stub",
   "needsFullText": false,
-  "fetchedAt": "2026-01-23T05:09:26.850Z"
+  "fetchedAt": "2026-01-23T05:09:26.850Z",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": 53,
+      "performances": 70,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "So does the show's anodyne Broadway sound, which is poppy and pleasant without being memorable",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "If The Great Gatsby doesn't have the makings of a long-term Broadway resident, it's become, in its newly minted tension and decadence, a welcome visitor",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "you might as well join in and enjoy the ride",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Multiple critics offer qualified praise for the spectacle and production values while consistently noting significant flaws in the score and depth, suggesting a visually impressive but ultimately hollow experience worth seeing for the Broadway spectacle. | GPT-4o-mini: The reviews indicate a mix of enjoyment and disappointment, particularly regarding the music and depth of the adaptation, leading to a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:26:40.367Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,9 +9,65 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"Maybe Happy Ending stands out for both its intimacy and its originality. Arden and his actors approach the material with a delicate touch; they trust the romantic comedy to be charming, which it is, and let the wistfulness emerge naturally.\"",
   "originalScore": "5/5",
-  "assignedScore": 100,
+  "assignedScore": 88,
   "source": "playwright-scraped",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:41:00.000Z",
-  "bwwExcerpt": "Can a show as strange and special as Maybe Happy Ending find a place for itself on Broadway today? I like to think that maybe it can. But as the show reminds us, everything is ephemeral: “We have a shelf life, you know that,” says Claire. “It’s the way that it has to be.” The fact that this show is ..."
+  "bwwExcerpt": "Can a show as strange and special as Maybe Happy Ending find a place for itself on Broadway today? I like to think that maybe it can. But as the show reminds us, everything is ephemeral: “We have a shelf life, you know that,” says Claire. “It’s the way that it has to be.” The fact that this show is ...",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 86,
+      "performances": 89,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is utterly enchanting",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "In a Broadway landscape dominated by loud adaptations of pre-existing IP, Maybe Happy Ending stands out for both its intimacy and its originality",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The fact that this show is casting its firefly glow on Broadway at all feels like a gift",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses consistently enthusiastic language ('utterly enchanting', 'superb', 'splendid') with strong praise for all elements and frames the show as a special gift to Broadway, indicating a clear recommendation despite some uncertainty about commercial viability. | GPT-4o-mini: The review expresses strong enthusiasm for the originality, performances, and direction of the show, with only minor reservations about its place on Broadway.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:10:20.088Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

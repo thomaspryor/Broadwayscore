@@ -9,10 +9,66 @@
   "isFullReview": true,
   "showScoreExcerpt": "âThereâs a lot to admire about 'Stereophonic.' The cast gives feel-real performances under the thoughtful direction of Daniel Aukin.â",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 80,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "waybackUrl": "http://web.archive.org/web/20251018082225/https://www.newyorktheatreguide.com/reviews/stereophonic-broadway-review",
   "fetchedAt": "2026-01-23T10:15:46.935Z",
-  "bwwExcerpt": "The band is back together on Broadway. David Adjmi’s Stereophonic had a critically acclaimed, sold-out run off Broadway in fall 2023 at Playwrights Horizons, and now it’s hitting all the right notes at the Golden Theatre.        Average Rating: 95.0% {   \"@context\":\"https://schema...."
+  "bwwExcerpt": "The band is back together on Broadway. David Adjmi’s Stereophonic had a critically acclaimed, sold-out run off Broadway in fall 2023 at Playwrights Horizons, and now it’s hitting all the right notes at the Golden Theatre.        Average Rating: 95.0% {   \"@context\":\"https://schema....",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 85,
+      "performances": 84,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's completely absorbing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "And the payoff is fantastic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the 3-hour play could benefit from some cuts itself",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer praises the absorbing naturalistic dialogue, fantastic musical payoffs, and strong performances, with only minor reservations about length, indicating a clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall experience, with only minor reservations about pacing.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:23:23.462Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

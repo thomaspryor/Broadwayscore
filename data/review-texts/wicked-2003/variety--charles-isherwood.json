@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "It’s not easy being green. Or blonde, for that matter. Those are just two of the many lessons to be learned from this big, murky new Broadway musical. But maybe the most salient pointer is that it ain’t easy being a Broadway musical. A strenuous effort to be all things to all people tends to weigh down this lumbering, overstuffed $14 million production. “Wicked” is stridently earnest one minute, self-mocking the next; a fantastical allegory about the perils of fascism in one scene, a Nickelodeon special about the importance of inner beauty in another. There are flying monkeys, flying witches and flying scenery, but the musical itself truly soars only on rare occasions, usually when one of its two marvelously talented leading ladies, Kristin Chenoweth and Idina Menzel, unleashes the kind of vocal magic that needs no supernatural or even technical assistance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "dtli",
   "dtliThumb": "Down",
-  "urlUpdated": "2026-01-23T05:30:47.012Z"
+  "urlUpdated": "2026-01-23T05:30:47.012Z",
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 70,
+      "performances": 85,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical itself truly soars only on rare occasions",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "two marvelously talented leading ladies, Kristin Chenoweth and Idina Menzel, unleashes the kind of vocal magic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "A strenuous effort to be all things to all people tends to weigh down this lumbering, overstuffed $14 million production",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges strong lead performances but finds the production fundamentally flawed and inconsistent, with no clear recommendation either way. | GPT-4o-mini: The review highlights significant issues with the production's coherence and pacing, but praises the performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:32:06.131Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

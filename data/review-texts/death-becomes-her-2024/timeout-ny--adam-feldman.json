@@ -10,7 +10,63 @@
   "dtliExcerpt": "They have complementary approaches to pitching jokes: Hilty tends to throw them hard straight over the plate, while Simard favors curveballs. Together they make musical-comedy magic—and musical comedy, when performed this well, never gets old.",
   "showScoreExcerpt": "âHaving popped its cork early, the show keeps the bubbles flowing freely for the next two hours.â",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 84,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "make musical-comedy magic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "when performed this well, never gets old",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "together they make musical-comedy magic",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for lead performances with superlative language ('magic') suggests clear recommendation, but excerpt is too brief to assess full show quality. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and the overall experience of the musical-comedy, indicating a must-see recommendation. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:02:07.036Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

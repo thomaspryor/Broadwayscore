@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "“Is it really possible to separate your life from your music?” asks the pesky documentary filmmaker in “MJ,” the Michael Jackson musical at Broadway’s Neil Simon Theatre.\n\nThe question hangs like a fog of stage smoke over this slickly produced show, as it attempts to weave together both the life and the music — but without quite delving into the more disturbing aspects of the former. (This comes as little surprise, since the musical was produced “by special arrangement with the estate of Michael Jackson.”)\n\n            This post is for paying subscribers only\n            Subscribe now\n            Already have an account? Sign in\n\n      Review — MJ — Natasha Katz — Lynn Nottage — Roy Furman — Latitude Link — James L. Nederlander — Quentin Earl Darrington — Peter Nigrini — Paul Tazewell — Gareth Owen — Derek McLane — John Gore Organization — Christopher Wheeldon — Lia Vollack — Jason Michael Webb — Whitney Bashor — Gabriel Ruiz — Antoine L. Smith — Joey Sorge — Raymond Baynard — John Edwards — Ayana George — Kali May Grinder — Apollo Levine — Ryan VanDenBoom — Lamont Walker II — Zelig Williams — Kumiko Yoshii — Sony Music Entertainment — Charles LaPointe — Sony Pictures Entertainment — Myles Frost — Tavon Olds-Sample — Carina-Kay Louchiey — Walter Russell III — Christian Wilson — Devin Trey Campbell — Michelle Mercedes — Kyle Robinson — John Branca — John McClain — Cue to Cue Productions — Naoya Kinoshita — Candy Spelling — Stephen C. Byrd — Sandy Robertson — Ed Walson — Peter W. May — CJ ENM — Martin Bandier — Michael Cassel Group — Albert Nocciolino — Playful Productions — Ken Schur — Willette & Manny Klausner — David Holcenberg — Joe Dulude II\n\n                    Introductory Offer\n\n                $1/month for 3 months\n\n                Subscribe\n\n              Already have an account?\n              Log in",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "dtli",
   "dtliThumb": "Down",
-  "scrapedAt": "2026-01-23T22:02:20.446Z"
+  "scrapedAt": "2026-01-23T22:02:20.446Z",
+  "llmScore": {
+    "score": 41,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "superficial fan-bait",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "glossy but unrevelatory",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "surface flash and stylish presentation",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic dismisses the show as 'superficial fan-bait' with a 'glossy but unrevelatory' approach, acknowledging production values while fundamentally criticizing the material's lack of depth. | GPT-4o-mini: The review expresses significant disappointment with the production's lack of depth and substance, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:13:19.124Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

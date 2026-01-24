@@ -9,8 +9,64 @@
   "isFullReview": true,
   "dtliExcerpt": "One year ago, seated at City Center, I cried at both numbers and left the theater deeply shaken. If that same power hasn't quite held, it is perhaps no fault of a broadly first-rate production. Hope is of less interest right now—it can feel like an almost irrelevant emotion. But when that finale arrived, and the voices joined gloriously as one, I felt it stirring once again. Not as strongly as before, perhaps. But still, that stirring of hope.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T18:00:00.000Z",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": 89,
+      "performances": 85,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "this revival remains expertly cast, gorgeously sung and, for all its imperfections, still deeply powerful",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "deBessonet's physical staging has not grown alongside these performers",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Not as strongly as before, perhaps. But still, that stirring of hope",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticisms of staging and some script flaws, the critic finds the production 'still deeply powerful' with exceptional performances and music, indicating a qualified but clear recommendation. | GPT-4o-mini: The review expresses a strong appreciation for the performances and music, but notes significant flaws in the staging and overall impact, leading to a positive but cautious recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:21:30.755Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

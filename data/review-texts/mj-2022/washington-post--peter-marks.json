@@ -10,8 +10,64 @@
   "dtliExcerpt": "That sordid history would not seem to have foretold a jukebox musical devoted to the upside of Jackson's genius - and certainly not by artists of the caliber of two-time Pulitzer winner Nottage (\"Ruined,\" \"Sweat\") and the celebrated ballet world fixture Wheeldon. The show's decidedly selective memory may be off-putting to theatergoers appalled by the stories of Jackson's alleged misdeeds. Nevertheless, the creative team's painstaking work has resulted in a riveting, adrenaline rush of a show, propelled by remarkable dancing and a mesmerizing central performance by Myles Frost as the sleek, soft-spoken pop megastar.",
   "showScoreExcerpt": "\"That sordid history would not seem to have foretold a jukebox musical devoted to the upside of Jacksonâs genius â and certainly not by artists of the caliber of two-time Pulitzer winner Nottage (âRuined,â âSweatâ) and the celebrated ballet world fixture Wheeldon. The showâs decidedly selective memory may be off-putting to theatergoers appalled by the stories of Jacksonâs alleged misdeeds. Nevertheless, the creative teamâs painstaking work has resulted in a riveting, adrenaline rush of a show, propelled by remarkable dancing and a mesmerizing central performance by Myles Frost as the sleek, soft-spoken pop megastar.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MJ-Opens-on-Broadway--See-What-the-Critics-Are-Saying-20220201",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 88,
+      "performances": 90,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "MJ is a dance musical of the first rank",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "exquisite dancers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "boosted the muscularity and grace of the pop star's signature movements",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for choreography and performances with superlative language ('first rank', 'exquisite') indicates clear recommendation despite excerpt limitations. | GPT-4o-mini: The review expresses strong enthusiasm for the choreography and overall production, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:14:36.471Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

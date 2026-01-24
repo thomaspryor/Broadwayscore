@@ -10,10 +10,61 @@
   "dtliExcerpt": "Home Legit Reviews Mar 19, 2025 7:00pm PT &#8216;Buena Vista Social Club&#8217; Review: Exuberant New Broadway Musical Celebrates the Soul of a Nation By Frank Rizzo Plus Icon Frank Rizzo Latest &#8216;Ragtime&#8217; Review: Broadway Revival Is a Timely, Glorious Panorama of Changing Times in America 3 months ago &#8216;Waiting for Godot&#8217; Review: Keanu Reeves and Alex Winter Bring a Cooler, Cosmic Take to This Broadway Waiting Game 4 months ago &#8216;Call Me Izzy&#8217; Review: Jean Smart Dazzles in a Broadway Play That Treads All-Too-Familiar Territory 7 months ago See All Matthew Murphy Entering \" Buena Vista Social Club \" is like stepping into a heady world of the senses, of heightened emotions, and of passionate music and dance. The Social Club was a real place for locals in Havana in the '50s. Decades later, its music became the source of a Grammy-winning album, then a popular film — and now it's the most intoxicating and rapturous show of the Broadway season. Related Stories &#039;Euphoria&#039; Season 3 Trailer: Zendaya, Sydney Sweeney and Jacob Elordi Return as Rue Battles Drug Dealers, Cassie Becomes a Cam Girl and More",
   "showScoreExcerpt": "âItâs the most intoxicating and rapturous show of the Broadway season.â",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:58:31.336Z",
   "urlUpdated": "2026-01-23T05:27:32.745Z",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "well-lived music",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "nostalgia, romance, loss, liberation, joys and pride",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review expresses clear emotional connection and praises the music's ability to evoke universal feelings, but the extremely brief excerpt makes it difficult to assess overall recommendation strength. | GPT-4o-mini: The review expresses positive sentiment towards the emotional depth and quality of the music, suggesting a clear recommendation despite lacking specific critiques.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:56:18.877Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

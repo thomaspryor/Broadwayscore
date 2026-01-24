@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “The Outsiders.” \n\nRUNDOWNBroadway has seen Shakespeare’s Capulets and Montagues, Arthur Laurents’ Sharks and Jets, and now, in “The Outsiders,” S.E. Hinton’s Greasers and Socs (short for “socialites”). The musical adaptation of the middle-school bookshelf staple uses the familiar antagonist framework found in those other works and treads closely to its original text, but book writers Adam Rapp and Justin Levine take creative (but unfortunately, not comprehensive) liberty to enhance the drama by sketching out all-white Socs and a mixed-race group of Greasers. All of our principal characters are still intact from the novel: the endearing, poetry-spinning protagonist Ponyboy (Brody Grant), his sheepish, ill-fated best friend Johnny (Sky Lakota-Lynch), his dudish brothers Sodapop (Jason Schmidt) and Darrel (Brent Comer). They are broken in some ways, deeply caring in others and wildly attractive. Case in point: A gaggle of young folks at the performance I attended squealed when Schmidt opened his shirt. (This demographic will undeniably be the lifeblood of this musical’s success.) But, scenic designers AMP and Tatiana Kahvegian’s tactile set of crunching dirt, exposed scaffolding and tire towers captures more authentic grit than any of the pugnacious characters do. That’s not to say that these actors lack talent. The production’s strenuous vocal, acting and dance demands are evident, and director Danya Taymor’s tight ensemble works like a well-oiled (well-greased?) machine. \n\n            This post is for paying subscribers only\n            Subscribe now\n            Already have an account? Sign in\n\n      Review — The Outsiders — Adam Rapp — Justin Levine — Jamestown Revival — Jonathan Clay — Zach Chance — Danya Taymor — Rick Kuperman and Jeff Kuperman — AMP — Tatiana Kahvegian — Sarafina Bush — Brian MacDevitt — Cody Spencer — Hana S. Kim — Alberto Alvarado — S.E. Hinton — Brody Grant — Sky Lakota-Lynch — Joshua Boone — Jason Schmidt — Brent Comer — Daryl Tofa\n\n                    Introductory Offer\n\n                $1/month for 3 months\n\n                Subscribe\n\n              Already have an account?\n              Log in",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "scrapedAt": "2026-01-23T22:02:31.876Z"
+  "scrapedAt": "2026-01-23T22:02:31.876Z",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 73,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "picture-perfect staging and a passionate cast of triple threats",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "coasts only on Golden-Age appeals",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "aimless wanderlust",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite strong praise for staging and performances, the critic suggests the show lacks substance and merely 'coasts' on nostalgia, indicating a qualified mixed response. | GPT-4o-mini: While the staging and performances are praised, the review indicates a lack of depth in the material, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:29:29.871Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

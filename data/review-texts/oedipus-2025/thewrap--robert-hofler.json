@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The biggest pleasure of this prestige production is watching how Icke pastes these modern references onto a classic story. It’s often fun to watch, but never more than clever. Icke also panders to one of the theater’s largest demos by having one of Jocasta and Oedipus’ sons, Polyneices (James Wilbraham), be outed by his brother, Eteocles (Jordan Scowen), at a family dinner. Because he’s such a wonderful father, Oedipus reassures Polyneices of his love and support by delivering a speech written by someone at PFLAG.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Mark-Strong-and-Lesley-Manville-Star-in-OEDIPUS-on-Broadway-20251113",
-  "dtliThumb": "Meh"
+  "dtliThumb": "Meh",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "The biggest pleasure of this prestige production",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "It's often fun to watch, but never more than clever",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "prestige production",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review offers qualified praise for the direction's cleverness while explicitly limiting enthusiasm with 'never more than clever,' suggesting moderate appreciation without strong recommendation. | GPT-4o-mini: The review indicates enjoyment in the cleverness of the production but lacks strong enthusiasm, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:17:17.646Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,9 +9,65 @@
   "isFullReview": true,
   "dtliExcerpt": "Extended silliness such as this musical escapade needs to be grounded in a few quiet minutes of genuine emotion, and ironically this moment occurs in Operation Mincemeat when a fake identity for the corpse is being forged.",
   "originalScore": "4/5",
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T18:00:00.000Z",
   "bwwThumb": "Up",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 79,
+      "performances": 86,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Operation Mincemeat is a must-see show for you",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This nearly ceaselessly amusing affair",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Jak Malone's simple, oh-so-touching rendition likely nabs him awards later this spring",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls this a 'must-see show' and consistently praises the performances, direction, and overall entertainment value with only minor reservations about the British humor potentially not translating. | GPT-4o-mini: The review expresses strong enthusiasm for the show's humor and performances while acknowledging some potential cultural differences in humor appreciation, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:20:11.038Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

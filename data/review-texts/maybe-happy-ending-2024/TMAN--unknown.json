@@ -8,8 +8,64 @@
   "fullText": "A sweet romcom by Hue Park and Will Aronson opens on Broadway.\n\nWhen a theater reviewer uses the word \"sweet\" or any of its synonyms, it's most often in a derogatory way. The book is\n\nWritten by Hue Park (book and lyrics) and Will Aronson (book, lyrics, and music),\n\nAfter 12 years, Oliver's quiet life is interrupted by a knock on the door from his across-the-hall neighbor Claire (Helen J Shen). Claire is a \"Helperbot 5,\" more aesthetically humanoid but less durable, and she needs to borrow Oliver's charger. Both Oliver and Claire are on the road to planned obsolescence, and that, of course, is when they inadvertently fall in love while on a journey to return Oliver to his former companion.\n\nYes, it's fairly predictable. The second Oliver starts talking about how James will eventually come pick him up, you know his dream will eventually be crushed, the same way that you know that Annie is never going to find her birth parents. But it's not the destination, it's the journey. And this journey is just very charming, thanks to two writers who've crafted a wholesome and believably human(oid) story and a pair of evenly matched stars who are impossible to hate.\n\nFrom his stiffly humorous movement (choreographed by Moni Yakim) to the unblinking sincerity in his delivery, Criss is immensely impressive as he captures the discreetly emotional essence of this outdated bot. His tightly coiffed hair (styled by Craig Franklin Miller) and shellacked makeup (Suki Tsujimoto) go a long way in helping him bring us to an uncanny valley that's legitimately freaky. Shen is effortlessly charming, infusing Claire with a shy humor that makes her utterly lovable. Together, they share such easy chemistry that you find yourself rooting for these two lonely robots to be together forever.\n\nMichael Arden's high-tech staging works its robot butt off to bring the futuristic setting to life. Dane Laffrey's gliding set pieces evoke the sleek but rundown atmosphere of Oliver and Claire's world, but they're so noisy you can always tell when they're coming. Ben Stanton's lighting adds a\n\nGet the best deals and latest updates on theater and shows by signing up for TheaterMania&#039;s newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.\n\nGet the best deals and latest updates on theater and shows by signing up for TheaterMania&#039;s newsletter today!\n\nBy providing information about entertainment and cultural events on this site, TheaterMania.com shall not be deemed to endorse, recommend, approve and/or guarantee such events, or any facts, views, advice and/or information contained therein.\n\n©1999-2026 TheaterMania.com, Inc. All Rights Reserved.",
   "isFullReview": true,
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 74,
   "source": "scraped",
   "needsFullText": true,
-  "scrapedAt": "2026-01-23T21:59:53.915Z"
+  "scrapedAt": "2026-01-23T21:59:53.915Z",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 83,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "this journey is just very charming, thanks to two writers who've crafted a wholesome and believably human(oid) story and a pair of evenly matched stars who are impossible to hate",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Yes, it's fairly predictable",
+        "sentiment": "negative",
+        "strength": 2
+      },
+      {
+        "quote": "you find yourself rooting for these two lonely robots to be together forever",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the performances and finds the show charming despite acknowledging its predictability, indicating a qualified recommendation with more strengths than weaknesses. | GPT-4o-mini: The review expresses a clear recommendation with positive remarks about the performances and charm of the production, despite noting predictability in the story.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:10:36.851Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

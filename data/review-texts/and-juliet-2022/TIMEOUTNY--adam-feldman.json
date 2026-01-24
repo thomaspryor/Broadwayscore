@@ -9,9 +9,65 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"Its title notwithstanding, '& Juliet' barely takes time to define its heroine; it puts her at the center of the story and then makes her its least interesting character.\"",
   "originalScore": "3/5",
-  "assignedScore": 60,
+  "assignedScore": 68,
   "source": "playwright-scraped",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:47:00.000Z",
-  "bwwExcerpt": "\"Keep it light, keep it tight, keep it fun, and then we're done!\" That's the pithy advice that the indignant 16th-century housewife Anne Hathaway (Betsy Wolfe) imparts to her neglectful husband, William Shakespeare (Stark Sands), as a way to improve his play Romeo and Juliet, which she considers too..."
+"bwwExcerpt": "\"Keep it light, keep it tight, keep it fun, and then we're done!\" That's the pithy advice that the indignant 16th-century housewife Anne Hathaway (Betsy Wolfe) imparts to her neglectful husband, William Shakespeare (Stark Sands), as a way to improve his play Romeo and Juliet, which she considers too...",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": 80,
+      "performances": 73,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is what it is: It gives you the hooks and it gets the ovations",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "& Juliet, though often entertaining, also feels pretty disposable",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "& Juliet gives audiences what they want from it: all those hits, baby, one more time",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show delivers entertainment value and crowd-pleasing hits but finds it ultimately disposable with weak character development and narrative thrust - a classic mixed review that lands on conditional recommendation. | GPT-4o-mini: The review highlights entertaining aspects and strong music but notes significant weaknesses in the story and character development, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:52:34.429Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

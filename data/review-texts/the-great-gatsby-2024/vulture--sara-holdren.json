@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Under Marc Bruni’s jazz-hands-happy direction, this Gatsby feels like it belongs on a cruise or in a theme park. It would make a good fit if Epcot’s pavilions expanded to include time periods as well as countries. Poor James Gatz, victim of his own disguise. A century on, retellers of his story, like his hordes of party guests, remain distracted by the spectacle. Here, Bruni and his designers lean into the roaring garishness almost to the point of cartoon.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425",
-  "dtliThumb": "Down"
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 23
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels like it belongs on a cruise or in a theme park",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "jazz-hands-happy direction",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "would make a good fit if Epcot's pavilions expanded",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses deeply dismissive language comparing the production to tourist attractions, indicating they view it as lowbrow entertainment unworthy of Broadway. | GPT-4o-mini: The review expresses strong disapproval of the production's direction, suggesting it lacks depth and feels more suited for entertainment venues than serious theater.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:28:01.545Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

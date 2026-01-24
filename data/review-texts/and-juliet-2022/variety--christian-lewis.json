@@ -10,10 +10,66 @@
   "dtliExcerpt": "Home Legit Reviews Nov 17, 2022 6:30pm PT &#8216;& Juliet&#8217; Review: Shakespearean Jukebox Musical is Like a Shot of Pure Gold By Christian Lewis Plus Icon Christian Lewis Latest &#8216;Chess&#8217; Review: Lea Michele Reigns as Queen of This Uneven Broadway Revival 2 months ago &#8216;Just in Time&#8217; Review: Jonathan Groff Plays Bobby Darin in a Lackluster Bio-Jukebox on Broadway 9 months ago &#8216;Pirates! The Penzance Musical&#8217; Review: David Hyde Pierce and Jinkx Monsoon Lead a Rollicking, Riotous Reimagination of Gilbert and Sullivan on Broadway 9 months ago See All Matthew Murphy Shakespeare's Juliet singing Britney Spears' \"Oops&hellip;I Did It Again\" is certainly a surprising and unexpected juxtaposition. While there is every reason to be skeptical of a Shakespearean jukebox musical, \"& Juliet\" makes it work remarkably well. It's the most fun you'll have in a Broadway theater right now. \"& Juliet\" features 32 songs by Max Martin and a rotating group of collaborators (officially credited as Max Martin and Friends), ranging from the 90s to today and including songs made popular by Robyn, the Backstreet Boys, Katy Perry, Demi Lovato, P!nk and more. The playbill includes a note that Martin has had more number one hits than any other artist this century, and boldly claims \"He's basically the Shakespeare of pop music.\" At the very least his catalog is unquestionably impressive &#8212; and his songs make for a surprisingly fantastic jukebox musical. blogherads.adq.push(function () { blogherads .defineSlot( 'medrec', 'gpt-variety-article-mid-article-uid0' ) .setTargeting( 'pos', [\"mid-article1\",\"mid-articleX\",\"mid\",\"mid-article\"] ) .setTargeting( 'viewable', 'yes' ) .setSubAdUnitPath(\"ros\\/mid-article\") .addSize([[300,250],[2,2],[300,251],[2,4],[4,2],[320,480],[620,366]]) .setClsOptimization(\"minsize\") ; }); Related Stories &#039;Euphoria&#039; Season 3 Trailer: Zendaya, Sydney Sweeney and Jacob Elordi Return as Rue Battles Drug Dealers, Cassie Becomes a Cam Girl and More",
   "showScoreExcerpt": "\"What the show lacks in plotting, it more than makes up for musically. It is a jukebox, but itâs a smart one, using the songs in deft, humorous and unexpected ways.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:57:21.504Z",
   "dtliThumb": "Up",
-  "bwwExcerpt": "All this could have come across as a high school English class assignment, but Read manages to make it work. He clearly has respect for and knowledge of the source material but also isn't afraid to highlight just how ridiculous the play really is. (As we are reminded here, Romeo and Juliet only knew..."
+"bwwExcerpt": "All this could have come across as a high school English class assignment, but Read manages to make it work. He clearly has respect for and knowledge of the source material but also isn't afraid to highlight just how ridiculous the play really is. (As we are reminded here, Romeo and Juliet only knew...",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes it work remarkably well",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's the most fun you'll have in a Broadway theater right now",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "there is every reason to be skeptical of a Shakespearean jukebox musical",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging skepticism about the concept, the critic enthusiastically endorses the show with superlative language about fun and effectiveness, indicating a strong positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the show's execution and enjoyment factor, indicating a clear recommendation despite initial skepticism.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:53:57.626Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

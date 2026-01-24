@@ -10,8 +10,54 @@
   "dtliExcerpt": "WHO would have thought there could be such bliss in being played for a patsy?",
   "showScoreExcerpt": "The pulse-racing revival of the musical ''Chicago,'' involves a cast of top-flight artists perfectly mated to their parts and some of the sexiest, most sophisticated dancing seen on Broadway in years...The America portrayed onstage may be a vision of hell, but the way it's being presented flies us right into musical heaven.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "dtli",
   "dtliThumb": "Up",
-  "designation": null
+  "designation": null,
+  "llmScore": {
+    "score": 50,
+    "confidence": "high",
+    "range": {
+      "low": 45,
+      "high": 55
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "WHO would have thought there could be such bliss in being played for a patsy?",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Single line suggests positive surprise at enjoying a show that manipulates the audience, but insufficient context to determine clear recommendation strength. | GPT-4o-mini: The review is ambiguous and does not provide a clear recommendation, suggesting a mixed response to the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:00:39.982Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 50,
+    "openaiScore": 50,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

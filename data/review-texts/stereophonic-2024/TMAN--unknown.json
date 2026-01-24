@@ -9,8 +9,64 @@
   "isFullReview": true,
   "showScoreExcerpt": "â âStereophonicâ is a unique and singular exploration of the passion and torment that comes with making art that passes the test of time, and I have little doubt that this play will, too.â",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 88,
   "source": "scraped",
   "needsFullText": true,
-  "scrapedAt": "2026-01-23T22:00:06.817Z"
+  "scrapedAt": "2026-01-23T22:00:06.817Z",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 93,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's riveting from start to finish, one of those shows that unassumingly lures you in and then socks you with a punch of emotion",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The performances are so exquisitely rendered, so beautifully lived-in, that every moment is full",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Their work is just remarkable",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances, direction, and emotional impact with superlative language like 'miraculous,' 'riveting,' and 'remarkable,' though acknowledges the lengthy runtime. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting exceptional performances and direction while only mentioning a minor caveat about the length.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:24:04.852Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

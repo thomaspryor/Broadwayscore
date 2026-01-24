@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The interconnections between musicians, songs and a society have rarely been evoked as vividly, and as lovingly, as they are in “Buena Vista Social Club,” which opened on Wednesday at the Gerald Schoenfeld Theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "Up",
-  "designation": "Critics_Pick"
+  "designation": "Critics_Pick",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "rarely been evoked as vividly, and as lovingly",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The interconnections between musicians, songs and a society",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "interconnections between musicians, songs and a society have rarely been evoked as vividly",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The superlative language ('rarely...as vividly') and emotional words ('lovingly') suggest strong praise, but this appears to be just the opening line of a longer review, limiting confidence in the full critical assessment. | GPT-4o-mini: The review expresses strong appreciation for the vivid and loving portrayal of musical interconnections, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:55:58.414Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

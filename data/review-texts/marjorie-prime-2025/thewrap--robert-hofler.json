@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "“I’d like to be a machine, wouldn’t you?”\n\nThat Andy Warhol quote kept running through my mind as I watched Jordan Harrison’s “Marjorie Prime,” which opened Monday at the Helen Hayes Theatre. When it was all over, I much preferred watching the actors impersonate machines in Harrison's sci-fi tale than watching them impersonate human beings.\n\nIn 2015, \"Marjorie Prime\" was a Pulitzer Prize finalist, and, back then, the play’s premise looked a lot fresher: a robot, called a “prime,” is used to help people grieve the loss of a loved one. The “prime” looks just like the dead person, but needs to be fed information from living people to achieve optimum results in giving comfort and support to the grieving survivor. In Harrison’s play, a widow named Marjorie receives a “prime” of her dead husband. Since “Blade Runner,” writers and directors have overly mined the robot territory, and a clear descendant of Ridley Scott's classic and Harrison's “Marjorie Prime,” which got the movie treatment in 2017, is the newer Netflix offering “I Am Your Man,” a 2021 German-language film by Maria Schrader.\n\nRobots are designed to be pleasant, efficient, clean. People are designed to be difficult, contrary, messy. There’s a reason why, in the middle of the 90-minute “Marjorie Prime,” the human Marjorie (June Squibb) soils herself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Opens-On-Broadway-Starring-Cynthia-Nixon-June-Squibb-Danny-Burstein-and-More-20251208",
   "dtliThumb": "Meh",
-  "scrapedAt": "2026-01-23T22:04:22.602Z"
+  "scrapedAt": "2026-01-23T22:04:22.602Z",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harrison tries to up the ante by dipping into his gothic drawer of horrors to deliver not one but two suicides that push the human narrative into the contrived",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the machines are more honest than the humans and, better yet, there's none of the angst",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "tells a simple kitchen-sink story",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic finds the core story simple but criticizes the playwright's dramatic choices as contrived, with only mild praise for the lack of angst, suggesting more problems than strengths. | GPT-4o-mini: The review expresses significant criticism of the narrative's contrivance and the overall effectiveness of the storytelling, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:09:52.041Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,64 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"The music is so good, the performances so alive, and the band so sexy\"",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 60,
   "source": "scraped",
   "needsFullText": true,
-  "scrapedAt": "2026-01-23T21:59:34.837Z"
+  "scrapedAt": "2026-01-23T21:59:34.837Z",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 83,
+      "performances": 77,
+      "direction": 71
+    },
+    "keyPhrases": [
+      {
+        "quote": "That thoroughly banal explanation still doesn't justify the mediocre book musical before us—a gorgeous night of sound and color that really could have just been a concert.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Director Saheem Ali partially succeeds in distracting the audience from the actual play with top-notch production values",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "music director Marco Paguia is serving up a feast for the ears, breathing new life into a well-known album with his clever arrangements and resourceful orchestrations",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the music, performances, and production values extensively but delivers a devastating critique of the book as 'mediocre' and suggests it should have just been a concert, indicating significant structural problems that undermine the overall recommendation. | GPT-4o-mini: The review highlights strong musical elements and production values but criticizes the book, leading to a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:54:59.148Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

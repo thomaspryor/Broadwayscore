@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Maybe Happy Ending.”\n\nRUNDOWN Good things come in small packages. In the case of the original new musical “Maybe Happy Ending,” the best things. Will Aronson and Hue Park’s one-act romantic, robot comedy — a Broadway transfer from South Korea — brims with gooey performances from its four-person cast, tickling humor and pools of heart. It’s a production with gimmicks (commentary on our para-relationship with technology, a set design of industrial wonders, “Glee”’s best male actor), but miraculously and mercifully it doesn’t solely bank on them.\n\nThe show drops us into an unfamiliar time, 2064, an unnerving reality where human owners and humanoid helperbots, like Oliver (Darren Criss) and Claire (Helen J. Shen), live in tandem. Oliver is an earlier model, so Criss embraces staccato movements, like he’s full of tightly-wired joints. Shen, as the more advanced Claire, uses smoother gestures. The two subtly capture the differences in physicality and vocal inflection between their makings, but their connection when partnered in scenes — as they evolve from nuisance neighbors to chatty friends to honeyed lovers — is always in sync. These two even have chemistry with a prop: Oliver’s plant, HwaBoon, tags along for the musical’s adventure like an animal sidekick in a Disney film.\n\n            This post is for paying subscribers only\n            Subscribe now\n            Already have an account? Sign in\n\n      Review — Maybe Happy Ending — Will Aronson — Hue Park — Michael Arden — Darren Criss — Helen J. Shen — Dane Laffrey — George Reeve — Ben Stanton — Marcus Choi — Dez Duron — Peter Hylenski\n\n                    Introductory Offer\n\n                $1/month for 3 months\n\n                Subscribe\n\n              Already have an account?\n              Log in",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
-  "scrapedAt": "2026-01-23T22:02:17.241Z"
+  "scrapedAt": "2026-01-23T22:02:17.241Z",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "gorgeous visuals and pure heart",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "pulling on the threads that make Disney's capital so everlasting",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "gorgeous visuals",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Positive language about visuals and emotional impact suggests recommendation, but extremely brief excerpt limits confidence in scoring. | GPT-4o-mini: The review highlights strong positive elements like visuals and emotional impact, indicating a clear recommendation despite lacking detail on other components.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:10:47.306Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,9 +10,65 @@
   "dtliExcerpt": "BOSTON — The jukebox has exploded.\r\n\r\nIts pieces zoom through the air like candy-colored shrapnel, whizzing by before the memory can tag them and making the blandly familiar sound enticingly exotic. I’m talking about the recycled pop hits, mostly of a romantic stripe, that make up the seemingly infinite song list of “Moulin Rouge! The Musical,” at the Emerson Colonial Theater here.\r\n\r\nBy the end of this smart, shameless and extravagantly entertaining production, adapted from Baz Luhrmann’s 2001 movie, you’ll think you’ve heard fragments of every Top 40 song of lust and longing that has been whispered, screamed or crooned into your ear during the past several decades. You may even believe that once upon a time you loved them all.\r\n\r\nPart of the genius of Mr. Luhrmann’s original version — which starred Nicole Kidman and Ewan McGregor as doomed lovers in a Bohemian, fin-de-siècle Paris — was that it put mainstream, latter-day radio songs into the context of a verismo costume opera like “La Traviata.” Not for nothing was Elton’s John’s “Your Song” the ballad most memorably shared by the film’s leading lovers.",
   "showScoreExcerpt": "CRITICâS PICK \"âMoulin Rouge! The Musicalâ Offers a Party, and a Playlist, for the Ages. Forbidden pleasures abound in this spectacular musical, starring a dazzling Karen Olivo as a doomed Parisian chanteuse.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
   "dtliThumb": "Up",
-  "designation": "Critics_Pick"
+  "designation": "Critics_Pick",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "smart, shameless and extravagantly entertaining production",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Part of the genius of Mr. Luhrmann's original version",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "making the blandly familiar sound enticingly exotic",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses strong positive language ('extravagantly entertaining', 'genius', 'smart') with enthusiasm for the musical concept and production, indicating clear recommendation despite some theatrical complexity. | GPT-4o-mini: The review expresses strong enthusiasm for the production's entertainment value and creativity, indicating a clear recommendation despite not addressing potential drawbacks.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:15:13.831Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

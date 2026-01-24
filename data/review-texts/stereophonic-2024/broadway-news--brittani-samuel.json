@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Stereophonic.”\n\nRUNDOWN Sometimes, a song is so good you want to live in it. You want to nestle into its melodies, unravel the chords holding it up and more than anything, wander in the mind fields of the people who created it. David Adjmi’s “Stereophonic” is the play that sparks this very desire. It presents an unshakeable, hyperreal slice-of-life drama, employing artists to make art about making art — a salivary meta-trifecta. Adjmi’s script captures a year-long span of time with a Fleetwood Mac-esque music group in the 1970s. Fresh from the success of their debut album, the band gathers in a Sausalito studio to embark on constructing the next one. We’re trapped in the room with them, their two sage engineers and, crucially, their egos. The conversations between bandmates toggle with such finely-tuned naturalism, we almost feel like we’re encroaching on the privacy of real human beings. Adjmi builds complex portraits with painstakingly tiny brush strokes. An entire scene hinges on drummer Simon’s (Chris Stack) frustration about his snare’s hum. Another, unleashes a sea of dramaturgical implications over lead singer Diana’s (Sarah Pidgeon) inability to hit one note. \n\n            This post is for paying subscribers only\n            Subscribe now\n            Already have an account? Sign in\n\n      Review — Stereophonic — David Adjmi — Daniel Aukin — Will Brill — Juliana Canfield — Sarah Pidgeon — Tom Pecinka — Chris Stack — Eli Gelb — Andrew R. Butler — Will Butler — David Zinn — Ryan Rumery — John Golden Theatre — Enver Chakartash — Jiyoun Chang — Justin Craig\n\n                    Introductory Offer\n\n                $1/month for 3 months\n\n                Subscribe\n\n              Already have an account?\n              Log in",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "dtli",
   "dtliThumb": "Up",
-  "scrapedAt": "2026-01-23T22:02:25.654Z"
+  "scrapedAt": "2026-01-23T22:02:25.654Z",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 95,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a song is so good you want to live in it",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the play that sparks this very desire",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You want to nestle into its melodies, unravel the chords holding it up",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses exceptionally poetic and passionate language to describe an almost transcendent desire to inhabit the show's music, indicating genuine rapture despite the brief excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm for the play, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:24:19.345Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

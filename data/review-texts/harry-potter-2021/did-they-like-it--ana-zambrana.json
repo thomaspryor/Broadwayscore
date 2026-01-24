@@ -9,7 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "The moment you walk into the Lyric Theatre the magic of the Potter world hugs you. Just as they have done in Universal Studios, with the flick of their wand, The Wizarding World of Harry Potter invites you to join them on a new expedition. The welcoming warm glow of faux candlelight, the gold-trimmed accents, and the glimmering Christmas tree, all work together to trick your senses. For a second, you forget that when you leave, your senses will be violated by the harsh lighting and grating score of Times Square, something to shock you back into muggle reality. Until then, the Lyric is your escape.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "the magic of the Potter world hugs you",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "all work together to trick your senses",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the Lyric is your escape",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt focuses entirely on praising the immersive production design and atmosphere with vivid positive imagery, but lacks any discussion of performances, story, or overall theatrical experience beyond the physical environment. | GPT-4o-mini: The review expresses a strong sense of enchantment and escape provided by the production, despite a minor caveat about the transition back to reality, indicating a solid recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:03:50.482Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

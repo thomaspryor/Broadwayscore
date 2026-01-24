@@ -10,7 +10,63 @@
   "dtliExcerpt": "I know, I know: You’ve been indulging for years in a little scatological side business called “South Park.” But now, you’ve discovered your true calling — as the wit-spewing class clowns of Broadway.",
   "showScoreExcerpt": "“Money can buy you happiness! If you’re in possession of a ticket, you’ve wisely secured a seat in the premier-class cabin of delirium.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "dtli",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you've discovered your true calling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "as the wit-spewing class clowns of Broadway",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "wit-spewing class clowns of Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review suggests the creators have found their theatrical calling with witty, irreverent humor translating well to Broadway, but the excerpt is too brief to determine full recommendation strength. | GPT-4o-mini: The review suggests a positive view of the show's humor and appeal, indicating a clear recommendation despite lack of detailed critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:54:34.992Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

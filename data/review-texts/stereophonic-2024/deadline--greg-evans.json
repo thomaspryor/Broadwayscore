@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "April on Broadway, to mangle a phrase from a showtune classic, is bustin' out all over with no fewer than 14 new plays and musicals set to open before the April 25 Tony Award eligibility cutoff date. So crowded are the final weeks of the 2023-24 theater season that three days each will see the openings of two shows, a Broadway rarity.\n\n\tCheck this page to see Deadline's takes. Whether you use this page as a guide or as an invitation to argue, drop by often for the latest on Broadway's offerings. And there'll be plenty of offerings indeed — here's the schedule of April openings: The Outsiders (April 11), Lempicka (April 14), The Wiz (April 17), Suffs (April 18), Stereophonic (April 19), Hell's Kitchen (April 20), Cabaret (April 21), Patriots (April 22), The Heart of Rock and Roll (April 22), Mary Jane (April 23), Illinoise (April 24), Uncle Vanya (April 24), Mother Play (April 25), The Great Gatsby (April 25).\n\n\t\t\t\t\tRelated Stories\t\t\n\n\tNews\n\n\t\t\t\t\tTony Awards: Every Best Play Winner Since 1947",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
-  "scrapedAt": "2026-01-23T22:05:42.707Z"
+  "scrapedAt": "2026-01-23T22:05:42.707Z",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 93,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "unerring direction by Daniel Aukin",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "miraculous cast that so fully embodies",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "like the answer to a question you never knew you needed answered",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong superlative language ('miraculous', 'unerring') and the metaphor about answering an unknown need suggests high enthusiasm, though the brief excerpt limits complete assessment. | GPT-4o-mini: The review expresses strong enthusiasm for the direction and performances, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:24:24.746Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,9 +9,67 @@
   "isFullReview": true,
   "showScoreExcerpt": "âThe chance to see two theatrical masterminds go at it for a few hours is sufficient justification for the effort.â",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 61,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "waybackUrl": "http://web.archive.org/web/20250716092631/https://www.nytimes.com/2024/11/21/theater/death-becomes-her-review-hilty-simard.html",
-  "fetchedAt": "2026-01-23T06:00:43.744Z"
+  "fetchedAt": "2026-01-23T06:00:43.744Z",
+  "llmScore": {
+    "score": 61,
+    "confidence": "low",
+    "range": {
+      "low": 44.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": 65,
+      "performances": 83,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hilarious star turns from Megan Hilty and Jennifer Simard make the mostly unfunny 1992 film into an intermittently memorable Broadway musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "That Hilty and Simard make it so jolly is a big relief and a big surprise",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "For its first 30 minutes, the musical is nothing but [funny]. When introduced, Hilty's Madeline Ashton is a star of a certain age being hoisted by chorus boys in a creaky vehicle",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the lead performances enthusiastically and finds significant entertainment value, but notes the show is 'intermittently memorable' and operates 'mostly at low comedy levels,' suggesting qualified recommendation rather than unqualified praise. | GPT-4o-mini: While the performances are praised, the overall production struggles with humor and depth, leading to a mixed-negative recommendation. | Note: Models differed by 23 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:01:10.964Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 49,
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 23 points (Claude: 72, OpenAI: 49)"
+    ]
+  }
 }

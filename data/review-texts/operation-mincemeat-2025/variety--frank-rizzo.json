@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Home Legit Reviews Mar 20, 2025 7:00pm PT &#8216;Operation Mincemeat&#8217; Review: Broadway Transfer of the Olivier-Winning Musical Has Absurdity, Laughs and Heart By Frank Rizzo Plus Icon Frank Rizzo Latest &#8216;Ragtime&#8217; Review: Broadway Revival Is a Timely, Glorious Panorama of Changing Times in America 3 months ago &#8216;Waiting for Godot&#8217; Review: Keanu Reeves and Alex Winter Bring a Cooler, Cosmic Take to This Broadway Waiting Game 4 months ago &#8216;Call Me Izzy&#8217; Review: Jean Smart Dazzles in a Broadway Play That Treads All-Too-Familiar Territory 7 months ago See All Julieta Cervantes An astonishing, loopy and very true World War II story about Great Britain tricking Germany into believing false invasion plans has been the source material for non-fiction books and movies dramas . But this ludicrous 1943 espionage plot involving a corpse, fake papers and amazing good fortune also lends itself to absurdity. That's the approach the Brit comedy collective SpitLip takes with \" Operation Mincemeat ,\" the Olivier Award-winning, musical-comedy import from London. blogherads.adq.push(function () { blogherads .defineSlot( 'medrec', 'gpt-variety-article-mid-article-uid0' ) .setTargeting( 'pos', [\"mid-article1\",\"mid-articleX\",\"mid\",\"mid-article\"] ) .setTargeting( 'viewable', 'yes' ) .setSubAdUnitPath(\"ros\\/mid-article\") .addSize([[300,250],[2,2],[300,251],[2,4],[4,2],[320,480],[620,366]]) .setClsOptimization(\"minsize\") ; }); Related Stories &#039;Euphoria&#039; Season 3 Trailer: Zendaya, Sydney Sweeney and Jacob Elordi Return as Rue Battles Drug Dealers, Cassie Becomes a Cam Girl and More",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:55:07.285Z",
   "urlUpdated": "2026-01-23T05:27:32.789Z",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "laugh uproariously",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "perhaps even unexpectedly shed a tear or two",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Not if you want to laugh uproariously",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language about the comedic effect with emotional depth, using prestigious comedy comparisons, though the excerpt is brief and lacks explicit recommendation language. | GPT-4o-mini: The review conveys strong enthusiasm for the humor and emotional impact of the production, suggesting a clear recommendation despite some uncertainty about broader appeal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:20:50.004Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

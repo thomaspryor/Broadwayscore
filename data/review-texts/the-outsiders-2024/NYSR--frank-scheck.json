@@ -12,5 +12,61 @@
   "source": "reviews-json-stub",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:10:44.858Z",
-  "bwwExcerpt": "Watching the new Broadway musical The Outsiders, it’s hard to shake the feeling that you’ve seen it all before. It’s not just because of the source material, including both S.E. Hinton’s classic YA novel and Francis Coppola’s 1983 film adaptation featuring a slew of young Hollywood hunks...."
+  "bwwExcerpt": "Watching the new Broadway musical The Outsiders, it’s hard to shake the feeling that you’ve seen it all before. It’s not just because of the source material, including both S.E. Hinton’s classic YA novel and Francis Coppola’s 1983 film adaptation featuring a slew of young Hollywood hunks....",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 69,
+      "performances": 75,
+      "direction": 61
+    },
+    "keyPhrases": [
+      {
+        "quote": "proves a perfectly respectable effort with many laudable elements. What it mostly seems to lack is a reason for being",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "It's hard not to be flip about the melodramatic storyline, which doesn't feel at home onstage",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "If you can get past the general rehashedness of it all, The Outsiders has many things going for it",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production 'perfectly respectable' with strong performances and music, but questions its reason for existing and criticizes the derivative, melodramatic story that doesn't translate well to stage. | GPT-4o-mini: The review presents a balanced view, praising the performances and music while criticizing the adaptation's originality and overall execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:29:00.918Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

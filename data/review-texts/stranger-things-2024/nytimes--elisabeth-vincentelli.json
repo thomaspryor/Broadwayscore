@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "“The First Shadow” fulfills its franchise requirements in terms of spectacular art direction and compliance to the series’ canon (to which it adds tantalizing tidbits). Whether it is satisfying as a piece of theater is a dicier proposition.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "designation": null
+  "designation": null,
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "fulfills its franchise requirements in terms of spectacular art direction",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Whether it is satisfying as a piece of theater is a dicier proposition",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the production values but fundamentally questions whether it succeeds as theater, suggesting a qualified, lukewarm assessment that leans slightly mixed-negative. | GPT-4o-mini: The review acknowledges strong production values but questions the overall theatrical satisfaction, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:26:03.427Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

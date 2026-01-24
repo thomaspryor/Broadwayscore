@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "tells your story,\" this show now gives voice to these Tudor #MeToos, presenting a feminist - both proto and post - version of \"herstory.\" As one character says, \"History s about to get over-throned.\" Helen Shaw, Vulture : The point of Six is its escapism. If you live at the intersection of its interests and can recognize a Spice Girls or Beyonc&eacute; reference (\"C mon, ladies, let s get in Reformation\"), your animal heart will have no choice but to jump up and down with the beat. Even the sheer brightness of Six operates as color therapy. Emma Bailey s set is a simple rock stage backed by outlines of Gothic windows covered in LEDs that change and pulse in cheery display. Tim Deiling s lights are red and purple and gold, bathing your hungry pores. The color pours down your eye holes right into your serotonin receptors - all that warmth without heat triggers something deep in your lizard brain that says, \"Vacation.\" So let the cares of this world roll away. Heck, let the cares of 16th-",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211004",
-  "needsFullText": false
+  "needsFullText": false,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So let the cares of this world roll away",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This is one liberation in which you don't have to lift a finger",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Queens are doing it for themselves",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt uses uplifting, liberating language suggesting the show provides escapist entertainment and empowerment, indicating positive recommendation despite being too brief to assess specific elements. | GPT-4o-mini: The review conveys a positive sentiment about the experience of the show, suggesting a strong recommendation despite lacking specific critiques.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:22:22.488Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

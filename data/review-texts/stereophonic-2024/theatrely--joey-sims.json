@@ -9,8 +9,64 @@
   "isFullReview": true,
   "dtliExcerpt": "For three glorious hours, Stereophonic drops its audience into a unique agony: the pursuit of artistic perfection. David Adjmi's astounding new work, itself near-perfect, captures the wondrous highs and excruciating lows of the creative process with a hilarious, painstaking precision. You'll want to live in this play forever.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T18:00:00.000Z",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 88,
+      "performances": 92,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "David Adjmi's astounding new work, itself near-perfect",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "You'll want to live in this play forever",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "We could hang out with these characters in the Golden forever",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review contains unqualified superlative praise ('astounding', 'near-perfect', 'transcendent') with emotional investment language that signals a rave recommendation despite acknowledging minor flaws. | GPT-4o-mini: The review expresses unqualified enthusiasm for the play's writing, performances, and direction, indicating it as a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:24:58.355Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

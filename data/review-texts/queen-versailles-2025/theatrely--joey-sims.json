@@ -10,8 +10,64 @@
   "dtliExcerpt": "Saddled with an unmemorable score by Stephen Schwartz (Wicked, Pippin) and a confused book by Lindsey Ferrentino (Amy and the Orphans), Versailles glides by as bland bio-musical for much of its excessive runtime, the show's perspective on Siegel meandering confusedly between misplaced sympathy and perverse fascination. That is until both the text and director Michael Arden's staging (crisp up to this point, if sleepy) jolt suddenly to life in the story's final section, as the overall tone shifts abruptly into bitter rage.",
   "bwwExcerpt": "Saddled with an unmemorable score by Stephen Schwartz (Wicked, Pippin) and a confused book by Lindsey Ferrentino (Amy and the Orphans), Versailles glides by as bland bio-musical for much of its excessive runtime, the show's perspective on Siegel meandering confusedly between misplaced sympathy and perverse fascination.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T18:00:00.000Z",
-  "dtliThumb": "Meh"
+  "dtliThumb": "Meh",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 38,
+      "music": 50,
+      "performances": 75,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "this mostly dull work traces Siegel's journey from rags to riches",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Now, that intriguing late turn hardly redeems the plodding narrative that has preceded it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Chenoweth herself is excellent throughout, finding pathos in Siegel's journey without ever sentimentalizing",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show 'mostly dull' and 'plodding' with only an 'intriguing late turn' that 'hardly redeems' the preceding narrative, making it difficult to recommend despite praising Chenoweth's performance. | GPT-4o-mini: The review highlights significant flaws in the book and overall execution, but acknowledges strong performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:21:06.485Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

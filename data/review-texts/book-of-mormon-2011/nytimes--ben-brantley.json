@@ -10,10 +10,66 @@
   "dtliExcerpt": "This is to all the doubters and deniers out there, the ones who say that heaven on Broadway does not exist, that it's only some myth our ancestors dreamed up. I am here to report that a newborn, old-fashioned, pleasure-giving musical has arrived at the Eugene O'Neill Theater, the kind our grandparents told us left them walking on air if not on water. So hie thee hence, nonbelievers (and believers too), to \"The Book of Mormon,\" and feast upon its sweetness.",
   "showScoreExcerpt": "CRITIC'S PICK\n\"On my fourth visit on a recent night, the show still had me at “Hello,”...I had anticipated a certain falling off of religious fervor: three years is a long time for a peppy musical to stay peppy. But gosh darn it if I didn’t feel born again all over again, ready to spread the word about the faith that this show preaches and, more importantly practices: the holy faith of musical comedy.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 96,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "dtliThumb": "Up",
   "designation": "Critics_Pick",
-  "bwwExcerpt": "This is to all the doubters and deniers out there, the ones who say that heaven on Broadway does not exist, that it's only some myth our ancestors dreamed up. I am here to report that a newborn, old-fashioned, pleasure-giving musical has arrived at the Eugene O'Neill Theater, the kind our grandparen..."
+  "bwwExcerpt": "This is to all the doubters and deniers out there, the ones who say that heaven on Broadway does not exist, that it's only some myth our ancestors dreamed up. I am here to report that a newborn, old-fashioned, pleasure-giving musical has arrived at the Eugene O'Neill Theater, the kind our grandparen...",
+  "llmScore": {
+    "score": 96,
+    "confidence": "high",
+    "range": {
+      "low": 90.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "heaven on Broadway does not exist, that it's only some myth our ancestors dreamed up. I am here to report that a newborn, old-fashioned, pleasure-giving musical has arrived",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "left them walking on air if not on water",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "So hie thee hence, nonbelievers (and believers too), to 'The Book of Mormon,' and feast upon its sweetness",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified rapturous praise using superlative religious metaphors ('heaven on Broadway') with explicit urgent recommendation to see the show immediately. | GPT-4o-mini: The review expresses unqualified enthusiasm and a strong recommendation to see the musical, indicating it as a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:54:24.122Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 96,
+    "openaiScore": 95,
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

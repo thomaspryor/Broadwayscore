@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Cole Escola’s Oh, Mary! is not just funny: It is dizzyingly, breathtakingly funny, the kind of funny that ambushes your body into uncontained laughter. Stage comedies have become an endangered species in recent decades, and when they do pop up they tend to be the kind of funny that evokes smirks, chuckles or wry smiles of recognition. Not so here: I can’t remember the last time I saw a play that made me laugh, helplessly and loudly, as much as Oh, Mary! did—and my reaction was shared by the rest of the audience, which burst into applause at the end of every scene. Fasten your seatbelts: This 80-minute show is a fast and wild joy ride.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "dizzyingly, breathtakingly funny",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the kind of funny that ambushes your body into uncontained laughter",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Uses superlative language with intense descriptors ('dizzyingly, breathtakingly') and visceral praise about uncontrollable physical response to the comedy, indicating an overwhelming positive experience. | GPT-4o-mini: The review expresses unqualified enthusiasm for the humor of the show, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:18:42.526Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

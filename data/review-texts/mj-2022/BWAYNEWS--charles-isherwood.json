@@ -8,8 +8,64 @@
   "fullText": "“Is it really possible to separate your life from your music?” asks the pesky documentary filmmaker in “MJ,” the Michael Jackson musical at Broadway’s Neil Simon Theatre. The question hangs like a fog of stage smoke over this slickly produced show, as it attempts to weave together both the life and the music — but without quite delving into the more disturbing aspects of the former. (This comes as little surprise, since the musical was produced “by special arrangement with the estate of Michael Jackson.”) This post is for paying subscribers only Subscribe now Already have an account? Sign in Review — MJ — Natasha Katz — Lynn Nottage — Roy Furman — Latitude Link — James L. Nederlander — Quentin Earl Darrington — Peter Nigrini — Paul Tazewell — Gareth Owen — Derek McLane — John Gore Organization — Christopher Wheeldon — Lia Vollack — Jason Michael Webb — Whitney Bashor — Gabriel Ruiz — Antoine L. Smith — Joey Sorge — Raymond Baynard — John Edwards — Ayana George — Kali May Grinder — Apollo Levine — Ryan VanDenBoom — Lamont Walker II — Zelig Williams — Kumiko Yoshii — Sony Music Entertainment — Charles LaPointe — Sony Pictures Entertainment — Myles Frost — Tavon Olds-Sample — Carina-Kay Louchiey — Walter Russell III — Christian Wilson — Devin Trey Campbell — Michelle Mercedes — Kyle Robinson — John Branca — John McClain — Cue to Cue Productions — Naoya Kinoshita — Candy Spelling — Stephen C. Byrd — Sandy Robertson — Ed Walson — Peter W. May — CJ ENM — Martin Bandier — Michael Cassel Group — Albert Nocciolino — Playful Productions — Ken Schur — Willette & Manny Klausner — David Holcenberg — Joe Dulude II Introductory Offer $1/month for 3 months Subscribe Already have an account? Log in",
   "isFullReview": true,
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 48,
   "source": "reviews-json-stub",
   "needsFullText": false,
-  "fetchedAt": "2026-01-23T05:04:09.619Z"
+  "fetchedAt": "2026-01-23T05:04:09.619Z",
+  "llmScore": {
+    "score": 48,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": null,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "The question hangs like a fog of stage smoke over this slickly produced show",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "without quite delving into the more disturbing aspects of the former",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "slickly produced show",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the show's avoidance of Jackson's controversial aspects while acknowledging professional production values, suggesting a conflicted but ultimately disappointing experience. | GPT-4o-mini: The review indicates a lack of depth in exploring the subject matter, leading to a mixed recommendation without strong enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:11:49.125Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

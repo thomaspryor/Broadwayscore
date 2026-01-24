@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Helen J Shen and Darren Criss in 'Maybe Happy Ending' on Broadway Matthew Murphy and Evan Zimmerman It takes a special type of theatrical talent, one loaded with heart and wit and insight, to imbue something that looks like an Apple MagSafe iPhone Charger with more romantic appeal than a decade&#8217;s worth of Valentines Day chocolates, but that&#8217;s just what the creators and performers of the delightful musical Maybe Happy Ending have achieved. Related Stories News 'Hold On To Me Darling' Review: Adam Driver Has The Country Blues In Off Broadway Revival",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:04:02.581Z",
   "dtliThumb": "Up",
-  "bwwExcerpt": "After the amazing firefly scene, and even more spectacularly, a scene in which our lovers’ inner circuits reveals themselves in a heart-stopping, full-stage display of light and sound that explodes from the set’s early, more constricted (if still lovely) aperture approach, Maybe Happy Ending could h..."
+  "bwwExcerpt": "After the amazing firefly scene, and even more spectacularly, a scene in which our lovers’ inner circuits reveals themselves in a heart-stopping, full-stage display of light and sound that explodes from the set’s early, more constricted (if still lovely) aperture approach, Maybe Happy Ending could h...",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": 82,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "buoyed not only by the endearing performances but by a score",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "effectively makes a case that the genre known as Contemporary Musical Theater still has plenty of joy and pleasures to offer",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "showing a flare for comedy and lightheartedness-amid-the-desolation",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Clear positive recommendation with praise for performances, score, and direction, though lacking superlative language that would push it into rave territory. | GPT-4o-mini: The review expresses strong praise for the performances and music while highlighting the director's effective approach, indicating a clear recommendation despite a lack of explicit endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:10:53.382Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

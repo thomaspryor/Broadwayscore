@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "’ which also lampoons history, albeit more cavalierly. Audiences are always receptive to flights into jubilant escapism—perhaps particularly now—and this plucky musical provides it in generous doses. Sara Holdren, Vulture: Operation Mincemeat isn’t exactly blazingly clever—the jokes fly thick and fast, and they tend toward broad grin-crackers rather than breathless zingers—but it overflows with good humor and heartfelt commitment… While some moments certainly sizzle more than others, there’s more than enough sincerity and goofy charisma on stage to keep the show powered. Frank Rizzo, Variety: Though the main characters are played for laughs, each one, amid all the comic chaos, also reveals their own dignity, heart, and humanity. The show also manages to teeter between patriotism and subversiveness: admiring the derring-do of the mission while poking at its shortcomings, too. Having the actors play any gender of any character without camp or winks is a theatrical approach that not only",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "dtli",
   "dtliThumb": "Up",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250320",
-  "needsFullText": false
+  "needsFullText": false,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "some moments certainly sizzle more than others",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "more than enough sincerity and goofy charisma",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "keep the show powered",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges uneven quality but finds sufficient charm and energy to sustain the production, suggesting a qualified positive recommendation. | GPT-4o-mini: The review indicates a generally positive experience with some reservations, suggesting a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:20:54.861Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

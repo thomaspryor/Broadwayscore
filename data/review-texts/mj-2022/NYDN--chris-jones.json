@@ -12,5 +12,61 @@
   "source": "reviews-json-stub",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:04:13.138Z",
-  "bwwExcerpt": "COVID means a lack of tourists, short-term. But the show has all kinds of artistic beauties to offer the artist's global fans. Thanks in no small part to the gorgeous palate created by Derek McLane, Natasha Katz, Paul Tazewell and Peter Nigrini, the show is genuinely beautiful to experience througho..."
+  "bwwExcerpt": "COVID means a lack of tourists, short-term. But the show has all kinds of artistic beauties to offer the artist's global fans. Thanks in no small part to the gorgeous palate created by Derek McLane, Natasha Katz, Paul Tazewell and Peter Nigrini, the show is genuinely beautiful to experience througho...",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 84,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "brilliantly choreographed new Broadway show",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "offers a great rush of adrenaline and excitement, pivotal qualities as Broadway plots its pandemic comeback",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "by far the most visually impressive of any of these other Jackson experiences",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for choreography, performances, and visual spectacle with clear enthusiasm for the production's entertainment value, despite acknowledging controversial subject matter. | GPT-4o-mini: The review highlights strong choreography and performances while acknowledging some controversy and omissions, leading to a solid but not unqualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:11:54.637Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

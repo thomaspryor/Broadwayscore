@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "In its original extended run at the Lortel Theatre earlier this year, Oh, Mary! drew packed houses that one night included Steven Spielberg, Sally Field and Tony Kushner, respectively the director, co-star and screenwriter of Lincoln. The widely circulated backstage photo of the group with Escola in Mary drag no doubt helped spread the word that this was no ordinary lark. The playwright might describe it as stupid, but any comedy that liberates audiences from the despair of the current political climate with 80 minutes of almost uninterrupted laughter is a work of genius.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "80 minutes of almost uninterrupted laughter",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "liberates audiences from the despair of the current political climate",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a work of genius",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic calls the show 'a work of genius' and describes it as delivering '80 minutes of almost uninterrupted laughter' that serves as audience liberation, indicating strong enthusiasm and clear recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the comedy's ability to provide joy and laughter, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:18:13.599Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "A new generation of cats just took over Broadway. Simply said, Julie Taymor’s staging of Disney’s The Lion King is a marvel, a theatrical achievement unrivaled in its beauty, brains and ingenuity. Leaping far beyond its celluloid inspiration, the stage version improves upon nearly every aspect of the hit 1994 animated film, from visual artistry and storytelling to Lebo M’s score and the newly African-ized pop songs of Elton John and Tim Rice. With this production, the Walt Disney Co. stages itself as a serious and ambitious contender on the legit scene, all but demanding that its first theatrical foray, 1994′s too-literally adapted Beauty and the Beast, was little more than a warm-up.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "Up",
-  "urlUpdated": "2026-01-23T05:32:03.466Z"
+  "urlUpdated": "2026-01-23T05:32:03.466Z",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": null,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "a theatrical achievement unrivaled in its beauty, brains and ingenuity",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Simply said, Julie Taymor's staging of Disney's The Lion King is a marvel",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "improves upon nearly every aspect of the hit 1994 animated film",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified superlatives like 'marvel,' 'unrivaled,' and 'theatrical achievement' combined with praise for improving on source material indicate genuine rave enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its superiority over the original film and praising its artistic achievements.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:28:30.697Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
