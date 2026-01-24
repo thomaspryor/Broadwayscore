@@ -15,9 +15,14 @@
     "reviews:all": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts --all",
     "reviews:status": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/status.ts",
     "reviews:validate": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/validate.ts",
-    "reviews:verify": "npx ts-node --project scripts/tsconfig.json scripts/verify-reviews.ts"
+    "llm:score": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts",
+    "llm:score:show": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --show",
+    "llm:score:all": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --all",
+    "llm:calibrate": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --calibrate-only",
+    "llm:validate": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --validate-only"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
     "next": "14.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
@@ -29,9 +34,12 @@
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.3",
+    "jsdom": "^27.4.0",
+    "playwright": "^1.58.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.4.5"
   }
 }
