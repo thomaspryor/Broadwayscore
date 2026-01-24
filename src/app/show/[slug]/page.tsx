@@ -164,6 +164,14 @@ function GlobeIcon() {
   );
 }
 
+function TicketIcon() {
+  return (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+    </svg>
+  );
+}
+
 // Format pill - outline style
 function FormatPill({ type }: { type: string }) {
   const isMusical = type === 'musical' || type === 'revival';
@@ -509,24 +517,42 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           />
         )}
 
-        {/* Action Buttons */}
-        {(show.ticketLinks?.length || show.officialUrl || show.trailerUrl) && (
-          <div className="flex flex-wrap gap-3 mb-8">
-            {/* Ticket Links */}
-            {show.ticketLinks?.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary flex items-center gap-2"
-              >
-                {link.platform}
-                {link.priceFrom && <span className="opacity-80">from ${link.priceFrom}</span>}
-                <ExternalLinkIcon />
-              </a>
-            ))}
+        {/* Ticket Buttons - Prominent CTA */}
+        {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && (
+          <div className="card p-4 sm:p-5 mb-6 bg-gradient-to-r from-brand/10 to-purple-500/10 border-brand/20">
+            <div className="flex items-center gap-2 mb-3">
+              <TicketIcon />
+              <h2 className="text-sm font-semibold text-white uppercase tracking-wide">Get Tickets</h2>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {show.ticketLinks.map((link, i) => (
+                <a
+                  key={i}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold transition-all ${
+                    i === 0
+                      ? 'bg-gradient-brand text-white hover:shadow-glow-sm hover:scale-[1.02] active:scale-[0.98]'
+                      : 'bg-surface-overlay hover:bg-white/10 text-gray-200 hover:text-white border border-white/10'
+                  }`}
+                >
+                  <span>{link.platform}</span>
+                  {link.priceFrom && (
+                    <span className={i === 0 ? 'opacity-90 text-sm' : 'text-gray-400 text-sm'}>
+                      from ${link.priceFrom}
+                    </span>
+                  )}
+                  <ExternalLinkIcon />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
 
+        {/* Other Action Buttons */}
+        {(show.officialUrl || show.trailerUrl) && (
+          <div className="flex flex-wrap gap-3 mb-8">
             {/* Official Website */}
             {show.officialUrl && (
               <a
