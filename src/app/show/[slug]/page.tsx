@@ -334,26 +334,40 @@ function CriticScoreSection({ score, reviewCount, reviews }: { score: number; re
     <section className="card p-5 sm:p-6 mb-6" aria-labelledby="critic-score-heading">
       <div className="flex items-start gap-4 sm:gap-6 mb-4">
         {/* Large Score Badge */}
-        <div
-          className={`w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}
-          role="meter"
-          aria-valuenow={roundedScore}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-label={`Critic Score: ${roundedScore} out of 100 - ${sentimentLabel}`}
-        >
-          <span className="text-4xl sm:text-5xl font-extrabold" aria-hidden="true">{roundedScore}</span>
-        </div>
+        {showTBD ? (
+          <div
+            className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex items-center justify-center flex-shrink-0 bg-surface-overlay text-gray-400 border border-white/10"
+            role="status"
+            aria-label="Score to be determined - fewer than 5 reviews"
+          >
+            <span className="text-3xl sm:text-4xl font-extrabold" aria-hidden="true">TBD</span>
+          </div>
+        ) : (
+          <div
+            className={`w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}
+            role="meter"
+            aria-valuenow={roundedScore}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`Critic Score: ${roundedScore} out of 100 - ${sentimentLabel}`}
+          >
+            <span className="text-4xl sm:text-5xl font-extrabold" aria-hidden="true">{roundedScore}</span>
+          </div>
+        )}
 
         {/* Critic Score Label and Sentiment */}
         <div className="flex-1 pt-1">
           <h2 id="critic-score-heading" className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Critic Score</h2>
-          <div className={`text-lg sm:text-xl font-bold ${colorClass}`}>{sentimentLabel}</div>
+          {showTBD ? (
+            <div className="text-lg sm:text-xl font-bold text-gray-400">Awaiting Reviews</div>
+          ) : (
+            <div className={`text-lg sm:text-xl font-bold ${colorClass}`}>{sentimentLabel}</div>
+          )}
           <a
             href="#critic-reviews"
             className="text-sm text-gray-500 hover:text-brand transition-colors mt-1 inline-block"
           >
-            Based on {reviewCount} Critic Review{reviewCount !== 1 ? 's' : ''}
+            Based on {reviewCount} Critic Review{reviewCount !== 1 ? 's' : ''}{showTBD ? ' (5+ needed)' : ''}
           </a>
         </div>
       </div>
@@ -605,7 +619,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </div>
             {show.closingDate && (
               <div>
-                <dt className="text-gray-500">Closes</dt>
+                <dt className="text-gray-500">{show.status === 'closed' ? 'Closed' : 'Closes'}</dt>
                 <dd className="text-white mt-0.5">{formatDate(show.closingDate)}</dd>
               </div>
             )}

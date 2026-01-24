@@ -8,12 +8,21 @@ type SortField = 'criticScore' | 'title' | 'openingDate';
 type SortDirection = 'asc' | 'desc';
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews';
 
-function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm' | 'md' | 'lg' }) {
+function ScoreBadge({ score, size = 'md', reviewCount }: { score?: number | null; size?: 'sm' | 'md' | 'lg'; reviewCount?: number }) {
   const sizeClass = {
     sm: 'w-11 h-11 text-lg rounded-lg',
     md: 'w-14 h-14 text-2xl rounded-xl',
     lg: 'w-16 h-16 text-3xl rounded-xl',
   }[size];
+
+  // Show TBD if fewer than 5 reviews
+  if (reviewCount !== undefined && reviewCount < 5) {
+    return (
+      <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`}>
+        TBD
+      </div>
+    );
+  }
 
   if (score === undefined || score === null) {
     return (
@@ -24,7 +33,19 @@ function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm'
   }
 
   const roundedScore = Math.round(score);
-  const colorClass = roundedScore >= 70 ? 'score-high' : roundedScore >= 50 ? 'score-medium' : 'score-low';
+  let colorClass: string;
+
+  if (roundedScore >= 85) {
+    colorClass = 'score-high ring-2 ring-accent-gold/50';
+  } else if (roundedScore >= 75) {
+    colorClass = 'score-high';
+  } else if (roundedScore >= 65) {
+    colorClass = 'score-medium';
+  } else if (roundedScore >= 55) {
+    colorClass = 'bg-orange-500 text-white';
+  } else {
+    colorClass = 'score-low';
+  }
 
   return (
     <div className={`score-badge ${sizeClass} ${colorClass} font-bold`}>
@@ -149,7 +170,9 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
           {show.limitedRun && <LimitedRunBadge />}
           {!hideStatus && <StatusBadge status={show.status} />}
           <span className="text-[10px] text-gray-500">
-            Opened {formatOpeningDate(show.openingDate)}
+            {show.status === 'closed' && show.closingDate
+              ? `Closed ${formatOpeningDate(show.closingDate)}`
+              : `Opened ${formatOpeningDate(show.openingDate)}`}
           </span>
         </div>
       </div>
