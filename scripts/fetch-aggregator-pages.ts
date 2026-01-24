@@ -223,36 +223,47 @@ async function fetchBwwRoundup(page: Page, showId: string, shows: Record<string,
     return { showId, aggregator: 'bww-rr', success: false, error: 'Show not found in shows.json' };
   }
 
-  // BWW review roundups are articles, need to search for them
-  const searchTerms = `${show.title} review roundup site:broadwayworld.com`;
+  // Use BWW's internal search instead of Google (Google blocks headless browsers)
+  const searchQuery = `${show.title} review roundup`;
+  const searchUrl = `https://www.broadwayworld.com/search/?q=${encodeURIComponent(searchQuery)}&searchtype=articles`;
 
   try {
-    // Use Google search to find the review roundup page
-    await page.goto(`https://www.google.com/search?q=${encodeURIComponent(searchTerms)}`, { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(2000);
+    await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.waitForTimeout(3000);
 
-    // Find first BWW link that looks like a review roundup
-    const bwwLinks = page.locator('a[href*="broadwayworld.com"][href*="review"]');
+    // Look for review roundup link in search results
+    // BWW search results have links with "Review-Roundup" in the URL
+    const roundupLinks = page.locator('a[href*="Review-Roundup"]');
 
-    if (await bwwLinks.count() === 0) {
-      return { showId, aggregator: 'bww-rr', success: false, error: 'No review roundup found via search' };
+    if (await roundupLinks.count() === 0) {
+      // Try broader search for any review article
+      const reviewLinks = page.locator('a[href*="broadwayworld.com/article/"][href*="Review"]');
+      if (await reviewLinks.count() === 0) {
+        return { showId, aggregator: 'bww-rr', success: false, error: 'No review roundup found in BWW search' };
+      }
+      // Use first review link as fallback
+      const href = await reviewLinks.first().getAttribute('href');
+      if (!href) {
+        return { showId, aggregator: 'bww-rr', success: false, error: 'Could not extract URL from search results' };
+      }
+      await page.goto(href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    } else {
+      // Click the first review roundup link
+      const href = await roundupLinks.first().getAttribute('href');
+      if (!href) {
+        return { showId, aggregator: 'bww-rr', success: false, error: 'Could not extract review roundup URL' };
+      }
+      await page.goto(href, { waitUntil: 'domcontentloaded', timeout: 30000 });
     }
 
-    const href = await bwwLinks.first().getAttribute('href');
-    if (!href) {
-      return { showId, aggregator: 'bww-rr', success: false, error: 'Could not extract URL' };
-    }
-
-    // Navigate to the actual BWW page
-    await page.goto(href, { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForTimeout(2000);
 
     const finalUrl = page.url();
     const html = await page.content();
 
-    // Verify it's a review roundup article
-    if (!html.includes('broadwayworld') || (!html.includes('review') && !html.includes('Review'))) {
-      return { showId, aggregator: 'bww-rr', success: false, error: 'Page does not appear to be a review roundup' };
+    // Verify it's a BWW article page
+    if (!html.includes('broadwayworld') || !finalUrl.includes('/article/')) {
+      return { showId, aggregator: 'bww-rr', success: false, error: 'Page does not appear to be a BWW article' };
     }
 
     saveHtml('bww-rr', showId, html, show.title, finalUrl);
