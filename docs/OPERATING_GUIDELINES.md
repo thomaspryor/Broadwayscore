@@ -1,194 +1,228 @@
 # Operating Guidelines for Broadway Scorecard Sessions
 
-These guidelines apply to all Claude Code sessions working on this project.
+These guidelines apply to ALL Claude Code sessions working on this project.
 
-## Core Principles
+---
 
-### 1. Use Sub-Agents Liberally
+## 1. USE SUB-AGENTS LIBERALLY
 
-Parallelize work whenever possible:
+Sub-agents are cheap. Use them aggressively for parallel work.
 
+**Always parallelize independent operations:**
 ```
-GOOD: Launch 3 sub-agents to scrape 3 different aggregators simultaneously
-BAD: Scrape aggregators one at a time, waiting for each to complete
+GOOD: Fetching 3 aggregators (DTLI, Show-Score, BWW) = 3 parallel agents
+BAD:  Fetching aggregators sequentially, waiting for each to complete
 ```
 
-When to use sub-agents:
-- Multiple independent data fetches
-- Parallel file processing
-- Concurrent validation tasks
-- Any I/O-bound operations that don't depend on each other
+**When to use sub-agents:**
+- Multiple web fetches (each aggregator = separate agent)
+- Batch file processing (split shows into groups)
+- Parallel validation tasks
+- Any I/O-bound work that doesn't depend on prior results
 
-### 2. Self-Verification Checklist
+**Example pattern:**
+```
+Task: Gather reviews for 10 shows from 3 sources
 
-Before completing any session, verify:
+Launch:
+  - Agent 1: Fetch DTLI for all 10 shows
+  - Agent 2: Fetch Show-Score for all 10 shows
+  - Agent 3: Fetch BWW for all 10 shows
 
-- [ ] JSON files are valid (parse without errors)
-- [ ] TypeScript compiles: `npx tsc --noEmit`
-- [ ] Build passes: `npm run build`
-- [ ] New files follow naming conventions
-- [ ] IDs follow canonical format
-- [ ] No hardcoded credentials or secrets
+All 3 run simultaneously. 3x faster than sequential.
+```
 
-Spot-check examples:
-- Read 2-3 generated files to verify structure
-- Validate a sample review ID against the show it references
-- Confirm URLs are valid and accessible
+---
 
-### 3. Operate Autonomously
+## 2. CHECK YOUR WORK REGULARLY
 
-**Make reasonable decisions without asking:**
-- Data format choices within established conventions
-- Error handling strategies
-- File organization within defined directories
-- Retry counts and timing
+### Validate JSON after writing
+```typescript
+// Always verify JSON is valid before moving on
+const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+```
 
-**Do ask when:**
-- Changing scoring methodology
-- Adding new data sources
-- Modifying published API contracts
-- Making breaking changes to data schema
-- Anything affecting user-facing behavior
+### Spot-check 2-3 examples per batch
+- Read generated files to verify structure
+- Confirm review IDs reference valid shows
+- Check URLs are accessible
+
+### Run build before pushing
+```bash
+npm run build  # Must pass
+```
+
+### Cross-reference against sources
+- Compare review counts: our data vs aggregator claims
+- Verify critic names match across sources
+- Flag discrepancies for investigation
+
+---
+
+## 3. OPERATE AUTONOMOUSLY
+
+### DO NOT ask permission for:
+- ✅ File changes within your scope (your assigned directories)
+- ✅ Implementation choices (how to parse, what format to use)
+- ✅ Fixing bugs you discover
+- ✅ Commits and pushes
+- ✅ Retrying with different approaches when first attempt fails
+- ✅ Adding error handling or logging
+- ✅ Choosing between equivalent valid options
+
+### DO ask for:
+- ❓ Changing `src/types/canonical.ts` (affects all sessions)
+- ❓ Deleting data files (irreversible)
+- ❓ When blocked after 3+ attempts at different approaches
+- ❓ Changing scoring methodology
+- ❓ Adding new data sources not in the plan
+- ❓ Breaking changes to existing schemas
 
 **When in doubt:** Make the conservative choice, document your reasoning, and continue.
 
-### 4. Error Handling Strategy
+---
 
-**For transient errors (network, rate limits):**
-1. Retry up to 4 times with exponential backoff
-2. Log the error with context
-3. Continue with other work
-4. Summarize failures at end of session
+## 4. HANDLE ERRORS GRACEFULLY
 
+### Retry 4x with fallbacks
 ```typescript
-// Example retry pattern
 async function fetchWithRetry(url: string, maxRetries = 4): Promise<Response | null> {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const response = await fetch(url);
       if (response.ok) return response;
+
+      // Rate limited - wait and retry
       if (response.status === 429) {
         await sleep(Math.pow(2, attempt) * 1000);
         continue;
       }
+
+      // Permanent failure - try fallback
+      if (response.status === 403) {
+        return tryFallbackSource(url);
+      }
     } catch (error) {
-      console.log(`Attempt ${attempt} failed: ${error.message}`);
+      console.log(`Attempt ${attempt}/${maxRetries} failed: ${error.message}`);
       if (attempt < maxRetries) {
         await sleep(Math.pow(2, attempt) * 1000);
       }
     }
   }
-  return null;
+  return null;  // Give up, but don't throw
 }
 ```
 
-**For permanent errors (404, missing data):**
-1. Log the error
-2. Skip that item
-3. Continue with other work
-4. Report in final summary
+### Log failures, continue with remaining work
+```typescript
+const results = { success: [], failed: [] };
+
+for (const show of shows) {
+  try {
+    const data = await fetchShowData(show);
+    results.success.push(show.id);
+  } catch (error) {
+    results.failed.push({ id: show.id, error: error.message });
+    // Continue with next show - don't stop
+  }
+}
+```
+
+### Summarize issues at end
+```
+Session complete.
+✅ Processed: 18 shows
+❌ Failed: 2 shows
+   - hamilton-2015: 403 Forbidden (site blocking)
+   - wicked-2003: Timeout after 4 retries
+
+Next steps: Manual intervention needed for failed shows.
+```
 
 **Never:**
-- Silently swallow errors
+- Stop all work because one item failed
+- Silently swallow errors (always log)
 - Retry indefinitely
-- Let one failure stop all work
 
-### 5. Commit and Push Frequently
+---
 
-Commit after each logical unit of work:
-- After adding/updating data for a single show
+## 5. DATA INTEGRITY FIRST
+
+### Validate against schema before saving
+```typescript
+import { Review } from '@/types/canonical';
+
+function saveReview(review: unknown): void {
+  // Validate required fields
+  if (!review.id || !review.showId || !review.outletId) {
+    throw new Error(`Invalid review: missing required fields`);
+  }
+
+  // Validate score range
+  if (review.assignedScore < 0 || review.assignedScore > 100) {
+    throw new Error(`Invalid score: ${review.assignedScore}`);
+  }
+
+  // Only save if valid
+  fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
+}
+```
+
+### Never write invalid or partial data
+- If extraction fails mid-way, don't save partial results
+- Use atomic writes (write to temp file, then rename)
+- Validate JSON can be parsed back after writing
+
+### Preserve existing data
+- Read existing file before overwriting
+- Merge new data with existing, don't replace
+- Keep backup of previous version if making significant changes
+
+---
+
+## 6. COMMIT & PUSH FREQUENTLY
+
+### Commit after each logical unit
+- After processing each show
 - After completing a batch of similar operations
 - Before switching to a different type of task
-- At minimum every 10-15 minutes of active work
 
-Commit message format:
+### Push every 3-5 commits
+```bash
+# Pattern:
+git add <files>
+git commit -m "feat: Add reviews for show-name"
+# ... repeat 3-5 times ...
+git push
 ```
-feat: Brief description of what was added
 
-- Specific detail 1
-- Specific detail 2
+### Commit message format
+```
+feat: Brief description
+
+- Detail 1
+- Detail 2
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 ```
 
-Categories:
+**Categories:**
 - `feat:` - New features or data
 - `fix:` - Bug fixes
 - `refactor:` - Code restructuring
-- `docs:` - Documentation changes
-- `chore:` - Maintenance tasks
+- `docs:` - Documentation
+- `chore:` - Maintenance
 
-### 6. Session Reporting
+---
 
-At the end of each session, summarize:
+## Session End Checklist
 
-1. **What was completed:**
-   - Files created/modified
-   - Shows processed
-   - Reviews added
+Before ending any session:
 
-2. **What failed (if anything):**
-   - URLs that couldn't be accessed
-   - Data that couldn't be parsed
-   - Shows that need manual attention
-
-3. **What's next:**
-   - Remaining work for future sessions
-   - Dependencies on other sessions
-   - Blockers identified
-
-## Data Quality Standards
-
-### Review Data
-
-Every review should have:
-- Valid show ID (exists in shows.json)
-- Valid outlet ID (from outlets.ts or UNKNOWN)
-- URL that resolves (or note if broken)
-- Assigned score 0-100
-- At least one of: originalRating, bucket, or thumb
-
-### Aggregator Data
-
-Every aggregator fetch should:
-- Archive the raw HTML
-- Extract structured data
-- Note the fetch timestamp
-- Flag any parsing errors
-
-### LLM Scores
-
-Every LLM score should:
-- Include the model used
-- Include confidence level
-- Include reasoning
-- Be reproducible with same prompt version
-
-## Performance Guidelines
-
-### Parallel Operations
-- Maximum 5 concurrent web requests
-- Maximum 10 concurrent file operations
-- Use batching for large datasets
-
-### Resource Limits
-- Don't load entire data files into memory unnecessarily
-- Stream large files when possible
-- Clean up temporary files
-
-### Rate Limiting
-- Respect robots.txt
-- Add delays between requests to same domain (1-2 seconds)
-- Use caching for repeated lookups
-
-## Security
-
-### Never commit:
-- API keys or secrets
-- User credentials
-- Personal information
-- Paywalled content verbatim
-
-### Always:
-- Use environment variables for secrets
-- Sanitize user input
-- Validate URLs before fetching
-- Check file paths for traversal attacks
+- [ ] All JSON files parse without errors
+- [ ] TypeScript compiles: `npx tsc --noEmit`
+- [ ] Build passes: `npm run build`
+- [ ] All changes committed and pushed
+- [ ] Summary of completed work provided
+- [ ] Failed items documented with reasons
+- [ ] Next steps identified for follow-up
