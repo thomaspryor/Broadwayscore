@@ -19,7 +19,9 @@
     "llm:score:show": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --show",
     "llm:score:all": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --all",
     "llm:calibrate": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --calibrate-only",
-    "llm:validate": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --validate-only"
+    "llm:validate": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --validate-only",
+    "llm:evaluate": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/evaluate.ts",
+    "llm:status": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/status.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
