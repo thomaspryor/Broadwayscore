@@ -257,7 +257,7 @@ const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: strin
   'musicals': {
     title: 'Best Broadway Musicals',
     description: 'The highest-rated musicals currently playing on Broadway, ranked by critic scores.',
-    filter: (show) => show.type === 'musical' && show.status === 'open',
+    filter: (show) => (show.type === 'musical' || show.type === 'revival') && show.status === 'open',
   },
   'plays': {
     title: 'Best Broadway Plays',
@@ -336,6 +336,26 @@ export function getBestOfList(category: BestOfCategory): BestOfList | undefined 
  */
 export function getAllBestOfCategories(): BestOfCategory[] {
   return Object.keys(BEST_OF_CONFIG) as BestOfCategory[];
+}
+
+/**
+ * Get upcoming shows (in previews or recently opened)
+ */
+export function getUpcomingShows(): ComputedShow[] {
+  const allShows = getAllShows();
+  const threeMonthsAgo = new Date();
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+
+  return allShows
+    .filter(show => {
+      // Shows in previews
+      if (show.status === 'previews') return true;
+      // Shows that opened within last 3 months
+      const openDate = new Date(show.openingDate);
+      return show.status === 'open' && openDate >= threeMonthsAgo;
+    })
+    .sort((a, b) => new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime())
+    .slice(0, 8);
 }
 
 // ============================================

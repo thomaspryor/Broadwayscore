@@ -1,13 +1,52 @@
 'use client';
 
-import { useState, useMemo, memo } from 'react';
+import { useMemo, memo, useCallback, Suspense } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { getAllShows, ComputedShow, getDataStats } from '@/lib/data';
 
-type SortField = 'criticScore' | 'title' | 'openingDate';
-type SortDirection = 'asc' | 'desc';
+// URL parameter values
+type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'all';
+type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'closing_soon';
+type TypeParam = 'all' | 'musical' | 'play';
+
+// Internal filter values
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews';
-type TypeFilter = 'all' | 'musicals' | 'plays';
+
+// Defaults
+const DEFAULT_STATUS: StatusParam = 'now_playing';
+const DEFAULT_SORT: SortParam = 'recent';
+const DEFAULT_TYPE: TypeParam = 'all';
+
+// Map URL params to internal values
+const statusParamToFilter: Record<StatusParam, StatusFilter> = {
+  now_playing: 'open',
+  closed: 'closed',
+  upcoming: 'previews',
+  all: 'all',
+};
+
+// Labels for display in filter chips
+const statusLabels: Record<StatusParam, string> = {
+  now_playing: 'Now Playing',
+  closed: 'Closed',
+  upcoming: 'Upcoming',
+  all: 'All',
+};
+
+const sortLabels: Record<SortParam, string> = {
+  recent: 'Recently Opened',
+  score_desc: 'Highest Rated',
+  score_asc: 'Lowest Rated',
+  alpha: 'A-Z',
+  closing_soon: 'Closing Soon',
+};
+
+const typeLabels: Record<TypeParam, string> = {
+  all: 'All',
+  musical: 'Musicals',
+  play: 'Plays',
+};
 
 function ScoreBadge({ score, size = 'md', reviewCount }: { score?: number | null; size?: 'sm' | 'md' | 'lg'; reviewCount?: number }) {
   const sizeClass = {
@@ -114,6 +153,24 @@ function LimitedRunBadge() {
   );
 }
 
+// Filter chip with remove button
+function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }) {
+  return (
+    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-brand/20 text-brand">
+      {label}
+      <button
+        onClick={onRemove}
+        className="ml-0.5 hover:bg-brand/30 rounded-full p-0.5 transition-colors"
+        aria-label={`Remove ${label} filter`}
+      >
+        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </span>
+  );
+}
+
 // Use UTC-based formatting to avoid timezone-related hydration mismatch
 function formatOpeningDate(dateStr: string): string {
   const date = new Date(dateStr);
@@ -191,12 +248,60 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
   );
 });
 
-export default function HomePage() {
-  const [sortField, setSortField] = useState<SortField>('criticScore');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>('open');
-  const [typeFilter, setTypeFilter] = useState<TypeFilter>('all');
-  const [searchQuery, setSearchQuery] = useState('');
+// Inner component that uses searchParams
+function HomePageInner() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Parse URL params with defaults
+  const statusParam = (searchParams.get('status') as StatusParam) || DEFAULT_STATUS;
+  const sortParam = (searchParams.get('sort') as SortParam) || DEFAULT_SORT;
+  const typeParam = (searchParams.get('type') as TypeParam) || DEFAULT_TYPE;
+  const searchQuery = searchParams.get('q') || '';
+
+  // Validate params (use default if invalid)
+  const status: StatusParam = ['now_playing', 'closed', 'upcoming', 'all'].includes(statusParam) ? statusParam : DEFAULT_STATUS;
+  const sort: SortParam = ['recent', 'score_desc', 'score_asc', 'alpha', 'closing_soon'].includes(sortParam) ? sortParam : DEFAULT_SORT;
+  const type: TypeParam = ['all', 'musical', 'play'].includes(typeParam) ? typeParam : DEFAULT_TYPE;
+
+  // Internal status filter value
+  const statusFilter = statusParamToFilter[status];
+
+  // Update URL helper
+  const updateParams = useCallback((updates: Record<string, string | null>) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    for (const [key, value] of Object.entries(updates)) {
+      if (value === null) {
+        params.delete(key);
+      } else {
+        // Don't include default values in URL
+        const isDefault =
+          (key === 'status' && value === DEFAULT_STATUS) ||
+          (key === 'sort' && value === DEFAULT_SORT) ||
+          (key === 'type' && value === DEFAULT_TYPE) ||
+          (key === 'q' && value === '');
+
+        if (isDefault) {
+          params.delete(key);
+        } else {
+          params.set(key, value);
+        }
+      }
+    }
+
+    const paramString = params.toString();
+    router.push(paramString ? `${pathname}?${paramString}` : pathname, { scroll: false });
+  }, [searchParams, pathname, router]);
+
+  // Check if any non-default filters are active
+  const hasActiveFilters = status !== DEFAULT_STATUS || sort !== DEFAULT_SORT || type !== DEFAULT_TYPE || searchQuery !== '';
+
+  // Clear all filters
+  const clearAllFilters = useCallback(() => {
+    router.push(pathname, { scroll: false });
+  }, [pathname, router]);
 
   const shows = useMemo(() => getAllShows(), []);
 
@@ -204,18 +309,20 @@ export default function HomePage() {
     // Only include shows with reviews
     let result = shows.filter(show => show.criticScore && show.criticScore.reviewCount > 0);
 
+    // Status filter
     if (statusFilter !== 'all') {
       result = result.filter(show => show.status === statusFilter);
     }
 
-    if (typeFilter !== 'all') {
-      if (typeFilter === 'musicals') {
-        result = result.filter(show => show.type === 'musical' || show.type === 'revival');
-      } else if (typeFilter === 'plays') {
-        result = result.filter(show => show.type === 'play');
-      }
+    // Type filter
+    if (type !== 'all') {
+      result = result.filter(show => {
+        const isMusical = show.type === 'musical' || show.type === 'revival';
+        return type === 'musical' ? isMusical : !isMusical;
+      });
     }
 
+    // Search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(show =>
@@ -224,47 +331,32 @@ export default function HomePage() {
       );
     }
 
+    // Sort
     result.sort((a, b) => {
-      let aVal: string | number | null;
-      let bVal: string | number | null;
-
-      switch (sortField) {
-        case 'criticScore':
-          aVal = a.criticScore?.score ?? -1;
-          bVal = b.criticScore?.score ?? -1;
-          break;
-        case 'title':
-          aVal = a.title.toLowerCase();
-          bVal = b.title.toLowerCase();
-          break;
-        case 'openingDate':
-          aVal = a.openingDate;
-          bVal = b.openingDate;
-          break;
+      switch (sort) {
+        case 'score_desc':
+          return (b.criticScore?.score ?? -1) - (a.criticScore?.score ?? -1);
+        case 'score_asc':
+          return (a.criticScore?.score ?? -1) - (b.criticScore?.score ?? -1);
+        case 'alpha':
+          return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
+        case 'closing_soon': {
+          // Shows with closing dates first, sorted by closest date
+          const aClose = a.closingDate ? new Date(a.closingDate).getTime() : Infinity;
+          const bClose = b.closingDate ? new Date(b.closingDate).getTime() : Infinity;
+          return aClose - bClose;
+        }
+        case 'recent':
         default:
-          return 0;
+          // Most recent opening date first
+          return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
       }
-
-      if (typeof aVal === 'string' && typeof bVal === 'string') {
-        return sortDirection === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
-      }
-
-      return sortDirection === 'asc' ? (aVal as number) - (bVal as number) : (bVal as number) - (aVal as number);
     });
 
     return result;
-  }, [shows, sortField, sortDirection, statusFilter, typeFilter, searchQuery]);
+  }, [shows, statusFilter, type, searchQuery, sort]);
 
-  const handleSort = (field: SortField) => {
-    if (sortField === field) {
-      setSortDirection(d => d === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortField(field);
-      setSortDirection(field === 'title' ? 'asc' : 'desc');
-    }
-  };
-
-  // Hide status chip when it would be redundant (matches current filter)
+  // Hide status chip when it would be redundant
   const shouldHideStatus = statusFilter !== 'all';
 
   return (
@@ -290,7 +382,7 @@ export default function HomePage() {
           type="search"
           placeholder="Search shows..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => updateParams({ q: e.target.value })}
           className="search-input pl-12 focus-visible:outline-none"
           autoComplete="off"
         />
@@ -298,18 +390,18 @@ export default function HomePage() {
 
       {/* Type Filter Pills */}
       <div className="flex items-center gap-2 mb-4" role="group" aria-label="Filter by type">
-        {(['all', 'musicals', 'plays'] as const).map((type) => (
+        {(['all', 'musical', 'play'] as const).map((t) => (
           <button
-            key={type}
-            onClick={() => setTypeFilter(type)}
-            aria-pressed={typeFilter === type}
+            key={t}
+            onClick={() => updateParams({ type: t })}
+            aria-pressed={type === t}
             className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
-              typeFilter === type
+              type === t
                 ? 'bg-brand text-white shadow-glow-sm'
                 : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
             }`}
           >
-            {type === 'all' ? 'All' : type === 'musicals' ? 'Musicals' : 'Plays'}
+            {t === 'all' ? 'All' : t === 'musical' ? 'Musicals' : 'Plays'}
           </button>
         ))}
       </div>
@@ -317,46 +409,73 @@ export default function HomePage() {
       {/* Status & Sort Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm">
         <div className="flex items-center gap-2" role="group" aria-label="Filter by status">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-500" id="status-filter-label">STATUS</span>
-          {(['open', 'all', 'closed'] as const).map((status) => (
+          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-500">STATUS</span>
+          {(['now_playing', 'all', 'closed'] as const).map((s) => (
             <button
-              key={status}
-              onClick={() => setStatusFilter(status)}
-              aria-pressed={statusFilter === status}
+              key={s}
+              onClick={() => updateParams({ status: s })}
+              aria-pressed={status === s}
               className={`px-2 py-1 rounded transition-colors text-[11px] font-medium uppercase tracking-wider ${
-                statusFilter === status ? 'text-brand' : 'text-gray-400 hover:text-white'
+                status === s ? 'text-brand' : 'text-gray-400 hover:text-white'
               }`}
             >
-              {status === 'all' ? 'ALL' : status === 'open' ? 'NOW PLAYING' : 'CLOSED'}
+              {s === 'all' ? 'ALL' : s === 'now_playing' ? 'NOW PLAYING' : 'CLOSED'}
             </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-2" role="group" aria-label="Sort shows">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-500" id="sort-label">SORT</span>
-          <button
-            onClick={() => handleSort('criticScore')}
-            aria-pressed={sortField === 'criticScore'}
-            className={`px-2 py-1 rounded text-[11px] font-medium uppercase tracking-wider ${sortField === 'criticScore' ? 'text-brand' : 'text-gray-400 hover:text-white'}`}
-          >
-            SCORE {sortField === 'criticScore' && (sortDirection === 'desc' ? '↓' : '↑')}
-          </button>
-          <button
-            onClick={() => handleSort('title')}
-            aria-pressed={sortField === 'title'}
-            className={`px-2 py-1 rounded text-[11px] font-medium uppercase tracking-wider ${sortField === 'title' ? 'text-brand' : 'text-gray-400 hover:text-white'}`}
-          >
-            A-Z {sortField === 'title' && (sortDirection === 'asc' ? '↑' : '↓')}
-          </button>
-          <button
-            onClick={() => handleSort('openingDate')}
-            aria-pressed={sortField === 'openingDate'}
-            className={`px-2 py-1 rounded text-[11px] font-medium uppercase tracking-wider ${sortField === 'openingDate' ? 'text-brand' : 'text-gray-400 hover:text-white'}`}
-          >
-            DATE {sortField === 'openingDate' && (sortDirection === 'desc' ? '↓' : '↑')}
-          </button>
+        <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="Sort shows">
+          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-500">SORT</span>
+          {(['recent', 'score_desc', 'alpha', 'closing_soon'] as const).map((s) => (
+            <button
+              key={s}
+              onClick={() => updateParams({ sort: s })}
+              aria-pressed={sort === s}
+              className={`px-2 py-1 rounded text-[11px] font-medium uppercase tracking-wider transition-colors ${
+                sort === s ? 'text-brand' : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              {s === 'recent' ? 'RECENT' : s === 'score_desc' ? 'TOP RATED' : s === 'alpha' ? 'A-Z' : 'CLOSING SOON'}
+            </button>
+          ))}
         </div>
       </div>
+
+      {/* Active Filter Chips */}
+      {hasActiveFilters && (
+        <div className="flex flex-wrap items-center gap-2 mb-6">
+          {status !== DEFAULT_STATUS && (
+            <FilterChip
+              label={`Status: ${statusLabels[status]}`}
+              onRemove={() => updateParams({ status: null })}
+            />
+          )}
+          {sort !== DEFAULT_SORT && (
+            <FilterChip
+              label={`Sort: ${sortLabels[sort]}`}
+              onRemove={() => updateParams({ sort: null })}
+            />
+          )}
+          {type !== DEFAULT_TYPE && (
+            <FilterChip
+              label={`Type: ${typeLabels[type]}`}
+              onRemove={() => updateParams({ type: null })}
+            />
+          )}
+          {searchQuery && (
+            <FilterChip
+              label={`Search: "${searchQuery}"`}
+              onRemove={() => updateParams({ q: null })}
+            />
+          )}
+          <button
+            onClick={clearAllFilters}
+            className="text-xs text-gray-400 hover:text-white transition-colors ml-2"
+          >
+            Clear all
+          </button>
+        </div>
+      )}
 
       {/* Score Legend */}
       <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-gray-500">
@@ -403,7 +522,7 @@ export default function HomePage() {
               : 'No shows match your current filters.'}
           </p>
           <button
-            onClick={() => { setSearchQuery(''); setStatusFilter('all'); }}
+            onClick={clearAllFilters}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-pill bg-brand/10 text-brand hover:bg-brand/20 transition-colors text-sm font-semibold"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -428,5 +547,34 @@ export default function HomePage() {
         </p>
       </div>
     </div>
+  );
+}
+
+// Main export with Suspense boundary for useSearchParams
+export default function HomePage() {
+  return (
+    <Suspense fallback={
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="mb-8 sm:mb-10">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 tracking-tight">
+            Broadway<span className="text-gradient">MetaScores</span>
+          </h1>
+          <p className="text-gray-400 text-base sm:text-lg">
+            Every show. Every review. One score.
+          </p>
+        </div>
+        <div className="animate-pulse space-y-4">
+          <div className="h-12 bg-surface-overlay rounded-xl"></div>
+          <div className="h-8 bg-surface-overlay rounded w-3/4"></div>
+          <div className="space-y-3">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="h-24 bg-surface-overlay rounded-xl"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    }>
+      <HomePageInner />
+    </Suspense>
   );
 }

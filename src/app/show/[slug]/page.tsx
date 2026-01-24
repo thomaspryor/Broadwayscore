@@ -259,9 +259,9 @@ interface ReviewForBreakdown {
 }
 
 function ScoreBreakdownBar({ reviews }: { reviews: ReviewForBreakdown[] }) {
-  const positive = reviews.filter(r => r.reviewMetaScore >= 70).length;
-  const mixed = reviews.filter(r => r.reviewMetaScore >= 50 && r.reviewMetaScore < 70).length;
-  const negative = reviews.filter(r => r.reviewMetaScore < 50).length;
+  const positive = reviews.filter(r => r.reviewMetaScore >= 65).length;
+  const mixed = reviews.filter(r => r.reviewMetaScore >= 55 && r.reviewMetaScore < 65).length;
+  const negative = reviews.filter(r => r.reviewMetaScore < 55).length;
   const total = reviews.length;
 
   if (total === 0) return null;
