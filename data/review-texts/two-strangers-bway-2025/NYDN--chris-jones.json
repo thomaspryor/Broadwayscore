@@ -10,5 +10,52 @@
   "assignedScore": 58,
   "source": "bww-roundup",
   "needsFullText": false,
-  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20250109"
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20250109",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 52,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "comes dangerously close to cloying sentimentality at times, but Dougal's dry sense of humor and Tutty's first-class delivery prevents the story from ever getting too soupy",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "So while this show held me for Act One with its considerable charm, by Act Two, it was hitting turbulence",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "they begin 'Two Strangers' with real promise",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Critics praise performances and Act One's charm but cite significant structural problems in Act Two and suggest the show should be shorter, indicating mixed reception with conditional interest.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-24T03:53:58.807Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 1731,
+    "outputTokens": 367
+  }
 }
