@@ -3,7 +3,7 @@
 import { useMemo, memo, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { getAllShows, ComputedShow, getDataStats } from '@/lib/data';
+import { getAllShows, ComputedShow, getDataStats, getBestOfList, getUpcomingShows } from '@/lib/data';
 
 // URL parameter values
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'all';
@@ -186,6 +186,14 @@ function SearchIcon() {
   );
 }
 
+function ChevronRightIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+    </svg>
+  );
+}
+
 const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: number; hideStatus: boolean }) {
   const score = show.criticScore?.score;
   const isRevival = show.type === 'revival';
@@ -248,6 +256,67 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
   );
 });
 
+// Compact card for featured rows
+const MiniShowCard = memo(function MiniShowCard({ show }: { show: ComputedShow }) {
+  const score = show.criticScore?.score;
+
+  return (
+    <Link
+      href={`/show/${show.slug}`}
+      className="flex-shrink-0 w-36 sm:w-40 group"
+    >
+      <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[3/4] mb-2">
+        {show.images?.poster || show.images?.thumbnail ? (
+          <img
+            src={show.images.poster || show.images.thumbnail}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl" aria-hidden="true">
+            🎭
+          </div>
+        )}
+        {/* Score overlay */}
+        <div className="absolute bottom-2 right-2">
+          <ScoreBadge score={score} size="sm" reviewCount={show.criticScore?.reviewCount} />
+        </div>
+      </div>
+      <h4 className="font-medium text-white text-sm group-hover:text-brand transition-colors line-clamp-2">
+        {show.title}
+      </h4>
+    </Link>
+  );
+});
+
+// Featured row with horizontal scroll
+function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: ComputedShow[]; viewAllHref?: string }) {
+  if (shows.length === 0) return null;
+
+  return (
+    <section className="mb-8">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-bold text-white">{title}</h2>
+        {viewAllHref && (
+          <Link
+            href={viewAllHref}
+            className="flex items-center gap-1 text-sm text-gray-400 hover:text-brand transition-colors"
+          >
+            See all <ChevronRightIcon />
+          </Link>
+        )}
+      </div>
+      <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+        {shows.map((show) => (
+          <MiniShowCard key={show.id} show={show} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // Inner component that uses searchParams
 function HomePageInner() {
   const searchParams = useSearchParams();
@@ -304,6 +373,11 @@ function HomePageInner() {
   }, [pathname, router]);
 
   const shows = useMemo(() => getAllShows(), []);
+
+  // Featured rows data
+  const bestMusicals = useMemo(() => getBestOfList('musicals')?.shows || [], []);
+  const bestPlays = useMemo(() => getBestOfList('plays')?.shows || [], []);
+  const upcomingShows = useMemo(() => getUpcomingShows(), []);
 
   const filteredAndSortedShows = useMemo(() => {
     // Only include shows with reviews
@@ -370,6 +444,22 @@ function HomePageInner() {
           Every show. Every review. One score.
         </p>
       </div>
+
+      {/* Featured Rows */}
+      <FeaturedRow
+        title="Best Musicals This Season"
+        shows={bestMusicals}
+        viewAllHref="/?type=musical&sort=score_desc"
+      />
+      <FeaturedRow
+        title="Best Plays This Season"
+        shows={bestPlays}
+        viewAllHref="/?type=play&sort=score_desc"
+      />
+      <FeaturedRow
+        title="New & Upcoming"
+        shows={upcomingShows}
+      />
 
       {/* Search */}
       <div id="search" className="relative mb-6 scroll-mt-24" role="search">
