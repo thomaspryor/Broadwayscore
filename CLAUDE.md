@@ -111,8 +111,14 @@ data/
   reviews.json            # Critic reviews with scores and original ratings
   grosses.json            # Box office data (weekly + all-time stats)
   new-shows-pending.json  # Auto-generated: new shows awaiting review data
+  show-score.json         # Show Score aggregator data (audience scores + critic reviews)
+  show-score-urls.json    # URL mapping for Show Score pages
   audience.json           # (Future) Audience scores
   buzz.json               # (Future) Social buzz data
+  aggregator-archive/     # Archived HTML pages from aggregator sites
+    show-score/           # Show Score page archives (*.html)
+    dtli/                 # Did They Like It archives
+    bww-roundups/         # BroadwayWorld review roundups
 ```
 
 ### Show Schema (shows.json)
@@ -269,6 +275,50 @@ Once configured, use the `scrapingbee_get_page_html` tool to fetch aggregator pa
 ```
 
 **Important:** Always cross-check our review count against these 3 aggregators before finalizing a show's reviews.
+
+### Show Score Integration
+
+Show Score is a third aggregator source alongside DTLI and BWW Review Roundups. It provides:
+- **Audience scores** (0-100%) from user ratings
+- **Critic review lists** with outlet, author, date, excerpt, and review URL
+
+**Files:**
+- `data/show-score-urls.json` - Maps 37 show IDs to Show Score URLs
+- `data/show-score.json` - Extracted data (audience scores + critic reviews)
+- `data/aggregator-archive/show-score/*.html` - Archived HTML pages
+- `scripts/extract-show-score-reviews.js` - Extraction script using JSDOM
+
+**Current Status (January 2026):**
+- 22 shows fully extracted with data
+- 15 shows need archive pages fetched
+- 3 shows need pages re-fetched (wrong content: moulin-rouge-2019, mj-2022, and-juliet-2022)
+
+**To fetch missing pages:**
+1. Use Playwright MCP to navigate to Show Score URL
+2. Capture page HTML with `browser_evaluate` → `document.documentElement.outerHTML`
+3. Save to `data/aggregator-archive/show-score/{show-id}.html` with metadata header
+4. Run `node scripts/extract-show-score-reviews.js` to update show-score.json
+
+**Data extracted per show:**
+```json
+{
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/...",
+  "audienceScore": 90,
+  "audienceReviewCount": 334,
+  "criticReviewCount": 17,
+  "criticReviews": [
+    {
+      "outlet": "The New York Times",
+      "author": "Laura Collins-Hughes",
+      "date": "November 20th, 2025",
+      "excerpt": "Critic's Pick: \"The effervescent new musical...\"",
+      "url": "https://www.nytimes.com/..."
+    }
+  ]
+}
+```
+
+**Note:** Show Score paginates critic reviews - only first 8 are in the initial HTML. The `criticReviewCount` reflects the total from the heading (e.g., "Critic Reviews (17)").
 
 ### SEO
 - JSON-LD structured data with ticket offers, cast, ratings
