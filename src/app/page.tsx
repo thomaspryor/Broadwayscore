@@ -236,9 +236,10 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
           {show.limitedRun && <LimitedRunBadge />}
           {!hideStatus && <StatusBadge status={show.status} />}
           <span className="text-[10px] text-gray-500">
-            {show.status === 'closed' && show.closingDate
-              ? `Closed ${formatOpeningDate(show.closingDate)}`
-              : `Opened ${formatOpeningDate(show.openingDate)}`}
+            Opened {formatOpeningDate(show.openingDate)}
+            {show.status === 'closed' && show.closingDate && (
+              <> · Closed {formatOpeningDate(show.closingDate)}</>
+            )}
           </span>
         </div>
       </div>
