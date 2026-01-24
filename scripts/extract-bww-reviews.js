@@ -144,7 +144,9 @@ function extractFromBlogPostings(content, showId) {
 
   for (const scriptMatch of scriptMatches) {
     try {
-      const json = JSON.parse(scriptMatch[1]);
+      // Remove control characters that break JSON parsing
+      const cleanedJson = scriptMatch[1].replace(/[\x00-\x1F\x7F]/g, ' ');
+      const json = JSON.parse(cleanedJson);
 
       // Check if this is a BlogPosting (individual review)
       if (json['@type'] === 'BlogPosting' && json.author) {
@@ -201,7 +203,9 @@ function extractReviewsFromFile(filePath, showId) {
   const jsonMatch = content.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   if (jsonMatch) {
     try {
-      const json = JSON.parse(jsonMatch[1]);
+      // Remove control characters that break JSON parsing
+      const cleanedJson = jsonMatch[1].replace(/[\x00-\x1F\x7F]/g, ' ');
+      const json = JSON.parse(cleanedJson);
       const articleBody = json.articleBody;
       const publishDate = json.datePublished;
       if (articleBody) {
