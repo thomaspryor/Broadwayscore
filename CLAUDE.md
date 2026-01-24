@@ -109,6 +109,7 @@ Each review has:
 data/
   shows.json              # Show metadata with full details
   reviews.json            # Critic reviews with scores and original ratings
+  grosses.json            # Box office data (weekly + all-time stats)
   new-shows-pending.json  # Auto-generated: new shows awaiting review data
   audience.json           # (Future) Audience scores
   buzz.json               # (Future) Social buzz data
@@ -127,12 +128,54 @@ data/
 }
 ```
 
+### Grosses Schema (grosses.json)
+```typescript
+{
+  lastUpdated: string,           // ISO timestamp
+  weekEnding: string,            // e.g., "1/18/2026"
+  shows: {
+    [slug: string]: {
+      thisWeek?: {               // Only for currently running shows
+        gross: number | null,
+        grossPrevWeek: number | null,
+        grossYoY: number | null,
+        capacity: number | null,
+        capacityPrevWeek: number | null,
+        capacityYoY: number | null,      // Not available from BWW
+        atp: number | null,              // Average Ticket Price
+        atpPrevWeek: number | null,      // Not available from BWW
+        atpYoY: number | null,           // Not available from BWW
+        attendance: number | null,
+        performances: number | null
+      },
+      allTime: {                 // Available for all shows including closed
+        gross: number | null,
+        performances: number | null,
+        attendance: number | null
+      },
+      lastUpdated?: string
+    }
+  }
+}
+```
+
+**Data availability from BroadwayWorld:**
+- ✅ Gross: current, prev week, YoY
+- ✅ Capacity: current, prev week
+- ❌ Capacity YoY: not provided
+- ✅ ATP: current only
+- ❌ ATP prev week/YoY: not provided
+- ✅ All-time stats: gross, performances, attendance (all shows)
+
 ## Key Files
 - `src/lib/engine.ts` - Scoring engine + TypeScript interfaces
-- `src/lib/data.ts` - Data loading layer
+- `src/lib/data.ts` - Data loading layer (includes grosses data functions)
 - `src/app/page.tsx` - Homepage with show grid
 - `src/app/show/[slug]/page.tsx` - Individual show pages
 - `src/config/scoring.ts` - Scoring rules, tier weights, outlet mappings
+- `src/components/BoxOfficeStats.tsx` - Box office stats display component
+- `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses scraper (Playwright)
+- `scripts/scrape-alltime.ts` - BroadwayWorld all-time stats scraper (Playwright)
 
 ## Automation (GitHub Actions)
 
@@ -149,6 +192,13 @@ All automation runs via GitHub Actions - no local commands needed.
 ### `.github/workflows/fetch-images.yml`
 - **Runs:** When triggered
 - **Does:** Fetches show images from TodayTix CDN
+
+### `.github/workflows/update-grosses.yml`
+- **Runs:** Every Tuesday & Wednesday at 3pm UTC (10am ET)
+- **Does:** Scrapes BroadwayWorld for weekly box office data and all-time stats
+- **Data source:** BroadwayWorld (grosses.cfm for weekly, grossescumulative.cfm for all-time)
+- **Note:** Data is typically released Monday/Tuesday after the week ends on Sunday
+- **Skips:** If data for the current week already exists (unless force=true)
 
 ## Deployment
 
@@ -179,6 +229,27 @@ All automation runs via GitHub Actions - no local commands needed.
 - Automated image fetching via GitHub Action
 - Weekly automated status updates
 - New show discovery automation
+
+### Box Office Stats
+Show pages display box office data in two rows of stat cards:
+
+**THIS WEEK row (for currently running shows):**
+- Gross (with WoW and YoY % change arrows)
+- Capacity % (with WoW % change arrow)
+- Avg Ticket Price
+
+**ALL TIME row (for all shows including closed):**
+- Total Gross (e.g., "$2.1B" for Lion King)
+- Total Performances
+- Total Attendance
+
+**Component:** `src/components/BoxOfficeStats.tsx`
+**Data functions:** `getShowGrosses()`, `getGrossesWeekEnding()` in `src/lib/data.ts`
+
+**Change indicators:**
+- Green up arrow for positive changes
+- Red down arrow for negative changes
+- Only shows when comparison data is available
 
 ### MCP Setup for Review Aggregators
 
