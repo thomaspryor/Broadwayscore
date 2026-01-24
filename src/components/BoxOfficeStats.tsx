@@ -72,8 +72,8 @@ function ChangeIndicator({ change, label }: ChangeIndicatorProps) {
   const isNegative = change < 0;
   const absChange = Math.abs(change);
 
-  // Format the change - show decimal for small changes
-  const formattedChange = absChange < 10 ? absChange.toFixed(1) : absChange.toFixed(0);
+  // Round UP using Math.ceil for display
+  const formattedChange = Math.ceil(absChange);
 
   return (
     <div className="flex items-center justify-center gap-0.5 text-[10px]">

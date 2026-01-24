@@ -46,8 +46,10 @@ function formatDate(dateStr: string): string {
 }
 
 function getScoreClasses(score: number): string {
-  if (score >= 70) return 'bg-score-high text-white';
-  if (score >= 50) return 'bg-score-medium text-gray-900';
+  if (score >= 85) return 'bg-score-high text-white ring-2 ring-accent-gold/50';
+  if (score >= 75) return 'bg-score-high text-white';
+  if (score >= 65) return 'bg-score-medium text-gray-900';
+  if (score >= 55) return 'bg-orange-500 text-white';
   return 'bg-score-low text-white';
 }
 
@@ -146,7 +148,12 @@ function ExternalLinkIcon({ className }: { className?: string }) {
 }
 
 const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
-  const scoreLabel = review.reviewMetaScore >= 70 ? 'Positive' : review.reviewMetaScore >= 50 ? 'Mixed' : 'Negative';
+  let scoreLabel: string;
+  if (review.reviewMetaScore >= 85) scoreLabel = 'Must See';
+  else if (review.reviewMetaScore >= 75) scoreLabel = 'Great';
+  else if (review.reviewMetaScore >= 65) scoreLabel = 'Good';
+  else if (review.reviewMetaScore >= 55) scoreLabel = 'Tepid';
+  else scoreLabel = 'Skip';
 
   return (
     <article className={`${isLast ? '' : 'border-b border-white/5 pb-4'} group`} aria-label={`Review from ${review.outlet}`}>

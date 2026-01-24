@@ -352,7 +352,7 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
     reviewCount: reviews.length,
     tier1Count,
     label: getCriticLabel(simpleScore),
-    reviews: computedReviews.sort((a, b) => a.tier - b.tier || b.reviewMetaScore - a.reviewMetaScore),
+    reviews: computedReviews.sort((a, b) => b.reviewMetaScore - a.reviewMetaScore),
   };
 }
 

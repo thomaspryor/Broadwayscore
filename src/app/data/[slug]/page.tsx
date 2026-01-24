@@ -13,7 +13,7 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
   if (!show) return { title: 'Show Not Found' };
 
   return {
-    title: `${show.metadata.title} Data - Broadway Metascore`,
+    title: `${show.metadata.title} Data - Broadway Critic Score`,
     description: `Raw data for ${show.metadata.title}`,
   };
 }
@@ -265,9 +265,9 @@ export default function ShowDataPage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
-        {/* Metascore Breakdown */}
+        {/* Critic Score Breakdown */}
         {metascore && (
-          <JsonBlock data={metascore} title="Metascore Calculation" />
+          <JsonBlock data={metascore} title="Critic Score Calculation" />
         )}
 
         {/* Summary */}

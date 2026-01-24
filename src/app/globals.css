@@ -311,6 +311,16 @@
     text-wrap: balance;
   }
 
+  /* Hide scrollbar utility */
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Content visibility for long lists - skip rendering off-screen items */
   .content-auto {
     content-visibility: auto;
