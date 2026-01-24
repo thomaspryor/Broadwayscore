@@ -2,7 +2,7 @@
 
 import { useState, useMemo, memo } from 'react';
 import Link from 'next/link';
-import { getAllShows, ComputedShow } from '@/lib/data';
+import { getAllShows, ComputedShow, getDataStats } from '@/lib/data';
 
 type SortField = 'criticScore' | 'title' | 'openingDate';
 type SortDirection = 'asc' | 'desc';
@@ -419,6 +419,13 @@ export default function HomePage() {
         <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
           How scores work →
         </Link>
+      </div>
+
+      {/* Total Review Count */}
+      <div className="mt-12 py-6 border-t border-white/5 text-center">
+        <p className="text-gray-400 text-sm">
+          Aggregating <span className="text-white font-semibold">{getDataStats().totalReviews.toLocaleString()}</span> reviews and counting
+        </p>
       </div>
     </div>
   );
