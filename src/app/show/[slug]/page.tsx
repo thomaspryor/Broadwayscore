@@ -58,19 +58,19 @@ function ScoreBadge({ score, size = 'lg', reviewCount }: { score?: number | null
   let colorClass: string;
 
   if (roundedScore >= 85) {
-    // Must See - green with gold accent
+    // Must-See - green with gold accent
     colorClass = 'bg-score-high text-white shadow-[0_4px_16px_rgba(16,185,129,0.4)] ring-2 ring-accent-gold/50';
   } else if (roundedScore >= 75) {
-    // Great - green
+    // Recommended - green
     colorClass = 'bg-score-high text-white shadow-[0_4px_16px_rgba(16,185,129,0.4)]';
   } else if (roundedScore >= 65) {
-    // Good - yellow
+    // Worth Seeing - yellow
     colorClass = 'bg-score-medium text-gray-900 shadow-[0_4px_16px_rgba(245,158,11,0.4)]';
   } else if (roundedScore >= 55) {
-    // Tepid - orange
+    // Skippable - orange
     colorClass = 'bg-orange-500 text-white shadow-[0_4px_16px_rgba(249,115,22,0.4)]';
   } else {
-    // Skip - red
+    // Stay Away - red
     colorClass = 'bg-score-low text-white shadow-[0_4px_16px_rgba(239,68,68,0.4)]';
   }
 
@@ -217,23 +217,23 @@ function ScoreLabel({ score }: { score: number }) {
   let textClass: string;
 
   if (roundedScore >= 85) {
-    label = 'Must See';
+    label = 'Must-See';
     bgClass = 'bg-score-high/20 border border-accent-gold/50';
     textClass = 'text-score-high';
   } else if (roundedScore >= 75) {
-    label = 'Great';
+    label = 'Recommended';
     bgClass = 'bg-score-high/20';
     textClass = 'text-score-high';
   } else if (roundedScore >= 65) {
-    label = 'Good';
+    label = 'Worth Seeing';
     bgClass = 'bg-score-medium/20';
     textClass = 'text-score-medium';
   } else if (roundedScore >= 55) {
-    label = 'Tepid';
+    label = 'Skippable';
     bgClass = 'bg-orange-500/20';
     textClass = 'text-orange-400';
   } else {
-    label = 'Skip';
+    label = 'Stay Away';
     bgClass = 'bg-score-low/20';
     textClass = 'text-score-low';
   }
@@ -247,11 +247,11 @@ function ScoreLabel({ score }: { score: number }) {
 
 function getSentimentLabel(score: number): { label: string; colorClass: string } {
   const roundedScore = Math.round(score);
-  if (roundedScore >= 85) return { label: 'Must See', colorClass: 'text-score-high' };
-  if (roundedScore >= 75) return { label: 'Great', colorClass: 'text-score-high' };
-  if (roundedScore >= 65) return { label: 'Good', colorClass: 'text-score-medium' };
-  if (roundedScore >= 55) return { label: 'Tepid', colorClass: 'text-orange-400' };
-  return { label: 'Skip', colorClass: 'text-score-low' };
+  if (roundedScore >= 85) return { label: 'Must-See', colorClass: 'text-score-high' };
+  if (roundedScore >= 75) return { label: 'Recommended', colorClass: 'text-score-high' };
+  if (roundedScore >= 65) return { label: 'Worth Seeing', colorClass: 'text-score-medium' };
+  if (roundedScore >= 55) return { label: 'Skippable', colorClass: 'text-orange-400' };
+  return { label: 'Stay Away', colorClass: 'text-score-low' };
 }
 
 interface ReviewForBreakdown {

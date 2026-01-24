@@ -25,53 +25,53 @@ export interface ScoreBucketConfig {
 export const SCORE_BUCKETS: ScoreBucketConfig[] = [
   {
     id: 'must-see',
-    label: 'Must See',
-    shortLabel: 'Must See',
+    label: 'Must-See',
+    shortLabel: 'Must-See',
     minScore: 85,
     maxScore: 100,
     color: 'text-amber-400',      // Gold
     bgColor: 'bg-amber-400/20',
-    description: 'Exceptional - a Broadway highlight',
+    description: 'Drop-everything great. If you\'re seeing one show, make it this.',
   },
   {
-    id: 'great',
-    label: 'Great',
-    shortLabel: 'Great',
+    id: 'recommended',
+    label: 'Recommended',
+    shortLabel: 'Recommended',
     minScore: 75,
     maxScore: 84,
     color: 'text-emerald-400',    // Green
     bgColor: 'bg-emerald-400/20',
-    description: 'Highly recommended',
+    description: 'Strong choice—most people will have a great time.',
   },
   {
-    id: 'good',
-    label: 'Good',
-    shortLabel: 'Good',
+    id: 'worth-seeing',
+    label: 'Worth Seeing',
+    shortLabel: 'Worth Seeing',
     minScore: 65,
     maxScore: 74,
     color: 'text-sky-400',        // Blue
     bgColor: 'bg-sky-400/20',
-    description: 'Solid show, worth seeing',
+    description: 'Good, with caveats. Best if the premise/cast/genre is your thing.',
   },
   {
-    id: 'tepid',
-    label: 'Tepid',
-    shortLabel: 'Tepid',
+    id: 'skippable',
+    label: 'Skippable',
+    shortLabel: 'Skippable',
     minScore: 55,
     maxScore: 64,
     color: 'text-orange-400',     // Orange
     bgColor: 'bg-orange-400/20',
-    description: 'Mixed reviews, consider carefully',
+    description: 'Optional. Fine to miss unless you\'re a completist or super fan.',
   },
   {
-    id: 'skip',
-    label: 'Skip',
-    shortLabel: 'Skip',
+    id: 'stay-away',
+    label: 'Stay Away',
+    shortLabel: 'Stay Away',
     minScore: 0,
     maxScore: 54,
     color: 'text-red-400',        // Red
     bgColor: 'bg-red-400/20',
-    description: 'Generally not recommended',
+    description: 'Not recommended. Your time and money are better spent elsewhere.',
   },
   {
     id: 'pending',
@@ -111,7 +111,7 @@ export function getScoreBucket(score: number | null): ScoreBucketConfig {
     b.id !== 'pending' && score >= b.minScore && score <= b.maxScore
   );
 
-  return bucket || SCORE_BUCKETS.find(b => b.id === 'skip')!;
+  return bucket || SCORE_BUCKETS.find(b => b.id === 'stay-away')!;
 }
 
 /**

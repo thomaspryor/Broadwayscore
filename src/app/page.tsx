@@ -572,23 +572,23 @@ function HomePageInner() {
       <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-gray-500">
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-score-high ring-1 ring-accent-gold/50"></div>
-          <span>85+ Must See</span>
+          <span>85+ Must-See</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-score-high"></div>
-          <span>75-84 Great</span>
+          <span>75-84 Recommended</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-score-medium"></div>
-          <span>65-74 Good</span>
+          <span>65-74 Worth Seeing</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-orange-500"></div>
-          <span>55-64 Tepid</span>
+          <span>55-64 Skippable</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-score-low"></div>
-          <span>&lt;55 Skip</span>
+          <span>&lt;55 Stay Away</span>
         </div>
       </div>
 
