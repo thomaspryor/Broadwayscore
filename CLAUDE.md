@@ -326,6 +326,68 @@ Show Score is a third aggregator source alongside DTLI and BWW Review Roundups. 
 - Sitemap.xml auto-generated
 - Robots.txt configured
 
+## Review Data Schema (January 2026)
+
+Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json` has:
+
+```json
+{
+  "showId": "two-strangers-bway-2025",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Laura Collins-Hughes",
+  "url": "https://...",
+  "publishDate": "November 20, 2025",
+  "fullText": "..." or null,
+  "isFullReview": true/false,
+  "dtliExcerpt": "...",
+  "bwwExcerpt": "...",
+  "showScoreExcerpt": "...",
+  "originalScore": null,
+  "assignedScore": 78,
+  "source": "playwright-scraped",
+  "dtliThumb": "Up/Down/Meh",
+  "bwwThumb": "Up/Down/Meh"
+}
+```
+
+**Field meanings:**
+- `fullText` - Complete review text (null if only excerpts available)
+- `isFullReview` - true if fullText is a complete review (500+ chars from scraped source)
+- `dtliExcerpt` - Excerpt from Did They Like It aggregator
+- `bwwExcerpt` - Excerpt from BroadwayWorld Review Roundup
+- `showScoreExcerpt` - Excerpt from Show Score aggregator
+- `source` - Where the data came from: `dtli`, `bww-roundup`, `playwright-scraped`, `webfetch-scraped`, `manual`
+
+## Subscription Access for Paywalled Sites
+
+For scraping paywalled review sites, the user has subscriptions:
+
+| Site | Email/Username | Password Location |
+|------|---------------|-------------------|
+| **New York Times** | ewcampbell1@gmail.com | GitHub Secrets |
+| **Vulture/NY Mag** | thomas.pryor@gmail.com | GitHub Secrets |
+
+**Usage:** When scraping NYT or Vulture reviews via Playwright, log in first using these credentials.
+
+## Scraping Priority & Approach
+
+### Free Outlets (scrape directly with Playwright/WebFetch)
+- **Stage and Cinema** (stageandcinema.com) - Works well with Playwright
+- **Theatrely** (theatrely.com) - Works with WebFetch
+- **Cititour** (cititour.com) - Works with WebFetch
+- **New York Theater** (newyorktheater.me) - Try Playwright
+- **Culture Sauce** - Free access
+
+### Paywalled Outlets (use subscription login)
+- **New York Times** - Use NYT subscription
+- **Vulture/NY Magazine** - Use Vulture subscription
+
+### Blocked/Unavailable
+- **Broadway News** - Many URLs return 404 (pages removed)
+- **Entertainment Weekly** - Paywalled, no subscription
+- **The Wrap** - Often blocked
+
 ## Future Features
 - Audience scores integration
 - Comparison views
