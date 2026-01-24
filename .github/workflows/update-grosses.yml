@@ -68,12 +68,12 @@ jobs:
         env:
           NODE_ENV: production
 
-      - name: Scrape IBDB all-time stats
+      - name: Scrape BroadwayWorld all-time stats
         if: steps.check.outputs.skip != 'true'
-        run: npx tsx scripts/scrape-ibdb.ts
+        run: npx tsx scripts/scrape-alltime.ts
         env:
           NODE_ENV: production
-        continue-on-error: true  # Don't fail the whole job if IBDB is unavailable
+        continue-on-error: true  # Don't fail the whole job if BWW cumulative page is unavailable
 
       - name: Check for changes
         if: steps.check.outputs.skip != 'true'
