@@ -1,0 +1,113 @@
+name: Fetch Aggregator Pages
+
+on:
+  # Manual trigger with inputs
+  workflow_dispatch:
+    inputs:
+      aggregator:
+        description: 'Aggregator to fetch from'
+        required: true
+        default: 'show-score'
+        type: choice
+        options:
+          - show-score
+          - dtli
+          - bww-rr
+          - all
+      shows:
+        description: 'Show IDs (comma-separated, "all", or "missing")'
+        required: true
+        default: 'missing'
+        type: string
+      force:
+        description: 'Re-fetch even if file exists'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  fetch-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: claude/broadway-metascore-site-8jjx7
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Fetch aggregator pages
+        run: |
+          ARGS="--aggregator ${{ github.event.inputs.aggregator }} --shows ${{ github.event.inputs.shows }}"
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+          npx tsx scripts/fetch-aggregator-pages.ts $ARGS
+        env:
+          NODE_ENV: production
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            # Count changed files
+            CHANGED=$(git diff --name-only data/ | wc -l | tr -d ' ')
+            echo "changed_count=$CHANGED" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/
+
+          # Create commit message based on inputs
+          AGGREGATOR="${{ github.event.inputs.aggregator }}"
+          SHOWS="${{ github.event.inputs.shows }}"
+          CHANGED="${{ steps.changes.outputs.changed_count }}"
+
+          git commit -m "data: Fetch $AGGREGATOR pages ($CHANGED files updated)
+
+          Aggregator: $AGGREGATOR
+          Shows: $SHOWS
+          Force: ${{ github.event.inputs.force }}
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          git push
+
+      - name: Summary
+        run: |
+          echo "## Fetch Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Aggregator:** ${{ github.event.inputs.aggregator }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Shows:** ${{ github.event.inputs.shows }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Force:** ${{ github.event.inputs.force }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ steps.changes.outputs.has_changes }}" = "true" ]; then
+            echo "### Files Updated" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            git diff --name-only data/ | head -20 >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No changes to commit." >> $GITHUB_STEP_SUMMARY
+          fi
