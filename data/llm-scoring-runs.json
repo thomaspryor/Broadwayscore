@@ -1,0 +1,66 @@
+[
+  {
+    "startedAt": "2026-01-24T03:46:22.391Z",
+    "completedAt": "2026-01-24T03:46:23.239Z",
+    "totalReviews": 36,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 5,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "two-strangers-bway-2025",
+        "outletId": "CITI",
+        "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CXRWvRrXwyQo3XejYVr8C\"}"
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "outletId": "CSCE",
+        "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CXRWvSs41mmtLtAcD5aiR\"}"
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "outletId": "NYDN",
+        "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CXRWvTZyKYgMdYZ7tAe1k\"}"
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "outletId": "NYP",
+        "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CXRWvUF9ofkW61dZXxHvZ\"}"
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "outletId": "NYSR",
+        "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CXRWvUwKuXkcKSvrNLsFr\"}"
+      }
+    ],
+    "calibration": {
+      "count": 0,
+      "mae": 0,
+      "rmse": 0,
+      "meanBias": 0,
+      "stdDev": 0,
+      "bucketAccuracy": 0,
+      "byConfidence": {
+        "high": {
+          "count": 0,
+          "mae": 0
+        },
+        "medium": {
+          "count": 0,
+          "mae": 0
+        },
+        "low": {
+          "count": 0,
+          "mae": 0
+        }
+      },
+      "outletBias": {}
+    },
+    "validation": []
+  }
+]
