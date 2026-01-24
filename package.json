@@ -18,8 +18,10 @@
     "llm:score": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts",
     "llm:score:show": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --show",
     "llm:score:all": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --all",
+    "llm:ensemble": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --ensemble",
     "llm:calibrate": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --calibrate-only",
     "llm:validate": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --validate-only",
+    "llm:ground-truth": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --ground-truth",
     "llm:evaluate": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/evaluate.ts",
     "llm:status": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/status.ts"
   },
