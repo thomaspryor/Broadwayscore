@@ -70,7 +70,7 @@ export default function CollapsibleReviews({
             </>
           ) : (
             <>
-              Show {hiddenCount} more review{hiddenCount > 1 ? 's' : ''}
+              Show {hiddenCount} more {hiddenCount === 1 ? 'review' : 'reviews'}
               <ChevronDownIcon className="w-4 h-4" />
             </>
           )}

@@ -375,7 +375,7 @@ function CriticScoreSection({ score, reviewCount, reviews }: { score: number; re
             href="#critic-reviews"
             className="text-sm text-gray-500 hover:text-brand transition-colors mt-1 inline-block"
           >
-            Based on {reviewCount} Critic Review{reviewCount !== 1 ? 's' : ''}{showTBD ? ' (5+ needed)' : ''}
+            Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}{showTBD ? ' (5+ needed)' : ''}
           </a>
         </div>
       </div>
