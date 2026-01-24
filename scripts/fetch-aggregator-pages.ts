@@ -43,7 +43,12 @@ interface FetchResult {
 // Load shows data
 function loadShows(): Record<string, Show> {
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
-  return data.shows;
+  // Convert array to record keyed by id
+  const shows: Record<string, Show> = {};
+  for (const show of data.shows) {
+    shows[show.id] = show;
+  }
+  return shows;
 }
 
 // Load Show Score URL mappings
