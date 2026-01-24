@@ -149,11 +149,11 @@ function ExternalLinkIcon({ className }: { className?: string }) {
 
 const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
   let scoreLabel: string;
-  if (review.reviewMetaScore >= 85) scoreLabel = 'Must See';
-  else if (review.reviewMetaScore >= 75) scoreLabel = 'Great';
-  else if (review.reviewMetaScore >= 65) scoreLabel = 'Good';
-  else if (review.reviewMetaScore >= 55) scoreLabel = 'Tepid';
-  else scoreLabel = 'Skip';
+  if (review.reviewMetaScore >= 85) scoreLabel = 'Must-See';
+  else if (review.reviewMetaScore >= 75) scoreLabel = 'Recommended';
+  else if (review.reviewMetaScore >= 65) scoreLabel = 'Worth Seeing';
+  else if (review.reviewMetaScore >= 55) scoreLabel = 'Skippable';
+  else scoreLabel = 'Stay Away';
 
   return (
     <article className={`${isLast ? '' : 'border-b border-white/5 pb-4'} group`} aria-label={`Review from ${review.outlet}`}>

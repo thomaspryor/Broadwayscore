@@ -44,20 +44,20 @@ export default function StickyScoreHeader({ title, score, showAfterPx = 200 }: S
     scoreColorClass = 'bg-gray-600';
   } else if (roundedScore >= 85) {
     scoreColorClass = 'bg-score-high ring-2 ring-accent-gold/50';
-    scoreLabel = 'Must See';
+    scoreLabel = 'Must-See';
   } else if (roundedScore >= 75) {
     scoreColorClass = 'bg-score-high';
-    scoreLabel = 'Great';
+    scoreLabel = 'Recommended';
   } else if (roundedScore >= 65) {
     scoreColorClass = 'bg-score-medium';
     scoreTextClass = 'text-gray-900';
-    scoreLabel = 'Good';
+    scoreLabel = 'Worth Seeing';
   } else if (roundedScore >= 55) {
     scoreColorClass = 'bg-orange-500';
-    scoreLabel = 'Tepid';
+    scoreLabel = 'Skippable';
   } else {
     scoreColorClass = 'bg-score-low';
-    scoreLabel = 'Skip';
+    scoreLabel = 'Stay Away';
   }
 
   return (
