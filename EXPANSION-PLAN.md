@@ -52,11 +52,20 @@ This document prioritizes the expansion features into **parallel workstreams** t
 }
 ```
 
+### Award Bodies to Track
+1. **Tony Awards** - The headline, most prestigious
+2. **Drama Desk Awards** - Broadway + Off-Broadway
+3. **Outer Critics Circle Awards** - Commonly referenced; Broadway + Off-Broadway
+4. **Drama League Awards** - Oldest, appears in bios/press constantly
+5. **New York Drama Critics' Circle Awards** - Critics' "best of season" signal
+6. **Pulitzer Prize for Drama** - Rare but huge (special badge treatment)
+
 ### Designation Definitions
-- **Lavished** - 3+ major wins (Tony/Drama Desk/OCC combined)
+- **Lavished** - 3+ major wins across all bodies
 - **Recognized** - 1-2 wins OR 4+ nominations with 0-1 wins
 - **Shut-out** - Eligible but received 0 nominations
 - **Pre-Season** - Not yet eligible (show opened after cutoff)
+- **Pulitzer Winner** - Special badge overlay if won Pulitzer
 
 ### Tasks for this Workstream
 1. Research: Scrape Tony Awards data for all 40 shows (Wikipedia is cleanest)
@@ -89,8 +98,9 @@ This document prioritizes the expansion features into **parallel workstreams** t
 
 2. **Mezzanine Stars integration**
    - Create `data/mezzanine.json` structure
-   - You screenshot from phone → upload to repo
-   - Manual entry (or OCR later) for: score, review count, show ID
+   - User uploads screenshots directly to Claude Code chat
+   - Claude extracts: show name, star rating (X.X/5), review count
+   - Data stored in `data/mezzanine.json`
 
 3. **Combined Audience Score calculation**
    - Weighted average: Show Score (50%) + Mezzanine (50%)
@@ -154,7 +164,7 @@ This document prioritizes the expansion features into **parallel workstreams** t
    Miracle    - Profit > 3x investment (Hamilton, Lion King)
    Windfall   - Profit > 1.5x investment
    Trickle    - Broke even or modest profit over time
-   Easy Lay   - Limited run that made money (not open-ended)
+   Sugar Daddy - Limited run that made money (not open-ended)
    Fizzle     - Lost money but not all
    Flop       - Lost most/all investment
    TBD        - Too early to tell (still running)
@@ -348,21 +358,21 @@ Lower priority, simpler features
 
 ---
 
-## Questions for You Before Starting
+## Decisions Made (January 25, 2026)
 
-1. **Awards:** Include Outer Critics Circle and Lucille Lortel, or just Tony + Drama Desk?
+1. **Awards:** Tony, Drama Desk, Outer Critics Circle, Drama League, NY Drama Critics' Circle, Pulitzer Prize for Drama
 
-2. **Mezzanine:** Can you screenshot the Mezzanine app data for each show? Or should I design an OCR pipeline for bulk import?
+2. **Mezzanine:** User will upload screenshots to Claude Code chat for extraction
 
-3. **Biz Buzz:** You mentioned having actual financials for some shows - which ones? This would help calibrate our estimates.
+3. **Biz Buzz:** Research via Deep Research + Reddit scraping + LLMs. User has some financials, can get more.
 
-4. **Reddit grosses user:** The user u/thebroadwaygrossesboy - have you saved any of their posts? Would be helpful for Biz Buzz.
+4. **Reddit grosses:** Search for posts by same user titled "GROSSES ANALYSIS + {date}" - weekly posts with capitalization/recoupment data
 
-5. **Commercial designations:** Your definitions are great. Should "Easy Lay" be renamed (might read oddly on the site)?
+5. **Commercial designations:** Renamed "Easy Lay" → "Sugar Daddy"
 
-6. **Lottery priority:** Is this urgent for user value, or can it wait?
+6. **Lottery/Rush:** Not urgent, but LLM can parse Playbill's comprehensive list easily
 
-7. **Review submission:** GitHub Issues for form backend (free, simple) or prefer something fancier?
+7. **Review submission:** GitHub Issues backend (simple, free)
 
 ---
 
