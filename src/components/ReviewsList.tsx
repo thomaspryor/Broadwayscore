@@ -156,11 +156,11 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
   else scoreLabel = 'Stay Away';
 
   return (
-    <article className={`${isLast ? '' : 'border-b border-white/5 pb-4'} group`} aria-label={`Review from ${review.outlet}`}>
-      <div className="flex items-start gap-3">
+    <article className={`${isLast ? '' : 'border-b border-white/5 pb-5'} group`} aria-label={`Review from ${review.outlet}`}>
+      <div className="flex items-start gap-4">
         {/* Score on LEFT - Metacritic style */}
         <div
-          className={`flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center text-lg font-bold ${getScoreClasses(review.reviewMetaScore)}`}
+          className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center text-xl font-bold ${getScoreClasses(review.reviewMetaScore)}`}
           role="meter"
           aria-valuenow={review.reviewMetaScore}
           aria-valuemin={0}
@@ -173,8 +173,8 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
         {/* Content */}
         <div className="min-w-0 flex-1">
           {/* Outlet name + Badge + Date row */}
-          <div className="flex items-center justify-between gap-2 mb-1 flex-nowrap">
-            <div className="flex items-center gap-2 min-w-0">
+          <div className="flex items-center justify-between gap-2 mb-2 flex-nowrap">
+            <div className="flex items-center gap-2.5 min-w-0">
               <OutletLogo outlet={review.outlet} />
               <span className="font-bold text-white text-base truncate">{review.outlet}</span>
               {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
@@ -187,25 +187,25 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
             <span className="text-xs text-gray-500 flex-shrink-0 whitespace-nowrap">{formatDate(review.publishDate)}</span>
           </div>
 
-          {/* Quote/Summary */}
+          {/* Quote/Summary - larger text */}
           {review.quote && (
-            <p className="text-sm text-gray-300 leading-relaxed mb-2">
+            <p className="text-base text-gray-300 leading-relaxed mb-2">
               &ldquo;{review.quote}&rdquo;
             </p>
           )}
           {review.summary && !review.quote && (
-            <p className="text-sm text-gray-400 leading-relaxed mb-2">
+            <p className="text-base text-gray-400 leading-relaxed mb-2">
               {review.summary}
             </p>
           )}
           {review.pullQuote && !review.quote && !review.summary && (
-            <p className="text-sm text-gray-400 leading-relaxed mb-2">
+            <p className="text-base text-gray-400 leading-relaxed mb-2">
               {review.pullQuote}
             </p>
           )}
 
           {/* Author at BOTTOM + Full Review link */}
-          <div className="flex items-center justify-between mt-2">
+          <div className="flex items-center justify-between mt-3">
             {review.criticName && (
               <span className="text-sm text-gray-500">By {review.criticName}</span>
             )}
@@ -237,7 +237,7 @@ export default function ReviewsList({ reviews, initialCount = 5 }: ReviewsListPr
   const hiddenCount = reviews.length - initialCount;
 
   return (
-    <div className="space-y-4" role="feed" aria-label="Critic reviews">
+    <div className="space-y-5" role="feed" aria-label="Critic reviews">
       {displayedReviews.map((review) => (
         <ReviewCard
           key={`${review.outletId}-${review.publishDate}`}

@@ -445,7 +445,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         </Link>
 
         {/* Header with Poster Card */}
-        <div className="flex gap-4 sm:gap-6 mb-6">
+        <div className="flex gap-5 sm:gap-6 mb-5">
           {/* Poster Card - fetchpriority high for LCP optimization */}
           <div className="flex-shrink-0 w-28 sm:w-36 lg:w-44">
             <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
@@ -488,23 +488,29 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
 
           {/* Title & Meta */}
-          <div className="flex-1 min-w-0 pt-2 sm:pt-4">
+          <div className="flex-1 min-w-0 pt-1 sm:pt-2">
             <div className="flex flex-wrap items-center gap-1.5 mb-2">
               <FormatPill type={show.type} />
               <ProductionPill isRevival={show.type === 'revival'} />
               {show.limitedRun && <LimitedRunBadge />}
               <StatusBadge status={show.status} />
             </div>
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
               {show.title}
             </h1>
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-gray-400 text-sm">
               <span className="text-gray-300">{show.venue}</span>
               <span className="text-gray-600">•</span>
+              <span>{show.runtime}</span>
+              <span className="text-gray-600">•</span>
               <span>Opened {formatDate(show.openingDate)}</span>
-              <span className="text-gray-600 hidden sm:inline">•</span>
-              <span className="hidden sm:inline">{show.runtime}</span>
             </div>
+            {/* Synopsis inline with header for better space usage */}
+            {show.synopsis && (
+              <p className="text-gray-400 text-sm sm:text-base leading-relaxed mt-3 line-clamp-3 sm:line-clamp-none">
+                {show.synopsis}
+              </p>
+            )}
           </div>
         </div>
 
@@ -581,12 +587,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
-        {/* Synopsis */}
-        {show.synopsis && (
-          <div className="mb-8">
-            <p className="text-gray-300 leading-relaxed">{show.synopsis}</p>
-          </div>
-        )}
 
         {/* Critic Reviews */}
         {show.criticScore && show.criticScore.reviews.length > 0 && (
