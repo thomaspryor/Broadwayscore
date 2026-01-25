@@ -287,33 +287,28 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
           {show.venue}
           <span className="text-gray-600 mx-1.5">·</span>
           <span className="text-gray-400">
-            {formatOpeningDate(show.openingDate)}
-            {show.status === 'closed' && show.closingDate && (
-              <> – {formatOpeningDate(show.closingDate)}</>
-            )}
+            Opened {formatOpeningDate(show.openingDate)}
           </span>
+          {show.closingDate && (
+            <span className="text-amber-400">
+              {' '}• Closing {formatOpeningDate(show.closingDate)}
+            </span>
+          )}
         </p>
       </div>
 
       {/* Score */}
       <div className="flex-shrink-0 flex flex-col items-center justify-center">
-        <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} />
-        {show.criticScore && (
-          <>
-            <span className="text-xs text-gray-400 mt-1 font-medium">
-              {show.criticScore.reviewCount} reviews
-            </span>
-            {getScoreTier(score) && (
-              <span
-                className="text-[10px] font-semibold mt-0.5 uppercase tracking-wide"
-                style={{ color: getScoreTier(score)?.color }}
-                title={getScoreTier(score)?.tooltip}
-              >
-                {getScoreTier(score)?.label}
-              </span>
-            )}
-          </>
+        {show.criticScore && getScoreTier(score) && (
+          <span
+            className="text-[10px] font-semibold mb-1 uppercase tracking-wide"
+            style={{ color: getScoreTier(score)?.color }}
+            title={getScoreTier(score)?.tooltip}
+          >
+            {getScoreTier(score)?.label}
+          </span>
         )}
+        <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} />
       </div>
     </Link>
   );
@@ -652,30 +647,6 @@ function HomePageInner() {
         </div>
       )}
 
-      {/* Score Legend */}
-      <div className="flex flex-wrap items-center justify-end gap-4 mb-6 text-xs text-gray-400">
-        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.mustSee.tooltip}>
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.mustSee.color, boxShadow: '0 0 6px rgba(255, 215, 0, 0.5)' }}></div>
-          <span>{SCORE_TIERS.mustSee.range} {SCORE_TIERS.mustSee.label}</span>
-        </div>
-        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.recommended.tooltip}>
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.recommended.color }}></div>
-          <span>{SCORE_TIERS.recommended.range} {SCORE_TIERS.recommended.label}</span>
-        </div>
-        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.worthSeeing.tooltip}>
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.worthSeeing.color }}></div>
-          <span>{SCORE_TIERS.worthSeeing.range} {SCORE_TIERS.worthSeeing.label}</span>
-        </div>
-        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.skippable.tooltip}>
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.skippable.color }}></div>
-          <span>{SCORE_TIERS.skippable.range} {SCORE_TIERS.skippable.label}</span>
-        </div>
-        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.stayAway.tooltip}>
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.stayAway.color }}></div>
-          <span>{SCORE_TIERS.stayAway.range} {SCORE_TIERS.stayAway.label}</span>
-        </div>
-      </div>
-
       {/* Show List */}
       <h2 className="sr-only">Broadway Shows</h2>
       <div className="space-y-3" role="list" aria-label="Broadway shows">
@@ -714,6 +685,30 @@ function HomePageInner() {
         <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
           How scores work →
         </Link>
+      </div>
+
+      {/* Score Legend */}
+      <div className="flex flex-wrap items-center justify-center gap-4 mt-8 mb-4 text-xs text-gray-400">
+        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.mustSee.tooltip}>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.mustSee.color, boxShadow: '0 0 6px rgba(255, 215, 0, 0.5)' }}></div>
+          <span>{SCORE_TIERS.mustSee.range} {SCORE_TIERS.mustSee.label}</span>
+        </div>
+        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.recommended.tooltip}>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.recommended.color }}></div>
+          <span>{SCORE_TIERS.recommended.range} {SCORE_TIERS.recommended.label}</span>
+        </div>
+        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.worthSeeing.tooltip}>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.worthSeeing.color }}></div>
+          <span>{SCORE_TIERS.worthSeeing.range} {SCORE_TIERS.worthSeeing.label}</span>
+        </div>
+        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.skippable.tooltip}>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.skippable.color }}></div>
+          <span>{SCORE_TIERS.skippable.range} {SCORE_TIERS.skippable.label}</span>
+        </div>
+        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.stayAway.tooltip}>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.stayAway.color }}></div>
+          <span>{SCORE_TIERS.stayAway.range} {SCORE_TIERS.stayAway.label}</span>
+        </div>
       </div>
 
       {/* Featured Rows */}
