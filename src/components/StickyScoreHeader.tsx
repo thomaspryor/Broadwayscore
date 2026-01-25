@@ -63,7 +63,7 @@ export default function StickyScoreHeader({ title, score, showAfterPx = 200 }: S
 
   return (
     <div
-      className="fixed top-16 sm:top-[4.5rem] left-0 right-0 z-40 bg-surface/98 backdrop-blur-sm border-b border-white/10 transform transition-transform duration-200"
+      className="fixed top-16 sm:top-[4.5rem] left-0 right-0 z-30 bg-surface/98 backdrop-blur-sm border-b border-white/10 transform transition-transform duration-200"
       role="banner"
       aria-label={`${title} - Score: ${roundedScore ?? 'Not rated'}`}
     >

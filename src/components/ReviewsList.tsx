@@ -157,10 +157,10 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
 
   return (
     <article className={`${isLast ? '' : 'border-b border-white/5 pb-5'} group`} aria-label={`Review from ${review.outlet}`}>
-      <div className="flex items-start gap-4">
-        {/* Score on LEFT - Metacritic style */}
+      <div className="flex items-start gap-3 sm:gap-4">
+        {/* Score on LEFT - Metacritic style - smaller on mobile */}
         <div
-          className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center text-xl font-bold ${getScoreClasses(review.reviewMetaScore)}`}
+          className={`flex-shrink-0 w-11 h-11 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl flex items-center justify-center text-base sm:text-xl font-bold ${getScoreClasses(review.reviewMetaScore)}`}
           role="meter"
           aria-valuenow={review.reviewMetaScore}
           aria-valuemin={0}
@@ -172,19 +172,19 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
 
         {/* Content */}
         <div className="min-w-0 flex-1">
-          {/* Outlet name + Badge + Date row */}
-          <div className="flex items-center justify-between gap-2 mb-2 flex-nowrap">
-            <div className="flex items-center gap-2.5 min-w-0">
+          {/* Outlet name + Badge - stacks on mobile */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2 mb-2">
+            <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
               <OutletLogo outlet={review.outlet} />
-              <span className="font-bold text-white text-base truncate">{review.outlet}</span>
+              <span className="font-bold text-white text-sm sm:text-base truncate">{review.outlet}</span>
               {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
               {review.designation && review.designation !== 'Critics_Pick' && (
-                <span className="text-xs text-score-high font-medium whitespace-nowrap">
+                <span className="text-xs text-score-high font-medium whitespace-nowrap hidden sm:inline">
                   {review.designation.replace('_', ' ')}
                 </span>
               )}
             </div>
-            <span className="text-xs text-gray-500 flex-shrink-0 whitespace-nowrap">{formatDate(review.publishDate)}</span>
+            <span className="text-xs text-gray-500 flex-shrink-0">{formatDate(review.publishDate)}</span>
           </div>
 
           {/* Quote/Summary - larger text */}

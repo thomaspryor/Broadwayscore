@@ -431,3 +431,43 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* iOS Safe Area support */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+/* Prevent horizontal overflow on mobile */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Ensure all images are responsive */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mobile tap highlight removal for cleaner touch feedback */
+@media (max-width: 640px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Ensure minimum touch targets on mobile */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Exception for inline links */
+  p a, span a, li a {
+    min-height: auto;
+    min-width: auto;
+  }
+}

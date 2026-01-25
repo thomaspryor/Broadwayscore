@@ -70,27 +70,27 @@ export const metadata: Metadata = {
 function BottomNav() {
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 bg-surface/98 backdrop-blur-sm border-t border-white/10 sm:hidden"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-surface/98 backdrop-blur-sm border-t border-white/10 sm:hidden safe-area-bottom"
       aria-label="Mobile navigation"
     >
       <div className="flex items-center justify-around h-16">
-        <Link href="/" className="flex flex-col items-center gap-1 px-4 py-2 text-brand" aria-current="page">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <Link href="/" className="flex flex-col items-center justify-center gap-0.5 min-w-[72px] min-h-[48px] text-brand" aria-current="page">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
           </svg>
-          <span className="text-[10px] font-medium">Home</span>
+          <span className="text-xs font-medium">Home</span>
         </Link>
-        <Link href="/#search" className="flex flex-col items-center gap-1 px-4 py-2 text-gray-400 hover:text-white transition-colors">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <Link href="/#search" className="flex flex-col items-center justify-center gap-0.5 min-w-[72px] min-h-[48px] text-gray-400 hover:text-white transition-colors">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-          <span className="text-[10px] font-medium">Search</span>
+          <span className="text-xs font-medium">Search</span>
         </Link>
-        <Link href="/methodology" className="flex flex-col items-center gap-1 px-4 py-2 text-gray-400 hover:text-white transition-colors">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <Link href="/methodology" className="flex flex-col items-center justify-center gap-0.5 min-w-[72px] min-h-[48px] text-gray-400 hover:text-white transition-colors">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <span className="text-[10px] font-medium">Info</span>
+          <span className="text-xs font-medium">Info</span>
         </Link>
       </div>
     </nav>
