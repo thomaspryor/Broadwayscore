@@ -46,6 +46,9 @@ async function fetchShowsFromBroadwayOrg() {
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
 
+  // Capture console logs from the browser
+  page.on('console', msg => console.log('BROWSER:', msg.text()));
+
   console.log(`Navigating to ${BROADWAY_ORG_URL}...`);
   await page.goto(BROADWAY_ORG_URL, { waitUntil: 'networkidle', timeout: 30000 });
 
