@@ -101,6 +101,7 @@ A website aggregating Broadway show reviews into composite "metascores" (like Me
 ### Shows Database
 - 27 currently open shows
 - 13 closed shows tracked
+- **Upcoming shows** (status: "previews") with opening dates and preview start dates
 - Full metadata: synopsis, cast, creative team, tags, age recommendations, theater addresses
 - Ticket links for all open shows (TodayTix + Telecharge/Ticketmaster)
 
@@ -155,12 +156,18 @@ data/
   id, title, slug, venue, openingDate, closingDate, status, type, runtime, intermissions,
   images: { hero, thumbnail, poster },
   synopsis, ageRecommendation, tags,
+  previewsStartDate,  // For upcoming shows (status: "previews")
   ticketLinks: [{ platform, url, priceFrom }],
   cast: [{ name, role }],
   creativeTeam: [{ name, role }],
   officialUrl, trailerUrl, theaterAddress
 }
 ```
+
+**Status values:**
+- `"open"` - Currently running (opening date has passed)
+- `"previews"` - Upcoming show (opening date is in future)
+- `"closed"` - Show has closed (closing date has passed)
 
 ### Grosses Schema (grosses.json)
 ```typescript
@@ -220,8 +227,13 @@ data/
 All automation runs via GitHub Actions - no local commands needed.
 
 ### `.github/workflows/update-show-status.yml`
-- **Runs:** Every Monday at 6 AM UTC (or manually via GitHub UI)
-- **Does:** Updates show statuses, discovers new shows, auto-adds to database
+- **Runs:** Every day at 8 AM UTC (3 AM EST) (or manually via GitHub UI)
+- **Does:**
+  - Updates show statuses (open → closed when closing date passes)
+  - Transitions previews → open when opening date arrives
+  - Discovers new shows on Broadway.org
+  - Auto-adds new shows with status: "previews" if opening date is in future
+  - Triggers review gathering only for shows that have opened (not previews)
 
 ### `.github/workflows/gather-reviews.yml`
 - **Runs:** When new shows discovered (or manually triggered)

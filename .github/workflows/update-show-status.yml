@@ -138,12 +138,41 @@ jobs:
             });
 
   # Optional: Trigger review data gathering workflow
+  # Note: Only triggers for shows that have opened (not previews)
   trigger-data-agent:
     needs: update-shows
     if: needs.update-shows.outputs.new_shows_count != '' && needs.update-shows.outputs.new_shows_count != '0'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout to filter previews shows
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Filter out previews shows
+        id: filter
+        run: |
+          slugs="${{ needs.update-shows.outputs.new_slugs }}"
+          IFS=',' read -ra SHOW_ARRAY <<< "$slugs"
+
+          opened_shows=""
+          for slug in "${SHOW_ARRAY[@]}"; do
+            # Check if show status is not "previews"
+            status=$(node -e "const shows = require('./data/shows.json'); const show = shows.shows.find(s => s.slug === '$slug'); console.log(show?.status || 'unknown');")
+            if [ "$status" != "previews" ]; then
+              if [ -z "$opened_shows" ]; then
+                opened_shows="$slug"
+              else
+                opened_shows="$opened_shows,$slug"
+              fi
+            fi
+          done
+
+          echo "opened_shows=$opened_shows" >> $GITHUB_OUTPUT
+          echo "Filtered shows for review gathering: $opened_shows"
+
       - name: Trigger data agent workflow
+        if: steps.filter.outputs.opened_shows != ''
         uses: actions/github-script@v7
         with:
           script: |
@@ -155,10 +184,10 @@ jobs:
                 workflow_id: 'gather-reviews.yml',
                 ref: 'main',
                 inputs: {
-                  shows: '${{ needs.update-shows.outputs.new_slugs }}'
+                  shows: '${{ steps.filter.outputs.opened_shows }}'
                 }
               });
-              console.log('Triggered gather-reviews workflow');
+              console.log('Triggered gather-reviews workflow for opened shows');
             } catch (e) {
               // Workflow doesn't exist yet, that's okay
               console.log('gather-reviews workflow not found, skipping trigger');
