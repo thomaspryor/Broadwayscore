@@ -675,6 +675,7 @@ function HomePageInner() {
         <FeaturedRow
           title="New & Upcoming"
           shows={upcomingShows}
+          viewAllHref="/?status=now_playing&sort=recent"
         />
       </div>
 
