@@ -33,6 +33,7 @@ jobs:
         run: |
           node << 'EOF'
           const fs = require('fs');
+          const https = require('https');
           const axios = require('axios');
 
           const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -56,12 +57,19 @@ jobs:
             };
 
             try {
+              const httpsAgent = new https.Agent({
+                rejectUnauthorized: false,
+              });
+
               const response = await axios.get(url, {
                 proxy: proxy,
+                httpsAgent: httpsAgent,
                 headers: {
                   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                  'Accept-Language': 'en-US,en;q=0.9',
                 },
-                timeout: 60000,
+                timeout: 90000,
               });
 
               return response.data;
