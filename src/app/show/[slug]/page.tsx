@@ -73,20 +73,20 @@ function ScoreBadge({ score, size = 'lg', reviewCount }: { score?: number | null
   let colorClass: string;
 
   if (roundedScore >= 85) {
-    // Must-See - green with gold accent
-    colorClass = 'bg-score-high text-white shadow-[0_4px_16px_rgba(16,185,129,0.4)] ring-2 ring-accent-gold/50';
+    // Must-See - premium gold
+    colorClass = 'score-must-see';
   } else if (roundedScore >= 75) {
-    // Recommended - green
-    colorClass = 'bg-score-high text-white shadow-[0_4px_16px_rgba(16,185,129,0.4)]';
+    // Great - green
+    colorClass = 'score-great';
   } else if (roundedScore >= 65) {
-    // Worth Seeing - yellow
-    colorClass = 'bg-score-medium text-gray-900 shadow-[0_4px_16px_rgba(245,158,11,0.4)]';
+    // Good - teal
+    colorClass = 'score-good';
   } else if (roundedScore >= 55) {
-    // Skippable - orange
-    colorClass = 'bg-orange-500 text-white shadow-[0_4px_16px_rgba(249,115,22,0.4)]';
+    // Tepid - yellow
+    colorClass = 'score-tepid';
   } else {
-    // Stay Away - red
-    colorClass = 'bg-score-low text-white shadow-[0_4px_16px_rgba(239,68,68,0.4)]';
+    // Skip - orange-red
+    colorClass = 'score-skip';
   }
 
   return (
@@ -233,24 +233,24 @@ function ScoreLabel({ score }: { score: number }) {
 
   if (roundedScore >= 85) {
     label = 'Must-See';
-    bgClass = 'bg-score-high/20 border border-accent-gold/50';
-    textClass = 'text-score-high';
+    bgClass = 'bg-score-must-see/20 border border-score-must-see/50';
+    textClass = 'text-score-must-see';
   } else if (roundedScore >= 75) {
-    label = 'Recommended';
-    bgClass = 'bg-score-high/20';
-    textClass = 'text-score-high';
+    label = 'Great';
+    bgClass = 'bg-score-great/20';
+    textClass = 'text-score-great';
   } else if (roundedScore >= 65) {
-    label = 'Worth Seeing';
-    bgClass = 'bg-score-medium/20';
-    textClass = 'text-score-medium';
+    label = 'Good';
+    bgClass = 'bg-score-good/20';
+    textClass = 'text-score-good';
   } else if (roundedScore >= 55) {
-    label = 'Skippable';
-    bgClass = 'bg-orange-500/20';
-    textClass = 'text-orange-400';
+    label = 'Tepid';
+    bgClass = 'bg-score-tepid/20';
+    textClass = 'text-score-tepid';
   } else {
-    label = 'Stay Away';
-    bgClass = 'bg-score-low/20';
-    textClass = 'text-score-low';
+    label = 'Skip';
+    bgClass = 'bg-score-skip/20';
+    textClass = 'text-score-skip';
   }
 
   return (
@@ -262,11 +262,11 @@ function ScoreLabel({ score }: { score: number }) {
 
 function getSentimentLabel(score: number): { label: string; colorClass: string } {
   const roundedScore = Math.round(score);
-  if (roundedScore >= 85) return { label: 'Must-See', colorClass: 'text-score-high' };
-  if (roundedScore >= 75) return { label: 'Recommended', colorClass: 'text-score-high' };
-  if (roundedScore >= 65) return { label: 'Worth Seeing', colorClass: 'text-score-medium' };
-  if (roundedScore >= 55) return { label: 'Skippable', colorClass: 'text-orange-400' };
-  return { label: 'Stay Away', colorClass: 'text-score-low' };
+  if (roundedScore >= 85) return { label: 'Must-See', colorClass: 'text-score-must-see' };
+  if (roundedScore >= 75) return { label: 'Great', colorClass: 'text-score-great' };
+  if (roundedScore >= 65) return { label: 'Good', colorClass: 'text-score-good' };
+  if (roundedScore >= 55) return { label: 'Tepid', colorClass: 'text-score-tepid' };
+  return { label: 'Skip', colorClass: 'text-score-skip' };
 }
 
 interface ReviewForBreakdown {
@@ -291,19 +291,19 @@ function ScoreBreakdownBar({ reviews }: { reviews: ReviewForBreakdown[] }) {
       <div className="h-3 rounded-full overflow-hidden flex bg-surface-overlay" aria-hidden="true">
         {positivePct > 0 && (
           <div
-            className="bg-score-high h-full"
+            className="bg-score-great h-full"
             style={{ width: `${positivePct}%` }}
           />
         )}
         {mixedPct > 0 && (
           <div
-            className="bg-score-medium h-full"
+            className="bg-score-tepid h-full"
             style={{ width: `${mixedPct}%` }}
           />
         )}
         {negativePct > 0 && (
           <div
-            className="bg-score-low h-full"
+            className="bg-score-skip h-full"
             style={{ width: `${negativePct}%` }}
           />
         )}
@@ -312,19 +312,19 @@ function ScoreBreakdownBar({ reviews }: { reviews: ReviewForBreakdown[] }) {
       <div className="flex items-center gap-4 text-xs">
         {positive > 0 && (
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-score-high" aria-hidden="true" />
+            <div className="w-3 h-3 rounded-sm bg-score-great" aria-hidden="true" />
             <span className="text-gray-400">{positive} Positive</span>
           </div>
         )}
         {mixed > 0 && (
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-score-medium" aria-hidden="true" />
+            <div className="w-3 h-3 rounded-sm bg-score-tepid" aria-hidden="true" />
             <span className="text-gray-400">{mixed} Mixed</span>
           </div>
         )}
         {negative > 0 && (
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-score-low" aria-hidden="true" />
+            <div className="w-3 h-3 rounded-sm bg-score-skip" aria-hidden="true" />
             <span className="text-gray-400">{negative} Negative</span>
           </div>
         )}
@@ -342,15 +342,15 @@ function CriticScoreSection({ score, reviewCount, reviews }: { score: number; re
 
   let scoreColorClass: string;
   if (roundedScore >= 85) {
-    scoreColorClass = 'bg-score-high text-white ring-2 ring-accent-gold/50';
+    scoreColorClass = 'score-must-see';
   } else if (roundedScore >= 75) {
-    scoreColorClass = 'bg-score-high text-white';
+    scoreColorClass = 'score-great';
   } else if (roundedScore >= 65) {
-    scoreColorClass = 'bg-score-medium text-gray-900';
+    scoreColorClass = 'score-good';
   } else if (roundedScore >= 55) {
-    scoreColorClass = 'bg-orange-500 text-white';
+    scoreColorClass = 'score-tepid';
   } else {
-    scoreColorClass = 'bg-score-low text-white';
+    scoreColorClass = 'score-skip';
   }
 
   return (

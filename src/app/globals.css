@@ -77,19 +77,72 @@
     @apply w-20 h-20 text-score-xl rounded-2xl;
   }
 
+  /* Must See (85-100) - Premium gold with gradient and glow */
+  .score-must-see {
+    background: linear-gradient(135deg, #D4AF37 0%, #C5A028 50%, #D4AF37 100%);
+    color: #1a1a1a;
+    box-shadow:
+      0 0 20px rgba(212, 175, 55, 0.4),
+      0 2px 8px rgba(212, 175, 55, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .score-must-see::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    animation: shimmer 3s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  /* Great (75-84) - Green */
+  .score-great {
+    @apply bg-score-great text-white;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+  }
+
+  /* Good (65-74) - Teal */
+  .score-good {
+    @apply bg-score-good text-white;
+    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);
+  }
+
+  /* Tepid (55-64) - Yellow */
+  .score-tepid {
+    @apply bg-score-tepid text-gray-900;
+    box-shadow: 0 2px 8px rgba(234, 179, 8, 0.3);
+  }
+
+  /* Skip (0-54) - Orange-Red */
+  .score-skip {
+    @apply bg-score-skip text-white;
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+  }
+
+  /* Legacy classes for compatibility */
   .score-high {
     @apply bg-score-high text-white;
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
   }
 
   .score-medium {
     @apply bg-score-medium text-gray-900;
-    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+    box-shadow: 0 2px 8px rgba(234, 179, 8, 0.3);
   }
 
   .score-low {
     @apply bg-score-low text-white;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
   }
 
   .score-none {

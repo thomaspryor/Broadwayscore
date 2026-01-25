@@ -22,14 +22,30 @@ const config: Config = {
     },
     extend: {
       colors: {
-        // Score colors - keeping semantic colors for scores
+        // Score colors - tiered system
         score: {
-          high: '#10b981',
-          'high-bg': 'rgba(16, 185, 129, 0.15)',
-          medium: '#f59e0b',
-          'medium-bg': 'rgba(245, 158, 11, 0.15)',
-          low: '#ef4444',
-          'low-bg': 'rgba(239, 68, 68, 0.15)',
+          // Must See (85-100) - Premium gold
+          'must-see': '#D4AF37',
+          'must-see-bg': 'rgba(212, 175, 55, 0.15)',
+          // Great (75-84) - Green
+          great: '#22c55e',
+          'great-bg': 'rgba(34, 197, 94, 0.15)',
+          // Good (65-74) - Teal
+          good: '#14b8a6',
+          'good-bg': 'rgba(20, 184, 166, 0.15)',
+          // Tepid (55-64) - Yellow
+          tepid: '#eab308',
+          'tepid-bg': 'rgba(234, 179, 8, 0.15)',
+          // Skip (0-54) - Orange-Red
+          skip: '#f97316',
+          'skip-bg': 'rgba(249, 115, 22, 0.15)',
+          // Legacy aliases for compatibility
+          high: '#22c55e',
+          'high-bg': 'rgba(34, 197, 94, 0.15)',
+          medium: '#eab308',
+          'medium-bg': 'rgba(234, 179, 8, 0.15)',
+          low: '#f97316',
+          'low-bg': 'rgba(249, 115, 22, 0.15)',
           none: '#6b7280',
         },
         // Surface colors - deeper, richer darks

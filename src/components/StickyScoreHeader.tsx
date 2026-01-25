@@ -43,21 +43,22 @@ export default function StickyScoreHeader({ title, score, showAfterPx = 200 }: S
   if (roundedScore === null) {
     scoreColorClass = 'bg-gray-600';
   } else if (roundedScore >= 85) {
-    scoreColorClass = 'bg-score-high ring-2 ring-accent-gold/50';
+    scoreColorClass = 'score-must-see';
+    scoreTextClass = 'text-gray-900';
     scoreLabel = 'Must-See';
   } else if (roundedScore >= 75) {
-    scoreColorClass = 'bg-score-high';
-    scoreLabel = 'Recommended';
+    scoreColorClass = 'score-great';
+    scoreLabel = 'Great';
   } else if (roundedScore >= 65) {
-    scoreColorClass = 'bg-score-medium';
-    scoreTextClass = 'text-gray-900';
-    scoreLabel = 'Worth Seeing';
+    scoreColorClass = 'score-good';
+    scoreLabel = 'Good';
   } else if (roundedScore >= 55) {
-    scoreColorClass = 'bg-orange-500';
-    scoreLabel = 'Skippable';
+    scoreColorClass = 'score-tepid';
+    scoreTextClass = 'text-gray-900';
+    scoreLabel = 'Tepid';
   } else {
-    scoreColorClass = 'bg-score-low';
-    scoreLabel = 'Stay Away';
+    scoreColorClass = 'score-skip';
+    scoreLabel = 'Skip';
   }
 
   return (

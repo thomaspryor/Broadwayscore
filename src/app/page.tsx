@@ -76,15 +76,15 @@ function ScoreBadge({ score, size = 'md', reviewCount }: { score?: number | null
   let colorClass: string;
 
   if (roundedScore >= 85) {
-    colorClass = 'score-high ring-2 ring-accent-gold/50';
+    colorClass = 'score-must-see';
   } else if (roundedScore >= 75) {
-    colorClass = 'score-high';
+    colorClass = 'score-great';
   } else if (roundedScore >= 65) {
-    colorClass = 'score-medium';
+    colorClass = 'score-good';
   } else if (roundedScore >= 55) {
-    colorClass = 'bg-orange-500 text-white';
+    colorClass = 'score-tepid';
   } else {
-    colorClass = 'score-low';
+    colorClass = 'score-skip';
   }
 
   return (
@@ -290,11 +290,11 @@ const MiniShowCard = memo(function MiniShowCard({ show }: { show: ComputedShow }
         <div className="absolute bottom-1.5 right-1.5">
           <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
             score === undefined || score === null ? 'bg-surface-overlay text-gray-400' :
-            score >= 85 ? 'bg-score-high text-white ring-1 ring-accent-gold/50' :
-            score >= 75 ? 'bg-score-high text-white' :
-            score >= 65 ? 'bg-score-medium text-gray-900' :
-            score >= 55 ? 'bg-orange-500 text-white' :
-            'bg-score-low text-white'
+            score >= 85 ? 'score-must-see' :
+            score >= 75 ? 'score-great' :
+            score >= 65 ? 'score-good' :
+            score >= 55 ? 'score-tepid' :
+            'score-skip'
           }`}>
             {score !== undefined && score !== null ? Math.round(score) : '—'}
           </div>
@@ -595,24 +595,24 @@ function HomePageInner() {
       {/* Score Legend */}
       <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-gray-500">
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-score-high ring-1 ring-accent-gold/50"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-score-must-see shadow-[0_0_6px_rgba(212,175,55,0.5)]"></div>
           <span>85+ Must-See</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-score-high"></div>
-          <span>75-84 Recommended</span>
+          <div className="w-2.5 h-2.5 rounded-full bg-score-great"></div>
+          <span>75-84 Great</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-score-medium"></div>
-          <span>65-74 Worth Seeing</span>
+          <div className="w-2.5 h-2.5 rounded-full bg-score-good"></div>
+          <span>65-74 Good</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-orange-500"></div>
-          <span>55-64 Skippable</span>
+          <div className="w-2.5 h-2.5 rounded-full bg-score-tepid"></div>
+          <span>55-64 Tepid</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-score-low"></div>
-          <span>&lt;55 Stay Away</span>
+          <div className="w-2.5 h-2.5 rounded-full bg-score-skip"></div>
+          <span>&lt;55 Skip</span>
         </div>
       </div>
 

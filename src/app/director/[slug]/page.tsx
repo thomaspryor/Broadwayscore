@@ -54,11 +54,18 @@ function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm'
   }
 
   const roundedScore = Math.round(score);
-  const colorClass = roundedScore >= 70
-    ? 'bg-score-high text-white'
-    : roundedScore >= 50
-    ? 'bg-score-medium text-gray-900'
-    : 'bg-score-low text-white';
+  let colorClass: string;
+  if (roundedScore >= 85) {
+    colorClass = 'score-must-see';
+  } else if (roundedScore >= 75) {
+    colorClass = 'score-great';
+  } else if (roundedScore >= 65) {
+    colorClass = 'score-good';
+  } else if (roundedScore >= 55) {
+    colorClass = 'score-tepid';
+  } else {
+    colorClass = 'score-skip';
+  }
 
   return (
     <div className={`${sizeClasses[size]} ${colorClass} flex items-center justify-center font-bold`}>
