@@ -191,6 +191,7 @@ export interface ComputedShow {
   synopsis?: string;
   ageRecommendation?: string;
   limitedRun?: boolean;
+  previewsStartDate?: string;  // For upcoming shows
   ticketLinks?: TicketLink[];
   officialUrl?: string;
   trailerUrl?: string;
@@ -552,6 +553,7 @@ export function computeShowData(
     synopsis: show.synopsis,
     ageRecommendation: show.ageRecommendation,
     limitedRun: show.limitedRun,
+    previewsStartDate: show.previewsStartDate,
     ticketLinks: show.ticketLinks,
     officialUrl: show.officialUrl,
     trailerUrl: show.trailerUrl,
