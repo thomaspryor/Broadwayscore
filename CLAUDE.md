@@ -130,14 +130,15 @@ Each review has:
 
 ```
 data/
-  shows.json              # Show metadata with full details
-  reviews.json            # Critic reviews with scores and original ratings
-  grosses.json            # Box office data (weekly + all-time stats)
-  new-shows-pending.json  # Auto-generated: new shows awaiting review data
-  show-score.json         # Show Score aggregator data (audience scores + critic reviews)
-  show-score-urls.json    # URL mapping for Show Score pages
-  audience.json           # (Future) Audience scores
-  buzz.json               # (Future) Social buzz data
+  shows.json                      # Show metadata with full details
+  reviews.json                    # Critic reviews with scores and original ratings
+  grosses.json                    # Box office data (weekly + all-time stats)
+  new-shows-pending.json          # Auto-generated: new shows awaiting review data
+  historical-shows-pending.json   # Auto-generated: historical shows awaiting metadata
+  show-score.json                 # Show Score aggregator data (audience scores + critic reviews)
+  show-score-urls.json            # URL mapping for Show Score pages
+  audience.json                   # (Future) Audience scores
+  buzz.json                       # (Future) Social buzz data
   review-texts/           # Individual review JSON files by show
     {show-id}/            # e.g., hamilton-2015/, wicked-2003/
       {outlet}--{critic}.json  # e.g., nytimes--ben-brantley.json
@@ -215,6 +216,8 @@ data/
 - `src/app/show/[slug]/page.tsx` - Individual show pages
 - `src/config/scoring.ts` - Scoring rules, tier weights, outlet mappings
 - `src/components/BoxOfficeStats.tsx` - Box office stats display component
+- `scripts/discover-new-shows.js` - Discovers new/upcoming shows from Broadway.org (runs daily)
+- `scripts/discover-historical-shows.js` - Discovers closed shows from past seasons (manual trigger)
 - `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses scraper (Playwright)
 - `scripts/scrape-alltime.ts` - BroadwayWorld all-time stats scraper (Playwright)
 - `scripts/collect-review-texts-v2.js` - Enhanced review text scraper with stealth mode, ScrapingBee fallback, Archive.org fallback
@@ -249,6 +252,17 @@ All automation runs via GitHub Actions - no local commands needed.
 - **Data source:** BroadwayWorld (grosses.cfm for weekly, grossescumulative.cfm for all-time)
 - **Note:** Data is typically released Monday/Tuesday after the week ends on Sunday
 - **Skips:** If data for the current week already exists (unless force=true)
+
+### `.github/workflows/discover-historical-shows.yml`
+- **Runs:** Manual trigger only (workflow_dispatch)
+- **Does:**
+  - Discovers closed Broadway shows from past seasons
+  - Works backwards through history (most recent first)
+  - Adds shows with status: "closed" and tag: "historical"
+  - Does NOT trigger review gathering (waits for manual backfill)
+- **Usage:** Specify seasons like `2024-2025,2023-2024` (one or two seasons at a time recommended)
+- **Strategy:** Start with most recent closed shows, gradually work back ~20 years
+- **Note:** Review data collection for historical shows happens separately when ready
 
 ## Deployment
 

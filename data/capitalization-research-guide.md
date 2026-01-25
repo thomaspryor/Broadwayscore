@@ -1,26 +1,8 @@
 
 # Broadway Capitalization Research Guide
-Generated: 2026-01-25T23:01:26.771Z
+Generated: 2026-01-25T23:18:24.599Z
 
 ## Shows Missing Data
-
-### Maybe Happy Ending
-- Show ID: 1
-- Status: open
-- Missing: Capitalization amount
-
-**Search Queries:**
-1. "Maybe Happy Ending" Broadway capitalization budget million
-2. "Maybe Happy Ending" Broadway recouped investment
-3. "Maybe Happy Ending" SEC filing Broadway
-4. site:reddit.com/r/Broadway "Maybe Happy Ending" budget OR capitalization OR recoup
-5. site:broadwaynews.com "Maybe Happy Ending" capitalization OR recoup
-6. site:broadwayjournal.com "Maybe Happy Ending" capitalization
-
-**SEC EDGAR Search:**
-https://www.sec.gov/cgi-bin/srch-ia?text=Maybe%20Happy%20Ending%20Broadway&first=1&last=40
-
----
 
 ### The Outsiders
 - Show ID: 2
@@ -73,24 +55,6 @@ https://www.sec.gov/cgi-bin/srch-ia?text=Bug%20Broadway&first=1&last=40
 
 **SEC EDGAR Search:**
 https://www.sec.gov/cgi-bin/srch-ia?text=Aladdin%20Broadway&first=1&last=40
-
----
-
-### Oedipus
-- Show ID: 19
-- Status: open
-- Missing: Capitalization amount
-
-**Search Queries:**
-1. "Oedipus" Broadway capitalization budget million
-2. "Oedipus" Broadway recouped investment
-3. "Oedipus" SEC filing Broadway
-4. site:reddit.com/r/Broadway "Oedipus" budget OR capitalization OR recoup
-5. site:broadwaynews.com "Oedipus" capitalization OR recoup
-6. site:broadwayjournal.com "Oedipus" capitalization
-
-**SEC EDGAR Search:**
-https://www.sec.gov/cgi-bin/srch-ia?text=Oedipus%20Broadway&first=1&last=40
 
 ---
 
@@ -184,42 +148,6 @@ https://www.sec.gov/cgi-bin/srch-ia?text=Liberation%20Broadway&first=1&last=40
 
 ---
 
-### Boop! The Musical
-- Show ID: 30
-- Status: closed
-- Missing: Capitalization amount
-
-**Search Queries:**
-1. "Boop! The Musical" Broadway capitalization budget million
-2. "Boop! The Musical" Broadway recouped investment
-3. "Boop The Musical" SEC filing Broadway
-4. site:reddit.com/r/Broadway "Boop! The Musical" budget OR capitalization OR recoup
-5. site:broadwaynews.com "Boop! The Musical" capitalization OR recoup
-6. site:broadwayjournal.com "Boop! The Musical" capitalization
-
-**SEC EDGAR Search:**
-https://www.sec.gov/cgi-bin/srch-ia?text=Boop!%20The%20Musical%20Broadway&first=1&last=40
-
----
-
-### The Queen of Versailles
-- Show ID: 31
-- Status: open
-- Missing: Capitalization amount
-
-**Search Queries:**
-1. "The Queen of Versailles" Broadway capitalization budget million
-2. "The Queen of Versailles" Broadway recouped investment
-3. "The Queen of Versailles" SEC filing Broadway
-4. site:reddit.com/r/Broadway "The Queen of Versailles" budget OR capitalization OR recoup
-5. site:broadwaynews.com "The Queen of Versailles" capitalization OR recoup
-6. site:broadwayjournal.com "The Queen of Versailles" capitalization
-
-**SEC EDGAR Search:**
-https://www.sec.gov/cgi-bin/srch-ia?text=The%20Queen%20of%20Versailles%20Broadway&first=1&last=40
-
----
-
 ### Ragtime
 - Show ID: 34
 - Status: open
@@ -253,42 +181,6 @@ https://www.sec.gov/cgi-bin/srch-ia?text=Ragtime%20Broadway&first=1&last=40
 
 **SEC EDGAR Search:**
 https://www.sec.gov/cgi-bin/srch-ia?text=Chess%20Broadway&first=1&last=40
-
----
-
-### The Roommate
-- Show ID: 37
-- Status: closed
-- Missing: Capitalization amount
-
-**Search Queries:**
-1. "The Roommate" Broadway capitalization budget million
-2. "The Roommate" Broadway recouped investment
-3. "The Roommate" SEC filing Broadway
-4. site:reddit.com/r/Broadway "The Roommate" budget OR capitalization OR recoup
-5. site:broadwaynews.com "The Roommate" capitalization OR recoup
-6. site:broadwayjournal.com "The Roommate" capitalization
-
-**SEC EDGAR Search:**
-https://www.sec.gov/cgi-bin/srch-ia?text=The%20Roommate%20Broadway&first=1&last=40
-
----
-
-### Our Town
-- Show ID: 38
-- Status: closed
-- Missing: Capitalization amount
-
-**Search Queries:**
-1. "Our Town" Broadway capitalization budget million
-2. "Our Town" Broadway recouped investment
-3. "Our Town" SEC filing Broadway
-4. site:reddit.com/r/Broadway "Our Town" budget OR capitalization OR recoup
-5. site:broadwaynews.com "Our Town" capitalization OR recoup
-6. site:broadwayjournal.com "Our Town" capitalization
-
-**SEC EDGAR Search:**
-https://www.sec.gov/cgi-bin/srch-ia?text=Our%20Town%20Broadway&first=1&last=40
 
 ---
 
