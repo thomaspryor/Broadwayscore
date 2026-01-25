@@ -259,10 +259,10 @@ All automation runs via GitHub Actions - no local commands needed.
   - Discovers closed Broadway shows from past seasons
   - Works backwards through history (most recent first)
   - Adds shows with status: "closed" and tag: "historical"
-  - Does NOT trigger review gathering (waits for manual backfill)
+  - Automatically triggers review gathering for all discovered shows
 - **Usage:** Specify seasons like `2024-2025,2023-2024` (one or two seasons at a time recommended)
 - **Strategy:** Start with most recent closed shows, gradually work back ~20 years
-- **Note:** Review data collection for historical shows happens separately when ready
+- **Note:** Review gathering happens automatically after discovery (same process as new shows)
 
 ## Deployment
 
