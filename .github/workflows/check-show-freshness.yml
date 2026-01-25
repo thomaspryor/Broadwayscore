@@ -2,9 +2,15 @@ name: Check Show Freshness
 
 on:
   schedule:
-    # Run daily at 6 AM UTC (1 AM ET / 2 AM ET during DST)
+    # Daily at 6 AM UTC (1 AM ET)
     - cron: '0 6 * * *'
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      check_closing_dates:
+        description: 'Also check for closing date announcements'
+        required: false
+        default: 'false'
+        type: boolean
 
 jobs:
   check-freshness:
@@ -22,8 +28,14 @@ jobs:
           node-version: '20'
 
       - name: Run freshness check
-        id: freshness
         run: node scripts/check-show-freshness.js
+
+      - name: Check for closing date announcements (weekly or manual)
+        if: github.event.inputs.check_closing_dates == 'true' || github.event.schedule == '0 6 * * 0'
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/check-closing-dates.js
+        continue-on-error: true
 
       - name: Check for changes
         id: changes
@@ -32,6 +44,7 @@ jobs:
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
+            git diff data/shows.json
           fi
 
       - name: Commit and push changes
@@ -39,16 +52,36 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/shows.json
+          git add data/shows.json data/freshness-report.json
 
-          # Get list of closed shows for commit message
+          # Build commit message based on what changed
+          CHANGES=""
+
+          # Check for auto-closed shows
           CLOSED=$(node -e "
-            const d = require('./data/shows.json');
-            const closed = d.shows.filter(s => s.status === 'closed' && s.closingDate);
-            const today = new Date().toISOString().split('T')[0];
-            const recentlyClosed = closed.filter(s => s.closingDate <= today && s.closingDate >= new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0]);
-            console.log(recentlyClosed.map(s => s.title).join(', ') || 'shows');
-          ")
+            const r = require('./data/freshness-report.json');
+            if (r.statusChanges?.autoClosed?.length > 0) {
+              console.log('Closed: ' + r.statusChanges.autoClosed.map(s => s.title).join(', '));
+            }
+          " 2>/dev/null || echo "")
 
-          git commit -m "chore: Auto-update show statuses (closed: $CLOSED)"
+          if [ -n "$CLOSED" ]; then
+            CHANGES="$CLOSED"
+          fi
+
+          # Default message if no specific changes
+          if [ -z "$CHANGES" ]; then
+            CHANGES="Updated show data"
+          fi
+
+          git commit -m "chore: Auto-update show data
+
+$CHANGES"
           git push
+
+      - name: Upload freshness report
+        uses: actions/upload-artifact@v4
+        with:
+          name: freshness-report
+          path: data/freshness-report.json
+          retention-days: 7
