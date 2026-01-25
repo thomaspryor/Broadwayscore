@@ -15,6 +15,22 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
   const canonicalUrl = `${BASE_URL}/browse/${params.slug}`;
 
+  // Get shows for this browse list to extract poster URLs
+  const browseList = getBrowseList(params.slug);
+  const topPosters = browseList?.shows
+    .slice(0, 4)
+    .map(show => show.images?.poster)
+    .filter((url): url is string => !!url) || [];
+
+  // Build OG image URL
+  const ogParams = new URLSearchParams({
+    type: 'browse',
+    title: config.h1,
+    subtitle: config.metaDescription.slice(0, 100),
+    ...(topPosters.length > 0 && { posters: topPosters.join(',') }),
+  });
+  const ogImageUrl = `${BASE_URL}/api/og?${ogParams.toString()}`;
+
   return {
     title: config.metaTitle,
     description: config.metaDescription,
@@ -26,11 +42,23 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       description: config.metaDescription,
       url: canonicalUrl,
       type: 'article',
+      images: [{
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: config.h1,
+      }],
     },
     twitter: {
       card: 'summary_large_image',
       title: config.metaTitle,
       description: config.metaDescription,
+      images: [{
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: config.h1,
+      }],
     },
   };
 }
