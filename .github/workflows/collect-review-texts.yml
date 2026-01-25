@@ -54,11 +54,11 @@ jobs:
         id: collect
         env:
           NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
-          NYT_PASSWORD: ${{ secrets.NYT_PASSWORD }}
+          NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
           VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
           VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
           WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
-          WAPO_PASSWORD: ${{ secrets.WAPO_PASSWORD }}
+          WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.max_reviews }}
           PRIORITY: ${{ inputs.priority }}
