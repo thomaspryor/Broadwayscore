@@ -38,13 +38,22 @@ jobs:
           const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
           async function fetchWithScrapingBee(url, apiKey) {
+            // Debug: Check if API key is being read
+            if (!apiKey || apiKey.trim() === '') {
+              throw new Error('ScrapingBee API key is empty or undefined');
+            }
+
+            console.log(`  API key starts with: ${apiKey.substring(0, 10)}...`);
+
             const response = await axios.get('https://app.scrapingbee.com/api/v1/', {
               params: {
-                api_key: apiKey,
+                api_key: apiKey.trim(),
                 url: url,
-                render_js: false,
-                premium_proxy: false,
+                render_js: true,
+                premium_proxy: true,
+                wait: 5000,
                 block_ads: true,
+                block_resources: false,
               },
               timeout: 30000,
             });
