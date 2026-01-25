@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Broadway Metascore Image Fetcher
+ * Broadway Scorecard Image Fetcher
  *
  * Usage:
  *   node scripts/fetch-images.js           # Fetch all and auto-update shows.json
@@ -637,7 +637,7 @@ function updateShowsJson(imageResults) {
 async function main() {
   const isDryRun = process.argv.includes('--dry-run');
 
-  console.log('Broadway Metascore Image Fetcher');
+  console.log('Broadway Scorecard Image Fetcher');
   console.log('================================');
   console.log(`Mode: ${isDryRun ? 'DRY RUN (no changes)' : 'AUTO-UPDATE shows.json'}\n`);
 

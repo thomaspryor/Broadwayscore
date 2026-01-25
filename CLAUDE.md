@@ -1,4 +1,4 @@
-# Broadway Metascore Project Context
+# Broadway Scorecard Project Context
 
 ## ⚠️ CRITICAL RULES - READ FIRST ⚠️
 
@@ -392,4 +392,4 @@ For scraping paywalled review sites, the user has subscriptions:
 - Audience scores integration
 - Comparison views
 - Historical tracking
-- Custom domain setup (broadwaymetascore.com)
+- Custom domain setup (broadwayscorecard.com)
