@@ -2,9 +2,10 @@
 /**
  * check-closing-dates.js
  *
- * Weekly check for newly announced Broadway closing dates.
- * Scrapes Broadway.org to find shows that have announced closing dates
- * that we don't have in our data yet.
+ * Weekly check for Broadway closing date changes:
+ * 1. Finds NEW closing dates for shows without one
+ * 2. Detects EXTENSIONS (closing date pushed later) - common marketing tactic
+ * 3. Flags discrepancies for review
  *
  * Usage: node scripts/check-closing-dates.js [--dry-run]
  *
@@ -106,28 +107,35 @@ async function checkClosingDates() {
   const data = loadShows();
   const openShows = data.shows.filter(s => s.status === 'open');
   const showsWithoutClosingDate = openShows.filter(s => !s.closingDate);
+  const showsWithClosingDate = openShows.filter(s => s.closingDate);
 
   console.log(`Open shows: ${openShows.length}`);
   console.log(`Without closing date: ${showsWithoutClosingDate.length}`);
+  console.log(`With closing date: ${showsWithClosingDate.length}`);
   console.log('');
 
-  if (showsWithoutClosingDate.length === 0) {
-    console.log('✅ All open shows have closing dates!');
-    return;
-  }
-
-  // Create lookup map
+  // Create lookup map for ALL open shows (to check for extensions too)
   const showLookup = {};
-  for (const show of showsWithoutClosingDate) {
+  for (const show of openShows) {
     const normalized = normalizeTitle(show.title);
     showLookup[normalized] = show;
   }
 
-  console.log('Shows needing closing dates:');
-  for (const show of showsWithoutClosingDate) {
-    console.log(`  - ${show.title}`);
+  if (showsWithoutClosingDate.length > 0) {
+    console.log('Shows needing closing dates:');
+    for (const show of showsWithoutClosingDate) {
+      console.log(`  - ${show.title}`);
+    }
+    console.log('');
   }
-  console.log('');
+
+  if (showsWithClosingDate.length > 0) {
+    console.log('Shows to check for extensions:');
+    for (const show of showsWithClosingDate) {
+      console.log(`  - ${show.title} (current: ${show.closingDate})`);
+    }
+    console.log('');
+  }
 
   // Try to fetch Broadway.org
   console.log('Fetching Broadway.org for closing date announcements...');
@@ -144,7 +152,8 @@ async function checkClosingDates() {
 
     // Parse for show listings and closing dates
     // Broadway.org format: <div class="show-card">...<span class="closing-date">Closes Feb 8</span>...
-    const updates = [];
+    const newDates = [];      // Shows that didn't have a date
+    const extensions = [];    // Shows where the date moved later (extended!)
 
     // Simple regex to find show names with closing info
     // This is a simplified approach - a proper HTML parser would be better
@@ -158,18 +167,31 @@ async function checkClosingDates() {
       const title = titleMatch[1].trim();
       const normalized = normalizeTitle(title);
 
-      // Check if this is one of our shows without closing date
+      // Check if this is one of our open shows
       const show = showLookup[normalized];
       if (!show) continue;
 
       // Look for closing date in this block
-      const closingDate = parseClosingDate(block);
-      if (closingDate) {
-        updates.push({
-          id: show.id,
-          title: show.title,
-          closingDate: closingDate,
-        });
+      const scrapedDate = parseClosingDate(block);
+      if (scrapedDate) {
+        if (!show.closingDate) {
+          // New closing date
+          newDates.push({
+            id: show.id,
+            title: show.title,
+            closingDate: scrapedDate,
+            type: 'new',
+          });
+        } else if (scrapedDate > show.closingDate) {
+          // Extension! The date moved later
+          extensions.push({
+            id: show.id,
+            title: show.title,
+            oldDate: show.closingDate,
+            closingDate: scrapedDate,
+            type: 'extension',
+          });
+        }
       }
     }
 
@@ -180,23 +202,35 @@ async function checkClosingDates() {
       const normalized = normalizeTitle(title);
       const show = showLookup[normalized];
 
-      if (show && !updates.find(u => u.id === show.id)) {
-        const closingDate = parseClosingDate(match[0]);
-        if (closingDate) {
-          updates.push({
-            id: show.id,
-            title: show.title,
-            closingDate: closingDate,
-          });
+      if (show && !newDates.find(u => u.id === show.id) && !extensions.find(u => u.id === show.id)) {
+        const scrapedDate = parseClosingDate(match[0]);
+        if (scrapedDate) {
+          if (!show.closingDate) {
+            newDates.push({
+              id: show.id,
+              title: show.title,
+              closingDate: scrapedDate,
+              type: 'new',
+            });
+          } else if (scrapedDate > show.closingDate) {
+            extensions.push({
+              id: show.id,
+              title: show.title,
+              oldDate: show.closingDate,
+              closingDate: scrapedDate,
+              type: 'extension',
+            });
+          }
         }
       }
     }
 
-    if (updates.length > 0) {
+    // Report and apply new closing dates
+    if (newDates.length > 0) {
       console.log('');
-      console.log('FOUND CLOSING DATES:');
+      console.log('NEW CLOSING DATES:');
       console.log('-'.repeat(40));
-      for (const update of updates) {
+      for (const update of newDates) {
         console.log(`  📅 ${update.title}: ${update.closingDate}`);
 
         if (!dryRun) {
@@ -206,15 +240,35 @@ async function checkClosingDates() {
           }
         }
       }
+    }
 
+    // Report and apply extensions
+    if (extensions.length > 0) {
+      console.log('');
+      console.log('🎉 EXTENSIONS DETECTED (closing date pushed later):');
+      console.log('-'.repeat(40));
+      for (const update of extensions) {
+        console.log(`  📅 ${update.title}: ${update.oldDate} → ${update.closingDate}`);
+
+        if (!dryRun) {
+          const show = data.shows.find(s => s.id === update.id);
+          if (show) {
+            show.closingDate = update.closingDate;
+          }
+        }
+      }
+    }
+
+    const totalUpdates = newDates.length + extensions.length;
+    if (totalUpdates > 0) {
       if (!dryRun) {
         saveShows(data);
         console.log('');
-        console.log(`✅ Updated ${updates.length} shows with closing dates`);
+        console.log(`✅ Updated ${totalUpdates} shows (${newDates.length} new, ${extensions.length} extensions)`);
       }
     } else {
       console.log('');
-      console.log('No new closing dates found in scrape.');
+      console.log('No closing date changes found in scrape.');
       console.log('(This may require manual checking of Broadway news sources)');
     }
 
