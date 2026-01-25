@@ -68,12 +68,21 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-function ScoreBadge({ score, size = 'lg', reviewCount }: { score?: number | null; size?: 'md' | 'lg' | 'xl'; reviewCount?: number }) {
+function ScoreBadge({ score, size = 'lg', reviewCount, status }: { score?: number | null; size?: 'md' | 'lg' | 'xl'; reviewCount?: number; status?: string }) {
   const sizeClasses = {
     md: 'w-14 h-14 text-2xl rounded-xl',
     lg: 'w-20 h-20 text-4xl rounded-2xl',
     xl: 'w-24 h-24 text-5xl rounded-2xl',
   };
+
+  // Show TBD for previews shows
+  if (status === 'previews') {
+    return (
+      <div className={`${sizeClasses[size]} bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-extrabold`}>
+        TBD
+      </div>
+    );
+  }
 
   // Show TBD if fewer than 5 reviews
   if (reviewCount !== undefined && reviewCount < 5) {
@@ -356,12 +365,12 @@ function ScoreBreakdownBar({ reviews }: { reviews: ReviewForBreakdown[] }) {
   );
 }
 
-function CriticScoreSection({ score, reviewCount, reviews }: { score: number; reviewCount: number; reviews: ReviewForBreakdown[] }) {
+function CriticScoreSection({ score, reviewCount, reviews, status }: { score: number; reviewCount: number; reviews: ReviewForBreakdown[]; status?: string }) {
   const roundedScore = Math.round(score);
   const { label: sentimentLabel, colorClass } = getSentimentLabel(score);
 
-  // Show TBD if fewer than 5 reviews
-  const showTBD = reviewCount < 5;
+  // Show TBD for previews shows or if fewer than 5 reviews
+  const showTBD = status === 'previews' || reviewCount < 5;
 
   let scoreColorClass: string;
   if (roundedScore >= 85) {
@@ -540,6 +549,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             score={score}
             reviewCount={show.criticScore.reviewCount}
             reviews={show.criticScore.reviews}
+            status={show.status}
           />
         )}
 
@@ -644,9 +654,15 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Details</h2>
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
             <div>
-              <dt className="text-gray-500">Opened</dt>
+              <dt className="text-gray-500">{show.status === 'previews' ? 'Opens' : 'Opened'}</dt>
               <dd className="text-white mt-0.5">{formatDate(show.openingDate)}</dd>
             </div>
+            {show.previewsStartDate && show.status === 'previews' && (
+              <div>
+                <dt className="text-gray-500">Previews Start</dt>
+                <dd className="text-white mt-0.5">{formatDate(show.previewsStartDate)}</dd>
+              </div>
+            )}
             {show.closingDate && (
               <div>
                 <dt className="text-gray-500">{show.status === 'closed' ? 'Closed' : 'Closes'}</dt>
