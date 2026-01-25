@@ -67,7 +67,7 @@ function ScoreBadge({ score, reviewCount }: { score?: number | null; reviewCount
   // Show TBD if fewer than 5 reviews
   if (reviewCount !== undefined && reviewCount < 5) {
     return (
-      <div className="w-12 h-12 bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-bold text-sm rounded-xl">
+      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-bold text-xs sm:text-sm rounded-lg sm:rounded-xl">
         TBD
       </div>
     );
@@ -75,7 +75,7 @@ function ScoreBadge({ score, reviewCount }: { score?: number | null; reviewCount
 
   if (score === undefined || score === null) {
     return (
-      <div className="w-12 h-12 bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold text-lg rounded-xl">
+      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold text-base sm:text-lg rounded-lg sm:rounded-xl">
         -
       </div>
     );
@@ -97,7 +97,7 @@ function ScoreBadge({ score, reviewCount }: { score?: number | null; reviewCount
   }
 
   return (
-    <div className={`w-12 h-12 ${colorClass} flex items-center justify-center font-bold text-lg rounded-xl`}>
+    <div className={`w-10 h-10 sm:w-12 sm:h-12 ${colorClass} flex items-center justify-center font-bold text-base sm:text-lg rounded-lg sm:rounded-xl`}>
       {roundedScore}
     </div>
   );
@@ -182,17 +182,17 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
 
         {/* Show List */}
         {shows.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {shows.map((show, index) => (
               <Link
                 key={show.id}
                 href={`/show/${show.slug}`}
-                className="card p-4 flex items-center gap-4 hover:bg-surface-raised/80 transition-colors group"
+                className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group min-h-[72px]"
               >
                 {config.limit !== 1 && <RankBadge rank={index + 1} />}
 
-                {/* Thumbnail */}
-                <div className="w-16 h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                {/* Thumbnail - smaller on mobile */}
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
                   {show.images?.thumbnail ? (
                     <img
                       src={show.images.thumbnail}
@@ -202,41 +202,36 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-2xl">🎭</span>
+                      <span className="text-xl sm:text-2xl">🎭</span>
                     </div>
                   )}
                 </div>
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <h2 className="font-bold text-white group-hover:text-brand transition-colors truncate">
+                  <h2 className="font-bold text-white text-sm sm:text-base group-hover:text-brand transition-colors truncate">
                     {show.title}
                   </h2>
-                  <p className="text-gray-400 text-sm truncate">
+                  <p className="text-gray-400 text-xs sm:text-sm truncate">
                     {show.venue} {show.runtime && `• ${show.runtime}`}
                   </p>
                   {show.closingDate && (
-                    <p className="text-rose-400 text-xs mt-1">
-                      Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                    </p>
-                  )}
-                  {show.criticScore && show.criticScore.reviewCount >= 5 && (
-                    <p className="text-gray-500 text-xs mt-1">
-                      {show.criticScore.reviewCount} reviews
+                    <p className="text-rose-400 text-xs mt-0.5 sm:mt-1">
+                      Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     </p>
                   )}
                 </div>
 
-                {/* Score */}
+                {/* Score - slightly smaller on mobile */}
                 <ScoreBadge score={show.criticScore?.score} reviewCount={show.criticScore?.reviewCount} />
               </Link>
             ))}
           </div>
         ) : (
-          <div className="card p-8 text-center">
-            <div className="text-4xl mb-4">🎭</div>
-            <h2 className="text-xl font-bold text-white mb-2">No Shows Currently</h2>
-            <p className="text-gray-400 mb-6">
+          <div className="card p-6 sm:p-8 text-center">
+            <div className="text-3xl sm:text-4xl mb-4">🎭</div>
+            <h2 className="text-lg sm:text-xl font-bold text-white mb-2">No Shows Currently</h2>
+            <p className="text-gray-400 text-sm sm:text-base mb-6">
               There are no shows matching this category right now. Check back soon as Broadway is always changing!
             </p>
             <div className="flex flex-wrap justify-center gap-2">
@@ -244,7 +239,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
                 <Link
                   key={page.slug}
                   href={`/browse/${page.slug}`}
-                  className="px-4 py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors"
+                  className="px-4 py-2.5 sm:py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors min-h-[44px] sm:min-h-0 flex items-center"
                 >
                   {page.title.replace('Best ', '').replace('Broadway ', '')}
                 </Link>
@@ -255,14 +250,14 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
 
         {/* Related Categories */}
         {relatedPages.length > 0 && (
-          <div className="mt-12 pt-8 border-t border-white/10">
-            <h3 className="text-lg font-bold text-white mb-4">See Also</h3>
+          <div className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-white/10">
+            <h3 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4">See Also</h3>
             <div className="flex flex-wrap gap-2">
               {relatedPages.map(page => (
                 <Link
                   key={page.slug}
                   href={`/browse/${page.slug}`}
-                  className="px-4 py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors"
+                  className="px-4 py-2.5 sm:py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors min-h-[44px] sm:min-h-0 flex items-center"
                 >
                   {page.title.replace('Best ', '').replace('Broadway ', '')}
                 </Link>
