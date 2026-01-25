@@ -96,7 +96,6 @@ function sortByImportance(items: string[]): string[] {
   return [...items].sort((a, b) => {
     const aIndex = TONY_CATEGORY_ORDER.indexOf(a);
     const bIndex = TONY_CATEGORY_ORDER.indexOf(b);
-    // If not found, put at end
     const aOrder = aIndex === -1 ? 999 : aIndex;
     const bOrder = bIndex === -1 ? 999 : bIndex;
     return aOrder - bOrder;
@@ -174,19 +173,36 @@ const DESIGNATION_CONFIG: Record<AwardsDesignation, {
   },
 };
 
-interface ExpandableSectionProps {
-  title: string;
-  items: string[];
-  icon: 'trophy' | 'star';
-  iconColor: string;
-  defaultExpanded?: boolean;
+// Combined Tony Awards item (win or nomination)
+interface TonyItem {
+  category: string;
+  isWin: boolean;
 }
 
-function ExpandableSection({ title, items, icon, iconColor, defaultExpanded = false }: ExpandableSectionProps) {
+// Combined expandable section for Tony wins and nominations
+function TonyExpandableSection({
+  wins,
+  nominations,
+  defaultExpanded = false
+}: {
+  wins: string[];
+  nominations: string[];
+  defaultExpanded?: boolean;
+}) {
   const [expanded, setExpanded] = useState(defaultExpanded);
-  const sortedItems = sortByImportance(items);
+
+  // Combine and sort - wins first, then nominations, both sorted by importance
+  const sortedWins = sortByImportance(wins);
+  const sortedNoms = sortByImportance(nominations);
+
+  const items: TonyItem[] = [
+    ...sortedWins.map(cat => ({ category: cat, isWin: true })),
+    ...sortedNoms.map(cat => ({ category: cat, isWin: false })),
+  ];
 
   if (items.length === 0) return null;
+
+  const totalCount = items.length;
 
   return (
     <div className="border-t border-white/5 pt-3 mt-3">
@@ -194,32 +210,133 @@ function ExpandableSection({ title, items, icon, iconColor, defaultExpanded = fa
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center justify-between text-left group"
       >
-        <div className="flex items-center gap-2">
-          {icon === 'trophy' ? (
-            <TrophyIcon className={iconColor} />
-          ) : (
-            <StarIcon className={iconColor} />
-          )}
-          <span className="text-sm font-medium text-gray-300">
-            {title} ({items.length})
-          </span>
-        </div>
+        <span className="text-sm font-medium text-gray-300">
+          See all categories ({totalCount})
+        </span>
         <ChevronIcon expanded={expanded} className="text-gray-500 group-hover:text-gray-400" />
       </button>
 
       {expanded && (
-        <ul className="mt-3 space-y-2 pl-6">
-          {sortedItems.map((item, idx) => (
-            <li key={idx} className="flex items-start gap-2 text-sm">
-              <span className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${
-                isMajorCategory(item) ? 'bg-amber-400' : 'bg-gray-500'
-              }`} />
-              <span className={isMajorCategory(item) ? 'text-white font-medium' : 'text-gray-400'}>
-                {item}
+        <ul className="mt-3 space-y-2">
+          {items.map((item, idx) => (
+            <li key={idx} className="flex items-center gap-2 text-sm">
+              {item.isWin ? (
+                <TrophyIcon className="text-amber-400 flex-shrink-0" />
+              ) : (
+                <StarIcon className="text-gray-500 flex-shrink-0" />
+              )}
+              <span className={
+                item.isWin
+                  ? (isMajorCategory(item.category) ? 'text-white font-medium' : 'text-amber-200')
+                  : (isMajorCategory(item.category) ? 'text-gray-300' : 'text-gray-500')
+              }>
+                {item.category}
               </span>
+              {item.isWin && (
+                <span className="text-[10px] uppercase tracking-wide text-amber-400/70 font-semibold">Won</span>
+              )}
             </li>
           ))}
         </ul>
+      )}
+    </div>
+  );
+}
+
+// Expandable section for Other Major Awards
+function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
+  const [expanded, setExpanded] = useState(false);
+
+  const dramaDeskWins = awards.dramadesk?.wins || [];
+  const occWins = awards.outerCriticsCircle?.wins || [];
+  const dramaLeagueWins = awards.dramaLeague?.wins || [];
+
+  const hasAwards = dramaDeskWins.length > 0 || occWins.length > 0 || dramaLeagueWins.length > 0;
+
+  if (!hasAwards) return null;
+
+  const totalCount = dramaDeskWins.length + occWins.length + dramaLeagueWins.length;
+
+  return (
+    <div className="mt-4 pt-4 border-t border-white/5">
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-center justify-between text-left group"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+            Other Major Awards
+          </span>
+          <span className="text-xs text-gray-600">({totalCount} wins)</span>
+        </div>
+        <ChevronIcon expanded={expanded} className="text-gray-500 group-hover:text-gray-400" />
+      </button>
+
+      {/* Summary badges - always visible */}
+      <div className="flex flex-wrap gap-2 mt-2">
+        {dramaDeskWins.length > 0 && (
+          <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 text-xs font-medium border border-purple-500/20">
+            <TrophyIcon className="w-3.5 h-3.5" />
+            {dramaDeskWins.length} Drama Desk
+          </span>
+        )}
+        {occWins.length > 0 && (
+          <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-cyan-500/10 text-cyan-400 text-xs font-medium border border-cyan-500/20">
+            <TrophyIcon className="w-3.5 h-3.5" />
+            {occWins.length} Outer Critics
+          </span>
+        )}
+        {dramaLeagueWins.length > 0 && (
+          <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-teal-500/10 text-teal-400 text-xs font-medium border border-teal-500/20">
+            <TrophyIcon className="w-3.5 h-3.5" />
+            {dramaLeagueWins.length} Drama League
+          </span>
+        )}
+      </div>
+
+      {/* Expanded details */}
+      {expanded && (
+        <div className="mt-3 space-y-3">
+          {dramaDeskWins.length > 0 && (
+            <div>
+              <div className="text-xs text-purple-400 font-medium mb-1.5">Drama Desk Awards</div>
+              <ul className="space-y-1 pl-4">
+                {dramaDeskWins.map((win, idx) => (
+                  <li key={idx} className="flex items-center gap-2 text-sm text-gray-400">
+                    <TrophyIcon className="w-3 h-3 text-purple-400 flex-shrink-0" />
+                    {win}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {occWins.length > 0 && (
+            <div>
+              <div className="text-xs text-cyan-400 font-medium mb-1.5">Outer Critics Circle Awards</div>
+              <ul className="space-y-1 pl-4">
+                {occWins.map((win, idx) => (
+                  <li key={idx} className="flex items-center gap-2 text-sm text-gray-400">
+                    <TrophyIcon className="w-3 h-3 text-cyan-400 flex-shrink-0" />
+                    {win}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {dramaLeagueWins.length > 0 && (
+            <div>
+              <div className="text-xs text-teal-400 font-medium mb-1.5">Drama League Awards</div>
+              <ul className="space-y-1 pl-4">
+                {dramaLeagueWins.map((win, idx) => (
+                  <li key={idx} className="flex items-center gap-2 text-sm text-gray-400">
+                    <TrophyIcon className="w-3 h-3 text-teal-400 flex-shrink-0" />
+                    {win}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
@@ -262,7 +379,6 @@ export default function AwardsCard({ showId, awards }: AwardsCardProps) {
   // Build sublabel based on actual data
   let dynamicSublabel = config.sublabel;
   if (designation === 'recognized' && tonyWinsList.length > 0) {
-    // Show what they won
     const topWin = sortByImportance(tonyWinsList)[0];
     dynamicSublabel = `Won ${topWin}`;
   } else if (designation === 'nominated' && tonyNoms > 0) {
@@ -314,7 +430,7 @@ export default function AwardsCard({ showId, awards }: AwardsCardProps) {
           </div>
 
           {/* Win/Nom counts */}
-          <div className="flex flex-wrap gap-4 mb-1">
+          <div className="flex flex-wrap gap-4">
             {tonyWins > 0 && (
               <div className="flex items-center gap-1.5">
                 <TrophyIcon className="text-amber-400" />
@@ -331,56 +447,17 @@ export default function AwardsCard({ showId, awards }: AwardsCardProps) {
             )}
           </div>
 
-          {/* Expandable Wins List */}
-          {tonyWinsList.length > 0 && (
-            <ExpandableSection
-              title="Wins"
-              items={tonyWinsList}
-              icon="trophy"
-              iconColor="text-amber-400"
-              defaultExpanded={tonyWinsList.length <= 4}
-            />
-          )}
-
-          {/* Expandable Nominations List */}
-          {tonyNominationsOnly.length > 0 && (
-            <ExpandableSection
-              title="Nominations"
-              items={tonyNominationsOnly}
-              icon="star"
-              iconColor="text-gray-400"
-              defaultExpanded={false}
-            />
-          )}
+          {/* Combined expandable section for all Tony categories */}
+          <TonyExpandableSection
+            wins={tonyWinsList}
+            nominations={tonyNominationsOnly}
+            defaultExpanded={tonyWinsList.length + tonyNominationsOnly.length <= 5}
+          />
         </div>
       )}
 
-      {/* Other Awards Summary */}
-      {(awards?.dramadesk?.wins?.length || awards?.outerCriticsCircle?.wins?.length || awards?.dramaLeague?.wins?.length) && (
-        <div className="mt-4 pt-4 border-t border-white/5">
-          <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">Other Major Awards</span>
-          <div className="flex flex-wrap gap-2 mt-2">
-            {awards.dramadesk?.wins && awards.dramadesk.wins.length > 0 && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 text-xs font-medium border border-purple-500/20">
-                <TrophyIcon className="w-3.5 h-3.5" />
-                {awards.dramadesk.wins.length} Drama Desk
-              </span>
-            )}
-            {awards.outerCriticsCircle?.wins && awards.outerCriticsCircle.wins.length > 0 && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-cyan-500/10 text-cyan-400 text-xs font-medium border border-cyan-500/20">
-                <TrophyIcon className="w-3.5 h-3.5" />
-                {awards.outerCriticsCircle.wins.length} Outer Critics
-              </span>
-            )}
-            {awards.dramaLeague?.wins && awards.dramaLeague.wins.length > 0 && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-teal-500/10 text-teal-400 text-xs font-medium border border-teal-500/20">
-                <TrophyIcon className="w-3.5 h-3.5" />
-                {awards.dramaLeague.wins.length} Drama League
-              </span>
-            )}
-          </div>
-        </div>
-      )}
+      {/* Other Major Awards - Expandable */}
+      {awards && <OtherAwardsExpandableSection awards={awards} />}
     </div>
   );
 }
