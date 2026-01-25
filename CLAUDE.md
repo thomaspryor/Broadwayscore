@@ -191,6 +191,9 @@ data/
 - `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses scraper (Playwright)
 - `scripts/scrape-alltime.ts` - BroadwayWorld all-time stats scraper (Playwright)
 - `scripts/collect-review-texts-v2.js` - Enhanced review text scraper with stealth mode, ScrapingBee fallback, Archive.org fallback
+- `scripts/audit-scores.js` - Validates all review scores, flags wrong conversions, sentiment placeholders, duplicates
+- `scripts/fix-scores.js` - Automated fix for common scoring issues (wrong star/letter conversions)
+- `scripts/rebuild-show-reviews.js` - Rebuilds reviews.json for specific shows from review-texts data
 
 ## Automation (GitHub Actions)
 
