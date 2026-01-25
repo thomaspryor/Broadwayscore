@@ -47,14 +47,11 @@ async function fetchShowsFromBroadwayOrg() {
   const page = await browser.newPage();
 
   console.log(`Navigating to ${BROADWAY_ORG_URL}...`);
-  await page.goto(BROADWAY_ORG_URL, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.goto(BROADWAY_ORG_URL, { waitUntil: 'networkidle', timeout: 30000 });
 
-  console.log('Waiting for show content to load...');
-  // Wait for main content area
-  await page.waitForSelector('main', { timeout: 10000 });
-
-  // Give JavaScript time to render show cards
-  await page.waitForTimeout(3000);
+  console.log('Waiting for show content to render...');
+  // Just wait for JavaScript to render
+  await page.waitForTimeout(5000);
 
   console.log('Extracting show data from rendered DOM...');
   const shows = await page.evaluate(() => {
