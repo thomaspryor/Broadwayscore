@@ -158,7 +158,7 @@ async function checkLinks() {
 
 async function audit() {
   console.log('\n' + '='.repeat(50));
-  console.log('🎭 BroadwayMetaScores SEO Audit');
+  console.log('🎭 Broadway Scorecard SEO Audit');
   console.log('='.repeat(50));
 
   await validateSchema();
@@ -190,14 +190,14 @@ async function audit() {
 function generateShareUrls(showSlug, showTitle, score) {
   const pageUrl = `${BASE_URL}/show/${showSlug}`;
   const text = score
-    ? `${showTitle} has a ${score}/100 critic score on BroadwayMetaScores!`
-    : `Check out ${showTitle} on BroadwayMetaScores`;
+    ? `${showTitle} has a ${score}/100 critic score on Broadway Scorecard!`
+    : `Check out ${showTitle} on Broadway Scorecard`;
 
   return {
     twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(pageUrl)}`,
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`,
     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`,
-    email: `mailto:?subject=${encodeURIComponent(showTitle + ' - BroadwayMetaScores')}&body=${encodeURIComponent(text + '\n\n' + pageUrl)}`,
+    email: `mailto:?subject=${encodeURIComponent(showTitle + ' - Broadway Scorecard')}&body=${encodeURIComponent(text + '\n\n' + pageUrl)}`,
   };
 }
 
@@ -238,7 +238,7 @@ switch (command) {
     break;
   default:
     console.log(`
-🎭 BroadwayMetaScores SEO Utilities
+🎭 Broadway Scorecard SEO Utilities
 
 Commands:
   ping-sitemap     Notify Google/Bing of sitemap updates

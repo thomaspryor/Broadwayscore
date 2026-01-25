@@ -221,7 +221,7 @@ export default function HomePage() {
       {/* Hero Header */}
       <div className="mb-8 sm:mb-10">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 tracking-tight">
-          Broadway<span className="text-gradient">MetaScores</span>
+          Broadway<span className="text-gradient">Scorecard</span>
         </h1>
         <p className="text-gray-400 text-base sm:text-lg">
           Every show. Every review. One score.
@@ -337,5 +337,34 @@ export default function HomePage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+// Main export with Suspense boundary for useSearchParams
+export default function HomePage() {
+  return (
+    <Suspense fallback={
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="mb-8 sm:mb-10">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 tracking-tight">
+            Broadway<span className="text-gradient">Scorecard</span>
+          </h1>
+          <p className="text-gray-400 text-base sm:text-lg">
+            Every show. Every review. One score.
+          </p>
+        </div>
+        <div className="animate-pulse space-y-4">
+          <div className="h-12 bg-surface-overlay rounded-xl"></div>
+          <div className="h-8 bg-surface-overlay rounded w-3/4"></div>
+          <div className="space-y-3">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="h-24 bg-surface-overlay rounded-xl"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    }>
+      <HomePageInner />
+    </Suspense>
   );
 }

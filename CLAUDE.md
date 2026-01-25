@@ -1,4 +1,4 @@
-# Broadway Metascore Project Context
+# Broadway Scorecard Project Context
 
 ## ⚠️ CRITICAL RULES - READ FIRST ⚠️
 
@@ -209,4 +209,4 @@ Once configured, use the `scrapingbee_get_page_html` tool to fetch aggregator pa
 - Audience scores integration
 - Comparison views
 - Historical tracking
-- Custom domain setup (broadwaymetascore.com)
+- Custom domain setup (broadwayscorecard.com)

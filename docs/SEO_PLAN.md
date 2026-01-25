@@ -1,4 +1,4 @@
-# Broadway Metascore: SEO & Discovery Master Plan
+# Broadway Scorecard: SEO & Discovery Master Plan
 
 ## Current State (Phases 1, 2, 3 Complete)
 
@@ -45,7 +45,7 @@ Home > Theaters > [Theater Name]
 
 ### 2.3 Organization Schema
 **Status:** Available in src/lib/seo.ts (can add to layout)
-- BroadwayMetaScores as `Organization`
+- Broadway Scorecard as `Organization`
 - Logo, URL, social profiles
 
 ### 2.4 Offer/Ticket Schema

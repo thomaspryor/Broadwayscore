@@ -9,7 +9,7 @@ export function generateOrganizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'BroadwayMetaScores',
+    name: 'Broadway Scorecard',
     url: BASE_URL,
     logo: `${BASE_URL}/logo.png`,
     description: 'Aggregated Broadway show ratings from professional critics',

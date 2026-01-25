@@ -1,4 +1,4 @@
-// Scoring utilities for Broadway Metascore
+// Scoring utilities for Broadway Scorecard
 // These functions implement the transparent methodology
 
 import {
