@@ -1,0 +1,255 @@
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { Metadata } from 'next';
+import { getBrowseList, getAllBrowseSlugs } from '@/lib/data';
+import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
+import { getBrowsePageConfig, BROWSE_PAGES } from '@/config/browse-pages';
+
+export function generateStaticParams() {
+  return getAllBrowseSlugs().map((slug) => ({ slug }));
+}
+
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+  const config = getBrowsePageConfig(params.slug);
+  if (!config) return { title: 'Page Not Found' };
+
+  const canonicalUrl = `${BASE_URL}/browse/${params.slug}`;
+
+  return {
+    title: config.metaTitle,
+    description: config.metaDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: config.metaTitle,
+      description: config.metaDescription,
+      url: canonicalUrl,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: config.metaTitle,
+      description: config.metaDescription,
+    },
+  };
+}
+
+function ScoreBadge({ score, reviewCount }: { score?: number | null; reviewCount?: number }) {
+  // Show TBD if fewer than 5 reviews
+  if (reviewCount !== undefined && reviewCount < 5) {
+    return (
+      <div className="w-12 h-12 bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-bold text-sm rounded-xl">
+        TBD
+      </div>
+    );
+  }
+
+  if (score === undefined || score === null) {
+    return (
+      <div className="w-12 h-12 bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold text-lg rounded-xl">
+        -
+      </div>
+    );
+  }
+
+  const roundedScore = Math.round(score);
+  let colorClass: string;
+
+  if (roundedScore >= 85) {
+    colorClass = 'bg-score-high text-white ring-2 ring-accent-gold/50';
+  } else if (roundedScore >= 75) {
+    colorClass = 'bg-score-high text-white';
+  } else if (roundedScore >= 65) {
+    colorClass = 'bg-score-medium text-gray-900';
+  } else if (roundedScore >= 55) {
+    colorClass = 'bg-orange-500 text-white';
+  } else {
+    colorClass = 'bg-score-low text-white';
+  }
+
+  return (
+    <div className={`w-12 h-12 ${colorClass} flex items-center justify-center font-bold text-lg rounded-xl`}>
+      {roundedScore}
+    </div>
+  );
+}
+
+function RankBadge({ rank }: { rank: number }) {
+  const isTop3 = rank <= 3;
+  return (
+    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+      isTop3 ? 'bg-accent-gold text-gray-900' : 'bg-surface-overlay text-gray-400 border border-white/10'
+    }`}>
+      {rank}
+    </div>
+  );
+}
+
+export default function BrowsePage({ params }: { params: { slug: string } }) {
+  const browseList = getBrowseList(params.slug);
+
+  if (!browseList) {
+    notFound();
+  }
+
+  const { config, shows } = browseList;
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: 'Browse', url: `${BASE_URL}/browse` },
+    { name: config.title, url: `${BASE_URL}/browse/${params.slug}` },
+  ]);
+
+  const itemListSchema = generateItemListSchema(
+    shows.map(show => ({
+      name: show.title,
+      url: `${BASE_URL}/show/${show.slug}`,
+      image: show.images?.hero,
+      score: show.criticScore?.score ? Math.round(show.criticScore.score) : undefined,
+    })),
+    config.title
+  );
+
+  // Get related pages info
+  const relatedPages = config.relatedPages
+    .map(slug => getBrowsePageConfig(slug))
+    .filter((p): p is NonNullable<typeof p> => p !== undefined);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, itemListSchema]) }}
+      />
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+        {/* Breadcrumb */}
+        <nav className="text-sm text-gray-400 mb-4" aria-label="Breadcrumb">
+          <ol className="flex items-center gap-2">
+            <li>
+              <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            </li>
+            <li className="text-gray-600">/</li>
+            <li className="text-gray-300">{config.title}</li>
+          </ol>
+        </nav>
+
+        {/* Back Link */}
+        <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          All Shows
+        </Link>
+
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">{config.h1}</h1>
+          <p className="text-gray-300 leading-relaxed">{config.intro}</p>
+          <p className="text-gray-500 text-sm mt-3">
+            {shows.length} {shows.length === 1 ? 'show' : 'shows'} | Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+          </p>
+        </div>
+
+        {/* Show List */}
+        {shows.length > 0 ? (
+          <div className="space-y-4">
+            {shows.map((show, index) => (
+              <Link
+                key={show.id}
+                href={`/show/${show.slug}`}
+                className="card p-4 flex items-center gap-4 hover:bg-surface-raised/80 transition-colors group"
+              >
+                {config.limit !== 1 && <RankBadge rank={index + 1} />}
+
+                {/* Thumbnail */}
+                <div className="w-16 h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                  {show.images?.thumbnail ? (
+                    <img
+                      src={show.images.thumbnail}
+                      alt={`${show.title} Broadway ${show.type}`}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-2xl">🎭</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <h2 className="font-bold text-white group-hover:text-brand transition-colors truncate">
+                    {show.title}
+                  </h2>
+                  <p className="text-gray-400 text-sm truncate">
+                    {show.venue} {show.runtime && `• ${show.runtime}`}
+                  </p>
+                  {show.closingDate && (
+                    <p className="text-rose-400 text-xs mt-1">
+                      Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </p>
+                  )}
+                  {show.criticScore && show.criticScore.reviewCount >= 5 && (
+                    <p className="text-gray-500 text-xs mt-1">
+                      {show.criticScore.reviewCount} reviews
+                    </p>
+                  )}
+                </div>
+
+                {/* Score */}
+                <ScoreBadge score={show.criticScore?.score} reviewCount={show.criticScore?.reviewCount} />
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="card p-8 text-center">
+            <div className="text-4xl mb-4">🎭</div>
+            <h2 className="text-xl font-bold text-white mb-2">No Shows Currently</h2>
+            <p className="text-gray-400 mb-6">
+              There are no shows matching this category right now. Check back soon as Broadway is always changing!
+            </p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {relatedPages.slice(0, 3).map(page => (
+                <Link
+                  key={page.slug}
+                  href={`/browse/${page.slug}`}
+                  className="px-4 py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors"
+                >
+                  {page.title.replace('Best ', '').replace('Broadway ', '')}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Related Categories */}
+        {relatedPages.length > 0 && (
+          <div className="mt-12 pt-8 border-t border-white/10">
+            <h3 className="text-lg font-bold text-white mb-4">See Also</h3>
+            <div className="flex flex-wrap gap-2">
+              {relatedPages.map(page => (
+                <Link
+                  key={page.slug}
+                  href={`/browse/${page.slug}`}
+                  className="px-4 py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors"
+                >
+                  {page.title.replace('Best ', '').replace('Broadway ', '')}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Methodology Link */}
+        <div className="mt-8 text-sm text-gray-500 border-t border-white/5 pt-6">
+          <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
+            How are scores calculated? →
+          </Link>
+        </div>
+      </div>
+    </>
+  );
+}

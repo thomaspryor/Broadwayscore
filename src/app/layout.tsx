@@ -2,8 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Link from 'next/link';
 import ScrollToTop from '@/components/ScrollToTop';
-
-const BASE_URL = 'https://broadwayscorecard.com';
+import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -92,6 +91,14 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://images.ctfassets.net" />
       </head>
       <body className="min-h-screen font-sans pb-16 sm:pb-0">
+        {/* Site-wide structured data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify([
+            generateOrganizationSchema(),
+            generateWebSiteSchema(),
+          ]) }}
+        />
         {/* Skip Link for keyboard navigation */}
         <a
           href="#main-content"
@@ -120,6 +127,47 @@ export default function RootLayout({
         <main id="main-content" className="min-h-[calc(100vh-200px)]">{children}</main>
         <footer className="border-t border-white/5 mt-12 sm:mt-16 hidden sm:block">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            {/* Browse Categories */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 pb-8 border-b border-white/5">
+              <div>
+                <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Category</h4>
+                <ul className="space-y-2 text-sm text-gray-400">
+                  <li><Link href="/browse/best-broadway-musicals" className="hover:text-white transition-colors">Best Musicals</Link></li>
+                  <li><Link href="/browse/best-broadway-dramas" className="hover:text-white transition-colors">Best Dramas</Link></li>
+                  <li><Link href="/browse/best-broadway-comedies" className="hover:text-white transition-colors">Comedies</Link></li>
+                  <li><Link href="/browse/best-broadway-revivals" className="hover:text-white transition-colors">Revivals</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Audience</h4>
+                <ul className="space-y-2 text-sm text-gray-400">
+                  <li><Link href="/browse/broadway-shows-for-kids" className="hover:text-white transition-colors">Shows for Kids</Link></li>
+                  <li><Link href="/browse/broadway-shows-for-date-night" className="hover:text-white transition-colors">Date Night</Link></li>
+                  <li><Link href="/browse/broadway-shows-for-tourists" className="hover:text-white transition-colors">For Tourists</Link></li>
+                  <li><Link href="/browse/first-time-broadway" className="hover:text-white transition-colors">First-Timers</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">Deals & Tickets</h4>
+                <ul className="space-y-2 text-sm text-gray-400">
+                  <li><Link href="/browse/broadway-lottery-shows" className="hover:text-white transition-colors">Lottery Shows</Link></li>
+                  <li><Link href="/browse/broadway-rush-tickets" className="hover:text-white transition-colors">Rush Tickets</Link></li>
+                  <li><Link href="/browse/short-broadway-shows" className="hover:text-white transition-colors">Short Shows</Link></li>
+                  <li><Link href="/browse/broadway-shows-closing-soon" className="hover:text-white transition-colors">Closing Soon</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">More</h4>
+                <ul className="space-y-2 text-sm text-gray-400">
+                  <li><Link href="/browse/tony-winners-on-broadway" className="hover:text-white transition-colors">Tony Winners</Link></li>
+                  <li><Link href="/browse/jukebox-musicals-on-broadway" className="hover:text-white transition-colors">Jukebox Musicals</Link></li>
+                  <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
+                  <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Bottom */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center">
                 <span className="text-lg font-bold text-white">Broadway</span>
