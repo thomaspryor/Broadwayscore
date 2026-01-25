@@ -115,6 +115,12 @@ data/
   show-score-urls.json    # URL mapping for Show Score pages
   audience.json           # (Future) Audience scores
   buzz.json               # (Future) Social buzz data
+  review-texts/           # Individual review JSON files by show
+    {show-id}/            # e.g., hamilton-2015/, wicked-2003/
+      {outlet}--{critic}.json  # e.g., nytimes--ben-brantley.json
+    failed-fetches.json   # Tracking file for reviews that couldn't be scraped
+  archives/reviews/       # Archived HTML of scraped review pages
+    {show-id}/            # HTML snapshots with timestamps
   aggregator-archive/     # Archived HTML pages from aggregator sites
     show-score/           # Show Score page archives (*.html)
     dtli/                 # Did They Like It archives
@@ -182,6 +188,7 @@ data/
 - `src/components/BoxOfficeStats.tsx` - Box office stats display component
 - `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses scraper (Playwright)
 - `scripts/scrape-alltime.ts` - BroadwayWorld all-time stats scraper (Playwright)
+- `scripts/collect-review-texts-v2.js` - Enhanced review text scraper with stealth mode, ScrapingBee fallback, Archive.org fallback
 
 ## Automation (GitHub Actions)
 
