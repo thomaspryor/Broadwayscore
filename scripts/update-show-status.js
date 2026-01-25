@@ -3,7 +3,8 @@
  * Broadway Show Status Updater
  *
  * Conservative status updates:
- * 1. Only marks shows as closed if closing date has passed
+ * 1. Only marks shows as closed if closing date passed 7+ days ago
+ *    (grace period allows time to catch extensions)
  * 2. Checks for previews → open transitions based on opening date
  * 3. Does NOT make assumptions from ticket availability
  *
@@ -18,6 +19,10 @@ const path = require('path');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const dryRun = process.argv.includes('--dry-run');
+
+// Grace period in days - don't auto-close until this many days after closing date
+// This gives time for the check-closing-dates script to catch extensions
+const CLOSING_GRACE_PERIOD_DAYS = 7;
 
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
@@ -35,6 +40,16 @@ function isDatePassed(dateStr) {
   today.setHours(0, 0, 0, 0);
   date.setHours(0, 0, 0, 0);
   return date < today;
+}
+
+function isDatePassedByDays(dateStr, days) {
+  if (!dateStr) return false;
+  const date = new Date(dateStr);
+  const threshold = new Date();
+  threshold.setHours(0, 0, 0, 0);
+  threshold.setDate(threshold.getDate() - days);
+  date.setHours(0, 0, 0, 0);
+  return date < threshold;
 }
 
 function isDateReached(dateStr) {
@@ -59,12 +74,19 @@ function updateShowStatuses() {
   for (const show of data.shows) {
     const changes = {};
 
-    // Check 1: Close shows whose closing date has passed
-    if (show.status === 'open' && show.closingDate && isDatePassed(show.closingDate)) {
+    // Check 1: Close shows whose closing date has passed (with grace period)
+    // Grace period gives check-closing-dates.js time to catch extensions
+    if (show.status === 'open' && show.closingDate && isDatePassedByDays(show.closingDate, CLOSING_GRACE_PERIOD_DAYS)) {
       changes.status = { from: 'open', to: 'closed' };
+      changes.note = `Closing date ${show.closingDate} passed ${CLOSING_GRACE_PERIOD_DAYS}+ days ago`;
       if (!dryRun) {
         show.status = 'closed';
       }
+    }
+
+    // Flag shows approaching closing (but don't change status)
+    if (show.status === 'open' && show.closingDate && isDatePassed(show.closingDate) && !isDatePassedByDays(show.closingDate, CLOSING_GRACE_PERIOD_DAYS)) {
+      console.log(`  ⚠️  ${show.title}: closing date ${show.closingDate} passed - in grace period (check for extension)`);
     }
 
     // Check 2: Move previews to open if opening date has passed
