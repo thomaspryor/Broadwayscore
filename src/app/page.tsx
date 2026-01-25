@@ -202,6 +202,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
   return (
     <Link
       href={`/show/${show.slug}`}
+      role="listitem"
       className="group card-interactive flex gap-4 p-4 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       style={{ animationDelay: `${index * 30}ms` }}
     >
@@ -525,14 +526,14 @@ function HomePageInner() {
       {/* Status & Sort Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm">
         <div className="flex items-center gap-1 sm:gap-2 flex-wrap" role="group" aria-label="Filter by status">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mr-1">STATUS</span>
+          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">STATUS</span>
           {(['now_playing', 'all', 'closed'] as const).map((s) => (
             <button
               key={s}
               onClick={() => updateParams({ status: s })}
               aria-pressed={status === s}
               className={`px-2.5 py-2 sm:px-2 sm:py-1 rounded transition-colors text-[11px] font-medium uppercase tracking-wider min-h-[44px] sm:min-h-0 ${
-                status === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-400 hover:text-white'
+                status === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
               }`}
             >
               {s === 'all' ? 'ALL' : s === 'now_playing' ? 'PLAYING' : 'CLOSED'}
@@ -541,14 +542,14 @@ function HomePageInner() {
         </div>
 
         <div className="flex items-center gap-1 sm:gap-2 flex-wrap" role="group" aria-label="Sort shows">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mr-1">SORT</span>
+          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT</span>
           {(['recent', 'score_desc', 'alpha', 'closing_soon'] as const).map((s) => (
             <button
               key={s}
               onClick={() => updateParams({ sort: s })}
               aria-pressed={sort === s}
               className={`px-2.5 py-2 sm:px-2 sm:py-1 rounded text-[11px] font-medium uppercase tracking-wider transition-colors min-h-[44px] sm:min-h-0 ${
-                sort === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-400 hover:text-white'
+                sort === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
               }`}
             >
               {s === 'recent' ? 'NEW' : s === 'score_desc' ? 'TOP' : s === 'alpha' ? 'A-Z' : 'CLOSING'}
@@ -618,6 +619,7 @@ function HomePageInner() {
       </div>
 
       {/* Show List */}
+      <h2 className="sr-only">Broadway Shows</h2>
       <div className="space-y-3" role="list" aria-label="Broadway shows">
         {filteredAndSortedShows.map((show, index) => (
           <ShowCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} />
