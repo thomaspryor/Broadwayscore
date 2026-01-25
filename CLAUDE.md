@@ -84,7 +84,7 @@ git push origin main
 
 ## Project Overview
 
-A website aggregating Broadway show reviews into composite "metascores" (like Metacritic for Broadway).
+A website aggregating Broadway show reviews into composite scores (independent Broadway-focused review aggregator).
 
 **Tech Stack:** Next.js 14, TypeScript, Tailwind CSS, static export
 
@@ -108,7 +108,7 @@ A website aggregating Broadway show reviews into composite "metascores" (like Me
 ## Scoring Methodology (V1 - Critics Only)
 
 ### Current Implementation
-- **Metascore = Critic Score** (simplified for V1)
+- **Composite Score = Critic Score** (simplified for V1)
 - Tier-weighted average of critic reviews
 
 ### Critic Score Calculation
