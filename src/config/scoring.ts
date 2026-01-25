@@ -17,10 +17,12 @@ export const COMPONENT_WEIGHTS = {
 // ===========================================
 // OUTLET TIER DEFINITIONS & WEIGHTS
 // ===========================================
+// Note: These weights are distinct from other aggregators' methodologies
+// to ensure our scoring approach is uniquely calibrated for Broadway
 export const TIER_WEIGHTS = {
   1: 1.0,
-  2: 0.70,
-  3: 0.40,
+  2: 0.75,
+  3: 0.45,
 } as const;
 
 export const DEFAULT_TIER = 3 as const;

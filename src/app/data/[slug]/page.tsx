@@ -36,7 +36,7 @@ export default function ShowDataPage({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  const { metadata, criticScore, audienceScore, buzzScore, metascore, summary, confidence } = show;
+  const { metadata, criticScore, audienceScore, buzzScore, compositeScore, summary, confidence } = show;
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -57,7 +57,7 @@ export default function ShowDataPage({ params }: { params: { slug: string } }) {
       {/* Quick Stats */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
         <div className="bg-gray-800 rounded-lg p-4 text-center">
-          <div className="text-3xl font-bold text-white">{metascore?.score ?? '—'}</div>
+          <div className="text-3xl font-bold text-white">{compositeScore?.score ?? '—'}</div>
           <div className="text-sm text-gray-400">Overall</div>
         </div>
         <div className="bg-gray-800 rounded-lg p-4 text-center">
@@ -266,8 +266,8 @@ export default function ShowDataPage({ params }: { params: { slug: string } }) {
         )}
 
         {/* Critic Score Breakdown */}
-        {metascore && (
-          <JsonBlock data={metascore} title="Critic Score Calculation" />
+        {compositeScore && (
+          <JsonBlock data={compositeScore} title="Critic Score Calculation" />
         )}
 
         {/* Summary */}
