@@ -1,0 +1,122 @@
+[
+  {
+    "filePath": "data/review-texts/aladdin-2014/EW--unknown.json",
+    "url": "https://ew.com/aladdin-broadway-review/",
+    "showId": "aladdin-2014",
+    "outlet": "Entertainment Weekly",
+    "critic": null,
+    "attempts": 2,
+    "firstAttempt": "2026-01-25T13:36:32.145Z",
+    "lastAttempt": "2026-01-25T13:38:27.931Z",
+    "errors": [
+      {
+        "method": "playwright",
+        "error": "HTTP 404"
+      },
+      {
+        "method": "archive.org",
+        "error": "Archive.org returned 404"
+      }
+    ]
+  },
+  {
+    "filePath": "data/review-texts/aladdin-2014/NBCNY--dave-quinn.json",
+    "url": "https://www.nbcnewyork.com/entertainment/aladdin-broadway-review/",
+    "showId": "aladdin-2014",
+    "outlet": "NBC New York",
+    "critic": "Dave Quinn",
+    "attempts": 2,
+    "firstAttempt": "2026-01-25T13:36:45.322Z",
+    "lastAttempt": "2026-01-25T13:38:38.784Z",
+    "errors": [
+      {
+        "method": "playwright",
+        "error": "Show title not found in text"
+      },
+      {
+        "method": "archive.org",
+        "error": "Archive.org returned 404"
+      }
+    ]
+  },
+  {
+    "filePath": "data/review-texts/aladdin-2014/TDB--tim-teeman.json",
+    "url": "https://www.thedailybeast.com/aladdin-broadway-review/",
+    "showId": "aladdin-2014",
+    "outlet": "The Daily Beast",
+    "critic": "Tim Teeman",
+    "attempts": 2,
+    "firstAttempt": "2026-01-25T13:36:53.405Z",
+    "lastAttempt": "2026-01-25T13:38:44.871Z",
+    "errors": [
+      {
+        "method": "playwright",
+        "error": "HTTP 404"
+      },
+      {
+        "method": "archive.org",
+        "error": "Archive.org returned 404"
+      }
+    ]
+  },
+  {
+    "filePath": "data/review-texts/aladdin-2014/ap--mark-kennedy.json",
+    "url": "https://apnews.com/article/aladdin-broadway-review-2014",
+    "showId": "aladdin-2014",
+    "outlet": "Associated Press",
+    "critic": "Mark Kennedy",
+    "attempts": 1,
+    "firstAttempt": "2026-01-25T13:39:04.719Z",
+    "lastAttempt": "2026-01-25T13:39:04.719Z",
+    "errors": [
+      {
+        "method": "playwright",
+        "error": "HTTP 404"
+      },
+      {
+        "method": "archive.org",
+        "error": "Archive.org returned 404"
+      }
+    ]
+  },
+  {
+    "filePath": "data/review-texts/aladdin-2014/broadway-voice--kristen-balzano.json",
+    "url": "http://bwayvoice.com/aladdin/",
+    "showId": "aladdin-2014",
+    "outlet": "Broadway Voice",
+    "critic": "Kristen Balzano",
+    "attempts": 1,
+    "firstAttempt": "2026-01-25T13:39:20.207Z",
+    "lastAttempt": "2026-01-25T13:39:20.207Z",
+    "errors": [
+      {
+        "method": "playwright",
+        "error": "page.goto: net::ERR_NAME_NOT_RESOLVED at http://bwayvoice.com/aladdin/\nCall log:\n\u001b[2m  - navigating to \"http://bwayvoice.com/aladdin/\", waiting until \"domcontentloaded\"\u001b[22m\n"
+      },
+      {
+        "method": "archive.org",
+        "error": "Archive.org returned 404"
+      }
+    ]
+  },
+  {
+    "filePath": "data/review-texts/aladdin-2014/catholic-transcript--bernard-carragher.json",
+    "url": "http://www.catholictranscript.org/arts-media/theater-reviews/3404-aladdin.html",
+    "showId": "aladdin-2014",
+    "outlet": "Catholic Transcript",
+    "critic": "Bernard Carragher",
+    "attempts": 1,
+    "firstAttempt": "2026-01-25T13:39:38.030Z",
+    "lastAttempt": "2026-01-25T13:39:38.030Z",
+    "errors": [
+      {
+        "method": "playwright",
+        "error": "Only 33 words (need 300)"
+      },
+      {
+        "method": "archive.org",
+        "error": "Archive.org returned 404"
+      }
+    ]
+  }
+]
