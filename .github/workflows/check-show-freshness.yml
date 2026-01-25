@@ -11,6 +11,11 @@ on:
         required: false
         default: 'false'
         type: boolean
+      skip_build_check:
+        description: 'Skip build verification (faster but less safe)'
+        required: false
+        default: 'false'
+        type: boolean
 
 jobs:
   check-freshness:
@@ -26,12 +31,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run freshness check
         run: node scripts/check-show-freshness.js
 
       - name: Check for closing date announcements (weekly or manual)
-        if: github.event.inputs.check_closing_dates == 'true' || github.event.schedule == '0 6 * * 0'
+        if: github.event.inputs.check_closing_dates == 'true' || (github.event_name == 'schedule' && contains(github.event.schedule, '0 6 * * 0'))
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/check-closing-dates.js
@@ -40,12 +49,23 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet data/shows.json; then
+          if git diff --quiet data/shows.json data/freshness-report.json 2>/dev/null; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            git diff data/shows.json
+            echo "Changes detected:"
+            git diff --stat data/
           fi
+
+      - name: Validate data integrity
+        if: steps.changes.outputs.has_changes == 'true'
+        run: node scripts/validate-data.js
+
+      - name: Build site (verify no breaking changes)
+        if: steps.changes.outputs.has_changes == 'true' && github.event.inputs.skip_build_check != 'true'
+        run: npm run build
+        env:
+          NODE_ENV: production
 
       - name: Commit and push changes
         if: steps.changes.outputs.has_changes == 'true'
@@ -58,15 +78,17 @@ jobs:
           CHANGES=""
 
           # Check for auto-closed shows
-          CLOSED=$(node -e "
-            const r = require('./data/freshness-report.json');
-            if (r.statusChanges?.autoClosed?.length > 0) {
-              console.log('Closed: ' + r.statusChanges.autoClosed.map(s => s.title).join(', '));
-            }
-          " 2>/dev/null || echo "")
+          if [ -f data/freshness-report.json ]; then
+            CLOSED=$(node -e "
+              const r = require('./data/freshness-report.json');
+              if (r.statusChanges?.autoClosed?.length > 0) {
+                console.log('Closed: ' + r.statusChanges.autoClosed.map(s => s.title).join(', '));
+              }
+            " 2>/dev/null || echo "")
 
-          if [ -n "$CLOSED" ]; then
-            CHANGES="$CLOSED"
+            if [ -n "$CLOSED" ]; then
+              CHANGES="$CLOSED"
+            fi
           fi
 
           # Default message if no specific changes
@@ -76,12 +98,22 @@ jobs:
 
           git commit -m "chore: Auto-update show data
 
-$CHANGES"
+$CHANGES
+
+Validated: ✅ Data integrity checked
+Build: ✅ Site builds successfully"
           git push
 
       - name: Upload freshness report
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: freshness-report
           path: data/freshness-report.json
           retention-days: 7
+
+      - name: Report failure
+        if: failure()
+        run: |
+          echo "::error::Show freshness check failed - no changes pushed to production"
+          echo "Check the logs above for details on what went wrong."
