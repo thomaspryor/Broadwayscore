@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
   ShowAwards,
   AwardsDesignation,
@@ -31,6 +32,22 @@ function StarIcon({ className }: { className?: string }) {
   );
 }
 
+// Chevron icon for expand/collapse
+function ChevronIcon({ expanded, className }: { expanded: boolean; className?: string }) {
+  return (
+    <svg
+      className={`${className} transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      width="16"
+      height="16"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    </svg>
+  );
+}
+
 // Book/Pulitzer icon
 function PulitzerIcon({ className }: { className?: string }) {
   return (
@@ -40,84 +57,170 @@ function PulitzerIcon({ className }: { className?: string }) {
   );
 }
 
-// Designation badge colors and labels
-const DESIGNATION_CONFIG: Record<AwardsDesignation, { label: string; bgClass: string; textClass: string; borderClass: string }> = {
+// Category importance order - most prestigious first
+const TONY_CATEGORY_ORDER = [
+  'Best Musical',
+  'Best Play',
+  'Best Revival of a Musical',
+  'Best Revival of a Play',
+  'Best Book of a Musical',
+  'Best Original Score',
+  'Best Actor in a Musical',
+  'Best Actress in a Musical',
+  'Best Actor in a Play',
+  'Best Actress in a Play',
+  'Best Direction of a Musical',
+  'Best Direction of a Play',
+  'Best Featured Actor in a Musical',
+  'Best Featured Actress in a Musical',
+  'Best Featured Actor in a Play',
+  'Best Featured Actress in a Play',
+  'Best Choreography',
+  'Best Orchestrations',
+  'Best Scenic Design',
+  'Best Scenic Design of a Musical',
+  'Best Scenic Design of a Play',
+  'Best Costume Design',
+  'Best Costume Design of a Musical',
+  'Best Costume Design of a Play',
+  'Best Lighting Design',
+  'Best Lighting Design of a Musical',
+  'Best Lighting Design of a Play',
+  'Best Sound Design',
+  'Best Sound Design of a Musical',
+  'Best Sound Design of a Play',
+];
+
+// Sort awards by importance
+function sortByImportance(items: string[]): string[] {
+  return [...items].sort((a, b) => {
+    const aIndex = TONY_CATEGORY_ORDER.indexOf(a);
+    const bIndex = TONY_CATEGORY_ORDER.indexOf(b);
+    // If not found, put at end
+    const aOrder = aIndex === -1 ? 999 : aIndex;
+    const bOrder = bIndex === -1 ? 999 : bIndex;
+    return aOrder - bOrder;
+  });
+}
+
+// Check if category is a "major" award (top-tier)
+function isMajorCategory(category: string): boolean {
+  const majorCategories = [
+    'Best Musical',
+    'Best Play',
+    'Best Revival of a Musical',
+    'Best Revival of a Play',
+    'Best Book of a Musical',
+    'Best Original Score',
+    'Best Actor in a Musical',
+    'Best Actress in a Musical',
+    'Best Actor in a Play',
+    'Best Actress in a Play',
+    'Best Direction of a Musical',
+    'Best Direction of a Play',
+  ];
+  return majorCategories.includes(category);
+}
+
+// Designation config with better labels
+const DESIGNATION_CONFIG: Record<AwardsDesignation, {
+  label: string;
+  sublabel: string;
+  bgClass: string;
+  textClass: string;
+  borderClass: string;
+}> = {
   'pulitzer-winner': {
     label: 'Pulitzer Winner',
+    sublabel: 'Highest honor in American drama',
     bgClass: 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20',
     textClass: 'text-amber-400',
     borderClass: 'border-amber-500/30',
   },
   'lavished': {
     label: 'Award Darling',
+    sublabel: 'Multiple major wins',
     bgClass: 'bg-gradient-to-r from-violet-500/15 to-purple-500/15',
     textClass: 'text-violet-400',
     borderClass: 'border-violet-500/30',
   },
   'recognized': {
-    label: 'Recognized',
+    label: 'Award Winner',
+    sublabel: 'Tony winner',
     bgClass: 'bg-emerald-500/10',
     textClass: 'text-emerald-400',
     borderClass: 'border-emerald-500/20',
   },
   'nominated': {
-    label: 'Nominated',
+    label: 'Tony Nominated',
+    sublabel: 'Nominated for Tony Awards',
     bgClass: 'bg-blue-500/10',
     textClass: 'text-blue-400',
     borderClass: 'border-blue-500/20',
   },
   'shut-out': {
-    label: 'Overlooked',
+    label: 'No Nominations',
+    sublabel: 'Eligible but not nominated',
     bgClass: 'bg-gray-500/10',
     textClass: 'text-gray-400',
     borderClass: 'border-gray-500/20',
   },
   'pre-season': {
     label: 'Awaiting Eligibility',
+    sublabel: 'Not yet eligible for awards',
     bgClass: 'bg-gray-700/30',
     textClass: 'text-gray-500',
     borderClass: 'border-gray-600/20',
   },
 };
 
-interface AwardsBadgeProps {
-  designation: AwardsDesignation;
-  tonyWins: number;
-  tonyNoms: number;
-  hasPulitzer: boolean;
-}
-
-function AwardsBadge({ designation, tonyWins, tonyNoms, hasPulitzer }: AwardsBadgeProps) {
-  const config = DESIGNATION_CONFIG[designation];
-
-  return (
-    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${config.bgClass} ${config.borderClass}`}>
-      {hasPulitzer && <PulitzerIcon className="text-amber-400" />}
-      {!hasPulitzer && tonyWins > 0 && <TrophyIcon className={config.textClass} />}
-      {!hasPulitzer && tonyWins === 0 && tonyNoms > 0 && <StarIcon className={config.textClass} />}
-      <span className={`text-sm font-semibold ${config.textClass}`}>{config.label}</span>
-    </div>
-  );
-}
-
-interface TonyStatProps {
-  value: number;
-  label: string;
+interface ExpandableSectionProps {
+  title: string;
+  items: string[];
   icon: 'trophy' | 'star';
+  iconColor: string;
+  defaultExpanded?: boolean;
 }
 
-function TonyStat({ value, label, icon }: TonyStatProps) {
-  if (value === 0) return null;
+function ExpandableSection({ title, items, icon, iconColor, defaultExpanded = false }: ExpandableSectionProps) {
+  const [expanded, setExpanded] = useState(defaultExpanded);
+  const sortedItems = sortByImportance(items);
+
+  if (items.length === 0) return null;
 
   return (
-    <div className="flex items-center gap-1.5">
-      {icon === 'trophy' ? (
-        <TrophyIcon className="text-amber-400" />
-      ) : (
-        <StarIcon className="text-gray-400" />
+    <div className="border-t border-white/5 pt-3 mt-3">
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-center justify-between text-left group"
+      >
+        <div className="flex items-center gap-2">
+          {icon === 'trophy' ? (
+            <TrophyIcon className={iconColor} />
+          ) : (
+            <StarIcon className={iconColor} />
+          )}
+          <span className="text-sm font-medium text-gray-300">
+            {title} ({items.length})
+          </span>
+        </div>
+        <ChevronIcon expanded={expanded} className="text-gray-500 group-hover:text-gray-400" />
+      </button>
+
+      {expanded && (
+        <ul className="mt-3 space-y-2 pl-6">
+          {sortedItems.map((item, idx) => (
+            <li key={idx} className="flex items-start gap-2 text-sm">
+              <span className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${
+                isMajorCategory(item) ? 'bg-amber-400' : 'bg-gray-500'
+              }`} />
+              <span className={isMajorCategory(item) ? 'text-white font-medium' : 'text-gray-400'}>
+                {item}
+              </span>
+            </li>
+          ))}
+        </ul>
       )}
-      <span className="text-white font-bold">{value}</span>
-      <span className="text-gray-400 text-sm">{label}</span>
     </div>
   );
 }
@@ -127,14 +230,23 @@ export default function AwardsCard({ showId, awards }: AwardsCardProps) {
   const tonyWins = getTonyWinCount(showId);
   const tonyNoms = getTonyNominationCount(showId);
   const hasPulitzer = !!awards?.pulitzer;
+  const config = DESIGNATION_CONFIG[designation];
+
+  // Get wins and nominations lists
+  const tonyWinsList = awards?.tony?.wins || [];
+  const tonyNominatedFor = awards?.tony?.nominatedFor || [];
+  // Nominations that aren't wins
+  const tonyNominationsOnly = tonyNominatedFor.filter(nom => !tonyWinsList.includes(nom));
 
   // Don't show card if pre-season with no data
   if (designation === 'pre-season' && !awards?.tony?.note) {
     return (
       <div className="card p-5 sm:p-6 mb-8">
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Awards</h2>
+        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Awards Scorecard</h2>
         <div className="text-center py-4">
-          <AwardsBadge designation={designation} tonyWins={0} tonyNoms={0} hasPulitzer={false} />
+          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border ${config.bgClass} ${config.borderClass}`}>
+            <span className={`text-base font-semibold ${config.textClass}`}>{config.label}</span>
+          </div>
           <p className="text-gray-500 text-sm mt-3">
             This show has not yet been eligible for major awards.
           </p>
@@ -143,42 +255,55 @@ export default function AwardsCard({ showId, awards }: AwardsCardProps) {
     );
   }
 
-  // Get notable wins for display
-  const notableWins: string[] = [];
-  if (awards?.tony?.wins) {
-    // Prioritize the big categories
-    const bigCategories = ['Best Musical', 'Best Play', 'Best Revival of a Musical', 'Best Revival of a Play'];
-    for (const category of bigCategories) {
-      if (awards.tony.wins.includes(category)) {
-        notableWins.push(`Tony: ${category}`);
-      }
-    }
-  }
-  if (awards?.pulitzer) {
-    notableWins.unshift(`Pulitzer Prize for Drama (${awards.pulitzer.year})`);
-  }
-
   // Get Tony season for display
   const tonySeason = awards?.tony?.season;
   const tonyCeremony = awards?.tony?.ceremony;
 
+  // Build sublabel based on actual data
+  let dynamicSublabel = config.sublabel;
+  if (designation === 'recognized' && tonyWinsList.length > 0) {
+    // Show what they won
+    const topWin = sortByImportance(tonyWinsList)[0];
+    dynamicSublabel = `Won ${topWin}`;
+  } else if (designation === 'nominated' && tonyNoms > 0) {
+    dynamicSublabel = `${tonyNoms} Tony nomination${tonyNoms > 1 ? 's' : ''}`;
+  }
+
   return (
     <div className="card p-5 sm:p-6 mb-8">
-      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Awards</h2>
+      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Awards Scorecard</h2>
 
-      {/* Designation Badge */}
-      <div className="flex flex-wrap items-center gap-3 mb-4">
-        <AwardsBadge
-          designation={designation}
-          tonyWins={tonyWins}
-          tonyNoms={tonyNoms}
-          hasPulitzer={hasPulitzer}
-        />
+      {/* Main Designation Badge - More prominent */}
+      <div className={`rounded-xl p-4 border mb-4 ${config.bgClass} ${config.borderClass}`}>
+        <div className="flex items-center gap-3">
+          {hasPulitzer && <PulitzerIcon className="text-amber-400 w-8 h-8" />}
+          {!hasPulitzer && tonyWins > 0 && <TrophyIcon className={`${config.textClass} w-6 h-6`} />}
+          {!hasPulitzer && tonyWins === 0 && tonyNoms > 0 && <StarIcon className={`${config.textClass} w-5 h-5`} />}
+          {!hasPulitzer && tonyWins === 0 && tonyNoms === 0 && (
+            <div className={`w-5 h-5 rounded-full border-2 ${config.borderClass}`} />
+          )}
+          <div>
+            <div className={`text-lg font-bold ${config.textClass}`}>{config.label}</div>
+            <div className="text-sm text-gray-400">{dynamicSublabel}</div>
+          </div>
+        </div>
       </div>
 
-      {/* Tony Stats */}
+      {/* Pulitzer Special Callout */}
+      {hasPulitzer && awards?.pulitzer && (
+        <div className="bg-gradient-to-r from-amber-500/10 to-yellow-500/10 rounded-lg p-3 border border-amber-500/20 mb-4">
+          <div className="flex items-center gap-2">
+            <PulitzerIcon className="text-amber-400" />
+            <span className="text-amber-300 font-medium">
+              Pulitzer Prize for Drama ({awards.pulitzer.year})
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Tony Stats Summary */}
       {(tonyWins > 0 || tonyNoms > 0) && (
-        <div className="bg-surface-overlay rounded-xl p-4 border border-white/5 mb-4">
+        <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
               Tony Awards {tonySeason && `(${tonySeason})`}
@@ -187,25 +312,46 @@ export default function AwardsCard({ showId, awards }: AwardsCardProps) {
               <span className="text-xs text-gray-600">{tonyCeremony} Ceremony</span>
             )}
           </div>
-          <div className="flex flex-wrap gap-4">
-            <TonyStat value={tonyWins} label="Wins" icon="trophy" />
-            <TonyStat value={tonyNoms - tonyWins} label="Other Nominations" icon="star" />
-          </div>
-        </div>
-      )}
 
-      {/* Notable Wins */}
-      {notableWins.length > 0 && (
-        <div className="space-y-2">
-          <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">Notable Wins</span>
-          <ul className="space-y-1.5">
-            {notableWins.slice(0, 4).map((win, idx) => (
-              <li key={idx} className="flex items-center gap-2 text-sm">
-                <TrophyIcon className="text-amber-400 flex-shrink-0" />
-                <span className="text-gray-300">{win}</span>
-              </li>
-            ))}
-          </ul>
+          {/* Win/Nom counts */}
+          <div className="flex flex-wrap gap-4 mb-1">
+            {tonyWins > 0 && (
+              <div className="flex items-center gap-1.5">
+                <TrophyIcon className="text-amber-400" />
+                <span className="text-white font-bold text-lg">{tonyWins}</span>
+                <span className="text-gray-400 text-sm">Win{tonyWins !== 1 ? 's' : ''}</span>
+              </div>
+            )}
+            {tonyNominationsOnly.length > 0 && (
+              <div className="flex items-center gap-1.5">
+                <StarIcon className="text-gray-400" />
+                <span className="text-white font-bold text-lg">{tonyNominationsOnly.length}</span>
+                <span className="text-gray-400 text-sm">Other Nomination{tonyNominationsOnly.length !== 1 ? 's' : ''}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Expandable Wins List */}
+          {tonyWinsList.length > 0 && (
+            <ExpandableSection
+              title="Wins"
+              items={tonyWinsList}
+              icon="trophy"
+              iconColor="text-amber-400"
+              defaultExpanded={tonyWinsList.length <= 4}
+            />
+          )}
+
+          {/* Expandable Nominations List */}
+          {tonyNominationsOnly.length > 0 && (
+            <ExpandableSection
+              title="Nominations"
+              items={tonyNominationsOnly}
+              icon="star"
+              iconColor="text-gray-400"
+              defaultExpanded={false}
+            />
+          )}
         </div>
       )}
 
@@ -215,20 +361,20 @@ export default function AwardsCard({ showId, awards }: AwardsCardProps) {
           <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">Other Major Awards</span>
           <div className="flex flex-wrap gap-2 mt-2">
             {awards.dramadesk?.wins && awards.dramadesk.wins.length > 0 && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-purple-500/10 text-purple-400 text-xs border border-purple-500/20">
-                <TrophyIcon className="w-3 h-3" />
+              <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 text-xs font-medium border border-purple-500/20">
+                <TrophyIcon className="w-3.5 h-3.5" />
                 {awards.dramadesk.wins.length} Drama Desk
               </span>
             )}
             {awards.outerCriticsCircle?.wins && awards.outerCriticsCircle.wins.length > 0 && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-cyan-500/10 text-cyan-400 text-xs border border-cyan-500/20">
-                <TrophyIcon className="w-3 h-3" />
+              <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-cyan-500/10 text-cyan-400 text-xs font-medium border border-cyan-500/20">
+                <TrophyIcon className="w-3.5 h-3.5" />
                 {awards.outerCriticsCircle.wins.length} Outer Critics
               </span>
             )}
             {awards.dramaLeague?.wins && awards.dramaLeague.wins.length > 0 && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-teal-500/10 text-teal-400 text-xs border border-teal-500/20">
-                <TrophyIcon className="w-3 h-3" />
+              <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-teal-500/10 text-teal-400 text-xs font-medium border border-teal-500/20">
+                <TrophyIcon className="w-3.5 h-3.5" />
                 {awards.dramaLeague.wins.length} Drama League
               </span>
             )}
