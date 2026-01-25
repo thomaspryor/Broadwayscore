@@ -95,7 +95,8 @@ jobs:
               process.exit(1);
             }
 
-            const shows = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+            const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+            const shows = showsData.shows;
 
             let showsToProcess = shows;
             if (process.env.SHOW_IDS) {
