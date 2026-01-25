@@ -105,6 +105,14 @@ function saveState() {
 // Find reviews that need full text
 function findReviewsToProcess() {
   const reviews = [];
+
+  // Create directory if it doesn't exist
+  if (!fs.existsSync(CONFIG.reviewTextsDir)) {
+    console.log(`Creating ${CONFIG.reviewTextsDir} directory...`);
+    fs.mkdirSync(CONFIG.reviewTextsDir, { recursive: true });
+    return reviews; // Empty array if no reviews exist yet
+  }
+
   const shows = fs.readdirSync(CONFIG.reviewTextsDir)
     .filter(f => fs.statSync(path.join(CONFIG.reviewTextsDir, f)).isDirectory());
 
