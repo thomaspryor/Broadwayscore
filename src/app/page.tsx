@@ -4,6 +4,7 @@ import { useMemo, memo, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { getAllShows, ComputedShow, getDataStats, getUpcomingShows } from '@/lib/data';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 // URL parameter values
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'all';
@@ -208,7 +209,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
       <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-surface-overlay">
         {show.images?.thumbnail ? (
           <img
-            src={show.images.thumbnail}
+            src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
             alt=""
             aria-hidden="true"
             loading="lazy"
@@ -275,7 +276,7 @@ const MiniShowCard = memo(function MiniShowCard({ show }: { show: ComputedShow }
       <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3] mb-1.5">
         {show.images?.poster || show.images?.thumbnail ? (
           <img
-            src={show.images.poster || show.images.thumbnail}
+            src={getOptimizedImageUrl(show.images.poster || show.images.thumbnail, 'card')}
             alt=""
             aria-hidden="true"
             loading="lazy"
