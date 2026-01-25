@@ -17,6 +17,8 @@ import audienceData from '../../data/audience.json';
 import buzzData from '../../data/buzz.json';
 import grossesData from '../../data/grosses.json';
 import awardsData from '../../data/awards.json';
+import commercialData from '../../data/commercial.json';
+import audienceBuzzData from '../../data/audience-buzz.json';
 
 // Type the imported data
 const shows: RawShow[] = showsData.shows as RawShow[];
@@ -636,6 +638,121 @@ export function getBrowseList(slug: string): BrowseList | undefined {
  */
 export function getAllBrowseSlugs(): string[] {
   return getBrowseSlugsFromConfig();
+}
+
+// ============================================
+// Commercial / Biz Buzz Queries
+// ============================================
+
+export type CommercialDesignation =
+  | 'Miracle'     // Profit > 3x investment (long-running mega-hits)
+  | 'Windfall'    // Profit > 1.5x investment (solid hits)
+  | 'Trickle'     // Broke even or modest profit over time
+  | 'Sugar Daddy' // Limited run that made money
+  | 'Fizzle'      // Lost money but not all
+  | 'Flop'        // Lost most/all investment
+  | 'TBD';        // Too early to tell
+
+export interface ShowCommercial {
+  designation: CommercialDesignation;
+  capitalization: number | null;
+  capitalizationSource: string | null;
+  capitalActual?: number;
+  capitalActualSource?: string;
+  weeklyRunningCost: number | null;
+  recouped: boolean | null;
+  recoupedDate: string | null;
+  recoupedWeeks: number | null;
+  recoupedSource?: string | null;
+  notes?: string;
+}
+
+interface CommercialFile {
+  _meta: {
+    description: string;
+    lastUpdated: string;
+    sources: string;
+    designations: Record<string, string>;
+  };
+  shows: Record<string, ShowCommercial>;
+}
+
+const commercial = commercialData as unknown as CommercialFile;
+
+/**
+ * Get commercial data for a specific show by slug
+ */
+export function getShowCommercial(slug: string): ShowCommercial | undefined {
+  return commercial.shows[slug];
+}
+
+/**
+ * Get commercial designation for a show by slug
+ */
+export function getCommercialDesignation(slug: string): CommercialDesignation | undefined {
+  return commercial.shows[slug]?.designation;
+}
+
+/**
+ * Check if a show has recouped its investment (by slug)
+ */
+export function hasRecouped(slug: string): boolean | null {
+  return commercial.shows[slug]?.recouped ?? null;
+}
+
+/**
+ * Get capitalization for a show by slug
+ */
+export function getCapitalization(slug: string): number | null {
+  return commercial.shows[slug]?.capitalization ?? null;
+}
+
+/**
+ * Get show slugs by commercial designation
+ */
+export function getShowsByDesignation(designation: CommercialDesignation): string[] {
+  const results: string[] = [];
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    if (data.designation === designation) {
+      results.push(slug);
+    }
+  }
+  return results;
+}
+
+/**
+ * Get all shows that have recouped (returns slugs)
+ */
+export function getRecoupedShows(): Array<{ slug: string; capitalization: number | null; recoupedDate: string | null }> {
+  const results: Array<{ slug: string; capitalization: number | null; recoupedDate: string | null }> = [];
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    if (data.recouped === true) {
+      results.push({
+        slug,
+        capitalization: data.capitalization,
+        recoupedDate: data.recoupedDate,
+      });
+    }
+  }
+  return results.sort((a, b) => {
+    if (!a.recoupedDate) return 1;
+    if (!b.recoupedDate) return -1;
+    return new Date(b.recoupedDate).getTime() - new Date(a.recoupedDate).getTime();
+  });
+}
+
+/**
+ * Get commercial data last updated timestamp
+ */
+export function getCommercialLastUpdated(): string {
+  return commercial._meta.lastUpdated;
+}
+
+/**
+ * Get commercial designation description
+ */
+export function getDesignationDescription(designation: CommercialDesignation): string {
+  return commercial._meta.designations[designation] || '';
 }
 
 // Export types
