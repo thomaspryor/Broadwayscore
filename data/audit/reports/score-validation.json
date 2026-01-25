@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-01-25T03:33:23.529Z",
-  "totalReviews": 987,
-  "validated": 987,
-  "withFlags": 315,
+  "timestamp": "2026-01-25T04:13:02.367Z",
+  "totalReviews": 976,
+  "validated": 976,
+  "withFlags": 309,
   "highSeverity": 19,
   "mediumSeverity": 9,
   "byType": {
-    "missing_score": 287,
+    "missing_score": 281,
     "dtli_mismatch": 11,
     "rating_mismatch": 18,
     "bww_mismatch": 1
@@ -320,27 +320,6 @@
       "severity": "high"
     },
     {
-      "file": "moulin-rouge-2019/GUARDIAN--alexis-soloski.json",
-      "showId": "moulin-rouge-2019",
-      "outlet": "The Guardian",
-      "criticName": "Alexis Soloski",
-      "assignedScore": 48,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": "3/5",
-      "flags": [
-        {
-          "type": "rating_mismatch",
-          "severity": "high",
-          "message": "Original rating 3/5 (stars) expects 55-70, got 48",
-          "expected": "55-70",
-          "actual": 48,
-          "originalValue": "3/5"
-        }
-      ],
-      "severity": "high"
-    },
-    {
       "file": "moulin-rouge-2019/NYSR--melissa-rose-bernardo.json",
       "showId": "moulin-rouge-2019",
       "outlet": "New York Stage Review",
@@ -357,6 +336,27 @@
           "expected": "85-100",
           "actual": 78,
           "originalValue": "5/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "moulin-rouge-2019/guardian--alexis-soloski.json",
+      "showId": "moulin-rouge-2019",
+      "outlet": "The Guardian",
+      "criticName": "Alexis Soloski",
+      "assignedScore": 48,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": "3/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 3/5 (stars) expects 55-70, got 48",
+          "expected": "55-70",
+          "actual": 48,
+          "originalValue": "3/5"
         }
       ],
       "severity": "high"
@@ -1865,61 +1865,10 @@
       "severity": "info"
     },
     {
-      "file": "hadestown-2019/ew--jessica-derschowitz.json",
-      "showId": "hadestown-2019",
-      "outlet": "Entertainment Weekly",
-      "criticName": "Jessica Derschowitz",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "hadestown-2019/nytimes--ben-brantley.json",
       "showId": "hadestown-2019",
       "outlet": "The New York Times",
       "criticName": "Ben Brantley",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "hadestown-2019/thewrap--thom-geier.json",
-      "showId": "hadestown-2019",
-      "outlet": "TheWrap",
-      "criticName": "Thom Geier",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "hadestown-2019/wsj--terry-techout.json",
-      "showId": "hadestown-2019",
-      "outlet": "The Wall Street Journal",
-      "criticName": "Terry Teachout",
       "assignedScore": null,
       "dtliThumb": null,
       "bwwThumb": null,
@@ -4869,23 +4818,6 @@
       "severity": "info"
     },
     {
-      "file": "the-notebook-2024/nypost--johnny-oleksinki.json",
-      "showId": "the-notebook-2024",
-      "outlet": "New York Post",
-      "criticName": "Johnny Oleksinki",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": "Down",
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "the-notebook-2024/nypost--johnny-oleksinski.json",
       "showId": "the-notebook-2024",
       "outlet": "New York Post",
@@ -5076,44 +5008,10 @@
       "severity": "medium"
     },
     {
-      "file": "the-outsiders-2024/cititour--scott-lipton.json",
-      "showId": "the-outsiders-2024",
-      "outlet": "Cititour",
-      "criticName": "Scott Lipton",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "the-outsiders-2024/guardian--adrian-horton.json",
       "showId": "the-outsiders-2024",
       "outlet": "The Guardian",
       "criticName": "Adrian Horton",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "the-outsiders-2024/new-york-theatre-guide--joe-dziemianowicz.json",
-      "showId": "the-outsiders-2024",
-      "outlet": "New York Theatre Guide",
-      "criticName": "Joe Dziemianowicz",
       "assignedScore": null,
       "dtliThumb": null,
       "bwwThumb": null,
@@ -6048,27 +5946,6 @@
         "severity": "high"
       },
       {
-        "file": "moulin-rouge-2019/GUARDIAN--alexis-soloski.json",
-        "showId": "moulin-rouge-2019",
-        "outlet": "The Guardian",
-        "criticName": "Alexis Soloski",
-        "assignedScore": 48,
-        "dtliThumb": null,
-        "bwwThumb": null,
-        "originalRating": "3/5",
-        "flags": [
-          {
-            "type": "rating_mismatch",
-            "severity": "high",
-            "message": "Original rating 3/5 (stars) expects 55-70, got 48",
-            "expected": "55-70",
-            "actual": 48,
-            "originalValue": "3/5"
-          }
-        ],
-        "severity": "high"
-      },
-      {
         "file": "moulin-rouge-2019/NYSR--melissa-rose-bernardo.json",
         "showId": "moulin-rouge-2019",
         "outlet": "New York Stage Review",
@@ -6085,6 +5962,27 @@
             "expected": "85-100",
             "actual": 78,
             "originalValue": "5/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "moulin-rouge-2019/guardian--alexis-soloski.json",
+        "showId": "moulin-rouge-2019",
+        "outlet": "The Guardian",
+        "criticName": "Alexis Soloski",
+        "assignedScore": 48,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "3/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 3/5 (stars) expects 55-70, got 48",
+            "expected": "55-70",
+            "actual": 48,
+            "originalValue": "3/5"
           }
         ],
         "severity": "high"
