@@ -640,7 +640,7 @@ function HomePageInner() {
           )}
           <button
             onClick={clearAllFilters}
-            className="text-xs text-gray-400 hover:text-white transition-colors ml-2"
+            className="text-xs text-gray-400 hover:text-white transition-colors ml-auto"
           >
             Clear all
           </button>
