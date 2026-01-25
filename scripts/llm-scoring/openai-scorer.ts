@@ -186,7 +186,10 @@ export class OpenAIReviewScorer {
           throw new Error(`OpenAI API error: ${response.status} - ${errorBody}`);
         }
 
-        const data = await response.json();
+        const data = await response.json() as {
+          usage?: { prompt_tokens?: number; completion_tokens?: number };
+          choices?: Array<{ message?: { content?: string } }>;
+        };
 
         // Track tokens
         inputTokens = data.usage?.prompt_tokens || 0;

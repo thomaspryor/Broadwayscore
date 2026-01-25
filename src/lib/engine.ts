@@ -65,6 +65,7 @@ export interface RawShow {
   // New fields
   synopsis?: string;
   ageRecommendation?: string;  // e.g., "Ages 12+", "All ages"
+  limitedRun?: boolean;        // true for shows with announced closing dates
   ticketLinks?: TicketLink[];
   officialUrl?: string;
   trailerUrl?: string;
@@ -188,6 +189,7 @@ export interface ComputedShow {
   // New fields
   synopsis?: string;
   ageRecommendation?: string;
+  limitedRun?: boolean;
   ticketLinks?: TicketLink[];
   officialUrl?: string;
   trailerUrl?: string;
@@ -350,7 +352,7 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
     reviewCount: reviews.length,
     tier1Count,
     label: getCriticLabel(simpleScore),
-    reviews: computedReviews.sort((a, b) => a.tier - b.tier || b.reviewMetaScore - a.reviewMetaScore),
+    reviews: computedReviews.sort((a, b) => b.reviewMetaScore - a.reviewMetaScore),
   };
 }
 
@@ -529,7 +531,7 @@ export function computeShowData(
   const criticScore = computeCriticScore(showReviews);
 
   // V1: metascore = critic score (audience/buzz coming later)
-  const metascore = criticScore?.score ? Math.round(criticScore.score) : null;
+  const metascore = criticScore?.weightedScore ? Math.round(criticScore.weightedScore) : null;
 
   const confidence = assessConfidence(criticScore, null, show.status);
 
@@ -548,6 +550,7 @@ export function computeShowData(
     // Pass through new fields
     synopsis: show.synopsis,
     ageRecommendation: show.ageRecommendation,
+    limitedRun: show.limitedRun,
     ticketLinks: show.ticketLinks,
     officialUrl: show.officialUrl,
     trailerUrl: show.trailerUrl,

@@ -14,11 +14,19 @@ on:
       priority:
         description: 'Priority filter (tier1, all)'
         required: false
-        default: 'tier1'
+        default: 'all'
       show_filter:
         description: 'Only process specific show (leave empty for all)'
         required: false
         default: ''
+      aggressive:
+        description: 'Skip Playwright for known-blocked sites (true/false)'
+        required: false
+        default: 'false'
+      retry_failed:
+        description: 'Retry previously failed reviews (true/false)'
+        required: false
+        default: 'false'
 
 jobs:
   collect-reviews:
@@ -53,17 +61,29 @@ jobs:
       - name: Run review collection
         id: collect
         env:
+          # Paywall credentials
           NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
           NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
           VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
           VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
           WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
           WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
+          # API keys for fallback tiers
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
+          BRIGHTDATA_CUSTOMER_ID: ${{ secrets.BRIGHTDATA_CUSTOMER_ID }}
+          # Collection settings
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.max_reviews }}
           PRIORITY: ${{ inputs.priority }}
           SHOW_FILTER: ${{ inputs.show_filter }}
-        run: node scripts/collect-review-texts.js
+          RETRY_FAILED: ${{ inputs.retry_failed }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.aggressive }}" = "true" ]; then
+            ARGS="$ARGS --aggressive"
+          fi
+          node scripts/collect-review-texts.js $ARGS
 
       - name: Commit and push changes
         run: |
@@ -77,10 +97,10 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "feat: Collect review texts (batch run)
+            git commit -m "feat: Collect review texts (multi-tier fallback)
 
-          - Processed reviews from GitHub Action
-          - Added full texts and archives
+          - Used 4-tier fallback: Playwright → ScrapingBee → Bright Data → Archive.org
+          - See collection report for tier breakdown
 
           Co-Authored-By: GitHub Action <action@github.com>"
             git push
