@@ -32,6 +32,84 @@ const LETTER_TO_SCORE = {
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 
+/**
+ * Clean excerpt text from aggregator sources
+ * Fixes: JavaScript/ad code, HTML entities, multi-critic concatenation
+ */
+function cleanExcerpt(text) {
+  if (!text) return null;
+
+  let cleaned = text;
+
+  // Remove JavaScript/ad code patterns
+  cleaned = cleaned.replace(/blogherads\.[^;]+;?/gi, '');
+  cleaned = cleaned.replace(/\.defineSlot\([^)]+\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/\.setTargeting\([^)]+\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/\.addSize\([^)]+\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/\.exemptFromSleep\(\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/\.setClsOptimization\([^)]+\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/\.setSubAdUnitPath\([^)]+\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/googletag\.[^;]+;?/gi, '');
+  cleaned = cleaned.replace(/\[\s*["']mid-article\d*["'][^\]]*\]/gi, '');
+  cleaned = cleaned.replace(/Related Stories\s+Casting[^"]+/gi, '');
+
+  // Decode common HTML entities
+  cleaned = cleaned.replace(/&#8217;/g, "'");
+  cleaned = cleaned.replace(/&#8216;/g, "'");
+  cleaned = cleaned.replace(/&#8220;/g, '"');
+  cleaned = cleaned.replace(/&#8221;/g, '"');
+  cleaned = cleaned.replace(/&#039;/g, "'");
+  cleaned = cleaned.replace(/&quot;/g, '"');
+  cleaned = cleaned.replace(/&amp;/g, '&');
+  cleaned = cleaned.replace(/&nbsp;/g, ' ');
+  cleaned = cleaned.replace(/&#x27;/g, "'");
+  cleaned = cleaned.replace(/&rsquo;/g, "'");
+  cleaned = cleaned.replace(/&lsquo;/g, "'");
+  cleaned = cleaned.replace(/&rdquo;/g, '"');
+  cleaned = cleaned.replace(/&ldquo;/g, '"');
+  cleaned = cleaned.replace(/&mdash;/g, '—');
+  cleaned = cleaned.replace(/&ndash;/g, '–');
+
+  // Stop at next critic attribution (BWW roundups concatenate multiple critics)
+  // Pattern: "Name, Outlet:" or "FirstName LastName, Outlet:"
+  const nextCriticMatch = cleaned.match(/\.\s+[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)?,\s+[A-Z][^:]+:/);
+  if (nextCriticMatch && nextCriticMatch.index > 50) {
+    cleaned = cleaned.substring(0, nextCriticMatch.index + 1);
+  }
+
+  // Clean up whitespace
+  cleaned = cleaned.replace(/\s+/g, ' ').trim();
+
+  // Skip if it starts mid-sentence (lowercase letter or fragment)
+  if (/^[a-z]/.test(cleaned) || cleaned.length < 20) {
+    // Try to find the first complete sentence
+    const sentenceStart = cleaned.search(/[.!?]\s+[A-Z]/);
+    if (sentenceStart > 0 && sentenceStart < cleaned.length - 50) {
+      cleaned = cleaned.substring(sentenceStart + 2);
+    } else if (/^[a-z]/.test(cleaned)) {
+      // Still starts lowercase - this excerpt is unusable
+      return null;
+    }
+  }
+
+  // Truncate to reasonable length (300 chars) at sentence boundary
+  if (cleaned.length > 300) {
+    const truncateAt = cleaned.lastIndexOf('.', 300);
+    if (truncateAt > 100) {
+      cleaned = cleaned.substring(0, truncateAt + 1);
+    } else {
+      cleaned = cleaned.substring(0, 297) + '...';
+    }
+  }
+
+  // Final validation - reject if still looks polluted
+  if (/defineSlot|setTargeting|blogherads|googletag/i.test(cleaned)) {
+    return null;
+  }
+
+  return cleaned.length > 20 ? cleaned : null;
+}
+
 // Stats tracking
 const stats = {
   totalFiles: 0,
@@ -258,7 +336,7 @@ showDirs.forEach(showId => {
         url: data.url || null,
         publishDate: data.publishDate || null,
         originalRating: data.originalScore || null,
-        pullQuote: data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.pullQuote || null,
+        pullQuote: cleanExcerpt(data.dtliExcerpt) || cleanExcerpt(data.bwwExcerpt) || cleanExcerpt(data.showScoreExcerpt) || cleanExcerpt(data.pullQuote) || null,
         dtliThumb: data.dtliThumb || null,
         bwwThumb: data.bwwThumb || null
       };
