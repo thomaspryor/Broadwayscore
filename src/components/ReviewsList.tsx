@@ -10,7 +10,7 @@ interface Review {
   url: string;
   publishDate: string;
   tier: 1 | 2 | 3;
-  reviewMetaScore: number;
+  reviewScore: number;
   designation?: string;
   quote?: string;
   summary?: string;
@@ -149,10 +149,10 @@ function ExternalLinkIcon({ className }: { className?: string }) {
 
 const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
   let scoreLabel: string;
-  if (review.reviewMetaScore >= 85) scoreLabel = 'Must-See';
-  else if (review.reviewMetaScore >= 75) scoreLabel = 'Recommended';
-  else if (review.reviewMetaScore >= 65) scoreLabel = 'Worth Seeing';
-  else if (review.reviewMetaScore >= 55) scoreLabel = 'Skippable';
+  if (review.reviewScore >= 85) scoreLabel = 'Must-See';
+  else if (review.reviewScore >= 75) scoreLabel = 'Recommended';
+  else if (review.reviewScore >= 65) scoreLabel = 'Worth Seeing';
+  else if (review.reviewScore >= 55) scoreLabel = 'Skippable';
   else scoreLabel = 'Stay Away';
 
   return (
@@ -160,14 +160,14 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
       <div className="flex items-start gap-3 sm:gap-4">
         {/* Score on LEFT - Metacritic style - smaller on mobile */}
         <div
-          className={`flex-shrink-0 w-11 h-11 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl flex items-center justify-center text-base sm:text-xl font-bold ${getScoreClasses(review.reviewMetaScore)}`}
+          className={`flex-shrink-0 w-11 h-11 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl flex items-center justify-center text-base sm:text-xl font-bold ${getScoreClasses(review.reviewScore)}`}
           role="meter"
-          aria-valuenow={review.reviewMetaScore}
+          aria-valuenow={review.reviewScore}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={`Score: ${review.reviewMetaScore} - ${scoreLabel}`}
+          aria-label={`Score: ${review.reviewScore} - ${scoreLabel}`}
         >
-          <span aria-hidden="true">{review.reviewMetaScore}</span>
+          <span aria-hidden="true">{review.reviewScore}</span>
         </div>
 
         {/* Content */}

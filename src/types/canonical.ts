@@ -308,7 +308,7 @@ export interface LLMScore {
 // ===========================================
 
 export interface ComputedCriticScore {
-  score: number;                  // Simple average of reviewMetaScores
+  score: number;                  // Simple average of review scores
   weightedScore: number;          // Weighted average using tier weights
   reviewCount: number;
   tier1Count: number;
@@ -318,7 +318,7 @@ export interface ComputedCriticScore {
 
 export interface ComputedShow extends Show {
   criticScore: ComputedCriticScore | null;
-  metascore: number | null;
+  compositeScore: number | null;
   scoreBucket: ScoreBucket;
   confidence: ConfidenceLevel;
   methodologyVersion: string;

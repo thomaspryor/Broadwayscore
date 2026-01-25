@@ -130,8 +130,8 @@ export interface ComputedReview {
   assignedScore: number;
   bucketScore?: number;
   thumbScore?: number;
-  reviewMetaScore: number;      // The score used for averaging
-  weightedScore: number;        // reviewMetaScore × tierWeight
+  reviewScore: number;      // The computed score used for averaging
+  weightedScore: number;    // reviewScore × tierWeight
   designation?: string;
   quote?: string;               // Direct quote from the review
   summary?: string;             // Third-person summary of the review
@@ -145,7 +145,7 @@ export interface ComputedAudience extends RawAudience {
 }
 
 export interface CriticScoreResult {
-  score: number;                // Simple average of reviewMetaScores
+  score: number;                // Simple average of review scores
   weightedScore: number;        // Weighted average using tier weights
   reviewCount: number;
   tier1Count: number;
@@ -202,7 +202,7 @@ export interface ComputedShow {
   criticScore: CriticScoreResult | null;
   audienceScore: AudienceScoreResult | null;
   buzzScore: BuzzScoreResult | null;
-  metascore: number | null;
+  compositeScore: number | null;
   confidence: ConfidenceResult;
   methodologyVersion: string;
   methodologyDate: string;
@@ -300,18 +300,18 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
       thumbScore = THUMB_SCORE_MAP[review.thumb];
     }
 
-    // Calculate reviewMetaScore
+    // Calculate final review score
     // If we have both assigned score and a mapped score, average them
     // Otherwise use the assigned score directly
-    let reviewMetaScore = assignedScore;
+    let reviewScore = assignedScore;
 
     // Apply designation bump if applicable
     if (review.designation && DESIGNATION_BUMPS[review.designation]) {
-      reviewMetaScore = Math.min(100, reviewMetaScore + DESIGNATION_BUMPS[review.designation]);
+      reviewScore = Math.min(100, reviewScore + DESIGNATION_BUMPS[review.designation]);
     }
 
     // Calculate weighted score
-    const weightedScore = reviewMetaScore * tierWeight;
+    const weightedScore = reviewScore * tierWeight;
 
     return {
       showId: review.showId,
@@ -325,7 +325,7 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
       assignedScore,
       bucketScore,
       thumbScore,
-      reviewMetaScore,
+      reviewScore,
       weightedScore,
       designation: review.designation,
       quote: review.quote,
@@ -336,11 +336,11 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
   });
 
   // Calculate scores
-  // Simple average (MetaScore_v1)
-  const simpleSum = computedReviews.reduce((sum, r) => sum + r.reviewMetaScore, 0);
+  // Simple average of all review scores
+  const simpleSum = computedReviews.reduce((sum, r) => sum + r.reviewScore, 0);
   const simpleScore = Math.round((simpleSum / computedReviews.length) * 100) / 100;
 
-  // Weighted average (Weighted_MetaScore)
+  // Weighted average using tier weights
   const weightedSum = computedReviews.reduce((sum, r) => sum + r.weightedScore, 0);
   const totalWeight = computedReviews.reduce((sum, r) => sum + r.tierWeight, 0);
   const weightedScore = Math.round((weightedSum / totalWeight) * 100) / 100;
@@ -353,7 +353,7 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
     reviewCount: reviews.length,
     tier1Count,
     label: getCriticLabel(simpleScore),
-    reviews: computedReviews.sort((a, b) => b.reviewMetaScore - a.reviewMetaScore),
+    reviews: computedReviews.sort((a, b) => b.reviewScore - a.reviewScore),
   };
 }
 
@@ -452,10 +452,10 @@ export function computeBuzzScore(threads: RawBuzzThread[]): BuzzScoreResult | nu
 }
 
 // ===========================================
-// OVERALL METASCORE
+// OVERALL COMPOSITE SCORE
 // ===========================================
 
-export function computeMetascore(
+export function computeCompositeScore(
   criticScore: number | null,
   audienceScore: number | null,
   buzzScore: number | null
@@ -531,8 +531,8 @@ export function computeShowData(
 
   const criticScore = computeCriticScore(showReviews);
 
-  // V1: metascore = critic score (audience/buzz coming later)
-  const metascore = criticScore?.weightedScore ? Math.round(criticScore.weightedScore) : null;
+  // V1: composite score = critic score (audience/buzz coming later)
+  const compositeScore = criticScore?.weightedScore ? Math.round(criticScore.weightedScore) : null;
 
   const confidence = assessConfidence(criticScore, null, show.status);
 
@@ -563,7 +563,7 @@ export function computeShowData(
     criticScore,
     audienceScore: null,
     buzzScore: null,
-    metascore,
+    compositeScore,
     confidence,
     methodologyVersion: METHODOLOGY_VERSION,
     methodologyDate: METHODOLOGY_DATE,

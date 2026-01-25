@@ -77,12 +77,12 @@ export function getAllShowSlugs(): string[] {
 }
 
 /**
- * Get shows sorted by metascore
+ * Get shows sorted by composite score
  */
-export function getShowsSortedByMetascore(ascending = false): ComputedShow[] {
+export function getShowsSortedByCompositeScore(ascending = false): ComputedShow[] {
   return [...getAllShows()].sort((a, b) => {
-    const scoreA = a.metascore ?? -1;
-    const scoreB = b.metascore ?? -1;
+    const scoreA = a.compositeScore ?? -1;
+    const scoreB = b.compositeScore ?? -1;
     return ascending ? scoreA - scoreB : scoreB - scoreA;
   });
 }

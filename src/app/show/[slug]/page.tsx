@@ -302,13 +302,13 @@ function getSentimentLabel(score: number): { label: string; colorClass: string }
 }
 
 interface ReviewForBreakdown {
-  reviewMetaScore: number;
+  reviewScore: number;
 }
 
 function ScoreBreakdownBar({ reviews }: { reviews: ReviewForBreakdown[] }) {
-  const positive = reviews.filter(r => r.reviewMetaScore >= 65).length;
-  const mixed = reviews.filter(r => r.reviewMetaScore >= 55 && r.reviewMetaScore < 65).length;
-  const negative = reviews.filter(r => r.reviewMetaScore < 55).length;
+  const positive = reviews.filter(r => r.reviewScore >= 65).length;
+  const mixed = reviews.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
+  const negative = reviews.filter(r => r.reviewScore < 55).length;
   const total = reviews.length;
 
   if (total === 0) return null;

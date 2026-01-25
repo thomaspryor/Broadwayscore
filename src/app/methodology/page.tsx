@@ -106,8 +106,11 @@ export default function MethodologyPage() {
         {/* Overview */}
         <section className="card p-5 sm:p-6">
           <h2 className="text-xl font-bold text-white mb-4">Overview</h2>
+          <p className="text-gray-300 mb-4">
+            Broadway Scorecard is an independent review aggregator built specifically for Broadway theater. Unlike general entertainment aggregators, we focus exclusively on theatrical productions with specialized features including box office data, theater information, and opening/closing tracking.
+          </p>
           <p className="text-gray-300">
-            Broadway Scorecard aggregates professional critic reviews to calculate a weighted average score for each Broadway show. Reviews are sourced from major publications and weighted by outlet tier to reflect their influence and reach.
+            Our scoring methodology aggregates professional critic reviews using a weighted average system calibrated specifically for Broadway. Reviews are sourced from major publications and weighted by outlet tier to reflect their reach and theatrical expertise.
           </p>
         </section>
 
@@ -185,7 +188,7 @@ export default function MethodologyPage() {
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-2 py-0.5 rounded bg-gray-500/20 text-gray-400 text-xs font-medium">Tier 2</span>
-                <span className="text-gray-400 text-sm">Weight: 0.70×</span>
+                <span className="text-gray-400 text-sm">Weight: 0.75×</span>
               </div>
               <p className="text-gray-300 text-sm">
                 NY Post, NY Daily News, TheaterMania, Entertainment Weekly, Deadline, The Wrap, IndieWire, Observer, Slant, Chicago Tribune, USA Today, NY Stage Review, NY Theatre Guide
@@ -195,7 +198,7 @@ export default function MethodologyPage() {
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-2 py-0.5 rounded bg-surface text-gray-500 text-xs font-medium">Tier 3</span>
-                <span className="text-gray-400 text-sm">Weight: 0.40×</span>
+                <span className="text-gray-400 text-sm">Weight: 0.45×</span>
               </div>
               <p className="text-gray-300 text-sm">
                 BroadwayWorld, amNewYork, Front Mezz Junkies, Culture Sauce, and other smaller outlets/blogs
@@ -315,6 +318,36 @@ export default function MethodologyPage() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* What Makes Us Different */}
+        <section className="card p-5 sm:p-6">
+          <h2 className="text-xl font-bold text-white mb-4">What Makes Broadway Scorecard Unique</h2>
+          <p className="text-gray-300 mb-4">
+            Unlike general entertainment aggregators, Broadway Scorecard is built exclusively for theater:
+          </p>
+          <ul className="text-gray-300 space-y-2 text-sm">
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span><strong className="text-white">Broadway-specific focus:</strong> Every show, every week, with specialized tracking of openings, closings, and previews</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span><strong className="text-white">Box office integration:</strong> Weekly grosses, capacity percentages, and all-time stats for every production</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span><strong className="text-white">Theater metadata:</strong> Cast, creative teams, venues, runtimes, and ticket pricing</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span><strong className="text-white">Independent methodology:</strong> Our tier weights and scoring approach are calibrated specifically for Broadway criticism</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span><strong className="text-white">Coming soon:</strong> Audience scores and social buzz tracking to provide a complete picture</span>
+            </li>
+          </ul>
         </section>
 
         {/* Transparency */}
