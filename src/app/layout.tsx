@@ -4,6 +4,7 @@ import Link from 'next/link';
 import ScrollToTop from '@/components/ScrollToTop';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
 import { getAllShows } from '@/lib/data';
+import { Analytics } from '@vercel/analytics/react';
 
 // Get top 3 show posters for homepage OG image
 function getTopShowPosters(): string[] {
@@ -234,6 +235,7 @@ export default function RootLayout({
         </footer>
         <BottomNav />
         <ScrollToTop />
+        <Analytics />
       </body>
     </html>
   );
