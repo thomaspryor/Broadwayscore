@@ -3,6 +3,8 @@
 /**
  * Scrape Reddit r/broadway for show discussions and analyze sentiment
  *
+ * Uses Reddit's public JSON endpoints - NO API CREDENTIALS NEEDED!
+ *
  * This script:
  * 1. Searches r/broadway for discussions about each show
  * 2. Filters to find genuine audience reviews (people who saw the show)
@@ -11,8 +13,6 @@
  * 5. Updates data/audience-buzz.json with Reddit data
  *
  * Environment variables:
- *   REDDIT_CLIENT_ID - Reddit app client ID
- *   REDDIT_CLIENT_SECRET - Reddit app client secret
  *   ANTHROPIC_API_KEY - Claude API key for sentiment analysis
  *
  * Usage:
@@ -30,8 +30,8 @@ const dryRun = args.includes('--dry-run');
 const limitArg = args.find(a => a.startsWith('--limit='));
 const showLimit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 
-// Reddit API config
-const REDDIT_USER_AGENT = 'BroadwayScorecard:v1.0 (by /u/BroadwayScorecard)';
+// Reddit config (public endpoints, no auth needed)
+const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 const SUBREDDIT = 'broadway';
 const COMMENTS_PER_SHOW = 50; // Target number of comments to analyze per show
 
@@ -43,29 +43,24 @@ const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
 
 /**
- * Get Reddit OAuth token
+ * Make a request to Reddit's public JSON endpoint
  */
-async function getRedditToken() {
-  const clientId = process.env.REDDIT_CLIENT_ID;
-  const clientSecret = process.env.REDDIT_CLIENT_SECRET;
-
-  if (!clientId || !clientSecret) {
-    throw new Error('REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET must be set');
-  }
-
+function redditFetch(url) {
   return new Promise((resolve, reject) => {
-    const auth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
-    const postData = 'grant_type=client_credentials';
+    // Add .json to URL if not present
+    if (!url.includes('.json')) {
+      url = url.replace(/\/?$/, '.json');
+    }
+
+    const urlObj = new URL(url);
 
     const options = {
-      hostname: 'www.reddit.com',
-      path: '/api/v1/access_token',
-      method: 'POST',
+      hostname: urlObj.hostname,
+      path: urlObj.pathname + urlObj.search,
+      method: 'GET',
       headers: {
-        'Authorization': `Basic ${auth}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': REDDIT_USER_AGENT,
-        'Content-Length': postData.length,
+        'User-Agent': USER_AGENT,
+        'Accept': 'application/json',
       },
     };
 
@@ -73,84 +68,58 @@ async function getRedditToken() {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        if (res.statusCode === 429) {
+          reject(new Error('Rate limited by Reddit - please wait a few minutes'));
+          return;
+        }
         try {
-          const json = JSON.parse(data);
-          if (json.access_token) {
-            resolve(json.access_token);
-          } else {
-            reject(new Error('No access token in response: ' + data));
-          }
+          resolve(JSON.parse(data));
         } catch (e) {
-          reject(e);
+          reject(new Error(`Failed to parse JSON: ${data.slice(0, 100)}`));
         }
       });
     });
 
     req.on('error', reject);
-    req.write(postData);
     req.end();
   });
 }
 
 /**
- * Make authenticated Reddit API request
+ * Sleep helper
  */
-async function redditRequest(token, endpoint) {
-  return new Promise((resolve, reject) => {
-    const options = {
-      hostname: 'oauth.reddit.com',
-      path: endpoint,
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'User-Agent': REDDIT_USER_AGENT,
-      },
-    };
-
-    const req = https.request(options, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch (e) {
-          reject(e);
-        }
-      });
-    });
-
-    req.on('error', reject);
-    req.end();
-  });
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
 }
 
 /**
  * Search Reddit for show discussions
  */
-async function searchShowDiscussions(token, showTitle) {
-  // Build search query - look for people who "saw" or "watched" the show
+async function searchShowDiscussions(showTitle) {
+  // Build search queries - look for people who "saw" or "watched" the show
   const queries = [
-    `"${showTitle}" (saw OR watched OR review OR thoughts)`,
-    `"${showTitle}" (loved OR hated OR amazing OR terrible OR boring)`,
+    `${showTitle} saw`,
+    `${showTitle} review`,
+    `${showTitle} thoughts`,
   ];
 
   const allPosts = [];
 
   for (const query of queries) {
     const encoded = encodeURIComponent(query);
-    const endpoint = `/r/${SUBREDDIT}/search?q=${encoded}&restrict_sr=on&sort=relevance&t=all&limit=25`;
+    const url = `https://www.reddit.com/r/${SUBREDDIT}/search.json?q=${encoded}&restrict_sr=on&sort=relevance&t=all&limit=25`;
 
     try {
-      const response = await redditRequest(token, endpoint);
+      const response = await redditFetch(url);
       if (response.data?.children) {
         allPosts.push(...response.data.children.map(c => c.data));
       }
     } catch (e) {
-      console.error(`Search failed for "${query}":`, e.message);
+      console.error(`  Search failed for "${query}":`, e.message);
     }
 
-    // Rate limiting - wait between requests
-    await new Promise(r => setTimeout(r, 1000));
+    // Rate limiting - Reddit limits to ~60 requests per minute for unauthenticated
+    await sleep(1500);
   }
 
   // Deduplicate by post ID
@@ -165,20 +134,20 @@ async function searchShowDiscussions(token, showTitle) {
 /**
  * Get comments from a post
  */
-async function getPostComments(token, postId) {
-  const endpoint = `/r/${SUBREDDIT}/comments/${postId}?limit=100&depth=2`;
+async function getPostComments(postId, subreddit = SUBREDDIT) {
+  const url = `https://www.reddit.com/r/${subreddit}/comments/${postId}.json?limit=100&depth=2`;
 
   try {
-    const response = await redditRequest(token, endpoint);
+    const response = await redditFetch(url);
     // Response is array: [post, comments]
-    if (response[1]?.data?.children) {
+    if (Array.isArray(response) && response[1]?.data?.children) {
       return response[1].data.children
         .filter(c => c.kind === 't1') // Only comments
         .map(c => c.data)
         .filter(c => c.body && c.body.length >= 50); // Min length
     }
   } catch (e) {
-    console.error(`Failed to get comments for ${postId}:`, e.message);
+    console.error(`  Failed to get comments for ${postId}:`, e.message);
   }
 
   return [];
@@ -291,11 +260,11 @@ Respond with a JSON array, one object per comment:
         })));
       }
     } catch (e) {
-      console.error('Claude analysis failed:', e.message);
+      console.error('  Claude analysis failed:', e.message);
     }
 
-    // Rate limiting
-    await new Promise(r => setTimeout(r, 500));
+    // Rate limiting for Claude
+    await sleep(500);
   }
 
   return results;
@@ -356,11 +325,11 @@ function calculateScore(sentimentResults) {
 /**
  * Process a single show
  */
-async function processShow(token, show) {
+async function processShow(show) {
   console.log(`\nProcessing: ${show.title}`);
 
   // Search for discussions
-  const posts = await searchShowDiscussions(token, show.title);
+  const posts = await searchShowDiscussions(show.title);
   console.log(`  Found ${posts.length} posts`);
 
   if (posts.length === 0) {
@@ -369,14 +338,14 @@ async function processShow(token, show) {
 
   // Get comments from top posts
   let allComments = [];
-  for (const post of posts.slice(0, 10)) { // Top 10 posts
-    const comments = await getPostComments(token, post.id);
+  for (const post of posts.slice(0, 8)) { // Top 8 posts (reduced to respect rate limits)
+    const comments = await getPostComments(post.id, post.subreddit || SUBREDDIT);
     allComments.push(...comments);
 
     if (allComments.length >= COMMENTS_PER_SHOW * 2) break;
 
     // Rate limiting
-    await new Promise(r => setTimeout(r, 500));
+    await sleep(1500);
   }
 
   console.log(`  Collected ${allComments.length} comments`);
@@ -469,20 +438,8 @@ function updateAudienceBuzz(showId, redditData) {
  * Main function
  */
 async function main() {
-  console.log('Reddit Sentiment Scraper for Broadway Scorecard\n');
-
-  // Get Reddit token
-  console.log('Authenticating with Reddit...');
-  let token;
-  try {
-    token = await getRedditToken();
-    console.log('Authenticated!\n');
-  } catch (e) {
-    console.error('Failed to authenticate with Reddit:', e.message);
-    console.error('\nMake sure REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET are set.');
-    console.error('Create a Reddit app at: https://www.reddit.com/prefs/apps');
-    process.exit(1);
-  }
+  console.log('Reddit Sentiment Scraper for Broadway Scorecard');
+  console.log('Using public JSON endpoints (no API credentials needed)\n');
 
   // Get shows to process
   let shows = showsData.shows.filter(s => s.status === 'open' || s.status === 'closed');
@@ -506,7 +463,7 @@ async function main() {
 
   for (const show of shows) {
     try {
-      const redditData = await processShow(token, show);
+      const redditData = await processShow(show);
       processed++;
 
       if (redditData && !dryRun) {
@@ -517,8 +474,8 @@ async function main() {
       console.error(`Error processing ${show.title}:`, e.message);
     }
 
-    // Rate limiting between shows
-    await new Promise(r => setTimeout(r, 2000));
+    // Rate limiting between shows (3 seconds to be safe with public endpoints)
+    await sleep(3000);
   }
 
   // Save updated audience-buzz.json
