@@ -57,15 +57,15 @@ function ScoreBadge({ score, reviewCount }: { score?: number | null; reviewCount
   let colorClass: string;
 
   if (roundedScore >= 85) {
-    colorClass = 'bg-score-high text-white ring-2 ring-accent-gold/50';
+    colorClass = 'score-must-see';
   } else if (roundedScore >= 75) {
-    colorClass = 'bg-score-high text-white';
+    colorClass = 'score-great';
   } else if (roundedScore >= 65) {
-    colorClass = 'bg-score-medium text-gray-900';
+    colorClass = 'score-good';
   } else if (roundedScore >= 55) {
-    colorClass = 'bg-orange-500 text-white';
+    colorClass = 'score-tepid';
   } else {
-    colorClass = 'bg-score-low text-white';
+    colorClass = 'score-skip';
   }
 
   return (
