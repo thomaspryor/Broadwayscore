@@ -1,9 +1,9 @@
 name: Update Shows
 
 on:
-  # Run every Monday at 6 AM UTC (1 AM EST)
+  # Run daily at 8 AM UTC (3 AM EST) to catch new show openings quickly
   schedule:
-    - cron: '0 6 * * 1'
+    - cron: '0 8 * * *'
   # Allow manual triggering
   workflow_dispatch:
     inputs:
