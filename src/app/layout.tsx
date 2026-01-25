@@ -4,35 +4,29 @@ import './globals.css';
 import Link from 'next/link';
 import ScrollToTop from '@/components/ScrollToTop';
 
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-});
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
+const BASE_URL = 'https://broadwayscorecard.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'BroadwayMetaScores - Aggregated Broadway Show Ratings',
-    template: '%s | BroadwayMetaScores',
+    default: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
+    template: '%s | Broadway Scorecard',
   },
-  description: 'Aggregated Broadway show ratings from top critics. Find the best shows on Broadway with transparent, data-driven metascores.',
-  keywords: ['Broadway', 'theater', 'musicals', 'reviews', 'ratings', 'metascore', 'critic reviews'],
-  authors: [{ name: 'BroadwayMetaScores' }],
+  description: 'Comprehensive Broadway show ratings combining critic reviews, audience scores, and community buzz. Find the best shows on Broadway with transparent, data-driven scores.',
+  keywords: ['Broadway', 'theater', 'musicals', 'reviews', 'ratings', 'scorecard', 'critic reviews', 'audience scores'],
+  authors: [{ name: 'Broadway Scorecard' }],
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: BASE_URL,
-    siteName: 'BroadwayMetaScores',
-    title: 'BroadwayMetaScores - Aggregated Broadway Show Ratings',
-    description: 'Aggregated Broadway show ratings from top critics. Transparent, data-driven metascores.',
+    siteName: 'Broadway Scorecard',
+    title: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
+    description: 'Comprehensive Broadway show ratings combining critic reviews, audience scores, and community buzz.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'BroadwayMetaScores',
-    description: 'Aggregated Broadway show ratings from top critics.',
+    title: 'Broadway Scorecard',
+    description: 'Aggregated Broadway show ratings from critics, audiences, and community buzz.',
   },
   robots: {
     index: true,
@@ -70,7 +64,7 @@ export default function RootLayout({
             <div className="flex items-center justify-between h-16 sm:h-18">
               <Link href="/" className="flex items-center group rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface">
                 <span className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Broadway</span>
-                <span className="text-xl sm:text-2xl font-extrabold text-gradient tracking-tight">MetaScores</span>
+                <span className="text-xl sm:text-2xl font-extrabold text-gradient tracking-tight">Scorecard</span>
               </Link>
               <div className="hidden sm:flex items-center gap-1">
                 <Link href="/" className="nav-link nav-link-active rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
@@ -89,7 +83,7 @@ export default function RootLayout({
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center">
                 <span className="text-lg font-bold text-white">Broadway</span>
-                <span className="text-lg font-bold text-gradient">MetaScores</span>
+                <span className="text-lg font-bold text-gradient">Scorecard</span>
               </div>
               <div className="flex items-center gap-6 text-sm text-gray-400">
                 <Link href="/methodology" className="hover:text-white transition-colors">

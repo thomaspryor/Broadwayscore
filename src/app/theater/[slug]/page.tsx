@@ -21,7 +21,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const description = `${theater.name} on Broadway. ${currentShowText} See all shows, scores, and theater details.`;
 
   return {
-    title: `${theater.name} - Broadway Theater | BroadwayMetaScores`,
+    title: `${theater.name} - Broadway Theater | Broadway Scorecard`,
     description,
     alternates: {
       canonical: canonicalUrl,

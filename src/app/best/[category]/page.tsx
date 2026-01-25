@@ -17,7 +17,7 @@ export function generateMetadata({ params }: { params: { category: string } }): 
   const canonicalUrl = `${BASE_URL}/best/${params.category}`;
 
   return {
-    title: `${list.title} 2026 | BroadwayMetaScores`,
+    title: `${list.title} 2026 | Broadway Scorecard`,
     description: list.description,
     alternates: {
       canonical: canonicalUrl,
