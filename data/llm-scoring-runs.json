@@ -1,0 +1,1849 @@
+[
+  {
+    "startedAt": "2026-01-24T03:46:22.391Z",
+    "completedAt": "2026-01-24T03:46:23.239Z",
+    "totalReviews": 36,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 5,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "two-strangers-bway-2025",
+        "outletId": "CITI",
+        "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CXRWvRrXwyQo3XejYVr8C\"}"
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "outletId": "CSCE",
+        "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CXRWvSs41mmtLtAcD5aiR\"}"
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "outletId": "NYDN",
+        "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CXRWvTZyKYgMdYZ7tAe1k\"}"
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "outletId": "NYP",
+        "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CXRWvUF9ofkW61dZXxHvZ\"}"
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "outletId": "NYSR",
+        "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CXRWvUwKuXkcKSvrNLsFr\"}"
+      }
+    ],
+    "calibration": {
+      "count": 0,
+      "mae": 0,
+      "rmse": 0,
+      "meanBias": 0,
+      "stdDev": 0,
+      "bucketAccuracy": 0,
+      "byConfidence": {
+        "high": {
+          "count": 0,
+          "mae": 0
+        },
+        "medium": {
+          "count": 0,
+          "mae": 0
+        },
+        "low": {
+          "count": 0,
+          "mae": 0
+        }
+      },
+      "outletBias": {}
+    },
+    "validation": []
+  },
+  {
+    "startedAt": "2026-01-24T03:53:41.488Z",
+    "completedAt": "2026-01-24T03:54:10.163Z",
+    "totalReviews": 36,
+    "processed": 5,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 10889,
+      "output": 1773,
+      "total": 12662
+    },
+    "errorDetails": [],
+    "calibration": {
+      "count": 5,
+      "mae": 5.8,
+      "rmse": 6.77,
+      "meanBias": -5.8,
+      "stdDev": 3.49,
+      "bucketAccuracy": 80,
+      "byConfidence": {
+        "high": {
+          "count": 2,
+          "mae": 7.5
+        },
+        "medium": {
+          "count": 3,
+          "mae": 4.67
+        },
+        "low": {
+          "count": 0,
+          "mae": 0
+        }
+      },
+      "byTier": {
+        "tier1": {
+          "count": 0,
+          "mae": 0,
+          "meanBias": 0
+        },
+        "tier2": {
+          "count": 3,
+          "mae": 5.67,
+          "meanBias": -5.67
+        },
+        "tier3": {
+          "count": 2,
+          "mae": 6,
+          "meanBias": -6
+        }
+      },
+      "outletBias": {}
+    },
+    "validation": [
+      {
+        "showId": "two-strangers-bway-2025",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 1,
+          "down": 0,
+          "total": 5
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 3,
+          "down": 2,
+          "total": 9
+        },
+        "bwwDistribution": {
+          "up": 9,
+          "flat": 5,
+          "down": 0,
+          "total": 14
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "DTLI: Up thumbs differ by 36% (ours: 80%, theirs: 44%)"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-01-24T04:26:06.204Z",
+    "completedAt": "2026-01-24T04:26:42.481Z",
+    "totalReviews": 1166,
+    "processed": 5,
+    "skipped": 970,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 25470,
+      "output": 3343,
+      "total": 28813
+    },
+    "errorDetails": [],
+    "calibration": {
+      "count": 9,
+      "mae": 4.89,
+      "rmse": 5.91,
+      "meanBias": -3.56,
+      "stdDev": 4.72,
+      "bucketAccuracy": 55.6,
+      "byConfidence": {
+        "high": {
+          "count": 5,
+          "mae": 5.2
+        },
+        "medium": {
+          "count": 4,
+          "mae": 4.5
+        },
+        "low": {
+          "count": 0,
+          "mae": 0
+        }
+      },
+      "byTier": {
+        "tier1": {
+          "count": 1,
+          "mae": 4,
+          "meanBias": 4
+        },
+        "tier2": {
+          "count": 4,
+          "mae": 4.5,
+          "meanBias": -4.5
+        },
+        "tier3": {
+          "count": 4,
+          "mae": 5.5,
+          "meanBias": -4.5
+        }
+      },
+      "outletBias": {}
+    },
+    "validation": [
+      {
+        "showId": "aladdin-2014",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 1,
+          "down": 0,
+          "total": 3
+        },
+        "dtliDistribution": {
+          "up": 3,
+          "flat": 1,
+          "down": 0,
+          "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "and-juliet-2022",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 2
+        },
+        "dtliDistribution": {
+          "up": 5,
+          "flat": 2,
+          "down": 0,
+          "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 1,
+          "down": 0,
+          "total": 5
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 3,
+          "down": 2,
+          "total": 9
+        },
+        "bwwDistribution": {
+          "up": 9,
+          "flat": 5,
+          "down": 0,
+          "total": 14
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "DTLI: Up thumbs differ by 36% (ours: 80%, theirs: 44%)"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-01-24T04:51:47.688Z",
+    "completedAt": "2026-01-24T05:32:06.131Z",
+    "totalReviews": 1221,
+    "processed": 380,
+    "skipped": 841,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 1523428,
+      "output": 235846,
+      "total": 1759274
+    },
+    "errorDetails": [],
+    "calibration": {
+      "count": 341,
+      "mae": 10.96,
+      "rmse": 18.03,
+      "meanBias": -4.98,
+      "stdDev": 17.33,
+      "bucketAccuracy": 50.4,
+      "byConfidence": {
+        "high": {
+          "count": 212,
+          "mae": 8.75
+        },
+        "medium": {
+          "count": 124,
+          "mae": 14.48
+        },
+        "low": {
+          "count": 5,
+          "mae": 17
+        }
+      },
+      "byTier": {
+        "tier1": {
+          "count": 39,
+          "mae": 7.51,
+          "meanBias": -3.67
+        },
+        "tier2": {
+          "count": 82,
+          "mae": 15.49,
+          "meanBias": -11.66
+        },
+        "tier3": {
+          "count": 220,
+          "mae": 9.88,
+          "meanBias": -2.72
+        }
+      },
+      "outletBias": {
+        "The Hollywood Reporter": {
+          "count": 16,
+          "meanBias": 1.9375
+        },
+        "The New York Times": {
+          "count": 28,
+          "meanBias": 2.0357142857142856
+        },
+        "Variety": {
+          "count": 26,
+          "meanBias": -7.153846153846154
+        },
+        "Chicago Tribune": {
+          "count": 10,
+          "meanBias": -0.3
+        },
+        "New York Theatre Guide": {
+          "count": 11,
+          "meanBias": -3.8181818181818183
+        },
+        "New York Theater": {
+          "count": 12,
+          "meanBias": -2.9166666666666665
+        },
+        "The Daily Beast": {
+          "count": 13,
+          "meanBias": 1.3076923076923077
+        },
+        "Theatrely": {
+          "count": 5,
+          "meanBias": -8.4
+        },
+        "Time Out New York": {
+          "count": 24,
+          "meanBias": 0.16666666666666666
+        },
+        "TheaterMania": {
+          "count": 32,
+          "meanBias": -20.28125
+        },
+        "Vulture": {
+          "count": 18,
+          "meanBias": -3.2777777777777777
+        },
+        "The Washington Post": {
+          "count": 2,
+          "meanBias": 1.5
+        },
+        "BROADWAY NEWS": {
+          "count": 11,
+          "meanBias": -10.181818181818182
+        },
+        "Deadline": {
+          "count": 14,
+          "meanBias": -3.7142857142857144
+        },
+        "New York Stage Review": {
+          "count": 27,
+          "meanBias": -0.8888888888888888
+        },
+        "amNewYork": {
+          "count": 6,
+          "meanBias": -4.333333333333333
+        },
+        "New York Post": {
+          "count": 15,
+          "meanBias": -5.266666666666667
+        },
+        "TheWrap": {
+          "count": 16,
+          "meanBias": -13.4375
+        },
+        "The New Yorker": {
+          "count": 2,
+          "meanBias": 23.5
+        },
+        "THEATRELY": {
+          "count": 7,
+          "meanBias": -4
+        },
+        "BroadwayWorld": {
+          "count": 4,
+          "meanBias": -3.5
+        },
+        "Front Mezz Junkies": {
+          "count": 2,
+          "meanBias": 4
+        },
+        "Stage and Cinema": {
+          "count": 2,
+          "meanBias": -3
+        },
+        "The Wrap": {
+          "count": 6,
+          "meanBias": -21.833333333333332
+        },
+        "Culture Sauce": {
+          "count": 8,
+          "meanBias": -4
+        },
+        "One Minute Critic": {
+          "count": 2,
+          "meanBias": 1
+        },
+        "Rolling Stone": {
+          "count": 2,
+          "meanBias": -4.5
+        },
+        "Cititour": {
+          "count": 4,
+          "meanBias": -13.75
+        },
+        "New York Daily News": {
+          "count": 2,
+          "meanBias": -1
+        },
+        "One-Minute Critic": {
+          "count": 2,
+          "meanBias": -7
+        },
+        "Slant Magazine": {
+          "count": 2,
+          "meanBias": -11
+        },
+        "Entertainment Weekly": {
+          "count": 2,
+          "meanBias": -7.5
+        }
+      }
+    },
+    "validation": [
+      {
+        "showId": "aladdin-2014",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 1,
+          "down": 1,
+          "total": 6
+        },
+        "dtliDistribution": {
+          "up": 3,
+          "flat": 1,
+          "down": 0,
+          "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "and-juliet-2022",
+        "ourDistribution": {
+          "up": 13,
+          "flat": 7,
+          "down": 0,
+          "total": 20
+        },
+        "dtliDistribution": {
+          "up": 5,
+          "flat": 2,
+          "down": 0,
+          "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "book-of-mormon-2011",
+        "ourDistribution": {
+          "up": 7,
+          "flat": 0,
+          "down": 0,
+          "total": 7
+        },
+        "dtliDistribution": {
+          "up": 11,
+          "flat": 0,
+          "down": 0,
+          "total": 11
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "buena-vista-social-club-2025",
+        "ourDistribution": {
+          "up": 14,
+          "flat": 3,
+          "down": 1,
+          "total": 18
+        },
+        "dtliDistribution": {
+          "up": 10,
+          "flat": 5,
+          "down": 0,
+          "total": 15
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "bug-2025",
+        "ourDistribution": {
+          "up": 17,
+          "flat": 7,
+          "down": 0,
+          "total": 24
+        },
+        "dtliDistribution": {
+          "up": 13,
+          "flat": 5,
+          "down": 0,
+          "total": 18
+        },
+        "bwwDistribution": {
+          "up": 14,
+          "flat": 3,
+          "down": 0,
+          "total": 17
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "bug-2026",
+        "ourDistribution": {
+          "up": 17,
+          "flat": 7,
+          "down": 0,
+          "total": 24
+        },
+        "dtliDistribution": {
+          "up": 13,
+          "flat": 5,
+          "down": 0,
+          "total": 18
+        },
+        "bwwDistribution": {
+          "up": 14,
+          "flat": 3,
+          "down": 0,
+          "total": 17
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "cabaret-2024",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 0,
+          "down": 0,
+          "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "chess-2025",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 6,
+          "down": 4,
+          "total": 13
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 9,
+          "down": 2,
+          "total": 15
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "DTLI: Sentiment flip: we say negative, they say positive"
+      },
+      {
+        "showId": "chicago-1996",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 2,
+          "down": 0,
+          "total": 4
+        },
+        "dtliDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "death-becomes-her-2024",
+        "ourDistribution": {
+          "up": 9,
+          "flat": 4,
+          "down": 1,
+          "total": 14
+        },
+        "dtliDistribution": {
+          "up": 10,
+          "flat": 2,
+          "down": 1,
+          "total": 13
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "hadestown-2019",
+        "ourDistribution": {
+          "up": 7,
+          "flat": 0,
+          "down": 0,
+          "total": 7
+        },
+        "dtliDistribution": {
+          "up": 6,
+          "flat": 0,
+          "down": 0,
+          "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "hamilton-2015",
+        "ourDistribution": {
+          "up": 7,
+          "flat": 0,
+          "down": 0,
+          "total": 7
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 0,
+          "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "harry-potter-2021",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 0,
+          "total": 4
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 0,
+          "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "hells-kitchen-2024",
+        "ourDistribution": {
+          "up": 14,
+          "flat": 3,
+          "down": 3,
+          "total": 20
+        },
+        "dtliDistribution": {
+          "up": 13,
+          "flat": 2,
+          "down": 0,
+          "total": 15
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "just-in-time-2025",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 1,
+          "down": 0,
+          "total": 4
+        },
+        "bwwDistribution": {
+          "up": 20,
+          "flat": 14,
+          "down": 0,
+          "total": 34
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "liberation-2025",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 1,
+          "down": 0,
+          "total": 2
+        },
+        "bwwDistribution": {
+          "up": 16,
+          "flat": 0,
+          "down": 0,
+          "total": 16
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "mamma-mia-2025",
+        "ourDistribution": {
+          "up": 7,
+          "flat": 1,
+          "down": 5,
+          "total": 13
+        },
+        "dtliDistribution": {
+          "up": 7,
+          "flat": 1,
+          "down": 3,
+          "total": 11
+        },
+        "bwwDistribution": {
+          "up": 6,
+          "flat": 8,
+          "down": 0,
+          "total": 14
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "BWW: Flat thumbs differ by 49% (ours: 8%, theirs: 57%)"
+      },
+      {
+        "showId": "marjorie-prime-2025",
+        "ourDistribution": {
+          "up": 11,
+          "flat": 2,
+          "down": 1,
+          "total": 14
+        },
+        "dtliDistribution": {
+          "up": 10,
+          "flat": 5,
+          "down": 0,
+          "total": 15
+        },
+        "bwwDistribution": {
+          "up": 15,
+          "flat": 3,
+          "down": 0,
+          "total": 18
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "maybe-happy-ending-2024",
+        "ourDistribution": {
+          "up": 15,
+          "flat": 0,
+          "down": 1,
+          "total": 16
+        },
+        "dtliDistribution": {
+          "up": 14,
+          "flat": 0,
+          "down": 0,
+          "total": 14
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "mj-2022",
+        "ourDistribution": {
+          "up": 13,
+          "flat": 4,
+          "down": 10,
+          "total": 27
+        },
+        "dtliDistribution": {
+          "up": 6,
+          "flat": 4,
+          "down": 4,
+          "total": 14
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "moulin-rouge-2019",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 2,
+          "down": 0,
+          "total": 5
+        },
+        "dtliDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "oedipus-2025",
+        "ourDistribution": {
+          "up": 12,
+          "flat": 4,
+          "down": 1,
+          "total": 17
+        },
+        "dtliDistribution": {
+          "up": 10,
+          "flat": 3,
+          "down": 0,
+          "total": 13
+        },
+        "bwwDistribution": {
+          "up": 14,
+          "flat": 2,
+          "down": 0,
+          "total": 16
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "oh-mary-2024",
+        "ourDistribution": {
+          "up": 9,
+          "flat": 1,
+          "down": 1,
+          "total": 11
+        },
+        "dtliDistribution": {
+          "up": 13,
+          "flat": 1,
+          "down": 0,
+          "total": 14
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "operation-mincemeat-2025",
+        "ourDistribution": {
+          "up": 11,
+          "flat": 5,
+          "down": 4,
+          "total": 20
+        },
+        "dtliDistribution": {
+          "up": 8,
+          "flat": 2,
+          "down": 2,
+          "total": 12
+        },
+        "bwwDistribution": {
+          "up": 12,
+          "flat": 6,
+          "down": 0,
+          "total": 18
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 1,
+          "down": 1,
+          "total": 2
+        },
+        "bwwDistribution": {
+          "up": 3,
+          "flat": 14,
+          "down": 0,
+          "total": 17
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "ragtime-2025",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 0,
+          "total": 4
+        },
+        "bwwDistribution": {
+          "up": 16,
+          "flat": 3,
+          "down": 0,
+          "total": 19
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "six-2021",
+        "ourDistribution": {
+          "up": 10,
+          "flat": 2,
+          "down": 0,
+          "total": 12
+        },
+        "dtliDistribution": {
+          "up": 5,
+          "flat": 0,
+          "down": 0,
+          "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "stereophonic-2024",
+        "ourDistribution": {
+          "up": 22,
+          "flat": 1,
+          "down": 1,
+          "total": 24
+        },
+        "dtliDistribution": {
+          "up": 13,
+          "flat": 0,
+          "down": 0,
+          "total": 13
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "stranger-things-2024",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 3,
+          "down": 6,
+          "total": 12
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 3,
+          "down": 4,
+          "total": 11
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-great-gatsby-2024",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 6,
+          "down": 8,
+          "total": 15
+        },
+        "dtliDistribution": {
+          "up": 2,
+          "flat": 4,
+          "down": 5,
+          "total": 11
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-lion-king-1997",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 1,
+          "down": 0,
+          "total": 5
+        },
+        "dtliDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-notebook-2024",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 0,
+          "down": 1,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-outsiders-2024",
+        "ourDistribution": {
+          "up": 6,
+          "flat": 8,
+          "down": 3,
+          "total": 17
+        },
+        "dtliDistribution": {
+          "up": 5,
+          "flat": 7,
+          "down": 1,
+          "total": 13
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "ourDistribution": {
+          "up": 11,
+          "flat": 3,
+          "down": 5,
+          "total": 19
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 3,
+          "down": 2,
+          "total": 9
+        },
+        "bwwDistribution": {
+          "up": 9,
+          "flat": 5,
+          "down": 0,
+          "total": 14
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "BWW: Down thumbs differ by 26% (ours: 26%, theirs: 0%)"
+      },
+      {
+        "showId": "wicked-2003",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 2,
+          "down": 0,
+          "total": 3
+        },
+        "dtliDistribution": {
+          "up": 0,
+          "flat": 0,
+          "down": 3,
+          "total": 3
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "DTLI: Down thumbs differ by 100% (ours: 0%, theirs: 100%)"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-01-25T03:24:51.874Z",
+    "completedAt": "2026-01-25T03:31:51.677Z",
+    "totalReviews": 986,
+    "processed": 65,
+    "skipped": 921,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 159727,
+      "output": 23418,
+      "total": 183145
+    },
+    "errorDetails": [],
+    "calibration": {
+      "count": 342,
+      "mae": 9.07,
+      "rmse": 12.65,
+      "meanBias": -2.54,
+      "stdDev": 12.39,
+      "bucketAccuracy": 49.1,
+      "byConfidence": {
+        "high": {
+          "count": 238,
+          "mae": 8.73
+        },
+        "medium": {
+          "count": 100,
+          "mae": 9.54
+        },
+        "low": {
+          "count": 4,
+          "mae": 17.25
+        }
+      },
+      "byTier": {
+        "tier1": {
+          "count": 37,
+          "mae": 7.22,
+          "meanBias": -4.51
+        },
+        "tier2": {
+          "count": 70,
+          "mae": 8.5,
+          "meanBias": -5.01
+        },
+        "tier3": {
+          "count": 235,
+          "mae": 9.53,
+          "meanBias": -1.49
+        }
+      },
+      "outletBias": {
+        "The Hollywood Reporter": {
+          "count": 10,
+          "meanBias": 4.4
+        },
+        "The New York Times": {
+          "count": 25,
+          "meanBias": 1.4
+        },
+        "Variety": {
+          "count": 26,
+          "meanBias": -7.153846153846154
+        },
+        "Chicago Tribune": {
+          "count": 8,
+          "meanBias": 0.875
+        },
+        "New York Theatre Guide": {
+          "count": 11,
+          "meanBias": -3.8181818181818183
+        },
+        "New York Theater": {
+          "count": 13,
+          "meanBias": -4.230769230769231
+        },
+        "The Daily Beast": {
+          "count": 11,
+          "meanBias": 3.5454545454545454
+        },
+        "Theatrely": {
+          "count": 5,
+          "meanBias": -3.8
+        },
+        "Time Out New York": {
+          "count": 18,
+          "meanBias": -0.3888888888888889
+        },
+        "TheaterMania": {
+          "count": 19,
+          "meanBias": 1
+        },
+        "Vulture": {
+          "count": 17,
+          "meanBias": -2.588235294117647
+        },
+        "BROADWAY NEWS": {
+          "count": 9,
+          "meanBias": -5.111111111111111
+        },
+        "Deadline": {
+          "count": 14,
+          "meanBias": -3.7142857142857144
+        },
+        "New York Stage Review": {
+          "count": 51,
+          "meanBias": 0.23529411764705882
+        },
+        "amNewYork": {
+          "count": 6,
+          "meanBias": -4.333333333333333
+        },
+        "Culture Sauce": {
+          "count": 12,
+          "meanBias": -2.5833333333333335
+        },
+        "THEATRELY": {
+          "count": 17,
+          "meanBias": 0.29411764705882354
+        },
+        "New York Post": {
+          "count": 12,
+          "meanBias": -5.666666666666667
+        },
+        "TheWrap": {
+          "count": 16,
+          "meanBias": -13.4375
+        },
+        "BroadwayWorld": {
+          "count": 4,
+          "meanBias": -3.5
+        },
+        "Front Mezz Junkies": {
+          "count": 2,
+          "meanBias": 4
+        },
+        "Stage and Cinema": {
+          "count": 2,
+          "meanBias": -3
+        },
+        "The Wrap": {
+          "count": 6,
+          "meanBias": -21.833333333333332
+        },
+        "Cititour": {
+          "count": 8,
+          "meanBias": -5.5
+        },
+        "One Minute Critic": {
+          "count": 2,
+          "meanBias": 1
+        },
+        "Rolling Stone": {
+          "count": 2,
+          "meanBias": -4.5
+        },
+        "New York Daily News": {
+          "count": 2,
+          "meanBias": -1
+        },
+        "Slant Magazine": {
+          "count": 2,
+          "meanBias": -11
+        },
+        "Entertainment Weekly": {
+          "count": 2,
+          "meanBias": -7.5
+        }
+      }
+    },
+    "validation": [
+      {
+        "showId": "aladdin-2014",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 1,
+          "down": 1,
+          "total": 5
+        },
+        "dtliDistribution": {
+          "up": 3,
+          "flat": 1,
+          "down": 0,
+          "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "and-juliet-2022",
+        "ourDistribution": {
+          "up": 12,
+          "flat": 5,
+          "down": 0,
+          "total": 17
+        },
+        "dtliDistribution": {
+          "up": 5,
+          "flat": 2,
+          "down": 0,
+          "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "book-of-mormon-2011",
+        "ourDistribution": {
+          "up": 6,
+          "flat": 0,
+          "down": 0,
+          "total": 6
+        },
+        "dtliDistribution": {
+          "up": 11,
+          "flat": 0,
+          "down": 0,
+          "total": 11
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "boop-2025",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 1,
+          "down": 0,
+          "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "buena-vista-social-club-2025",
+        "ourDistribution": {
+          "up": 11,
+          "flat": 2,
+          "down": 0,
+          "total": 13
+        },
+        "dtliDistribution": {
+          "up": 10,
+          "flat": 5,
+          "down": 0,
+          "total": 15
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "bug-2025",
+        "ourDistribution": {
+          "up": 17,
+          "flat": 6,
+          "down": 0,
+          "total": 23
+        },
+        "dtliDistribution": {
+          "up": 13,
+          "flat": 5,
+          "down": 0,
+          "total": 18
+        },
+        "bwwDistribution": {
+          "up": 14,
+          "flat": 3,
+          "down": 0,
+          "total": 17
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "bug-2026",
+        "ourDistribution": {
+          "up": 17,
+          "flat": 6,
+          "down": 0,
+          "total": 23
+        },
+        "dtliDistribution": {
+          "up": 13,
+          "flat": 5,
+          "down": 0,
+          "total": 18
+        },
+        "bwwDistribution": {
+          "up": 14,
+          "flat": 3,
+          "down": 0,
+          "total": 17
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "cabaret-2024",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 0,
+          "down": 0,
+          "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "chess-2025",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 4,
+          "down": 4,
+          "total": 12
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 9,
+          "down": 2,
+          "total": 15
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "DTLI: Flat thumbs differ by 27% (ours: 33%, theirs: 60%)"
+      },
+      {
+        "showId": "chicago-1996",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 2,
+          "down": 0,
+          "total": 4
+        },
+        "dtliDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "death-becomes-her-2024",
+        "ourDistribution": {
+          "up": 9,
+          "flat": 2,
+          "down": 1,
+          "total": 12
+        },
+        "dtliDistribution": {
+          "up": 10,
+          "flat": 2,
+          "down": 1,
+          "total": 13
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "hadestown-2019",
+        "ourDistribution": {
+          "up": 7,
+          "flat": 1,
+          "down": 0,
+          "total": 8
+        },
+        "dtliDistribution": {
+          "up": 6,
+          "flat": 0,
+          "down": 0,
+          "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "hamilton-2015",
+        "ourDistribution": {
+          "up": 7,
+          "flat": 0,
+          "down": 0,
+          "total": 7
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 0,
+          "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "harry-potter-2021",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 0,
+          "total": 4
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 0,
+          "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "hells-kitchen-2024",
+        "ourDistribution": {
+          "up": 16,
+          "flat": 3,
+          "down": 1,
+          "total": 20
+        },
+        "dtliDistribution": {
+          "up": 13,
+          "flat": 2,
+          "down": 0,
+          "total": 15
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "just-in-time-2025",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 2,
+          "down": 0,
+          "total": 7
+        },
+        "bwwDistribution": {
+          "up": 9,
+          "flat": 5,
+          "down": 0,
+          "total": 14
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "liberation-2025",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 1,
+          "down": 0,
+          "total": 4
+        },
+        "bwwDistribution": {
+          "up": 16,
+          "flat": 0,
+          "down": 0,
+          "total": 16
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "mamma-mia-2025",
+        "ourDistribution": {
+          "up": 9,
+          "flat": 2,
+          "down": 5,
+          "total": 16
+        },
+        "dtliDistribution": {
+          "up": 7,
+          "flat": 1,
+          "down": 3,
+          "total": 11
+        },
+        "bwwDistribution": {
+          "up": 6,
+          "flat": 8,
+          "down": 0,
+          "total": 14
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "BWW: Flat thumbs differ by 45% (ours: 13%, theirs: 57%)"
+      },
+      {
+        "showId": "marjorie-prime-2025",
+        "ourDistribution": {
+          "up": 15,
+          "flat": 2,
+          "down": 1,
+          "total": 18
+        },
+        "dtliDistribution": {
+          "up": 10,
+          "flat": 5,
+          "down": 0,
+          "total": 15
+        },
+        "bwwDistribution": {
+          "up": 15,
+          "flat": 3,
+          "down": 0,
+          "total": 18
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "maybe-happy-ending-2024",
+        "ourDistribution": {
+          "up": 15,
+          "flat": 0,
+          "down": 0,
+          "total": 15
+        },
+        "dtliDistribution": {
+          "up": 14,
+          "flat": 0,
+          "down": 0,
+          "total": 14
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "mj-2022",
+        "ourDistribution": {
+          "up": 10,
+          "flat": 3,
+          "down": 7,
+          "total": 20
+        },
+        "dtliDistribution": {
+          "up": 6,
+          "flat": 4,
+          "down": 4,
+          "total": 14
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "moulin-rouge-2019",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 2,
+          "down": 0,
+          "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "oedipus-2025",
+        "ourDistribution": {
+          "up": 14,
+          "flat": 4,
+          "down": 1,
+          "total": 19
+        },
+        "dtliDistribution": {
+          "up": 10,
+          "flat": 3,
+          "down": 0,
+          "total": 13
+        },
+        "bwwDistribution": {
+          "up": 14,
+          "flat": 2,
+          "down": 0,
+          "total": 16
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "oh-mary-2024",
+        "ourDistribution": {
+          "up": 11,
+          "flat": 2,
+          "down": 0,
+          "total": 13
+        },
+        "dtliDistribution": {
+          "up": 13,
+          "flat": 1,
+          "down": 0,
+          "total": 14
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "operation-mincemeat-2025",
+        "ourDistribution": {
+          "up": 11,
+          "flat": 4,
+          "down": 3,
+          "total": 18
+        },
+        "dtliDistribution": {
+          "up": 8,
+          "flat": 2,
+          "down": 2,
+          "total": 12
+        },
+        "bwwDistribution": {
+          "up": 12,
+          "flat": 6,
+          "down": 0,
+          "total": 18
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 1,
+          "down": 3,
+          "total": 5
+        },
+        "bwwDistribution": {
+          "up": 3,
+          "flat": 14,
+          "down": 0,
+          "total": 17
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "BWW: Flat thumbs differ by 62% (ours: 20%, theirs: 82%)"
+      },
+      {
+        "showId": "ragtime-2025",
+        "ourDistribution": {
+          "up": 7,
+          "flat": 0,
+          "down": 0,
+          "total": 7
+        },
+        "bwwDistribution": {
+          "up": 16,
+          "flat": 3,
+          "down": 0,
+          "total": 19
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "six-2021",
+        "ourDistribution": {
+          "up": 12,
+          "flat": 2,
+          "down": 0,
+          "total": 14
+        },
+        "dtliDistribution": {
+          "up": 5,
+          "flat": 0,
+          "down": 0,
+          "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "stereophonic-2024",
+        "ourDistribution": {
+          "up": 19,
+          "flat": 1,
+          "down": 1,
+          "total": 21
+        },
+        "dtliDistribution": {
+          "up": 13,
+          "flat": 0,
+          "down": 0,
+          "total": 13
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "stranger-things-2024",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 3,
+          "down": 5,
+          "total": 13
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 3,
+          "down": 4,
+          "total": 11
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "suffs-2024",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 0,
+          "down": 1,
+          "total": 1
+        },
+        "dtliDistribution": {
+          "up": 3,
+          "flat": 3,
+          "down": 1,
+          "total": 7
+        },
+        "bwwDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-great-gatsby-2024",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 7,
+          "down": 8,
+          "total": 16
+        },
+        "dtliDistribution": {
+          "up": 2,
+          "flat": 4,
+          "down": 5,
+          "total": 11
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-lion-king-1997",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 1,
+          "down": 0,
+          "total": 5
+        },
+        "dtliDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-notebook-2024",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 2,
+          "down": 1,
+          "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-outsiders-2024",
+        "ourDistribution": {
+          "up": 8,
+          "flat": 8,
+          "down": 3,
+          "total": 19
+        },
+        "dtliDistribution": {
+          "up": 5,
+          "flat": 7,
+          "down": 1,
+          "total": 13
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "ourDistribution": {
+          "up": 9,
+          "flat": 3,
+          "down": 4,
+          "total": 16
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 3,
+          "down": 2,
+          "total": 9
+        },
+        "bwwDistribution": {
+          "up": 9,
+          "flat": 5,
+          "down": 0,
+          "total": 14
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
+        "dtliDistribution": {
+          "up": 5,
+          "flat": 1,
+          "down": 1,
+          "total": 7
+        },
+        "bwwDistribution": {
+          "up": 3,
+          "flat": 3,
+          "down": 0,
+          "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "wicked-2003",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 2,
+          "down": 0,
+          "total": 2
+        },
+        "dtliDistribution": {
+          "up": 0,
+          "flat": 0,
+          "down": 3,
+          "total": 3
+        },
+        "hasDisagreement": false
+      }
+    ]
+  }
+]

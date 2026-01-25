@@ -19,8 +19,8 @@ export const COMPONENT_WEIGHTS = {
 // ===========================================
 export const TIER_WEIGHTS = {
   1: 1.0,
-  2: 0.85,
-  3: 0.70,
+  2: 0.70,
+  3: 0.40,
 } as const;
 
 export const DEFAULT_TIER = 3 as const;
@@ -188,17 +188,19 @@ export const CONFIDENCE_RULES = {
 // CRITIC SCORE LABEL THRESHOLDS
 // ===========================================
 export const CRITIC_LABEL_THRESHOLDS = {
-  'Rave': 85,
-  'Positive': 70,
-  'Mixed': 50,
-  'Negative': 0,
+  'Must-See': 85,
+  'Recommended': 75,
+  'Worth Seeing': 65,
+  'Skippable': 55,
+  'Stay Away': 0,
 };
 
 export function getCriticLabel(score: number): string {
-  if (score >= 85) return 'Rave';
-  if (score >= 70) return 'Positive';
-  if (score >= 50) return 'Mixed';
-  return 'Negative';
+  if (score >= 85) return 'Must-See';
+  if (score >= 75) return 'Recommended';
+  if (score >= 65) return 'Worth Seeing';
+  if (score >= 55) return 'Skippable';
+  return 'Stay Away';
 }
 
 // ===========================================

@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBestOfList, getAllBestOfCategories, BestOfCategory } from '@/lib/data';
 import { generateBreadcrumbSchema, generateItemListSchema } from '@/lib/seo';
+import { getOptimizedImageUrl } from '@/lib/images';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export function generateStaticParams() {
   return getAllBestOfCategories().map((category) => ({ category }));
@@ -39,21 +40,28 @@ export function generateMetadata({ params }: { params: { category: string } }): 
 function ScoreBadge({ score }: { score?: number | null }) {
   if (score === undefined || score === null) {
     return (
-      <div className="w-12 h-12 bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold text-lg rounded-xl">
+      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold text-base sm:text-lg rounded-lg sm:rounded-xl">
         —
       </div>
     );
   }
 
   const roundedScore = Math.round(score);
-  const colorClass = roundedScore >= 70
-    ? 'bg-score-high text-white'
-    : roundedScore >= 50
-    ? 'bg-score-medium text-gray-900'
-    : 'bg-score-low text-white';
+  let colorClass: string;
+  if (roundedScore >= 85) {
+    colorClass = 'score-must-see';
+  } else if (roundedScore >= 75) {
+    colorClass = 'score-great';
+  } else if (roundedScore >= 65) {
+    colorClass = 'score-good';
+  } else if (roundedScore >= 55) {
+    colorClass = 'score-tepid';
+  } else {
+    colorClass = 'score-skip';
+  }
 
   return (
-    <div className={`w-12 h-12 ${colorClass} flex items-center justify-center font-bold text-lg rounded-xl`}>
+    <div className={`w-10 h-10 sm:w-12 sm:h-12 ${colorClass} flex items-center justify-center font-bold text-base sm:text-lg rounded-lg sm:rounded-xl`}>
       {roundedScore}
     </div>
   );
@@ -125,17 +133,18 @@ export default function BestOfPage({ params }: { params: { category: string } })
               <Link
                 key={show.id}
                 href={`/show/${show.slug}`}
-                className="card p-4 flex items-center gap-4 hover:bg-surface-raised/80 transition-colors group"
+                className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group min-h-[72px]"
               >
                 <RankBadge rank={index + 1} />
 
                 {/* Thumbnail */}
-                <div className="w-16 h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
                   {show.images?.thumbnail ? (
                     <img
-                      src={show.images.thumbnail}
+                      src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
                       alt={`${show.title} Broadway ${show.type}`}
                       className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -182,7 +191,7 @@ export default function BestOfPage({ params }: { params: { category: string } })
                   <Link
                     key={cat}
                     href={`/best/${cat}`}
-                    className="px-4 py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors"
+                    className="px-4 py-2.5 sm:py-2 min-h-[44px] sm:min-h-0 flex items-center rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors"
                   >
                     {otherList.title.replace('Best ', '').replace('Top 10 ', '')}
                   </Link>

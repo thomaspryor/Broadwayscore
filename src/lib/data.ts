@@ -15,6 +15,7 @@ import showsData from '../../data/shows.json';
 import reviewsData from '../../data/reviews.json';
 import audienceData from '../../data/audience.json';
 import buzzData from '../../data/buzz.json';
+import grossesData from '../../data/grosses.json';
 
 // Type the imported data
 const shows: RawShow[] = showsData.shows as RawShow[];
@@ -102,11 +103,15 @@ export function getDataFreshness() {
  * Get raw data counts for stats
  */
 export function getDataStats() {
+  // Sum up actual review counts from computed shows
+  const allShows = getAllShows();
+  const totalReviews = allShows.reduce((sum, show) => sum + (show.criticScore?.reviewCount || 0), 0);
+
   return {
     totalShows: shows.length,
     openShows: shows.filter(s => s.status === 'open').length,
     closedShows: shows.filter(s => s.status === 'closed').length,
-    totalReviews: reviews.length,
+    totalReviews,
     totalAudiencePlatforms: audience.length,
     totalBuzzThreads: buzz.length,
   };
@@ -256,7 +261,7 @@ const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: strin
   'musicals': {
     title: 'Best Broadway Musicals',
     description: 'The highest-rated musicals currently playing on Broadway, ranked by critic scores.',
-    filter: (show) => show.type === 'musical' && show.status === 'open',
+    filter: (show) => (show.type === 'musical' || show.type === 'revival') && show.status === 'open',
   },
   'plays': {
     title: 'Best Broadway Plays',
@@ -337,5 +342,141 @@ export function getAllBestOfCategories(): BestOfCategory[] {
   return Object.keys(BEST_OF_CONFIG) as BestOfCategory[];
 }
 
+/**
+ * Get upcoming shows (in previews or recently opened)
+ */
+export function getUpcomingShows(): ComputedShow[] {
+  const allShows = getAllShows();
+  const threeMonthsAgo = new Date();
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+
+  return allShows
+    .filter(show => {
+      // Shows in previews
+      if (show.status === 'previews') return true;
+      // Shows that opened within last 3 months
+      const openDate = new Date(show.openingDate);
+      return show.status === 'open' && openDate >= threeMonthsAgo;
+    })
+    .sort((a, b) => new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime())
+    .slice(0, 8);
+}
+
+// ============================================
+// Box Office / Grosses Queries
+// ============================================
+
+export interface ShowGrosses {
+  thisWeek?: {
+    gross: number | null;
+    grossPrevWeek: number | null;
+    grossYoY: number | null;
+    capacity: number | null;
+    capacityPrevWeek: number | null;
+    capacityYoY: number | null;
+    atp: number | null;
+    atpPrevWeek: number | null;
+    atpYoY: number | null;
+    attendance: number | null;
+    performances: number | null;
+  };
+  allTime: {
+    gross: number | null;
+    performances: number | null;
+    attendance: number | null;
+  };
+  lastUpdated?: string;
+}
+
+interface GrossesFile {
+  lastUpdated: string;
+  weekEnding: string;
+  shows: Record<string, ShowGrosses>;
+}
+
+const grosses = grossesData as GrossesFile;
+
+/**
+ * Get box office data for a specific show by slug
+ */
+export function getShowGrosses(slug: string): ShowGrosses | undefined {
+  return grosses.shows[slug];
+}
+
+/**
+ * Get the week ending date for grosses data
+ */
+export function getGrossesWeekEnding(): string {
+  return grosses.weekEnding;
+}
+
+/**
+ * Get grosses last updated timestamp
+ */
+export function getGrossesLastUpdated(): string {
+  return grosses.lastUpdated;
+}
+
+// ============================================
+// Browse Page Queries
+// ============================================
+
+import { BROWSE_PAGES, BrowsePageConfig, getAllBrowseSlugs as getBrowseSlugsFromConfig } from '@/config/browse-pages';
+
+export interface BrowseList {
+  config: BrowsePageConfig;
+  shows: ComputedShow[];
+}
+
+/**
+ * Get filtered and sorted shows for a browse page
+ */
+export function getBrowseList(slug: string): BrowseList | undefined {
+  const config = BROWSE_PAGES[slug];
+  if (!config) return undefined;
+
+  const allShows = getAllShows();
+  let filteredShows = allShows.filter(config.filter);
+
+  // Sort shows
+  if (config.sort === 'score') {
+    filteredShows = filteredShows.sort((a, b) =>
+      (b.criticScore?.score ?? 0) - (a.criticScore?.score ?? 0)
+    );
+  } else if (config.sort === 'opening-date') {
+    filteredShows = filteredShows.sort((a, b) =>
+      new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
+    );
+  } else if (config.sort === 'closing-date') {
+    filteredShows = filteredShows.sort((a, b) => {
+      if (!a.closingDate) return 1;
+      if (!b.closingDate) return -1;
+      return new Date(a.closingDate).getTime() - new Date(b.closingDate).getTime();
+    });
+  } else if (config.sort === 'title') {
+    filteredShows = filteredShows.sort((a, b) =>
+      a.title.localeCompare(b.title)
+    );
+  }
+
+  // Apply limit if specified
+  if (config.limit) {
+    filteredShows = filteredShows.slice(0, config.limit);
+  }
+
+  return {
+    config,
+    shows: filteredShows,
+  };
+}
+
+/**
+ * Get all browse page slugs for static generation
+ */
+export function getAllBrowseSlugs(): string[] {
+  return getBrowseSlugsFromConfig();
+}
+
 // Export types
 export type { ComputedShow };
+export type { BrowsePageConfig } from '@/config/browse-pages';

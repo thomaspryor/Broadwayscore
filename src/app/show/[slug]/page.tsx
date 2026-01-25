@@ -1,13 +1,12 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow, getTheaterBySlug, getAllShows } from '@/lib/data';
-import { generateShowSchema, generateBreadcrumbSchema } from '@/lib/seo';
+import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding } from '@/lib/data';
+import { generateShowSchema, generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { getOptimizedImageUrl } from '@/lib/images';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
-import AnimatedScoreDistribution from '@/components/AnimatedScoreDistribution';
 import ReviewsList from '@/components/ReviewsList';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
+import BoxOfficeStats from '@/components/BoxOfficeStats';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -20,21 +19,25 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const score = show.criticScore?.score;
   const roundedScore = score ? Math.round(score) : null;
   const reviewCount = show.criticScore?.reviewCount || 0;
-
-  // Enhanced title with score for better CTR
-  const title = roundedScore
-    ? `${show.title} Reviews | ${roundedScore}/100 Critic Score`
-    : `${show.title} - Broadway Reviews & Ratings`;
-
-  // Enhanced description with call-to-action
-  const description = roundedScore
-    ? `${show.title} has a ${roundedScore}/100 critic score based on ${reviewCount} reviews. See what critics are saying about this Broadway ${show.type}.`
-    : `Read critic reviews and ratings for ${show.title} on Broadway at ${show.venue}.`;
+  const description = score
+    ? `${show.title} has a critic score of ${roundedScore}/100 based on ${reviewCount} reviews. ${show.synopsis?.slice(0, 100) || ''}`
+    : `Reviews and scores for ${show.title} on Broadway. ${show.synopsis?.slice(0, 100) || ''}`;
 
   const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
 
+  // Build OG image URL with show data
+  const ogParams = new URLSearchParams({
+    type: 'show',
+    title: show.title,
+    theater: show.venue || '',
+    reviews: String(reviewCount),
+    ...(roundedScore && { score: String(roundedScore) }),
+    ...(show.images?.poster && { poster: show.images.poster }),
+  });
+  const ogImageUrl = `${BASE_URL}/api/og?${ogParams.toString()}`;
+
   return {
-    title,
+    title: `${show.title} - Critic Score & Reviews`,
     description,
     alternates: {
       canonical: canonicalUrl,
@@ -44,23 +47,42 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       description,
       url: canonicalUrl,
       type: 'article',
-      images: show.images?.hero ? [{ url: show.images.hero, width: 1200, height: 630, alt: `${show.title} Broadway show` }] : undefined,
+      images: [{
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: `${show.title} - Score: ${roundedScore ?? 'TBD'} - Broadway Scorecard`,
+      }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: roundedScore ? `${show.title} - ${roundedScore}/100` : show.title,
+      title: `${show.title} - Critic Score ${roundedScore ? `${roundedScore}/100` : 'TBD'}`,
       description,
-      images: show.images?.hero ? [show.images.hero] : undefined,
+      images: [{
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: `${show.title} - Score: ${roundedScore ?? 'TBD'} - Broadway Scorecard`,
+      }],
     },
   };
 }
 
-function ScoreBadge({ score, size = 'lg' }: { score?: number | null; size?: 'md' | 'lg' | 'xl' }) {
+function ScoreBadge({ score, size = 'lg', reviewCount }: { score?: number | null; size?: 'md' | 'lg' | 'xl'; reviewCount?: number }) {
   const sizeClasses = {
     md: 'w-14 h-14 text-2xl rounded-xl',
     lg: 'w-20 h-20 text-4xl rounded-2xl',
     xl: 'w-24 h-24 text-5xl rounded-2xl',
   };
+
+  // Show TBD if fewer than 5 reviews
+  if (reviewCount !== undefined && reviewCount < 5) {
+    return (
+      <div className={`${sizeClasses[size]} bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-extrabold`}>
+        TBD
+      </div>
+    );
+  }
 
   if (score === undefined || score === null) {
     return (
@@ -70,13 +92,25 @@ function ScoreBadge({ score, size = 'lg' }: { score?: number | null; size?: 'md'
     );
   }
 
-  // Round to whole number for cleaner display
   const roundedScore = Math.round(score);
-  const colorClass = roundedScore >= 70
-    ? 'bg-score-high text-white shadow-[0_4px_16px_rgba(16,185,129,0.4)]'
-    : roundedScore >= 50
-    ? 'bg-score-medium text-gray-900 shadow-[0_4px_16px_rgba(245,158,11,0.4)]'
-    : 'bg-score-low text-white shadow-[0_4px_16px_rgba(239,68,68,0.4)]';
+  let colorClass: string;
+
+  if (roundedScore >= 85) {
+    // Must-See - premium gold
+    colorClass = 'score-must-see';
+  } else if (roundedScore >= 75) {
+    // Great - green
+    colorClass = 'score-great';
+  } else if (roundedScore >= 65) {
+    // Good - teal
+    colorClass = 'score-good';
+  } else if (roundedScore >= 55) {
+    // Tepid - yellow
+    colorClass = 'score-tepid';
+  } else {
+    // Skip - orange-red
+    colorClass = 'score-skip';
+  }
 
   return (
     <div className={`${sizeClasses[size]} ${colorClass} flex items-center justify-center font-extrabold`}>
@@ -85,17 +119,22 @@ function ScoreBadge({ score, size = 'lg' }: { score?: number | null; size?: 'md'
   );
 }
 
-function StatusChip({ status }: { status: string }) {
-  const config: Record<string, { label: string; className: string }> = {
-    open: { label: 'Now Playing', className: 'bg-status-open-bg text-status-open border-status-open/20' },
-    closed: { label: 'Closed', className: 'bg-status-closed-bg text-status-closed border-status-closed/20' },
-    previews: { label: 'In Previews', className: 'bg-status-previews-bg text-status-previews border-status-previews/20' },
-  };
+// Status pill - subtle background with accent color
+function StatusBadge({ status }: { status: string }) {
+  const label = {
+    open: 'NOW PLAYING',
+    closed: 'CLOSED',
+    previews: 'IN PREVIEWS',
+  }[status] || status.toUpperCase();
 
-  const { label, className } = config[status] || { label: status, className: 'bg-status-closed-bg text-status-closed border-status-closed/20' };
+  const colorClass = {
+    open: 'bg-emerald-500/15 text-emerald-400',
+    closed: 'bg-gray-500/15 text-gray-400',
+    previews: 'bg-purple-500/15 text-purple-400',
+  }[status] || 'bg-gray-500/15 text-gray-400';
 
   return (
-    <span className={`inline-flex items-center px-3 py-1 rounded-pill text-xs font-semibold uppercase tracking-wide border ${className}`}>
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
       {label}
     </span>
   );
@@ -115,17 +154,16 @@ function TierBadge({ tier }: { tier: number }) {
   );
 }
 
+// Use UTC-based formatting to avoid timezone-related hydration mismatch
 function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
+  const date = new Date(dateStr);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 }
 
 function BackArrow() {
   return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
     </svg>
   );
@@ -133,7 +171,7 @@ function BackArrow() {
 
 function ExternalLinkIcon() {
   return (
-    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
     </svg>
   );
@@ -141,7 +179,7 @@ function ExternalLinkIcon() {
 
 function MapPinIcon() {
   return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>
@@ -150,7 +188,7 @@ function MapPinIcon() {
 
 function PlayIcon() {
   return (
-    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M8 5v14l11-7z" />
     </svg>
   );
@@ -158,32 +196,54 @@ function PlayIcon() {
 
 function GlobeIcon() {
   return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
     </svg>
   );
 }
 
-function TypeTag({ type }: { type: string }) {
-  const config: Record<string, { label: string; className: string }> = {
-    musical: { label: 'Musical', className: 'bg-purple-500/20 text-purple-400 border-purple-500/20' },
-    play: { label: 'Play', className: 'bg-blue-500/20 text-blue-400 border-blue-500/20' },
-    revival: { label: 'Revival', className: 'bg-amber-500/20 text-amber-400 border-amber-500/20' },
-  };
+function TicketIcon() {
+  return (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+    </svg>
+  );
+}
 
-  const { label, className } = config[type] || { label: type, className: 'bg-gray-500/20 text-gray-400 border-gray-500/20' };
+// Format pill - outline style
+function FormatPill({ type }: { type: string }) {
+  const isMusical = type === 'musical' || type === 'revival';
+  const label = isMusical ? 'MUSICAL' : 'PLAY';
+  const colorClass = isMusical
+    ? 'border-purple-500/50 text-purple-400'
+    : 'border-blue-500/50 text-blue-400';
 
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium uppercase tracking-wide border ${className}`}>
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide border ${colorClass}`}>
       {label}
     </span>
   );
 }
 
-function NewBadge() {
+// Production pill - solid muted fill
+function ProductionPill({ isRevival }: { isRevival: boolean }) {
+  const label = isRevival ? 'REVIVAL' : 'ORIGINAL';
+  const colorClass = isRevival
+    ? 'bg-gray-500/20 text-gray-400'
+    : 'bg-amber-500/20 text-amber-400';
+
   return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded bg-brand/20 text-brand text-xs font-bold uppercase tracking-wide">
-      New
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
+      {label}
+    </span>
+  );
+}
+
+// Limited Run badge - eye-catching for shows ending soon
+function LimitedRunBadge() {
+  return (
+    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-rose-500/15 text-rose-400 border border-rose-500/30">
+      LIMITED RUN
     </span>
   );
 }
@@ -195,29 +255,25 @@ function ScoreLabel({ score }: { score: number }) {
   let textClass: string;
 
   if (roundedScore >= 85) {
-    label = 'Must See!';
-    bgClass = 'bg-score-high/20';
-    textClass = 'text-score-high';
+    label = 'Must-See';
+    bgClass = 'bg-score-must-see/20 border border-score-must-see/50';
+    textClass = 'text-score-must-see';
   } else if (roundedScore >= 75) {
-    label = 'Excellent';
-    bgClass = 'bg-score-high/20';
-    textClass = 'text-score-high';
-  } else if (roundedScore >= 65) {
     label = 'Great';
-    bgClass = 'bg-score-high/20';
-    textClass = 'text-score-high';
-  } else if (roundedScore >= 55) {
+    bgClass = 'bg-score-great/20';
+    textClass = 'text-score-great';
+  } else if (roundedScore >= 65) {
     label = 'Good';
-    bgClass = 'bg-score-medium/20';
-    textClass = 'text-score-medium';
-  } else if (roundedScore >= 45) {
-    label = 'Mixed';
-    bgClass = 'bg-score-medium/20';
-    textClass = 'text-score-medium';
+    bgClass = 'bg-score-good/20';
+    textClass = 'text-score-good';
+  } else if (roundedScore >= 55) {
+    label = 'Tepid';
+    bgClass = 'bg-score-tepid/20';
+    textClass = 'text-score-tepid';
   } else {
-    label = 'Poor';
-    bgClass = 'bg-score-low/20';
-    textClass = 'text-score-low';
+    label = 'Skip';
+    bgClass = 'bg-score-skip/20';
+    textClass = 'text-score-skip';
   }
 
   return (
@@ -227,11 +283,145 @@ function ScoreLabel({ score }: { score: number }) {
   );
 }
 
-function isNewShow(openingDate: string): boolean {
-  const opening = new Date(openingDate);
-  const now = new Date();
-  const daysSinceOpening = (now.getTime() - opening.getTime()) / (1000 * 60 * 60 * 24);
-  return daysSinceOpening <= 60 && daysSinceOpening >= 0;
+function getSentimentLabel(score: number): { label: string; colorClass: string } {
+  const roundedScore = Math.round(score);
+  if (roundedScore >= 85) return { label: 'Must-See', colorClass: 'text-score-must-see' };
+  if (roundedScore >= 75) return { label: 'Great', colorClass: 'text-score-great' };
+  if (roundedScore >= 65) return { label: 'Good', colorClass: 'text-score-good' };
+  if (roundedScore >= 55) return { label: 'Tepid', colorClass: 'text-score-tepid' };
+  return { label: 'Skip', colorClass: 'text-score-skip' };
+}
+
+interface ReviewForBreakdown {
+  reviewMetaScore: number;
+}
+
+function ScoreBreakdownBar({ reviews }: { reviews: ReviewForBreakdown[] }) {
+  const positive = reviews.filter(r => r.reviewMetaScore >= 65).length;
+  const mixed = reviews.filter(r => r.reviewMetaScore >= 55 && r.reviewMetaScore < 65).length;
+  const negative = reviews.filter(r => r.reviewMetaScore < 55).length;
+  const total = reviews.length;
+
+  if (total === 0) return null;
+
+  const positivePct = Math.round((positive / total) * 100);
+  const mixedPct = Math.round((mixed / total) * 100);
+  const negativePct = Math.round((negative / total) * 100);
+
+  return (
+    <div className="space-y-2" role="img" aria-label={`Review breakdown: ${positive} positive, ${mixed} mixed, ${negative} negative out of ${total} total reviews`}>
+      {/* Bar */}
+      <div className="h-3 rounded-full overflow-hidden flex bg-surface-overlay" aria-hidden="true">
+        {positivePct > 0 && (
+          <div
+            className="bg-score-great h-full"
+            style={{ width: `${positivePct}%` }}
+          />
+        )}
+        {mixedPct > 0 && (
+          <div
+            className="bg-score-tepid h-full"
+            style={{ width: `${mixedPct}%` }}
+          />
+        )}
+        {negativePct > 0 && (
+          <div
+            className="bg-score-skip h-full"
+            style={{ width: `${negativePct}%` }}
+          />
+        )}
+      </div>
+      {/* Legend */}
+      <div className="flex items-center gap-4 text-xs">
+        {positive > 0 && (
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-score-great" aria-hidden="true" />
+            <span className="text-gray-400">{positive} Positive</span>
+          </div>
+        )}
+        {mixed > 0 && (
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-score-tepid" aria-hidden="true" />
+            <span className="text-gray-400">{mixed} Mixed</span>
+          </div>
+        )}
+        {negative > 0 && (
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-score-skip" aria-hidden="true" />
+            <span className="text-gray-400">{negative} Negative</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function CriticScoreSection({ score, reviewCount, reviews }: { score: number; reviewCount: number; reviews: ReviewForBreakdown[] }) {
+  const roundedScore = Math.round(score);
+  const { label: sentimentLabel, colorClass } = getSentimentLabel(score);
+
+  // Show TBD if fewer than 5 reviews
+  const showTBD = reviewCount < 5;
+
+  let scoreColorClass: string;
+  if (roundedScore >= 85) {
+    scoreColorClass = 'score-must-see';
+  } else if (roundedScore >= 75) {
+    scoreColorClass = 'score-great';
+  } else if (roundedScore >= 65) {
+    scoreColorClass = 'score-good';
+  } else if (roundedScore >= 55) {
+    scoreColorClass = 'score-tepid';
+  } else {
+    scoreColorClass = 'score-skip';
+  }
+
+  return (
+    <section className="card p-5 sm:p-6 mb-6" aria-labelledby="critic-score-heading">
+      <div className="flex items-start gap-4 sm:gap-6 mb-4">
+        {/* Large Score Badge */}
+        {showTBD ? (
+          <div
+            className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex items-center justify-center flex-shrink-0 bg-surface-overlay text-gray-400 border border-white/10"
+            role="status"
+            aria-label="Score to be determined - fewer than 5 reviews"
+          >
+            <span className="text-3xl sm:text-4xl font-extrabold" aria-hidden="true">TBD</span>
+          </div>
+        ) : (
+          <div
+            className={`w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}
+            role="meter"
+            aria-valuenow={roundedScore}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`Critic Score: ${roundedScore} out of 100 - ${sentimentLabel}`}
+          >
+            <span className="text-4xl sm:text-5xl font-extrabold" aria-hidden="true">{roundedScore}</span>
+          </div>
+        )}
+
+        {/* Critic Score Label and Sentiment */}
+        <div className="flex-1 pt-1">
+          <h2 id="critic-score-heading" className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Critic Score</h2>
+          {showTBD ? (
+            <div className="text-lg sm:text-xl font-bold text-gray-400">Awaiting Reviews</div>
+          ) : (
+            <div className={`text-lg sm:text-xl font-bold ${colorClass}`}>{sentimentLabel}</div>
+          )}
+          <a
+            href="#critic-reviews"
+            className="text-sm text-gray-500 hover:text-brand transition-colors mt-1 inline-block"
+          >
+            Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}{showTBD ? ' (5+ needed)' : ''}
+          </a>
+        </div>
+      </div>
+
+      {/* Score Breakdown Bar */}
+      <ScoreBreakdownBar reviews={reviews} />
+    </section>
+  );
 }
 
 function getGoogleMapsUrl(address: string): string {
@@ -239,17 +429,6 @@ function getGoogleMapsUrl(address: string): string {
 }
 
 
-// Generate all structured data for the page (TheaterEvent + BreadcrumbList)
-function generateAllStructuredData(show: ComputedShow) {
-  const showSchema = generateShowSchema(show);
-  const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: BASE_URL },
-    { name: 'Shows', url: `${BASE_URL}/#shows` },
-    { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
-  ]);
-
-  return [showSchema, breadcrumbSchema];
-}
 
 export default function ShowPage({ params }: { params: { slug: string } }) {
   const show = getShowBySlug(params.slug);
@@ -258,15 +437,21 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  const structuredData = generateAllStructuredData(show);
+  const showSchema = generateShowSchema(show);
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: show.type === 'musical' || show.type === 'revival' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${show.type === 'musical' || show.type === 'revival' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` },
+    { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
+  ]);
   const score = show.criticScore?.score;
+  const grosses = getShowGrosses(params.slug);
+  const weekEnding = getGrossesWeekEnding();
 
   return (
     <>
-      {/* Enhanced JSON-LD: TheaterEvent with Reviews + BreadcrumbList */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([showSchema, breadcrumbSchema]) }}
       />
 
       {/* Sticky Score Header */}
@@ -280,26 +465,38 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         </Link>
 
         {/* Header with Poster Card */}
-        <div className="flex gap-4 sm:gap-6 mb-8">
-          {/* Poster Card */}
-          <div className="flex-shrink-0">
-            <div className="relative w-28 sm:w-36 lg:w-44 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
+        <div className="flex gap-5 sm:gap-6 mb-5">
+          {/* Poster Card - fetchpriority high for LCP optimization */}
+          <div className="flex-shrink-0 w-28 sm:w-36 lg:w-44">
+            <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
               {show.images?.poster ? (
                 <img
-                  src={show.images.poster}
-                  alt={`${show.title} Broadway ${show.type} poster - now playing at ${show.venue}`}
+                  src={getOptimizedImageUrl(show.images.poster, 'poster')}
+                  alt={show.title}
+                  width={176}
+                  height={264}
+                  decoding="async"
+                  fetchPriority="high"
                   className="w-full h-full object-cover"
                 />
               ) : show.images?.thumbnail ? (
                 <img
-                  src={show.images.thumbnail}
-                  alt={`${show.title} Broadway ${show.type} - now playing at ${show.venue}`}
+                  src={getOptimizedImageUrl(show.images.thumbnail, 'poster')}
+                  alt={show.title}
+                  width={176}
+                  height={264}
+                  decoding="async"
+                  fetchPriority="high"
                   className="w-full h-full object-cover"
                 />
               ) : show.images?.hero ? (
                 <img
-                  src={show.images.hero}
-                  alt={`${show.title} Broadway ${show.type} - now playing at ${show.venue}`}
+                  src={getOptimizedImageUrl(show.images.hero, 'poster')}
+                  alt={show.title}
+                  width={176}
+                  height={264}
+                  decoding="async"
+                  fetchPriority="high"
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -308,82 +505,87 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 </div>
               )}
             </div>
-            {/* Score badge below poster */}
-            {score !== undefined && score !== null && (
-              <div className="mt-3 flex flex-col items-center">
-                <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Metascore</span>
-                <ScoreBadge score={score} size="md" />
-              </div>
-            )}
           </div>
 
           {/* Title & Meta */}
-          <div className="flex-1 min-w-0 pt-2 sm:pt-4">
-            <div className="flex flex-wrap items-center gap-2 mb-1">
-              <TypeTag type={show.type} />
-              {isNewShow(show.openingDate) && <NewBadge />}
-              <StatusChip status={show.status} />
+          <div className="flex-1 min-w-0 pt-1 sm:pt-2">
+            <div className="flex flex-wrap items-center gap-1.5 mb-2">
+              <FormatPill type={show.type} />
+              <ProductionPill isRevival={show.type === 'revival'} />
+              {show.limitedRun && <LimitedRunBadge />}
+              <StatusBadge status={show.status} />
             </div>
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
               {show.title}
             </h1>
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-gray-400 text-sm">
               <span className="text-gray-300">{show.venue}</span>
-              <span className="text-gray-600 hidden sm:inline">•</span>
-              <span className="hidden sm:inline">{show.runtime}</span>
+              <span className="text-gray-600">•</span>
+              <span>{show.runtime}</span>
+              <span className="text-gray-600">•</span>
+              <span>Opened {formatDate(show.openingDate)}</span>
             </div>
-
-            {/* Score Label and Reviews - desktop */}
-            {score && (
-              <div className="hidden sm:flex items-center gap-3 mt-4">
-                <ScoreLabel score={score} />
-                {show.criticScore && (
-                  <span className="text-sm text-gray-500">
-                    Based on {show.criticScore.reviewCount} reviews
-                  </span>
-                )}
-              </div>
+            {/* Synopsis inline with header for better space usage */}
+            {show.synopsis && (
+              <p className="text-gray-400 text-sm sm:text-base leading-relaxed mt-3 line-clamp-3 sm:line-clamp-none">
+                {show.synopsis}
+              </p>
             )}
           </div>
         </div>
 
-        {/* Score Label - mobile only */}
-        {score && (
-          <div className="flex items-center gap-3 mb-6 sm:hidden">
-            <ScoreLabel score={score} />
-            {show.criticScore && (
-              <span className="text-sm text-gray-500">
-                {show.criticScore.reviewCount} reviews
-              </span>
-            )}
+        {/* Critic Score Section */}
+        {score && show.criticScore && (
+          <CriticScoreSection
+            score={score}
+            reviewCount={show.criticScore.reviewCount}
+            reviews={show.criticScore.reviews}
+          />
+        )}
+
+        {/* Ticket Buttons - Prominent CTA */}
+        {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && (
+          <div className="card p-4 sm:p-5 mb-6 bg-gradient-to-r from-brand/10 to-purple-500/10 border-brand/20">
+            <div className="flex items-center gap-2 mb-3">
+              <TicketIcon />
+              <h2 className="text-sm font-semibold text-white uppercase tracking-wide">Get Tickets</h2>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {show.ticketLinks.map((link, i) => (
+                <a
+                  key={i}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center gap-2 px-5 py-3 min-h-[48px] rounded-xl font-semibold transition-all ${
+                    i === 0
+                      ? 'bg-gradient-brand text-white hover:shadow-glow-sm hover:scale-[1.02] active:scale-[0.98]'
+                      : 'bg-surface-overlay hover:bg-white/10 text-gray-200 hover:text-white border border-white/10'
+                  }`}
+                >
+                  <span>{link.platform}</span>
+                  {link.priceFrom && (
+                    <span className={i === 0 ? 'opacity-90 text-sm' : 'text-gray-400 text-sm'}>
+                      from ${link.priceFrom}
+                    </span>
+                  )}
+                  <ExternalLinkIcon />
+                </a>
+              ))}
+            </div>
           </div>
         )}
 
-        {/* Action Buttons */}
-        {(show.ticketLinks?.length || show.officialUrl || show.trailerUrl) && (
+        {/* Other Action Buttons */}
+        {(show.officialUrl || show.trailerUrl) && (
           <div className="flex flex-wrap gap-3 mb-8">
-            {/* Ticket Links */}
-            {show.ticketLinks?.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary flex items-center gap-2"
-              >
-                {link.platform}
-                {link.priceFrom && <span className="opacity-80">from ${link.priceFrom}</span>}
-                <ExternalLinkIcon />
-              </a>
-            ))}
-
             {/* Official Website */}
             {show.officialUrl && (
               <a
                 href={show.officialUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
+                className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
               >
                 <GlobeIcon />
                 Official Site
@@ -396,7 +598,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 href={show.trailerUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
+                className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
               >
                 <PlayIcon />
                 Trailer
@@ -405,51 +607,46 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
-        {/* Synopsis */}
-        {show.synopsis && (
-          <div className="mb-8">
-            <p className="text-gray-300 leading-relaxed">{show.synopsis}</p>
-          </div>
-        )}
 
         {/* Critic Reviews */}
         {show.criticScore && show.criticScore.reviews.length > 0 && (
-          <div className="card p-5 sm:p-6 mb-8">
+          <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
-              <span className="text-sm text-gray-500">{show.criticScore.reviewCount} reviews</span>
+              <span className="text-sm text-gray-400 font-medium">{show.criticScore.reviewCount} reviews</span>
             </div>
-
-            <AnimatedScoreDistribution reviews={show.criticScore.reviews} />
 
             <ReviewsList reviews={show.criticScore.reviews} initialCount={5} />
           </div>
         )}
 
+        {/* Box Office Stats */}
+        {grosses && <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />}
+
         {/* Cast & Creative */}
         {(show.cast || show.creativeTeam) && (
           <div className="grid sm:grid-cols-2 gap-6 mb-8">
             {show.cast && show.cast.length > 0 && (
-              <div className="card p-5">
+              <div className="card p-4 sm:p-5">
                 <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Cast</h2>
-                <ul className="space-y-2">
+                <ul className="space-y-2.5 sm:space-y-2">
                   {show.cast.map((member, i) => (
-                    <li key={i} className="flex justify-between text-sm">
+                    <li key={i} className="flex flex-col sm:flex-row sm:justify-between text-sm gap-0.5 sm:gap-2">
                       <span className="text-white font-medium">{member.name}</span>
-                      <span className="text-gray-500">{member.role}</span>
+                      <span className="text-gray-500 text-xs sm:text-sm">{member.role}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
             {show.creativeTeam && show.creativeTeam.length > 0 && (
-              <div className="card p-5">
+              <div className="card p-4 sm:p-5">
                 <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Creative Team</h2>
-                <ul className="space-y-2">
+                <ul className="space-y-2.5 sm:space-y-2">
                   {show.creativeTeam.map((member, i) => (
-                    <li key={i} className="flex justify-between text-sm">
+                    <li key={i} className="flex flex-col sm:flex-row sm:justify-between text-sm gap-0.5 sm:gap-2">
                       <span className="text-white font-medium">{member.name}</span>
-                      <span className="text-gray-500">{member.role}</span>
+                      <span className="text-gray-500 text-xs sm:text-sm">{member.role}</span>
                     </li>
                   ))}
                 </ul>
@@ -459,16 +656,16 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         )}
 
         {/* Show Details */}
-        <div className="card p-5 mb-8">
+        <div className="card p-4 sm:p-5 mb-8">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Details</h2>
-          <dl className="grid grid-cols-2 gap-4 text-sm">
+          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
             <div>
               <dt className="text-gray-500">Opened</dt>
               <dd className="text-white mt-0.5">{formatDate(show.openingDate)}</dd>
             </div>
             {show.closingDate && (
               <div>
-                <dt className="text-gray-500">Closes</dt>
+                <dt className="text-gray-500">{show.status === 'closed' ? 'Closed' : 'Closes'}</dt>
                 <dd className="text-white mt-0.5">{formatDate(show.closingDate)}</dd>
               </div>
             )}
@@ -488,7 +685,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 <dd className="text-white mt-0.5">{show.ageRecommendation}</dd>
               </div>
             )}
-            <div className="col-span-2">
+            <div className="sm:col-span-2">
               <dt className="text-gray-500">Theater</dt>
               <dd className="text-white mt-0.5">
                 {show.theaterAddress ? (
@@ -509,9 +706,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </dl>
         </div>
 
-        {/* Internal Links - SEO & Discovery */}
-        <InternalLinks show={show} />
-
         {/* Footer */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
           <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
@@ -520,114 +714,5 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         </div>
       </div>
     </>
-  );
-}
-
-// Internal linking component for SEO
-function InternalLinks({ show }: { show: ComputedShow }) {
-  // Get director info
-  const director = show.creativeTeam?.find(m =>
-    m.role.toLowerCase().includes('director') &&
-    !m.role.toLowerCase().includes('music director')
-  );
-  const directorSlug = director?.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-
-  // Get other shows at this theater
-  const theaterSlug = show.venue.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-  const theater = getTheaterBySlug(theaterSlug);
-  const otherShowsAtTheater = theater?.allShows.filter(s => s.slug !== show.slug && s.status === 'open').slice(0, 3) || [];
-
-  // Get related shows by tags
-  const allShows = getAllShows();
-  const showTags = show.tags?.map(t => t.toLowerCase()) || [];
-  const relatedShows = allShows
-    .filter(s =>
-      s.slug !== show.slug &&
-      s.status === 'open' &&
-      s.tags?.some(t => showTags.includes(t.toLowerCase()))
-    )
-    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
-    .slice(0, 4);
-
-  if (!director && otherShowsAtTheater.length === 0 && relatedShows.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="space-y-6 border-t border-white/5 pt-6 mt-6">
-      {/* Director Link */}
-      {director && directorSlug && (
-        <div>
-          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            More from the Director
-          </h3>
-          <Link
-            href={`/director/${directorSlug}`}
-            className="inline-flex items-center gap-2 text-brand hover:text-brand-hover transition-colors"
-          >
-            <span className="font-medium">{director.name}</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-        </div>
-      )}
-
-      {/* Theater Link */}
-      {theater && (
-        <div>
-          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            More at {show.venue}
-          </h3>
-          <Link
-            href={`/theater/${theaterSlug}`}
-            className="inline-flex items-center gap-2 text-brand hover:text-brand-hover transition-colors"
-          >
-            <span className="font-medium">View theater page</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-        </div>
-      )}
-
-      {/* Related Shows */}
-      {relatedShows.length > 0 && (
-        <div>
-          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            You Might Also Like
-          </h3>
-          <div className="grid grid-cols-2 gap-3">
-            {relatedShows.map(related => (
-              <Link
-                key={related.slug}
-                href={`/show/${related.slug}`}
-                className="card p-3 flex items-center gap-3 hover:bg-surface-raised/80 transition-colors group"
-              >
-                <div className="w-10 h-10 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
-                  {related.images?.thumbnail ? (
-                    <img
-                      src={related.images.thumbnail}
-                      alt={`${related.title} Broadway ${related.type}`}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-lg">🎭</div>
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate group-hover:text-brand transition-colors">
-                    {related.title}
-                  </p>
-                  {related.criticScore?.score && (
-                    <p className="text-xs text-gray-500">{Math.round(related.criticScore.score)}/100</p>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
   );
 }

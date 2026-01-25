@@ -166,74 +166,71 @@ function extractImageFromApi(data) {
   // Return an object with separate URLs for different image types when possible
   try {
     const result = { poster: null, hero: null, thumbnail: null };
-    const allImageUrls = [];
 
-    // Path 1: data.show.images array - extract all images first
+    // Path 1: data.show.images array - extract POSTER and HERO separately
     if (data?.data?.show?.images?.length > 0) {
       const images = data.data.show.images;
 
-      // Collect all image URLs
-      for (const img of images) {
-        if (img?.file?.url) allImageUrls.push(img.file.url);
-      }
-    }
+      // Look for POSTER type (usually square or portrait)
+      const posterImg = images.find(i => i.type === 'POSTER');
+      if (posterImg?.file?.url) result.poster = posterImg.file.url;
 
-    // Path 2: Check for separate posterImageUrl and heroImageUrl
-    if (data?.data?.show?.posterImageUrl) allImageUrls.push(data.data.show.posterImageUrl);
-    if (data?.data?.show?.heroImageUrl) allImageUrls.push(data.data.show.heroImageUrl);
-    if (data?.data?.show?.thumbnailImageUrl) allImageUrls.push(data.data.show.thumbnailImageUrl);
+      // Look for HERO type (usually landscape banner)
+      const heroImg = images.find(i => i.type === 'HERO');
+      if (heroImg?.file?.url) result.hero = heroImg.file.url;
 
-    // Path 3: data.images array directly
-    if (data?.images?.length > 0) {
-      for (const img of data.images) {
-        if (img?.file?.url) allImageUrls.push(img.file.url);
-        if (img?.url) allImageUrls.push(img.url);
-      }
-    }
+      // Look for THUMBNAIL type
+      const thumbImg = images.find(i => i.type === 'THUMBNAIL' || i.type === 'SQUARE');
+      if (thumbImg?.file?.url) result.thumbnail = thumbImg.file.url;
 
-    // Path 4: Direct posterImageUrl / heroImageUrl
-    if (data?.posterImageUrl) allImageUrls.push(data.posterImageUrl);
-    if (data?.heroImageUrl) allImageUrls.push(data.heroImageUrl);
-    if (data?.thumbnailImageUrl) allImageUrls.push(data.thumbnailImageUrl);
-
-    // Path 5: Look for all ctfassets URLs in the response
-    const jsonStr = JSON.stringify(data);
-    const ctfMatches = jsonStr.match(/https:\/\/images\.ctfassets\.net\/[^"\\]+/g);
-    if (ctfMatches) {
-      allImageUrls.push(...ctfMatches);
-    }
-
-    // Now match images by dimensions in filename
-    if (allImageUrls.length > 0) {
-      // Remove duplicates
-      const uniqueUrls = [...new Set(allImageUrls)];
-
-      // Match by dimensions in filename
-      for (const url of uniqueUrls) {
-        const filename = url.split('/').pop().split('?')[0];
-
-        // Look for square images (1080x1080, 1000x1000, etc)
-        if (filename.match(/1080x1080|1000x1000|square/i)) {
-          result.thumbnail = url;
-        }
-        // Look for portrait images (480x720, 2x3 ratio)
-        else if (filename.match(/480x720|600x900|poster/i)) {
-          result.poster = url;
-        }
-        // Look for landscape/hero images (1440x580, 16x9, etc)
-        else if (filename.match(/1440x580|1920x1080|hero|banner/i)) {
-          result.hero = url;
-        }
-      }
-
-      // If we found specific image types, return them
-      if (result.poster || result.hero || result.thumbnail) {
+      // If we found at least poster or hero, return the result
+      if (result.poster || result.hero) {
         return result;
       }
 
       // Fallback: use first image for everything
-      return uniqueUrls[0];
+      if (images[0]?.file?.url) {
+        return images[0].file.url;
+      }
     }
+
+    // Path 2: Check for separate posterImageUrl and heroImageUrl
+    if (data?.data?.show?.posterImageUrl || data?.data?.show?.heroImageUrl) {
+      result.poster = data.data.show.posterImageUrl;
+      result.hero = data.data.show.heroImageUrl;
+      if (result.poster || result.hero) return result;
+    }
+
+    // Path 3: data.images array directly
+    if (data?.images?.length > 0) {
+      const images = data.images;
+
+      const posterImg = images.find(i => i.type === 'POSTER');
+      if (posterImg?.file?.url) result.poster = posterImg.file.url;
+      if (posterImg?.url) result.poster = posterImg.url;
+
+      const heroImg = images.find(i => i.type === 'HERO');
+      if (heroImg?.file?.url) result.hero = heroImg.file.url;
+      if (heroImg?.url) result.hero = heroImg.url;
+
+      if (result.poster || result.hero) return result;
+
+      // Fallback to first image
+      if (images[0]?.file?.url) return images[0].file.url;
+      if (images[0]?.url) return images[0].url;
+    }
+
+    // Path 4: Direct posterImageUrl / heroImageUrl
+    if (data?.posterImageUrl || data?.heroImageUrl) {
+      result.poster = data.posterImageUrl;
+      result.hero = data.heroImageUrl;
+      if (result.poster || result.hero) return result;
+    }
+
+    // Path 5: Look for any ctfassets URL in the response
+    const jsonStr = JSON.stringify(data);
+    const ctfMatch = jsonStr.match(/https:\/\/images\.ctfassets\.net\/[^"\\]+/);
+    if (ctfMatch) return ctfMatch[0];
 
   } catch (e) {
     // Ignore parsing errors
@@ -251,9 +248,20 @@ function extractImageFromHtml(html) {
   const twitterMatch = html.match(/<meta[^>]*name=["']twitter:image["'][^>]*content=["']([^"']+)["']/i);
   if (twitterMatch && twitterMatch[1].includes('ctfassets.net')) return twitterMatch[1];
 
-  // Pattern 3: Any Contentful image URL in the page
+  // Pattern 3: Any Contentful image URL in the page - PRIORITIZE POSTER IMAGES
   const ctfMatches = html.match(/https:\/\/images\.ctfassets\.net\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+\/[^"'\s<>]+\.(jpg|jpeg|png|webp)/gi);
   if (ctfMatches && ctfMatches.length > 0) {
+    // Prioritize poster/square images over landscape banners
+    // Look for images with poster dimensions in filename (480x720, 600x900, etc)
+    const posterImages = ctfMatches.filter(url =>
+      url.includes('480x720') || url.includes('600x900') || url.includes('TodayTix-480x720') ||
+      url.includes('_Poster') || url.includes('-Poster') || url.includes('poster')
+    );
+    if (posterImages.length > 0) {
+      return posterImages[0];
+    }
+
+    // Otherwise return longest URL (usually has most detail)
     const sorted = ctfMatches.sort((a, b) => b.length - a.length);
     return sorted[0];
   }
@@ -284,7 +292,7 @@ function formatImageUrls(imageData) {
     imageData = { hero: imageData, poster: null, thumbnail: null };
   }
 
-  // Extract URLs and clean them (remove existing query params)
+  // Extract URLs and clean them
   let heroUrl = imageData.hero ? imageData.hero.split('?')[0] : null;
   let posterUrl = imageData.poster ? imageData.poster.split('?')[0] : null;
   let thumbnailUrl = imageData.thumbnail ? imageData.thumbnail.split('?')[0] : null;
@@ -294,40 +302,40 @@ function formatImageUrls(imageData) {
   if (!fallbackUrl) return null;
 
   heroUrl = heroUrl || fallbackUrl;
-  posterUrl = posterUrl || fallbackUrl;
-  thumbnailUrl = thumbnailUrl || fallbackUrl;
+
+  // Try to construct poster/thumbnail URLs by replacing dimensions in filename
+  if (!posterUrl && fallbackUrl.includes('1440x580')) {
+    posterUrl = fallbackUrl.replace('1440x580', '480x720');
+  } else {
+    posterUrl = posterUrl || fallbackUrl;
+  }
+
+  if (!thumbnailUrl && fallbackUrl.includes('1440x580')) {
+    thumbnailUrl = fallbackUrl.replace('1440x580', '480x720');
+  } else {
+    thumbnailUrl = thumbnailUrl || fallbackUrl;
+  }
 
   // Helper to add Contentful params
-  const addParams = (url, params) => {
+  const addParams = (url, width, height, fit = 'pad', quality = 90, focus = null) => {
     if (url.includes('ctfassets.net')) {
+      let params = `w=${width}&h=${height}&fit=${fit}&q=${quality}`;
+      if (focus && fit === 'fill') {
+        params += `&f=${focus}`;
+      }
+      if (fit === 'pad') {
+        params += '&bg=rgb:1a1a1a';
+      }
       return `${url}?${params}`;
     }
     return url;
   };
 
-  // Determine if each image is already the right dimensions
-  const heroFilename = heroUrl.split('/').pop();
-  const posterFilename = posterUrl.split('/').pop();
-  const thumbnailFilename = thumbnailUrl.split('/').pop();
-
-  // Format each image type
-  // If the source image is already the right dimensions/ratio, use lighter params
-  // Otherwise use pad to avoid cropping
+  // Format each image type with appropriate dimensions and fit strategy
   return {
-    // Hero: landscape banner - prefer minimal processing if already landscape
-    hero: heroFilename.match(/1440x580|1920x1080|hero|banner/i)
-      ? addParams(heroUrl, 'w=1920&h=1080&fit=pad&q=90&bg=rgb:1a1a1a')
-      : addParams(heroUrl, 'w=1920&h=1080&fit=pad&q=90&bg=rgb:1a1a1a'),
-
-    // Thumbnail: square - if source is square, use fill for better quality
-    thumbnail: thumbnailFilename.match(/1080x1080|1000x1000|square/i)
-      ? addParams(thumbnailUrl, 'h=450&fm=webp&q=90')
-      : addParams(thumbnailUrl, 'w=400&h=400&fit=pad&q=80&bg=rgb:1a1a1a'),
-
-    // Poster: portrait - if source is portrait, use fill with faces detection
-    poster: posterFilename.match(/480x720|600x900|poster/i)
-      ? addParams(posterUrl, 'h=450&f=faces&fit=fill&fm=webp&q=90')
-      : addParams(posterUrl, 'w=600&h=900&fit=pad&q=85&bg=rgb:1a1a1a'),
+    hero: addParams(heroUrl, 1920, 1080, 'pad', 90),              // Landscape 16:9 - use pad to preserve full image
+    thumbnail: addParams(thumbnailUrl, 400, 400, 'fill', 80, 'center'), // Square 1:1 - smart crop from center
+    poster: addParams(posterUrl, 600, 900, 'fill', 85, 'center'),       // Portrait 2:3 - smart crop from center
   };
 }
 
@@ -584,25 +592,28 @@ function fetchTodayTixGraphQL(showId) {
   });
 }
 
+function isCleanUrl(url) {
+  // A "clean" URL is one without query parameters - these are manually set and should be preserved
+  if (!url || typeof url !== 'string') return false;
+  return url.includes('ctfassets.net') && !url.includes('?');
+}
+
+function hasCleanImages(images) {
+  // Check if show has any manually-set clean URLs that should be preserved
+  if (!images || typeof images !== 'object') return false;
+  return isCleanUrl(images.hero) || isCleanUrl(images.thumbnail) || isCleanUrl(images.poster);
+}
+
 function updateShowsJson(imageResults) {
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
-
-  // Load curated images to avoid overwriting them
-  const CURATED_JSON_PATH = path.join(__dirname, '..', 'data', 'curated-images.json');
-  let curatedShows = [];
-  try {
-    const curatedData = JSON.parse(fs.readFileSync(CURATED_JSON_PATH, 'utf8'));
-    curatedShows = Object.keys(curatedData.images || {});
-  } catch (e) {
-    // No curated images file, proceed normally
-  }
-
   let updatedCount = 0;
   let skippedCount = 0;
 
   for (const show of showsData.shows) {
-    // Skip shows that have curated images
-    if (curatedShows.includes(show.slug)) {
+    // IMPORTANT: Skip shows that have manually-set clean URLs (no query params)
+    // These were manually curated and should NOT be overwritten
+    if (hasCleanImages(show.images)) {
+      console.log(`   ⏭️  Skipping ${show.slug} - has manually-set clean URLs`);
       skippedCount++;
       continue;
     }
@@ -617,7 +628,7 @@ function updateShowsJson(imageResults) {
   fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
 
   if (skippedCount > 0) {
-    console.log(`\nℹ️  Skipped ${skippedCount} shows with curated images`);
+    console.log(`\n⏭️  Preserved ${skippedCount} shows with manually-set images`);
   }
 
   return updatedCount;
