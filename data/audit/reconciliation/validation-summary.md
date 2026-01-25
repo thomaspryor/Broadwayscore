@@ -166,7 +166,7 @@ These reviews have different thumb assignments between DTLI and our data:
 - Chris Jones: Listed under both NY Daily News and Chicago Tribune
 
 ### book-of-mormon
-- Terry Teachout / Terry Techout (typo)
+- Terry Teachout / Terry Teachout (typo)
 - Multiple BroadwayWorld entries
 
 ### the-notebook-2024
@@ -174,7 +174,7 @@ These reviews have different thumb assignments between DTLI and our data:
 - Duplicate NY Post entries
 
 ### hadestown-2019
-- Terry Teachout / Terry Techout (typo)
+- Terry Teachout / Terry Teachout (typo)
 
 ---
 
@@ -239,7 +239,7 @@ These older shows have significantly fewer reviews on DTLI than in our database:
 ### Data Quality (Priority 2)
 5. **Review 12 thumb mismatches** - Verify correct assignments
 6. **Remove duplicates** in the-outsiders, book-of-mormon, the-notebook
-7. **Fix typo** - Terry Teachout/Techout standardization
+7. ~~**Fix typo** - Terry Teachout/Techout standardization~~ (DONE 2026-01-24)
 8. **Fix dtliThumb error** - two-strangers/New York Theater
 
 ### Coverage Gaps (Priority 3)
