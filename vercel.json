@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.broadwayscorecard.com"
+        }
+      ],
+      "destination": "https://broadwayscorecard.com/$1",
+      "permanent": true
+    }
+  ]
+}

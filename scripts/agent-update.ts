@@ -1,6 +1,6 @@
 #!/usr/bin/env npx ts-node
 /**
- * Broadway Metascore Agent Updater
+ * Broadway Scorecard Agent Updater
  *
  * This script checks for new reviews, audience data, and buzz signals,
  * then proposes updates to the data files.
@@ -205,7 +205,7 @@ function generateReport(): UpdateReport {
 
 function printReport(report: UpdateReport) {
   console.log('\n' + '='.repeat(60));
-  console.log('BROADWAY METASCORE - DATA UPDATE REPORT');
+  console.log('BROADWAY SCORECARD - DATA UPDATE REPORT');
   console.log('='.repeat(60));
   console.log(`Generated: ${report.timestamp}`);
   console.log(`Shows checked: ${report.showsChecked}`);

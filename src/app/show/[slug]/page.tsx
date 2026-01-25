@@ -40,7 +40,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${show.title} - BroadwayMetaScores`,
+      title: `${show.title} - Broadway Scorecard`,
       description,
       url: canonicalUrl,
       type: 'article',
