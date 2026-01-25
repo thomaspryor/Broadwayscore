@@ -5,18 +5,14 @@
  * Discovers new Broadway shows by checking Broadway.org listings
  * and adds them to shows.json with basic metadata.
  *
- * Uses Bright Data (primary) with ScrapingBee/Playwright fallbacks.
+ * Uses Playwright to scrape JavaScript-rendered content.
  *
  * Usage: node scripts/discover-new-shows.js [--dry-run]
- *
- * Environment variables:
- *   BRIGHTDATA_TOKEN - Bright Data API token (primary)
- *   SCRAPINGBEE_API_KEY - ScrapingBee API key (fallback)
  */
 
 const fs = require('fs');
 const path = require('path');
-const { fetchPage, cleanup } = require('./lib/scraper');
+const { chromium } = require('playwright');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -45,64 +41,70 @@ function slugify(title) {
     .replace(/-+/g, '-');
 }
 
-// Scraping is now handled by shared lib/scraper.js module
+async function fetchShowsFromBroadwayOrg() {
+  console.log('Launching browser...');
+  const browser = await chromium.launch({ headless: true });
+  const page = await browser.newPage();
 
-function parseShowsFromBroadwayOrg(html) {
-  const shows = [];
+  console.log(`Navigating to ${BROADWAY_ORG_URL}...`);
+  await page.goto(BROADWAY_ORG_URL, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
-  // Broadway.org 2026 structure: Each show is in a container with h4 title and date info
-  // Pattern: <h4>Show Title</h4> ... "Begins: Mar 27, 2026" or "Through: Jun 7, 2026"
+  console.log('Waiting for show content to load...');
+  // Wait for main content area
+  await page.waitForSelector('main', { timeout: 10000 });
 
-  // Extract show cards - they contain h4 headings with show titles
-  const showCardPattern = /<div[^>]*>\s*<a[^>]*href="\/shows\/([^"]+)"[^>]*><\/a>\s*<div[^>]*>\s*<a[^>]*>\s*<h4[^>]*>([^<]+)<\/h4>/gi;
+  // Give JavaScript time to render show cards
+  await page.waitForTimeout(3000);
 
-  let match;
-  while ((match = showCardPattern.exec(html)) !== null) {
-    const slug = match[1];
-    const title = match[2].trim();
+  console.log('Extracting show data from rendered DOM...');
+  const shows = await page.evaluate(() => {
+    const showsList = [];
 
-    // Find the context after this title to extract dates and venue
-    const contextStart = match.index;
-    const contextEnd = Math.min(html.length, contextStart + 2000);
-    const context = html.substring(contextStart, contextEnd);
+    // Look for all links that go to /shows/[slug]
+    const showLinks = Array.from(document.querySelectorAll('a[href^="/shows/"]'));
 
-    // Extract venue (theater name)
-    let venue = 'TBA';
-    const venueMatch = context.match(/(?:href="\/broadway-theatres\/[^"]*"[^>]*>\s*<div[^>]*>\s*(?:<img[^>]*>)?\s*<div[^>]*>|<div[^>]*>\s*)([^<]+?)\s*(?:Theatre|Theater)/i);
-    if (venueMatch) {
-      venue = venueMatch[1].trim() + (venueMatch[0].includes('Theatre') ? ' Theatre' : ' Theater');
-    }
+    for (const link of showLinks) {
+      const href = link.getAttribute('href');
+      if (!href || href === '/shows/') continue;
 
-    // Extract opening date (Begins: Date)
-    let openingDate = null;
-    const beginsMatch = context.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/i);
-    if (beginsMatch) {
-      const parsedDate = new Date(beginsMatch[1]);
-      if (!isNaN(parsedDate.getTime())) {
-        openingDate = parsedDate.toISOString().split('T')[0];
+      const slug = href.replace('/shows/', '');
+
+      // Find h4 within or near this link
+      const h4 = link.querySelector('h4') || link.closest('div')?.querySelector('h4');
+      if (!h4) continue;
+
+      const title = h4.textContent.trim();
+      if (!title || title.length < 3) continue;
+
+      // Find parent container for dates and venue
+      let container = link.closest('div');
+      if (container) {
+        container = container.parentElement || container;
+      }
+
+      const venue = container?.querySelector('a[href*="/broadway-theatres/"]')?.textContent?.trim() || 'TBA';
+      const text = container?.textContent || '';
+
+      const beginsMatch = text.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
+      const throughMatch = text.match(/Through:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
+
+      // Avoid duplicates
+      if (!showsList.find(s => s.title === title)) {
+        showsList.push({
+          title,
+          venue,
+          slug,
+          openingDate: beginsMatch ? beginsMatch[1] : null,
+          closingDate: throughMatch ? throughMatch[1] : null
+        });
       }
     }
 
-    // Extract closing date (Through: Date)
-    let closingDate = null;
-    const throughMatch = context.match(/Through:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/i);
-    if (throughMatch) {
-      const parsedDate = new Date(throughMatch[1]);
-      if (!isNaN(parsedDate.getTime())) {
-        closingDate = parsedDate.toISOString().split('T')[0];
-      }
-    }
+    return showsList;
+  });
 
-    if (title && title.length > 2 && title.length < 150) {
-      shows.push({
-        title: title,
-        venue: venue,
-        openingDate: openingDate,
-        closingDate: closingDate,
-        slug: slug,
-      });
-    }
-  }
+  await browser.close();
+  console.log(`Extracted ${shows.length} shows from Broadway.org`);
 
   return shows;
 }
@@ -121,29 +123,17 @@ async function discoverShows() {
   console.log(`Existing shows in database: ${data.shows.length}`);
   console.log('');
 
-  // Fetch Broadway.org
-  console.log('Fetching Broadway.org...');
-  let content, format;
+  // Fetch shows from Broadway.org using Playwright
+  let discoveredShows;
   try {
-    const result = await fetchPage(BROADWAY_ORG_URL, { renderJs: false });
-    content = result.content;
-    format = result.format;
-    console.log(`Fetched ${content.length} bytes (${format} from ${result.source})`);
+    discoveredShows = await fetchShowsFromBroadwayOrg();
+    console.log(`Found ${discoveredShows.length} shows on Broadway.org`);
+    console.log('');
   } catch (e) {
     console.error('Error fetching Broadway.org:', e.message);
     console.log('');
-    console.log('To enable discovery, set BRIGHTDATA_TOKEN or SCRAPINGBEE_API_KEY.');
-    await cleanup();
     return { newShows: [], count: 0 };
   }
-
-  // Parse shows (works with both HTML and markdown)
-  const discoveredShows = parseShowsFromBroadwayOrg(content);
-  console.log(`Found ${discoveredShows.length} shows on Broadway.org`);
-  console.log('');
-
-  // Cleanup resources
-  await cleanup();
 
   // Find new shows not in our database
   const newShows = [];
@@ -158,10 +148,29 @@ async function discoverShows() {
       );
 
       if (!isVariation) {
+        // Convert date strings to ISO format
+        let openingDate = null;
+        if (show.openingDate) {
+          const parsed = new Date(show.openingDate);
+          if (!isNaN(parsed.getTime())) {
+            openingDate = parsed.toISOString().split('T')[0];
+          }
+        }
+
+        let closingDate = null;
+        if (show.closingDate) {
+          const parsed = new Date(show.closingDate);
+          if (!isNaN(parsed.getTime())) {
+            closingDate = parsed.toISOString().split('T')[0];
+          }
+        }
+
         newShows.push({
           ...show,
           slug: slug,
           id: `${slug}-${new Date().getFullYear()}`,
+          openingDate,
+          closingDate,
         });
       }
     }
