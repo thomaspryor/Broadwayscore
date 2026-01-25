@@ -103,6 +103,22 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
     reasoning: 'Unqualified praise with superlatives ("triumph", "impeccable"), strong emotional impact promised, no caveats.'
   },
 
+  // 5-STAR example (score: 87) - measured language but still 5 stars
+  {
+    reviewExcerpt: `Daniel Aukin's superb production navigates the change without missing a beat. The jam has been preserved. With the greater sense of distance at the Golden Theatre, Stereophonic feels more than ever like watching a wide-screen film. There's nary a false note. The result is richly satisfying multitrack production. (5/5 stars)`,
+    score: 87,
+    bucket: 'Positive',
+    reasoning: '5/5 stars with consistent praise ("superb", "richly satisfying", "nary a false note"). Even without extreme superlatives, 5 stars = 85+ range.'
+  },
+
+  // 4-STAR example (score: 78) - clear recommendation
+  {
+    reviewExcerpt: `The dancers and singers of the ensemble are first-rate, and Wheeldon gives them a lot to do. As the 1992 incarnation, Frost carries the bulk of the role, and not only nails Jackson's signature sound and moves but also his otherworldly affect. The design is deluxe: dazzling costumes, a smooth set, flashy lighting. Worth seeing for the performances alone. (4/5 stars)`,
+    score: 78,
+    bucket: 'Positive',
+    reasoning: '4/5 stars with clear praise for performances and design. 4 stars = 75-88 range.'
+  },
+
   // POSITIVE example (score: 82)
   {
     reviewExcerpt: `June Squibb brings a lovable feistiness to the role of Marjorie, while Danny Burstein delivers another remarkable performance. The play raises fascinating questions about memory and identity in the age of AI. Some scenes drag slightly in the second half, but the ensemble work elevates the material throughout.`,
@@ -127,6 +143,14 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
     reasoning: 'Balanced positive (performances) and negative (dated material), no clear recommendation, suggests conditional interest.'
   },
 
+  // 2-STAR example (score: 45) - negative despite some praise
+  {
+    reviewExcerpt: `A monumentally silly show. Elder viewers reared on the comparatively subtle writing of Charles Busch are likely to find Escola's slapdash artistry crude, but there's no denying he snags laughs. I blush to admit that Escola is an artist new to me and their charm eludes me so far. The script may be flimsy. (2/5 stars)`,
+    score: 45,
+    bucket: 'Negative',
+    reasoning: '2/5 stars despite acknowledging some laughs. Personal criticism ("charm eludes me", "flimsy script") signals negative. 2 stars = 35-55 range.'
+  },
+
   // MIXED-NEGATIVE example (score: 42)
   {
     reviewExcerpt: `Despite a game cast giving their all, the production never finds its footing. The second act drags interminably, the songs are forgettable, and the direction seems uncertain whether to play it campy or sincere. A few bright moments, particularly in the Act One finale, aren't enough to save the evening.`,
@@ -148,7 +172,7 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
 // PROMPT TEMPLATES
 // ========================================
 
-export const PROMPT_VERSION = '2.0.0';
+export const PROMPT_VERSION = '3.0.0';
 
 /**
  * System prompt establishing the scoring framework
@@ -169,17 +193,30 @@ Score what the critic is RECOMMENDING, not just their emotional reaction:
 | 20-34 | Negative | Clear pan, few redeeming elements |
 | 0-19 | Pan | Unqualified rejection, warns people away |
 
+## Star Rating Calibration (IMPORTANT)
+
+When a review has an original star rating, use these mappings:
+| Stars | Score Range | Notes |
+|-------|-------------|-------|
+| 5/5 or A/A+ | 85-100 | Even without superlatives, 5 stars = strong positive |
+| 4/5 or B+/A- | 75-88 | Clear recommendation |
+| 3/5 or B/B- | 55-72 | Mixed but lean positive |
+| 2/5 or C/C+ | 35-55 | Mixed-negative |
+| 1/5 or D/F | 0-35 | Pan |
+
 ## Important Scoring Principles
 
-1. **Professional critics sound measured even when enthusiastic.** A critic saying "a solid, well-crafted production" from the New York Times often means strong recommendation.
+1. **Professional critics sound measured even when enthusiastic.** A critic saying "a solid, well-crafted production" from the New York Times often means strong recommendation (75-85).
 
-2. **Watch for mixed reviews.** A critic might love the performances but hate the book. Weigh both.
+2. **5/5 star reviews should score 85+.** If a critic gave 5 stars, score at least 85 even if the language seems measured. The star rating is the critic's final verdict.
 
-3. **The recommendation signal matters most.** Look for: "worth seeing", "skip it", "don't miss", "for fans only", etc.
+3. **Watch for mixed reviews.** A critic might love the performances but hate the book. Weigh both.
 
-4. **Excerpt limitations.** If you only have a partial review, acknowledge lower confidence.
+4. **The recommendation signal matters most.** Look for: "worth seeing", "skip it", "don't miss", "for fans only", etc.
 
-5. **Never score above 85 unless there's genuine superlative language.** Critics rarely give raves.
+5. **Excerpt limitations.** If you only have a partial review, acknowledge lower confidence.
+
+6. **Avoid score compression.** Don't cluster scores in the 60-75 range. Use the full scale based on the critic's actual sentiment.
 
 ## Calibration Examples
 
