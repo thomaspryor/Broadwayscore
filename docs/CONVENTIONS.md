@@ -217,3 +217,46 @@ import { getScoreBucket, getScoreLabel } from '@/config/score-buckets';
 const bucket = getScoreBucket(87);   // → { id: 'must-see', label: 'Must See', ... }
 const label = getScoreLabel(72);     // → "Good"
 ```
+
+---
+
+## Image Display Rules
+
+**RULE: Always preserve original aspect ratios. Never crop show artwork.**
+
+### Standard Aspect Ratios
+
+| Image Type | Aspect Ratio | Typical Size | Usage |
+|------------|--------------|--------------|-------|
+| **Poster** | 2:3 (portrait) | 480×720 | Featured rows, show cards |
+| **Thumbnail** | 1:1 (square) | 1080×1080 | List items, search results |
+| **Hero** | 4:3 or 16:9 | 1600×1200 | Show detail page headers |
+
+### CSS Implementation
+
+```css
+/* Poster cards - use aspect-ratio to match source images */
+.poster-card {
+  aspect-ratio: 2/3;      /* Standard Broadway poster ratio */
+  width: 100%;
+}
+
+.poster-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* OK when aspect-ratio matches source */
+}
+
+/* If source ratio unknown, use contain to prevent cropping */
+.poster-card-safe img {
+  object-fit: contain;
+  background-color: var(--surface-overlay);
+}
+```
+
+### Sources
+
+Images are sourced from TodayTix's Contentful CDN:
+- Poster: `480x720` suffix → 2:3 ratio
+- Thumbnail: `1080x1080` suffix → 1:1 ratio
+- Hero: `1600x1200` suffix → 4:3 ratio

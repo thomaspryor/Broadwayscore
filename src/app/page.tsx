@@ -261,6 +261,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
 });
 
 // Compact card for featured rows
+// NOTE: Poster images use 2:3 aspect ratio (standard Broadway poster format, e.g., 480x720)
+// Always preserve original aspect ratio - never crop show artwork
 const MiniShowCard = memo(function MiniShowCard({ show }: { show: ComputedShow }) {
   const score = show.criticScore?.score;
 
@@ -269,7 +271,8 @@ const MiniShowCard = memo(function MiniShowCard({ show }: { show: ComputedShow }
       href={`/show/${show.slug}`}
       className="flex-shrink-0 w-28 sm:w-32 group"
     >
-      <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[3/4] mb-1.5">
+      {/* Poster container - 2:3 aspect ratio matches standard Broadway poster dimensions */}
+      <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3] mb-1.5">
         {show.images?.poster || show.images?.thumbnail ? (
           <img
             src={show.images.poster || show.images.thumbnail}
@@ -483,22 +486,6 @@ function HomePageInner() {
         </p>
       </div>
 
-      {/* Featured Rows */}
-      <FeaturedRow
-        title="Best New Musicals of the Season"
-        shows={bestNewMusicals}
-        viewAllHref="/?type=musical&sort=score_desc"
-      />
-      <FeaturedRow
-        title="Best New Plays of the Season"
-        shows={bestNewPlays}
-        viewAllHref="/?type=play&sort=score_desc"
-      />
-      <FeaturedRow
-        title="New & Upcoming"
-        shows={upcomingShows}
-      />
-
       {/* Search */}
       <div id="search" className="relative mb-6 scroll-mt-24" role="search">
         <label htmlFor="show-search" className="sr-only">Search Broadway shows</label>
@@ -668,8 +655,26 @@ function HomePageInner() {
         </Link>
       </div>
 
+      {/* Featured Rows */}
+      <div className="mt-12 pt-8 border-t border-white/5">
+        <FeaturedRow
+          title="Best New Musicals of the Season"
+          shows={bestNewMusicals}
+          viewAllHref="/?type=musical&sort=score_desc"
+        />
+        <FeaturedRow
+          title="Best New Plays of the Season"
+          shows={bestNewPlays}
+          viewAllHref="/?type=play&sort=score_desc"
+        />
+        <FeaturedRow
+          title="New & Upcoming"
+          shows={upcomingShows}
+        />
+      </div>
+
       {/* Total Review Count */}
-      <div className="mt-12 py-6 border-t border-white/5 text-center">
+      <div className="mt-8 py-6 border-t border-white/5 text-center">
         <p className="text-gray-400 text-sm">
           Aggregating <span className="text-white font-semibold">{getDataStats().totalReviews.toLocaleString()}</span> reviews and counting
         </p>
