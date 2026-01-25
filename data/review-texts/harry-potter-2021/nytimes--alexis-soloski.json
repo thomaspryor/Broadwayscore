@@ -1,0 +1,75 @@
+{
+  "showId": "harry-potter-2021",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Alexis Soloski",
+  "url": "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-review.html?smid=tw-nytimesarts&smtyp=cur",
+  "publishDate": "December 7, 2021",
+  "fullText": "The new version, which opened on Tuesday, does feel smaller — its themes starker, its concession to fandom more blatant. But as directed by Tiffany and choreographed by Steven Hoggett, with an essential score from Imogen Heap, it remains diamond-sharp in its staging and dazzling in its visual imagination, as magical as any spell or potion.",
+  "isFullReview": false,
+  "dtliExcerpt": "The new version, which opened on Tuesday, does feel smaller — its themes starker, its concession to fandom more blatant. But as directed by Tiffany and choreographed by Steven Hoggett, with an essential score from Imogen Heap, it remains diamond-sharp in its staging and dazzling in its visual imagination, as magical as any spell or potion.",
+  "showScoreExcerpt": "CRITIC'S PICK\n\"It remains diamond-sharp in its staging and dazzling in its visual imagination, as magical as any spell or potion...Yet there are excisions, most of them so surgical you would never notice, though I did slightly miss the beloved Hogwarts groundskeeper Hagrid...This new version remains ravishingly entertaining, but is also, like the movie adaptations, a more obvious attempt to cash in on Pottermania.\"",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "dtli",
+  "dtliThumb": "Up",
+  "designation": "Critics_Pick",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 88,
+      "performances": null,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "remains diamond-sharp in its staging and dazzling in its visual imagination, as magical as any spell or potion",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "does feel smaller — its themes starker, its concession to fandom more blatant",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "with an essential score from Imogen Heap",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed signals with significant reservations about the show feeling 'smaller' and 'more blatant,' but strong praise for staging, visual imagination, and score creates an overall positive recommendation. | GPT-4o-mini: The review highlights strong visual and staging elements while acknowledging some thematic concerns, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:03:56.238Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

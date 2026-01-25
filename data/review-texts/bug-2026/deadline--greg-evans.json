@@ -1,0 +1,75 @@
+{
+  "showId": "bug-2026",
+  "outletId": "deadline",
+  "outlet": "Deadline",
+  "criticName": "Greg Evans",
+  "url": "https://deadline.com/2026/01/bug-broadway-review-carrie-coon-tracy-letts-1236680796/",
+  "publishDate": "January 12, 2026",
+  "fullText": "Together, the creative touches corralled by Cromer and his company build a world that’s unerringly, distressingly realistic, even when everything inside those soon-to-be tinfoil-covered walls loses all recognizable meaning.",
+  "isFullReview": false,
+  "dtliExcerpt": "Carrie Coon and Namir Smallwood in 'Bug' on Broadway Matthew Murphy The afternoon I saw Tracy Letts &#8216; excellent, itchy Bug on Broadway &#8212; an earlier scheduled performance had been canceled &#8212; the bestselling and unfortunately influential crackpot Dr. Erich von D&auml;niken died. The author who, back in 1968 wrote a ludicrous, and supposedly true, book called Chariots of the Gods? (that question mark did some very heavy lifting) positing that pretty much the entire history of human achievement can be credited to interventions of ancient, advanced aliens. A silly but far-reaching classic of conspiracy theories and paranoia, the book put the concept of alien-assisted pyramid-building and Stonehenge-erecting firmly into a Cold War culture primed for rabbit holes, gullibility and rejection of anything smacking of the sort of Establishment thinking that relied on little details like evidence and science. blogherads.adq.push(function () { blogherads .defineSlot( 'medrec', 'gpt-dsk-tab-mid-article1-uid0' ) .setTargeting( 'pos', [\"mid-article1\",\"mid\",\"mid-articleX\",\"mid-article\",\"300x251\"] ) .setTargeting( 'viewable', 'yes' ) .setSubAdUnitPath(\"ros\\/mid-article\") .addSize([[2,2],[300,250],[620,350],[300,251],[501,282],[3,3],[2,4],[4,2],[620,366]]) .exemptFromSleep() .setClsOptimization(\"minsize\") ; }); Related Stories News Deadline's Theater Critic Greg Evans Picks His Top 10 Broadway Shows Of 2025",
+  "originalScore": null,
+  "assignedScore": 71,
+  "source": "dtli",
+  "needsFullText": false,
+  "fetchedAt": "2026-01-23T04:59:33.626Z",
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "unerringly, distressingly realistic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "loses all recognizable meaning",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "creative touches corralled by Cromer and his company build a world",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Praises the director and creative team for building a convincing world, but the excerpt is too brief to determine overall recommendation strength. | GPT-4o-mini: The review highlights strong creative direction but hints at a loss of meaning, suggesting a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:57:58.216Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

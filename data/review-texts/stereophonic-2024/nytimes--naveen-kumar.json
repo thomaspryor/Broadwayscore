@@ -1,0 +1,76 @@
+{
+  "showId": "stereophonic-2024",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Naveen Kumar",
+  "url": "https://www.nytimes.com/2024/04/19/theater/stereophonic-review.html",
+  "publishDate": "April 19, 2024",
+  "fullText": "A fly-on-the-wall study of how people both need and viciously destroy each other, “Stereophonic” is a fiery family drama, as electrifying as any since “Who’s Afraid of Virginia Woolf?”",
+  "isFullReview": false,
+  "dtliExcerpt": "Peering behind the mystique of rock ’n’ roll has undeniable voyeuristic appeal. So there is an immediate thrill to seeing the mahogany-paneled control room and glassed-in sound booth that fill the Golden Theater stage, where “Stereophonic” opened on Friday. But David Adjmi’s astonishing new play, with songs by the former Arcade Fire member Will Butler, delivers far more than a dishy glimpse inside the recording studio during rock’s golden age.",
+  "originalScore": null,
+  "assignedScore": 89,
+  "source": "dtli",
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Rock-N-Roll-Drama-STEREOPHONIC-Opens-On-Broadway-20240419",
+  "dtliThumb": "Up",
+  "designation": "Critics_Pick",
+  "bwwExcerpt": "Peering behind the mystique of rock ’n’ roll has undeniable voyeuristic appeal. So there is an immediate thrill to seeing the mahogany-paneled control room and glassed-in sound booth that fill the Golden Theater stage, where “Stereophonic” opened on Friday. But David Adjmi’s astonishing new play, wi...",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "fiery family drama, as electrifying as any since \"Who's Afraid of Virginia Woolf?\"",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "A fly-on-the-wall study of how people both need and viciously destroy each other",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a fiery family drama",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The comparison to a theatrical masterpiece like 'Who's Afraid of Virginia Woolf?' combined with highly positive language ('fiery', 'electrifying') indicates strong critical enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and compares the play favorably to a classic, indicating a must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:24:46.149Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

@@ -1,0 +1,74 @@
+{
+  "showId": "the-great-gatsby-2024",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Laura Collins-Hughes",
+  "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jordan.html",
+  "publishDate": "April 25, 2024",
+  "fullText": "But this “Great Gatsby,” which is not terribly bothered, either, with the moral shadings of its title character’s rise and fall, is principally interested in a good time. When Nick utters the novel’s sober final line, about “boats against the current,” the words have no heft. An ensemble of dancers is upstaging him anyway, wanting to give the audience one last moment at the party.",
+  "isFullReview": false,
+  "dtliExcerpt": "But this “Great Gatsby,” which is not terribly bothered, either, with the moral shadings of its title character’s rise and fall, is principally interested in a good time. When Nick utters the novel’s sober final line, about “boats against the current,” the words have no heft. An ensemble of dancers is upstaging him anyway, wanting to give the audience one last moment at the party.",
+  "originalScore": null,
+  "assignedScore": 45,
+  "source": "dtli",
+  "dtliThumb": "Meh",
+  "designation": null,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": null,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "not terribly bothered, either, with the moral shadings of its title character's rise and fall",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "principally interested in a good time",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "the words have no heft",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production superficial and lacking emotional weight, criticizing its failure to engage with the source material's deeper themes in favor of empty spectacle. | GPT-4o-mini: The review expresses significant disappointment in the adaptation's lack of depth and engagement, leading to a mixed-negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:27:35.992Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

@@ -1,0 +1,57 @@
+{
+  "showId": "mamma-mia-2025",
+  "outletId": "NYTG",
+  "outlet": "New York Theatre Guide",
+  "criticName": null,
+  "url": "https://www.newyorktheatreguide.com/reviews/mamma-mia-broadway-review",
+  "publishDate": "2025-08-14",
+  "fullText": "Broadway first-timers&#x27; guide: Jordan De Leon and Grant Reynolds of &#x27;Mamma Mia!&#x27; 02 Dec 2025, 05:00",
+  "isFullReview": false,
+  "originalScore": null,
+  "assignedScore": 50,
+  "source": "reviews-json-stub",
+  "needsFullText": false,
+  "fetchedAt": "2026-01-23T05:02:51.351Z",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 55
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "GPT-4o-mini: The review does not provide any substantive commentary or recommendation, leaving the score uncertain.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:07:22.425Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 50,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

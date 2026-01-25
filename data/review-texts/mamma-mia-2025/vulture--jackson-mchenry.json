@@ -1,0 +1,74 @@
+{
+  "showId": "mamma-mia-2025",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Jackson McHenry",
+  "url": "https://www.vulture.com/article/theater-review-mamma-mia-broadway-revival-abba.html",
+  "publishDate": "August 14, 2025",
+  "fullText": "The title still carries that big old exclamation point, but the fantasy is more than a little long in the tooth. Maybe it should be styled with a question mark, or just an ellipsis. Mamma mia … they sure do sing a bunch of ABBA songs.",
+  "isFullReview": false,
+  "dtliExcerpt": "The title still carries that big old exclamation point, but the fantasy is more than a little long in the tooth. Maybe it should be styled with a question mark, or just an ellipsis. Mamma mia … they sure do sing a bunch of ABBA songs.",
+  "originalScore": null,
+  "assignedScore": 39,
+  "source": "dtli",
+  "needsFullText": true,
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 45,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the fantasy is more than a little long in the tooth",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Maybe it should be styled with a question mark, or just an ellipsis",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "they sure do sing a bunch of ABBA songs",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic expresses clear dismissiveness about the show feeling dated and tired, with sarcastic tone suggesting the ABBA songs are the only notable element. | GPT-4o-mini: The review expresses clear disappointment with the show's longevity and suggests it may no longer be engaging, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:08:33.840Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

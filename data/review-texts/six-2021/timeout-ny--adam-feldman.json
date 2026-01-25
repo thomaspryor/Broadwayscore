@@ -1,0 +1,75 @@
+{
+  "showId": "six-2021",
+  "outletId": "timeout-ny",
+  "outlet": "Time Out New York",
+  "criticName": "Adam Feldman",
+  "url": "https://www.timeout.com/newyork/theater/six-broadway-review-musical",
+  "publishDate": "October 3, 2021",
+  "fullText": "Who doesn’t enjoy a royal wedding? The zingy Broadway musical Six celebrates, in boisterous fashion, the union of English dynastic history and modern pop music.",
+  "isFullReview": false,
+  "dtliExcerpt": "Six is not a show that bears too much thinking about. Toby Marlow and Lucy Moss wrote it when they were still students at Cambridge University, and it has the feel of a very entertaining senior showcase. Its 80 minutes are stuffed with clever turns of rhyme and catchy pastiche melodies that let mega-voiced singers toss off impressive \"riffs to ruffle your ruffs.\" The show's own riffs on history are educational, too, like a cheeky new British edition of Schoolhouse Rock. If all these hors d'oeuvres don't quite add up to a meal, they are undeniably tasty.",
+  "showScoreExcerpt": "\"At heart, Six is a sparkly lark—Hamilton Extra Lite, with the multiculturalism and anachronism and knowing name-dropping but without the plot, emotion and depth...Six is not deep. Six is fun. Let yourself go and enjoy the finery.\"",
+  "originalScore": null,
+  "assignedScore": 79,
+  "source": "dtli",
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211003",
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Who doesn't enjoy a royal wedding?",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "zingy Broadway musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "celebrates, in boisterous fashion",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses enthusiastic language like 'zingy' and 'boisterous fashion' with celebratory tone, but this appears to be just an opening excerpt rather than a full critical assessment. | GPT-4o-mini: The review expresses enthusiasm for the musical's concept and execution, indicating a strong recommendation despite lacking detailed critiques.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:22:32.873Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

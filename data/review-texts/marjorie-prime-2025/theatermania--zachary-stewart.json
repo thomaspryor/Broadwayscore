@@ -1,0 +1,73 @@
+{
+  "showId": "marjorie-prime-2025",
+  "outletId": "theatermania",
+  "outlet": "TheaterMania",
+  "criticName": "Zachary Stewart",
+  "url": "https://www.theatermania.com/news/review-marjorie-prime-predicted-the-rise-of-the-ai-companion_1814289/",
+  "publishDate": "December 8, 2025",
+  "fullText": "Anne Kauffman, who helmed the 2015 off-Broadway production, directs with a steady hand and a keen sense of light and sound. Sharp blackouts barely give us time to catch our breath before we contemplate Walter’s face illuminated in a spotlight like a digital saint (Ben Stanton’s lighting is more manipulative than any AI algorithm). Daniel Kluger’s original string music is an echo from Majorie’s past (she was a violinist) that becomes increasingly adulterated with electronic distortion. These elegant design choices undergird emotionally raw performances.",
+  "isFullReview": false,
+  "dtliExcerpt": "Anne Kauffman, who helmed the 2015 off-Broadway production, directs with a steady hand and a keen sense of light and sound. Sharp blackouts barely give us time to catch our breath before we contemplate Walter’s face illuminated in a spotlight like a digital saint (Ben Stanton’s lighting is more manipulative than any AI algorithm). Daniel Kluger’s original string music is an echo from Majorie’s past (she was a violinist) that becomes increasingly adulterated with electronic distortion. These elegant design choices undergird emotionally raw performances.",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "dtli",
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": 80,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "directs with a steady hand and a keen sense of light and sound",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "These elegant design choices undergird emotionally raw performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "lighting is more manipulative than any AI algorithm",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for direction, design elements, and performances with sophisticated analysis and no negative caveats suggests clear recommendation. | GPT-4o-mini: The review highlights strong direction and design choices, indicating a clear recommendation despite not explicitly stating 'must-see'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:09:44.598Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

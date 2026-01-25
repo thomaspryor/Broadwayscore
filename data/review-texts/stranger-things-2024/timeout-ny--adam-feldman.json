@@ -1,0 +1,75 @@
+{
+  "showId": "stranger-things-2024",
+  "outletId": "timeout-ny",
+  "outlet": "Time Out New York",
+  "criticName": "Adam Feldman",
+  "url": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney",
+  "publishDate": "April 22, 2025",
+  "fullText": "The First Shadow doesn’t offer much by way of characters or plot beyond adding meager flesh to already familiar bones. And padding a skeleton doesn’t make it scarier, just bulkier.",
+  "isFullReview": false,
+  "dtliExcerpt": "ne in the series—made his ominous appearance at the close of the first act, I fantasized about pulling him aside to ask for a sedative. Although in truth the show itself was already soporific enough. Adam Feldman, Time Out New York: When Daldry and Martin bring the show's best elements together—McCartney’s acting, Miriam Buether’s sets, Brigitte Reiffenstuel’s costumes, Jon Clark’s lighting, Paul Arditti’s sound, the production group 59’s video design and effects—the production is like a breathtaking theme-park ride. And as with a roller coaster, there are longueurs as the show chugs up to where it needs to be to deliver the next big whoop. Go and enjoy, but don’t be surprised if you soon forget that Stranger Things has happened. Matt Windman, amNY: A three-hour fan wiki brought to life, complete with origin stories, stilted dialogue, lame jokes, and sequences seemingly constructed only to set up the next visual effect. David Finkle, New York Stage Review: Whatever of this makes sense",
+  "originalScore": null,
+  "assignedScore": 29,
+  "source": "dtli",
+  "dtliThumb": "Meh",
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway-20241120",
+  "needsFullText": false,
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 20.5,
+      "high": 37.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "doesn't offer much by way of characters or plot",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "adding meager flesh to already familiar bones",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "padding a skeleton doesn't make it scarier, just bulkier",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review harshly criticizes the fundamental elements of story and character development, using dismissive metaphors that suggest the show fails to improve upon its source material. | GPT-4o-mini: The review is predominantly negative, criticizing the lack of character and plot development, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:26:22.416Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": 25,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

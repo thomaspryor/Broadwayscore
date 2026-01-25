@@ -1,0 +1,73 @@
+{
+  "showId": "stranger-things-2024",
+  "outletId": "washington-post",
+  "outlet": "WASHINGTON POST",
+  "criticName": "Naveen Kumar",
+  "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/22/stranger-things-first-shadow-broadway/",
+  "publishDate": "April 22, 2025",
+  "fullText": "But the extravagantly staged brand extension is a Broadway play only in the technical sense — in address, price point and duration. To draw audiences through its nearly three hours, the show lurches forward like an episodic binge-watch, banking on and rewarding extensive familiarity with the sci-fi hit.",
+  "isFullReview": false,
+  "dtliExcerpt": "But the extravagantly staged brand extension is a Broadway play only in the technical sense — in address, price point and duration. To draw audiences through its nearly three hours, the show lurches forward like an episodic binge-watch, banking on and rewarding extensive familiarity with the sci-fi hit.",
+  "originalScore": null,
+  "assignedScore": 42,
+  "source": "dtli",
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway play only in the technical sense",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "lurches forward like an episodic binge-watch",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "extravagantly staged",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic dismisses this as not being a legitimate Broadway play and criticizes its structure as lurching and episodic, with only minor praise for staging. | GPT-4o-mini: The review expresses significant criticism about the show's structure and reliance on prior knowledge, indicating a hard-to-recommend experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:26:34.021Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

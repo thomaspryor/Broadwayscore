@@ -1,0 +1,73 @@
+{
+  "showId": "bug-2026",
+  "outletId": "nypost",
+  "outlet": "New York Post",
+  "criticName": "Johnny Oleksinski",
+  "url": "https://nypost.com/2026/01/09/entertainment/bug-review-carrie-coon-is-terrifying-in-tense-conspiracy-theory-play-on-broadway/",
+  "publishDate": "January 9, 2026",
+  "fullText": "As they turn into paranoid shut-ins who insist the world is out to get them, Coon’s waitress goes from a vulnerable shift worker to something resembling the subject of an exorcism. Smallwood’s secretive nomad, meanwhile, amps up his crazed conspiracy theories to the volume of “the power of Christ compels you!”\r\n\r\nBecause of Letts’ empathetic writing and Coon’s broken, can’t-take-it-anymore performance, we understand their extremism and why they believe the outlandish things they believe — even if Peter is the harder nut to crack.",
+  "isFullReview": false,
+  "dtliExcerpt": "As they turn into paranoid shut-ins who insist the world is out to get them, Coon’s waitress goes from a vulnerable shift worker to something resembling the subject of an exorcism. Smallwood’s secretive nomad, meanwhile, amps up his crazed conspiracy theories to the volume of “the power of Christ compels you!”\r\n\r\nBecause of Letts’ empathetic writing and Coon’s broken, can’t-take-it-anymore performance, we understand their extremism and why they believe the outlandish things they believe — even if Peter is the harder nut to crack.",
+  "originalScore": null,
+  "assignedScore": 76,
+  "source": "dtli",
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": 83,
+      "direction": 0
+    },
+    "keyPhrases": [
+      {
+        "quote": "Letts' empathetic writing and Coon's broken, can't-take-it-anymore performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "we understand their extremism and why they believe the outlandish things they believe",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Peter is the harder nut to crack",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic praises both Letts' empathetic writing and Coon's compelling performance while acknowledging the material's challenging nature, suggesting qualified recommendation despite some character development issues. | GPT-4o-mini: The review highlights strong performances and empathetic writing, indicating a clear recommendation despite no explicit suggestion to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:58:08.782Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

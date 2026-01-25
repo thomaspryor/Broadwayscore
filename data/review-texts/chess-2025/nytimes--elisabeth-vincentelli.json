@@ -1,0 +1,73 @@
+{
+  "showId": "chess-2025",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Elisabeth Vincentelli",
+  "url": "https://www.nytimes.com/2025/11/16/theater/chess-review-lea-michele-broadway.html",
+  "publishDate": "November 16, 2025",
+  "fullText": "Parts of the show are absolutely thrilling and parts are flat at best, aggressively dumb at worst. At least Mayer’s production, starring Nicholas Christopher, Lea Michele and Aaron Tveit, is not a bland bore. Thinking back to Michele’s big, then bigger, then biggest “Nobody’s Side” or Christopher’s red-hot, neck-vein-bursting “Anthem,” I can feel the needle move toward the positive side of the dial.",
+  "isFullReview": false,
+  "dtliExcerpt": "Parts of the show are absolutely thrilling and parts are flat at best, aggressively dumb at worst. At least Mayer’s production, starring Nicholas Christopher, Lea Michele and Aaron Tveit, is not a bland bore. Thinking back to Michele’s big, then bigger, then biggest “Nobody’s Side” or Christopher’s red-hot, neck-vein-bursting “Anthem,” I can feel the needle move toward the positive side of the dial.",
+  "originalScore": null,
+  "assignedScore": 64,
+  "source": "dtli",
+  "dtliThumb": "Meh",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 77,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "Parts of the show are absolutely thrilling and parts are flat at best, aggressively dumb at worst",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I can feel the needle move toward the positive side of the dial",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "is not a bland bore",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Mixed review with strong negative criticisms balanced by praise for specific performances and moments, ending on a cautiously positive note. | GPT-4o-mini: The review highlights both thrilling moments and significant flaws, leading to a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:59:54.649Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

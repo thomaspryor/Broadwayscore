@@ -1,0 +1,75 @@
+{
+  "showId": "hells-kitchen-2024",
+  "outletId": "timeout-ny",
+  "outlet": "Time Out New York",
+  "criticName": "Adam Feldman",
+  "url": "https://www.timeout.com/newyork/theater/hells-kitchen-musical-broadway-review-alicia-keys",
+  "publishDate": "April 20, 2024",
+  "fullText": "Playwright Kristoffer Diaz, director Michael Greif and choreographer Camille A. Brown have found the right recipe for this show—and, in its vivid dancers and magnificent singers, just the right ingredients—and they've cooked up a heck of a block party.",
+  "isFullReview": false,
+  "dtliExcerpt": "Playwright Kristoffer Diaz, director Michael Greif and choreographer Camille A. Brown have found the right recipe for this show—and, in its vivid dancers and magnificent singers, just the right ingredients—and they've cooked up a heck of a block party.",
+  "showScoreExcerpt": "\"Hell’s Kitchen is ultimately a celebration of the city—and the people who make it pop.\"",
+  "originalScore": null,
+  "assignedScore": 84,
+  "source": "dtli",
+  "dtliThumb": "Up",
+  "designation": "Critics_Choice",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 87,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "found the right recipe for this show",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "magnificent singers",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "cooked up a heck of a block party",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Enthusiastic praise for creative team execution and performances with vivid celebratory language, though excerpt lacks broader show assessment. | GPT-4o-mini: The review expresses strong enthusiasm for the production's direction and performances, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:06:04.987Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

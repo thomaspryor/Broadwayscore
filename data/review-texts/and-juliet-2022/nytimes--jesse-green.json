@@ -1,0 +1,66 @@
+{
+  "showId": "and-juliet-2022",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Jesse Green",
+  "url": "https://www.nytimes.com/2022/11/17/theater/and-juliet-review.html",
+  "publishDate": "November 17, 2022",
+  "fullText": "The wit operates on many levels in the musical “& Juliet,” starring Lorna Courtney, at the Stephen Sondheim Theater in Manhattan.",
+  "isFullReview": false,
+  "dtliExcerpt": "The wit operates on many levels in the musical “& Juliet,” starring Lorna Courtney, at the Stephen Sondheim Theater in Manhattan.",
+  "showScoreExcerpt": "\"Jukebox musicals may still be bottom feeders, but, as '& Juliet' proves, there are sometimes small treasures to be found in the murk.\"",
+  "originalScore": null,
+  "assignedScore": 70,
+  "source": "dtli",
+  "dtliThumb": "Up",
+  "designation": null,
+  "bwwExcerpt": "What saves \"& Juliet\" from being a lowest-common-denominator corporate byproduct is something else, something I never expected: wit.The wit operates on many levels in the director Luke Sheppard's super-poppy production, including hilarious hybrid Elizabethan costumes (by Paloma Young) that feature a...",
+  "llmScore": {
+    "score": 70,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The wit operates on many levels",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This fragment only praises the wit/writing with moderate language, but provides no clear recommendation signal or broader assessment of the production. | GPT-4o-mini: The review indicates a positive aspect of the musical's wit, but lacks depth and specific recommendations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:53:46.362Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 70,
+    "openaiScore": 70,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

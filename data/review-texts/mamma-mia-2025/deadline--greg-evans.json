@@ -1,0 +1,76 @@
+{
+  "showId": "mamma-mia-2025",
+  "outletId": "deadline",
+  "outlet": "Deadline",
+  "criticName": "Greg Evans",
+  "url": "https://deadline.com/2025/08/mamma-mia-broadway-review-1236485619/",
+  "publishDate": "August 14, 2025",
+  "fullText": "This touring production’s stop at the Garden has all the makings of a homecoming, and it’s a strenuously joyous one.",
+  "isFullReview": false,
+  "dtliExcerpt": "(L to R) Jalynn Steele, Christine Sherrill and Carly Sakolove, 'Mamma Mia! Joan Marcus If you love Mamma Mia !, you&#8217;re gonna love Mamma Mia ! With the touring production of the hit ABBA musical making a six-month stop on Broadway , the flawed, fun-loving show returns to the venue &#8211; the Winter Garden Theatre &#8211; where it held sway back when the century was new. The ninth-longest running Broadway show of all time, Mamma Mia! ran for 14 years at the Winter Garden following its opening shortly after the Towers fell. This touring production&#8217;s stop at the Garden has all the makings of a homecoming, and it&#8217;s a strenuously joyous one. Related Stories Reviews Broadway's 2024-2025 Season: All Of Deadline's Reviews",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "dtli",
+  "needsFullText": false,
+  "fetchedAt": "2026-01-23T05:02:57.888Z",
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "all the makings of a homecoming",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "strenuously joyous",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this touring production’s stop at the Garden has all the makings of a homecoming",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses distinctly positive language about the production being a joyous homecoming, suggesting a clear recommendation despite the brevity. | GPT-4o-mini: The review expresses strong positive sentiment about the production's joyful nature and homecoming feel, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:07:44.225Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short",
+  "bwwExcerpt": "The ninth-longest running Broadway show of all time, Mamma Mia! ran for 14 years at the Winter Garden following its opening shortly after the Towers fell. This touring production’s stop at the Garden has all the makings of a homecoming, and it’s a strenuously joyous one."
+}

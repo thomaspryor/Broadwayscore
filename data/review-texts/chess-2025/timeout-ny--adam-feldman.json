@@ -1,0 +1,74 @@
+{
+  "showId": "chess-2025",
+  "outletId": "timeout-ny",
+  "outlet": "Time Out New York",
+  "criticName": "Adam Feldman",
+  "url": "https://www.timeout.com/newyork/theater/chess-broadway-musical-revival-review-aaron-tveit-lea-michele-nicholas-christopher",
+  "publishDate": "November 16, 2025",
+  "fullText": "The production at Broadway’s Imperial Theatre, directed by Michael Mayer, has plenty of good moves. Memorable and tuneful songs, including some bona fide bangers? Check! Slickly staged musical numbers? Check! Talented actor-singers Lea Michele, Aaron Tveit and Nicholas Christopher in the lead roles? Check, check, check!—but no checkmate. Once again, the show blows its assets; shackled to storytelling that is arguably worse than ever, Chess goes down in forfeit.",
+  "isFullReview": false,
+  "dtliExcerpt": "The production at Broadway’s Imperial Theatre, directed by Michael Mayer, has plenty of good moves. Memorable and tuneful songs, including some bona fide bangers? Check! Slickly staged musical numbers? Check! Talented actor-singers Lea Michele, Aaron Tveit and Nicholas Christopher in the lead roles? Check, check, check!—but no checkmate. Once again, the show blows its assets; shackled to storytelling that is arguably worse than ever, Chess goes down in forfeit.",
+  "showScoreExcerpt": "\"has plenty of good moves...but no checkmate. Once again, the show blows its assets; shackled to storytelling that is arguably worse than ever, Chess goes down in forfeit.\"",
+  "originalScore": null,
+  "assignedScore": 42,
+  "source": "dtli",
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 80,
+      "performances": 75,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once again, the show blows its assets",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "shackled to storytelling that is arguably worse than ever",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Chess goes down in forfeit",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising the music, performances, and staging, the critic delivers a decisive pan due to fundamental storytelling failures, using chess metaphors to indicate complete defeat. | GPT-4o-mini: While the review praises the music and performances, it heavily criticizes the storytelling, leading to a mixed-negative recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:00:14.669Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

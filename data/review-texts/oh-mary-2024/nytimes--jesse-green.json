@@ -1,0 +1,75 @@
+{
+  "showId": "oh-mary-2024",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Jesse Green",
+  "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html?searchResultPosition=1",
+  "publishDate": "July 11, 2024",
+  "fullText": "The laughs roll through the house and return, creating a loop that at times approaches hysteria. (Never for the actors though; they do not break.) And the technical aspects, though also enlarged, remain smarter than they are lavish, recalling the roots of the drag aesthetic in the handmade ethos of community and school.",
+  "isFullReview": false,
+  "dtliExcerpt": "The laughs roll through the house and return, creating a loop that at times approaches hysteria. (Never for the actors though; they do not break.) And the technical aspects, though also enlarged, remain smarter than they are lavish, recalling the roots of the drag aesthetic in the handmade ethos of community and school.",
+  "originalScore": null,
+  "assignedScore": 78,
+  "source": "dtli",
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
+  "dtliThumb": "Up",
+  "designation": "Critics_Pick",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 82,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "The laughs roll through the house and return, creating a loop that at times approaches hysteria",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the technical aspects, though also enlarged, remain smarter than they are lavish",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Never for the actors though; they do not break",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt describes sustained audience laughter and praises both the disciplined performances and intelligent technical design, suggesting clear positive reception despite being only a fragment. | GPT-4o-mini: The review highlights strong laughter and clever technical aspects, indicating a solid recommendation despite lacking explicit praise for performances or script.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:18:25.985Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

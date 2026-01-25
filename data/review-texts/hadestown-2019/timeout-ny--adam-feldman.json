@@ -1,0 +1,74 @@
+{
+  "showId": "hadestown-2019",
+  "outletId": "timeout-ny",
+  "outlet": "Time Out New York",
+  "criticName": "Adam Feldman",
+  "url": "https://www.timeout.com/newyork/theater/hadestown-review-broadway",
+  "publishDate": "April 17, 2019",
+  "fullText": "Here’s my advice: Go to hell. And by hell, of course, I mean Hadestown, Anaïs Mitchell’s fizzy, moody, thrilling new Broadway musical. Ostensibly, at least, the show is a modern retelling of the ancient Greek myth of Orpheus and Eurydice: Boy meets girl, boy loses girl, boy goes to the land of the dead in hopes of retrieving girl, boy loses girl again. “It’s an old song,” sings our narrator, the messenger god Hermes (André De Shields, a master of arch razzle-dazzle). “And we’re gonna sing it again.” But it’s the newness of Mitchell’s musical account—and Rachel Chavkin’s gracefully dynamic staging—that bring this old story to quivering life.",
+  "isFullReview": false,
+  "dtliExcerpt": "Here's my advice: Go to hell. And by hell, of course, I mean Hadestown, Anaïs Mitchell's fizzy, moody, thrilling new Broadway musical. Ostensibly, at least, the show is a modern retelling of the ancient Greek myth of Orpheus and Eurydice: Boy meets girl, boy loses girl, boy goes to the land of the dead in hopes of retrieving girl, boy loses girl again. \"It's an old song,\" sings our narrator, the messenger god Hermes (André De Shields, a master of arch razzle-dazzle). \"And we're gonna sing it again.\" But it's the newness of Mitchell's musical account-and Rachel Chavkin's gracefully dynamic staging-that bring this old story to quivering life.",
+  "originalScore": null,
+  "assignedScore": 89,
+  "source": "dtli",
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 90,
+      "performances": 92,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "Go to hell. And by hell, of course, I mean Hadestown",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "fizzy, moody, thrilling new Broadway musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "gracefully dynamic staging—that bring this old story to quivering life",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses enthusiastic language throughout ('thrilling', 'fizzy', 'quivering life') with a playful opening recommendation, praising multiple elements including music, direction, and performances with no significant caveats. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's fresh take on a classic story, praising its thrilling quality and dynamic staging.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:02:52.966Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

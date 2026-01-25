@@ -1,0 +1,75 @@
+{
+  "showId": "six-2021",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Jesse Green",
+  "url": "https://www.nytimes.com/2021/10/03/theater/six-review-broadway.html",
+  "publishDate": "October 3, 2021",
+  "fullText": "Yet somehow “Six,” by Toby Marlow and Lucy Moss, isn’t a philosophically incoherent jumble; it’s a rollicking, reverberant blast from the past. I don’t just mean that it’s loud, though it is; you may clutch your ears even before the audience, primed by streaming audio and TikTok, starts singing along to the nine inexhaustibly catchy songs. I also mean that though gleefully anachronistic, mixing 16th-century marital politics with 21st-century selfies and shade, it suggests a surprising, disturbing and ultimately hopeful commonality. Which shouldn’t work, but does.",
+  "isFullReview": false,
+  "dtliExcerpt": "Yet somehow “Six,” by Toby Marlow and Lucy Moss, isn’t a philosophically incoherent jumble; it’s a rollicking, reverberant blast from the past. I don’t just mean that it’s loud, though it is; you may clutch your ears even before the audience, primed by streaming audio and TikTok, starts singing along to the nine inexhaustibly catchy songs. I also mean that though gleefully anachronistic, mixing 16th-century marital politics with 21st-century selfies and shade, it suggests a surprising, disturbing and ultimately hopeful commonality. Which shouldn’t work, but does.",
+  "originalScore": null,
+  "assignedScore": 85,
+  "source": "dtli",
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211003",
+  "dtliThumb": "Up",
+  "designation": "Critics_Pick",
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 79.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 88,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "rollicking, reverberant blast from the past",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "nine inexhaustibly catchy songs",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Which shouldn't work, but does",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic expresses clear enthusiasm for the show's energy, music, and surprising effectiveness despite conceptual concerns, indicating a strong recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the show's energetic music and clever thematic blending, leading to a clear recommendation despite no explicit call to action.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:22:27.748Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 84,
+    "openaiScore": 85,
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

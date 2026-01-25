@@ -1,0 +1,73 @@
+{
+  "showId": "hells-kitchen-2024",
+  "outletId": "chicago-tribune",
+  "outlet": "Chicago Tribune",
+  "criticName": "Chris Jones",
+  "url": "https://www.chicagotribune.com/2024/04/20/review-hells-kitchen-on-broadway-is-alicia-keys-lively-coming-of-age-story/",
+  "publishDate": "April 20, 2024",
+  "fullText": "The music of Alicia Keys is well suited to a jukebox musical: the burst of energy that flows from hits like “Girl on Fire” are dynamic blasts perfectly suited to a show clearly drawing from Keys’ own origin story&#8230;It’s just so vibrant in its zest and energy.",
+  "isFullReview": false,
+  "dtliExcerpt": "The music of Alicia Keys is well suited to a jukebox musical: the burst of energy that flows from hits like “Girl on Fire” are dynamic blasts perfectly suited to a show clearly drawing from Keys’ own origin story&#8230;It’s just so vibrant in its zest and energy.",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "dtli",
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 88,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "well suited to a jukebox musical",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "dynamic blasts perfectly suited to a show",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "so vibrant in its zest and energy",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows clear enthusiasm for the music and energy of the show with multiple positive descriptors, but the fragment nature limits confidence in the overall recommendation. | GPT-4o-mini: The review highlights the vibrant energy and suitability of Alicia Keys' music for the musical format, indicating a strong recommendation despite the lack of detail on other elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:05:16.800Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

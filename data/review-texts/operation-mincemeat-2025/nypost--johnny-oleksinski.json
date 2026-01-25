@@ -1,0 +1,73 @@
+{
+  "showId": "operation-mincemeat-2025",
+  "outletId": "nypost",
+  "outlet": "New York Post",
+  "criticName": "Johnny Oleksinski",
+  "url": "inment/operation-mincemeat-review-hyperactive-wwii-musical-comedy-got-on-my-nerves/",
+  "publishDate": "March 20, 2025",
+  "fullText": "The madcap World War II comedy from London, which opened Thursday night at the Golden Theatre, is an often tiring wallop of frenetic hyperactivity. There’s ample cleverness and some witty lines, but the Red Bull tweeness gets grating.",
+  "isFullReview": false,
+  "dtliExcerpt": "The madcap World War II comedy from London, which opened Thursday night at the Golden Theatre, is an often tiring wallop of frenetic hyperactivity. There’s ample cleverness and some witty lines, but the Red Bull tweeness gets grating.",
+  "originalScore": null,
+  "assignedScore": 45,
+  "source": "dtli",
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": null,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "an often tiring wallop of frenetic hyperactivity",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There's ample cleverness and some witty lines",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the Red Bull tweeness gets grating",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges some positives like cleverness and wit, but the dominant tone criticizes the production as tiring, hyperactive, and grating, making it difficult to recommend. | GPT-4o-mini: The review expresses significant fatigue with the production's energy and suggests that while there are some clever moments, the overall experience is more negative than positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:20:16.406Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

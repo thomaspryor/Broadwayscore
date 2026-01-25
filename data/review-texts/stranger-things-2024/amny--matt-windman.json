@@ -1,0 +1,76 @@
+{
+  "showId": "stranger-things-2024",
+  "outletId": "amny",
+  "outlet": "amNewYork",
+  "criticName": "Matt Windman",
+  "url": "https://www.amny.com/entertainment/broadway/review-stranger-things-the-first-shadow/",
+  "publishDate": "April 22, 2025",
+  "fullText": "The result? A three-hour fan wiki brought to life, complete with origin stories, stilted dialogue, lame jokes, and sequences seemingly constructed only to set up the next visual effect. Yes, there are plenty of them: levitations, transformations, and a monstrous spider that hovers over the audience like the Phantom’s chandelier.",
+  "isFullReview": false,
+  "dtliExcerpt": "ler coaster, there are longueurs as the show chugs up to where it needs to be to deliver the next big whoop. Go and enjoy, but don’t be surprised if you soon forget that Stranger Things has happened. Matt Windman, amNY: A three-hour fan wiki brought to life, complete with origin stories, stilted dialogue, lame jokes, and sequences seemingly constructed only to set up the next visual effect. David Finkle, New York Stage Review: Whatever of this makes sense might keep ticket-buyers interested, if not wholly involved, thanks to the proliferating special effects. Bob Verini, New York Stage Review: So here it is, the Broadway show as theme park, right down to the three-storied façade of the ebony mansion through which all patrons must pass en route to their seats and the merch, and a thrill ride not to be forgotten. The goal is an immersive experience, and to my mind not only have they achieved it, but it’s a helluva lot more fun and exciting than the average “civilized” immersive (looking",
+  "originalScore": null,
+  "assignedScore": 25,
+  "source": "dtli",
+  "needsFullText": false,
+  "fetchedAt": "2026-01-23T05:09:19.646Z",
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway-20241120",
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "A three-hour fan wiki brought to life, complete with origin stories, stilted dialogue, lame jokes",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "sequences seemingly constructed only to set up the next visual effect",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Yes, there are plenty of them: levitations, transformations, and a monstrous spider",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic delivers harsh criticism of the script ('stilted dialogue, lame jokes') and structure ('sequences seemingly constructed only to set up the next visual effect'), with only neutral acknowledgment of the spectacle elements. | GPT-4o-mini: The review is overwhelmingly critical, highlighting poor writing and execution, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:25:32.353Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

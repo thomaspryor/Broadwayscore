@@ -1,0 +1,73 @@
+{
+  "showId": "oh-mary-2024",
+  "outletId": "nypost",
+  "outlet": "New York Post",
+  "criticName": "Johnny Oleksinski",
+  "url": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
+  "publishDate": "July 11, 2024",
+  "fullText": "Escola, who New Yorkers will know from Joe’s Pub gigs and TV viewers might recognize from “Search Party,” is conjuring theatrical magic at the Lyceum that must be seen to be believed. And, as the show is so bizarre as to defy description, to be fully grasped. “Oh, Mary!” might not be another theatrical history lesson Broadway is used to, but I reckon it’s a show for the history books.",
+  "isFullReview": false,
+  "dtliExcerpt": "Escola, who New Yorkers will know from Joe’s Pub gigs and TV viewers might recognize from “Search Party,” is conjuring theatrical magic at the Lyceum that must be seen to be believed. And, as the show is so bizarre as to defy description, to be fully grasped. “Oh, Mary!” might not be another theatrical history lesson Broadway is used to, but I reckon it’s a show for the history books.",
+  "originalScore": null,
+  "assignedScore": 89,
+  "source": "dtli",
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "conjuring theatrical magic at the Lyceum that must be seen to be believed",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I reckon it's a show for the history books",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the show is so bizarre as to defy description, to be fully grasped",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive language with 'theatrical magic' and 'must be seen to be believed' indicates clear recommendation, though the emphasis on bizarreness and defying description prevents full rave territory. | GPT-4o-mini: The review expresses strong enthusiasm and a clear recommendation to see the show, indicating it is a unique and memorable experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:18:19.454Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

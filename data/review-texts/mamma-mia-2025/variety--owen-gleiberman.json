@@ -1,0 +1,75 @@
+{
+  "showId": "mamma-mia-2025",
+  "outletId": "variety",
+  "outlet": "Variety",
+  "criticName": "Owen Gleiberman",
+  "url": "https://variety.com/2025/music/reviews/mamma-mia-review-broadway-2025-1236488886/",
+  "publishDate": "August 14, 2025",
+  "fullText": "Yet “Mamma Mia!” remains what it always was: a feast for your pleasure centers. It’s a show that almost invites us to roll our eyes at it — until that moment or two later when we’re inevitably going, My, my, how can I resist you?",
+  "isFullReview": false,
+  "dtliExcerpt": "Yet “Mamma Mia!” remains what it always was: a feast for your pleasure centers. It’s a show that almost invites us to roll our eyes at it — until that moment or two later when we’re inevitably going, My, my, how can I resist you?",
+  "originalScore": null,
+  "assignedScore": 78,
+  "source": "dtli",
+  "needsFullText": true,
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a feast for your pleasure centers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "almost invites us to roll our eyes at it",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "My, my, how can I resist you?",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's flaws but ultimately celebrates its irresistible entertainment value and pleasure-giving qualities. | GPT-4o-mini: The review expresses enjoyment and a clear recommendation despite some playful skepticism, indicating a strong positive sentiment overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:08:28.361Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short",
+  "bwwExcerpt": "I saw the original stage version three times, and while the revived “Mamma Mia!” has its own spirit (which I would call slightly more bumptious, with more aggressive choreography), it’s really the same show. It’s directed, like the original (and like the 2008 movie version), by Phyllida Lloyd, and i..."
+}

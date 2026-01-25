@@ -1,0 +1,74 @@
+{
+  "showId": "harry-potter-2021",
+  "outletId": "timeout-ny",
+  "outlet": "Time Out New York",
+  "criticName": "Adam Feldman",
+  "url": "https://www.timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
+  "publishDate": "December 7, 2021",
+  "fullText": "Despite its shrinking, Harry Potter and the Cursed Child has kept most of its charm. The spectacular set pieces of John Tiffany’s production remain—the staircase ballet, the underwater swimming scene, the gorgeous flying wraiths—but about a third of the former text has been excised.",
+  "isFullReview": false,
+  "dtliExcerpt": "Despite its shrinking, Harry Potter and the Cursed Child has kept most of its charm. The spectacular set pieces of John Tiffany’s production remain—the staircase ballet, the underwater swimming scene, the gorgeous flying wraiths—but about a third of the former text has been excised.",
+  "showScoreExcerpt": "\"5/5 stars...Despite its shrinking, 'Harry Potter and the Cursed Child' has kept most of its charm. The spectacular set pieces of John Tiffany’s production remain...The plotting sometimes feels more rushed than before. But the changes have the salutary effect of focusing the story on its most interesting new creations: the resentful Albus Potter (James Romney) and the unpopular Scorpius Malfoy (Brady Dalton Richards), whose bond has been reconceived in a significant way.\"",
+  "originalScore": null,
+  "assignedScore": 71,
+  "source": "dtli",
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "has kept most of its charm",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The spectacular set pieces of John Tiffany's production remain",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "about a third of the former text has been excised",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review emphasizes that despite cuts, the production retains its charm and spectacular elements, suggesting a qualified positive recommendation. | GPT-4o-mini: The review highlights strong production elements while noting significant cuts to the text, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:04:01.766Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

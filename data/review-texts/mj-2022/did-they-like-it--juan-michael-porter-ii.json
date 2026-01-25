@@ -1,0 +1,73 @@
+{
+  "showId": "mj-2022",
+  "outletId": "did-they-like-it",
+  "outlet": "DID THEY LIKE IT",
+  "criticName": "Juan Michael Porter II",
+  "url": "https://didtheylikeit.com/shows/mj-the-musical/mj-trips-into-the-bio-musical-morass/",
+  "publishDate": "February 1, 2022",
+  "fullText": "Songs from his extensive catalog appear throughout the show haphazardly. When they take place during rehearsal scenes, such as when Michael is tinkering with a new idea, they leave the audience buzzing with nostalgia and wonder. But when they are forced into awkward dramatic moments that they were never meant to fulfill―for instance, Michael sitting off in the corner singing snippets of a sad song because he is a perpetually morose sap―the effect left me hyperventilating with queasiness.",
+  "isFullReview": false,
+  "dtliExcerpt": "Songs from his extensive catalog appear throughout the show haphazardly. When they take place during rehearsal scenes, such as when Michael is tinkering with a new idea, they leave the audience buzzing with nostalgia and wonder. But when they are forced into awkward dramatic moments that they were never meant to fulfill―for instance, Michael sitting off in the corner singing snippets of a sad song because he is a perpetually morose sap―the effect left me hyperventilating with queasiness.",
+  "originalScore": null,
+  "assignedScore": 45,
+  "source": "dtli",
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 60,
+      "performances": null,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "leave the audience buzzing with nostalgia and wonder",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "forced into awkward dramatic moments that they were never meant to fulfill",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the effect left me hyperventilating with queasiness",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic praises the catalog songs in rehearsal contexts but harshly criticizes their forced integration into dramatic moments, with the visceral negative reaction ('hyperventilating with queasiness') suggesting more problems than strengths. | GPT-4o-mini: The review highlights both nostalgic moments and significant discomfort with the show's execution, leading to a mixed-negative recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:13:30.641Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

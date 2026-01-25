@@ -1,0 +1,74 @@
+{
+  "showId": "oh-mary-2024",
+  "outletId": "thewrap",
+  "outlet": "TheWrap",
+  "criticName": "Robert Hofler",
+  "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
+  "publishDate": "July 11, 2024",
+  "fullText": "“Oh, Mary!” plays even better on Broadway than it did downtown at the Lucille Lortel Theater earlier this year. Experiencing this comedy with a few hundred more theatergoers takes the laughter from boisterous to atomic and the effect is absolutely radioactive.",
+  "isFullReview": false,
+  "dtliExcerpt": "“Oh, Mary!” plays even better on Broadway than it did downtown at the Lucille Lortel Theater earlier this year. Experiencing this comedy with a few hundred more theatergoers takes the laughter from boisterous to atomic and the effect is absolutely radioactive. Plot-wise, it continues to be best to write as little as possible. There are outrageous twists and turns in the story that genuinely shock an audience into delayed convulsions of laughter. Let’s just say that Escola has somehow managed to turn the assassination of President Abraham Lincoln into an inspired, rollicking comedy.",
+  "originalScore": null,
+  "assignedScore": 89,
+  "source": "dtli",
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "plays even better on Broadway than it did downtown",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "takes the laughter from boisterous to atomic and the effect is absolutely radioactive",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Experiencing this comedy with a few hundred more theatergoers takes the laughter from boisterous to atomic",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong enthusiasm with vivid metaphors ('atomic', 'radioactive') and clear improvement comparison, indicating a very positive recommendation despite brief excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's impact and audience engagement, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T05:18:36.842Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}

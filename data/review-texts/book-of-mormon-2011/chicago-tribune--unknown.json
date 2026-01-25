@@ -1,0 +1,73 @@
+{
+  "showId": "book-of-mormon-2011",
+  "outletId": "chicago-tribune",
+  "outlet": "Chicago Tribune",
+  "criticName": null,
+  "url": "http://leisureblogs.chicagotribune.com/the_theater_loop/2011/03/book-of-mormon-broadway-review-south-park.html",
+  "publishDate": "March 24, 2011",
+  "fullText": "If any show could make the case that you can have fun with absolutely anything in the oft-painful run of human experience — AIDS, genocide, genital mutilation, poverty, religion, “The Lion King” — then that show is “The Book of Mormon,” the shrewd, remarkably well-crafted and wholly hilarious new Broadway musical from the creators of “South Park” and the composer of “Avenue Q.”",
+  "isFullReview": false,
+  "dtliExcerpt": "If any show could make the case that you can have fun with absolutely anything in the oft-painful run of human experience — AIDS, genocide, genital mutilation, poverty, religion, “The Lion King” — then that show is “The Book of Mormon,” the shrewd, remarkably well-crafted and wholly hilarious new Broadway musical from the creators of “South Park” and the composer of “Avenue Q.”",
+  "originalScore": null,
+  "assignedScore": 89,
+  "source": "dtli",
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "shrewd, remarkably well-crafted and wholly hilarious",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "you can have fun with absolutely anything",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "new Broadway musical from the creators of 'South Park' and the composer of 'Avenue Q'",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive language with superlatives like 'remarkably well-crafted' and 'wholly hilarious' indicates clear enthusiasm and recommendation, though falls short of unqualified rave territory. | GPT-4o-mini: The review expresses strong enthusiasm and praise for the show's craft and humor, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-24T04:54:13.729Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textStatus": "incomplete",
+  "textIssue": "too_short"
+}
