@@ -49,6 +49,51 @@ const typeLabels: Record<TypeParam, string> = {
   play: 'Plays',
 };
 
+// Score tier labels and tooltips
+const SCORE_TIERS = {
+  mustSee: {
+    label: 'Must-See',
+    tooltip: 'Drop-everything great. If you\'re seeing one show, make it this.',
+    range: '85-100',
+    color: '#FFD700',
+    glow: true,
+  },
+  recommended: {
+    label: 'Recommended',
+    tooltip: 'Strong choice—most people will have a great time.',
+    range: '75-84',
+    color: '#22c55e',
+  },
+  worthSeeing: {
+    label: 'Worth Seeing',
+    tooltip: 'Good, with caveats. Best if the premise/cast/genre is your thing.',
+    range: '65-74',
+    color: '#14b8a6',
+  },
+  skippable: {
+    label: 'Skippable',
+    tooltip: 'Optional. Fine to miss unless you\'re a completist or super fan.',
+    range: '55-64',
+    color: '#f59e0b',
+  },
+  stayAway: {
+    label: 'Stay Away',
+    tooltip: 'Not recommended. Your time and money are better spent elsewhere.',
+    range: '<55',
+    color: '#ef4444',
+  },
+};
+
+function getScoreTier(score: number | null | undefined) {
+  if (score === null || score === undefined) return null;
+  const rounded = Math.round(score);
+  if (rounded >= 85) return SCORE_TIERS.mustSee;
+  if (rounded >= 75) return SCORE_TIERS.recommended;
+  if (rounded >= 65) return SCORE_TIERS.worthSeeing;
+  if (rounded >= 55) return SCORE_TIERS.skippable;
+  return SCORE_TIERS.stayAway;
+}
+
 function ScoreBadge({ score, size = 'md', reviewCount }: { score?: number | null; size?: 'sm' | 'md' | 'lg'; reviewCount?: number }) {
   const sizeClass = {
     sm: 'w-11 h-11 text-lg rounded-lg',
@@ -254,9 +299,20 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
       <div className="flex-shrink-0 flex flex-col items-center justify-center">
         <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} />
         {show.criticScore && (
-          <span className="text-xs text-gray-400 mt-1 font-medium">
-            {show.criticScore.reviewCount} reviews
-          </span>
+          <>
+            <span className="text-xs text-gray-400 mt-1 font-medium">
+              {show.criticScore.reviewCount} reviews
+            </span>
+            {getScoreTier(score) && (
+              <span
+                className="text-[10px] font-semibold mt-0.5 uppercase tracking-wide"
+                style={{ color: getScoreTier(score)?.color }}
+                title={getScoreTier(score)?.tooltip}
+              >
+                {getScoreTier(score)?.label}
+              </span>
+            )}
+          </>
         )}
       </div>
     </Link>
@@ -597,26 +653,26 @@ function HomePageInner() {
       )}
 
       {/* Score Legend */}
-      <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-gray-400">
-        <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#FFD700', boxShadow: '0 0 6px rgba(255, 215, 0, 0.5)' }}></div>
-          <span>85+ Must-See</span>
+      <div className="flex flex-wrap items-center justify-end gap-4 mb-6 text-xs text-gray-400">
+        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.mustSee.tooltip}>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.mustSee.color, boxShadow: '0 0 6px rgba(255, 215, 0, 0.5)' }}></div>
+          <span>{SCORE_TIERS.mustSee.range} {SCORE_TIERS.mustSee.label}</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#22c55e' }}></div>
-          <span>75-84 Great</span>
+        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.recommended.tooltip}>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.recommended.color }}></div>
+          <span>{SCORE_TIERS.recommended.range} {SCORE_TIERS.recommended.label}</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#14b8a6' }}></div>
-          <span>65-74 Good</span>
+        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.worthSeeing.tooltip}>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.worthSeeing.color }}></div>
+          <span>{SCORE_TIERS.worthSeeing.range} {SCORE_TIERS.worthSeeing.label}</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#f59e0b' }}></div>
-          <span>55-64 Tepid</span>
+        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.skippable.tooltip}>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.skippable.color }}></div>
+          <span>{SCORE_TIERS.skippable.range} {SCORE_TIERS.skippable.label}</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#ef4444' }}></div>
-          <span>&lt;55 Skip</span>
+        <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.stayAway.tooltip}>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.stayAway.color }}></div>
+          <span>{SCORE_TIERS.stayAway.range} {SCORE_TIERS.stayAway.label}</span>
         </div>
       </div>
 
