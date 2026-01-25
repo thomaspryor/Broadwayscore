@@ -235,7 +235,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
         <p className="text-sm text-gray-400 mt-0.5 truncate">
           {show.venue}
           <span className="text-gray-600 mx-1.5">·</span>
-          <span className="text-gray-500">
+          <span className="text-gray-400">
             {formatOpeningDate(show.openingDate)}
             {show.status === 'closed' && show.closingDate && (
               <> – {formatOpeningDate(show.closingDate)}</>
@@ -304,9 +304,9 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
           </div>
         </div>
       </div>
-      <h4 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-2 leading-tight">
+      <h3 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-2 leading-tight">
         {show.title}
-      </h4>
+      </h3>
     </Link>
   );
 });
@@ -636,7 +636,7 @@ function HomePageInner() {
             </svg>
           </div>
           <h3 className="text-lg font-semibold text-white mb-2">No shows found</h3>
-          <p className="text-gray-500 mb-6 max-w-sm mx-auto">
+          <p className="text-gray-400 mb-6 max-w-sm mx-auto">
             {searchQuery
               ? `No shows match "${searchQuery}". Try adjusting your search or filters.`
               : 'No shows match your current filters.'}
@@ -653,7 +653,7 @@ function HomePageInner() {
         </div>
       )}
 
-      <div className="mt-8 flex items-center justify-between text-sm text-gray-500">
+      <div className="mt-8 flex items-center justify-between text-sm text-gray-400">
         <span>{filteredAndSortedShows.length} shows</span>
         <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
           How scores work →
