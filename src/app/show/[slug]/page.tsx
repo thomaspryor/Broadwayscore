@@ -559,6 +559,14 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           />
         )}
 
+        {/* Audience Buzz Section */}
+        {audienceBuzz && (
+          <AudienceBuzzCard
+            buzz={audienceBuzz}
+            showScoreUrl={audienceBuzz.sources.showScore ? `https://www.show-score.com/broadway-shows/${show.slug}` : undefined}
+          />
+        )}
+
         {/* Action Links - Official Site, Tickets, Trailer */}
         {(show.officialUrl || show.trailerUrl || (show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed')) && (
           <div className="flex flex-wrap gap-3 mb-8">
