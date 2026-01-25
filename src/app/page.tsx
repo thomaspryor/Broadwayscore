@@ -94,12 +94,21 @@ function getScoreTier(score: number | null | undefined) {
   return SCORE_TIERS.stayAway;
 }
 
-function ScoreBadge({ score, size = 'md', reviewCount }: { score?: number | null; size?: 'sm' | 'md' | 'lg'; reviewCount?: number }) {
+function ScoreBadge({ score, size = 'md', reviewCount, status }: { score?: number | null; size?: 'sm' | 'md' | 'lg'; reviewCount?: number; status?: string }) {
   const sizeClass = {
     sm: 'w-11 h-11 text-lg rounded-lg',
     md: 'w-14 h-14 text-2xl rounded-xl',
     lg: 'w-16 h-16 text-3xl rounded-xl',
   }[size];
+
+  // Show TBD for previews shows
+  if (status === 'previews') {
+    return (
+      <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`}>
+        TBD
+      </div>
+    );
+  }
 
   // Show TBD if fewer than 5 reviews
   if (reviewCount !== undefined && reviewCount < 5) {
@@ -287,7 +296,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
           {show.venue}
           <span className="text-gray-600 mx-1.5">·</span>
           <span className="text-gray-400">
-            Opened {formatOpeningDate(show.openingDate)}
+            {show.status === 'previews' ? 'Opens' : 'Opened'} {formatOpeningDate(show.openingDate)}
           </span>
           {show.closingDate && (
             <span className="text-amber-400">
@@ -308,7 +317,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
             {getScoreTier(score)?.label}
           </span>
         )}
-        <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} />
+        <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} status={show.status} />
       </div>
     </Link>
   );

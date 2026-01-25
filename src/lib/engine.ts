@@ -66,6 +66,7 @@ export interface RawShow {
   synopsis?: string;
   ageRecommendation?: string;  // e.g., "Ages 12+", "All ages"
   limitedRun?: boolean;        // true for shows with announced closing dates
+  previewsStartDate?: string;  // First preview performance (for upcoming shows)
   ticketLinks?: TicketLink[];
   officialUrl?: string;
   trailerUrl?: string;

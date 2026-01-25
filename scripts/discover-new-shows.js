@@ -64,10 +64,40 @@ function parseShowsFromBroadwayOrg(html) {
   for (const match of titleMatches) {
     const title = match[1].trim();
     if (title && title.length > 2 && title.length < 100) {
+      // Try to find opening date near this title
+      const contextStart = Math.max(0, match.index - 500);
+      const contextEnd = Math.min(html.length, match.index + 500);
+      const context = html.substring(contextStart, contextEnd);
+
+      let openingDate = null;
+      let previewsStartDate = null;
+
+      // Look for dates in various formats
+      const datePatterns = [
+        /opening[:\s]+([A-Z][a-z]+\s+\d{1,2},?\s+\d{4})/i,
+        /opens[:\s]+([A-Z][a-z]+\s+\d{1,2},?\s+\d{4})/i,
+        /preview[s]?[:\s]+([A-Z][a-z]+\s+\d{1,2},?\s+\d{4})/i,
+      ];
+
+      for (const pattern of datePatterns) {
+        const dateMatch = context.match(pattern);
+        if (dateMatch) {
+          const parsedDate = new Date(dateMatch[1]);
+          if (!isNaN(parsedDate.getTime())) {
+            if (pattern.toString().includes('preview')) {
+              previewsStartDate = parsedDate.toISOString().split('T')[0];
+            } else {
+              openingDate = parsedDate.toISOString().split('T')[0];
+            }
+          }
+        }
+      }
+
       shows.push({
         title: title,
         venue: 'TBA',
-        status: 'open',
+        openingDate: openingDate,
+        previewsStartDate: previewsStartDate,
       });
     }
   }
@@ -80,10 +110,11 @@ function parseShowsFromBroadwayOrg(html) {
       if (Array.isArray(jsonLd)) {
         for (const item of jsonLd) {
           if (item['@type'] === 'Event' || item['@type'] === 'TheaterEvent') {
+            const startDate = item.startDate ? new Date(item.startDate).toISOString().split('T')[0] : null;
             shows.push({
               title: item.name,
               venue: item.location?.name || 'TBA',
-              status: 'open',
+              openingDate: startDate,
             });
           }
         }
@@ -171,21 +202,31 @@ async function discoverShows() {
   if (!dryRun) {
     // Add new shows to database
     for (const show of newShows) {
+      // Determine status based on opening date
+      const openingDate = show.openingDate || new Date().toISOString().split('T')[0];
+      const openingDateObj = new Date(openingDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // If opening date is in the future, mark as previews
+      const status = openingDateObj > today ? 'previews' : 'open';
+
       data.shows.push({
         id: show.id,
         title: show.title,
         slug: show.slug,
         venue: show.venue,
-        openingDate: new Date().toISOString().split('T')[0], // Placeholder
+        openingDate: openingDate,
         closingDate: null,
-        status: 'open',
+        status: status,
         type: 'musical', // Default, needs manual verification
         runtime: null,
         intermissions: null,
         images: {},
         synopsis: '',
         ageRecommendation: null,
-        tags: ['new'],
+        previewsStartDate: show.previewsStartDate || null,
+        tags: status === 'previews' ? ['upcoming'] : ['new'],
         ticketLinks: [],
         cast: [],
         creativeTeam: [],
