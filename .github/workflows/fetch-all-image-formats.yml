@@ -1,0 +1,43 @@
+name: Fetch All Image Formats
+
+on:
+  workflow_dispatch:  # Manual trigger only
+  schedule:
+    - cron: '0 6 * * 1'  # Weekly on Monday at 6 AM UTC
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-all-formats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch all image formats via ScrapingBee
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/fetch-all-image-formats.js
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/shows.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push if changed
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/shows.json
+          git commit -m "chore: Auto-update all image formats (square, portrait, landscape)"
+          git push
