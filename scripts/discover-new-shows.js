@@ -12,7 +12,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { chromium } = require('playwright');
+const { JSDOM } = require('jsdom');
+const { fetchPage, cleanup } = require('./lib/scraper');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -42,99 +43,95 @@ function slugify(title) {
 }
 
 async function fetchShowsFromBroadwayOrg() {
-  console.log('Launching browser...');
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
+  console.log(`Fetching Broadway.org shows page...`);
 
-  // Capture console logs from the browser
-  page.on('console', msg => console.log('BROWSER:', msg.text()));
+  // Use shared scraper with automatic fallback
+  const result = await fetchPage(BROADWAY_ORG_URL);
 
-  console.log(`Navigating to ${BROADWAY_ORG_URL}...`);
-  await page.goto(BROADWAY_ORG_URL, { waitUntil: 'networkidle', timeout: 30000 });
+  console.log(`Received ${result.format} content from ${result.source}`);
+  console.log('Parsing show data...');
 
-  console.log('Waiting for show content to render...');
-  // Just wait for JavaScript to render
-  await page.waitForTimeout(5000);
+  // Parse HTML with JSDOM
+  const dom = new JSDOM(result.content);
+  const document = dom.window.document;
 
-  console.log('Extracting show data from rendered DOM...');
-  const shows = await page.evaluate(() => {
-    const showsList = [];
+  const showsList = [];
 
-    // Debug: Check what's on the page
+  // Try finding h4 headings (show titles)
+  const h4s = Array.from(document.querySelectorAll('h4'));
+  console.log(`Found ${h4s.length} h4 headings`);
+
+  if (h4s.length > 0) {
+    h4s.forEach(h4 => {
+      const title = h4.textContent.trim();
+      if (!title || title.length < 3) return;
+
+      // Find container
+      let container = h4.closest('div');
+      if (container && container.parentElement) {
+        container = container.parentElement;
+      }
+
+      const text = container?.textContent || '';
+      const venueLink = container?.querySelector('a[href*="/broadway-theatres/"]');
+      const venue = venueLink?.textContent?.trim() || 'TBA';
+
+      // Extract dates from text
+      const beginsMatch = text.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
+      const throughMatch = text.match(/Through:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
+
+      if (!showsList.find(s => s.title === title)) {
+        showsList.push({
+          title,
+          venue,
+          slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+          openingDate: beginsMatch ? beginsMatch[1] : null,
+          closingDate: throughMatch ? throughMatch[1] : null
+        });
+      }
+    });
+  } else {
+    // Fallback: try to find show links
     const showLinks = Array.from(document.querySelectorAll('a[href^="/shows/"]'));
-    console.log(`Found ${showLinks.length} links to /shows/`);
+    console.log(`Found ${showLinks.length} show links`);
 
-    // Try finding h4 headings directly
-    const h4s = Array.from(document.querySelectorAll('h4'));
-    console.log(`Found ${h4s.length} h4 headings`);
+    for (const link of showLinks) {
+      const href = link.getAttribute('href');
+      if (!href || href === '/shows/') continue;
 
-    // If we have h4s but no show links, extract from h4s directly
-    if (h4s.length > 0) {
-      h4s.forEach(h4 => {
-        const title = h4.textContent.trim();
-        if (!title || title.length < 3) return;
+      const slug = href.replace('/shows/', '');
+      const h4 = link.querySelector('h4');
+      if (!h4) continue;
 
-        // Find container
-        let container = h4.closest('div');
-        if (container) container = container.parentElement || container;
+      const title = h4.textContent.trim();
+      if (!title || title.length < 3) continue;
 
-        const text = container?.textContent || '';
-        const venue = container?.querySelector('a[href*="/broadway-theatres/"]')?.textContent?.trim() || 'TBA';
+      let container = link.closest('div');
+      if (container && container.parentElement) {
+        container = container.parentElement;
+      }
 
-        const beginsMatch = text.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
-        const throughMatch = text.match(/Through:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
+      const venueLink = container?.querySelector('a[href*="/broadway-theatres/"]');
+      const venue = venueLink?.textContent?.trim() || 'TBA';
+      const text = container?.textContent || '';
 
-        if (!showsList.find(s => s.title === title)) {
-          showsList.push({
-            title,
-            venue,
-            slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-            openingDate: beginsMatch ? beginsMatch[1] : null,
-            closingDate: throughMatch ? throughMatch[1] : null
-          });
-        }
-      });
-    } else {
-      // Fallback: try the original method
-      for (const link of showLinks) {
-        const href = link.getAttribute('href');
-        if (!href || href === '/shows/') continue;
+      const beginsMatch = text.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
+      const throughMatch = text.match(/Through:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
 
-        const slug = href.replace('/shows/', '');
-        const h4 = link.querySelector('h4') || link.closest('div')?.querySelector('h4');
-        if (!h4) continue;
-
-        const title = h4.textContent.trim();
-        if (!title || title.length < 3) continue;
-
-        let container = link.closest('div');
-        if (container) container = container.parentElement || container;
-
-        const venue = container?.querySelector('a[href*="/broadway-theatres/"]')?.textContent?.trim() || 'TBA';
-        const text = container?.textContent || '';
-
-        const beginsMatch = text.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
-        const throughMatch = text.match(/Through:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
-
-        if (!showsList.find(s => s.title === title)) {
-          showsList.push({
-            title,
-            venue,
-            slug,
-            openingDate: beginsMatch ? beginsMatch[1] : null,
-            closingDate: throughMatch ? throughMatch[1] : null
-          });
-        }
+      if (!showsList.find(s => s.title === title)) {
+        showsList.push({
+          title,
+          venue,
+          slug,
+          openingDate: beginsMatch ? beginsMatch[1] : null,
+          closingDate: throughMatch ? throughMatch[1] : null
+        });
       }
     }
+  }
 
-    return showsList;
-  });
-
-  await browser.close();
-  console.log(`Extracted ${shows.length} shows from Broadway.org`);
-
-  return shows;
+  console.log(`Extracted ${showsList.length} shows from Broadway.org`);
+  return showsList;
 }
 
 async function discoverShows() {
@@ -283,7 +280,12 @@ async function discoverShows() {
   return { newShows, count: newShows.length };
 }
 
-discoverShows().catch(e => {
-  console.error('Discovery failed:', e);
-  process.exit(1);
-});
+discoverShows()
+  .catch(e => {
+    console.error('Discovery failed:', e);
+    process.exit(1);
+  })
+  .finally(() => {
+    // Clean up scraper resources
+    cleanup().catch(console.error);
+  });
