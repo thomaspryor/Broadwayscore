@@ -106,6 +106,16 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="canonical" href={BASE_URL} />
+        {/* Preconnect to image CDN for faster LCP */}
+        <link
+          rel="preconnect"
+          href="https://images.ctfassets.net"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="dns-prefetch"
+          href="https://images.ctfassets.net"
+        />
         {/* Preload Inter font for faster text rendering */}
         <link
           rel="preconnect"
