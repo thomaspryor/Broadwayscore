@@ -1,73 +1,425 @@
 {
-  "timestamp": "2026-01-24T23:40:11.575Z",
-  "totalReviews": 985,
-  "validated": 985,
-  "withFlags": 351,
-  "highSeverity": 3,
+  "timestamp": "2026-01-25T03:33:23.529Z",
+  "totalReviews": 987,
+  "validated": 987,
+  "withFlags": 315,
+  "highSeverity": 19,
   "mediumSeverity": 9,
   "byType": {
-    "missing_score": 339,
+    "missing_score": 287,
     "dtli_mismatch": 11,
-    "rating_mismatch": 1
+    "rating_mismatch": 18,
+    "bww_mismatch": 1
   },
   "flaggedReviews": [
     {
-      "file": "and-juliet-2022/broadway-news--brittani-samuel.json",
-      "showId": "and-juliet-2022",
-      "outlet": "BROADWAY NEWS",
-      "criticName": "Brittani Samuel",
-      "assignedScore": 50,
-      "dtliThumb": "Up",
+      "file": "back-to-the-future-2023/ew--dalton-ross.json",
+      "showId": "back-to-the-future-2023",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Dalton Ross",
+      "assignedScore": 67,
+      "dtliThumb": null,
       "bwwThumb": null,
-      "originalRating": null,
+      "originalRating": "B",
       "flags": [
         {
-          "type": "dtli_mismatch",
+          "type": "rating_mismatch",
           "severity": "high",
-          "message": "DTLI \"Up\" but score 50 < 55",
-          "expected": ">= 55",
-          "actual": 50
+          "message": "Original rating B (letter) expects 70-85, got 67",
+          "expected": "70-85",
+          "actual": 67,
+          "originalValue": "B"
         }
       ],
       "severity": "high"
     },
     {
-      "file": "chicago-1996/nytimes--ben-brantley.json",
-      "showId": "chicago-1996",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "assignedScore": 50,
-      "dtliThumb": "Up",
+      "file": "back-to-the-future-2023/nysr--steven-suskin.json",
+      "showId": "back-to-the-future-2023",
+      "outlet": "New York Stage Review",
+      "criticName": "Steven Suskin",
+      "assignedScore": 68,
+      "dtliThumb": null,
       "bwwThumb": null,
-      "originalRating": null,
+      "originalRating": "4 stars",
       "flags": [
         {
-          "type": "dtli_mismatch",
+          "type": "rating_mismatch",
           "severity": "high",
-          "message": "DTLI \"Up\" but score 50 < 55",
-          "expected": ">= 55",
-          "actual": 50
+          "message": "Original rating 4/5 (stars) expects 75-90, got 68",
+          "expected": "75-90",
+          "actual": 68,
+          "originalValue": "4/5"
         }
       ],
       "severity": "high"
     },
     {
-      "file": "mj-2022/TIMEOUTNY--adam-feldman.json",
-      "showId": "mj-2022",
-      "outlet": "Time Out New York",
-      "criticName": "Adam Feldman",
-      "assignedScore": 74,
-      "dtliThumb": "Up",
+      "file": "boop-2025/culture-sauce--thom-geier.json",
+      "showId": "boop-2025",
+      "outlet": "Culture Sauce",
+      "criticName": "Thom Geier",
+      "assignedScore": 72,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": "4/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 4/5 (stars) expects 75-90, got 72",
+          "expected": "75-90",
+          "actual": 72,
+          "originalValue": "4/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "boop-2025/ny-stage-review--frank-scheck.json",
+      "showId": "boop-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Frank Scheck",
+      "assignedScore": 72,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": "4/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 4/5 (stars) expects 75-90, got 72",
+          "expected": "75-90",
+          "actual": 72,
+          "originalValue": "4/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "bug-2026/ny-stage-review--frank-scheck.json",
+      "showId": "bug-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Frank Scheck",
+      "assignedScore": 68,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": "4/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 4/5 (stars) expects 75-90, got 68",
+          "expected": "75-90",
+          "actual": 68,
+          "originalValue": "4/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "hadestown-2019/ny-stage-review--michael-sommers.json",
+      "showId": "hadestown-2019",
+      "outlet": "New York Stage Review",
+      "criticName": "Michael Sommers",
+      "assignedScore": 65,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": "4/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 4/5 (stars) expects 75-90, got 65",
+          "expected": "75-90",
+          "actual": 65,
+          "originalValue": "4/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "hells-kitchen-2024/ny-stage-review--melissa-rose-bernardo.json",
+      "showId": "hells-kitchen-2024",
+      "outlet": "New York Stage Review",
+      "criticName": "Melissa Rose Bernardo",
+      "assignedScore": 77,
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "originalRating": "3/5",
+      "flags": [
+        {
+          "type": "dtli_mismatch",
+          "severity": "medium",
+          "message": "DTLI \"Meh\" but score 77 outside 45-75",
+          "expected": "45-75",
+          "actual": 77
+        },
+        {
+          "type": "bww_mismatch",
+          "severity": "medium",
+          "message": "BWW \"Meh\" but score 77 outside 45-75",
+          "expected": "45-75",
+          "actual": 77
+        },
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 3/5 (stars) expects 55-70, got 77",
+          "expected": "55-70",
+          "actual": 77,
+          "originalValue": "3/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "hells-kitchen-2024/ny-stage-review--rose-bernardo.json",
+      "showId": "hells-kitchen-2024",
+      "outlet": "New York Stage Review",
+      "criticName": "Rose Bernardo",
+      "assignedScore": 78,
+      "dtliThumb": null,
       "bwwThumb": null,
       "originalRating": "3/5",
       "flags": [
         {
           "type": "rating_mismatch",
           "severity": "high",
-          "message": "Original rating 3/5 (stars) expects 55-70, got 74",
+          "message": "Original rating 3/5 (stars) expects 55-70, got 78",
           "expected": "55-70",
-          "actual": 74,
+          "actual": 78,
           "originalValue": "3/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "mamma-mia-2025/culture-sauce--thom-geier.json",
+      "showId": "mamma-mia-2025",
+      "outlet": "Culture Sauce",
+      "criticName": "Thom Geier",
+      "assignedScore": 72,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": "4/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 4/5 (stars) expects 75-90, got 72",
+          "expected": "75-90",
+          "actual": 72,
+          "originalValue": "4/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "mamma-mia-2025/new-york-theater--jonathan-mandell.json",
+      "showId": "mamma-mia-2025",
+      "outlet": "New York Theater",
+      "criticName": "Jonathan Mandell",
+      "assignedScore": 52,
+      "dtliThumb": "Up",
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "dtli_mismatch",
+          "severity": "high",
+          "message": "DTLI \"Up\" but score 52 < 55",
+          "expected": ">= 55",
+          "actual": 52
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "mamma-mia-2025/ny-stage-review--david-finkle.json",
+      "showId": "mamma-mia-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "David Finkle",
+      "assignedScore": 45,
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "originalRating": "3/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 3/5 (stars) expects 55-70, got 45",
+          "expected": "55-70",
+          "actual": 45,
+          "originalValue": "3/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "marjorie-prime-2025/ny-stage-review--frank-scheck.json",
+      "showId": "marjorie-prime-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Frank Scheck",
+      "assignedScore": 82,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": "5/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 5/5 (stars) expects 85-100, got 82",
+          "expected": "85-100",
+          "actual": 82,
+          "originalValue": "5/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "marjorie-prime-2025/ny-stage-review--melissa-rose-bernardo.json",
+      "showId": "marjorie-prime-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Melissa Rose Bernardo",
+      "assignedScore": 83,
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "originalRating": "5/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 5/5 (stars) expects 85-100, got 83",
+          "expected": "85-100",
+          "actual": 83,
+          "originalValue": "5/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "marjorie-prime-2025/ny-stage-review--rose-bernardo.json",
+      "showId": "marjorie-prime-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Rose Bernardo",
+      "assignedScore": 78,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": "5/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 5/5 (stars) expects 85-100, got 78",
+          "expected": "85-100",
+          "actual": 78,
+          "originalValue": "5/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "moulin-rouge-2019/GUARDIAN--alexis-soloski.json",
+      "showId": "moulin-rouge-2019",
+      "outlet": "The Guardian",
+      "criticName": "Alexis Soloski",
+      "assignedScore": 48,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": "3/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 3/5 (stars) expects 55-70, got 48",
+          "expected": "55-70",
+          "actual": 48,
+          "originalValue": "3/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "moulin-rouge-2019/NYSR--melissa-rose-bernardo.json",
+      "showId": "moulin-rouge-2019",
+      "outlet": "New York Stage Review",
+      "criticName": "Melissa Rose Bernardo",
+      "assignedScore": 78,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": "5/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 5/5 (stars) expects 85-100, got 78",
+          "expected": "85-100",
+          "actual": 78,
+          "originalValue": "5/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "oedipus-2025/ny-stage-review--frank-scheck.json",
+      "showId": "oedipus-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Frank Scheck",
+      "assignedScore": 72,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": "4/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 4/5 (stars) expects 75-90, got 72",
+          "expected": "75-90",
+          "actual": 72,
+          "originalValue": "4/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "oh-mary-2024/ny-stage-review--michael-sommers.json",
+      "showId": "oh-mary-2024",
+      "outlet": "New York Stage Review",
+      "criticName": "Michael Sommers",
+      "assignedScore": 62,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": "2/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 2/5 (stars) expects 35-50, got 62",
+          "expected": "35-50",
+          "actual": 62,
+          "originalValue": "2/5"
+        }
+      ],
+      "severity": "high"
+    },
+    {
+      "file": "six-2021/ny-stage-review--melissa-rose-bernardo.json",
+      "showId": "six-2021",
+      "outlet": "New York Stage Review",
+      "criticName": "Melissa Rose Bernardo",
+      "assignedScore": 78,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": "5/5",
+      "flags": [
+        {
+          "type": "rating_mismatch",
+          "severity": "high",
+          "message": "Original rating 5/5 (stars) expects 85-100, got 78",
+          "expected": "85-100",
+          "actual": 78,
+          "originalValue": "5/5"
         }
       ],
       "severity": "high"
@@ -603,23 +955,6 @@
       "severity": "info"
     },
     {
-      "file": "boop-2025/culture-sauce--thom-geier.json",
-      "showId": "boop-2025",
-      "outlet": "Culture Sauce",
-      "criticName": "Thom Geier",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": "4/5",
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "boop-2025/daily-beast--tim-teeman.json",
       "showId": "boop-2025",
       "outlet": "The Daily Beast",
@@ -743,23 +1078,6 @@
       "showId": "boop-2025",
       "outlet": "TheaterMania",
       "criticName": "Pete Hempstead",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "boop-2025/theatrely--juan-a-ramirez.json",
-      "showId": "boop-2025",
-      "outlet": "THEATRELY",
-      "criticName": "Juan A. Ramirez",
       "assignedScore": null,
       "dtliThumb": "Up",
       "bwwThumb": null,
@@ -912,23 +1230,6 @@
       "severity": "medium"
     },
     {
-      "file": "buena-vista-social-club-2025/theatrely--kobi-kassal.json",
-      "showId": "buena-vista-social-club-2025",
-      "outlet": "THEATRELY",
-      "criticName": "Kobi Kassal",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "bug-2026/4columns--david-cote.json",
       "showId": "bug-2025",
       "outlet": "4Columns",
@@ -984,23 +1285,6 @@
       "showId": "bug-2025",
       "outlet": "New York Daily News",
       "criticName": "Chris Jones",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "bug-2026/theatrely--joey-sims.json",
-      "showId": "bug-2026",
-      "outlet": "THEATRELY",
-      "criticName": "Joey Sims",
       "assignedScore": null,
       "dtliThumb": "Up",
       "bwwThumb": null,
@@ -1473,40 +1757,6 @@
       "severity": "info"
     },
     {
-      "file": "chess-2025/ny-stage-review--bob-verini.json",
-      "showId": "chess-2025",
-      "outlet": "New York Stage Review",
-      "criticName": "Bob Verini",
-      "assignedScore": null,
-      "dtliThumb": "Down",
-      "bwwThumb": null,
-      "originalRating": "2/5",
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "chess-2025/ny-stage-review--melissa-rose-bernardo.json",
-      "showId": "chess-2025",
-      "outlet": "New York Stage Review",
-      "criticName": "Melissa Rose Bernardo",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "originalRating": "4/5",
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "chess-2025/usa-today--patrick-ryan.json",
       "showId": "chess-2025",
       "outlet": "USA Today",
@@ -1602,23 +1852,6 @@
       "showId": "death-becomes-her-2024",
       "outlet": "The Guardian",
       "criticName": "Benjamin Lee",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "death-becomes-her-2024/theatrely--kobi-kassal.json",
-      "showId": "death-becomes-her-2024",
-      "outlet": "THEATRELY",
-      "criticName": "Kobi Kassal",
       "assignedScore": null,
       "dtliThumb": "Up",
       "bwwThumb": null,
@@ -2210,44 +2443,10 @@
       "severity": "info"
     },
     {
-      "file": "hells-kitchen-2024/cititour--brian-scott-lipton.json",
-      "showId": "hells-kitchen-2024",
-      "outlet": "Cititour",
-      "criticName": "Brian Scott Lipton",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "hells-kitchen-2024/cititour--scott-lipton.json",
       "showId": "hells-kitchen-2024",
       "outlet": "Cititour",
       "criticName": "Scott Lipton",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "hells-kitchen-2024/new-york-theater--jonathan-mandell.json",
-      "showId": "hells-kitchen-2024",
-      "outlet": "New York Theater",
-      "criticName": "Jonathan Mandell",
       "assignedScore": null,
       "dtliThumb": null,
       "bwwThumb": null,
@@ -2269,23 +2468,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "hells-kitchen-2024/ny-stage-review--melissa-rose-bernardo.json",
-      "showId": "hells-kitchen-2024",
-      "outlet": "New York Stage Review",
-      "criticName": "Melissa Rose Bernardo",
-      "assignedScore": null,
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "originalRating": "3/5",
       "flags": [
         {
           "type": "missing_score",
@@ -2349,23 +2531,6 @@
       "severity": "info"
     },
     {
-      "file": "just-in-time-2025/advertisement--chris-jones.json",
-      "showId": "just-in-time-2025",
-      "outlet": "Advertisement",
-      "criticName": "Chris Jones",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "just-in-time-2025/broadway-news--brittani-samuel.json",
       "showId": "just-in-time-2025",
       "outlet": "BROADWAY NEWS",
@@ -2387,23 +2552,6 @@
       "showId": "just-in-time-2025",
       "outlet": "Chicago Tribune",
       "criticName": "Chris Jones",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "just-in-time-2025/cititour--brian-scott-lipton.json",
-      "showId": "just-in-time-2025",
-      "outlet": "Cititour",
-      "criticName": "Brian Scott Lipton",
       "assignedScore": null,
       "dtliThumb": null,
       "bwwThumb": "Up",
@@ -2485,23 +2633,6 @@
       "severity": "info"
     },
     {
-      "file": "just-in-time-2025/new-york-theater--jonathan-mandell.json",
-      "showId": "just-in-time-2025",
-      "outlet": "New York Theater",
-      "criticName": "Jonathan Mandell",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "just-in-time-2025/new-york-theatre-guide--caroline-cao.json",
       "showId": "just-in-time-2025",
       "outlet": "New York Theatre Guide",
@@ -2570,23 +2701,6 @@
       "severity": "info"
     },
     {
-      "file": "just-in-time-2025/theatrely--kobi-kassal.json",
-      "showId": "just-in-time-2025",
-      "outlet": "THEATRELY",
-      "criticName": "Kobi Kassal",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "just-in-time-2025/thewrap--robert-hofler.json",
       "showId": "just-in-time-2025",
       "outlet": "TheWrap",
@@ -2611,23 +2725,6 @@
       "assignedScore": null,
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "just-in-time-2025/timeout-ny--adam-feldman.json",
-      "showId": "just-in-time-2025",
-      "outlet": "Time Out New York",
-      "criticName": "Adam Feldman",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": null,
       "originalRating": null,
       "flags": [
         {
@@ -2978,57 +3075,6 @@
       "severity": "info"
     },
     {
-      "file": "mamma-mia-2025/cititour--brian-scott-lipton.json",
-      "showId": "mamma-mia-2025",
-      "outlet": "Cititour",
-      "criticName": "Brian Scott Lipton",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "mamma-mia-2025/culture-sauce--thom-geier.json",
-      "showId": "mamma-mia-2025",
-      "outlet": "Culture Sauce",
-      "criticName": "Thom Geier",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "originalRating": "4/5",
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "mamma-mia-2025/new-york-theater--jonathan-mandell.json",
-      "showId": "mamma-mia-2025",
-      "outlet": "New York Theater",
-      "criticName": "Jonathan Mandell",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": "Meh",
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "mamma-mia-2025/ny-daily-news--chris-jones.json",
       "showId": "mamma-mia-2025",
       "outlet": "New York Daily News",
@@ -3037,23 +3083,6 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "mamma-mia-2025/ny-stage-review--david-finkle.json",
-      "showId": "mamma-mia-2025",
-      "outlet": "New York Stage Review",
-      "criticName": "David Finkle",
-      "assignedScore": null,
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "originalRating": "3/5",
       "flags": [
         {
           "type": "missing_score",
@@ -3084,23 +3113,6 @@
       "showId": "mamma-mia-2025",
       "outlet": "The New York Times",
       "criticName": "Elisabeth Vincentelli",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "marjorie-prime-2025/cititour--brian-scott-lipton.json",
-      "showId": "marjorie-prime-2025",
-      "outlet": "Cititour",
-      "criticName": "Brian Scott Lipton",
       "assignedScore": null,
       "dtliThumb": null,
       "bwwThumb": "Up",
@@ -3182,46 +3194,12 @@
       "severity": "info"
     },
     {
-      "file": "marjorie-prime-2025/ny-stage-review--melissa-rose-bernardo.json",
-      "showId": "marjorie-prime-2025",
-      "outlet": "New York Stage Review",
-      "criticName": "Melissa Rose Bernardo",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": "Up",
-      "originalRating": "5/5",
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "marjorie-prime-2025/nypost--johnny-oleksinki.json",
       "showId": "marjorie-prime-2025",
       "outlet": "New York Post",
       "criticName": "Johnny Oleksinki",
       "assignedScore": null,
       "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "marjorie-prime-2025/theatrely--juan-a-ramirez.json",
-      "showId": "marjorie-prime-2025",
-      "outlet": "THEATRELY",
-      "criticName": "Juan A. Ramirez",
-      "assignedScore": null,
-      "dtliThumb": "Up",
       "bwwThumb": null,
       "originalRating": null,
       "flags": [
@@ -3372,183 +3350,13 @@
       "severity": "info"
     },
     {
-      "file": "moulin-rouge-2019/ew--leah-greenblatt.json",
-      "showId": "moulin-rouge-2019",
-      "outlet": "Entertainment Weekly",
-      "criticName": "Leah Greenblatt",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "moulin-rouge-2019/has-crafted-a-stunning-array-of-costumes--fair-lady.json",
-      "showId": "moulin-rouge-2019",
-      "outlet": "has crafted a stunning array of costumes",
-      "criticName": "Fair Lady",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "moulin-rouge-2019/ny-stage-review--melissa-rose-bernardo.json",
-      "showId": "moulin-rouge-2019",
-      "outlet": "New York Stage Review",
-      "criticName": "Melissa Rose Bernardo",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": "5/5",
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "moulin-rouge-2019/ny-stage-review--rose-bernardo.json",
-      "showId": "moulin-rouge-2019",
-      "outlet": "New York Stage Review",
-      "criticName": "Rose Bernardo",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "moulin-rouge-2019/ny1--roma-torre.json",
-      "showId": "moulin-rouge-2019",
-      "outlet": "NY1",
-      "criticName": "Roma Torre",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "moulin-rouge-2019/telegraph--diane-snyder.json",
-      "showId": "moulin-rouge-2019",
-      "outlet": "The Telegraph",
-      "criticName": "Diane Snyder",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "moulin-rouge-2019/the-new-york-daily-news--chris-jones.json",
-      "showId": "moulin-rouge-2019",
-      "outlet": "The New York Daily News",
-      "criticName": "Chris Jones",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "moulin-rouge-2019/theater-news-online--jeremy-gerard.json",
+      "file": "moulin-rouge-2019/TNO--jeremy-gerard.json",
       "showId": "moulin-rouge-2019",
       "outlet": "Theater News Online",
       "criticName": "Jeremy Gerard",
       "assignedScore": null,
       "dtliThumb": null,
       "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "moulin-rouge-2019/thewrap--robert-hofler.json",
-      "showId": "moulin-rouge-2019",
-      "outlet": "TheWrap",
-      "criticName": "Robert Hofler",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "moulin-rouge-2019/vulture--sarah-holdren.json",
-      "showId": "moulin-rouge-2019",
-      "outlet": "Vulture",
-      "criticName": "Sarah Holdren",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "oedipus-2025/cititour--brian-scott-lipton.json",
-      "showId": "oedipus-2025",
-      "outlet": "Cititour",
-      "criticName": "Brian Scott Lipton",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": "Up",
       "originalRating": null,
       "flags": [
         {
@@ -3567,23 +3375,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "oedipus-2025/culture-sauce--thom-geier.json",
-      "showId": "oedipus-2025",
-      "outlet": "Culture Sauce",
-      "criticName": "Thom Geier",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": "5/5",
       "flags": [
         {
           "type": "missing_score",
@@ -3644,46 +3435,12 @@
       "severity": "info"
     },
     {
-      "file": "oedipus-2025/theatrely--juan-a-ramirez.json",
-      "showId": "oedipus-2025",
-      "outlet": "THEATRELY",
-      "criticName": "Juan A. Ramirez",
-      "assignedScore": null,
-      "dtliThumb": "Meh",
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "oh-mary-2024/nypost--johnny-oleksinki.json",
       "showId": "oh-mary-2024",
       "outlet": "New York Post",
       "criticName": "Johnny Oleksinki",
       "assignedScore": null,
       "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "oh-mary-2024/theatrely--nolan-boggess.json",
-      "showId": "oh-mary-2024",
-      "outlet": "Theatrely",
-      "criticName": "Nolan Boggess",
-      "assignedScore": null,
-      "dtliThumb": "Up",
       "bwwThumb": null,
       "originalRating": null,
       "flags": [
@@ -3736,23 +3493,6 @@
       "assignedScore": null,
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "our-town-2024/nytimes--alvin-klein.json",
-      "showId": "our-town-2024",
-      "outlet": "The New York Times",
-      "criticName": "Alvin Klein",
-      "assignedScore": null,
-      "dtliThumb": "Down",
-      "bwwThumb": null,
       "originalRating": null,
       "flags": [
         {
@@ -3822,23 +3562,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "queen-versailles-2025/culture-sauce--thom-geier.json",
-      "showId": "queen-versailles-2025",
-      "outlet": "Culture Sauce",
-      "criticName": "Thom Geier",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": "1/5",
       "flags": [
         {
           "type": "missing_score",
@@ -4205,23 +3928,6 @@
       "severity": "info"
     },
     {
-      "file": "ragtime-2025/culture-sauce--thom-geier.json",
-      "showId": "ragtime-2025",
-      "outlet": "Culture Sauce",
-      "criticName": "Thom Geier",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": "4/5",
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "ragtime-2025/daily-beast--tim-teeman.json",
       "showId": "ragtime-2025",
       "outlet": "The Daily Beast",
@@ -4511,44 +4217,10 @@
       "severity": "info"
     },
     {
-      "file": "six-2021/ny-stage-review--melissa-rose-bernardo.json",
-      "showId": "six-2021",
-      "outlet": "New York Stage Review",
-      "criticName": "Melissa Rose Bernardo",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": "5/5",
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "six-2021/ny-stage-review--rose-bernardo.json",
       "showId": "six-2021",
       "outlet": "New York Stage Review",
       "criticName": "Rose Bernardo",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "six-2021/theatrely--juan-a-ramirez.json",
-      "showId": "six-2021",
-      "outlet": "THEATRELY",
-      "criticName": "Juan A. Ramirez",
       "assignedScore": null,
       "dtliThumb": null,
       "bwwThumb": null,
@@ -4732,23 +4404,6 @@
       "severity": "info"
     },
     {
-      "file": "stranger-things-2024/ny-stage-review--bob-verini.json",
-      "showId": "stranger-things-2024",
-      "outlet": "New York Stage Review",
-      "criticName": "Bob Verini",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "originalRating": "4/5",
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "stranger-things-2024/nytimes--houman-barekat.json",
       "showId": "stranger-things-2024",
       "outlet": "The New York Times",
@@ -4824,23 +4479,6 @@
       "assignedScore": null,
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "stranger-things-2024/theatrely--kobi-kassal.json",
-      "showId": "stranger-things-2024",
-      "outlet": "THEATRELY",
-      "criticName": "Kobi Kassal",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": null,
       "originalRating": null,
       "flags": [
         {
@@ -4956,23 +4594,6 @@
       "severity": "info"
     },
     {
-      "file": "suffs-2024/theatrely--juan-a-ramirez.json",
-      "showId": "suffs-2024",
-      "outlet": "THEATRELY",
-      "criticName": "Juan A. Ramirez",
-      "assignedScore": null,
-      "dtliThumb": "Down",
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "suffs-2024/thewrap--robert-hofler.json",
       "showId": "suffs-2024",
       "outlet": "TheWrap",
@@ -5031,23 +4652,6 @@
       "assignedScore": null,
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "the-great-gatsby-2024/cititour--brian-scott-lipton.json",
-      "showId": "the-great-gatsby-2024",
-      "outlet": "Cititour",
-      "criticName": "Brian Scott Lipton",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": "Down",
       "originalRating": null,
       "flags": [
         {
@@ -5265,40 +4869,6 @@
       "severity": "info"
     },
     {
-      "file": "the-notebook-2024/ny-stage-review--roma-torre.json",
-      "showId": "the-notebook-2024",
-      "outlet": "New York Stage Review",
-      "criticName": "Roma Torre",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "originalRating": "3/5",
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "the-notebook-2024/ny-stage-review--steven-suskin.json",
-      "showId": "the-notebook-2024",
-      "outlet": "New York Stage Review",
-      "criticName": "Steven Suskin",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "originalRating": "3/5",
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "the-notebook-2024/nypost--johnny-oleksinki.json",
       "showId": "the-notebook-2024",
       "outlet": "New York Post",
@@ -5374,23 +4944,6 @@
       "assignedScore": null,
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "the-notebook-2024/theatrely--juan-a-ramirez.json",
-      "showId": "the-notebook-2024",
-      "outlet": "THEATRELY",
-      "criticName": "Juan A. Ramirez",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": "Meh",
       "originalRating": null,
       "flags": [
         {
@@ -5523,23 +5076,6 @@
       "severity": "medium"
     },
     {
-      "file": "the-outsiders-2024/cititour--brian-scott-lipton.json",
-      "showId": "the-outsiders-2024",
-      "outlet": "Cititour",
-      "criticName": "Brian Scott Lipton",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "the-outsiders-2024/cititour--scott-lipton.json",
       "showId": "the-outsiders-2024",
       "outlet": "Cititour",
@@ -5597,23 +5133,6 @@
       "criticName": "Johnny Oleksinki",
       "assignedScore": null,
       "dtliThumb": null,
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "the-outsiders-2024/theatrely--kobi-kassal.json",
-      "showId": "the-outsiders-2024",
-      "outlet": "THEATRELY",
-      "criticName": "Kobi Kassal",
-      "assignedScore": null,
-      "dtliThumb": "Up",
       "bwwThumb": null,
       "originalRating": null,
       "flags": [
@@ -5778,23 +5297,6 @@
       "severity": "info"
     },
     {
-      "file": "two-strangers-bway-2025/front-mezz-junkies--ross.json",
-      "showId": "two-strangers-bway-2025",
-      "outlet": "Front Mezz Junkies",
-      "criticName": "Ross",
-      "assignedScore": null,
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
       "file": "two-strangers-bway-2025/nypost--johnny-oleksinki.json",
       "showId": "two-strangers-bway-2025",
       "outlet": "New York Post",
@@ -5819,23 +5321,6 @@
       "assignedScore": null,
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "two-strangers-bway-2025/theatrely--juan-a-ramirez.json",
-      "showId": "two-strangers-bway-2025",
-      "outlet": "THEATRELY",
-      "criticName": "Juan A. Ramirez",
-      "assignedScore": null,
-      "dtliThumb": "Meh",
-      "bwwThumb": null,
       "originalRating": null,
       "flags": [
         {
@@ -5884,23 +5369,6 @@
       "showId": "water-for-elephants-2024",
       "outlet": "The New York Times",
       "criticName": "Jesse Green",
-      "assignedScore": null,
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "originalRating": null,
-      "flags": [
-        {
-          "type": "missing_score",
-          "message": "No assignedScore"
-        }
-      ],
-      "severity": "info"
-    },
-    {
-      "file": "water-for-elephants-2024/theatrely--juan-a-ramirez.json",
-      "showId": "water-for-elephants-2024",
-      "outlet": "THEATRELY",
-      "criticName": "Juan A. Ramirez",
       "assignedScore": null,
       "dtliThumb": "Up",
       "bwwThumb": null,
@@ -6039,26 +5507,6 @@
         "severity": "medium"
       },
       {
-        "file": "and-juliet-2022/broadway-news--brittani-samuel.json",
-        "showId": "and-juliet-2022",
-        "outlet": "BROADWAY NEWS",
-        "criticName": "Brittani Samuel",
-        "assignedScore": 50,
-        "dtliThumb": "Up",
-        "bwwThumb": null,
-        "originalRating": null,
-        "flags": [
-          {
-            "type": "dtli_mismatch",
-            "severity": "high",
-            "message": "DTLI \"Up\" but score 50 < 55",
-            "expected": ">= 55",
-            "actual": 50
-          }
-        ],
-        "severity": "high"
-      },
-      {
         "file": "buena-vista-social-club-2025/theatermania--zachary-stewart.json",
         "showId": "buena-vista-social-club-2025",
         "outlet": "TheaterMania",
@@ -6119,21 +5567,36 @@
         "severity": "medium"
       },
       {
-        "file": "chicago-1996/nytimes--ben-brantley.json",
-        "showId": "chicago-1996",
-        "outlet": "The New York Times",
-        "criticName": "Ben Brantley",
-        "assignedScore": 50,
-        "dtliThumb": "Up",
-        "bwwThumb": null,
-        "originalRating": null,
+        "file": "hells-kitchen-2024/ny-stage-review--melissa-rose-bernardo.json",
+        "showId": "hells-kitchen-2024",
+        "outlet": "New York Stage Review",
+        "criticName": "Melissa Rose Bernardo",
+        "assignedScore": 77,
+        "dtliThumb": "Meh",
+        "bwwThumb": "Meh",
+        "originalRating": "3/5",
         "flags": [
           {
             "type": "dtli_mismatch",
+            "severity": "medium",
+            "message": "DTLI \"Meh\" but score 77 outside 45-75",
+            "expected": "45-75",
+            "actual": 77
+          },
+          {
+            "type": "bww_mismatch",
+            "severity": "medium",
+            "message": "BWW \"Meh\" but score 77 outside 45-75",
+            "expected": "45-75",
+            "actual": 77
+          },
+          {
+            "type": "rating_mismatch",
             "severity": "high",
-            "message": "DTLI \"Up\" but score 50 < 55",
-            "expected": ">= 55",
-            "actual": 50
+            "message": "Original rating 3/5 (stars) expects 55-70, got 77",
+            "expected": "55-70",
+            "actual": 77,
+            "originalValue": "3/5"
           }
         ],
         "severity": "high"
@@ -6157,6 +5620,26 @@
           }
         ],
         "severity": "medium"
+      },
+      {
+        "file": "mamma-mia-2025/new-york-theater--jonathan-mandell.json",
+        "showId": "mamma-mia-2025",
+        "outlet": "New York Theater",
+        "criticName": "Jonathan Mandell",
+        "assignedScore": 52,
+        "dtliThumb": "Up",
+        "bwwThumb": "Meh",
+        "originalRating": null,
+        "flags": [
+          {
+            "type": "dtli_mismatch",
+            "severity": "high",
+            "message": "DTLI \"Up\" but score 52 < 55",
+            "expected": ">= 55",
+            "actual": 52
+          }
+        ],
+        "severity": "high"
       },
       {
         "file": "marjorie-prime-2025/thewrap--robert-hofler.json",
@@ -6239,25 +5722,432 @@
         "severity": "medium"
       }
     ],
-    "bwwMismatches": [],
+    "bwwMismatches": [
+      {
+        "file": "hells-kitchen-2024/ny-stage-review--melissa-rose-bernardo.json",
+        "showId": "hells-kitchen-2024",
+        "outlet": "New York Stage Review",
+        "criticName": "Melissa Rose Bernardo",
+        "assignedScore": 77,
+        "dtliThumb": "Meh",
+        "bwwThumb": "Meh",
+        "originalRating": "3/5",
+        "flags": [
+          {
+            "type": "dtli_mismatch",
+            "severity": "medium",
+            "message": "DTLI \"Meh\" but score 77 outside 45-75",
+            "expected": "45-75",
+            "actual": 77
+          },
+          {
+            "type": "bww_mismatch",
+            "severity": "medium",
+            "message": "BWW \"Meh\" but score 77 outside 45-75",
+            "expected": "45-75",
+            "actual": 77
+          },
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 3/5 (stars) expects 55-70, got 77",
+            "expected": "55-70",
+            "actual": 77,
+            "originalValue": "3/5"
+          }
+        ],
+        "severity": "high"
+      }
+    ],
     "ratingMismatches": [
       {
-        "file": "mj-2022/TIMEOUTNY--adam-feldman.json",
-        "showId": "mj-2022",
-        "outlet": "Time Out New York",
-        "criticName": "Adam Feldman",
-        "assignedScore": 74,
-        "dtliThumb": "Up",
+        "file": "back-to-the-future-2023/ew--dalton-ross.json",
+        "showId": "back-to-the-future-2023",
+        "outlet": "Entertainment Weekly",
+        "criticName": "Dalton Ross",
+        "assignedScore": 67,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "B",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating B (letter) expects 70-85, got 67",
+            "expected": "70-85",
+            "actual": 67,
+            "originalValue": "B"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "back-to-the-future-2023/nysr--steven-suskin.json",
+        "showId": "back-to-the-future-2023",
+        "outlet": "New York Stage Review",
+        "criticName": "Steven Suskin",
+        "assignedScore": 68,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "4 stars",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 4/5 (stars) expects 75-90, got 68",
+            "expected": "75-90",
+            "actual": 68,
+            "originalValue": "4/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "boop-2025/culture-sauce--thom-geier.json",
+        "showId": "boop-2025",
+        "outlet": "Culture Sauce",
+        "criticName": "Thom Geier",
+        "assignedScore": 72,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "4/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 4/5 (stars) expects 75-90, got 72",
+            "expected": "75-90",
+            "actual": 72,
+            "originalValue": "4/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "boop-2025/ny-stage-review--frank-scheck.json",
+        "showId": "boop-2025",
+        "outlet": "New York Stage Review",
+        "criticName": "Frank Scheck",
+        "assignedScore": 72,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "4/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 4/5 (stars) expects 75-90, got 72",
+            "expected": "75-90",
+            "actual": 72,
+            "originalValue": "4/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "bug-2026/ny-stage-review--frank-scheck.json",
+        "showId": "bug-2025",
+        "outlet": "New York Stage Review",
+        "criticName": "Frank Scheck",
+        "assignedScore": 68,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "4/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 4/5 (stars) expects 75-90, got 68",
+            "expected": "75-90",
+            "actual": 68,
+            "originalValue": "4/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "hadestown-2019/ny-stage-review--michael-sommers.json",
+        "showId": "hadestown-2019",
+        "outlet": "New York Stage Review",
+        "criticName": "Michael Sommers",
+        "assignedScore": 65,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "4/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 4/5 (stars) expects 75-90, got 65",
+            "expected": "75-90",
+            "actual": 65,
+            "originalValue": "4/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "hells-kitchen-2024/ny-stage-review--melissa-rose-bernardo.json",
+        "showId": "hells-kitchen-2024",
+        "outlet": "New York Stage Review",
+        "criticName": "Melissa Rose Bernardo",
+        "assignedScore": 77,
+        "dtliThumb": "Meh",
+        "bwwThumb": "Meh",
+        "originalRating": "3/5",
+        "flags": [
+          {
+            "type": "dtli_mismatch",
+            "severity": "medium",
+            "message": "DTLI \"Meh\" but score 77 outside 45-75",
+            "expected": "45-75",
+            "actual": 77
+          },
+          {
+            "type": "bww_mismatch",
+            "severity": "medium",
+            "message": "BWW \"Meh\" but score 77 outside 45-75",
+            "expected": "45-75",
+            "actual": 77
+          },
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 3/5 (stars) expects 55-70, got 77",
+            "expected": "55-70",
+            "actual": 77,
+            "originalValue": "3/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "hells-kitchen-2024/ny-stage-review--rose-bernardo.json",
+        "showId": "hells-kitchen-2024",
+        "outlet": "New York Stage Review",
+        "criticName": "Rose Bernardo",
+        "assignedScore": 78,
+        "dtliThumb": null,
         "bwwThumb": null,
         "originalRating": "3/5",
         "flags": [
           {
             "type": "rating_mismatch",
             "severity": "high",
-            "message": "Original rating 3/5 (stars) expects 55-70, got 74",
+            "message": "Original rating 3/5 (stars) expects 55-70, got 78",
             "expected": "55-70",
-            "actual": 74,
+            "actual": 78,
             "originalValue": "3/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "mamma-mia-2025/culture-sauce--thom-geier.json",
+        "showId": "mamma-mia-2025",
+        "outlet": "Culture Sauce",
+        "criticName": "Thom Geier",
+        "assignedScore": 72,
+        "dtliThumb": null,
+        "bwwThumb": "Up",
+        "originalRating": "4/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 4/5 (stars) expects 75-90, got 72",
+            "expected": "75-90",
+            "actual": 72,
+            "originalValue": "4/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "mamma-mia-2025/ny-stage-review--david-finkle.json",
+        "showId": "mamma-mia-2025",
+        "outlet": "New York Stage Review",
+        "criticName": "David Finkle",
+        "assignedScore": 45,
+        "dtliThumb": "Meh",
+        "bwwThumb": "Meh",
+        "originalRating": "3/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 3/5 (stars) expects 55-70, got 45",
+            "expected": "55-70",
+            "actual": 45,
+            "originalValue": "3/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "marjorie-prime-2025/ny-stage-review--frank-scheck.json",
+        "showId": "marjorie-prime-2025",
+        "outlet": "New York Stage Review",
+        "criticName": "Frank Scheck",
+        "assignedScore": 82,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "5/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 5/5 (stars) expects 85-100, got 82",
+            "expected": "85-100",
+            "actual": 82,
+            "originalValue": "5/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "marjorie-prime-2025/ny-stage-review--melissa-rose-bernardo.json",
+        "showId": "marjorie-prime-2025",
+        "outlet": "New York Stage Review",
+        "criticName": "Melissa Rose Bernardo",
+        "assignedScore": 83,
+        "dtliThumb": "Up",
+        "bwwThumb": "Up",
+        "originalRating": "5/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 5/5 (stars) expects 85-100, got 83",
+            "expected": "85-100",
+            "actual": 83,
+            "originalValue": "5/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "marjorie-prime-2025/ny-stage-review--rose-bernardo.json",
+        "showId": "marjorie-prime-2025",
+        "outlet": "New York Stage Review",
+        "criticName": "Rose Bernardo",
+        "assignedScore": 78,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "5/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 5/5 (stars) expects 85-100, got 78",
+            "expected": "85-100",
+            "actual": 78,
+            "originalValue": "5/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "moulin-rouge-2019/GUARDIAN--alexis-soloski.json",
+        "showId": "moulin-rouge-2019",
+        "outlet": "The Guardian",
+        "criticName": "Alexis Soloski",
+        "assignedScore": 48,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "3/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 3/5 (stars) expects 55-70, got 48",
+            "expected": "55-70",
+            "actual": 48,
+            "originalValue": "3/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "moulin-rouge-2019/NYSR--melissa-rose-bernardo.json",
+        "showId": "moulin-rouge-2019",
+        "outlet": "New York Stage Review",
+        "criticName": "Melissa Rose Bernardo",
+        "assignedScore": 78,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "5/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 5/5 (stars) expects 85-100, got 78",
+            "expected": "85-100",
+            "actual": 78,
+            "originalValue": "5/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "oedipus-2025/ny-stage-review--frank-scheck.json",
+        "showId": "oedipus-2025",
+        "outlet": "New York Stage Review",
+        "criticName": "Frank Scheck",
+        "assignedScore": 72,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "4/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 4/5 (stars) expects 75-90, got 72",
+            "expected": "75-90",
+            "actual": 72,
+            "originalValue": "4/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "oh-mary-2024/ny-stage-review--michael-sommers.json",
+        "showId": "oh-mary-2024",
+        "outlet": "New York Stage Review",
+        "criticName": "Michael Sommers",
+        "assignedScore": 62,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "2/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 2/5 (stars) expects 35-50, got 62",
+            "expected": "35-50",
+            "actual": 62,
+            "originalValue": "2/5"
+          }
+        ],
+        "severity": "high"
+      },
+      {
+        "file": "six-2021/ny-stage-review--melissa-rose-bernardo.json",
+        "showId": "six-2021",
+        "outlet": "New York Stage Review",
+        "criticName": "Melissa Rose Bernardo",
+        "assignedScore": 78,
+        "dtliThumb": null,
+        "bwwThumb": null,
+        "originalRating": "5/5",
+        "flags": [
+          {
+            "type": "rating_mismatch",
+            "severity": "high",
+            "message": "Original rating 5/5 (stars) expects 85-100, got 78",
+            "expected": "85-100",
+            "actual": 78,
+            "originalValue": "5/5"
           }
         ],
         "severity": "high"
