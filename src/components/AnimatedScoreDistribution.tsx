@@ -46,7 +46,7 @@ export default function AnimatedScoreDistribution({ reviews }: AnimatedScoreDist
         <span className="text-xs text-gray-400 w-16">Favorable</span>
         <div className="flex-1 h-2.5 bg-surface-overlay rounded-full overflow-hidden">
           <div
-            className="bg-score-high h-full rounded-full transition-all duration-700 ease-out"
+            className="bg-score-great h-full rounded-full transition-all duration-700 ease-out"
             style={{ width: isVisible ? `${highPct}%` : '0%' }}
           />
         </div>
@@ -57,7 +57,7 @@ export default function AnimatedScoreDistribution({ reviews }: AnimatedScoreDist
         <span className="text-xs text-gray-400 w-16">Mixed</span>
         <div className="flex-1 h-2.5 bg-surface-overlay rounded-full overflow-hidden">
           <div
-            className="bg-score-medium h-full rounded-full transition-all duration-700 ease-out delay-100"
+            className="bg-score-tepid h-full rounded-full transition-all duration-700 ease-out delay-100"
             style={{ width: isVisible ? `${mediumPct}%` : '0%' }}
           />
         </div>
@@ -68,7 +68,7 @@ export default function AnimatedScoreDistribution({ reviews }: AnimatedScoreDist
         <span className="text-xs text-gray-400 w-16">Unfavorable</span>
         <div className="flex-1 h-2.5 bg-surface-overlay rounded-full overflow-hidden">
           <div
-            className="bg-score-low h-full rounded-full transition-all duration-700 ease-out delay-200"
+            className="bg-score-skip h-full rounded-full transition-all duration-700 ease-out delay-200"
             style={{ width: isVisible ? `${lowPct}%` : '0%' }}
           />
         </div>

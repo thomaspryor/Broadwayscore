@@ -99,37 +99,37 @@ export default function MethodologyPage() {
           </p>
           <div className="space-y-3">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-high ring-2 ring-accent-gold/50 flex items-center justify-center font-bold text-white text-sm">85+</div>
+              <div className="w-14 h-10 rounded-lg score-must-see flex items-center justify-center font-bold text-sm">85+</div>
               <div>
                 <span className="text-white font-medium">Must-See</span>
                 <span className="text-gray-500 ml-2">— Drop-everything great. If you&apos;re seeing one show, make it this.</span>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-high flex items-center justify-center font-bold text-white text-sm">75-84</div>
+              <div className="w-14 h-10 rounded-lg score-great flex items-center justify-center font-bold text-sm">75-84</div>
               <div>
-                <span className="text-white font-medium">Recommended</span>
+                <span className="text-white font-medium">Great</span>
                 <span className="text-gray-500 ml-2">— Strong choice—most people will have a great time.</span>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-medium flex items-center justify-center font-bold text-gray-900 text-sm">65-74</div>
+              <div className="w-14 h-10 rounded-lg score-good flex items-center justify-center font-bold text-sm">65-74</div>
               <div>
-                <span className="text-white font-medium">Worth Seeing</span>
-                <span className="text-gray-500 ml-2">— Good, with caveats. Best if the premise/cast/genre is your thing.</span>
+                <span className="text-white font-medium">Good</span>
+                <span className="text-gray-500 ml-2">— Solid with caveats. Best if the premise/cast/genre is your thing.</span>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-orange-500 flex items-center justify-center font-bold text-white text-sm">55-64</div>
+              <div className="w-14 h-10 rounded-lg score-tepid flex items-center justify-center font-bold text-sm">55-64</div>
               <div>
-                <span className="text-white font-medium">Skippable</span>
+                <span className="text-white font-medium">Tepid</span>
                 <span className="text-gray-500 ml-2">— Optional. Fine to miss unless you&apos;re a completist or super fan.</span>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-low flex items-center justify-center font-bold text-white text-sm">&lt;55</div>
+              <div className="w-14 h-10 rounded-lg score-skip flex items-center justify-center font-bold text-sm">&lt;55</div>
               <div>
-                <span className="text-white font-medium">Stay Away</span>
+                <span className="text-white font-medium">Skip</span>
                 <span className="text-gray-500 ml-2">— Not recommended. Your time and money are better spent elsewhere.</span>
               </div>
             </div>

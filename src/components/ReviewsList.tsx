@@ -46,11 +46,11 @@ function formatDate(dateStr: string): string {
 }
 
 function getScoreClasses(score: number): string {
-  if (score >= 85) return 'bg-score-high text-white ring-2 ring-accent-gold/50';
-  if (score >= 75) return 'bg-score-high text-white';
-  if (score >= 65) return 'bg-score-medium text-gray-900';
-  if (score >= 55) return 'bg-orange-500 text-white';
-  return 'bg-score-low text-white';
+  if (score >= 85) return 'score-must-see';
+  if (score >= 75) return 'score-great';
+  if (score >= 65) return 'score-good';
+  if (score >= 55) return 'score-tepid';
+  return 'score-skip';
 }
 
 function OutletLogo({ outlet }: { outlet: string }) {
