@@ -16,35 +16,55 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - Create/update GitHub Actions for automation
 - If something truly requires local execution, create a GitHub Action to do it
 
-### 2. Vercel Deployment - CRITICAL
-**Production site: Vercel** (auto-deploys when code is pushed)
+### 2. Git Branches - CRITICAL
+**ALWAYS work on the `main` branch.** Do NOT create new branches.
+
+```
+✅ CORRECT: Make changes directly on main, push to main
+❌ WRONG: Create a new branch like claude/feature-xyz
+```
+
+**Why:** The user works with multiple Claude sessions. Creating separate branches causes divergence and confusion. Everything should stay on `main`.
+
+**At the START of every session:**
+```
+git checkout main
+git pull origin main
+```
+
+**At the END of every session (if you made changes):**
+```
+git add -A
+git commit -m "description"
+git push origin main
+```
+
+### 3. Vercel Deployment
+**Production site: Vercel** (auto-deploys when `main` is pushed)
 
 | Platform | Status | URL |
 |----------|--------|-----|
 | **Vercel** | ✅ PRIMARY | https://broadwayscore.vercel.app |
 | GitHub Pages | ⚠️ Secondary/Legacy | https://thomaspryor.github.io/Broadwayscore/ |
 
-**⚠️ IMPORTANT: Vercel deploys from the PRODUCTION BRANCH, not just any branch!**
-
-**Production branch:** `claude/broadway-metascore-site-8jjx7`
+**Production branch:** `main`
 
 **Deployment workflow:**
 ```
-1. Claude makes changes on assigned branch
-2. Claude merges changes INTO the production branch (not the other way around)
-3. Claude pushes the production branch
-4. Vercel auto-deploys from production branch → Done
+1. Claude makes changes on main
+2. Claude pushes to main
+3. Vercel auto-deploys → Done
 ```
 
 **NEVER:**
+- ❌ Create new branches (use main)
 - ❌ Ask user to "create a PR" or "merge via GitHub"
-- ❌ Talk about GitHub PRs, merges, or GitHub UI
-- ❌ Push only to a feature branch and expect Vercel to deploy it
+- ❌ Push to a feature branch and expect Vercel to deploy it
 
 **ALWAYS:**
-- ✅ Merge your changes into `claude/broadway-metascore-site-8jjx7`
-- ✅ Push directly to production branch if you have permission
-- ✅ If permission denied, resolve conflicts on your branch first, then ask user to merge ONE time
+- ✅ Work directly on `main`
+- ✅ Push to `main` when done
+- ✅ If you see you're on a different branch, switch to main first
 
 ### 3. Automate Everything
 - ❌ Don't ask user to manually fetch data
