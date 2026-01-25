@@ -20,7 +20,7 @@ permissions:
 jobs:
   update-shows:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     outputs:
       new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
       new_shows: ${{ steps.discover.outputs.new_shows }}
@@ -39,8 +39,8 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install
 
-      - name: Install Playwright browsers and system dependencies
-        run: npx playwright install --with-deps chromium
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium
 
       # Step 1: Update existing show statuses
       - name: Update show statuses
