@@ -23,7 +23,9 @@
     "llm:validate": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --validate-only",
     "llm:ground-truth": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --ground-truth",
     "llm:evaluate": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/evaluate.ts",
-    "llm:status": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/status.ts"
+    "llm:status": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/status.ts",
+    "reviews:collect": "node scripts/collect-review-texts.js",
+    "reviews:coverage": "node scripts/analyze-review-coverage.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
