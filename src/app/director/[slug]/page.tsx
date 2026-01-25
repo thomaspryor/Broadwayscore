@@ -20,7 +20,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     : `${director.name} has directed ${director.showCount} Broadway show${director.showCount > 1 ? 's' : ''}. See their full Broadway history.`;
 
   return {
-    title: `${director.name} - Broadway Director | BroadwayMetaScores`,
+    title: `${director.name} - Broadway Director | Broadway Scorecard`,
     description,
     alternates: {
       canonical: canonicalUrl,
