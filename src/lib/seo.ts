@@ -2,7 +2,7 @@
 
 import { ComputedShow } from './engine';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
+export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 // Organization Schema - Site identity
 export function generateOrganizationSchema() {
@@ -16,6 +16,25 @@ export function generateOrganizationSchema() {
     sameAs: [
       // Add social profiles when available
     ],
+  };
+}
+
+// WebSite Schema - For sitelinks search box
+export function generateWebSiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Broadway Scorecard',
+    url: BASE_URL,
+    description: 'Comprehensive Broadway show ratings combining critic reviews, audience scores, and community buzz.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${BASE_URL}/?search={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
   };
 }
 

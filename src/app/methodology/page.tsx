@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
+import { BASE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'How It Works - Scoring Methodology',
@@ -13,6 +12,12 @@ export const metadata: Metadata = {
     title: 'How Broadway Scorecard Works',
     description: 'Our transparent scoring methodology for aggregating Broadway critic reviews.',
     url: `${BASE_URL}/methodology`,
+    type: 'article',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'How Broadway Scorecard Works',
+    description: 'Our transparent scoring methodology for aggregating Broadway critic reviews.',
   },
 };
 
