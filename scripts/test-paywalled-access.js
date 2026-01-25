@@ -3,17 +3,26 @@
 /**
  * Test Paywalled Site Access
  *
- * Tests if stored credentials for NYT, Vulture, and WaPo actually work
+ * Tests if stored credentials for paywalled sites actually work
  * by attempting login and accessing a paywalled article.
+ *
+ * Sites tested:
+ *   - NYT (New York Times)
+ *   - Vulture (NY Magazine - Condé Nast)
+ *   - New Yorker (Condé Nast - same credentials as Vulture)
+ *   - WaPo (Washington Post)
+ *   - WSJ (Wall Street Journal)
  *
  * Environment variables:
  *   NYT_EMAIL, NYT_PASSWORD (or NYTIMES_PASSWORD)
- *   VULTURE_EMAIL, VULTURE_PASSWORD
+ *   VULTURE_EMAIL, VULTURE_PASSWORD (also used for New Yorker)
  *   WAPO_EMAIL, WAPO_PASSWORD (or WASHPOST_PASSWORD)
+ *   WSJ_EMAIL, WSJ_PASSWORD
  *
  * Usage:
  *   node scripts/test-paywalled-access.js
  *   node scripts/test-paywalled-access.js --site=nyt
+ *   node scripts/test-paywalled-access.js --site=newyorker
  *   node scripts/test-paywalled-access.js --headful  (show browser)
  */
 
@@ -198,10 +207,86 @@ const SITES = {
     }
   },
 
+  newyorker: {
+    name: 'The New Yorker (Condé Nast)',
+    loginUrl: 'https://www.newyorker.com/accounts/login',
+    testArticle: 'https://www.newyorker.com/magazine/2024/04/01/the-outsiders-broadway-review',
+    emailEnv: 'VULTURE_EMAIL', // Same Condé Nast credentials
+    passwordEnv: ['VULTURE_PASSWORD'],
+    login: async (page, email, password) => {
+      console.log('    Navigating to New Yorker login...');
+      await page.goto('https://www.newyorker.com/accounts/login', { waitUntil: 'networkidle', timeout: 30000 });
+
+      console.log('    Looking for email field...');
+      const emailField = await page.waitForSelector('input[name="email"], input[type="email"], #email', { timeout: 15000 });
+      await emailField.fill(email);
+
+      // Check if there's a separate password field or continue button
+      const passwordField = await page.$('input[name="password"], input[type="password"]');
+      if (passwordField) {
+        await passwordField.fill(password);
+        const submitBtn = await page.$('button[type="submit"]');
+        if (submitBtn) await submitBtn.click();
+      } else {
+        // Two-step login
+        const continueBtn = await page.$('button[type="submit"], button:has-text("Continue")');
+        if (continueBtn) {
+          await continueBtn.click();
+          await page.waitForTimeout(2000);
+          const pwdField = await page.waitForSelector('input[name="password"], input[type="password"]', { timeout: 10000 });
+          await pwdField.fill(password);
+          const loginBtn = await page.$('button[type="submit"]');
+          if (loginBtn) await loginBtn.click();
+        }
+      }
+
+      console.log('    Waiting for login to complete...');
+      await page.waitForTimeout(5000);
+
+      return true;
+    },
+    checkAccess: async (page, articleUrl) => {
+      console.log('    Navigating to test article...');
+      await page.goto(articleUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForTimeout(3000);
+
+      // Check for paywall
+      const paywallSelectors = [
+        '.paywall',
+        '[class*="Paywall"]',
+        '[data-testid="paywall"]',
+        'div:has-text("Subscribe to continue reading")'
+      ];
+
+      for (const selector of paywallSelectors) {
+        const element = await page.$(selector);
+        if (element) {
+          const isVisible = await element.isVisible();
+          if (isVisible) {
+            return { success: false, reason: 'Paywall detected' };
+          }
+        }
+      }
+
+      // Check for article content
+      const articleBody = await page.$('article, .article-content, [class*="ArticleBody"]');
+      if (!articleBody) {
+        return { success: false, reason: 'Article body not found' };
+      }
+
+      const articleText = await articleBody.textContent();
+      if (articleText.length < 500) {
+        return { success: false, reason: `Article too short (${articleText.length} chars)` };
+      }
+
+      return { success: true, articleLength: articleText.length };
+    }
+  },
+
   wapo: {
     name: 'Washington Post',
     loginUrl: 'https://www.washingtonpost.com/subscribe/signin/',
-    testArticle: 'https://www.washingtonpost.com/entertainment/theater/2024/03/21/water-for-elephants-broadway-musical-review/',
+    testArticle: 'https://www.washingtonpost.com/entertainment/theater/2025/04/26/just-in-time-jonathan-groff-bobby-darin-broadway/',
     emailEnv: 'WAPO_EMAIL',
     passwordEnv: ['WAPO_PASSWORD', 'WASHPOST_PASSWORD'],
     login: async (page, email, password) => {
