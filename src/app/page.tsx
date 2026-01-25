@@ -297,8 +297,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
         </p>
       </div>
 
-      {/* Score */}
-      <div className="flex-shrink-0 flex flex-col items-center justify-center">
+      {/* Score - fixed height to match thumbnail for consistent alignment */}
+      <div className="flex-shrink-0 w-20 sm:w-24 h-20 sm:h-24 flex flex-col items-center justify-center">
         {show.criticScore && getScoreTier(score) && (
           <span
             className="text-[10px] font-semibold mb-1 uppercase tracking-wide"
