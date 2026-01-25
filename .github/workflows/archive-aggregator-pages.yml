@@ -7,6 +7,10 @@ on:
         description: 'Comma-separated show IDs to archive (leave empty for all shows)'
         required: false
         default: ''
+      bright_data_zone:
+        description: 'Bright Data zone name (optional, defaults to web_unlocker)'
+        required: false
+        default: 'web_unlocker'
 
 jobs:
   archive-pages:
@@ -29,6 +33,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
           BRIGHTDATA_CUSTOMER_ID: ${{ secrets.BRIGHTDATA_CUSTOMER_ID }}
+          BRIGHTDATA_ZONE: ${{ github.event.inputs.bright_data_zone }}
           SHOW_IDS: ${{ github.event.inputs.show_ids }}
         run: |
           node << 'EOF'
@@ -38,54 +43,91 @@ jobs:
 
           const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-          async function fetchWithBrightData(url, apiKey, customerId) {
-            if (!apiKey || apiKey.trim() === '') {
-              throw new Error('Bright Data API key is empty or undefined');
-            }
+          // TIER 1: ScrapingBee (primary)
+          async function fetchWithScrapingBee(url, apiKey) {
+            const response = await axios.get('https://app.scrapingbee.com/api/v1/', {
+              params: {
+                api_key: apiKey.trim(),
+                url: url,
+                render_js: true,
+                premium_proxy: true,
+                wait: 5000,
+                block_ads: true,
+                block_resources: false,
+              },
+              timeout: 30000,
+            });
 
-            if (!customerId || customerId.trim() === '') {
-              throw new Error('Bright Data Customer ID is empty or undefined');
-            }
+            return response.data;
+          }
+
+          // TIER 2: Bright Data (fallback)
+          async function fetchWithBrightData(url, apiKey, customerId, zoneName) {
+            // Use provided zone name or default to 'web_unlocker'
+            const zone = zoneName && zoneName.trim() !== '' ? zoneName.trim() : 'web_unlocker';
 
             const proxy = {
               host: 'brd.superproxy.io',
               port: 33335,
               auth: {
-                username: `brd-customer-${customerId.trim()}-zone-unblocker`,
+                username: `brd-customer-${customerId.trim()}-zone-${zone}`,
                 password: apiKey.trim(),
               },
             };
 
-            try {
-              const httpsAgent = new https.Agent({
-                rejectUnauthorized: false,
-              });
+            const httpsAgent = new https.Agent({
+              rejectUnauthorized: false,
+            });
 
-              const response = await axios.get(url, {
-                proxy: proxy,
-                httpsAgent: httpsAgent,
-                headers: {
-                  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-                  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                  'Accept-Language': 'en-US,en;q=0.9',
-                },
-                timeout: 90000,
-              });
+            const response = await axios.get(url, {
+              proxy: proxy,
+              httpsAgent: httpsAgent,
+              headers: {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.9',
+              },
+              timeout: 90000,
+            });
 
-              return response.data;
-            } catch (error) {
-              if (error.response) {
-                console.log(`  Bright Data error - Status: ${error.response.status}`);
-              }
-              throw error;
-            }
+            return response.data;
           }
 
           async function archivePage(showId, aggregator, url, config) {
             try {
               console.log(`Fetching ${aggregator} for ${showId}...`);
               console.log(`  URL: ${url}`);
-              const html = await fetchWithBrightData(url, config.brightDataKey, config.brightDataCustomerId);
+
+              let html;
+              let method;
+
+              // Try ScrapingBee first
+              if (config.scrapingBeeKey) {
+                try {
+                  console.log(`  Trying ScrapingBee...`);
+                  html = await fetchWithScrapingBee(url, config.scrapingBeeKey);
+                  method = 'scrapingbee';
+                  console.log(`  ✓ ScrapingBee succeeded`);
+                } catch (sbError) {
+                  console.log(`  ✗ ScrapingBee failed: ${sbError.message}`);
+
+                  // Fall back to Bright Data
+                  if (config.brightDataKey && config.brightDataCustomerId) {
+                    console.log(`  Trying Bright Data...`);
+                    html = await fetchWithBrightData(url, config.brightDataKey, config.brightDataCustomerId, config.brightDataZone);
+                    method = 'brightdata';
+                    console.log(`  ✓ Bright Data succeeded`);
+                  } else {
+                    throw sbError;
+                  }
+                }
+              } else if (config.brightDataKey && config.brightDataCustomerId) {
+                // No ScrapingBee, use Bright Data directly
+                html = await fetchWithBrightData(url, config.brightDataKey, config.brightDataCustomerId, config.brightDataZone);
+                method = 'brightdata';
+              } else {
+                throw new Error('No scraping service configured');
+              }
 
               const dir = `data/aggregator-archive/${aggregator}`;
               if (!fs.existsSync(dir)) {
@@ -93,12 +135,12 @@ jobs:
               }
 
               const timestamp = new Date().toISOString();
-              const metadata = `<!-- Archived: ${timestamp} -->\n<!-- Source: ${url} -->\n<!-- Show ID: ${showId} -->\n\n`;
+              const metadata = `<!-- Archived: ${timestamp} -->\n<!-- Source: ${url} -->\n<!-- Show ID: ${showId} -->\n<!-- Method: ${method} -->\n\n`;
               const content = metadata + html;
 
               const filepath = `${dir}/${showId}.html`;
               fs.writeFileSync(filepath, content);
-              console.log(`✓ Saved ${filepath}`);
+              console.log(`✓ Saved ${filepath} (via ${method})`);
 
               // Rate limiting: wait 2 seconds between requests
               await sleep(2000);
@@ -121,19 +163,26 @@ jobs:
 
           async function main() {
             const config = {
+              scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY,
               brightDataKey: process.env.BRIGHTDATA_API_KEY,
               brightDataCustomerId: process.env.BRIGHTDATA_CUSTOMER_ID,
+              brightDataZone: process.env.BRIGHTDATA_ZONE || 'web_unlocker',
             };
 
-            if (!config.brightDataKey) {
-              console.error('❌ BRIGHTDATA_API_KEY not set in GitHub Secrets');
+            // Check that at least one scraping service is configured
+            const hasScrapingBee = config.scrapingBeeKey && config.scrapingBeeKey.trim() !== '';
+            const hasBrightData = config.brightDataKey && config.brightDataCustomerId;
+
+            if (!hasScrapingBee && !hasBrightData) {
+              console.error('❌ No scraping service configured. Set either:');
+              console.error('   - SCRAPINGBEE_API_KEY, or');
+              console.error('   - BRIGHTDATA_API_KEY + BRIGHTDATA_CUSTOMER_ID');
               process.exit(1);
             }
 
-            if (!config.brightDataCustomerId) {
-              console.error('❌ BRIGHTDATA_CUSTOMER_ID not set in GitHub Secrets');
-              process.exit(1);
-            }
+            console.log('🔧 Configured services:');
+            if (hasScrapingBee) console.log('   ✓ ScrapingBee (primary)');
+            if (hasBrightData) console.log(`   ✓ Bright Data (fallback, zone: ${config.brightDataZone})`);
 
             const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
             const shows = showsData.shows;
