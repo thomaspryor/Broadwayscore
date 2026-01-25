@@ -37,44 +37,47 @@ jobs:
 
           const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-          async function fetchWithScrapingBee(url, apiKey) {
-            // Debug: Check if API key is being read
+          async function fetchWithBrightData(url, apiKey, customerId) {
             if (!apiKey || apiKey.trim() === '') {
-              throw new Error('ScrapingBee API key is empty or undefined');
+              throw new Error('Bright Data API key is empty or undefined');
             }
 
-            console.log(`  API key starts with: ${apiKey.substring(0, 10)}...`);
+            if (!customerId || customerId.trim() === '') {
+              throw new Error('Bright Data Customer ID is empty or undefined');
+            }
+
+            const proxy = {
+              host: 'brd.superproxy.io',
+              port: 33335,
+              auth: {
+                username: `brd-customer-${customerId.trim()}-zone-unblocker`,
+                password: apiKey.trim(),
+              },
+            };
 
             try {
-              const response = await axios.get('https://app.scrapingbee.com/api/v1/', {
-                params: {
-                  api_key: apiKey.trim(),
-                  url: url,
-                  render_js: true,
-                  premium_proxy: true,
-                  wait: 5000,
-                  block_ads: true,
-                  block_resources: false,
+              const response = await axios.get(url, {
+                proxy: proxy,
+                headers: {
+                  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
                 },
-                timeout: 30000,
+                timeout: 60000,
               });
 
               return response.data;
             } catch (error) {
               if (error.response) {
-                console.log(`  ScrapingBee error response:`, error.response.data);
-                console.log(`  Status: ${error.response.status}`);
-                console.log(`  Headers:`, JSON.stringify(error.response.headers));
+                console.log(`  Bright Data error - Status: ${error.response.status}`);
               }
               throw error;
             }
           }
 
-          async function archivePage(showId, aggregator, url, apiKey) {
+          async function archivePage(showId, aggregator, url, config) {
             try {
               console.log(`Fetching ${aggregator} for ${showId}...`);
               console.log(`  URL: ${url}`);
-              const html = await fetchWithScrapingBee(url, apiKey);
+              const html = await fetchWithBrightData(url, config.brightDataKey, config.brightDataCustomerId);
 
               const dir = `data/aggregator-archive/${aggregator}`;
               if (!fs.existsSync(dir)) {
@@ -109,9 +112,18 @@ jobs:
           }
 
           async function main() {
-            const apiKey = process.env.SCRAPINGBEE_API_KEY;
-            if (!apiKey) {
-              console.error('❌ SCRAPINGBEE_API_KEY not set in GitHub Secrets');
+            const config = {
+              brightDataKey: process.env.BRIGHTDATA_API_KEY,
+              brightDataCustomerId: process.env.BRIGHTDATA_CUSTOMER_ID,
+            };
+
+            if (!config.brightDataKey) {
+              console.error('❌ BRIGHTDATA_API_KEY not set in GitHub Secrets');
+              process.exit(1);
+            }
+
+            if (!config.brightDataCustomerId) {
+              console.error('❌ BRIGHTDATA_CUSTOMER_ID not set in GitHub Secrets');
               process.exit(1);
             }
 
@@ -144,18 +156,18 @@ jobs:
 
               // 1. DTLI: didtheylikeit.com/shows/{slug}/
               const dtliUrl = `https://didtheylikeit.com/shows/${slug}/`;
-              const dtliSuccess = await archivePage(show.id, 'dtli', dtliUrl, apiKey);
+              const dtliSuccess = await archivePage(show.id, 'dtli', dtliUrl, config);
               if (dtliSuccess) stats.dtli.success++; else stats.dtli.fail++;
 
               // 2. Show-Score: show-score.com/broadway-shows/{slug}
               const showScoreUrl = `https://www.show-score.com/broadway-shows/${slug}`;
-              const showScoreSuccess = await archivePage(show.id, 'show-score', showScoreUrl, apiKey);
+              const showScoreSuccess = await archivePage(show.id, 'show-score', showScoreUrl, config);
               if (showScoreSuccess) stats.showScore.success++; else stats.showScore.fail++;
 
               // 3. BroadwayWorld: Search for show reviews
               const bwwSearchQuery = encodeURIComponent(`${show.title} review roundup`);
               const bwwUrl = `https://www.broadwayworld.com/search/?q=${bwwSearchQuery}`;
-              const bwwSuccess = await archivePage(show.id, 'bww-roundups', bwwUrl, apiKey);
+              const bwwSuccess = await archivePage(show.id, 'bww-roundups', bwwUrl, config);
               if (bwwSuccess) stats.bww.success++; else stats.bww.fail++;
             }
 
