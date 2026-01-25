@@ -1,16 +1,16 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwaymetascore.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export const metadata: Metadata = {
   title: 'How It Works - Scoring Methodology',
-  description: 'Learn how BroadwayMetaScores calculates critic scores from aggregated reviews. Our transparent methodology uses weighted averages based on outlet tier.',
+  description: 'Learn how Broadway Scorecard calculates critic scores from aggregated reviews. Our transparent methodology uses weighted averages based on outlet tier.',
   alternates: {
     canonical: `${BASE_URL}/methodology`,
   },
   openGraph: {
-    title: 'How BroadwayMetaScores Works',
+    title: 'How Broadway Scorecard Works',
     description: 'Our transparent scoring methodology for aggregating Broadway critic reviews.',
     url: `${BASE_URL}/methodology`,
   },
@@ -26,7 +26,7 @@ const faqSchema = {
       name: 'How are Broadway show scores calculated?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'BroadwayMetaScores aggregates professional critic reviews and calculates a weighted average score. Reviews from major outlets like The New York Times (Tier 1) have full weight, while smaller publications have slightly reduced weights.',
+        text: 'Broadway Scorecard aggregates professional critic reviews and calculates a weighted average score. Reviews from major outlets like The New York Times (Tier 1) have full weight, while smaller publications have slightly reduced weights.',
       },
     },
     {
@@ -82,7 +82,7 @@ export default function MethodologyPage() {
         <section className="card p-5 sm:p-6">
           <h2 className="text-xl font-bold text-white mb-4">Overview</h2>
           <p className="text-gray-300">
-            BroadwayMetaScores aggregates professional critic reviews to calculate a weighted average score for each Broadway show. Reviews are sourced from major publications and weighted by outlet tier to reflect their influence and reach.
+            Broadway Scorecard aggregates professional critic reviews to calculate a weighted average score for each Broadway show. Reviews are sourced from major publications and weighted by outlet tier to reflect their influence and reach.
           </p>
         </section>
 

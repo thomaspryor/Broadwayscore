@@ -479,7 +479,7 @@ function HomePageInner() {
       {/* Hero Header */}
       <div className="mb-8 sm:mb-10">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 tracking-tight">
-          Broadway<span className="text-gradient">MetaScores</span>
+          Broadway<span className="text-gradient">Scorecard</span>
         </h1>
         <p className="text-gray-400 text-base sm:text-lg">
           Every show. Every review. One score.
@@ -690,7 +690,7 @@ export default function HomePage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-8 sm:mb-10">
           <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 tracking-tight">
-            Broadway<span className="text-gradient">MetaScores</span>
+            Broadway<span className="text-gradient">Scorecard</span>
           </h1>
           <p className="text-gray-400 text-base sm:text-lg">
             Every show. Every review. One score.

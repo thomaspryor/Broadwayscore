@@ -34,6 +34,19 @@ const CONFIG = {
   // Tier 1 outlets (highest priority)
   tier1Outlets: ['nytimes', 'nyt', 'vulture', 'vult', 'variety', 'hollywood-reporter', 'thr', 'newyorker'],
 
+  // Sites known to be accessible without login (prioritize these)
+  accessibleSites: [
+    'theatermania.com', 'theatrely.com', 'frontmezzjunkies.com', 'nystagereview.com',
+    'newyorktheatreguide.com', 'cititour.com', 'broadwayworld.com', 'playbill.com',
+    'timeout.com', 'chicagotribune.com', 'deadline.com', 'observer.com',
+  ],
+
+  // Sites known to block/require login
+  blockedSites: [
+    'nytimes.com', 'vulture.com', 'nymag.com', 'variety.com', 'hollywoodreporter.com',
+    'washingtonpost.com', 'nypost.com', 'nydailynews.com', 'newyorker.com',
+  ],
+
   // Paywalled domains and their credential env vars
   paywalledDomains: {
     'nytimes.com': { emailVar: 'NYT_EMAIL', passVar: 'NYT_PASSWORD' },
@@ -134,6 +147,24 @@ function findReviewsToProcess() {
           continue;
         }
 
+        // Check if site is accessible or blocked
+        const urlLower = data.url.toLowerCase();
+        const isAccessible = CONFIG.accessibleSites.some(s => urlLower.includes(s));
+        const isBlocked = CONFIG.blockedSites.some(s => urlLower.includes(s));
+
+        // Skip blocked sites unless we have credentials
+        if (isBlocked) {
+          const creds = getPaywallCredentials(data.url);
+          if (!creds || !creds.email) {
+            continue; // Skip - no credentials for this blocked site
+          }
+        }
+
+        // Priority: 1 = accessible tier1, 2 = accessible, 3 = blocked with creds
+        let priority = 3;
+        if (isAccessible && isTier1) priority = 1;
+        else if (isAccessible) priority = 2;
+
         reviews.push({
           reviewId,
           filePath,
@@ -144,7 +175,8 @@ function findReviewsToProcess() {
           critic: data.criticName,
           url: data.url,
           isTier1,
-          priority: isTier1 ? 1 : 2,
+          isAccessible,
+          priority,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -229,9 +261,23 @@ async function loginToSite(page, domain, email, password) {
 // Extract article text from page
 async function extractArticleText(page) {
   return await page.evaluate(() => {
-    // Common article selectors
+    // Try to find paragraphs with substantial text content (likely article content)
+    const findArticleParagraphs = () => {
+      const allParagraphs = Array.from(document.querySelectorAll('p'));
+      // Filter to paragraphs with meaningful content (>50 chars)
+      const contentParagraphs = allParagraphs.filter(p => {
+        const text = p.textContent.trim();
+        return text.length > 50 && !text.includes('cookie') && !text.includes('subscribe');
+      });
+      return contentParagraphs;
+    };
+
+    // Common article selectors - try in order
     const selectors = [
-      'article',
+      'article .entry-content',
+      'article .post-content',
+      'article .article-body',
+      'article .content',
       '[data-testid="article-body"]',
       '.article-body',
       '.story-body',
@@ -240,49 +286,82 @@ async function extractArticleText(page) {
       '.review-content',
       '.article__body',
       '.article-content',
+      '.rich-text',
+      '[class*="ArticleBody"]',
+      '[class*="article-body"]',
+      '[class*="review-body"]',
+      '[class*="story-body"]',
       'main article',
       '.story-content',
+      'article',
+      'main',
     ];
 
     let articleElement = null;
+    let bestText = '';
+
+    // Try each selector
     for (const selector of selectors) {
-      articleElement = document.querySelector(selector);
-      if (articleElement) break;
+      try {
+        const el = document.querySelector(selector);
+        if (el) {
+          const text = el.textContent.trim();
+          if (text.length > bestText.length) {
+            articleElement = el;
+            bestText = text;
+          }
+        }
+      } catch (e) {}
     }
 
-    if (!articleElement) {
-      // Fallback: try to find the main content area
-      articleElement = document.querySelector('main') || document.body;
+    // Also try finding substantial paragraphs
+    const paragraphs = findArticleParagraphs();
+    if (paragraphs.length > 3) {
+      const pText = paragraphs.map(p => p.textContent.trim()).join('\n\n');
+      if (pText.length > bestText.length) {
+        bestText = pText;
+      }
     }
 
-    // Clone to avoid modifying the page
-    const clone = articleElement.cloneNode(true);
+    // If still no good text, try the body with cleanup
+    if (bestText.length < 500) {
+      articleElement = document.body;
+      const clone = articleElement.cloneNode(true);
 
-    // Remove unwanted elements
-    const removeSelectors = [
-      'script', 'style', 'nav', 'header', 'footer', 'aside',
-      '.ad', '.advertisement', '.social-share', '.related-articles',
-      '.newsletter-signup', '.comments', '[data-ad]', '.sidebar',
-      '.nav', '.menu', '.breadcrumb', '.tags', '.author-bio',
-    ];
+      // Remove unwanted elements
+      const removeSelectors = [
+        'script', 'style', 'nav', 'header', 'footer', 'aside', 'noscript',
+        '.ad', '.advertisement', '.social-share', '.related-articles',
+        '.newsletter-signup', '.comments', '[data-ad]', '.sidebar',
+        '.nav', '.menu', '.breadcrumb', '.tags', '.author-bio',
+        '[class*="nav"]', '[class*="menu"]', '[class*="sidebar"]',
+        '[class*="footer"]', '[class*="header"]', '[class*="cookie"]',
+        '[class*="newsletter"]', '[class*="subscribe"]', '[class*="social"]',
+      ];
 
-    for (const selector of removeSelectors) {
-      clone.querySelectorAll(selector).forEach(el => el.remove());
+      for (const selector of removeSelectors) {
+        try {
+          clone.querySelectorAll(selector).forEach(el => el.remove());
+        } catch (e) {}
+      }
+
+      bestText = clone.textContent || '';
     }
-
-    // Get text content
-    let text = clone.textContent || '';
 
     // Clean up whitespace
-    text = text.replace(/\s+/g, ' ').trim();
+    let text = bestText.replace(/\s+/g, ' ').trim();
 
     // Remove common boilerplate phrases
     const boilerplate = [
-      /Subscribe to our newsletter/gi,
-      /Sign up for/gi,
+      /Subscribe to our newsletter[^.]*\./gi,
+      /Sign up for[^.]*\./gi,
       /Advertisement/gi,
       /Cookie Policy/gi,
       /Privacy Policy/gi,
+      /Terms of Service/gi,
+      /All rights reserved/gi,
+      /Share this article/gi,
+      /Read more:/gi,
     ];
 
     for (const pattern of boilerplate) {
@@ -385,12 +464,36 @@ async function processReview(page, review, loggedInDomains) {
 
     // Navigate to review URL
     await page.goto(review.url, {
-      waitUntil: 'networkidle',
-      timeout: 30000
+      waitUntil: 'domcontentloaded',
+      timeout: 45000
     });
 
-    // Wait for content to load
+    // Wait for JavaScript content to render
+    // Try multiple strategies
+    try {
+      // Wait for common article selectors
+      await Promise.race([
+        page.waitForSelector('article', { timeout: 10000 }),
+        page.waitForSelector('[class*="article"]', { timeout: 10000 }),
+        page.waitForSelector('[class*="review"]', { timeout: 10000 }),
+        page.waitForSelector('[class*="content"]', { timeout: 10000 }),
+        page.waitForSelector('main p', { timeout: 10000 }),
+        page.waitForTimeout(8000), // Fallback: just wait
+      ]);
+    } catch (e) {
+      // Continue anyway - content might still be there
+    }
+
+    // Additional wait for JS rendering
     await page.waitForTimeout(2000);
+
+    // Check for CAPTCHA or blocking
+    const pageContent = await page.content();
+    if (pageContent.includes('captcha') || pageContent.includes('DataDome') ||
+        pageContent.includes('Access Denied') || pageContent.includes('blocked')) {
+      console.log('  BLOCKED: CAPTCHA or access denied detected');
+      return { success: false, error: 'CAPTCHA or access blocked' };
+    }
 
     // Archive raw HTML
     const archivePath = await archiveHtml(page, review);
@@ -469,15 +572,36 @@ async function main() {
     return;
   }
 
-  // Launch browser
+  // Launch browser with stealth settings
   const browser = await chromium.launch({
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-blink-features=AutomationControlled',
+      '--disable-dev-shm-usage',
+    ]
   });
 
   const context = await browser.newContext({
-    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
     viewport: { width: 1280, height: 800 },
+    locale: 'en-US',
+    timezoneId: 'America/New_York',
+    // Avoid bot detection
+    extraHTTPHeaders: {
+      'Accept-Language': 'en-US,en;q=0.9',
+    },
+  });
+
+  // Add stealth scripts to avoid detection
+  await context.addInitScript(() => {
+    // Override webdriver property
+    Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+    // Override plugins
+    Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3, 4, 5] });
+    // Override languages
+    Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en'] });
   });
 
   const page = await context.newPage();

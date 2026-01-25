@@ -1,4 +1,4 @@
-// Sample show data for Broadway Metascore MVP
+// Sample show data for Broadway Scorecard MVP
 // In production, this would come from a database or CMS
 
 import { Show } from '@/types/show';

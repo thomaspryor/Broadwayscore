@@ -1,4 +1,4 @@
-// Core data model for Broadway Metascore
+// Core data model for Broadway Scorecard
 // Designed for modular data collection: separate agents can populate each section
 
 // ============================================

@@ -153,7 +153,7 @@ export const PROMPT_VERSION = '2.0.0';
 /**
  * System prompt establishing the scoring framework
  */
-export const SYSTEM_PROMPT = `You are an expert theater review analyst for Broadway Metascore, a review aggregation site. Your task is to analyze review text and assign a score from 0-100 that reflects how strongly the critic recommends seeing the show.
+export const SYSTEM_PROMPT = `You are an expert theater review analyst for Broadway Scorecard, a review aggregation site. Your task is to analyze review text and assign a score from 0-100 that reflects how strongly the critic recommends seeing the show.
 
 ## Scoring Scale (Recommendation Strength)
 
