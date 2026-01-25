@@ -83,7 +83,19 @@ jobs:
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected:"
+            git diff --stat data/grosses.json
           fi
+
+      - name: Validate data integrity
+        if: steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
+        run: node scripts/validate-data.js
+
+      - name: Build site (verify no breaking changes)
+        if: steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
+        run: npm run build
+        env:
+          NODE_ENV: production
 
       - name: Commit and push changes
         if: steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
@@ -96,9 +108,10 @@ jobs:
           git add data/grosses.json
           git commit -m "data: Update Broadway grosses for week ending $WEEK_ENDING
 
-          Automated weekly update of box office data.
+Automated weekly update of box office data.
 
-          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+Validated: ✅ Data integrity checked
+Build: ✅ Site builds successfully"
 
           git push
 
