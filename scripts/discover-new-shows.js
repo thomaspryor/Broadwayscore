@@ -50,77 +50,57 @@ function slugify(title) {
 function parseShowsFromBroadwayOrg(html) {
   const shows = [];
 
-  // Look for show cards in the HTML
-  // Broadway.org uses various patterns, this covers common ones
-  const showPatterns = [
-    // Show card with title and venue
-    /<article[^>]*class="[^"]*show[^"]*"[^>]*>[\s\S]*?<h[23][^>]*>([^<]+)<\/h[23]>[\s\S]*?(?:venue|theater)[^>]*>([^<]*)</gi,
-    // Alternative pattern
-    /<div[^>]*class="[^"]*show-card[^"]*"[^>]*>[\s\S]*?<[^>]*class="[^"]*title[^"]*"[^>]*>([^<]+)<[\s\S]*?<[^>]*class="[^"]*venue[^"]*"[^>]*>([^<]+)</gi,
-  ];
+  // Broadway.org 2026 structure: Each show is in a container with h4 title and date info
+  // Pattern: <h4>Show Title</h4> ... "Begins: Mar 27, 2026" or "Through: Jun 7, 2026"
 
-  // Simple extraction - look for show titles followed by venue info
-  const titleMatches = html.matchAll(/<h[23][^>]*class="[^"]*(?:title|name)[^"]*"[^>]*>([^<]+)<\/h[23]>/gi);
-  for (const match of titleMatches) {
-    const title = match[1].trim();
-    if (title && title.length > 2 && title.length < 100) {
-      // Try to find opening date near this title
-      const contextStart = Math.max(0, match.index - 500);
-      const contextEnd = Math.min(html.length, match.index + 500);
-      const context = html.substring(contextStart, contextEnd);
+  // Extract show cards - they contain h4 headings with show titles
+  const showCardPattern = /<div[^>]*>\s*<a[^>]*href="\/shows\/([^"]+)"[^>]*><\/a>\s*<div[^>]*>\s*<a[^>]*>\s*<h4[^>]*>([^<]+)<\/h4>/gi;
 
-      let openingDate = null;
-      let previewsStartDate = null;
+  let match;
+  while ((match = showCardPattern.exec(html)) !== null) {
+    const slug = match[1];
+    const title = match[2].trim();
 
-      // Look for dates in various formats
-      const datePatterns = [
-        /opening[:\s]+([A-Z][a-z]+\s+\d{1,2},?\s+\d{4})/i,
-        /opens[:\s]+([A-Z][a-z]+\s+\d{1,2},?\s+\d{4})/i,
-        /preview[s]?[:\s]+([A-Z][a-z]+\s+\d{1,2},?\s+\d{4})/i,
-      ];
+    // Find the context after this title to extract dates and venue
+    const contextStart = match.index;
+    const contextEnd = Math.min(html.length, contextStart + 2000);
+    const context = html.substring(contextStart, contextEnd);
 
-      for (const pattern of datePatterns) {
-        const dateMatch = context.match(pattern);
-        if (dateMatch) {
-          const parsedDate = new Date(dateMatch[1]);
-          if (!isNaN(parsedDate.getTime())) {
-            if (pattern.toString().includes('preview')) {
-              previewsStartDate = parsedDate.toISOString().split('T')[0];
-            } else {
-              openingDate = parsedDate.toISOString().split('T')[0];
-            }
-          }
-        }
+    // Extract venue (theater name)
+    let venue = 'TBA';
+    const venueMatch = context.match(/(?:href="\/broadway-theatres\/[^"]*"[^>]*>\s*<div[^>]*>\s*(?:<img[^>]*>)?\s*<div[^>]*>|<div[^>]*>\s*)([^<]+?)\s*(?:Theatre|Theater)/i);
+    if (venueMatch) {
+      venue = venueMatch[1].trim() + (venueMatch[0].includes('Theatre') ? ' Theatre' : ' Theater');
+    }
+
+    // Extract opening date (Begins: Date)
+    let openingDate = null;
+    const beginsMatch = context.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/i);
+    if (beginsMatch) {
+      const parsedDate = new Date(beginsMatch[1]);
+      if (!isNaN(parsedDate.getTime())) {
+        openingDate = parsedDate.toISOString().split('T')[0];
       }
+    }
 
+    // Extract closing date (Through: Date)
+    let closingDate = null;
+    const throughMatch = context.match(/Through:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/i);
+    if (throughMatch) {
+      const parsedDate = new Date(throughMatch[1]);
+      if (!isNaN(parsedDate.getTime())) {
+        closingDate = parsedDate.toISOString().split('T')[0];
+      }
+    }
+
+    if (title && title.length > 2 && title.length < 150) {
       shows.push({
         title: title,
-        venue: 'TBA',
+        venue: venue,
         openingDate: openingDate,
-        previewsStartDate: previewsStartDate,
+        closingDate: closingDate,
+        slug: slug,
       });
-    }
-  }
-
-  // Also check for JSON-LD structured data
-  const jsonLdMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i);
-  if (jsonLdMatch) {
-    try {
-      const jsonLd = JSON.parse(jsonLdMatch[1]);
-      if (Array.isArray(jsonLd)) {
-        for (const item of jsonLd) {
-          if (item['@type'] === 'Event' || item['@type'] === 'TheaterEvent') {
-            const startDate = item.startDate ? new Date(item.startDate).toISOString().split('T')[0] : null;
-            shows.push({
-              title: item.name,
-              venue: item.location?.name || 'TBA',
-              openingDate: startDate,
-            });
-          }
-        }
-      }
-    } catch (e) {
-      // JSON-LD parsing failed, continue with regex results
     }
   }
 
@@ -203,13 +183,24 @@ async function discoverShows() {
     // Add new shows to database
     for (const show of newShows) {
       // Determine status based on opening date
-      const openingDate = show.openingDate || new Date().toISOString().split('T')[0];
-      const openingDateObj = new Date(openingDate);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      let openingDate;
+      let status;
 
-      // If opening date is in the future, mark as previews
-      const status = openingDateObj > today ? 'previews' : 'open';
+      if (show.openingDate) {
+        // Show has an opening date from Broadway.org
+        openingDate = show.openingDate;
+        const openingDateObj = new Date(openingDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        // If opening date is in the future, mark as previews
+        status = openingDateObj > today ? 'previews' : 'open';
+      } else {
+        // No opening date found - show is already running
+        // Use placeholder date (will need manual update)
+        openingDate = new Date().toISOString().split('T')[0];
+        status = 'open';
+      }
 
       data.shows.push({
         id: show.id,
@@ -217,7 +208,7 @@ async function discoverShows() {
         slug: show.slug,
         venue: show.venue,
         openingDate: openingDate,
-        closingDate: null,
+        closingDate: show.closingDate || null,
         status: status,
         type: 'musical', // Default, needs manual verification
         runtime: null,
