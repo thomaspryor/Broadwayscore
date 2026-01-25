@@ -38,6 +38,7 @@ on:
 
 env:
   ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
 jobs:
   score-reviews:
@@ -97,11 +98,18 @@ jobs:
           # Always verbose in CI
           ARGS="$ARGS --verbose"
 
+          # Always use ensemble mode (Claude + OpenAI)
+          ARGS="$ARGS --ensemble"
+
           echo "args=$ARGS" >> $GITHUB_OUTPUT
 
       - name: Run LLM scoring pipeline
         run: |
           npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts ${{ steps.build-args.outputs.args }}
+
+      - name: Rebuild reviews.json
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: node scripts/rebuild-all-reviews.js
 
       - name: Check for changes
         id: check-changes

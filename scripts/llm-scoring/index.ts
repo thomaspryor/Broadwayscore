@@ -263,10 +263,42 @@ async function main(): Promise<void> {
     ? allFiles.filter(f => !(f.data as any).llmScore)
     : allFiles;
 
-  // Apply text length filter
-  const validFiles = filesToProcess.filter(f =>
-    f.data.fullText && f.data.fullText.length >= options.minTextLength
-  );
+  // Helper to get scorable text (fullText or excerpts)
+  const getScorableText = (data: ReviewTextFile): string | null => {
+    // Check fullText first (but not if it's an error page)
+    if (data.fullText && data.fullText.length >= 100) {
+      const lower = data.fullText.toLowerCase();
+      if (!lower.includes('page not found') &&
+          !lower.includes('404') &&
+          !lower.includes('access denied')) {
+        return data.fullText;
+      }
+    }
+
+    // Fall back to excerpts
+    const excerpts: string[] = [];
+    if (data.bwwExcerpt) excerpts.push(data.bwwExcerpt);
+    if (data.dtliExcerpt && data.dtliExcerpt !== data.bwwExcerpt) {
+      excerpts.push(data.dtliExcerpt);
+    }
+    if (data.showScoreExcerpt &&
+        data.showScoreExcerpt !== data.bwwExcerpt &&
+        data.showScoreExcerpt !== data.dtliExcerpt) {
+      excerpts.push(data.showScoreExcerpt);
+    }
+
+    if (excerpts.length > 0) {
+      const combined = excerpts.join('\n\n');
+      if (combined.length >= options.minTextLength) {
+        return combined;
+      }
+    }
+
+    return null;
+  };
+
+  // Apply text length filter - now includes reviews with excerpts
+  const validFiles = filesToProcess.filter(f => getScorableText(f.data) !== null);
 
   // Apply limit
   const finalFiles = options.limit
