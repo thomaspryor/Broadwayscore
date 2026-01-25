@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding } from '@/lib/data';
 import { generateShowSchema, generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { getOptimizedImageUrl } from '@/lib/images';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
 import BoxOfficeStats from '@/components/BoxOfficeStats';
@@ -470,7 +471,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
               {show.images?.poster ? (
                 <img
-                  src={show.images.poster}
+                  src={getOptimizedImageUrl(show.images.poster, 'poster')}
                   alt={show.title}
                   width={176}
                   height={264}
@@ -480,7 +481,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 />
               ) : show.images?.thumbnail ? (
                 <img
-                  src={show.images.thumbnail}
+                  src={getOptimizedImageUrl(show.images.thumbnail, 'poster')}
                   alt={show.title}
                   width={176}
                   height={264}
@@ -490,7 +491,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 />
               ) : show.images?.hero ? (
                 <img
-                  src={show.images.hero}
+                  src={getOptimizedImageUrl(show.images.hero, 'poster')}
                   alt={show.title}
                   width={176}
                   height={264}

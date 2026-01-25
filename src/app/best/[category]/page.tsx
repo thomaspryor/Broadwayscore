@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBestOfList, getAllBestOfCategories, BestOfCategory } from '@/lib/data';
 import { generateBreadcrumbSchema, generateItemListSchema } from '@/lib/seo';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -140,9 +141,10 @@ export default function BestOfPage({ params }: { params: { category: string } })
                 <div className="w-16 h-16 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
                   {show.images?.thumbnail ? (
                     <img
-                      src={show.images.thumbnail}
+                      src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
                       alt={`${show.title} Broadway ${show.type}`}
                       className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
