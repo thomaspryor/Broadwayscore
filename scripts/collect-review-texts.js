@@ -4,10 +4,10 @@
  * Fetches full review texts using Playwright, archives raw HTML,
  * extracts article content, validates, and updates review JSON files.
  *
- * Environment variables:
- *   NYT_EMAIL, NYT_PASSWORD - New York Times credentials
+ * Environment variables (from GitHub Secrets):
+ *   NYT_EMAIL, NYT_PASSWORD - New York Times credentials (secrets: NYT_EMAIL, NYTIMES_PASSWORD)
  *   VULTURE_EMAIL, VULTURE_PASSWORD - Vulture/NY Mag credentials
- *   WAPO_EMAIL, WAPO_PASSWORD - Washington Post credentials
+ *   WAPO_EMAIL, WAPO_PASSWORD - Washington Post credentials (secrets: WAPO_EMAIL, WASHPOST_PASSWORD)
  *   BATCH_SIZE - Reviews per batch (default: 10)
  *   MAX_REVIEWS - Max reviews to process (default: 50, 0 = all)
  *   PRIORITY - 'tier1' or 'all' (default: tier1)
