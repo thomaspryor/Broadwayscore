@@ -45,29 +45,35 @@ jobs:
 
             console.log(`  API key starts with: ${apiKey.substring(0, 10)}...`);
 
-            const response = await axios.get('https://app.scrapingbee.com/api/v1/', {
-              params: {
-                api_key: apiKey.trim(),
-                url: url,
-                render_js: true,
-                premium_proxy: true,
-                wait: 5000,
-                block_ads: true,
-                block_resources: false,
-              },
-              timeout: 30000,
-            });
+            try {
+              const response = await axios.get('https://app.scrapingbee.com/api/v1/', {
+                params: {
+                  api_key: apiKey.trim(),
+                  url: url,
+                  render_js: true,
+                  premium_proxy: true,
+                  wait: 5000,
+                  block_ads: true,
+                  block_resources: false,
+                },
+                timeout: 30000,
+              });
 
-            if (response.status === 200) {
               return response.data;
-            } else {
-              throw new Error(`ScrapingBee returned ${response.status}`);
+            } catch (error) {
+              if (error.response) {
+                console.log(`  ScrapingBee error response:`, error.response.data);
+                console.log(`  Status: ${error.response.status}`);
+                console.log(`  Headers:`, JSON.stringify(error.response.headers));
+              }
+              throw error;
             }
           }
 
           async function archivePage(showId, aggregator, url, apiKey) {
             try {
               console.log(`Fetching ${aggregator} for ${showId}...`);
+              console.log(`  URL: ${url}`);
               const html = await fetchWithScrapingBee(url, apiKey);
 
               const dir = `data/aggregator-archive/${aggregator}`;
