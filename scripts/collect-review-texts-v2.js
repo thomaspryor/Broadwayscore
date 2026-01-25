@@ -414,9 +414,68 @@ function saveArchive(review, html, method) {
   return archivePath;
 }
 
+// Classify text quality based on rules:
+// - full: >1500 chars AND mentions show title AND >300 words
+// - partial: 500-1500 chars OR mentions show title but <300 words
+// - excerpt: <500 chars
+// - missing: no text
+function classifyTextQuality(text, showTitle, wordCount) {
+  if (!text || text.trim().length === 0) {
+    return 'missing';
+  }
+
+  const charCount = text.length;
+  const titleLower = showTitle ? showTitle.toLowerCase() : '';
+  const textLower = text.toLowerCase();
+  const hasShowTitle = titleLower && textLower.includes(titleLower);
+
+  // Full: >1500 chars AND mentions show title AND >300 words
+  if (charCount > 1500 && hasShowTitle && wordCount > 300) {
+    return 'full';
+  }
+
+  // Partial: 500-1500 chars OR mentions show title but <300 words
+  if (charCount >= 500 && charCount <= 1500) {
+    return 'partial';
+  }
+  if (hasShowTitle && wordCount < 300 && charCount >= 500) {
+    return 'partial';
+  }
+  if (charCount > 500 && charCount < 1500) {
+    return 'partial';
+  }
+  // Also partial if we have good chars but didn't meet full criteria
+  if (charCount > 1500 && (!hasShowTitle || wordCount <= 300)) {
+    return 'partial';
+  }
+
+  // Excerpt: <500 chars
+  if (charCount < 500) {
+    return 'excerpt';
+  }
+
+  return 'partial';
+}
+
+// Map fetch method to standardized sourceMethod
+function mapSourceMethod(method) {
+  const map = {
+    'playwright': 'playwright',
+    'playwright-stealth': 'playwright',
+    'scrapingbee': 'scrapingbee',
+    'archive.org': 'archive',
+    'archive': 'archive',
+    'webfetch': 'webfetch',
+  };
+  return map[method] || method;
+}
+
 // Update review JSON with text
 function updateReviewJson(review, text, archivePath, method) {
   const wordCount = text.split(/\s+/).length;
+  const showTitle = review.data.showId ? review.data.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
+  const textQuality = classifyTextQuality(text, showTitle, wordCount);
+  const sourceMethod = mapSourceMethod(method);
 
   const updatedData = {
     ...review.data,
@@ -426,6 +485,8 @@ function updateReviewJson(review, text, archivePath, method) {
     textFetchedAt: new Date().toISOString(),
     textFetchMethod: method,
     archivePath: archivePath,
+    textQuality: textQuality,
+    sourceMethod: sourceMethod,
   };
 
   fs.writeFileSync(review.filePath, JSON.stringify(updatedData, null, 2));
