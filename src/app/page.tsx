@@ -213,7 +213,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
             src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
             alt=""
             aria-hidden="true"
-            loading="lazy"
+            loading={index < 4 ? "eager" : "lazy"}
+            fetchPriority={index < 4 ? "high" : "auto"}
             width={96}
             height={96}
             decoding="async"
@@ -265,7 +266,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
 // Compact card for featured rows
 // NOTE: Poster images use 2:3 aspect ratio (standard Broadway poster format, e.g., 480x720)
 // Always preserve original aspect ratio - never crop show artwork
-const MiniShowCard = memo(function MiniShowCard({ show }: { show: ComputedShow }) {
+const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { show: ComputedShow; priority?: boolean }) {
   const score = show.criticScore?.score;
 
   return (
@@ -280,7 +281,8 @@ const MiniShowCard = memo(function MiniShowCard({ show }: { show: ComputedShow }
             src={getOptimizedImageUrl(show.images.poster || show.images.thumbnail, 'card')}
             alt=""
             aria-hidden="true"
-            loading="lazy"
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : "auto"}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
@@ -327,8 +329,8 @@ function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: Comp
         )}
       </div>
       <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-        {shows.map((show) => (
-          <MiniShowCard key={show.id} show={show} />
+        {shows.map((show, index) => (
+          <MiniShowCard key={show.id} show={show} priority={index < 4} />
         ))}
       </div>
     </section>
