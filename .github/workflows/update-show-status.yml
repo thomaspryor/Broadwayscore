@@ -35,14 +35,23 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Install dependencies
+        run: npm ci || npm install
+
       # Step 1: Update existing show statuses
       - name: Update show statuses
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/update-show-status.js
 
       # Step 2: Discover new shows (unless skipped)
       - name: Discover new shows
         id: discover
         if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/discover-new-shows.js
 
       # Step 3: Check for any changes

@@ -289,24 +289,45 @@ Show pages display box office data in two rows of stat cards:
 - Red down arrow for negative changes
 - Only shows when comparison data is available
 
-### MCP Setup for Review Aggregators
+### Web Scraping Setup
 
-The review aggregator sites (DTLI, Show-Score, BroadwayWorld) block standard web requests. To access them, we use the ScrapingBee MCP server.
+**For GitHub Actions (automated scripts):**
 
-**Setup (one-time):**
-1. Get free API key (1,000 credits): https://www.scrapingbee.com/
-2. Edit `.mcp.json` in the project root - replace `YOUR_API_KEY_HERE` with your actual key
-3. **Start a NEW Claude Code session** (MCP servers only load at startup, not hot-reloaded)
+Scripts use the shared `scripts/lib/scraper.js` module with automatic fallback:
 
-**Usage:**
-Once configured, use the `scrapingbee_get_page_html` tool to fetch aggregator pages:
+1. **Bright Data** (primary) - Returns clean markdown
+2. **ScrapingBee** (fallback) - Returns HTML
+3. **Playwright** (last resort) - Browser automation
+
+**Environment Variables:**
+```bash
+BRIGHTDATA_TOKEN=3686bf13-cbde-4a91-b54a-f721a73c0ed0
+SCRAPINGBEE_API_KEY=TM5B2FK5G0BNFS2IL2T1OUGYJR7KP49UEYZ33KUUYWJ3NZC8ZJG6BMAXI83IQRD3017UTTNX5JISNDMW
 ```
-- didtheylikeit.com/shows/[show-name]/ → Get review count breakdown (thumbs up/flat/down)
-- show-score.com/broadway-shows/[show] → Get full critic review list with outlets
-- broadwayworld.com review roundups → Get additional outlets
+
+**Scripts that use scraping:**
+- `scripts/discover-new-shows.js` - Broadway.org show discovery
+- `scripts/check-closing-dates.js` - Closing date monitoring
+- `scripts/scrape-grosses.ts` - BroadwayWorld box office (uses Playwright directly)
+- `scripts/scrape-alltime.ts` - BroadwayWorld all-time stats (uses Playwright directly)
+
+**For Claude Code (MCP - local development):**
+
+MCP servers configured in `.mcp.json`:
+- **Bright Data MCP** - For all general scraping
+- **ScrapingBee MCP** - For aggregator sites (Note: Has 431 header errors, prefer Bright Data)
+- **Playwright MCP** - For complex JavaScript-heavy sites
+
+**Usage in Claude:**
+```
+Use mcp__brightdata__scrape_as_markdown tool to fetch pages
+Use Playwright MCP for BroadwayWorld and complex sites
 ```
 
-**Important:** Always cross-check our review count against these 3 aggregators before finalizing a show's reviews.
+**Important:** Always cross-check review counts against these 3 aggregators:
+- didtheylikeit.com/shows/[show-name]/
+- show-score.com/broadway-shows/[show]
+- broadwayworld.com review roundups
 
 ### Show Score Integration
 
