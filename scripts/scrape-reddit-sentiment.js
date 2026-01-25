@@ -3,7 +3,7 @@
 /**
  * Scrape Reddit r/broadway for show discussions and analyze sentiment
  *
- * Uses Reddit's public JSON endpoints - NO API CREDENTIALS NEEDED!
+ * Uses ScrapingBee to fetch Reddit JSON endpoints (bypasses datacenter IP blocks)
  *
  * This script:
  * 1. Searches r/broadway for discussions about each show
@@ -13,6 +13,7 @@
  * 5. Updates data/audience-buzz.json with Reddit data
  *
  * Environment variables:
+ *   SCRAPINGBEE_API_KEY - ScrapingBee API key for fetching Reddit
  *   ANTHROPIC_API_KEY - Claude API key for sentiment analysis
  *
  * Usage:
@@ -30,10 +31,10 @@ const dryRun = args.includes('--dry-run');
 const limitArg = args.find(a => a.startsWith('--limit='));
 const showLimit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 
-// Reddit config (public endpoints, no auth needed)
-const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+// Config
+const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 const SUBREDDIT = 'broadway';
-const COMMENTS_PER_SHOW = 50; // Target number of comments to analyze per show
+const COMMENTS_PER_SHOW = 50;
 
 // Load shows data
 const showsPath = path.join(__dirname, '../data/shows.json');
@@ -43,45 +44,39 @@ const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
 
 /**
- * Make a request to Reddit's public JSON endpoint
+ * Fetch URL through ScrapingBee proxy
  */
-function redditFetch(url) {
+function fetchViaScrapingBee(url) {
   return new Promise((resolve, reject) => {
-    // Add .json to URL if not present
-    if (!url.includes('.json')) {
-      url = url.replace(/\/?$/, '.json');
+    if (!SCRAPINGBEE_KEY) {
+      reject(new Error('SCRAPINGBEE_API_KEY must be set'));
+      return;
     }
 
-    const urlObj = new URL(url);
+    // ScrapingBee with premium proxy for Reddit (residential IPs)
+    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false&premium_proxy=true`;
 
-    const options = {
-      hostname: urlObj.hostname,
-      path: urlObj.pathname + urlObj.search,
-      method: 'GET',
-      headers: {
-        'User-Agent': USER_AGENT,
-        'Accept': 'application/json',
-      },
-    };
-
-    const req = https.request(options, (res) => {
+    https.get(apiUrl, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
-        if (res.statusCode === 429) {
-          reject(new Error('Rate limited by Reddit - please wait a few minutes'));
-          return;
-        }
-        try {
-          resolve(JSON.parse(data));
-        } catch (e) {
-          reject(new Error(`Failed to parse JSON: ${data.slice(0, 100)}`));
+        if (res.statusCode === 200) {
+          try {
+            // Try to parse as JSON
+            resolve(JSON.parse(data));
+          } catch (e) {
+            // If it's not JSON, check if it's an error page
+            if (data.includes('<html') || data.includes('<!DOCTYPE')) {
+              reject(new Error('Got HTML instead of JSON - Reddit may be blocking'));
+            } else {
+              reject(new Error(`Failed to parse: ${data.slice(0, 100)}`));
+            }
+          }
+        } else {
+          reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 100)}`));
         }
       });
-    });
-
-    req.on('error', reject);
-    req.end();
+    }).on('error', reject);
   });
 }
 
@@ -96,21 +91,23 @@ function sleep(ms) {
  * Search Reddit for show discussions
  */
 async function searchShowDiscussions(showTitle) {
-  // Build search queries - look for people who "saw" or "watched" the show
+  // Clean show title for search
+  const cleanTitle = showTitle.replace(/[()]/g, '').trim();
+
+  // Build search queries
   const queries = [
-    `${showTitle} saw`,
-    `${showTitle} review`,
-    `${showTitle} thoughts`,
+    `${cleanTitle} saw`,
+    `${cleanTitle} review`,
   ];
 
   const allPosts = [];
 
   for (const query of queries) {
     const encoded = encodeURIComponent(query);
-    const url = `https://www.reddit.com/r/${SUBREDDIT}/search.json?q=${encoded}&restrict_sr=on&sort=relevance&t=all&limit=25`;
+    const url = `https://old.reddit.com/r/${SUBREDDIT}/search.json?q=${encoded}&restrict_sr=on&sort=relevance&t=all&limit=25`;
 
     try {
-      const response = await redditFetch(url);
+      const response = await fetchViaScrapingBee(url);
       if (response.data?.children) {
         allPosts.push(...response.data.children.map(c => c.data));
       }
@@ -118,8 +115,8 @@ async function searchShowDiscussions(showTitle) {
       console.error(`  Search failed for "${query}":`, e.message);
     }
 
-    // Rate limiting - Reddit limits to ~60 requests per minute for unauthenticated
-    await sleep(1500);
+    // Rate limiting
+    await sleep(2000);
   }
 
   // Deduplicate by post ID
@@ -135,16 +132,16 @@ async function searchShowDiscussions(showTitle) {
  * Get comments from a post
  */
 async function getPostComments(postId, subreddit = SUBREDDIT) {
-  const url = `https://www.reddit.com/r/${subreddit}/comments/${postId}.json?limit=100&depth=2`;
+  const url = `https://old.reddit.com/r/${subreddit}/comments/${postId}.json?limit=100&depth=2`;
 
   try {
-    const response = await redditFetch(url);
+    const response = await fetchViaScrapingBee(url);
     // Response is array: [post, comments]
     if (Array.isArray(response) && response[1]?.data?.children) {
       return response[1].data.children
-        .filter(c => c.kind === 't1') // Only comments
+        .filter(c => c.kind === 't1')
         .map(c => c.data)
-        .filter(c => c.body && c.body.length >= 50); // Min length
+        .filter(c => c.body && c.body.length >= 50);
     }
   } catch (e) {
     console.error(`  Failed to get comments for ${postId}:`, e.message);
@@ -175,24 +172,21 @@ function filterAudienceComments(comments, showTitle) {
   const exclusionPatterns = [
     /\b(cast recording|soundtrack|album|spotify|apple music)\b/i,
     /\b(movie|film|streaming|netflix|disney\+)\b/i,
-    /\b(tour|touring|national tour)\b/i, // Focus on Broadway
-    /\b(anyone know|does anyone|when does|how much|where can)\b/i, // Questions, not reviews
+    /\b(tour|touring|national tour)\b/i,
+    /\b(anyone know|does anyone|when does|how much|where can)\b/i,
   ];
 
   return comments.filter(comment => {
     const text = comment.body;
 
-    // Exclude if matches exclusion patterns
     if (exclusionPatterns.some(p => p.test(text))) {
       return false;
     }
 
-    // Include if matches audience indicators
     if (audienceIndicators.some(p => p.test(text))) {
       return true;
     }
 
-    // Include if mentions show title and has opinion words
     const opinionWords = /\b(loved|hated|amazing|incredible|terrible|boring|mediocre|overrated|underrated|favorite|worst|best|fantastic|awful|disappointed|blown away|meh)\b/i;
     const mentionsShow = text.toLowerCase().includes(showTitle.toLowerCase().replace(/[^\w\s]/g, ''));
 
@@ -226,7 +220,6 @@ Also assign a confidence score: "high", "medium", or "low".
 Comments to analyze:
 `;
 
-  // Batch comments (max 10 per request to stay under token limits)
   const batchSize = 10;
   const results = [];
 
@@ -263,7 +256,6 @@ Respond with a JSON array, one object per comment:
       console.error('  Claude analysis failed:', e.message);
     }
 
-    // Rate limiting for Claude
     await sleep(500);
   }
 
@@ -276,7 +268,6 @@ Respond with a JSON array, one object per comment:
 function calculateScore(sentimentResults) {
   if (sentimentResults.length === 0) return null;
 
-  // Weight by upvotes and confidence
   const weights = {
     high: 1.0,
     medium: 0.7,
@@ -328,7 +319,6 @@ function calculateScore(sentimentResults) {
 async function processShow(show) {
   console.log(`\nProcessing: ${show.title}`);
 
-  // Search for discussions
   const posts = await searchShowDiscussions(show.title);
   console.log(`  Found ${posts.length} posts`);
 
@@ -336,21 +326,18 @@ async function processShow(show) {
     return null;
   }
 
-  // Get comments from top posts
   let allComments = [];
-  for (const post of posts.slice(0, 8)) { // Top 8 posts (reduced to respect rate limits)
+  for (const post of posts.slice(0, 5)) { // Reduced to 5 posts to save API calls
     const comments = await getPostComments(post.id, post.subreddit || SUBREDDIT);
     allComments.push(...comments);
 
     if (allComments.length >= COMMENTS_PER_SHOW * 2) break;
 
-    // Rate limiting
-    await sleep(1500);
+    await sleep(2000);
   }
 
   console.log(`  Collected ${allComments.length} comments`);
 
-  // Filter to audience reviews
   const audienceComments = filterAudienceComments(allComments, show.title);
   console.log(`  Filtered to ${audienceComments.length} audience comments`);
 
@@ -359,17 +346,14 @@ async function processShow(show) {
     return null;
   }
 
-  // Take top comments by upvotes
   const topComments = audienceComments
     .sort((a, b) => (b.score || 0) - (a.score || 0))
     .slice(0, COMMENTS_PER_SHOW);
 
-  // Analyze sentiment
   console.log(`  Analyzing sentiment of ${topComments.length} comments...`);
   const sentimentResults = await analyzeSentiment(topComments);
   console.log(`  Got ${sentimentResults.length} sentiment results`);
 
-  // Calculate aggregate score
   const scoreData = calculateScore(sentimentResults);
   if (!scoreData) {
     return null;
@@ -397,26 +381,24 @@ function updateAudienceBuzz(showId, redditData) {
 
   audienceBuzz.shows[showId].sources.reddit = redditData;
 
-  // Recalculate combined score
   const sources = audienceBuzz.shows[showId].sources;
   const scores = [];
   const weights = [];
 
   if (sources.showScore?.score) {
     scores.push(sources.showScore.score);
-    weights.push(0.4); // 40% weight
+    weights.push(0.4);
   }
   if (sources.mezzanine?.score) {
     scores.push(sources.mezzanine.score);
-    weights.push(0.4); // 40% weight
+    weights.push(0.4);
   }
   if (sources.reddit?.score) {
     scores.push(sources.reddit.score);
-    weights.push(0.2); // 20% weight for Reddit (more volatile)
+    weights.push(0.2);
   }
 
   if (scores.length > 0) {
-    // Normalize weights
     const totalWeight = weights.reduce((a, b) => a + b, 0);
     const normalizedWeights = weights.map(w => w / totalWeight);
 
@@ -426,7 +408,6 @@ function updateAudienceBuzz(showId, redditData) {
 
     audienceBuzz.shows[showId].combinedScore = combined;
 
-    // Update designation
     if (combined >= 90) audienceBuzz.shows[showId].designation = 'Loving It';
     else if (combined >= 75) audienceBuzz.shows[showId].designation = 'Liking It';
     else if (combined >= 60) audienceBuzz.shows[showId].designation = 'Take-it-or-Leave-it';
@@ -439,9 +420,13 @@ function updateAudienceBuzz(showId, redditData) {
  */
 async function main() {
   console.log('Reddit Sentiment Scraper for Broadway Scorecard');
-  console.log('Using public JSON endpoints (no API credentials needed)\n');
+  console.log('Using ScrapingBee with premium proxy for Reddit access\n');
 
-  // Get shows to process
+  if (!SCRAPINGBEE_KEY) {
+    console.error('Error: SCRAPINGBEE_API_KEY environment variable must be set');
+    process.exit(1);
+  }
+
   let shows = showsData.shows.filter(s => s.status === 'open' || s.status === 'closed');
 
   if (showFilter) {
@@ -474,11 +459,9 @@ async function main() {
       console.error(`Error processing ${show.title}:`, e.message);
     }
 
-    // Rate limiting between shows (3 seconds to be safe with public endpoints)
     await sleep(3000);
   }
 
-  // Save updated audience-buzz.json
   if (!dryRun && successful > 0) {
     audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
     audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
