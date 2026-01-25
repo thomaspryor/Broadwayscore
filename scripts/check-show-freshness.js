@@ -15,10 +15,69 @@ const fs = require('fs');
 const path = require('path');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
+const GROSSES_FILE = path.join(__dirname, '..', 'data', 'grosses.json');
 const REPORT_FILE = path.join(__dirname, '..', 'data', 'freshness-report.json');
 
 const dryRun = process.argv.includes('--dry-run');
 const jsonOutput = process.argv.includes('--json');
+
+function loadGrosses() {
+  try {
+    return JSON.parse(fs.readFileSync(GROSSES_FILE, 'utf8'));
+  } catch (e) {
+    return null;
+  }
+}
+
+function checkGrossesFreshness() {
+  const grosses = loadGrosses();
+  if (!grosses) {
+    return { status: 'missing', message: 'grosses.json not found' };
+  }
+
+  const result = {
+    lastUpdated: grosses.lastUpdated,
+    weekEnding: grosses.weekEnding,
+    showCount: Object.keys(grosses.shows || {}).length,
+    status: 'ok',
+    daysStale: 0,
+  };
+
+  // Check if data is stale (more than 10 days old)
+  if (grosses.lastUpdated) {
+    const lastUpdate = new Date(grosses.lastUpdated);
+    const now = new Date();
+    const daysSinceUpdate = Math.floor((now - lastUpdate) / (1000 * 60 * 60 * 24));
+    result.daysStale = daysSinceUpdate;
+
+    if (daysSinceUpdate > 10) {
+      result.status = 'stale';
+      result.message = `Grosses data is ${daysSinceUpdate} days old (last updated ${grosses.lastUpdated.split('T')[0]})`;
+    } else if (daysSinceUpdate > 7) {
+      result.status = 'warning';
+      result.message = `Grosses data is ${daysSinceUpdate} days old - update expected soon`;
+    }
+  }
+
+  // Check week ending date
+  if (grosses.weekEnding) {
+    // Parse M/D/YYYY format
+    const parts = grosses.weekEnding.split('/');
+    if (parts.length === 3) {
+      const weekEnd = new Date(parts[2], parts[0] - 1, parts[1]);
+      const now = new Date();
+      const daysSinceWeekEnd = Math.floor((now - weekEnd) / (1000 * 60 * 60 * 24));
+
+      // If week ended more than 10 days ago, data might be stale
+      if (daysSinceWeekEnd > 10 && result.status === 'ok') {
+        result.status = 'warning';
+        result.message = `Week ending ${grosses.weekEnding} is ${daysSinceWeekEnd} days ago`;
+      }
+    }
+  }
+
+  return result;
+}
 
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
@@ -115,6 +174,9 @@ function checkFreshness() {
   const openShows = allShows.filter(s => s.status === 'open');
   const closedShows = allShows.filter(s => s.status === 'closed');
 
+  // Check grosses freshness
+  const grossesStatus = checkGrossesFreshness();
+
   const report = {
     generatedAt: timestamp,
     summary: {
@@ -122,6 +184,7 @@ function checkFreshness() {
       openShows: openShows.length,
       closedShows: closedShows.length,
     },
+    grosses: grossesStatus,
     statusChanges: {
       autoClosed: [],
     },
@@ -213,6 +276,21 @@ function checkFreshness() {
 }
 
 function printReport(report) {
+  // Box Office Data Status
+  if (report.grosses) {
+    const g = report.grosses;
+    const icon = g.status === 'ok' ? '✅' : g.status === 'warning' ? '⚠️' : g.status === 'stale' ? '🔴' : '❓';
+    console.log('BOX OFFICE DATA:');
+    console.log('-'.repeat(40));
+    console.log(`  ${icon} Week ending: ${g.weekEnding || 'unknown'}`);
+    console.log(`     Last updated: ${g.lastUpdated ? g.lastUpdated.split('T')[0] : 'unknown'} (${g.daysStale} days ago)`);
+    console.log(`     Shows tracked: ${g.showCount}`);
+    if (g.message) {
+      console.log(`     Status: ${g.message}`);
+    }
+    console.log('');
+  }
+
   // Status Changes
   if (report.statusChanges.autoClosed.length > 0) {
     console.log('AUTO-CLOSED (closing date passed):');
