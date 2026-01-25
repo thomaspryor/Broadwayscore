@@ -71,16 +71,18 @@ A website aggregating Broadway show reviews into composite "metascores" (like Me
 ## Current State (January 2026)
 
 ### What's Working
-- **22 Broadway shows** with full metadata (synopsis, cast, creative team, venues)
+- **40 Broadway shows** with full metadata (synopsis, cast, creative team, venues)
+- **1,150+ critic reviews** across all shows in `data/review-texts/`
 - **Critics-only scoring** (V1 approach)
-- **Two Strangers** has complete review data (16 critic reviews) as proof of concept
 - **TodayTix-inspired UI** with card layout, hero images, show detail pages
 - **External CDN images** from Contentful (TodayTix's CDN)
+- **URL-based filtering** with shareable filter state (?status=now_playing&sort=score_desc)
 
 ### Shows Database
-- 17 currently open shows
-- 5 closed shows tracked
+- 27 currently open shows
+- 13 closed shows tracked
 - Full metadata: synopsis, cast, creative team, tags, age recommendations, theater addresses
+- Ticket links for all open shows (TodayTix + Telecharge/Ticketmaster)
 
 ## Scoring Methodology (V1 - Critics Only)
 
