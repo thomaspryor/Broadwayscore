@@ -5,18 +5,21 @@
  * Discovers new Broadway shows by checking Broadway.org listings
  * and adds them to shows.json with basic metadata.
  *
- * Uses ScrapingBee for reliable scraping (API key in env).
+ * Uses Bright Data (primary) with ScrapingBee/Playwright fallbacks.
  *
  * Usage: node scripts/discover-new-shows.js [--dry-run]
+ *
+ * Environment variables:
+ *   BRIGHTDATA_TOKEN - Bright Data API token (primary)
+ *   SCRAPINGBEE_API_KEY - ScrapingBee API key (fallback)
  */
 
-const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const { fetchPage, cleanup } = require('./lib/scraper');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
-const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 const dryRun = process.argv.includes('--dry-run');
 
@@ -42,28 +45,7 @@ function slugify(title) {
     .replace(/-+/g, '-');
 }
 
-async function fetchWithScrapingBee(url) {
-  if (!SCRAPINGBEE_KEY) {
-    console.log('⚠️  SCRAPINGBEE_API_KEY not set');
-    return null;
-  }
-
-  const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
-
-  return new Promise((resolve, reject) => {
-    https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          resolve(data);
-        } else {
-          reject(new Error(`HTTP ${res.statusCode}`));
-        }
-      });
-    }).on('error', reject);
-  });
-}
+// Scraping is now handled by shared lib/scraper.js module
 
 function parseShowsFromBroadwayOrg(html) {
   const shows = [];
@@ -130,25 +112,27 @@ async function discoverShows() {
 
   // Fetch Broadway.org
   console.log('Fetching Broadway.org...');
-  let html;
+  let content, format;
   try {
-    html = await fetchWithScrapingBee(BROADWAY_ORG_URL);
-    if (!html) {
-      console.log('Could not fetch Broadway.org (no API key?)');
-      console.log('');
-      console.log('To enable discovery, set SCRAPINGBEE_API_KEY environment variable.');
-      return { newShows: [], count: 0 };
-    }
-    console.log(`Fetched ${html.length} bytes`);
+    const result = await fetchPage(BROADWAY_ORG_URL, { renderJs: false });
+    content = result.content;
+    format = result.format;
+    console.log(`Fetched ${content.length} bytes (${format} from ${result.source})`);
   } catch (e) {
     console.error('Error fetching Broadway.org:', e.message);
+    console.log('');
+    console.log('To enable discovery, set BRIGHTDATA_TOKEN or SCRAPINGBEE_API_KEY.');
+    await cleanup();
     return { newShows: [], count: 0 };
   }
 
-  // Parse shows
-  const discoveredShows = parseShowsFromBroadwayOrg(html);
+  // Parse shows (works with both HTML and markdown)
+  const discoveredShows = parseShowsFromBroadwayOrg(content);
   console.log(`Found ${discoveredShows.length} shows on Broadway.org`);
   console.log('');
+
+  // Cleanup resources
+  await cleanup();
 
   // Find new shows not in our database
   const newShows = [];

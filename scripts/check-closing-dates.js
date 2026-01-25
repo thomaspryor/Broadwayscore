@@ -8,18 +8,19 @@
  *
  * Usage: node scripts/check-closing-dates.js [--dry-run]
  *
- * Requires: SCRAPINGBEE_API_KEY environment variable
+ * Environment variables:
+ *   BRIGHTDATA_TOKEN - Bright Data API token (primary)
+ *   SCRAPINGBEE_API_KEY - ScrapingBee API key (fallback)
  */
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
+const { fetchPage, cleanup } = require('./lib/scraper');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const BROADWAY_ORG_URL = 'https://www.broadway.org/shows/';
 
 const dryRun = process.argv.includes('--dry-run');
-const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
@@ -30,28 +31,7 @@ function saveShows(data) {
   fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
 }
 
-async function fetchWithScrapingBee(url) {
-  if (!SCRAPINGBEE_KEY) {
-    console.log('⚠️  SCRAPINGBEE_API_KEY not set, skipping web scrape');
-    return null;
-  }
-
-  const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
-
-  return new Promise((resolve, reject) => {
-    https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          resolve(data);
-        } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
-        }
-      });
-    }).on('error', reject);
-  });
-}
+// Scraping is now handled by shared lib/scraper.js module
 
 function parseClosingDate(text) {
   // Try to parse various date formats
@@ -133,14 +113,10 @@ async function checkClosingDates() {
   console.log('Fetching Broadway.org for closing date announcements...');
 
   try {
-    const html = await fetchWithScrapingBee(BROADWAY_ORG_URL);
+    const result = await fetchPage(BROADWAY_ORG_URL, { renderJs: false });
+    const html = result.content;
 
-    if (!html) {
-      console.log('Could not fetch Broadway.org');
-      return;
-    }
-
-    console.log(`Fetched ${html.length} bytes`);
+    console.log(`Fetched ${html.length} bytes (${result.format} from ${result.source})`);
 
     // Parse for show listings and closing dates
     // Broadway.org format: <div class="show-card">...<span class="closing-date">Closes Feb 8</span>...
@@ -220,6 +196,8 @@ async function checkClosingDates() {
 
   } catch (error) {
     console.error('Error fetching data:', error.message);
+  } finally {
+    await cleanup();
   }
 
   console.log('');
