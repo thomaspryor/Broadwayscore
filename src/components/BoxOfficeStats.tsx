@@ -98,15 +98,15 @@ function StatCard({ value, label, wowChange, yoyChange }: StatCardProps) {
   const hasChanges = wowChange !== undefined || yoyChange !== undefined;
 
   return (
-    <div className="flex-1 bg-surface-overlay rounded-xl p-4 text-center border border-white/5">
-      <div className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+    <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+      <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
         {value}
       </div>
-      <div className="text-xs text-gray-500 uppercase tracking-wide mt-1 font-medium">
+      <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
         {label}
       </div>
       {hasChanges && (
-        <div className="flex flex-col gap-0.5 mt-1.5">
+        <div className="flex flex-col gap-0.5 mt-1 sm:mt-1.5">
           <ChangeIndicator change={wowChange ?? null} label="WoW" />
           <ChangeIndicator change={yoyChange ?? null} label="YoY" />
         </div>
