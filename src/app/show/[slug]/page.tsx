@@ -1,13 +1,15 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards } from '@/lib/data';
+import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getShowCommercial, getAudienceBuzz } from '@/lib/data';
 import { generateShowSchema, generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
 import BoxOfficeStats from '@/components/BoxOfficeStats';
 import AwardsCard from '@/components/AwardsCard';
+import BizBuzzCard from '@/components/BizBuzzCard';
+import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -457,6 +459,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const grosses = getShowGrosses(params.slug);
   const weekEnding = getGrossesWeekEnding();
   const awards = getShowAwards(show.id);
+  const commercial = getShowCommercial(show.slug);
+  const audienceBuzz = getAudienceBuzz(show.id);
 
   return (
     <>
@@ -618,6 +622,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Box Office Stats */}
         {grosses && <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />}
+
+        {/* Commercial Performance (Biz Buzz) */}
+        {commercial && <BizBuzzCard commercial={commercial} showTitle={show.title} />}
 
         {/* Awards */}
         <AwardsCard showId={show.id} awards={awards} />

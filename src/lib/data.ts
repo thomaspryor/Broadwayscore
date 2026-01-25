@@ -755,6 +755,98 @@ export function getDesignationDescription(designation: CommercialDesignation): s
   return commercial._meta.designations[designation] || '';
 }
 
+// ============================================
+// Audience Buzz Queries
+// ============================================
+
+export type AudienceBuzzDesignation =
+  | 'Loving It'          // 90-100: Audiences are ecstatic
+  | 'Liking It'          // 75-89: Solid audience response
+  | 'Take-it-or-Leave-it' // 60-74: Mixed reception
+  | 'Loathing It';       // 0-59: Audiences don't like it
+
+export interface AudienceBuzzSource {
+  score: number | null;
+  reviewCount: number | null;
+  starRating?: number;
+}
+
+export interface AudienceBuzzData {
+  title: string;
+  designation: AudienceBuzzDesignation;
+  combinedScore: number;
+  sources: {
+    showScore: AudienceBuzzSource | null;
+    mezzanine: AudienceBuzzSource | null;
+    reddit: AudienceBuzzSource | null;
+  };
+}
+
+interface AudienceBuzzFile {
+  _meta: {
+    lastUpdated: string;
+    sources: string[];
+    designationThresholds: Record<string, string>;
+    notes: string;
+  };
+  shows: Record<string, AudienceBuzzData>;
+}
+
+const audienceBuzz = audienceBuzzData as unknown as AudienceBuzzFile;
+
+/**
+ * Get audience buzz data for a specific show by ID
+ */
+export function getShowAudienceBuzz(showId: string): AudienceBuzzData | undefined {
+  return audienceBuzz.shows[showId];
+}
+
+// Alias for backward compatibility
+export const getAudienceBuzz = getShowAudienceBuzz;
+
+/**
+ * Get color classes for audience buzz designation
+ */
+export function getAudienceBuzzColor(designation: AudienceBuzzDesignation): {
+  bgClass: string;
+  textClass: string;
+  borderClass: string;
+} {
+  switch (designation) {
+    case 'Loving It':
+      return {
+        bgClass: 'bg-emerald-500/15',
+        textClass: 'text-emerald-400',
+        borderClass: 'border-emerald-500/25',
+      };
+    case 'Liking It':
+      return {
+        bgClass: 'bg-blue-500/15',
+        textClass: 'text-blue-400',
+        borderClass: 'border-blue-500/25',
+      };
+    case 'Take-it-or-Leave-it':
+      return {
+        bgClass: 'bg-amber-500/15',
+        textClass: 'text-amber-400',
+        borderClass: 'border-amber-500/25',
+      };
+    case 'Loathing It':
+      return {
+        bgClass: 'bg-red-500/15',
+        textClass: 'text-red-400',
+        borderClass: 'border-red-500/25',
+      };
+  }
+}
+
+/**
+ * Get audience buzz last updated timestamp
+ */
+export function getAudienceBuzzLastUpdated(): string {
+  return audienceBuzz._meta.lastUpdated;
+}
+
 // Export types
 export type { ComputedShow };
 export type { BrowsePageConfig } from '@/config/browse-pages';
