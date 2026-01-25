@@ -118,5 +118,65 @@
         "error": "Archive.org returned 404"
       }
     ]
+  },
+  {
+    "filePath": "data/review-texts/aladdin-2014/jks-theatre-scene--jeff-kready.json",
+    "url": "http://jkstheatrescene.blogspot.com/2014/03/review-aladdin.html",
+    "showId": "aladdin-2014",
+    "outlet": "JK's Theatre Scene",
+    "critic": "Jeff Kready",
+    "attempts": 1,
+    "firstAttempt": "2026-01-25T13:41:07.075Z",
+    "lastAttempt": "2026-01-25T13:41:07.075Z",
+    "errors": [
+      {
+        "method": "playwright",
+        "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://jkstheatrescene.blogspot.com/2014/03/review-aladdin.html\", waiting until \"domcontentloaded\"\u001b[22m\n"
+      },
+      {
+        "method": "archive.org",
+        "error": "Only 92 words (need 300)"
+      }
+    ]
+  },
+  {
+    "filePath": "data/review-texts/aladdin-2014/newsday--linda-winer.json",
+    "url": "https://www.newsday.com/entertainment/aladdin-broadway-review/",
+    "showId": "aladdin-2014",
+    "outlet": "Newsday",
+    "critic": "Linda Winer",
+    "attempts": 1,
+    "firstAttempt": "2026-01-25T13:41:46.408Z",
+    "lastAttempt": "2026-01-25T13:41:46.408Z",
+    "errors": [
+      {
+        "method": "playwright",
+        "error": "HTTP 404"
+      },
+      {
+        "method": "archive.org",
+        "error": "Archive.org returned 404"
+      }
+    ]
+  },
+  {
+    "filePath": "data/review-texts/aladdin-2014/northjersey--robert-feldberg.json",
+    "url": "http://www.northjersey.com/arts-and-entertainment/theater/aladdin-loses-its-magic-1.747278",
+    "showId": "aladdin-2014",
+    "outlet": "NorthJersey.com",
+    "critic": "Robert Feldberg",
+    "attempts": 1,
+    "firstAttempt": "2026-01-25T13:41:58.781Z",
+    "lastAttempt": "2026-01-25T13:41:58.781Z",
+    "errors": [
+      {
+        "method": "playwright",
+        "error": "HTTP 404"
+      },
+      {
+        "method": "archive.org",
+        "error": "Only 1 words (need 300)"
+      }
+    ]
   }
 ]

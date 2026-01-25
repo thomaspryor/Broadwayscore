@@ -516,7 +516,7 @@ function HomePageInner() {
             aria-pressed={type === t}
             className={`px-4 py-2.5 sm:py-2 rounded-full text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
               type === t
-                ? 'bg-brand text-white shadow-glow-sm'
+                ? 'bg-brand text-gray-900 shadow-glow-sm'
                 : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
             }`}
           >
@@ -597,7 +597,7 @@ function HomePageInner() {
       )}
 
       {/* Score Legend */}
-      <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-gray-500">
+      <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-gray-400">
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#FFD700', boxShadow: '0 0 6px rgba(255, 215, 0, 0.5)' }}></div>
           <span>85+ Must-See</span>
