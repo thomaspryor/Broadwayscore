@@ -279,8 +279,8 @@ Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.co
                 ref: 'main',
                 inputs: {
                   show_filter: shows.split(',')[0], // Process first show
-                  max_reviews: '20',
-                  priority: 'tier1'
+                  max_reviews: '100',
+                  priority: 'all'
                 }
               });
               console.log('Successfully triggered collect-review-texts workflow');
