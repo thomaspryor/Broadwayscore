@@ -103,11 +103,15 @@ export function getDataFreshness() {
  * Get raw data counts for stats
  */
 export function getDataStats() {
+  // Sum up actual review counts from computed shows
+  const allShows = getAllShows();
+  const totalReviews = allShows.reduce((sum, show) => sum + (show.criticScore?.reviewCount || 0), 0);
+
   return {
     totalShows: shows.length,
     openShows: shows.filter(s => s.status === 'open').length,
     closedShows: shows.filter(s => s.status === 'closed').length,
-    totalReviews: reviews.length,
+    totalReviews,
     totalAudiencePlatforms: audience.length,
     totalBuzzThreads: buzz.length,
   };
