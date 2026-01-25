@@ -16,6 +16,7 @@ import reviewsData from '../../data/reviews.json';
 import audienceData from '../../data/audience.json';
 import buzzData from '../../data/buzz.json';
 import grossesData from '../../data/grosses.json';
+import awardsData from '../../data/awards.json';
 
 // Type the imported data
 const shows: RawShow[] = showsData.shows as RawShow[];
@@ -415,6 +416,166 @@ export function getGrossesWeekEnding(): string {
  */
 export function getGrossesLastUpdated(): string {
   return grosses.lastUpdated;
+}
+
+// ============================================
+// Awards Queries
+// ============================================
+
+export interface TonyAwards {
+  season: string;
+  ceremony: string;
+  nominations?: number;
+  wins?: string[];
+  nominatedFor?: string[];
+  eligible?: boolean;
+  note?: string;
+}
+
+export interface DramaDeskAwards {
+  season: string;
+  wins: string[];
+  nominations: string[] | number;
+}
+
+export interface OuterCriticsCircleAwards {
+  season: string;
+  wins: string[];
+  nominations: number;
+}
+
+export interface DramaLeagueAwards {
+  season: string;
+  wins: string[];
+}
+
+export interface PulitzerPrize {
+  year: number;
+  category: string;
+}
+
+export interface ShowAwards {
+  tony?: TonyAwards;
+  dramadesk?: DramaDeskAwards;
+  outerCriticsCircle?: OuterCriticsCircleAwards;
+  dramaLeague?: DramaLeagueAwards;
+  pulitzer?: PulitzerPrize;
+  note?: string;
+}
+
+// Awards designation tiers
+export type AwardsDesignation =
+  | 'pulitzer-winner'   // Won Pulitzer Prize for Drama
+  | 'lavished'          // 3+ major wins across award bodies
+  | 'recognized'        // 1-2 wins OR 4+ nominations
+  | 'nominated'         // Has nominations but no wins
+  | 'shut-out'          // Eligible but no nominations
+  | 'pre-season';       // Not yet eligible for awards
+
+interface AwardsFile {
+  _meta: {
+    description: string;
+    lastUpdated: string;
+    sources: string[];
+  };
+  shows: Record<string, ShowAwards>;
+}
+
+const awards = awardsData as unknown as AwardsFile;
+
+/**
+ * Get awards data for a specific show by ID
+ */
+export function getShowAwards(showId: string): ShowAwards | undefined {
+  return awards.shows[showId];
+}
+
+/**
+ * Calculate total Tony wins for a show
+ */
+export function getTonyWinCount(showId: string): number {
+  const showAwards = awards.shows[showId];
+  return showAwards?.tony?.wins?.length || 0;
+}
+
+/**
+ * Calculate total Tony nominations for a show
+ */
+export function getTonyNominationCount(showId: string): number {
+  const showAwards = awards.shows[showId];
+  return showAwards?.tony?.nominations || 0;
+}
+
+/**
+ * Calculate awards designation for a show
+ */
+export function getAwardsDesignation(showId: string): AwardsDesignation {
+  const showAwards = awards.shows[showId];
+
+  if (!showAwards) return 'pre-season';
+
+  // Check Pulitzer first (highest honor)
+  if (showAwards.pulitzer) return 'pulitzer-winner';
+
+  // Check if Tony eligible
+  const tony = showAwards.tony;
+  if (!tony || tony.eligible === false) return 'pre-season';
+
+  // Count total wins across major award bodies
+  const tonyWins = tony.wins?.length || 0;
+  const dramaDeskWins = showAwards.dramadesk?.wins?.length || 0;
+  const occWins = showAwards.outerCriticsCircle?.wins?.length || 0;
+  const dramaLeagueWins = showAwards.dramaLeague?.wins?.length || 0;
+
+  const totalWins = tonyWins + dramaDeskWins + occWins + dramaLeagueWins;
+  const totalNominations = tony.nominations || 0;
+
+  // Lavished: 3+ major wins
+  if (totalWins >= 3) return 'lavished';
+
+  // Recognized: 1-2 wins OR 4+ nominations
+  if (totalWins >= 1 || totalNominations >= 4) return 'recognized';
+
+  // Nominated: Has nominations but no wins
+  if (totalNominations > 0) return 'nominated';
+
+  // Shut-out: Eligible but no nominations
+  return 'shut-out';
+}
+
+/**
+ * Get shows with the most Tony wins
+ */
+export function getShowsByTonyWins(limit = 10): Array<{ showId: string; wins: number; nominations: number }> {
+  const results: Array<{ showId: string; wins: number; nominations: number }> = [];
+
+  for (const [showId, showAwards] of Object.entries(awards.shows)) {
+    const wins = showAwards.tony?.wins?.length || 0;
+    const nominations = showAwards.tony?.nominations || 0;
+    if (wins > 0 || nominations > 0) {
+      results.push({ showId, wins, nominations });
+    }
+  }
+
+  return results
+    .sort((a, b) => b.wins - a.wins || b.nominations - a.nominations)
+    .slice(0, limit);
+}
+
+/**
+ * Check if show won Best Musical or Best Play Tony
+ */
+export function isTopTonyWinner(showId: string): boolean {
+  const showAwards = awards.shows[showId];
+  const wins = showAwards?.tony?.wins || [];
+  return wins.includes('Best Musical') || wins.includes('Best Play') || wins.includes('Best Revival of a Musical') || wins.includes('Best Revival of a Play');
+}
+
+/**
+ * Get awards data last updated timestamp
+ */
+export function getAwardsLastUpdated(): string {
+  return awards._meta.lastUpdated;
 }
 
 // ============================================

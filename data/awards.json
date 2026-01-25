@@ -1,0 +1,582 @@
+{
+  "_meta": {
+    "description": "Broadway show awards data - Tony Awards, Drama Desk, Outer Critics Circle, Drama League",
+    "lastUpdated": "2026-01-25",
+    "sources": ["Wikipedia", "Playbill", "TonyAwards.com", "BroadwayWorld"]
+  },
+  "shows": {
+    "chicago-1996": {
+      "tony": {
+        "season": "1996-97",
+        "ceremony": "51st",
+        "nominations": 8,
+        "wins": ["Best Revival of a Musical", "Best Actor in a Musical", "Best Actress in a Musical", "Best Choreography", "Best Lighting Design", "Best Direction of a Musical"],
+        "nominatedFor": ["Best Revival of a Musical", "Best Actor in a Musical", "Best Actress in a Musical", "Best Featured Actor in a Musical", "Best Featured Actress in a Musical", "Best Choreography", "Best Lighting Design", "Best Direction of a Musical"]
+      },
+      "dramadesk": {
+        "season": "1996-97",
+        "wins": ["Outstanding Revival of a Musical"],
+        "nominations": []
+      }
+    },
+    "the-lion-king-1997": {
+      "tony": {
+        "season": "1997-98",
+        "ceremony": "52nd",
+        "nominations": 11,
+        "wins": ["Best Musical", "Best Direction of a Musical", "Best Choreography", "Best Scenic Design", "Best Costume Design", "Best Lighting Design"],
+        "nominatedFor": ["Best Musical", "Best Direction of a Musical", "Best Choreography", "Best Scenic Design", "Best Costume Design", "Best Lighting Design", "Best Book of a Musical", "Best Original Score", "Best Actor in a Musical", "Best Actress in a Musical", "Best Featured Actor in a Musical"]
+      },
+      "dramadesk": {
+        "season": "1997-98",
+        "wins": ["Outstanding Musical", "Outstanding Director of a Musical", "Outstanding Choreography", "Outstanding Set Design", "Outstanding Costume Design"],
+        "nominations": []
+      }
+    },
+    "wicked-2003": {
+      "tony": {
+        "season": "2003-04",
+        "ceremony": "58th",
+        "nominations": 10,
+        "wins": ["Best Actress in a Musical", "Best Scenic Design", "Best Costume Design"],
+        "nominatedFor": ["Best Musical", "Best Actress in a Musical", "Best Featured Actor in a Musical", "Best Featured Actress in a Musical", "Best Scenic Design", "Best Costume Design", "Best Lighting Design", "Best Book of a Musical", "Best Original Score", "Best Direction of a Musical"]
+      },
+      "dramadesk": {
+        "season": "2003-04",
+        "wins": ["Outstanding Actress in a Musical"],
+        "nominations": []
+      }
+    },
+    "book-of-mormon-2011": {
+      "tony": {
+        "season": "2010-11",
+        "ceremony": "65th",
+        "nominations": 14,
+        "wins": ["Best Musical", "Best Direction of a Musical", "Best Original Score", "Best Book of a Musical", "Best Orchestrations", "Best Lighting Design", "Best Scenic Design", "Best Sound Design", "Best Featured Actress in a Musical"],
+        "nominatedFor": ["Best Musical", "Best Direction of a Musical", "Best Original Score", "Best Book of a Musical", "Best Orchestrations", "Best Lighting Design", "Best Scenic Design", "Best Sound Design", "Best Featured Actress in a Musical", "Best Actor in a Musical", "Best Featured Actor in a Musical", "Best Choreography", "Best Costume Design", "Best Featured Actress in a Musical"]
+      },
+      "dramadesk": {
+        "season": "2010-11",
+        "wins": ["Outstanding Musical", "Outstanding Book of a Musical", "Outstanding Music", "Outstanding Lyrics", "Outstanding Director of a Musical", "Outstanding Set Design of a Musical", "Outstanding Sound Design of a Musical"],
+        "nominations": []
+      }
+    },
+    "aladdin-2014": {
+      "tony": {
+        "season": "2013-14",
+        "ceremony": "68th",
+        "nominations": 5,
+        "wins": ["Best Featured Actor in a Musical"],
+        "nominatedFor": ["Best Musical", "Best Featured Actor in a Musical", "Best Choreography", "Best Scenic Design", "Best Costume Design"]
+      },
+      "dramadesk": {
+        "season": "2013-14",
+        "wins": [],
+        "nominations": []
+      }
+    },
+    "hamilton-2015": {
+      "tony": {
+        "season": "2015-16",
+        "ceremony": "70th",
+        "nominations": 16,
+        "wins": ["Best Musical", "Best Direction of a Musical", "Best Choreography", "Best Original Score", "Best Book of a Musical", "Best Actor in a Musical", "Best Featured Actress in a Musical", "Best Orchestrations", "Best Costume Design", "Best Lighting Design", "Best Scenic Design"],
+        "nominatedFor": ["Best Musical", "Best Direction of a Musical", "Best Choreography", "Best Original Score", "Best Book of a Musical", "Best Actor in a Musical", "Best Actress in a Musical", "Best Featured Actor in a Musical", "Best Featured Actor in a Musical", "Best Featured Actress in a Musical", "Best Orchestrations", "Best Costume Design", "Best Lighting Design", "Best Scenic Design", "Best Sound Design", "Best Featured Actress in a Musical"]
+      },
+      "dramadesk": {
+        "season": "2015-16",
+        "wins": ["Outstanding Musical", "Outstanding Book of a Musical", "Outstanding Music", "Outstanding Lyrics", "Outstanding Actor in a Musical", "Outstanding Director of a Musical", "Outstanding Choreography", "Outstanding Orchestrations"],
+        "nominations": []
+      },
+      "pulitzer": {
+        "year": 2016,
+        "category": "Drama"
+      }
+    },
+    "hadestown-2019": {
+      "tony": {
+        "season": "2018-19",
+        "ceremony": "73rd",
+        "nominations": 14,
+        "wins": ["Best Musical", "Best Direction of a Musical", "Best Original Score", "Best Featured Actor in a Musical", "Best Lighting Design", "Best Scenic Design", "Best Sound Design", "Best Orchestrations"],
+        "nominatedFor": ["Best Musical", "Best Direction of a Musical", "Best Original Score", "Best Featured Actor in a Musical", "Best Lighting Design", "Best Scenic Design", "Best Sound Design", "Best Orchestrations", "Best Actor in a Musical", "Best Actress in a Musical", "Best Featured Actress in a Musical", "Best Book of a Musical", "Best Choreography", "Best Costume Design"]
+      },
+      "dramadesk": {
+        "season": "2018-19",
+        "wins": ["Outstanding Musical", "Outstanding Director of a Musical", "Outstanding Music", "Outstanding Featured Actor in a Musical"],
+        "nominations": []
+      }
+    },
+    "moulin-rouge-2019": {
+      "tony": {
+        "season": "2019-20",
+        "ceremony": "74th",
+        "nominations": 14,
+        "wins": ["Best Musical", "Best Direction of a Musical", "Best Choreography", "Best Orchestrations", "Best Scenic Design", "Best Costume Design", "Best Lighting Design", "Best Sound Design", "Best Featured Actor in a Musical", "Best Actor in a Musical"],
+        "nominatedFor": ["Best Musical", "Best Direction of a Musical", "Best Choreography", "Best Orchestrations", "Best Scenic Design", "Best Costume Design", "Best Lighting Design", "Best Sound Design", "Best Featured Actor in a Musical", "Best Actor in a Musical", "Best Actress in a Musical", "Best Featured Actress in a Musical", "Best Book of a Musical", "Best Original Score"]
+      },
+      "dramadesk": {
+        "season": "2019-20",
+        "wins": ["Outstanding Musical", "Outstanding Director of a Musical", "Outstanding Scenic Design of a Musical", "Outstanding Lighting Design of a Musical"],
+        "nominations": []
+      }
+    },
+    "six-2021": {
+      "tony": {
+        "season": "2021-22",
+        "ceremony": "75th",
+        "nominations": 8,
+        "wins": ["Best Original Score"],
+        "nominatedFor": ["Best Musical", "Best Original Score", "Best Book of a Musical", "Best Direction of a Musical", "Best Choreography", "Best Costume Design", "Best Lighting Design", "Best Sound Design"]
+      },
+      "dramadesk": {
+        "season": "2021-22",
+        "wins": [],
+        "nominations": []
+      }
+    },
+    "harry-potter-2021": {
+      "tony": {
+        "season": "2017-18",
+        "ceremony": "72nd",
+        "nominations": 10,
+        "wins": ["Best Play", "Best Direction of a Play", "Best Scenic Design", "Best Costume Design", "Best Lighting Design", "Best Sound Design"],
+        "nominatedFor": ["Best Play", "Best Direction of a Play", "Best Scenic Design", "Best Costume Design", "Best Lighting Design", "Best Sound Design", "Best Actor in a Play", "Best Featured Actor in a Play", "Best Featured Actress in a Play", "Best Original Score"]
+      },
+      "dramadesk": {
+        "season": "2017-18",
+        "wins": ["Outstanding Play", "Outstanding Director of a Play", "Outstanding Set Design of a Play", "Outstanding Costume Design of a Play", "Outstanding Lighting Design of a Play", "Outstanding Sound Design of a Play"],
+        "nominations": []
+      }
+    },
+    "mj-2022": {
+      "tony": {
+        "season": "2021-22",
+        "ceremony": "75th",
+        "nominations": 10,
+        "wins": ["Best Actor in a Musical", "Best Choreography", "Best Sound Design", "Best Lighting Design"],
+        "nominatedFor": ["Best Musical", "Best Actor in a Musical", "Best Featured Actor in a Musical", "Best Direction of a Musical", "Best Choreography", "Best Sound Design", "Best Lighting Design", "Best Scenic Design", "Best Costume Design", "Best Book of a Musical"]
+      },
+      "dramadesk": {
+        "season": "2021-22",
+        "wins": ["Outstanding Actor in a Musical", "Outstanding Choreography"],
+        "nominations": []
+      }
+    },
+    "and-juliet-2022": {
+      "tony": {
+        "season": "2022-23",
+        "ceremony": "76th",
+        "nominations": 9,
+        "wins": [],
+        "nominatedFor": ["Best Musical", "Best Actress in a Musical", "Best Featured Actor in a Musical", "Best Featured Actress in a Musical", "Best Direction of a Musical", "Best Choreography", "Best Scenic Design", "Best Costume Design", "Best Lighting Design"]
+      },
+      "dramadesk": {
+        "season": "2022-23",
+        "wins": [],
+        "nominations": []
+      }
+    },
+    "back-to-the-future-2023": {
+      "tony": {
+        "season": "2023-24",
+        "ceremony": "77th",
+        "nominations": 2,
+        "wins": [],
+        "nominatedFor": ["Best Featured Actor in a Musical", "Best Scenic Design"]
+      },
+      "dramadesk": {
+        "season": "2023-24",
+        "wins": [],
+        "nominations": []
+      }
+    },
+    "the-notebook-2024": {
+      "tony": {
+        "season": "2023-24",
+        "ceremony": "77th",
+        "nominations": 3,
+        "wins": [],
+        "nominatedFor": ["Best Actor in a Musical", "Best Actress in a Musical", "Best Book of a Musical"]
+      },
+      "dramadesk": {
+        "season": "2023-24",
+        "wins": [],
+        "nominations": []
+      }
+    },
+    "water-for-elephants-2024": {
+      "tony": {
+        "season": "2023-24",
+        "ceremony": "77th",
+        "nominations": 7,
+        "wins": [],
+        "nominatedFor": ["Best Musical", "Best Actor in a Musical", "Best Featured Actor in a Musical", "Best Direction of a Musical", "Best Choreography", "Best Scenic Design", "Best Costume Design"]
+      },
+      "dramadesk": {
+        "season": "2023-24",
+        "wins": [],
+        "nominations": []
+      }
+    },
+    "the-outsiders-2024": {
+      "tony": {
+        "season": "2023-24",
+        "ceremony": "77th",
+        "nominations": 12,
+        "wins": ["Best Musical", "Best Direction of a Musical", "Best Lighting Design", "Best Sound Design"],
+        "nominatedFor": ["Best Musical", "Best Direction of a Musical", "Best Lighting Design", "Best Sound Design", "Best Actor in a Musical", "Best Actress in a Musical", "Best Featured Actor in a Musical", "Best Featured Actress in a Musical", "Best Book of a Musical", "Best Original Score", "Best Choreography", "Best Scenic Design"]
+      },
+      "dramadesk": {
+        "season": "2023-24",
+        "wins": ["Outstanding Musical", "Outstanding Director of a Musical"],
+        "nominations": []
+      }
+    },
+    "suffs-2024": {
+      "tony": {
+        "season": "2023-24",
+        "ceremony": "77th",
+        "nominations": 6,
+        "wins": ["Best Book of a Musical", "Best Original Score"],
+        "nominatedFor": ["Best Musical", "Best Book of a Musical", "Best Original Score", "Best Actress in a Musical", "Best Featured Actress in a Musical", "Best Direction of a Musical"]
+      },
+      "dramadesk": {
+        "season": "2023-24",
+        "wins": ["Outstanding Book of a Musical", "Outstanding Music", "Outstanding Lyrics"],
+        "nominations": []
+      }
+    },
+    "stereophonic-2024": {
+      "tony": {
+        "season": "2023-24",
+        "ceremony": "77th",
+        "nominations": 13,
+        "wins": ["Best Play", "Best Direction of a Play", "Best Scenic Design of a Play", "Best Sound Design of a Play", "Best Featured Actor in a Play"],
+        "nominatedFor": ["Best Play", "Best Direction of a Play", "Best Scenic Design of a Play", "Best Sound Design of a Play", "Best Featured Actor in a Play", "Best Actor in a Play", "Best Actress in a Play", "Best Featured Actor in a Play", "Best Featured Actress in a Play", "Best Featured Actress in a Play", "Best Lighting Design of a Play", "Best Costume Design of a Play", "Best Original Score"]
+      },
+      "dramadesk": {
+        "season": "2023-24",
+        "wins": ["Outstanding Play", "Outstanding Director of a Play", "Outstanding Sound Design of a Play"],
+        "nominations": []
+      },
+      "pulitzer": {
+        "year": 2024,
+        "category": "Drama"
+      }
+    },
+    "hells-kitchen-2024": {
+      "tony": {
+        "season": "2023-24",
+        "ceremony": "77th",
+        "nominations": 13,
+        "wins": ["Best Actress in a Musical", "Best Featured Actress in a Musical"],
+        "nominatedFor": ["Best Musical", "Best Actress in a Musical", "Best Featured Actress in a Musical", "Best Featured Actor in a Musical", "Best Direction of a Musical", "Best Choreography", "Best Book of a Musical", "Best Original Score", "Best Scenic Design", "Best Costume Design", "Best Lighting Design", "Best Sound Design", "Best Orchestrations"]
+      },
+      "dramadesk": {
+        "season": "2023-24",
+        "wins": ["Outstanding Actress in a Musical", "Outstanding Featured Actress in a Musical"],
+        "nominations": []
+      }
+    },
+    "cabaret-2024": {
+      "tony": {
+        "season": "2023-24",
+        "ceremony": "77th",
+        "nominations": 9,
+        "wins": ["Best Costume Design of a Musical"],
+        "nominatedFor": ["Best Revival of a Musical", "Best Actor in a Musical", "Best Actress in a Musical", "Best Featured Actor in a Musical", "Best Featured Actress in a Musical", "Best Direction of a Musical", "Best Scenic Design", "Best Costume Design of a Musical", "Best Sound Design"]
+      },
+      "dramadesk": {
+        "season": "2023-24",
+        "wins": [],
+        "nominations": []
+      }
+    },
+    "the-great-gatsby-2024": {
+      "tony": {
+        "season": "2023-24",
+        "ceremony": "77th",
+        "nominations": 1,
+        "wins": [],
+        "nominatedFor": ["Best Costume Design of a Musical"]
+      },
+      "dramadesk": {
+        "season": "2023-24",
+        "wins": [],
+        "nominations": []
+      }
+    },
+    "oh-mary-2024": {
+      "tony": {
+        "season": "2024-25",
+        "ceremony": "78th",
+        "nominations": 5,
+        "wins": ["Best Actor in a Play"],
+        "nominatedFor": ["Best Play", "Best Actor in a Play", "Best Featured Actor in a Play", "Best Direction of a Play", "Best Scenic Design of a Play"]
+      },
+      "dramadesk": {
+        "season": "2024-25",
+        "wins": [],
+        "nominations": []
+      },
+      "dramaLeague": {
+        "season": "2024-25",
+        "wins": ["Outstanding Production of a Play"]
+      }
+    },
+    "the-roommate-2024": {
+      "tony": {
+        "season": "2024-25",
+        "ceremony": "78th",
+        "nominations": 1,
+        "wins": [],
+        "nominatedFor": ["Best Actress in a Play"]
+      },
+      "dramadesk": {
+        "season": "2024-25",
+        "wins": [],
+        "nominations": []
+      }
+    },
+    "our-town-2024": {
+      "tony": {
+        "season": "2024-25",
+        "ceremony": "78th",
+        "nominations": 1,
+        "wins": [],
+        "nominatedFor": ["Best Revival of a Play"]
+      },
+      "dramadesk": {
+        "season": "2024-25",
+        "wins": ["Outstanding Costume Design of a Play"],
+        "nominations": []
+      }
+    },
+    "maybe-happy-ending-2024": {
+      "tony": {
+        "season": "2024-25",
+        "ceremony": "78th",
+        "nominations": 10,
+        "wins": ["Best Musical", "Best Book of a Musical", "Best Original Score", "Best Direction of a Musical", "Best Actor in a Musical", "Best Scenic Design of a Musical"],
+        "nominatedFor": ["Best Musical", "Best Book of a Musical", "Best Original Score", "Best Direction of a Musical", "Best Actor in a Musical", "Best Actress in a Musical", "Best Scenic Design of a Musical", "Best Costume Design of a Musical", "Best Lighting Design of a Musical", "Best Orchestrations"]
+      },
+      "dramadesk": {
+        "season": "2024-25",
+        "wins": ["Outstanding Musical", "Outstanding Director of a Musical", "Outstanding Music", "Outstanding Lyrics", "Outstanding Book of a Musical", "Outstanding Scenic Design of a Musical"],
+        "nominations": []
+      },
+      "outerCriticsCircle": {
+        "season": "2024-25",
+        "wins": ["Outstanding New Broadway Musical", "Outstanding Director of a Musical", "Outstanding Book of a Musical", "Outstanding New Score"],
+        "nominations": 9
+      },
+      "dramaLeague": {
+        "season": "2024-25",
+        "wins": ["Outstanding Production of a Musical", "Outstanding Direction of a Musical"]
+      }
+    },
+    "death-becomes-her-2024": {
+      "tony": {
+        "season": "2024-25",
+        "ceremony": "78th",
+        "nominations": 10,
+        "wins": [],
+        "nominatedFor": ["Best Musical", "Best Actress in a Musical", "Best Actress in a Musical", "Best Featured Actor in a Musical", "Best Book of a Musical", "Best Original Score", "Best Scenic Design", "Best Costume Design", "Best Lighting Design", "Best Sound Design"]
+      },
+      "dramadesk": {
+        "season": "2024-25",
+        "wins": ["Outstanding Wig and Hair"],
+        "nominations": []
+      },
+      "outerCriticsCircle": {
+        "season": "2024-25",
+        "wins": [],
+        "nominations": 12
+      }
+    },
+    "stranger-things-2024": {
+      "tony": {
+        "season": "2024-25",
+        "ceremony": "78th",
+        "nominations": 5,
+        "wins": ["Best Scenic Design of a Play", "Best Lighting Design of a Play", "Best Sound Design of a Play"],
+        "nominatedFor": ["Best Actor in a Play", "Best Scenic Design of a Play", "Best Costume Design of a Play", "Best Lighting Design of a Play", "Best Sound Design of a Play"]
+      },
+      "dramadesk": {
+        "season": "2024-25",
+        "wins": ["Outstanding Scenic Design of a Play", "Outstanding Lighting Design of a Play", "Outstanding Sound Design of a Play"],
+        "nominations": []
+      },
+      "outerCriticsCircle": {
+        "season": "2024-25",
+        "wins": [],
+        "nominations": 7
+      }
+    },
+    "buena-vista-social-club-2025": {
+      "tony": {
+        "season": "2024-25",
+        "ceremony": "78th",
+        "nominations": 10,
+        "wins": ["Best Choreography"],
+        "nominatedFor": ["Best Musical", "Best Book of a Musical", "Best Direction of a Musical", "Best Choreography", "Best Orchestrations", "Best Featured Actress in a Musical", "Best Sound Design", "Best Scenic Design", "Best Costume Design", "Best Lighting Design"]
+      },
+      "dramadesk": {
+        "season": "2024-25",
+        "wins": [],
+        "nominations": []
+      }
+    },
+    "operation-mincemeat-2025": {
+      "tony": {
+        "season": "2024-25",
+        "ceremony": "78th",
+        "nominations": 4,
+        "wins": ["Best Featured Actor in a Musical"],
+        "nominatedFor": ["Best Musical", "Best Book of a Musical", "Best Original Score", "Best Featured Actor in a Musical"]
+      },
+      "dramadesk": {
+        "season": "2024-25",
+        "wins": ["Outstanding Featured Actor in a Musical"],
+        "nominations": []
+      },
+      "outerCriticsCircle": {
+        "season": "2024-25",
+        "wins": ["Outstanding Featured Performer in a Broadway Musical"],
+        "nominations": 6
+      }
+    },
+    "boop-2025": {
+      "tony": {
+        "season": "2024-25",
+        "ceremony": "78th",
+        "nominations": 3,
+        "wins": [],
+        "nominatedFor": ["Best Choreography", "Best Actress in a Musical", "Best Costume Design"]
+      },
+      "dramadesk": {
+        "season": "2024-25",
+        "wins": ["Outstanding Direction", "Outstanding Lead Performance in a Musical", "Outstanding Choreography"],
+        "nominations": 11
+      }
+    },
+    "just-in-time-2025": {
+      "tony": {
+        "season": "2024-25",
+        "ceremony": "78th",
+        "nominations": 6,
+        "wins": [],
+        "nominatedFor": ["Best Actor in a Musical", "Best Featured Actress in a Musical", "Best Orchestrations", "Best Scenic Design", "Best Costume Design", "Best Sound Design"]
+      },
+      "dramadesk": {
+        "season": "2024-25",
+        "wins": ["Outstanding Orchestrations"],
+        "nominations": 9
+      },
+      "outerCriticsCircle": {
+        "season": "2024-25",
+        "wins": ["Outstanding Orchestrations"],
+        "nominations": 3
+      }
+    },
+    "mamma-mia-2025": {
+      "tony": {
+        "season": "2001-02",
+        "ceremony": "56th",
+        "nominations": 5,
+        "wins": [],
+        "nominatedFor": ["Best Musical", "Best Book of a Musical", "Best Actress in a Musical", "Best Featured Actress in a Musical", "Best Scenic Design"]
+      },
+      "note": "Original production - 2025 revival not yet eligible"
+    },
+    "liberation-2025": {
+      "tony": {
+        "season": "2025-26",
+        "ceremony": "79th",
+        "eligible": false,
+        "note": "Not yet eligible - opens Nov 2025"
+      }
+    },
+    "queen-versailles-2025": {
+      "tony": {
+        "season": "2025-26",
+        "ceremony": "79th",
+        "eligible": false,
+        "note": "Not yet eligible - opens Nov 2025"
+      }
+    },
+    "oedipus-2025": {
+      "tony": {
+        "season": "2025-26",
+        "ceremony": "79th",
+        "eligible": false,
+        "note": "Not yet eligible - opens Nov 2025"
+      }
+    },
+    "two-strangers-bway-2025": {
+      "tony": {
+        "season": "2025-26",
+        "ceremony": "79th",
+        "eligible": false,
+        "note": "Not yet eligible - opens Nov 2025"
+      }
+    },
+    "marjorie-prime-2025": {
+      "tony": {
+        "season": "2025-26",
+        "ceremony": "79th",
+        "eligible": false,
+        "note": "Not yet eligible - opens Dec 2025"
+      }
+    },
+    "ragtime-2025": {
+      "tony": {
+        "season": "2025-26",
+        "ceremony": "79th",
+        "eligible": false,
+        "note": "Not yet eligible - revival opens Dec 2025"
+      }
+    },
+    "chess-2025": {
+      "tony": {
+        "season": "2025-26",
+        "ceremony": "79th",
+        "eligible": false,
+        "note": "Not yet eligible - opens Dec 2025"
+      }
+    },
+    "bug-2026": {
+      "tony": {
+        "season": "2025-26",
+        "ceremony": "79th",
+        "eligible": false,
+        "note": "Not yet eligible - opens Jan 2026"
+      }
+    },
+    "every-brilliant-thing-2026": {
+      "tony": {
+        "season": "2025-26",
+        "ceremony": "79th",
+        "eligible": false,
+        "note": "Not yet eligible - opens Feb 2026"
+      }
+    },
+    "death-of-a-salesman-2026": {
+      "tony": {
+        "season": "2025-26",
+        "ceremony": "79th",
+        "eligible": false,
+        "note": "Not yet eligible - opens Mar 2026"
+      }
+    },
+    "beaches-2026": {
+      "tony": {
+        "season": "2025-26",
+        "ceremony": "79th",
+        "eligible": false,
+        "note": "Not yet eligible - opens Mar 2026"
+      }
+    }
+  }
+}

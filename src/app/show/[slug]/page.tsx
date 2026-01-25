@@ -1,12 +1,13 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding } from '@/lib/data';
+import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards } from '@/lib/data';
 import { generateShowSchema, generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
 import BoxOfficeStats from '@/components/BoxOfficeStats';
+import AwardsCard from '@/components/AwardsCard';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -455,6 +456,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const score = show.criticScore?.score;
   const grosses = getShowGrosses(params.slug);
   const weekEnding = getGrossesWeekEnding();
+  const awards = getShowAwards(show.id);
 
   return (
     <>
@@ -616,6 +618,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Box Office Stats */}
         {grosses && <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />}
+
+        {/* Awards */}
+        <AwardsCard showId={show.id} awards={awards} />
 
         {/* Cast & Creative */}
         {(show.cast || show.creativeTeam) && (
