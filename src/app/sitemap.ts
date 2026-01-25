@@ -5,15 +5,17 @@ import {
   getAllBestOfCategories,
   getAllDirectorSlugs,
   getAllTheaterSlugs,
+  getAllBrowseSlugs,
 } from '@/lib/data';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const showSlugs = getAllShowSlugs();
   const bestOfCategories = getAllBestOfCategories();
   const directorSlugs = getAllDirectorSlugs();
   const theaterSlugs = getAllTheaterSlugs();
+  const browseSlugs = getAllBrowseSlugs();
 
   // Show pages - prioritize open shows higher than closed shows
   const showPages = showSlugs.map((slug) => {
@@ -31,6 +33,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Best-of list pages - high priority, updated frequently
   const bestOfPages = bestOfCategories.map((category) => ({
     url: `${BASE_URL}/best/${category}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.85,
+  }));
+
+  // Browse pages - high priority SEO landing pages
+  const browsePages = browseSlugs.map((slug) => ({
+    url: `${BASE_URL}/browse/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.85,
@@ -60,8 +70,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'daily',
       priority: 1,
     },
+    // Browse pages - high priority SEO landing pages
+    ...browsePages,
     // Best-of lists - high priority discovery pages
     ...bestOfPages,
+    // Broadway theaters map
+    {
+      url: `${BASE_URL}/broadway-theaters-map`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
     // Index pages - good for SEO crawling
     {
       url: `${BASE_URL}/director`,

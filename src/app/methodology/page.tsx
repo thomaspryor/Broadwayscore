@@ -1,7 +1,14 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { BASE_URL } from '@/lib/seo';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
+// Build OG image URL for methodology page
+const ogParams = new URLSearchParams({
+  type: 'browse',
+  title: 'How Broadway Scorecard Works',
+  subtitle: 'Our transparent scoring methodology for aggregating critic reviews',
+});
+const ogImageUrl = `${BASE_URL}/api/og?${ogParams.toString()}`;
 
 export const metadata: Metadata = {
   title: 'How It Works - Scoring Methodology',
@@ -13,6 +20,24 @@ export const metadata: Metadata = {
     title: 'How Broadway Scorecard Works',
     description: 'Our transparent scoring methodology for aggregating Broadway critic reviews.',
     url: `${BASE_URL}/methodology`,
+    type: 'article',
+    images: [{
+      url: ogImageUrl,
+      width: 1200,
+      height: 630,
+      alt: 'How Broadway Scorecard Works - Scoring Methodology',
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'How Broadway Scorecard Works',
+    description: 'Our transparent scoring methodology for aggregating Broadway critic reviews.',
+    images: [{
+      url: ogImageUrl,
+      width: 1200,
+      height: 630,
+      alt: 'How Broadway Scorecard Works - Scoring Methodology',
+    }],
   },
 };
 
@@ -50,7 +75,7 @@ const faqSchema = {
       name: 'What do the score ranges mean?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Scores of 85+ indicate "Must See" universal acclaim, 75-84 is "Excellent", 65-74 is "Great", 55-64 is "Good", 45-54 is "Mixed", and below 45 is "Poor".',
+        text: 'Scores of 85+ indicate "Must-See" (drop-everything great), 75-84 is "Recommended" (strong choice), 65-74 is "Worth Seeing" (good with caveats), 55-64 is "Skippable" (optional), and below 55 is "Stay Away" (not recommended). Shows with fewer than 5 reviews display "TBD" until more reviews are collected.',
       },
     },
   ],
@@ -90,49 +115,49 @@ export default function MethodologyPage() {
         <section className="card p-5 sm:p-6">
           <h2 className="text-xl font-bold text-white mb-4">Score Interpretation</h2>
           <p className="text-gray-300 mb-4">
-            Scores are labeled based on these thresholds:
+            Critic Scores are labeled based on these thresholds:
           </p>
-          <div className="space-y-3">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-high flex items-center justify-center font-bold text-white text-sm">85+</div>
+          <div className="space-y-4 sm:space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <div className="w-14 h-10 rounded-lg score-must-see flex items-center justify-center font-bold text-sm flex-shrink-0">85+</div>
               <div>
-                <span className="text-white font-medium">Must See!</span>
-                <span className="text-gray-500 ml-2">— Universal acclaim</span>
+                <span className="text-white font-medium">Must-See</span>
+                <span className="text-gray-500 block sm:inline sm:ml-2">— Drop-everything great. If you&apos;re seeing one show, make it this.</span>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-high flex items-center justify-center font-bold text-white text-sm">75-84</div>
-              <div>
-                <span className="text-white font-medium">Excellent</span>
-                <span className="text-gray-500 ml-2">— Strong praise</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-high flex items-center justify-center font-bold text-white text-sm">65-74</div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <div className="w-14 h-10 rounded-lg score-great flex items-center justify-center font-bold text-sm flex-shrink-0">75-84</div>
               <div>
                 <span className="text-white font-medium">Great</span>
-                <span className="text-gray-500 ml-2">— Generally favorable</span>
+                <span className="text-gray-500 block sm:inline sm:ml-2">— Strong choice—most people will have a great time.</span>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-medium flex items-center justify-center font-bold text-gray-900 text-sm">55-64</div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <div className="w-14 h-10 rounded-lg score-good flex items-center justify-center font-bold text-sm flex-shrink-0">65-74</div>
               <div>
                 <span className="text-white font-medium">Good</span>
-                <span className="text-gray-500 ml-2">— More positive than negative</span>
+                <span className="text-gray-500 block sm:inline sm:ml-2">— Solid with caveats. Best if the premise/cast/genre is your thing.</span>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-medium flex items-center justify-center font-bold text-gray-900 text-sm">45-54</div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <div className="w-14 h-10 rounded-lg score-tepid flex items-center justify-center font-bold text-sm flex-shrink-0">55-64</div>
               <div>
-                <span className="text-white font-medium">Mixed</span>
-                <span className="text-gray-500 ml-2">— Divided reception</span>
+                <span className="text-white font-medium">Tepid</span>
+                <span className="text-gray-500 block sm:inline sm:ml-2">— Optional. Fine to miss unless you&apos;re a completist or super fan.</span>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-10 rounded-lg bg-score-low flex items-center justify-center font-bold text-white text-sm">&lt;45</div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <div className="w-14 h-10 rounded-lg score-skip flex items-center justify-center font-bold text-sm flex-shrink-0">&lt;55</div>
               <div>
-                <span className="text-white font-medium">Poor</span>
-                <span className="text-gray-500 ml-2">— Generally unfavorable</span>
+                <span className="text-white font-medium">Skip</span>
+                <span className="text-gray-500 block sm:inline sm:ml-2">— Not recommended. Your time and money are better spent elsewhere.</span>
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <div className="w-14 h-10 rounded-lg bg-surface-overlay border border-white/10 flex items-center justify-center font-bold text-gray-400 text-sm flex-shrink-0">TBD</div>
+              <div>
+                <span className="text-white font-medium">To Be Determined</span>
+                <span className="text-gray-500 block sm:inline sm:ml-2">— Fewer than 5 reviews collected</span>
               </div>
             </div>
           </div>
@@ -160,7 +185,7 @@ export default function MethodologyPage() {
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-2 py-0.5 rounded bg-gray-500/20 text-gray-400 text-xs font-medium">Tier 2</span>
-                <span className="text-gray-400 text-sm">Weight: 0.85×</span>
+                <span className="text-gray-400 text-sm">Weight: 0.70×</span>
               </div>
               <p className="text-gray-300 text-sm">
                 NY Post, NY Daily News, TheaterMania, Entertainment Weekly, Deadline, The Wrap, IndieWire, Observer, Slant, Chicago Tribune, USA Today, NY Stage Review, NY Theatre Guide
@@ -170,7 +195,7 @@ export default function MethodologyPage() {
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-2 py-0.5 rounded bg-surface text-gray-500 text-xs font-medium">Tier 3</span>
-                <span className="text-gray-400 text-sm">Weight: 0.70×</span>
+                <span className="text-gray-400 text-sm">Weight: 0.40×</span>
               </div>
               <p className="text-gray-300 text-sm">
                 BroadwayWorld, amNewYork, Front Mezz Junkies, Culture Sauce, and other smaller outlets/blogs

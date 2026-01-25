@@ -71,16 +71,18 @@ A website aggregating Broadway show reviews into composite "metascores" (like Me
 ## Current State (January 2026)
 
 ### What's Working
-- **22 Broadway shows** with full metadata (synopsis, cast, creative team, venues)
+- **40 Broadway shows** with full metadata (synopsis, cast, creative team, venues)
+- **1,150+ critic reviews** across all shows in `data/review-texts/`
 - **Critics-only scoring** (V1 approach)
-- **Two Strangers** has complete review data (16 critic reviews) as proof of concept
 - **TodayTix-inspired UI** with card layout, hero images, show detail pages
 - **External CDN images** from Contentful (TodayTix's CDN)
+- **URL-based filtering** with shareable filter state (?status=now_playing&sort=score_desc)
 
 ### Shows Database
-- 17 currently open shows
-- 5 closed shows tracked
+- 27 currently open shows
+- 13 closed shows tracked
 - Full metadata: synopsis, cast, creative team, tags, age recommendations, theater addresses
+- Ticket links for all open shows (TodayTix + Telecharge/Ticketmaster)
 
 ## Scoring Methodology (V1 - Critics Only)
 
@@ -90,8 +92,8 @@ A website aggregating Broadway show reviews into composite "metascores" (like Me
 
 ### Critic Score Calculation
 - **Tier 1 outlets** (NYT, Vulture, Variety): weight 1.0
-- **Tier 2 outlets** (TheaterMania, NY Post): weight 0.85
-- **Tier 3 outlets** (blogs, smaller sites): weight 0.70
+- **Tier 2 outlets** (TheaterMania, NY Post): weight 0.70
+- **Tier 3 outlets** (blogs, smaller sites): weight 0.40
 
 Each review has:
 - `assignedScore` (0-100) - normalized score
@@ -109,9 +111,22 @@ Each review has:
 data/
   shows.json              # Show metadata with full details
   reviews.json            # Critic reviews with scores and original ratings
+  grosses.json            # Box office data (weekly + all-time stats)
   new-shows-pending.json  # Auto-generated: new shows awaiting review data
+  show-score.json         # Show Score aggregator data (audience scores + critic reviews)
+  show-score-urls.json    # URL mapping for Show Score pages
   audience.json           # (Future) Audience scores
   buzz.json               # (Future) Social buzz data
+  review-texts/           # Individual review JSON files by show
+    {show-id}/            # e.g., hamilton-2015/, wicked-2003/
+      {outlet}--{critic}.json  # e.g., nytimes--ben-brantley.json
+    failed-fetches.json   # Tracking file for reviews that couldn't be scraped
+  archives/reviews/       # Archived HTML of scraped review pages
+    {show-id}/            # HTML snapshots with timestamps
+  aggregator-archive/     # Archived HTML pages from aggregator sites
+    show-score/           # Show Score page archives (*.html)
+    dtli/                 # Did They Like It archives
+    bww-roundups/         # BroadwayWorld review roundups
 ```
 
 ### Show Schema (shows.json)
@@ -127,12 +142,58 @@ data/
 }
 ```
 
+### Grosses Schema (grosses.json)
+```typescript
+{
+  lastUpdated: string,           // ISO timestamp
+  weekEnding: string,            // e.g., "1/18/2026"
+  shows: {
+    [slug: string]: {
+      thisWeek?: {               // Only for currently running shows
+        gross: number | null,
+        grossPrevWeek: number | null,
+        grossYoY: number | null,
+        capacity: number | null,
+        capacityPrevWeek: number | null,
+        capacityYoY: number | null,      // Not available from BWW
+        atp: number | null,              // Average Ticket Price
+        atpPrevWeek: number | null,      // Not available from BWW
+        atpYoY: number | null,           // Not available from BWW
+        attendance: number | null,
+        performances: number | null
+      },
+      allTime: {                 // Available for all shows including closed
+        gross: number | null,
+        performances: number | null,
+        attendance: number | null
+      },
+      lastUpdated?: string
+    }
+  }
+}
+```
+
+**Data availability from BroadwayWorld:**
+- ✅ Gross: current, prev week, YoY
+- ✅ Capacity: current, prev week
+- ❌ Capacity YoY: not provided
+- ✅ ATP: current only
+- ❌ ATP prev week/YoY: not provided
+- ✅ All-time stats: gross, performances, attendance (all shows)
+
 ## Key Files
 - `src/lib/engine.ts` - Scoring engine + TypeScript interfaces
-- `src/lib/data.ts` - Data loading layer
+- `src/lib/data.ts` - Data loading layer (includes grosses data functions)
 - `src/app/page.tsx` - Homepage with show grid
 - `src/app/show/[slug]/page.tsx` - Individual show pages
 - `src/config/scoring.ts` - Scoring rules, tier weights, outlet mappings
+- `src/components/BoxOfficeStats.tsx` - Box office stats display component
+- `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses scraper (Playwright)
+- `scripts/scrape-alltime.ts` - BroadwayWorld all-time stats scraper (Playwright)
+- `scripts/collect-review-texts-v2.js` - Enhanced review text scraper with stealth mode, ScrapingBee fallback, Archive.org fallback
+- `scripts/audit-scores.js` - Validates all review scores, flags wrong conversions, sentiment placeholders, duplicates
+- `scripts/fix-scores.js` - Automated fix for common scoring issues (wrong star/letter conversions)
+- `scripts/rebuild-show-reviews.js` - Rebuilds reviews.json for specific shows from review-texts data
 
 ## Automation (GitHub Actions)
 
@@ -149,6 +210,13 @@ All automation runs via GitHub Actions - no local commands needed.
 ### `.github/workflows/fetch-images.yml`
 - **Runs:** When triggered
 - **Does:** Fetches show images from TodayTix CDN
+
+### `.github/workflows/update-grosses.yml`
+- **Runs:** Every Tuesday & Wednesday at 3pm UTC (10am ET)
+- **Does:** Scrapes BroadwayWorld for weekly box office data and all-time stats
+- **Data source:** BroadwayWorld (grosses.cfm for weekly, grossescumulative.cfm for all-time)
+- **Note:** Data is typically released Monday/Tuesday after the week ends on Sunday
+- **Skips:** If data for the current week already exists (unless force=true)
 
 ## Deployment
 
@@ -180,6 +248,27 @@ All automation runs via GitHub Actions - no local commands needed.
 - Weekly automated status updates
 - New show discovery automation
 
+### Box Office Stats
+Show pages display box office data in two rows of stat cards:
+
+**THIS WEEK row (for currently running shows):**
+- Gross (with WoW and YoY % change arrows)
+- Capacity % (with WoW % change arrow)
+- Avg Ticket Price
+
+**ALL TIME row (for all shows including closed):**
+- Total Gross (e.g., "$2.1B" for Lion King)
+- Total Performances
+- Total Attendance
+
+**Component:** `src/components/BoxOfficeStats.tsx`
+**Data functions:** `getShowGrosses()`, `getGrossesWeekEnding()` in `src/lib/data.ts`
+
+**Change indicators:**
+- Green up arrow for positive changes
+- Red down arrow for negative changes
+- Only shows when comparison data is available
+
 ### MCP Setup for Review Aggregators
 
 The review aggregator sites (DTLI, Show-Score, BroadwayWorld) block standard web requests. To access them, we use the ScrapingBee MCP server.
@@ -199,11 +288,117 @@ Once configured, use the `scrapingbee_get_page_html` tool to fetch aggregator pa
 
 **Important:** Always cross-check our review count against these 3 aggregators before finalizing a show's reviews.
 
+### Show Score Integration
+
+Show Score is a third aggregator source alongside DTLI and BWW Review Roundups. It provides:
+- **Audience scores** (0-100%) from user ratings
+- **Critic review lists** with outlet, author, date, excerpt, and review URL
+
+**Files:**
+- `data/show-score-urls.json` - Maps 37 show IDs to Show Score URLs
+- `data/show-score.json` - Extracted data (audience scores + critic reviews)
+- `data/aggregator-archive/show-score/*.html` - Archived HTML pages
+- `scripts/extract-show-score-reviews.js` - Extraction script using JSDOM
+
+**Current Status (January 2026):**
+- 22 shows fully extracted with data
+- 15 shows need archive pages fetched
+- 3 shows need pages re-fetched (wrong content: moulin-rouge-2019, mj-2022, and-juliet-2022)
+
+**To fetch missing pages:**
+1. Use Playwright MCP to navigate to Show Score URL
+2. Capture page HTML with `browser_evaluate` → `document.documentElement.outerHTML`
+3. Save to `data/aggregator-archive/show-score/{show-id}.html` with metadata header
+4. Run `node scripts/extract-show-score-reviews.js` to update show-score.json
+
+**Data extracted per show:**
+```json
+{
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/...",
+  "audienceScore": 90,
+  "audienceReviewCount": 334,
+  "criticReviewCount": 17,
+  "criticReviews": [
+    {
+      "outlet": "The New York Times",
+      "author": "Laura Collins-Hughes",
+      "date": "November 20th, 2025",
+      "excerpt": "Critic's Pick: \"The effervescent new musical...\"",
+      "url": "https://www.nytimes.com/..."
+    }
+  ]
+}
+```
+
+**Note:** Show Score paginates critic reviews - only first 8 are in the initial HTML. The `criticReviewCount` reflects the total from the heading (e.g., "Critic Reviews (17)").
+
 ### SEO
 - JSON-LD structured data with ticket offers, cast, ratings
 - Dynamic meta tags per show
 - Sitemap.xml auto-generated
 - Robots.txt configured
+
+## Review Data Schema (January 2026)
+
+Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json` has:
+
+```json
+{
+  "showId": "two-strangers-bway-2025",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Laura Collins-Hughes",
+  "url": "https://...",
+  "publishDate": "November 20, 2025",
+  "fullText": "..." or null,
+  "isFullReview": true/false,
+  "dtliExcerpt": "...",
+  "bwwExcerpt": "...",
+  "showScoreExcerpt": "...",
+  "originalScore": null,
+  "assignedScore": 78,
+  "source": "playwright-scraped",
+  "dtliThumb": "Up/Down/Meh",
+  "bwwThumb": "Up/Down/Meh"
+}
+```
+
+**Field meanings:**
+- `fullText` - Complete review text (null if only excerpts available)
+- `isFullReview` - true if fullText is a complete review (500+ chars from scraped source)
+- `dtliExcerpt` - Excerpt from Did They Like It aggregator
+- `bwwExcerpt` - Excerpt from BroadwayWorld Review Roundup
+- `showScoreExcerpt` - Excerpt from Show Score aggregator
+- `source` - Where the data came from: `dtli`, `bww-roundup`, `playwright-scraped`, `webfetch-scraped`, `manual`
+
+## Subscription Access for Paywalled Sites
+
+For scraping paywalled review sites, the user has subscriptions:
+
+| Site | Email/Username | Password Location |
+|------|---------------|-------------------|
+| **New York Times** | ewcampbell1@gmail.com | GitHub Secrets |
+| **Vulture/NY Mag** | thomas.pryor@gmail.com | GitHub Secrets |
+
+**Usage:** When scraping NYT or Vulture reviews via Playwright, log in first using these credentials.
+
+## Scraping Priority & Approach
+
+### Free Outlets (scrape directly with Playwright/WebFetch)
+- **Stage and Cinema** (stageandcinema.com) - Works well with Playwright
+- **Theatrely** (theatrely.com) - Works with WebFetch
+- **Cititour** (cititour.com) - Works with WebFetch
+- **New York Theater** (newyorktheater.me) - Try Playwright
+- **Culture Sauce** - Free access
+
+### Paywalled Outlets (use subscription login)
+- **New York Times** - Use NYT subscription
+- **Vulture/NY Magazine** - Use Vulture subscription
+
+### Blocked/Unavailable
+- **Broadway News** - Many URLs return 404 (pages removed)
+- **Entertainment Weekly** - Paywalled, no subscription
+- **The Wrap** - Often blocked
 
 ## Future Features
 - Audience scores integration

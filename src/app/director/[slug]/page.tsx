@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getDirectorBySlug, getAllDirectorSlugs } from '@/lib/data';
 import { generateBreadcrumbSchema, generatePersonSchema } from '@/lib/seo';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
 
@@ -54,11 +55,18 @@ function ScoreBadge({ score, size = 'md' }: { score?: number | null; size?: 'sm'
   }
 
   const roundedScore = Math.round(score);
-  const colorClass = roundedScore >= 70
-    ? 'bg-score-high text-white'
-    : roundedScore >= 50
-    ? 'bg-score-medium text-gray-900'
-    : 'bg-score-low text-white';
+  let colorClass: string;
+  if (roundedScore >= 85) {
+    colorClass = 'score-must-see';
+  } else if (roundedScore >= 75) {
+    colorClass = 'score-great';
+  } else if (roundedScore >= 65) {
+    colorClass = 'score-good';
+  } else if (roundedScore >= 55) {
+    colorClass = 'score-tepid';
+  } else {
+    colorClass = 'score-skip';
+  }
 
   return (
     <div className={`${sizeClasses[size]} ${colorClass} flex items-center justify-center font-bold`}>
@@ -155,9 +163,10 @@ export default function DirectorPage({ params }: { params: { slug: string } }) {
                   <div className="w-14 h-14 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
                     {show.images?.thumbnail ? (
                       <img
-                        src={show.images.thumbnail}
+                        src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
                         alt={`${show.title} - Broadway ${show.type} directed by ${director.name}`}
                         className="w-full h-full object-cover"
+                        loading="lazy"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
@@ -202,9 +211,10 @@ export default function DirectorPage({ params }: { params: { slug: string } }) {
                   <div className="w-14 h-14 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
                     {show.images?.thumbnail ? (
                       <img
-                        src={show.images.thumbnail}
+                        src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
                         alt={`${show.title} - Broadway ${show.type} directed by ${director.name}`}
                         className="w-full h-full object-cover"
+                        loading="lazy"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">

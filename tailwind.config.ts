@@ -22,10 +22,26 @@ const config: Config = {
     },
     extend: {
       colors: {
-        // Score colors - keeping semantic colors for scores
+        // Score colors - tiered system
         score: {
-          high: '#10b981',
-          'high-bg': 'rgba(16, 185, 129, 0.15)',
+          // Must See (85-100) - Bright Gold
+          'must-see': '#FFD700',
+          'must-see-bg': 'rgba(255, 215, 0, 0.15)',
+          // Great (75-84) - Green
+          great: '#22c55e',
+          'great-bg': 'rgba(34, 197, 94, 0.15)',
+          // Good (65-74) - Teal
+          good: '#14b8a6',
+          'good-bg': 'rgba(20, 184, 166, 0.15)',
+          // Tepid (55-64) - Amber
+          tepid: '#f59e0b',
+          'tepid-bg': 'rgba(245, 158, 11, 0.15)',
+          // Skip (0-54) - Red
+          skip: '#ef4444',
+          'skip-bg': 'rgba(239, 68, 68, 0.15)',
+          // Legacy aliases for compatibility
+          high: '#22c55e',
+          'high-bg': 'rgba(34, 197, 94, 0.15)',
           medium: '#f59e0b',
           'medium-bg': 'rgba(245, 158, 11, 0.15)',
           low: '#ef4444',
@@ -39,19 +55,19 @@ const config: Config = {
           overlay: '#2a2a38',
           elevated: '#32323f',
         },
-        // Brand - TodayTix-inspired coral/hot pink
+        // Brand - Muted gold for prestigious feel
         brand: {
-          DEFAULT: '#ff6b6b',
-          hover: '#ff5252',
-          light: '#ff8a8a',
-          muted: 'rgba(255, 107, 107, 0.2)',
+          DEFAULT: '#d4a574',
+          hover: '#c4956a',
+          light: '#e4b584',
+          muted: 'rgba(212, 165, 116, 0.2)',
         },
         // Accent colors for variety
         accent: {
-          coral: '#ff6b6b',
-          pink: '#ff4d8d',
+          gold: '#d4a574',
+          cream: '#f5e6d3',
           purple: '#a855f7',
-          gold: '#fbbf24',
+          warm: '#b8956a',
         },
         // Status colors
         status: {
@@ -82,12 +98,12 @@ const config: Config = {
       boxShadow: {
         'card': '0 2px 8px -2px rgba(0, 0, 0, 0.5), 0 1px 2px -1px rgba(0, 0, 0, 0.4)',
         'card-hover': '0 8px 24px -4px rgba(0, 0, 0, 0.6), 0 4px 8px -2px rgba(0, 0, 0, 0.5)',
-        'glow': '0 0 20px rgba(255, 107, 107, 0.3)',
-        'glow-sm': '0 0 10px rgba(255, 107, 107, 0.2)',
+        'glow': '0 0 20px rgba(212, 165, 116, 0.3)',
+        'glow-sm': '0 0 10px rgba(212, 165, 116, 0.2)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-brand': 'linear-gradient(135deg, #ff6b6b 0%, #ff4d8d 100%)',
+        'gradient-brand': 'linear-gradient(135deg, #d4a574 0%, #b8956a 100%)',
         'gradient-dark': 'linear-gradient(180deg, #1a1a24 0%, #0f0f14 100%)',
       },
       animation: {
