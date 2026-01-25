@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Biz Buzz - Commercial performance data for Broadway shows",
-    "lastUpdated": "2026-01-25",
+    "lastUpdated": "2026-01-26",
     "sources": "SEC filings, trade press (Broadway Journal, Broadway News, Deadline, Variety), Reddit r/Broadway",
     "designations": {
       "Miracle": "Profit > 3x investment (long-running mega-hits)",
@@ -225,36 +225,36 @@
     },
     "boop": {
       "designation": "Flop",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
+      "capitalization": 26000000,
+      "capitalizationSource": "NY Times",
+      "weeklyRunningCost": 817000,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Closed quickly after poor reviews and weak sales. Jasmine Amy Rogers praised but couldn't save production."
+      "notes": "Big-budget extravaganza capitalized at $26M. Closed July 2025 after missing Tony momentum. Fixed weekly expenses of $817K. Jasmine Amy Rogers praised but couldn't save production."
     },
     "the-roommate": {
-      "designation": "Fizzle",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedWeeks": null,
-      "recoupedSource": null,
-      "notes": "Star vehicle for Patti LuPone and Mia Farrow. Limited run closed as scheduled."
-    },
-    "our-town": {
       "designation": "Sugar Daddy",
-      "capitalization": null,
-      "capitalizationSource": null,
+      "capitalization": 4800000,
+      "capitalizationSource": "SEC filing / Reddit",
       "weeklyRunningCost": null,
       "recouped": null,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Limited run with Jim Parsons. First Thornton Wilder play to gross $1M+ in a week. Strong final weeks."
+      "notes": "Star vehicle for Patti LuPone and Mia Farrow. Limited run closed as scheduled. Low capitalization compared to other Broadway shows."
+    },
+    "our-town": {
+      "designation": "Sugar Daddy",
+      "capitalization": 20000000,
+      "capitalizationSource": "NY Times / Broadway Stars",
+      "weeklyRunningCost": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedWeeks": null,
+      "recoupedSource": null,
+      "notes": "Limited run with Jim Parsons. First Thornton Wilder play to gross $1M+ in a week. Strong final weeks. Capitalized at $20M."
     },
     "death-becomes-her": {
       "designation": "TBD",
@@ -370,14 +370,14 @@
     },
     "maybe-happy-ending": {
       "designation": "TBD",
-      "capitalization": null,
-      "capitalizationSource": null,
+      "capitalization": 18250000,
+      "capitalizationSource": "SEC filing / Broadway Journal",
       "weeklyRunningCost": null,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Critics' Pick. Darren Criss + Helen J Shen. Small cast reduces running costs."
+      "notes": "Critics' Pick. Darren Criss + Helen J Shen. Small cast reduces running costs. Struggled financially early but has been selling out consistently."
     },
     "liberation": {
       "designation": "TBD",
@@ -413,15 +413,15 @@
       "notes": "Limited run. Critics' Pick."
     },
     "oedipus": {
-      "designation": "TBD",
-      "capitalization": null,
-      "capitalizationSource": null,
+      "designation": "Sugar Daddy",
+      "capitalization": 6000000,
+      "capitalizationSource": "BroadwayWorld",
       "weeklyRunningCost": null,
-      "recouped": null,
+      "recouped": true,
       "recoupedDate": null,
       "recoupedWeeks": null,
-      "recoupedSource": null,
-      "notes": "Mark Strong + Lesley Manville. Limited engagement. Critics' Pick."
+      "recoupedSource": "AFR",
+      "notes": "Mark Strong + Lesley Manville. Recouped during West End run. Limited engagement on Broadway sold out every performance. Critics' Pick."
     },
     "aladdin": {
       "designation": "Windfall",
@@ -446,15 +446,15 @@
       "notes": "Return engagement. Brand recognition from film franchise. Original run recouped long ago."
     },
     "queen-of-versailles": {
-      "designation": "TBD",
-      "capitalization": null,
-      "capitalizationSource": null,
+      "designation": "Flop",
+      "capitalization": 22500000,
+      "capitalizationSource": "Deadline / Broadway Journal",
       "weeklyRunningCost": null,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Critics' Pick. Kristin Chenoweth star vehicle."
+      "notes": "Closed early Dec 2025 after weak ticket sales. Stephen Schwartz score. Kristin Chenoweth star vehicle couldn't save production."
     }
   }
 }
