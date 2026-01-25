@@ -57,43 +57,71 @@ async function fetchShowsFromBroadwayOrg() {
   const shows = await page.evaluate(() => {
     const showsList = [];
 
-    // Look for all links that go to /shows/[slug]
+    // Debug: Check what's on the page
     const showLinks = Array.from(document.querySelectorAll('a[href^="/shows/"]'));
+    console.log(`Found ${showLinks.length} links to /shows/`);
 
-    for (const link of showLinks) {
-      const href = link.getAttribute('href');
-      if (!href || href === '/shows/') continue;
+    // Try finding h4 headings directly
+    const h4s = Array.from(document.querySelectorAll('h4'));
+    console.log(`Found ${h4s.length} h4 headings`);
 
-      const slug = href.replace('/shows/', '');
+    // If we have h4s but no show links, extract from h4s directly
+    if (h4s.length > 0) {
+      h4s.forEach(h4 => {
+        const title = h4.textContent.trim();
+        if (!title || title.length < 3) return;
 
-      // Find h4 within or near this link
-      const h4 = link.querySelector('h4') || link.closest('div')?.querySelector('h4');
-      if (!h4) continue;
+        // Find container
+        let container = h4.closest('div');
+        if (container) container = container.parentElement || container;
 
-      const title = h4.textContent.trim();
-      if (!title || title.length < 3) continue;
+        const text = container?.textContent || '';
+        const venue = container?.querySelector('a[href*="/broadway-theatres/"]')?.textContent?.trim() || 'TBA';
 
-      // Find parent container for dates and venue
-      let container = link.closest('div');
-      if (container) {
-        container = container.parentElement || container;
-      }
+        const beginsMatch = text.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
+        const throughMatch = text.match(/Through:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
 
-      const venue = container?.querySelector('a[href*="/broadway-theatres/"]')?.textContent?.trim() || 'TBA';
-      const text = container?.textContent || '';
+        if (!showsList.find(s => s.title === title)) {
+          showsList.push({
+            title,
+            venue,
+            slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+            openingDate: beginsMatch ? beginsMatch[1] : null,
+            closingDate: throughMatch ? throughMatch[1] : null
+          });
+        }
+      });
+    } else {
+      // Fallback: try the original method
+      for (const link of showLinks) {
+        const href = link.getAttribute('href');
+        if (!href || href === '/shows/') continue;
 
-      const beginsMatch = text.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
-      const throughMatch = text.match(/Through:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
+        const slug = href.replace('/shows/', '');
+        const h4 = link.querySelector('h4') || link.closest('div')?.querySelector('h4');
+        if (!h4) continue;
 
-      // Avoid duplicates
-      if (!showsList.find(s => s.title === title)) {
-        showsList.push({
-          title,
-          venue,
-          slug,
-          openingDate: beginsMatch ? beginsMatch[1] : null,
-          closingDate: throughMatch ? throughMatch[1] : null
-        });
+        const title = h4.textContent.trim();
+        if (!title || title.length < 3) continue;
+
+        let container = link.closest('div');
+        if (container) container = container.parentElement || container;
+
+        const venue = container?.querySelector('a[href*="/broadway-theatres/"]')?.textContent?.trim() || 'TBA';
+        const text = container?.textContent || '';
+
+        const beginsMatch = text.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
+        const throughMatch = text.match(/Through:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
+
+        if (!showsList.find(s => s.title === title)) {
+          showsList.push({
+            title,
+            venue,
+            slug,
+            openingDate: beginsMatch ? beginsMatch[1] : null,
+            closingDate: throughMatch ? throughMatch[1] : null
+          });
+        }
       }
     }
 
