@@ -1,0 +1,97 @@
+name: Collect Review Texts
+
+on:
+  workflow_dispatch:
+    inputs:
+      batch_size:
+        description: 'Number of reviews to process per batch'
+        required: false
+        default: '10'
+      max_reviews:
+        description: 'Maximum total reviews to process (0 = all)'
+        required: false
+        default: '50'
+      priority:
+        description: 'Priority filter (tier1, all)'
+        required: false
+        default: 'tier1'
+      show_filter:
+        description: 'Only process specific show (leave empty for all)'
+        required: false
+        default: ''
+
+jobs:
+  collect-reviews:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180  # 3 hour max
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Create directories
+        run: |
+          mkdir -p data/archives/reviews
+          mkdir -p data/audit/validation
+          mkdir -p data/collection-state
+
+      - name: Run review collection
+        id: collect
+        env:
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYT_PASSWORD: ${{ secrets.NYT_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
+          WAPO_PASSWORD: ${{ secrets.WAPO_PASSWORD }}
+          BATCH_SIZE: ${{ inputs.batch_size }}
+          MAX_REVIEWS: ${{ inputs.max_reviews }}
+          PRIORITY: ${{ inputs.priority }}
+          SHOW_FILTER: ${{ inputs.show_filter }}
+        run: node scripts/collect-review-texts.js
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          # Add all changes
+          git add data/review-texts/ data/archives/reviews/ data/audit/ data/collection-state/
+
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "feat: Collect review texts (batch run)
+
+          - Processed reviews from GitHub Action
+          - Added full texts and archives
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+            git push
+          fi
+
+      - name: Upload collection report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collection-report
+          path: |
+            data/audit/validation/collection-report-*.json
+            data/collection-state/progress.json
+          retention-days: 30
