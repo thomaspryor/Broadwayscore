@@ -595,23 +595,23 @@ function HomePageInner() {
       {/* Score Legend */}
       <div className="flex flex-wrap items-center gap-4 mb-6 text-xs text-gray-500">
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-score-must-see shadow-[0_0_6px_rgba(212,175,55,0.5)]"></div>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#FFD700', boxShadow: '0 0 6px rgba(255, 215, 0, 0.5)' }}></div>
           <span>85+ Must-See</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-score-great"></div>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#22c55e' }}></div>
           <span>75-84 Great</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-score-good"></div>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#14b8a6' }}></div>
           <span>65-74 Good</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-score-tepid"></div>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#f59e0b' }}></div>
           <span>55-64 Tepid</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-score-skip"></div>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#ef4444' }}></div>
           <span>&lt;55 Skip</span>
         </div>
       </div>

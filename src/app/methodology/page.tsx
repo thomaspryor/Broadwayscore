@@ -2,6 +2,14 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
 
+// Build OG image URL for methodology page
+const ogParams = new URLSearchParams({
+  type: 'browse',
+  title: 'How Broadway Scorecard Works',
+  subtitle: 'Our transparent scoring methodology for aggregating critic reviews',
+});
+const ogImageUrl = `${BASE_URL}/api/og?${ogParams.toString()}`;
+
 export const metadata: Metadata = {
   title: 'How It Works - Scoring Methodology',
   description: 'Learn how Broadway Scorecard calculates critic scores from aggregated reviews. Our transparent methodology uses weighted averages based on outlet tier.',
@@ -13,11 +21,23 @@ export const metadata: Metadata = {
     description: 'Our transparent scoring methodology for aggregating Broadway critic reviews.',
     url: `${BASE_URL}/methodology`,
     type: 'article',
+    images: [{
+      url: ogImageUrl,
+      width: 1200,
+      height: 630,
+      alt: 'How Broadway Scorecard Works - Scoring Methodology',
+    }],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'How Broadway Scorecard Works',
     description: 'Our transparent scoring methodology for aggregating Broadway critic reviews.',
+    images: [{
+      url: ogImageUrl,
+      width: 1200,
+      height: 630,
+      alt: 'How Broadway Scorecard Works - Scoring Methodology',
+    }],
   },
 };
 

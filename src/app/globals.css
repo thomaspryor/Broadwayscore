@@ -77,16 +77,18 @@
     @apply w-20 h-20 text-score-xl rounded-2xl;
   }
 
-  /* Must See (85-100) - Premium gold with gradient and glow */
+  /* Must See (85-100) - Premium gold with gradient, glow, and ring */
   .score-must-see {
-    background: linear-gradient(135deg, #D4AF37 0%, #C5A028 50%, #D4AF37 100%);
+    background: linear-gradient(135deg, #FFD700 0%, #DAA520 50%, #FFD700 100%);
     color: #1a1a1a;
     box-shadow:
-      0 0 20px rgba(212, 175, 55, 0.4),
-      0 2px 8px rgba(212, 175, 55, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      0 0 24px rgba(255, 215, 0, 0.5),
+      0 0 12px rgba(255, 215, 0, 0.4),
+      0 4px 12px rgba(0, 0, 0, 0.3),
+      inset 0 2px 0 rgba(255, 255, 255, 0.3);
     position: relative;
     overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.3);
   }
 
   .score-must-see::before {
@@ -96,8 +98,8 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-    animation: shimmer 3s infinite;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    animation: shimmer 2.5s infinite;
   }
 
   @keyframes shimmer {
@@ -107,42 +109,49 @@
 
   /* Great (75-84) - Green */
   .score-great {
-    @apply bg-score-great text-white;
+    background-color: #22c55e;
+    color: white;
     box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
   }
 
   /* Good (65-74) - Teal */
   .score-good {
-    @apply bg-score-good text-white;
+    background-color: #14b8a6;
+    color: white;
     box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);
   }
 
-  /* Tepid (55-64) - Yellow */
+  /* Tepid (55-64) - Amber/Orange */
   .score-tepid {
-    @apply bg-score-tepid text-gray-900;
-    box-shadow: 0 2px 8px rgba(234, 179, 8, 0.3);
+    background-color: #f59e0b;
+    color: #1a1a1a;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
   }
 
-  /* Skip (0-54) - Orange-Red */
+  /* Skip (0-54) - Red */
   .score-skip {
-    @apply bg-score-skip text-white;
-    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+    background-color: #ef4444;
+    color: white;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
   }
 
   /* Legacy classes for compatibility */
   .score-high {
-    @apply bg-score-high text-white;
+    background-color: #22c55e;
+    color: white;
     box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
   }
 
   .score-medium {
-    @apply bg-score-medium text-gray-900;
-    box-shadow: 0 2px 8px rgba(234, 179, 8, 0.3);
+    background-color: #f59e0b;
+    color: #1a1a1a;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
   }
 
   .score-low {
-    @apply bg-score-low text-white;
-    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+    background-color: #ef4444;
+    color: white;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
   }
 
   .score-none {

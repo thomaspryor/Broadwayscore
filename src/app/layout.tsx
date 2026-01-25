@@ -3,6 +3,29 @@ import './globals.css';
 import Link from 'next/link';
 import ScrollToTop from '@/components/ScrollToTop';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
+import { getAllShows } from '@/lib/data';
+
+// Get top 3 show posters for homepage OG image
+function getTopShowPosters(): string[] {
+  try {
+    const shows = getAllShows();
+    return shows
+      .filter(show => show.status === 'open' && show.criticScore?.score && show.images?.poster)
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+      .slice(0, 3)
+      .map(show => show.images!.poster!)
+      .filter((url): url is string => !!url);
+  } catch {
+    return [];
+  }
+}
+
+const topPosters = getTopShowPosters();
+const homeOgParams = new URLSearchParams({
+  type: 'home',
+  ...(topPosters.length > 0 && { posters: topPosters.join(',') }),
+});
+const homeOgImageUrl = `${BASE_URL}/api/og?${homeOgParams.toString()}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -20,11 +43,23 @@ export const metadata: Metadata = {
     siteName: 'Broadway Scorecard',
     title: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
     description: 'Comprehensive Broadway show ratings combining critic reviews, audience scores, and community buzz.',
+    images: [{
+      url: homeOgImageUrl,
+      width: 1200,
+      height: 630,
+      alt: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
+    }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Broadway Scorecard',
     description: 'Aggregated Broadway show ratings from critics, audiences, and community buzz.',
+    images: [{
+      url: homeOgImageUrl,
+      width: 1200,
+      height: 630,
+      alt: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
+    }],
   },
   robots: {
     index: true,
