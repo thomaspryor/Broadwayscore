@@ -1,0 +1,682 @@
+{
+  "_meta": {
+    "lastUpdated": "2026-01-25",
+    "sources": [
+      "Show Score",
+      "Mezzanine"
+    ],
+    "designationThresholds": {
+      "Loving It": "90-100",
+      "Liking It": "75-89",
+      "Take-it-or-Leave-it": "60-74",
+      "Loathing It": "0-59"
+    },
+    "notes": "Combined score is weighted: Show Score 50%, Mezzanine 50% (when both available)"
+  },
+  "shows": {
+    "hamilton-2015": {
+      "title": "Hamilton",
+      "designation": "Loving It",
+      "combinedScore": 95,
+      "sources": {
+        "showScore": {
+          "score": 96,
+          "reviewCount": 14401
+        },
+        "mezzanine": {
+          "score": 94,
+          "reviewCount": 5166,
+          "starRating": 4.7
+        },
+        "reddit": null
+      }
+    },
+    "maybe-happy-ending-2024": {
+      "title": "Maybe Happy Ending",
+      "designation": "Loving It",
+      "combinedScore": 94,
+      "sources": {
+        "showScore": {
+          "score": 95,
+          "reviewCount": 3213
+        },
+        "mezzanine": {
+          "score": 92,
+          "reviewCount": 4750,
+          "starRating": 4.6
+        },
+        "reddit": null
+      }
+    },
+    "ragtime-2025": {
+      "title": "Ragtime",
+      "designation": "Loving It",
+      "combinedScore": 93,
+      "sources": {
+        "showScore": {
+          "score": 93,
+          "reviewCount": 294
+        },
+        "mezzanine": {
+          "score": 92,
+          "reviewCount": 1353,
+          "starRating": 4.6
+        },
+        "reddit": null
+      }
+    },
+    "wicked-2003": {
+      "title": "Wicked",
+      "designation": "Loving It",
+      "combinedScore": 92,
+      "sources": {
+        "showScore": {
+          "score": 94,
+          "reviewCount": 25122
+        },
+        "mezzanine": {
+          "score": 90,
+          "reviewCount": 7823,
+          "starRating": 4.5
+        },
+        "reddit": null
+      }
+    },
+    "hadestown-2019": {
+      "title": "Hadestown",
+      "designation": "Loving It",
+      "combinedScore": 92,
+      "sources": {
+        "showScore": {
+          "score": 89,
+          "reviewCount": 265
+        },
+        "mezzanine": {
+          "score": 94,
+          "reviewCount": 9866,
+          "starRating": 4.7
+        },
+        "reddit": null
+      }
+    },
+    "cabaret-2024": {
+      "title": "cabaret at the kit kat club",
+      "designation": "Loving It",
+      "combinedScore": 92,
+      "sources": {
+        "showScore": {
+          "score": 92,
+          "reviewCount": 1816
+        },
+        "mezzanine": null,
+        "reddit": null
+      }
+    },
+    "death-becomes-her-2024": {
+      "title": "Death Becomes Her",
+      "designation": "Loving It",
+      "combinedScore": 91,
+      "sources": {
+        "showScore": {
+          "score": 94,
+          "reviewCount": 4202
+        },
+        "mezzanine": {
+          "score": 88,
+          "reviewCount": 4828,
+          "starRating": 4.4
+        },
+        "reddit": null
+      }
+    },
+    "the-outsiders-2024": {
+      "title": "The Outsiders",
+      "designation": "Loving It",
+      "combinedScore": 90,
+      "sources": {
+        "showScore": {
+          "score": 92,
+          "reviewCount": 2189
+        },
+        "mezzanine": {
+          "score": 88,
+          "reviewCount": 5548,
+          "starRating": 4.4
+        },
+        "reddit": null
+      }
+    },
+    "stranger-things-2024": {
+      "title": "Stranger Things: The First Shadow",
+      "designation": "Loving It",
+      "combinedScore": 90,
+      "sources": {
+        "showScore": {
+          "score": 93,
+          "reviewCount": 2726
+        },
+        "mezzanine": {
+          "score": 86,
+          "reviewCount": 1969,
+          "starRating": 4.3
+        },
+        "reddit": null
+      }
+    },
+    "boop-2025": {
+      "title": "boop the musical broadway",
+      "designation": "Liking It",
+      "combinedScore": 89,
+      "sources": {
+        "showScore": {
+          "score": 89,
+          "reviewCount": 865
+        },
+        "mezzanine": null,
+        "reddit": null
+      }
+    },
+    "buena-vista-social-club-2025": {
+      "title": "Buena Vista Social Club",
+      "designation": "Liking It",
+      "combinedScore": 89,
+      "sources": {
+        "showScore": {
+          "score": 96,
+          "reviewCount": 2103
+        },
+        "mezzanine": {
+          "score": 82,
+          "reviewCount": 999,
+          "starRating": 4.1
+        },
+        "reddit": null
+      }
+    },
+    "the-notebook-2024": {
+      "title": "the notebook broadway",
+      "designation": "Liking It",
+      "combinedScore": 88,
+      "sources": {
+        "showScore": {
+          "score": 88,
+          "reviewCount": 1170
+        },
+        "mezzanine": null,
+        "reddit": null
+      }
+    },
+    "just-in-time-2025": {
+      "title": "Just in Time",
+      "designation": "Liking It",
+      "combinedScore": 88,
+      "sources": {
+        "showScore": {
+          "score": 88,
+          "reviewCount": 185
+        },
+        "mezzanine": {
+          "score": 88,
+          "reviewCount": 1525,
+          "starRating": 4.4
+        },
+        "reddit": null
+      }
+    },
+    "two-strangers-bway-2025": {
+      "title": "Two Strangers (Carry a Cake Across New York)",
+      "designation": "Liking It",
+      "combinedScore": 87,
+      "sources": {
+        "showScore": {
+          "score": 90,
+          "reviewCount": 334
+        },
+        "mezzanine": {
+          "score": 84,
+          "reviewCount": 1250,
+          "starRating": 4.2
+        },
+        "reddit": null
+      }
+    },
+    "operation-mincemeat-2025": {
+      "title": "Operation Mincemeat",
+      "designation": "Liking It",
+      "combinedScore": 87,
+      "sources": {
+        "showScore": {
+          "score": 86,
+          "reviewCount": 22
+        },
+        "mezzanine": {
+          "score": 88,
+          "reviewCount": 2979,
+          "starRating": 4.4
+        },
+        "reddit": null
+      }
+    },
+    "oh-mary-2024": {
+      "title": "Oh, Mary!",
+      "designation": "Liking It",
+      "combinedScore": 87,
+      "sources": {
+        "showScore": {
+          "score": 84,
+          "reviewCount": 257
+        },
+        "mezzanine": {
+          "score": 90,
+          "reviewCount": 3655,
+          "starRating": 4.5
+        },
+        "reddit": null
+      }
+    },
+    "oedipus-2025": {
+      "title": "Oedipus",
+      "designation": "Liking It",
+      "combinedScore": 87,
+      "sources": {
+        "showScore": {
+          "score": 90,
+          "reviewCount": 498
+        },
+        "mezzanine": {
+          "score": 84,
+          "reviewCount": 675,
+          "starRating": 4.2
+        },
+        "reddit": null
+      }
+    },
+    "water-for-elephants-2024": {
+      "title": "water for elephants broadway",
+      "designation": "Liking It",
+      "combinedScore": 87,
+      "sources": {
+        "showScore": {
+          "score": 87,
+          "reviewCount": 1195
+        },
+        "mezzanine": null,
+        "reddit": null
+      }
+    },
+    "liberation-2025": {
+      "title": "Liberation",
+      "designation": "Liking It",
+      "combinedScore": 87,
+      "sources": {
+        "showScore": {
+          "score": 90,
+          "reviewCount": 280
+        },
+        "mezzanine": {
+          "score": 84,
+          "reviewCount": 1003,
+          "starRating": 4.2
+        },
+        "reddit": null
+      }
+    },
+    "the-lion-king-1997": {
+      "title": "The Lion King",
+      "designation": "Liking It",
+      "combinedScore": 86,
+      "sources": {
+        "showScore": {
+          "score": 92,
+          "reviewCount": 13615
+        },
+        "mezzanine": {
+          "score": 80,
+          "reviewCount": 2359,
+          "starRating": 4
+        },
+        "reddit": null
+      }
+    },
+    "and-juliet-2022": {
+      "title": "& Juliet",
+      "designation": "Liking It",
+      "combinedScore": 86,
+      "sources": {
+        "showScore": {
+          "score": 91,
+          "reviewCount": 5763
+        },
+        "mezzanine": {
+          "score": 80,
+          "reviewCount": 4564,
+          "starRating": 4
+        },
+        "reddit": null
+      }
+    },
+    "back-to-the-future-2023": {
+      "title": "back to the future the musical broadway",
+      "designation": "Liking It",
+      "combinedScore": 86,
+      "sources": {
+        "showScore": {
+          "score": 86,
+          "reviewCount": 1829
+        },
+        "mezzanine": null,
+        "reddit": null
+      }
+    },
+    "hells-kitchen-2024": {
+      "title": "Hell's Kitchen",
+      "designation": "Liking It",
+      "combinedScore": 85,
+      "sources": {
+        "showScore": {
+          "score": 93,
+          "reviewCount": 3473
+        },
+        "mezzanine": {
+          "score": 76,
+          "reviewCount": 2235,
+          "starRating": 3.8
+        },
+        "reddit": null
+      }
+    },
+    "mj-2022": {
+      "title": "MJ: The Musical",
+      "designation": "Liking It",
+      "combinedScore": 85,
+      "sources": {
+        "showScore": {
+          "score": 92,
+          "reviewCount": 2970
+        },
+        "mezzanine": {
+          "score": 78,
+          "reviewCount": 1713,
+          "starRating": 3.9
+        },
+        "reddit": null
+      }
+    },
+    "six-2021": {
+      "title": "Six",
+      "designation": "Liking It",
+      "combinedScore": 85,
+      "sources": {
+        "showScore": {
+          "score": 88,
+          "reviewCount": 3721
+        },
+        "mezzanine": {
+          "score": 82,
+          "reviewCount": 5369,
+          "starRating": 4.1
+        },
+        "reddit": null
+      }
+    },
+    "book-of-mormon-2011": {
+      "title": "The Book of Mormon",
+      "designation": "Liking It",
+      "combinedScore": 85,
+      "sources": {
+        "showScore": {
+          "score": 90,
+          "reviewCount": 13560
+        },
+        "mezzanine": {
+          "score": 80,
+          "reviewCount": 3766,
+          "starRating": 4
+        },
+        "reddit": null
+      }
+    },
+    "harry-potter-2021": {
+      "title": "Harry Potter and the Cursed Child",
+      "designation": "Liking It",
+      "combinedScore": 85,
+      "sources": {
+        "showScore": {
+          "score": 90,
+          "reviewCount": 6390
+        },
+        "mezzanine": {
+          "score": 80,
+          "reviewCount": 2565,
+          "starRating": 4
+        },
+        "reddit": null
+      }
+    },
+    "suffs-2024": {
+      "title": "suffs",
+      "designation": "Liking It",
+      "combinedScore": 85,
+      "sources": {
+        "showScore": {
+          "score": 85,
+          "reviewCount": 194
+        },
+        "mezzanine": null,
+        "reddit": null
+      }
+    },
+    "moulin-rouge-2019": {
+      "title": "Moulin Rouge! The Musical",
+      "designation": "Liking It",
+      "combinedScore": 84,
+      "sources": {
+        "showScore": {
+          "score": 88,
+          "reviewCount": 4107
+        },
+        "mezzanine": {
+          "score": 80,
+          "reviewCount": 9000,
+          "starRating": 4
+        },
+        "reddit": null
+      }
+    },
+    "the-roommate-2024": {
+      "title": "the roommate broadway",
+      "designation": "Liking It",
+      "combinedScore": 83,
+      "sources": {
+        "showScore": {
+          "score": 83,
+          "reviewCount": 659
+        },
+        "mezzanine": null,
+        "reddit": null
+      }
+    },
+    "our-town-2024": {
+      "title": "our town broadway",
+      "designation": "Liking It",
+      "combinedScore": 83,
+      "sources": {
+        "showScore": {
+          "score": 83,
+          "reviewCount": 863
+        },
+        "mezzanine": null,
+        "reddit": null
+      }
+    },
+    "mamma-mia-2025": {
+      "title": "Mamma Mia!",
+      "designation": "Liking It",
+      "combinedScore": 82,
+      "sources": {
+        "showScore": {
+          "score": 88,
+          "reviewCount": 1289
+        },
+        "mezzanine": {
+          "score": 76,
+          "reviewCount": 823,
+          "starRating": 3.8
+        },
+        "reddit": null
+      }
+    },
+    "bug-2026": {
+      "title": "bug broadway",
+      "designation": "Liking It",
+      "combinedScore": 80,
+      "sources": {
+        "showScore": {
+          "score": 80,
+          "reviewCount": 74
+        },
+        "mezzanine": null,
+        "reddit": null
+      }
+    },
+    "aladdin-2014": {
+      "title": "Aladdin",
+      "designation": "Liking It",
+      "combinedScore": 80,
+      "sources": {
+        "showScore": {
+          "score": 87,
+          "reviewCount": 8076
+        },
+        "mezzanine": {
+          "score": 72,
+          "reviewCount": 2820,
+          "starRating": 3.6
+        },
+        "reddit": null
+      }
+    },
+    "the-great-gatsby-2024": {
+      "title": "The Great Gatsby",
+      "designation": "Liking It",
+      "combinedScore": 79,
+      "sources": {
+        "showScore": {
+          "score": 82,
+          "reviewCount": 591
+        },
+        "mezzanine": {
+          "score": 76,
+          "reviewCount": 4125,
+          "starRating": 3.8
+        },
+        "reddit": null
+      }
+    },
+    "marjorie-prime-2025": {
+      "title": "Marjorie Prime",
+      "designation": "Liking It",
+      "combinedScore": 78,
+      "sources": {
+        "showScore": {
+          "score": 81,
+          "reviewCount": 64
+        },
+        "mezzanine": {
+          "score": 74,
+          "reviewCount": 425,
+          "starRating": 3.7
+        },
+        "reddit": null
+      }
+    },
+    "chess-2025": {
+      "title": "Chess",
+      "designation": "Liking It",
+      "combinedScore": 78,
+      "sources": {
+        "showScore": {
+          "score": 78,
+          "reviewCount": 202
+        },
+        "mezzanine": {
+          "score": 78,
+          "reviewCount": 1722,
+          "starRating": 3.9
+        },
+        "reddit": null
+      }
+    },
+    "chicago-1996": {
+      "title": "Chicago",
+      "designation": "Liking It",
+      "combinedScore": 77,
+      "sources": {
+        "showScore": {
+          "score": 84,
+          "reviewCount": 7391
+        },
+        "mezzanine": {
+          "score": 70,
+          "reviewCount": 3395,
+          "starRating": 3.5
+        },
+        "reddit": null
+      }
+    },
+    "bug-2025": {
+      "title": "Bug",
+      "designation": "Liking It",
+      "combinedScore": 76,
+      "sources": {
+        "showScore": null,
+        "mezzanine": {
+          "score": 76,
+          "reviewCount": 379,
+          "starRating": 3.8
+        },
+        "reddit": null
+      }
+    },
+    "stereophonic-2024": {
+      "title": "stereophonic",
+      "designation": "Take-it-or-Leave-it",
+      "combinedScore": 72,
+      "sources": {
+        "showScore": {
+          "score": 72,
+          "reviewCount": 781
+        },
+        "mezzanine": null,
+        "reddit": null
+      }
+    },
+    "all-out-2025": {
+      "title": "All Out: Comedy About Ambition",
+      "designation": "Take-it-or-Leave-it",
+      "combinedScore": 64,
+      "sources": {
+        "showScore": null,
+        "mezzanine": {
+          "score": 64,
+          "reviewCount": 251,
+          "starRating": 3.2
+        },
+        "reddit": null
+      }
+    },
+    "queen-versailles-2025": {
+      "title": "the queen of versailles broadway",
+      "designation": "Take-it-or-Leave-it",
+      "combinedScore": 62,
+      "sources": {
+        "showScore": {
+          "score": 62,
+          "reviewCount": 565
+        },
+        "mezzanine": null,
+        "reddit": null
+      }
+    }
+  }
+}
