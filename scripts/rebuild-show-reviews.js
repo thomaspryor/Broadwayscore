@@ -19,6 +19,39 @@ const LETTER_TO_SCORE = {
   'F': 15
 };
 
+/**
+ * Clean excerpt text from aggregator sources
+ */
+function cleanExcerpt(text) {
+  if (!text) return null;
+  let cleaned = text;
+  // Remove JavaScript/ad code
+  cleaned = cleaned.replace(/blogherads\.[^;]+;?/gi, '');
+  cleaned = cleaned.replace(/\.defineSlot\([^)]+\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/\.setTargeting\([^)]+\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/\.addSize\([^)]+\)[^;]*;?/gi, '');
+  cleaned = cleaned.replace(/googletag\.[^;]+;?/gi, '');
+  cleaned = cleaned.replace(/Related Stories\s+Casting[^"]+/gi, '');
+  // Decode HTML entities
+  cleaned = cleaned.replace(/&#8217;|&#039;|&#x27;|&rsquo;|&lsquo;/g, "'");
+  cleaned = cleaned.replace(/&#8220;|&#8221;|&quot;|&rdquo;|&ldquo;/g, '"');
+  cleaned = cleaned.replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ');
+  cleaned = cleaned.replace(/&mdash;/g, '—').replace(/&ndash;/g, '–');
+  // Stop at next critic attribution
+  const nextCritic = cleaned.match(/\.\s+[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)?,\s+[A-Z][^:]+:/);
+  if (nextCritic && nextCritic.index > 50) cleaned = cleaned.substring(0, nextCritic.index + 1);
+  cleaned = cleaned.replace(/\s+/g, ' ').trim();
+  // Skip if starts mid-sentence
+  if (/^[a-z]/.test(cleaned) && cleaned.length < 100) return null;
+  // Truncate to 300 chars
+  if (cleaned.length > 300) {
+    const truncAt = cleaned.lastIndexOf('.', 300);
+    cleaned = truncAt > 100 ? cleaned.substring(0, truncAt + 1) : cleaned.substring(0, 297) + '...';
+  }
+  if (/defineSlot|setTargeting|blogherads/i.test(cleaned)) return null;
+  return cleaned.length > 20 ? cleaned : null;
+}
+
 // Load reviews.json
 const reviewsPath = path.join(__dirname, '../data/reviews.json');
 const data = JSON.parse(fs.readFileSync(reviewsPath, 'utf8'));
@@ -147,7 +180,7 @@ SHOWS_TO_FIX.forEach(showId => {
       url: data.url || null,
       publishDate: data.publishDate || null,
       originalRating: data.originalScore || null,
-      pullQuote: data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || null,
+      pullQuote: cleanExcerpt(data.dtliExcerpt) || cleanExcerpt(data.bwwExcerpt) || cleanExcerpt(data.showScoreExcerpt) || null,
       dtliThumb: data.dtliThumb || null,
       bwwThumb: data.bwwThumb || null
     };
