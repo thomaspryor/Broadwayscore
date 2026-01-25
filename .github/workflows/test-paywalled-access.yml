@@ -1,0 +1,55 @@
+name: Test Paywalled Site Access
+
+on:
+  workflow_dispatch:
+    inputs:
+      site:
+        description: 'Site to test (nyt, vulture, wapo, wsj, or blank for all)'
+        required: false
+        default: ''
+
+jobs:
+  test-access:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run paywalled access test
+        env:
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYTIMES_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
+          WASHPOST_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
+          WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
+          WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+        run: |
+          if [ -n "${{ github.event.inputs.site }}" ]; then
+            node scripts/test-paywalled-access.js --site=${{ github.event.inputs.site }}
+          else
+            node scripts/test-paywalled-access.js
+          fi
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: error-screenshots
+          path: /tmp/*-error-*.png
+          retention-days: 7
