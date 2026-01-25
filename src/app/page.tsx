@@ -232,7 +232,13 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
         <h3 className="font-bold text-white text-lg group-hover:text-brand transition-colors truncate">
           {show.title}
         </h3>
-        <p className="text-sm text-gray-400 mt-0.5 truncate">
+        <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+          <FormatPill type={show.type} />
+          <ProductionPill isRevival={isRevival} />
+          {show.limitedRun && <LimitedRunBadge />}
+          {!hideStatus && <StatusBadge status={show.status} />}
+        </div>
+        <p className="text-sm text-gray-400 mt-1.5 truncate">
           {show.venue}
           <span className="text-gray-600 mx-1.5">·</span>
           <span className="text-gray-400">
@@ -242,12 +248,6 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
             )}
           </span>
         </p>
-        <div className="flex flex-wrap items-center gap-1.5 mt-2">
-          <FormatPill type={show.type} />
-          <ProductionPill isRevival={isRevival} />
-          {show.limitedRun && <LimitedRunBadge />}
-          {!hideStatus && <StatusBadge status={show.status} />}
-        </div>
       </div>
 
       {/* Score */}
@@ -482,10 +482,10 @@ function HomePageInner() {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       {/* Hero Header */}
       <div className="mb-8 sm:mb-10">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 tracking-tight">
+        <h1 className="text-5xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight">
           Broadway<span className="text-gradient">Scorecard</span>
         </h1>
-        <p className="text-gray-400 text-base sm:text-lg">
+        <p className="text-gray-400 text-lg sm:text-xl">
           Every show. Every review. One score.
         </p>
       </div>
@@ -694,10 +694,10 @@ export default function HomePage() {
     <Suspense fallback={
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-8 sm:mb-10">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 tracking-tight">
+          <h1 className="text-5xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight">
             Broadway<span className="text-gradient">Scorecard</span>
           </h1>
-          <p className="text-gray-400 text-base sm:text-lg">
+          <p className="text-gray-400 text-lg sm:text-xl">
             Every show. Every review. One score.
           </p>
         </div>
