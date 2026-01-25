@@ -467,9 +467,9 @@ export interface ShowAwards {
 
 // Awards designation tiers
 export type AwardsDesignation =
-  | 'pulitzer-winner'   // Won Pulitzer Prize for Drama
-  | 'lavished'          // 3+ major wins across award bodies
-  | 'recognized'        // 1-2 wins OR 4+ nominations
+  | 'sweeper'           // Won Best Musical/Play + 6+ Tony wins (swept the season)
+  | 'lavished'          // 3-5 Tony wins (Award Darling)
+  | 'recognized'        // 1-2 Tony wins OR 4+ nominations (Award Winner)
   | 'nominated'         // Has nominations but no wins
   | 'shut-out'          // Eligible but no nominations
   | 'pre-season';       // Not yet eligible for awards
@@ -516,27 +516,27 @@ export function getAwardsDesignation(showId: string): AwardsDesignation {
 
   if (!showAwards) return 'pre-season';
 
-  // Check Pulitzer first (highest honor)
-  if (showAwards.pulitzer) return 'pulitzer-winner';
-
   // Check if Tony eligible
   const tony = showAwards.tony;
   if (!tony || tony.eligible === false) return 'pre-season';
 
-  // Count total wins across major award bodies
-  const tonyWins = tony.wins?.length || 0;
-  const dramaDeskWins = showAwards.dramadesk?.wins?.length || 0;
-  const occWins = showAwards.outerCriticsCircle?.wins?.length || 0;
-  const dramaLeagueWins = showAwards.dramaLeague?.wins?.length || 0;
-
-  const totalWins = tonyWins + dramaDeskWins + occWins + dramaLeagueWins;
+  const tonyWins = tony.wins || [];
+  const tonyWinCount = tonyWins.length;
   const totalNominations = tony.nominations || 0;
 
-  // Lavished: 3+ major wins
-  if (totalWins >= 3) return 'lavished';
+  // Check if won Best Musical/Play (the big prize)
+  const wonBestMusicalOrPlay = tonyWins.some(win =>
+    ['Best Musical', 'Best Play', 'Best Revival of a Musical', 'Best Revival of a Play'].includes(win)
+  );
 
-  // Recognized: 1-2 wins OR 4+ nominations
-  if (totalWins >= 1 || totalNominations >= 4) return 'recognized';
+  // Sweeper: Won Best Musical/Play + 6+ total Tony wins (dominated the season)
+  if (wonBestMusicalOrPlay && tonyWinCount >= 6) return 'sweeper';
+
+  // Lavished (Award Darling): 3-5 Tony wins
+  if (tonyWinCount >= 3) return 'lavished';
+
+  // Recognized (Award Winner): 1-2 Tony wins OR 4+ nominations
+  if (tonyWinCount >= 1 || totalNominations >= 4) return 'recognized';
 
   // Nominated: Has nominations but no wins
   if (totalNominations > 0) return 'nominated';

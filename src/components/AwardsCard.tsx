@@ -129,16 +129,16 @@ const DESIGNATION_CONFIG: Record<AwardsDesignation, {
   textClass: string;
   borderClass: string;
 }> = {
-  'pulitzer-winner': {
-    label: 'Pulitzer Winner',
-    sublabel: 'Highest honor in American drama',
+  'sweeper': {
+    label: 'Awards Sweeper',
+    sublabel: 'Dominated the Tony Awards',
     bgClass: 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20',
     textClass: 'text-amber-400',
     borderClass: 'border-amber-500/30',
   },
   'lavished': {
     label: 'Award Darling',
-    sublabel: 'Multiple major wins',
+    sublabel: 'Multiple Tony wins',
     bgClass: 'bg-gradient-to-r from-violet-500/15 to-purple-500/15',
     textClass: 'text-violet-400',
     borderClass: 'border-violet-500/30',
@@ -378,7 +378,12 @@ export default function AwardsCard({ showId, awards }: AwardsCardProps) {
 
   // Build sublabel based on actual data
   let dynamicSublabel = config.sublabel;
-  if (designation === 'recognized' && tonyWinsList.length > 0) {
+  if (designation === 'sweeper' && tonyWinsList.length > 0) {
+    const topWin = sortByImportance(tonyWinsList)[0];
+    dynamicSublabel = `Won ${topWin} + ${tonyWins - 1} more`;
+  } else if (designation === 'lavished' && tonyWinsList.length > 0) {
+    dynamicSublabel = `${tonyWins} Tony wins`;
+  } else if (designation === 'recognized' && tonyWinsList.length > 0) {
     const topWin = sortByImportance(tonyWinsList)[0];
     dynamicSublabel = `Won ${topWin}`;
   } else if (designation === 'nominated' && tonyNoms > 0) {
@@ -392,10 +397,9 @@ export default function AwardsCard({ showId, awards }: AwardsCardProps) {
       {/* Main Designation Badge - More prominent */}
       <div className={`rounded-xl p-4 border mb-4 ${config.bgClass} ${config.borderClass}`}>
         <div className="flex items-center gap-3">
-          {hasPulitzer && <PulitzerIcon className="text-amber-400 w-8 h-8" />}
-          {!hasPulitzer && tonyWins > 0 && <TrophyIcon className={`${config.textClass} w-6 h-6`} />}
-          {!hasPulitzer && tonyWins === 0 && tonyNoms > 0 && <StarIcon className={`${config.textClass} w-5 h-5`} />}
-          {!hasPulitzer && tonyWins === 0 && tonyNoms === 0 && (
+          {tonyWins > 0 && <TrophyIcon className={`${config.textClass} w-6 h-6`} />}
+          {tonyWins === 0 && tonyNoms > 0 && <StarIcon className={`${config.textClass} w-5 h-5`} />}
+          {tonyWins === 0 && tonyNoms === 0 && (
             <div className={`w-5 h-5 rounded-full border-2 ${config.borderClass}`} />
           )}
           <div>
