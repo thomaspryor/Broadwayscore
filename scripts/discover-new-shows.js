@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 /**
  * Broadway New Show Discovery
- * Run with: node scripts/discover-new-shows.js
  *
- * This script discovers new Broadway shows by checking TodayTix listings
+ * Discovers new Broadway shows by checking Broadway.org listings
  * and adds them to shows.json with basic metadata.
  *
- * When run in GitHub Actions, it outputs discovered shows for downstream processing.
+ * Uses ScrapingBee for reliable scraping (API key in env).
+ *
+ * Usage: node scripts/discover-new-shows.js [--dry-run]
  */
 
 const https = require('https');
@@ -15,229 +16,221 @@ const path = require('path');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
+const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
-// TodayTix API endpoints for Broadway shows
-const TODAYTIX_API = 'https://api.todaytix.com/api/v2/shows?fieldset=summary&limit=100&location=35';
+const dryRun = process.argv.includes('--dry-run');
 
-function fetchJSON(url) {
-  return new Promise((resolve, reject) => {
-    const options = {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-        'Accept': 'application/json',
-      }
-    };
+// Broadway.org shows page
+const BROADWAY_ORG_URL = 'https://www.broadway.org/shows/';
 
-    https.get(url, options, (response) => {
-      if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-        return fetchJSON(response.headers.location).then(resolve).catch(reject);
-      }
+function loadShows() {
+  const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  return data;
+}
 
-      if (response.statusCode !== 200) {
-        return reject(new Error(`HTTP ${response.statusCode}`));
-      }
-
-      let data = '';
-      response.on('data', chunk => data += chunk);
-      response.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch (e) {
-          reject(e);
-        }
-      });
-      response.on('error', reject);
-    }).on('error', reject);
-  });
+function saveShows(data) {
+  fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
 }
 
 function slugify(title) {
   return title
     .toLowerCase()
+    .replace(/[!?'":\-–—,\.]/g, '')
     .replace(/[&]/g, 'and')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+    .replace(/\s+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .replace(/-+/g, '-');
 }
 
-function extractShowData(todaytixShow) {
-  // Extract relevant data from TodayTix API response
-  return {
-    todaytixId: todaytixShow.id,
-    title: todaytixShow.displayName || todaytixShow.name,
-    slug: slugify(todaytixShow.displayName || todaytixShow.name),
-    venue: todaytixShow.venue?.name || 'TBA',
-    type: todaytixShow.category?.name === 'Musicals' ? 'musical' : 'play',
-    status: 'open',
-    images: {
-      hero: todaytixShow.images?.productMedia?.hero?.file?.url
-        ? `https:${todaytixShow.images.productMedia.hero.file.url}`
-        : null,
-      thumbnail: todaytixShow.images?.productMedia?.appSquare?.file?.url
-        ? `https:${todaytixShow.images.productMedia.appSquare.file.url}`
-        : null,
-    },
-    synopsis: todaytixShow.tagLine || '',
-    ticketLinks: [{
-      platform: 'TodayTix',
-      url: `https://www.todaytix.com/nyc/shows/${todaytixShow.id}`,
-      priceFrom: todaytixShow.lowPrice || null,
-    }],
-  };
-}
-
-async function discoverNewShows() {
-  console.log('Broadway New Show Discovery');
-  console.log('============================\n');
-
-  // Load current shows.json
-  const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf-8'));
-  const existingSlugs = new Set(showsData.shows.map(s => s.slug));
-  const existingTitles = new Set(showsData.shows.map(s => s.title.toLowerCase()));
-
-  console.log(`Currently tracking ${showsData.shows.length} shows\n`);
-  console.log('Fetching current Broadway listings from TodayTix...\n');
-
-  let todaytixShows = [];
-
-  try {
-    const response = await fetchJSON(TODAYTIX_API);
-    todaytixShows = response.data || [];
-    console.log(`Found ${todaytixShows.length} shows on TodayTix\n`);
-  } catch (err) {
-    console.error(`Error fetching TodayTix: ${err.message}`);
-
-    // Fallback: try scraping the webpage instead
-    console.log('Trying alternative discovery method...');
-    // For now, we'll just exit gracefully
-    return { newShows: [], existingCount: showsData.shows.length };
+async function fetchWithScrapingBee(url) {
+  if (!SCRAPINGBEE_KEY) {
+    console.log('⚠️  SCRAPINGBEE_API_KEY not set');
+    return null;
   }
+
+  const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
+
+  return new Promise((resolve, reject) => {
+    https.get(apiUrl, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          resolve(data);
+        } else {
+          reject(new Error(`HTTP ${res.statusCode}`));
+        }
+      });
+    }).on('error', reject);
+  });
+}
+
+function parseShowsFromBroadwayOrg(html) {
+  const shows = [];
+
+  // Look for show cards in the HTML
+  // Broadway.org uses various patterns, this covers common ones
+  const showPatterns = [
+    // Show card with title and venue
+    /<article[^>]*class="[^"]*show[^"]*"[^>]*>[\s\S]*?<h[23][^>]*>([^<]+)<\/h[23]>[\s\S]*?(?:venue|theater)[^>]*>([^<]*)</gi,
+    // Alternative pattern
+    /<div[^>]*class="[^"]*show-card[^"]*"[^>]*>[\s\S]*?<[^>]*class="[^"]*title[^"]*"[^>]*>([^<]+)<[\s\S]*?<[^>]*class="[^"]*venue[^"]*"[^>]*>([^<]+)</gi,
+  ];
+
+  // Simple extraction - look for show titles followed by venue info
+  const titleMatches = html.matchAll(/<h[23][^>]*class="[^"]*(?:title|name)[^"]*"[^>]*>([^<]+)<\/h[23]>/gi);
+  for (const match of titleMatches) {
+    const title = match[1].trim();
+    if (title && title.length > 2 && title.length < 100) {
+      shows.push({
+        title: title,
+        venue: 'TBA',
+        status: 'open',
+      });
+    }
+  }
+
+  // Also check for JSON-LD structured data
+  const jsonLdMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i);
+  if (jsonLdMatch) {
+    try {
+      const jsonLd = JSON.parse(jsonLdMatch[1]);
+      if (Array.isArray(jsonLd)) {
+        for (const item of jsonLd) {
+          if (item['@type'] === 'Event' || item['@type'] === 'TheaterEvent') {
+            shows.push({
+              title: item.name,
+              venue: item.location?.name || 'TBA',
+              status: 'open',
+            });
+          }
+        }
+      }
+    } catch (e) {
+      // JSON-LD parsing failed, continue with regex results
+    }
+  }
+
+  return shows;
+}
+
+async function discoverShows() {
+  console.log('='.repeat(60));
+  console.log('BROADWAY SHOW DISCOVERY');
+  console.log('='.repeat(60));
+  console.log(`Mode: ${dryRun ? 'DRY RUN' : 'LIVE'}`);
+  console.log('');
+
+  const data = loadShows();
+  const existingSlugs = new Set(data.shows.map(s => s.slug));
+  const existingTitles = new Set(data.shows.map(s => s.title.toLowerCase()));
+
+  console.log(`Existing shows in database: ${data.shows.length}`);
+  console.log('');
+
+  // Fetch Broadway.org
+  console.log('Fetching Broadway.org...');
+  let html;
+  try {
+    html = await fetchWithScrapingBee(BROADWAY_ORG_URL);
+    if (!html) {
+      console.log('Could not fetch Broadway.org (no API key?)');
+      console.log('');
+      console.log('To enable discovery, set SCRAPINGBEE_API_KEY environment variable.');
+      return { newShows: [], count: 0 };
+    }
+    console.log(`Fetched ${html.length} bytes`);
+  } catch (e) {
+    console.error('Error fetching Broadway.org:', e.message);
+    return { newShows: [], count: 0 };
+  }
+
+  // Parse shows
+  const discoveredShows = parseShowsFromBroadwayOrg(html);
+  console.log(`Found ${discoveredShows.length} shows on Broadway.org`);
+  console.log('');
 
   // Find new shows not in our database
   const newShows = [];
+  for (const show of discoveredShows) {
+    const slug = slugify(show.title);
+    const titleLower = show.title.toLowerCase();
 
-  for (const ttShow of todaytixShows) {
-    const title = ttShow.displayName || ttShow.name;
-    const slug = slugify(title);
+    if (!existingSlugs.has(slug) && !existingTitles.has(titleLower)) {
+      // Check if it's a variation of an existing show
+      const isVariation = Array.from(existingTitles).some(t =>
+        titleLower.includes(t) || t.includes(titleLower)
+      );
 
-    // Skip if we already have this show (by slug or title)
-    if (existingSlugs.has(slug) || existingTitles.has(title.toLowerCase())) {
-      continue;
+      if (!isVariation) {
+        newShows.push({
+          ...show,
+          slug: slug,
+          id: `${slug}-${new Date().getFullYear()}`,
+        });
+      }
     }
-
-    // Skip non-Broadway shows (TodayTix includes off-broadway)
-    const venue = ttShow.venue?.name || '';
-    const isLikelyBroadway =
-      venue.includes('Theatre') ||
-      venue.includes('Theater') ||
-      ttShow.category?.name === 'Broadway' ||
-      ttShow.tags?.some(t => t.toLowerCase().includes('broadway'));
-
-    if (!isLikelyBroadway) {
-      continue;
-    }
-
-    const showData = extractShowData(ttShow);
-    newShows.push(showData);
-
-    console.log(`NEW: ${showData.title}`);
-    console.log(`     Venue: ${showData.venue}`);
-    console.log(`     Type: ${showData.type}`);
-    console.log(`     TodayTix ID: ${showData.todaytixId}\n`);
   }
-
-  console.log('============================');
-  console.log(`Found ${newShows.length} new shows\n`);
 
   if (newShows.length === 0) {
-    console.log('No new shows to add.');
-    return { newShows: [], existingCount: showsData.shows.length };
+    console.log('✅ No new shows discovered - database is up to date');
+    return { newShows: [], count: 0 };
   }
 
-  // Add new shows to shows.json
-  console.log('Adding new shows to shows.json...\n');
+  console.log(`🎭 Found ${newShows.length} NEW show(s):`);
+  console.log('-'.repeat(40));
+  for (const show of newShows) {
+    console.log(`  - ${show.title} (${show.venue})`);
+  }
+  console.log('');
 
-  let nextId = Math.max(...showsData.shows.map(s => s.id)) + 1;
+  if (!dryRun) {
+    // Add new shows to database
+    for (const show of newShows) {
+      data.shows.push({
+        id: show.id,
+        title: show.title,
+        slug: show.slug,
+        venue: show.venue,
+        openingDate: new Date().toISOString().split('T')[0], // Placeholder
+        closingDate: null,
+        status: 'open',
+        type: 'musical', // Default, needs manual verification
+        runtime: null,
+        intermissions: null,
+        images: {},
+        synopsis: '',
+        ageRecommendation: null,
+        tags: ['new'],
+        ticketLinks: [],
+        cast: [],
+        creativeTeam: [],
+      });
+    }
 
-  for (const newShow of newShows) {
-    const fullShow = {
-      id: nextId++,
-      title: newShow.title,
-      slug: newShow.slug,
-      venue: newShow.venue,
-      openingDate: null, // To be filled in manually or by data agent
-      closingDate: null,
-      status: 'open',
-      type: newShow.type,
-      runtime: null,
-      intermissions: null,
-      images: newShow.images,
-      synopsis: newShow.synopsis,
-      ageRecommendation: null,
-      tags: [],
-      ticketLinks: newShow.ticketLinks,
-      cast: [],
-      creativeTeam: [],
-      officialUrl: null,
-      trailerUrl: null,
-      theaterAddress: null,
-      _needsReviewData: true, // Flag for data agent
-      _todaytixId: newShow.todaytixId,
-    };
+    saveShows(data);
+    console.log(`✅ Added ${newShows.length} shows to shows.json`);
 
-    showsData.shows.push(fullShow);
-    console.log(`  Added: ${newShow.title} (ID: ${fullShow.id})`);
+    // Save pending shows for review
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
+      discoveredAt: new Date().toISOString(),
+      shows: newShows,
+    }, null, 2));
+    console.log(`📋 Saved pending shows to ${OUTPUT_FILE}`);
   }
 
-  // Update metadata
-  showsData._meta.lastUpdated = new Date().toISOString().split('T')[0];
-  showsData._meta.showCount = showsData.shows.length;
-
-  // Write updated shows.json
-  fs.writeFileSync(SHOWS_FILE, JSON.stringify(showsData, null, 2));
-  console.log('\nshows.json updated successfully!');
-
-  // Write pending shows list for data agent
-  const pendingData = {
-    discoveredAt: new Date().toISOString(),
-    shows: newShows.map(s => ({
-      slug: s.slug,
-      title: s.title,
-      todaytixId: s.todaytixId,
-      needsReviewData: true,
-    })),
-  };
-
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(pendingData, null, 2));
-  console.log(`\nPending shows written to: ${OUTPUT_FILE}`);
-
-  // Output for GitHub Actions
+  // GitHub Actions outputs
   if (process.env.GITHUB_OUTPUT) {
-    const outputLines = [
-      `new_shows_count=${newShows.length}`,
-      `new_shows=${newShows.map(s => s.title).join(', ')}`,
-      `new_slugs=${newShows.map(s => s.slug).join(',')}`,
-    ];
-    fs.appendFileSync(process.env.GITHUB_OUTPUT, outputLines.join('\n') + '\n');
+    const outputFile = process.env.GITHUB_OUTPUT;
+    fs.appendFileSync(outputFile, `new_shows_count=${newShows.length}\n`);
+    fs.appendFileSync(outputFile, `new_shows=${newShows.map(s => s.title).join(', ')}\n`);
+    fs.appendFileSync(outputFile, `new_slugs=${newShows.map(s => s.slug).join(',')}\n`);
   }
 
-  return { newShows, existingCount: showsData.shows.length - newShows.length };
+  return { newShows, count: newShows.length };
 }
 
-// Also export for use as module
-module.exports = { discoverNewShows };
-
-// Run if called directly
-if (require.main === module) {
-  discoverNewShows()
-    .then(result => {
-      console.log('\n============================');
-      console.log('Discovery Summary:');
-      console.log(`  Previously tracked: ${result.existingCount}`);
-      console.log(`  New shows found: ${result.newShows.length}`);
-      if (result.newShows.length > 0) {
-        console.log('\nNew shows need review data:');
-        result.newShows.forEach(s => console.log(`  - ${s.title}`));
-      }
-    })
-    .catch(console.error);
-}
+discoverShows().catch(e => {
+  console.error('Discovery failed:', e);
+  process.exit(1);
+});
