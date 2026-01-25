@@ -1,0 +1,148 @@
+name: Discover Historical Shows
+
+on:
+  # Manual trigger only - don't run automatically
+  workflow_dispatch:
+    inputs:
+      seasons:
+        description: 'Seasons to discover (comma-separated, e.g., 2024-2025,2023-2024)'
+        required: true
+        type: string
+      dry_run:
+        description: 'Dry run (do not add to database)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  discover-historical:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      historical_shows_count: ${{ steps.discover.outputs.historical_shows_count }}
+      historical_shows: ${{ steps.discover.outputs.historical_shows }}
+      historical_slugs: ${{ steps.discover.outputs.historical_slugs }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Discover historical shows
+        id: discover
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            node scripts/discover-historical-shows.js --seasons=${{ inputs.seasons }} --dry-run
+          else
+            node scripts/discover-historical-shows.js --seasons=${{ inputs.seasons }}
+          fi
+
+      - name: Check for changes
+        id: git-check
+        if: ${{ inputs.dry_run != 'true' }}
+        run: |
+          git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
+          if [ -f data/historical-shows-pending.json ]; then
+            echo "has_pending=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.git-check.outputs.changes == 'true' && inputs.dry_run != 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/shows.json
+          if [ -f data/historical-shows-pending.json ]; then
+            git add data/historical-shows-pending.json
+          fi
+
+          # Create commit message
+          if [ "${{ steps.discover.outputs.historical_shows_count }}" != "" ] && [ "${{ steps.discover.outputs.historical_shows_count }}" != "0" ]; then
+            git commit -m "chore: Add ${{ steps.discover.outputs.historical_shows_count }} historical shows from seasons: ${{ inputs.seasons }}"
+          else
+            git commit -m "chore: Historical show discovery (no new shows)"
+          fi
+          git push
+
+  # Create issue for historical shows
+  create-issue:
+    needs: discover-historical
+    if: needs.discover-historical.outputs.historical_shows_count != '' && needs.discover-historical.outputs.historical_shows_count != '0'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to read pending shows
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Create issue for historical shows
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const count = '${{ needs.discover-historical.outputs.historical_shows_count }}';
+
+            // Read pending shows from file
+            const pendingData = JSON.parse(fs.readFileSync('data/historical-shows-pending.json', 'utf8'));
+            const shows = pendingData.shows;
+            const seasons = pendingData.seasons;
+            const showsList = shows.map(s => `- ${s.title} (${s.season}, ${s.venue})`).join('\n');
+            const slugs = shows.map(s => s.slug);
+
+            const issueBody = `## Historical Broadway Shows Discovered
+
+            The historical discovery script found **${count} show(s)** from seasons: **${seasons.join(', ')}**
+
+            ${showsList}
+
+            ### Action Required
+
+            These shows have been added to \`shows.json\` as **closed shows** with basic metadata but need:
+
+            - [ ] Complete metadata (runtime, cast, creative team, synopsis)
+            - [ ] Image verification (many historical shows may not have images)
+            - [ ] Review data collection (when ready to backfill)
+
+            ### Shows to process:
+            ${slugs.map(s => `- [ ] \`${s}\``).join('\n')}
+
+            ### Note on Review Data
+
+            These are closed shows, so review gathering is not automatically triggered.
+            When you're ready to collect reviews for these shows, run:
+
+            \`\`\`bash
+            # Manually gather reviews for specific shows
+            node scripts/gather-reviews.js --shows=${slugs.slice(0, 3).join(',')}
+            \`\`\`
+
+            ---
+            *This issue was auto-generated by the Historical Show Discovery workflow*
+            `;
+
+            const title = shows.length === 1
+              ? `📚 Historical Show: ${shows[0].title}`
+              : `📚 ${shows.length} Historical Shows from ${seasons.join(', ')}`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: issueBody,
+              labels: ['historical-show', 'needs-metadata', 'automated']
+            });
