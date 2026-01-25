@@ -9,9 +9,56 @@
   "isFullReview": true,
   "dtliExcerpt": "Cole Escola's Broadway debut in Oh, Mary! is a triumph of absurdist comedy. The show centers on Mary Todd Lincoln in the weeks before Abraham Lincoln's assassination, reimagined as a former cabaret performer struggling with alcoholism.\n\nThe premise involves President Lincoln (portrayed as gay and conflicted) hiring an acting teacher to redirect his wife from drinking and performing cabaret into respectable theatre. The setup allows Escola to explore themes of identity and artistic legitimacy while delivering spectacular physical comedy.\n\nEscola's performance dominates the 80-minute production with feral hog energy—searching frantically for hidden alcohol, throwing furniture, and sustaining inventive slapstick. The supporting cast, including Conrad Ricamora as Lincoln and James Scully as the acting teacher, provides excellent comedic foils.\n\nDirector Sam Pinkleton orchestrates precise physicality, with a single mug generating audience laughter. The design elements—including Cha See's lighting and Holly Pierson's costumes—enhance the show's tonal flexibility between period and contemporary performance.\n\nThe show is also a piece of history. While transferring a peculiar Off-Broadway jewel to a commercial run is not unusual, Oh, Mary! does stand apart from its peers on Broadway. If one were inclined to look for a deeper meaning in Oh, Mary!, it is a rebuttal against the legitimacy, good taste, and straightness of most self-serious art. The fact that this piece of radically queer comedy has become the buzziest show of the season is a hopeful sign of work to come.\n\nOh, Mary! is at the Lyceum Theatre.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T03:30:00.000Z",
   "dtliThumb": "Up",
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 92
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 92,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "the future of Broadway is here and it's Cole Escola's stupid masterpiece Oh, Mary!",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Escola miraculously sustains this level of spectacular slapstick throughout the 80-min show both in their portrayal of Mary and in their nimble writing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "let's hope more people travel all over the world to see Mary's 'short legs and long medleys'",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Clear enthusiasm with superlative language ('masterpiece', 'sensational', 'spectacular') and strong recommendation for audiences to see the show, with only minor structural critiques.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:29:28.447Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2709,
+    "outputTokens": 381
+  }
 }

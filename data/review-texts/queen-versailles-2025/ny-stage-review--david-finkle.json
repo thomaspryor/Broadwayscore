@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "Final observation: At a point in the 1970s, Schwartz had three shows running on and off-Broadway: Godspell, Pippin, and The Magic Show. (There might even have been a fourth—The Baker’s Wife.) Right now, he’s matched the three-record with Wicked showing no signs of ever closing on Broadway, this one also on Broadway, and The Baker’s Wife currently revived off-Broadway. Congrats to him for that kind of rare happenstance. Imagine the personal pleasure as well as the weekly royalties.",
   "originalScore": "2/5",
-  "assignedScore": 40,
+  "assignedScore": 45,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T05:50:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-QUEEN-OF-VERSAILLES-Opens-on-Broadway-20251109",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 40,
+      "performances": 75,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "what's on view will likely only excite Chenoweth fans completely happy to watch their fave-rave performer",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "By the act-ending moment when Chenoweth is downstage center declaring with 'This is Not the Way' that the 2008 financial crash that bankrupted David won't stop her, only boredom has set in",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "For approximately ten minutes The Queen of Versailles is so powerful that no No-Queens-Day protest need be organized",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic finds the show bloated and boring despite strong praise for Chenoweth's performance and final moments, suggesting it's mainly for devoted fans rather than general audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:29:46.286Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2674,
+    "outputTokens": 395
+  }
 }

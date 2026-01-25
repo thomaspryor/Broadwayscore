@@ -9,8 +9,55 @@
   "isFullReview": true,
   "dtliExcerpt": "So here it is, the Broadway show as theme park, right down to the three-storied façade of the ebony mansion through which all patrons must pass en route to their seats and the merch, and a thrill ride not to be forgotten. The goal is an immersive experience, and to my mind not only have they achieved it, but it's a helluva lot more fun and exciting than the average \"civilized\" immersive (looking at you, Sleep No More). Are there enough of the fans and the curious to make it last and pay off? Only time will tell, just as only time will determine its chances to attract a whole new generation to the joys of live theater. Stranger things have happened.",
   "originalScore": "4/5",
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T20:00:00.000Z",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 85,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's an exciting and even moving evening, all the same",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "audiences are bearing witness to the most phenomenal exhibition of technical wizardry Broadway has ever seen",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a thrill ride not to be forgotten",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Despite acknowledging script weaknesses, the critic is clearly enthusiastic about the overall experience, praising the technical achievements as unprecedented and calling it exciting, moving, and unforgettable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:30:34.652Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2826,
+    "outputTokens": 335
+  }
 }

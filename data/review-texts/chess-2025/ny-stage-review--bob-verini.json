@@ -9,8 +9,55 @@
   "isFullReview": true,
   "dtliExcerpt": "Which begs a question. If all you're shooting for is the tired old metaphor that life is a game and the game is life, you might as well call your show Yahtzee! or Old Maid (no reflection on how Lea Michele's character of Florence, the \"genius strategist,\" is criminally underused as a pawn of male players). Actually, Chutes'n'Ladders might suit this version best, what with the cast gamely trudging up and down David Rockwell's American Bandstand set, while the characters' fortunes rise and fall with librettist Danny Strong and director Michael Mayer pulling their strings.",
   "originalScore": "2/5",
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T19:00:00.000Z",
-  "dtliThumb": "Down"
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 70,
+      "performances": 65,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "the spectacle wears out its welcome long before the end of a near-three-hour running time",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the promise of an effective staged Chess – if indeed it's a promise and not a chimera – remains stubbornly out of reach",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "They put over the beloved classics – 'Heaven Help My Heart,' 'Anthem,' 'Pity the Child,' 'I Know Him So Well' – with minimal melisma and maximal emotional connection",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Despite praise for the performances and beloved songs, the critic finds fundamental flaws in the concept, script, and execution, concluding that an effective staged version remains 'out of reach.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:25:58.718Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2383,
+    "outputTokens": 395
+  }
 }

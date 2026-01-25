@@ -9,10 +9,57 @@
   "isFullReview": true,
   "dtliExcerpt": "If only all of Keys' songs fit so easily into Kristoffer Diaz's libretto. The biggest head-scratcher: \"Pawn It All,\" sung by an angry Jersey to Ali's dad, Davis (the velvet-voiced Brandon Victor Dixon). Perhaps the creators simply wanted to give Bean a show-stopping song—as well as something for her character to do besides pour water, chop vegetables, and serve dinner. But bursting into her ex's audition at a nightclub and throwing all of her jewelry at the booker? And why is Bean closing her eyes and belting like she's onstage at 54 Below?",
   "originalScore": "3/5",
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T19:00:00.000Z",
   "bwwThumb": "Meh",
   "dtliThumb": "Meh",
-  "bwwUrl": "https://nystagereview.com/2024/04/20/hells-kitchen-welcome-to-alicia-keys-new-york/"
+  "bwwUrl": "https://nystagereview.com/2024/04/20/hells-kitchen-welcome-to-alicia-keys-new-york/",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 82,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hell's Kitchen is powered by a catalog of her hits and contains a few similar biographical elements",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "That's where Hell's Kitchen truly shines",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "If only all of Keys' songs fit so easily into Kristoffer Diaz's libretto. The biggest head-scratcher",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic clearly enjoys the show with praise for performances, choreography, and key musical numbers, though notes some songs don't integrate well into the story.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:26:42.962Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2225,
+    "outputTokens": 345
+  }
 }

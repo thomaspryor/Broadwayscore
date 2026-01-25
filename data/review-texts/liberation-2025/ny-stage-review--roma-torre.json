@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "When Bess Wohl’s play Liberation premiered off-Broadway last winter it was revelatory. Despite some structural weaknesses that remain, it’s a beautiful work featuring an ensemble of actors at the top of their game. It’s no wonder the production transferred to Broadway totally intact.",
   "originalScore": "4/5",
-  "assignedScore": 80,
+  "assignedScore": 78,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T04:30:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 88,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a beautiful work featuring an ensemble of actors at the top of their game",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's an important and necessary work that reminds us how far we've come and how far we've yet to go",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Liberation may be too long and perhaps overstuffed, but it's an important and necessary work",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Despite acknowledging structural weaknesses and pacing issues, the critic offers strong praise for the performances, writing, and the play's important themes, ultimately framing it as a valuable theatrical experience worth seeing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:27:15.473Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2738,
+    "outputTokens": 359
+  }
 }

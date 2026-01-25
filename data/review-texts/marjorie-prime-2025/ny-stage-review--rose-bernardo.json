@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "After debuting in 2014 at the Mark Taper Forum, Marjorie Prime had its New York premiere at Playwrights Horizons in 2015; a 2017 film featured Jon Hamm as Walter and Lois Smith reprising her stage role as Marjorie. A decade ago, the play seemed like a fascinating experiment. This remarkable revival, once again directed by Anne Kauffman, feels so much more potent. Perhaps it’s because we’re so much more conversant with AI today. We’re that much closer to achieving this concept that Harrison imagined. Or perhaps it’s because the technology is less important than the humanity of it all. The Walter onstage is first and foremost Marjorie’s late husband; the fact that he’s not flesh and blood is almost immaterial.",
   "originalScore": "5/5",
-  "assignedScore": 100,
+  "assignedScore": 78,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T04:40:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Opens-On-Broadway-Starring-Cynthia-Nixon-June-Squibb-Danny-Burstein-and-More-20251208",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 85,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "This remarkable revival, once again directed by Anne Kauffman, feels so much more potent",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "June Squibb, sublime... Danny Burstein, who's never been better",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "90-minute emotional avalanche of a production... this show will hit you where it hurts",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic uses strong praise for performances ('sublime', 'never been better') and calls it a 'remarkable revival' that feels 'potent', indicating clear recommendation despite emotional intensity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:28:14.282Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2348,
+    "outputTokens": 355
+  }
 }

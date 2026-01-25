@@ -9,11 +9,58 @@
   "isFullReview": true,
   "dtliExcerpt": "The area where this Mamma Mia! is far from deficient is in the cast. While there's not a single Broadway marquee name among them, not a one isn't giving an outstanding performance, not a one undeserving of marquee status.  They prominently include Christine Sherrill as single mom Donna Sheridan; Amy Weaver as bride-to-be Sophie Sheridan; Jalynn Steele and Carly Sakolove as Donna BFFs Tanya and Rosie; and Rob Marnell, Jim Newman, and Victor Wallace as possible fathers Harry Bright, Bill Austin, and Sam Carmichael.",
   "originalScore": "3/5",
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T19:00:00.000Z",
   "bwwThumb": "Meh",
   "dtliThumb": "Meh",
   "bwwUrl": "https://nystagereview.com/2025/08/14/mamma-mia-tuner-revival/",
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 25,
+      "performances": 80,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "this new production can be described in two words: severely cheapened",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "not a one isn't giving an outstanding performance, not a one undeserving of marquee status",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It would be a pleasure to say it's every bit as good as it ever was. Unfortunately, that cannot be reported",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Despite praising the cast as outstanding, the critic fundamentally condemns the production as 'severely cheapened' with ruinous sound design and arrangements that destroy the show's charm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:27:48.229Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2838,
+    "outputTokens": 356
+  }
 }

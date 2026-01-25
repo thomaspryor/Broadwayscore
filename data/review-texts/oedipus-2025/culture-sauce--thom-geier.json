@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "Like Teiresias, Merope understands that Oedipus' world is about to implode — though Ickes smartly insures that no one character has the full picture of the family history until the elements leak out bit by bit. By the time that countdown clock hits zero, and the penny drops for both Oedipus and Jocasta, there is no turning back. The final scenes, as Strong and Manville wrestle with the full ramifications of their unwitting actions, unspool with a furious inevitability that is difficult to watch and impossible to look away. Ickes and his cast have achieved something truly remarkable, producing a classic that doesn't feel like a revival at all. Oedipus may be the best play of the decade, and also the most contemporary.",
   "originalScore": "5/5",
-  "assignedScore": null,
+  "assignedScore": 96,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T04:00:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Mark-Strong-and-Lesley-Manville-Star-in-OEDIPUS-on-Broadway-20251113",
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "llmScore": {
+    "score": 96,
+    "confidence": "high",
+    "range": {
+      "low": 94,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": null,
+      "performances": 94,
+      "direction": 96
+    },
+    "keyPhrases": [
+      {
+        "quote": "stands as one of the memorable nights of theater you are ever likely to experience",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Oedipus may be the best play of the decade, and also the most contemporary",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Ickes and his cast have achieved something truly remarkable, producing a classic that doesn't feel like a revival at all",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "This is an unqualified rave with superlative language throughout, calling it 'one of the memorable nights of theater you are ever likely to experience' and 'the best play of the decade' with no meaningful caveats or criticisms.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:28:52.430Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2950,
+    "outputTokens": 377
+  }
 }

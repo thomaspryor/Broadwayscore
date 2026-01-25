@@ -9,10 +9,57 @@
   "isFullReview": true,
   "bwwExcerpt": "This is one of those musicals that some viewers will love vociferously while others, inevitably, espouse a decidedly contradictory view. There is enough quality entertainment on hand, especially from the performers, to provide viewers with a thoroughly watchable two-and-a-half hours. In normal Broadway seasons, when full-scale original musicals can be counted on a hand's worth of fingers, these attributes might be enough to place The Notebook in the Tony winner's circle, or at least in contention. But based on the 2023-24 musicals which have opened thus far and those which have already been seen in pre-Broadway mountings, one might predict that The Notebook will fall far above the worst but not in league with the best.",
   "originalScore": "3/5",
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T19:00:00.000Z",
   "bwwThumb": "Meh",
   "bwwUrl": "https://nystagereview.com/2024/03/14/the-notebook-just-another-love-story-with-kleenex/",
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": 62,
+      "performances": 78,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is enough quality entertainment on hand, especially from the performers, to provide viewers with a thoroughly watchable two-and-a-half hours",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "one might predict that The Notebook will fall far above the worst but not in league with the best",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "this three-generation Kleenex-clutching weepie might get lost in the awards season rush",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic acknowledges professional quality and watchable entertainment but positions it as middle-tier among the season's offerings, with mixed praise for components and no strong recommendation either way.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:31:15.789Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2804,
+    "outputTokens": 365
+  }
 }

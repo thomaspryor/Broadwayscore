@@ -9,10 +9,57 @@
   "isFullReview": true,
   "bwwExcerpt": "What ultimately makes Two Strangers such a winning Broadway arrival is its belief that tenderness is still theatrical currency. Jackson’s direction keeps the show surefooted, even at its most delicate, allowing Tutty and Pitts, and the entire creative team, to craft something that sneaks up on you. As we saw with Maybe Happy Ending, audiences are hungry for productions that treat emotion as serious craft, and hopefully, with these delightfully engaging Two Strangers, the much-needed emotional connection will deliver the Tony Award goods once again.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://frontmezzjunkies.com/2025/11/20/two-strangers-carry-a-cake-across-new-york/",
   "textStatus": "complete",
-  "scrapedAt": "2026-01-24T12:00:00.000Z"
+  "scrapedAt": "2026-01-24T12:00:00.000Z",
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 82,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 87,
+      "performances": 90,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Two Strangers such a winning Broadway arrival",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the show has been quietly expanding our own capacity for hope",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this small, sweet musical carries its multi-layered cake with surprising elegance",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Strong positive review with consistent praise for performances, music, and overall production, calling it a 'winning Broadway arrival' with only minor technical quibbles about set design.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:31:39.888Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2535,
+    "outputTokens": 330
+  }
 }

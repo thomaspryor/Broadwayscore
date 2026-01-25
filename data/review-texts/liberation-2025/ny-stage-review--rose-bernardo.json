@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "When Bess Wohl’s Liberation began performances off-Broadway at the Roundabout’s Laura Pels Theatre earlier this year, it was just after Trump’s second inauguration. The time-hopping memory play—which looks at a multigenerational group of second-wave feminists through a world-weary modern-day lens—registered as capital-I Important. Though not in a didactic, dullsville way. In a Heidi Chronicles kind of way.",
   "originalScore": "5/5",
-  "assignedScore": 100,
+  "assignedScore": 87,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T04:50:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "So much of Liberation—Wohl's best play, and she's had some excellent ones, including Small Mouth Sounds and Make Believe—feels like a radical act. This sensational cast, all in top form.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "feels eerily prescient, as if Wohl possessed some sort of crystal ball",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "We really have been asking the wrong questions all along, haven't we?",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic calls this Wohl's 'best play' with a 'sensational cast, all in top form' and praises its prescient relevance and radical honesty, indicating strong recommendation despite no explicit 'must-see' language.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:27:21.220Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2084,
+    "outputTokens": 390
+  }
 }

@@ -10,10 +10,57 @@
   "bwwExcerpt": "Each queen gets an absurdly catchy pop-inspired anthem to tell her own (often untold) story. There's a little Beyoncé in Catherine of Aragon's salsa-tinged \"No Way,\" which details Henry's infidelity, his quest for an annulment, and her refusal (\"You must think that I'm crazy/ You wanna replace me, baby, there's/ N-n-n-n-n-n-no way\"). Anne Boleyn's bouncy, electro-pop \"Don't Lose Ur Head\" has a Lily Allen vibe. To play up her sex appeal-and youthfulness-Catherine Parr sings the breathy, Britney Spears-style \"All You Wanna Do.\"",
   "showScoreExcerpt": "\"Six brings together a sextet of badass queens—clad in brilliant chain-trimmed corsets, studded black boots, and spiky crown-like headpieces designed by Gabriella Slade—to compete, American Idol–style, for a somewhat dubious honor: Who took the most crap from that self-serving, Church-splitting, six-times-married monarch?\"",
   "originalScore": "5/5",
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T20:00:00.000Z",
   "bwwThumb": null,
   "bwwUrl": "http://nystagereview.com/2021/10/03/six-long-live-the-queens/",
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 80,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you see Six—and if you're a Tudor history buff, a royal watcher, or someone who's simply looking for a show with strong central female characters, you bloody well should",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Each queen gets an absurdly catchy pop-inspired anthem",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Broadway gets to experience this rockin' rewrite of 16th-century her-story",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Clear positive recommendation with explicit encouragement to see the show, praising the music as 'absurdly catchy,' performances, and production values with enthusiasm throughout.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:30:09.827Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2558,
+    "outputTokens": 363
+  }
 }

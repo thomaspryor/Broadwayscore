@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "As for the show itself (I know, it almost seems like an afterthought), it has been given an undeniably powerful if somewhat imperfect staging. Among its chief strengths are its lead performances, or at least most of them, with Eddie Redmayne repeating his Olivier Award-winning performance (at least through early September) as the leering Emcee. He’s not quite as menacing as Alan Cumming in the Mendes production, at times seeming fragile and almost adorable. But the actor is certainly mesmerizing, using his angular physicality and androgynous looks to tremendous effect and employing his natural charisma to such a degree that you can’t take your eyes off him. During many dramatic scenes involving the other characters he silently lurks at the edge of the stage, doing nothing but making it seem like everything.     Melissa",
   "originalScore": "4/5",
-  "assignedScore": 80,
+  "assignedScore": 78,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T05:00:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": 72
+    },
+    "keyPhrases": [
+      {
+        "quote": "it has been given an undeniably powerful if somewhat imperfect staging",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you'll be ready glad you've come to Cabaret at the Kit Kat Club",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The conceptual staging isn't fully successful either",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic offers clear praise for the lead performances and overall production power while acknowledging some flaws in staging and one weak performance, concluding with a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:25:45.679Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2833,
+    "outputTokens": 333
+  }
 }

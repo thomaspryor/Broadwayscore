@@ -9,9 +9,56 @@
   "isFullReview": true,
   "dtliExcerpt": "But PigPen’s score, period appropriate with strumming ukuleles and happy-go-lucky lyrics, creates a strong thread to tie together the production’s tendency to roam. And the ensemble — by far the best arms on Broadway — provides endless visual richness. You’re never supposed to look too closely at the circus but, here, there’s more than enough to keep you staring.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "playwright-scraped",
   "dtliThumb": "Up",
   "bwwExcerpt": "Their performances, Stone’s direction, and Takeshi Kata’s ever-moving set are enough to keep the production on its track, though Rick Elice’s book often steers itself away. Each circus member has a backstory that’s hinted at during their introductions, then largely discarded....",
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 35,
+      "music": 78,
+      "performances": 82,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's more than enough to keep you staring",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Rick Elice's book often steers itself away",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Their performances, Stone's direction, and Takeshi Kata's ever-moving set are enough to keep the production on its track",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Strong praise for spectacle, performances, music, and direction, but significant criticism of the weak book and plot structure creates a qualified positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:31:51.677Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2194,
+    "outputTokens": 339
+  }
 }

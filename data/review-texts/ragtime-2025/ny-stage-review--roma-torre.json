@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "The imagery gets a big boost from lighting designers Adam Honoré and Donald Holder’s exquisite palette attaching distinctive shades of light to each of the main groups, and framing them in monochromatic bands painted overhead. And costumer Linda Cho did a terrific job expertly evoking the period, the class and the temperament of the characters. But even without the technical enhancements, the production would still soar given the bravura talents – all 41 actors and 28 musicians – gracing the Vivian Beaumont stage.      Melissa",
   "originalScore": "5/5",
-  "assignedScore": 100,
+  "assignedScore": 96,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T04:35:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 96,
+    "confidence": "high",
+    "range": {
+      "low": 94,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 95,
+      "performances": 95,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "this nearly flawless Lincoln Center Theater production ranks among Broadway's best of all time",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It is a magnificent performance and one that must not be missed",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "And that's what makes a masterpiece",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "The critic uses unqualified superlatives throughout ('masterpiece', 'nearly flawless', 'among Broadway's best of all time', 'must not be missed') with no meaningful reservations, indicating an absolute rave recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:29:57.908Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2975,
+    "outputTokens": 355
+  }
 }

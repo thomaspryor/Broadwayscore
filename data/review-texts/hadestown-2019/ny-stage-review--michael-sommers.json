@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "A new Broadway musical that takes audiences to hell and back, Hadestown looks and sounds terrific, and yet it lacks something vital. Drawn from a classical Greek legend, the musical somehow reminds me of a handsome ancient statue that is missing its head.",
   "originalScore": "4/5",
-  "assignedScore": 80,
+  "assignedScore": 65,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T06:28:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 62,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 78,
+      "performances": 68,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "looks and sounds terrific, and yet it lacks something vital",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "While Hadestown scarcely shapes up into an essential Broadway destination, it is among the better attractions in what so far has been a lackluster season",
+        "sentiment": "neutral",
+        "strength": 5
+      },
+      {
+        "quote": "brilliantly staged and designed, and there's no denying the infernal red-hot charms of the jazzy, jumping, blues-streaked score",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic praises the production values and score while identifying significant flaws in the story and central romance, concluding it's decent but not essential - a classic mixed review that acknowledges quality while withholding strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:26:24.195Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2628,
+    "outputTokens": 388
+  }
 }

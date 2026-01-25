@@ -9,10 +9,57 @@
   "isFullReview": true,
   "bwwExcerpt": "It was only a matter of time before a stage adaptation of The Notebook came to fruition. Based on Nicholas Sparks' best selling novel, the popular 2004 film starring Rachel McAdams and Ryan Gosling is a romantic (if rather schmaltzy) stunner. There is naturally a built-in audience for this musical, clamoring to know if it's as good as the movie and how does it compare? And for those new to the tear-jerker story of Allie and Noah from opposite sides of the tracks, does it still resonate at all? The answer to that last question is most certainly yes, it does resonate.  I think you'd have to hail from another planet not to feel something for these appealing characters. By the resounding sniffles heard throughout the audience, it most certainly succeeded on that front. And yet, despite some lovely songs and excellent performances, the musical is missing some keynotes.",
   "originalScore": "3/5",
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T19:00:00.000Z",
   "bwwThumb": "Meh",
   "bwwUrl": "https://nystagereview.com/2024/03/14/the-notebook-a-musical-romance-made-for-fans-to-love/",
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 62,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 70,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "And yet, despite some lovely songs and excellent performances, the musical is missing some keynotes.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Even with all that first class talent, The Notebook could have done more to earn the love.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There is absolutely nothing I can say here that could alter the emotional impact of The Notebook on its devoted fans.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic praises the performances extensively and acknowledges the show's emotional impact, but expresses significant disappointment with the book's storytelling holes and production design, concluding the show falls short of its potential despite strong elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:31:09.825Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2949,
+    "outputTokens": 367
+  }
 }

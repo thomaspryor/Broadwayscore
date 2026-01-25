@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "That the show seems to want to have it both ways may bother some. Director Michael Arden, who has tightened things up considerably since a 2024 Boston tryout, controls the pacing and focus with his usual confidence such that audiences may not even register the material’s ambivalence. Me, I was content to revel in Schwartz’s score, perhaps the most heartfelt, varied and robust of his career; in the variety and inventiveness of the production’s scenography; and above all in seeing a genuine Broadway star at the peak of her powers. Chenoweth embraces all her character’s contradictions as if they didn’t exist, translating her own belief in herself into Jackie’s. Unforgettable, the both of ‘em.",
   "originalScore": "4/5",
-  "assignedScore": 80,
+  "assignedScore": 75,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T05:45:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-QUEEN-OF-VERSAILLES-Opens-on-Broadway-20251109",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 85,
+      "performances": 90,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "This lavishly overstuffed, irresistibly entertaining confection is impossible to imagine without her",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Me, I was content to revel in Schwartz's score, perhaps the most heartfelt, varied and robust of his career",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "That the show seems to want to have it both ways may bother some",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Despite noting structural issues with the show's mixed messages, the critic ultimately celebrates Chenoweth's powerhouse performance, Schwartz's exceptional score, and the production's entertainment value, concluding with clear admiration for seeing 'a genuine Broadway star at the peak of her powers.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:29:40.316Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2744,
+    "outputTokens": 391
+  }
 }

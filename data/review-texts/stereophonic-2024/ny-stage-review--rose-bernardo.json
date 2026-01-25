@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "A three-hour play about an unnamed 1970s band recording an album, set entirely in the recording studio: That’s, essentially, the elevator pitch for Stereophonic, which just opened on Broadway after a sold-out 10-week run at Playwrights Horizons in late 2023. But that doesn’t even begin to describe the genius on display at the Golden Theatre.",
   "originalScore": "5/5",
-  "assignedScore": 100,
+  "assignedScore": 88,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T06:05:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Rock-N-Roll-Drama-STEREOPHONIC-Opens-On-Broadway-20240419",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 85,
+      "performances": 87,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "That doesn't even begin to describe the genius on display at the Golden Theatre",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "all fantastic; the official cast recording will be released May 10 digitally and June 14 on CD",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Could Stereophonic have lost five minutes here or there? Maybe. Could director Daniel Aukin have tightened up the pace a bit? Perhaps",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The critic uses superlative language like 'genius on display' and 'fantastic,' praises all elements of the production with specific examples, and only offers minor quibbles about pacing in an otherwise enthusiastic review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:30:28.937Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2398,
+    "outputTokens": 377
+  }
 }

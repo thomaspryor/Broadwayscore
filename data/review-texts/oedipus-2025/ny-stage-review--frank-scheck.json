@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "Ickes’ staging mainly proves powerful throughout, from the digital clock in the background that counts down the time, not only to the election results but also the revelation of the truth that shatters the characters’ lives (unity of time, don’t you know), to such visual devices as having a team of workmen gradually stripping the office of its furniture, mirroring the losses they endure.     Melissa",
   "originalScore": "4/5",
-  "assignedScore": 80,
+  "assignedScore": 72,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T04:55:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Mark-Strong-and-Lesley-Manville-Star-in-OEDIPUS-on-Broadway-20251113",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 58,
+      "music": null,
+      "performances": 88,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mark Strong and Lesley Manville deliver epic performances",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it provides a gripping theatrical experience that will be as much of a snob hit on Broadway as it was in London",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this Oedipus doesn't fully succeed in translating the original's poetic, grandiose style into modern terms",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic clearly recommends the show despite adaptation flaws, praising the 'epic performances' and calling it a 'gripping theatrical experience' that will be a hit, indicating qualified but definite enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:28:58.765Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2158,
+    "outputTokens": 366
+  }
 }

@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "A ribald cartoon more hysterical than historical, Oh, Mary! sheds unexpected light upon the assassination of Abraham Lincoln and represents the latest generation of gender bent comical entertainment known as camp. Elder viewers reared on the comparatively subtle writing and performance style of Charles Busch are likely to find Escola’s slapdash artistry crude, but there’s no denying he snags laughs.",
   "originalScore": "2/5",
-  "assignedScore": 40,
+  "assignedScore": 62,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T06:00:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 72,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's no denying he snags laughs",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "their charm eludes me so far",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "While the script may be flimsy, director Sam Pinkleton's production looks good",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic acknowledges the show's entertainment value and production strengths while expressing personal disconnect with the star and calling the script flimsy, resulting in a qualified, lukewarm assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:29:22.589Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2451,
+    "outputTokens": 335
+  }
 }

@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "The proceedings, all in all, are rather schizoid. Those seeking a smart night out, with sharply-delineated themes, are likely to react with a weary ‘Boop-Boop-a-Droop.’ There’s always the danger of showstopper fatigue setting in, as if you’ve eaten eight or nine hot fudge sundaes in a row. But as a respite from present-day realities and woes, and you know the ones I mean, Boop! could just be the tonic the doctor ordered.",
   "originalScore": "3/5",
-  "assignedScore": 60,
+  "assignedScore": 58,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T05:20:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 62
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 25,
+      "music": 65,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the most maladroit storylines Broadway has encountered in years, with cardboard characters that serve plot purposes only",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Jasmine Amy Rogers is the real deal, a triple threat as actor, singer, and dancer with irresistible warmth",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "But as a respite from present-day realities and woes, Boop! could just be the tonic the doctor ordered",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "While praising strong performances and production values, the critic delivers devastating criticism of the book and story, ultimately offering only qualified recommendation as escapist entertainment rather than quality theater.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:25:04.347Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2064,
+    "outputTokens": 372
+  }
 }

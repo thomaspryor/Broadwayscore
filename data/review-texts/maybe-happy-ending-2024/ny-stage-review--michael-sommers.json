@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "Lately there’s been audience complaint – if chat boards can be believed – how some recent Broadway musicals blast out hellishly loud, banging music. Maybe Happy Ending is surely the balm for any such feelings, since its sometimes jazz-inflected score is orchestrated gently for mostly strings, keyboard and woodwinds with exceptional grace by the composer.     Melissa",
   "originalScore": "4/5",
-  "assignedScore": 80,
+  "assignedScore": 78,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T05:40:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": 82,
+      "performances": 78,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "A darling and delightful new Broadway musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the quick, crisp script, the neat, sensible lyrics, and the glistening music yield considerable pleasure",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Although the genuinely sweet nature of their work teeters a few times on the edge of going twee",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Consistently positive language throughout with praise for all elements (script, music, performances, direction), only minor caveat about occasionally being too sweet, and ends with clear recommendation as 'balm' for audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:28:26.687Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2061,
+    "outputTokens": 363
+  }
 }

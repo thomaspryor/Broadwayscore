@@ -8,7 +8,54 @@
   "fullText": "You don't see too many pink pussy hats around lately—the ones that cropped up as a cringe-worthy response to our former President's disgustingly sexist comments. They're not in view at Suffs, the new musical about Wilson-era suffragists which just premiered at the Public Theater, but you can almost feel the lint they left on its creator's mind. Written, scored by, and starring Shaina Taub, it is the white feminist follow-up to the question first posed by the Public's last big American musical. You know, the one that inexplicably cast actors of color as slave owning Founding Fathers in an attempt to, I dunno, yassss?\n\nSuffs is not as puzzlingly concocted as that and, as directed by Leigh Silverman, is pretty straightforward: Alice Paul (Taub) is a firecracker young feminist grown tired of the polite, ineffective activism of the National American Woman Suffrage Association, led by the all-smiles Carrie Catt (Jenn Colella, fabulous). Paul defies Catt's pleas against messy direct action and breaks out on her own, founding the National Woman's Party (NWP) and staging a momentous march on Washington, DC the day before Woodrow Wilson's inauguration. The story follows the several women Paul enlists on her tireless crusade for equality.\n\nBut for as radical and boundary-pushing as Paul is set up to be, the character itself is a chore to see played out. An implacable steamroller with no nuance or interiority, she suffers in comparison to her more complex counterparts, whose own paths to, and views of, feminism would be vastly more interesting to explore.\n\nTake NWP member Inez Milholland (Phillipa Soo, radiant), a glamorous socialite-law student who wants to \"put the sex in sex equality\" with headline-grabbing stunts like leading a march on horseback. Her contributions to the cause question the merits of flashiness when it comes to drawing attention to a worthy cause, the downfalls of a distracting beauty when all you want is to be taken seriously.\n\nOr consider the story's Black suffragists, Ida B. Wells (Nikki M. James) and Mary Church Terrell (Cassondra James), who butt heads over the value of joining an explicitly white-centering movement which asks them to wait patiently for their own freedom to eventually arrive. The excellent James sings a blistering middle-finger to her character's sidelining, a great number titled \"Wait My Turn\", but to what end? The narrative acknowledges the leads' undermining of their essential Black sisters and then… keeps on trucking.\n\nWe can't rewrite history, but we can challenge it beyond just a checked-box acknowledgement of its wrongs. We can set up dialectics between the approaches, and explore these women's parallel needs for liberation and how they manifested throughout their lives. But it seems Taub is as uninterested in confrontation as she is in telling any story that might complicate the narrative she set out to spin. The dynamic between Paul and Catt, for example, could fuel a thousand delicious, thought-provoking tales about warring approaches between problematic women. But Catt, like Wells, is mostly abandoned by the droning plot.\n\nThe one confrontation that does play out successfully is the one happening in the score, where the Suffs' samey, Hamilton-lite melodies are beaten out by any number sung by the opposition. President Wilson (Grace McLean, spectacularly milking her part of all it's worth) receives delightful, inventive vaudeville tunes — amicably choreographed by Raja Feather Kelly on Mimi Lien's functional stairwell set — that sparkle with the wit of someone whose words we know contradict our own mentality. In fact, the only songs with any sort of charisma are the ones written against the Suffs, i.e. the ones with actual stakes.\n\nCredit where it is due: the second act is vastly superior, if only because conflicts play out vividly onstage, rather than through narration or navel-gazing. But by that point in this overlong musical, it's hard to drum up the excitement that should have been there from the beginning. Suffs isn't as miserable an experience as it might read under analysis but, unlike its worthy subject matter and the discussions a stronger throughline could have provoked, it isn't a drum worth beating.",
   "isFullReview": true,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "playwright-scraped",
-  "dtliThumb": "Down"
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 38,
+    "confidence": "high",
+    "range": {
+      "low": 32,
+      "high": 44
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 35,
+      "performances": 65,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Suffs isn't as miserable an experience as it might read under analysis but, unlike its worthy subject matter and the discussions a stronger throughline could have provoked, it isn't a drum worth beating.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "An implacable steamroller with no nuance or interiority, she suffers in comparison to her more complex counterparts",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The excellent James sings a blistering middle-finger to her character's sidelining, a great number titled 'Wait My Turn'",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic finds significant structural and narrative problems with the musical, criticizing the lead character's lack of depth, the abandonment of potentially interesting storylines, and samey music, while praising some individual performances.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:30:52.397Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2493,
+    "outputTokens": 403
+  }
 }

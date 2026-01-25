@@ -9,8 +9,55 @@
   "isFullReview": true,
   "dtliExcerpt": "If you've never seen, or heard, Chess, trust us. Every song is a banger, and the stars—Nicholas Christopher as Russian chess champion Anatoly Sergievsky, Aaron Tveit as American champ Freddie Trumper, and Lea Michele as Florence Vassy, a top chess strategist and the woman loved by both—know it. You'll never hear a better \"Anthem,\" the sweeping love-of-country ode that brings down the Act 1 curtain, and the house, than Christopher's. (Sorry, Josh Groban.) Tveit goes for broke—and hits every crazy high note—on the electrifying \"Pity the Child.\" And are these Rice's best-ever lyrics? A personal favorite: \"I see my present partner/ In the imperfect tense,\" from Michele's killer power ballad \"Nobody's Side.\"",
   "originalScore": "4/5",
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T19:00:00.000Z",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 90,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "a shamelessly enjoyable production that puts the spotlight on its best asset: the score",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Every song is a banger",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's been 40 years—how long can we spend trying to fix all the fractured parts of Chess?",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Despite acknowledging the musical's structural flaws, the critic clearly enjoys the production and praises the score, performances, and design elements, making this a qualified positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:26:05.868Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2366,
+    "outputTokens": 315
+  }
 }

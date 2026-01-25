@@ -9,8 +9,55 @@
   "isFullReview": true,
   "bwwExcerpt": "The six women-backed by a terrific onstage band of \"Ladies in Waiting\"-initially delighted to revel in their woes, wind up revealing more about womanhood (historical and contemporary), modern stardom, victimhood, pop culture, and survival than a musical with this logline has any right to. Capably co-directed by Moss and Jamie Armitage, the production does not shy away from the simplicity of its premise, sidestepping any staging issues by owning up to its concert format and allowing the women's charisma to hold court. And what charisma! There is not a single flaw in this production's casting and, while the material itself is strong enough to hold itself through changes in performers, I fear this opening ensemble is like lightning in a bottle. Each actor's work honors their monarch, as well as the respective myriad pop influences behind each queen's stage persona.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "playwright-scraped",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211003",
-  "scrapedAt": "2026-01-24T04:00:00.000Z"
+  "scrapedAt": "2026-01-24T04:00:00.000Z",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 84,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 95,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "The songs are, without hyperbole, miracles of modern musical theatre",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "There is not a single flaw in this production's casting",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "let it be decreed that Marlow and Moss may wear their crowns proudly",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic uses superlative language throughout ('miracles', 'not a single flaw', 'fabulous') with comprehensive praise for all elements and a clear endorsement, indicating a strong positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:30:16.834Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2685,
+    "outputTokens": 349
+  }
 }

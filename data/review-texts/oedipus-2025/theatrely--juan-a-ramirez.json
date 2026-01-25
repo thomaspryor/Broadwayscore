@@ -9,10 +9,57 @@
   "isFullReview": true,
   "dtliExcerpt": "Robert Icke is one of our best and most exciting theatrical talents, full stop. Any announcement of new work from the writer-director, known stateside lately for his incendiary updates of the Oresteia, Hamlet and The Doctor (from Schnitzler's Professor Bernhardi), are reason enough to immediately secure at least one round of tickets. So it's curious that he's hit a wall with Sophocles' Oedipus.\n\nThere's still the baseline level of competence for which he's come to be known—a sleek, glass-paneled modernist set by Hildegard Bechtler; laser-sharp performances, this time led by the phenomenal pairing of Mark Strong and Lesley Manville—that is leagues above most others' hopes for excellence. But without the profound insight (modern and timeless) he's excavated from those other works, there's little to generate the same theatrical electricity.\n\nIcke reimagines the story as unfolding on election night, with Oedipus as a charismatic candidate investigating his predecessor's murder. The production features Icke's usual whip-smart language and technical excellence. However, because audiences already know this story's surprises, the production needed either masterful pacing or fresh interpretive angles. Instead, each domino falls with complete earnestness, and without broader examination, resulting in minimal dramatic tension.\n\nDespite these critiques, there are far worse places to be than at a Robert Icke production—or watching Strong and Manville perform.\n\nOedipus runs through February 8, 2026 at Studio 54.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "playwright-scraped",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T23:40:00.000Z",
   "bwwExcerpt": "Robert Icke is one of our best and most exciting theatrical talents, full stop. Any announcement of new work from the writer-director, known stateside lately for his incendiary updates of the Oresteia, Hamlet and The Doctor (from Schnitzler’s Professor Bernhardi), are reason enough to immediately se...",
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 88,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "laser-sharp performances, this time led by the phenomenal pairing of Mark Strong and Lesley Manville – that is leagues above most others' hopes for excellence",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "without the profound insight (modern and timeless) he's excavated from those other works, there's little to generate the same theatrical electricity",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there are far worse places to be than at a Robert Icke production, or in the company of Strong and Manville",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic praises the stellar performances and production values while expressing disappointment that this work lacks the theatrical electricity of Icke's previous successes, ultimately suggesting it's still worth seeing despite its shortcomings.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:29:10.731Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2134,
+    "outputTokens": 392
+  }
 }

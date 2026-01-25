@@ -9,8 +9,55 @@
   "isFullReview": true,
   "bwwExcerpt": "If Dixon and Bean give swoon-worthy interpretations of some of Keys' catchiest melodies, Kecia Lewis is on fire in Keys' most moving and intense tune, \"Perfect Way To Die.\" The song is about a woman whose son has been shot dead. Nobody is shot dead in \"Hell's Kitchen.\" There's no indication that Miss Liza Jane had a son who was killed. Miss Jane sings the song after Ali enters the Ellington room and tells her she is too angry to play piano right now. In the scene right before, the police have a (somewhat murky) encounter with Knuck,  possibly instigated by Jersey, which led to his arrest.  Miss Liza Jane excoriates her student: \"Then why the hell are you in here and not out there. ¥ou were in pain. That pain led you here. Listen to that pain. Do something with it.\" If the lyrics don't correspond to the situation of the scene, the emotions are deeply aligned and easily shared by the audience. The same could be said about much of \"Hell's Kitchen.\"     Melissa",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T03:00:00.000Z",
-  "bwwUrl": "https://www.broadwayworld.com/article/Review-Roundup-HELLS-KITCHEN-Opens-on-Broadway-20240420"
+  "bwwUrl": "https://www.broadwayworld.com/article/Review-Roundup-HELLS-KITCHEN-Opens-on-Broadway-20240420",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 78,
+      "performances": 82,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lewis, Bean and Brandon Victor Dixon as her father Davis are the three veteran performers who give 'Hell's Kitchen' its juice",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "'Hell's Kitchen' is probably better than most in finding ways to place Keys' twenty-one previously recorded songs with at least some coherence",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "If the lyrics don't correspond to the situation of the scene, the emotions are deeply aligned and easily shared by the audience",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic appreciates the strong performances and effective use of Alicia Keys' songs while noting structural limitations of the jukebox musical format, resulting in a qualified positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:26:35.647Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2910,
+    "outputTokens": 375
+  }
 }

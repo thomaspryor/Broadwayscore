@@ -9,10 +9,57 @@
   "isFullReview": true,
   "bwwExcerpt": "No disrespect to headliners Karen Olivo (a Tony winner as Anita in 2009's West Side Story), who plays the tuberculosis-plagued performer/courtesan Satine, and Aaron Tveit (Catch Me If You Can, Next to Normal), as the lovestruck aspiring composer Christian but the real stars of this Moulin Rouge! are the artists who don't appear onstage. Lighting designer Justin Townsend can evoke anything from a pulse-pounding nightclub to the shadowy alleys of Argentina to a hallucinogenic electric-green drunken dream. Six-time Tony winner Catherine Zuber, fresh off the elegantly appointed My Fair Lady, has crafted a stunning array of costumes: cascading cancan underskirts; bondage-style corsets; crushed-velvet tailcoats; and, for Olivo's Satine, glittering bustiers, satiny robes, and body-hugging gowns. And set designer Derek McLane has turned the inside of the Hirschfeld Theatre into a crystal-studded, heart-shaped, hopelessly romantic fantasyland.",
   "originalScore": "5/5",
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T20:00:00.000Z",
   "bwwThumb": null,
   "bwwUrl": "http://nystagereview.com/2019/07/25/moulin-rouge-the-musical-a-dazzling-exercise-in-excess/",
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 80,
+      "performances": 75,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "the real stars of this Moulin Rouge! are the artists who don't appear onstage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's bliss",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a stroke of genius",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic consistently praises the production elements, performances, and creative choices with enthusiastic language like 'bliss' and 'stroke of genius,' indicating a clear positive recommendation despite no explicit directive to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:28:38.424Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 3069,
+    "outputTokens": 332
+  }
 }

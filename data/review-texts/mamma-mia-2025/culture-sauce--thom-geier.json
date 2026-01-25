@@ -9,10 +9,57 @@
   "isFullReview": true,
   "bwwExcerpt": "Nobody could mistake Mamma Mia! for high art. Cardboard-cutout characters vamp through a ridiculous romantic plot, while beloved disco-era ABBA hits are shoehorned in often as clumsily as Cinderella's prince struggling to find the perfect fit for the lost slipper of his royal-ball dancing partner. But audiences still thrill to dancing queens. And Mamma Mia!, returning to Broadway nearly a quarter century after it began a long and glorious run at the Winter Garden Theatre (and later the Broadhurst), has an infectious, high-energy showmanship that's almost irrepressible.",
   "originalScore": "4/5",
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T04:00:00.000Z",
   "bwwThumb": "Up",
   "bwwUrl": "https://culturesauce.com/2025/08/14/mamma-mia-2025-broadway-review/",
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 45,
+      "music": 78,
+      "performances": 75,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "has an infectious, high-energy showmanship that's almost irrepressible",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Nobody could mistake Mamma Mia! for high art. Cardboard-cutout characters vamp through a ridiculous romantic plot",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Mamma Mia! still has the power to connect with audiences in an old-fashioned, almost primal way",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic acknowledges significant flaws in the material but ultimately recommends the production for its energy, performances, and nostalgic appeal, concluding that it delivers on its promises despite being lowbrow entertainment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:27:33.433Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2795,
+    "outputTokens": 376
+  }
 }

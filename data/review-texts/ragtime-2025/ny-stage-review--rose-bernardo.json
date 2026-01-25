@@ -9,9 +9,56 @@
   "isFullReview": true,
   "bwwExcerpt": "Classism, systemic racism, the immigrant experience—none of that screams “musical!” But Ahrens, Flaherty, and McNally managed to work it all in without preaching or lecturing (all three won Tonys for their efforts). You could argue that the characters are one-dimensional, but that’s on E.L. Doctorow, whose 1974 novel Ragtime is almost a collection of snapshots to memorialize historic moments—for instance, the creation of the assembly line. And for those who say the show moves too slowly (it clocks in at 2 hours 50 minutes), composer and pianist Scott Joplin, aka the King of Ragtime, says this in a preface to Doctorow’s book: “It is never right to play Ragtime fast.”",
   "originalScore": "5/5",
-  "assignedScore": 100,
+  "assignedScore": 88,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T05:10:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
-  "textStatus": "missing"
+  "textStatus": "missing",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 92,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Henry is, in a word, magnificent. His Coalhouse is a tower of strength and spirit, fueled by long-simmering anger and stubborn righteousness.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "this marvelous revival now should land at Lincoln Center Theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "If you're not moved by that stunner of an opener, check your pulse.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Enthusiastic praise throughout with superlative language about performances and music, calling it a 'marvelous revival' with only minor structural critiques that are quickly dismissed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-01-25T03:30:04.249Z",
+    "promptVersion": "2.0.0",
+    "inputTokens": 2563,
+    "outputTokens": 359
+  }
 }
