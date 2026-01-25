@@ -17,11 +17,23 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
   const score = show.criticScore?.score;
   const roundedScore = score ? Math.round(score) : null;
+  const reviewCount = show.criticScore?.reviewCount || 0;
   const description = score
-    ? `${show.title} has a critic score of ${roundedScore}/100 based on ${show.criticScore?.reviewCount} reviews. ${show.synopsis?.slice(0, 100) || ''}`
+    ? `${show.title} has a critic score of ${roundedScore}/100 based on ${reviewCount} reviews. ${show.synopsis?.slice(0, 100) || ''}`
     : `Reviews and scores for ${show.title} on Broadway. ${show.synopsis?.slice(0, 100) || ''}`;
 
   const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
+
+  // Build OG image URL with show data
+  const ogParams = new URLSearchParams({
+    type: 'show',
+    title: show.title,
+    theater: show.venue || '',
+    reviews: String(reviewCount),
+    ...(roundedScore && { score: String(roundedScore) }),
+    ...(show.images?.poster && { poster: show.images.poster }),
+  });
+  const ogImageUrl = `${BASE_URL}/api/og?${ogParams.toString()}`;
 
   return {
     title: `${show.title} - Critic Score & Reviews`,
@@ -34,13 +46,23 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       description,
       url: canonicalUrl,
       type: 'article',
-      images: show.images?.hero ? [{ url: show.images.hero, width: 1600, height: 1200, alt: show.title }] : undefined,
+      images: [{
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: `${show.title} - Score: ${roundedScore ?? 'TBD'} - Broadway Scorecard`,
+      }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${show.title} - Critic Score ${roundedScore ? `${roundedScore}/100` : 'TBD'}`,
       description,
-      images: show.images?.hero ? [show.images.hero] : undefined,
+      images: [{
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: `${show.title} - Score: ${roundedScore ?? 'TBD'} - Broadway Scorecard`,
+      }],
     },
   };
 }
