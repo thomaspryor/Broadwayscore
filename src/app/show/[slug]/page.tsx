@@ -557,7 +557,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold transition-all ${
+                  className={`inline-flex items-center gap-2 px-5 py-3 min-h-[48px] rounded-xl font-semibold transition-all ${
                     i === 0
                       ? 'bg-gradient-brand text-white hover:shadow-glow-sm hover:scale-[1.02] active:scale-[0.98]'
                       : 'bg-surface-overlay hover:bg-white/10 text-gray-200 hover:text-white border border-white/10'
@@ -585,7 +585,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 href={show.officialUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
+                className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
               >
                 <GlobeIcon />
                 Official Site
@@ -598,7 +598,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 href={show.trailerUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
+                className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
               >
                 <PlayIcon />
                 Trailer
@@ -627,26 +627,26 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         {(show.cast || show.creativeTeam) && (
           <div className="grid sm:grid-cols-2 gap-6 mb-8">
             {show.cast && show.cast.length > 0 && (
-              <div className="card p-5">
+              <div className="card p-4 sm:p-5">
                 <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Cast</h2>
-                <ul className="space-y-2">
+                <ul className="space-y-2.5 sm:space-y-2">
                   {show.cast.map((member, i) => (
-                    <li key={i} className="flex justify-between text-sm">
+                    <li key={i} className="flex flex-col sm:flex-row sm:justify-between text-sm gap-0.5 sm:gap-2">
                       <span className="text-white font-medium">{member.name}</span>
-                      <span className="text-gray-500">{member.role}</span>
+                      <span className="text-gray-500 text-xs sm:text-sm">{member.role}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
             {show.creativeTeam && show.creativeTeam.length > 0 && (
-              <div className="card p-5">
+              <div className="card p-4 sm:p-5">
                 <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Creative Team</h2>
-                <ul className="space-y-2">
+                <ul className="space-y-2.5 sm:space-y-2">
                   {show.creativeTeam.map((member, i) => (
-                    <li key={i} className="flex justify-between text-sm">
+                    <li key={i} className="flex flex-col sm:flex-row sm:justify-between text-sm gap-0.5 sm:gap-2">
                       <span className="text-white font-medium">{member.name}</span>
-                      <span className="text-gray-500">{member.role}</span>
+                      <span className="text-gray-500 text-xs sm:text-sm">{member.role}</span>
                     </li>
                   ))}
                 </ul>
@@ -656,9 +656,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         )}
 
         {/* Show Details */}
-        <div className="card p-5 mb-8">
+        <div className="card p-4 sm:p-5 mb-8">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Details</h2>
-          <dl className="grid grid-cols-2 gap-4 text-sm">
+          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
             <div>
               <dt className="text-gray-500">Opened</dt>
               <dd className="text-white mt-0.5">{formatDate(show.openingDate)}</dd>
@@ -685,7 +685,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 <dd className="text-white mt-0.5">{show.ageRecommendation}</dd>
               </div>
             )}
-            <div className="col-span-2">
+            <div className="sm:col-span-2">
               <dt className="text-gray-500">Theater</dt>
               <dd className="text-white mt-0.5">
                 {show.theaterAddress ? (
