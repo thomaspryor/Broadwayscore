@@ -1,0 +1,172 @@
+name: Archive Aggregator Pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      show_ids:
+        description: 'Comma-separated show IDs to archive (leave empty for all shows)'
+        required: false
+        default: ''
+
+jobs:
+  archive-pages:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Archive aggregator pages
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SHOW_IDS: ${{ github.event.inputs.show_ids }}
+        run: |
+          node << 'EOF'
+          const fs = require('fs');
+          const https = require('https');
+
+          const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+          async function fetchWithScrapingBee(url, apiKey) {
+            return new Promise((resolve, reject) => {
+              const encodedUrl = encodeURIComponent(url);
+              const scrapingBeeUrl = `https://app.scrapingbee.com/api/v1/?api_key=${apiKey}&url=${encodedUrl}&render_js=false`;
+
+              https.get(scrapingBeeUrl, (res) => {
+                let data = '';
+                res.on('data', (chunk) => data += chunk);
+                res.on('end', () => {
+                  if (res.statusCode === 200) {
+                    resolve(data);
+                  } else {
+                    reject(new Error(`ScrapingBee returned ${res.statusCode}`));
+                  }
+                });
+              }).on('error', reject);
+            });
+          }
+
+          async function archivePage(showId, aggregator, url, apiKey) {
+            try {
+              console.log(`Fetching ${aggregator} for ${showId}...`);
+              const html = await fetchWithScrapingBee(url, apiKey);
+
+              const dir = `data/aggregator-archive/${aggregator}`;
+              if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+              }
+
+              const timestamp = new Date().toISOString();
+              const metadata = `<!-- Archived: ${timestamp} -->\n<!-- Source: ${url} -->\n<!-- Show ID: ${showId} -->\n\n`;
+              const content = metadata + html;
+
+              const filepath = `${dir}/${showId}.html`;
+              fs.writeFileSync(filepath, content);
+              console.log(`✓ Saved ${filepath}`);
+
+              // Rate limiting: wait 2 seconds between requests
+              await sleep(2000);
+              return true;
+            } catch (error) {
+              console.error(`✗ Failed to archive ${aggregator}/${showId}: ${error.message}`);
+              return false;
+            }
+          }
+
+          function generateSlug(show) {
+            // Try to use existing slug, or derive from ID/title
+            if (show.slug) return show.slug;
+
+            // Remove year suffix and convert to slug format
+            return show.id
+              .replace(/-(bway-)?202[0-9]$/, '')
+              .replace(/_/g, '-');
+          }
+
+          async function main() {
+            const apiKey = process.env.SCRAPINGBEE_API_KEY;
+            if (!apiKey) {
+              console.error('❌ SCRAPINGBEE_API_KEY not set in GitHub Secrets');
+              process.exit(1);
+            }
+
+            const shows = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+
+            let showsToProcess = shows;
+            if (process.env.SHOW_IDS) {
+              const selectedIds = process.env.SHOW_IDS.split(',').map(s => s.trim()).filter(Boolean);
+              if (selectedIds.length > 0) {
+                showsToProcess = shows.filter(show => selectedIds.includes(show.id));
+                console.log(`📋 Processing ${showsToProcess.length} selected shows`);
+              }
+            }
+
+            console.log(`\n📚 Archiving pages for ${showsToProcess.length} shows...\n`);
+
+            let stats = {
+              dtli: { success: 0, fail: 0 },
+              showScore: { success: 0, fail: 0 },
+              bww: { success: 0, fail: 0 }
+            };
+
+            for (const show of showsToProcess) {
+              console.log(`\n${'='.repeat(60)}`);
+              console.log(`${show.title} (${show.id})`);
+              console.log('='.repeat(60));
+
+              const slug = generateSlug(show);
+
+              // 1. DTLI: didtheylikeit.com/shows/{slug}/
+              const dtliUrl = `https://didtheylikeit.com/shows/${slug}/`;
+              const dtliSuccess = await archivePage(show.id, 'dtli', dtliUrl, apiKey);
+              if (dtliSuccess) stats.dtli.success++; else stats.dtli.fail++;
+
+              // 2. Show-Score: show-score.com/broadway-shows/{slug}
+              const showScoreUrl = `https://www.show-score.com/broadway-shows/${slug}`;
+              const showScoreSuccess = await archivePage(show.id, 'show-score', showScoreUrl, apiKey);
+              if (showScoreSuccess) stats.showScore.success++; else stats.showScore.fail++;
+
+              // 3. BroadwayWorld: Search for show reviews
+              const bwwSearchQuery = encodeURIComponent(`${show.title} review roundup`);
+              const bwwUrl = `https://www.broadwayworld.com/search/?q=${bwwSearchQuery}`;
+              const bwwSuccess = await archivePage(show.id, 'bww-roundups', bwwUrl, apiKey);
+              if (bwwSuccess) stats.bww.success++; else stats.bww.fail++;
+            }
+
+            console.log(`\n${'='.repeat(60)}`);
+            console.log('📊 SUMMARY');
+            console.log('='.repeat(60));
+            console.log(`DTLI:       ✓ ${stats.dtli.success}  ✗ ${stats.dtli.fail}`);
+            console.log(`Show-Score: ✓ ${stats.showScore.success}  ✗ ${stats.showScore.fail}`);
+            console.log(`BWW:        ✓ ${stats.bww.success}  ✗ ${stats.bww.fail}`);
+            console.log(`TOTAL:      ✓ ${stats.dtli.success + stats.showScore.success + stats.bww.success}  ✗ ${stats.dtli.fail + stats.showScore.fail + stats.bww.fail}`);
+          }
+
+          main().catch(error => {
+            console.error('💥 Fatal error:', error);
+            process.exit(1);
+          });
+          EOF
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/aggregator-archive/
+
+          if git diff --staged --quiet; then
+            echo "ℹ️  No changes to commit"
+          else
+            COMMIT_MSG="Archive aggregator pages (automated)"
+            if [ -n "${{ github.event.inputs.show_ids }}" ]; then
+              COMMIT_MSG="Archive aggregator pages for: ${{ github.event.inputs.show_ids }}"
+            fi
+            git commit -m "$COMMIT_MSG"
+            git push
+            echo "✅ Changes committed and pushed"
+          fi
