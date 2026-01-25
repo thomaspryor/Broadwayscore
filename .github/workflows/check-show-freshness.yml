@@ -1,0 +1,54 @@
+name: Check Show Freshness
+
+on:
+  schedule:
+    # Run daily at 6 AM UTC (1 AM ET / 2 AM ET during DST)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  check-freshness:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run freshness check
+        id: freshness
+        run: node scripts/check-show-freshness.js
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/shows.json; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/shows.json
+
+          # Get list of closed shows for commit message
+          CLOSED=$(node -e "
+            const d = require('./data/shows.json');
+            const closed = d.shows.filter(s => s.status === 'closed' && s.closingDate);
+            const today = new Date().toISOString().split('T')[0];
+            const recentlyClosed = closed.filter(s => s.closingDate <= today && s.closingDate >= new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0]);
+            console.log(recentlyClosed.map(s => s.title).join(', ') || 'shows');
+          ")
+
+          git commit -m "chore: Auto-update show statuses (closed: $CLOSED)"
+          git push
