@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding } from '@/lib/data';
+import { generateShowSchema, generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
 import BoxOfficeStats from '@/components/BoxOfficeStats';
@@ -15,17 +16,31 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!show) return { title: 'Show Not Found' };
 
   const score = show.criticScore?.score;
+  const roundedScore = score ? Math.round(score) : null;
   const description = score
-    ? `${show.title} has a critic score of ${score}. Read ${show.criticScore?.reviewCount} reviews.`
-    : `Reviews and scores for ${show.title} on Broadway.`;
+    ? `${show.title} has a critic score of ${roundedScore}/100 based on ${show.criticScore?.reviewCount} reviews. ${show.synopsis?.slice(0, 100) || ''}`
+    : `Reviews and scores for ${show.title} on Broadway. ${show.synopsis?.slice(0, 100) || ''}`;
+
+  const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
 
   return {
     title: `${show.title} - Critic Score & Reviews`,
     description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: `${show.title} - Broadway Scorecard`,
       description,
-      images: show.images?.hero ? [{ url: show.images.hero }] : undefined,
+      url: canonicalUrl,
+      type: 'article',
+      images: show.images?.hero ? [{ url: show.images.hero, width: 1600, height: 1200, alt: show.title }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${show.title} - Critic Score ${roundedScore ? `${roundedScore}/100` : 'TBD'}`,
+      description,
+      images: show.images?.hero ? [show.images.hero] : undefined,
     },
   };
 }
@@ -391,29 +406,6 @@ function getGoogleMapsUrl(address: string): string {
 }
 
 
-// JSON-LD structured data for SEO
-function generateStructuredData(show: ComputedShow) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'TheaterEvent',
-    name: show.title,
-    location: {
-      '@type': 'PerformingArtsTheater',
-      name: show.venue,
-      address: show.theaterAddress || 'New York, NY',
-    },
-    startDate: show.openingDate,
-    ...(show.closingDate && { endDate: show.closingDate }),
-    ...(show.images?.hero && { image: show.images.hero }),
-    aggregateRating: show.criticScore?.score ? {
-      '@type': 'AggregateRating',
-      ratingValue: show.criticScore.score,
-      bestRating: 100,
-      worstRating: 0,
-      reviewCount: show.criticScore.reviewCount,
-    } : undefined,
-  };
-}
 
 export default function ShowPage({ params }: { params: { slug: string } }) {
   const show = getShowBySlug(params.slug);
@@ -422,7 +414,12 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  const structuredData = generateStructuredData(show);
+  const showSchema = generateShowSchema(show);
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: show.type === 'musical' || show.type === 'revival' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${show.type === 'musical' || show.type === 'revival' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` },
+    { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
+  ]);
   const score = show.criticScore?.score;
   const grosses = getShowGrosses(params.slug);
   const weekEnding = getGrossesWeekEnding();
@@ -431,7 +428,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([showSchema, breadcrumbSchema]) }}
       />
 
       {/* Sticky Score Header */}

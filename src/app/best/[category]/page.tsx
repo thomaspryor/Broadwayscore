@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { getBestOfList, getAllBestOfCategories, BestOfCategory } from '@/lib/data';
 import { generateBreadcrumbSchema, generateItemListSchema } from '@/lib/seo';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export function generateStaticParams() {
   return getAllBestOfCategories().map((category) => ({ category }));

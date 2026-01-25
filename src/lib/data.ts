@@ -413,5 +413,66 @@ export function getGrossesLastUpdated(): string {
   return grosses.lastUpdated;
 }
 
+// ============================================
+// Browse Page Queries
+// ============================================
+
+import { BROWSE_PAGES, BrowsePageConfig, getAllBrowseSlugs as getBrowseSlugsFromConfig } from '@/config/browse-pages';
+
+export interface BrowseList {
+  config: BrowsePageConfig;
+  shows: ComputedShow[];
+}
+
+/**
+ * Get filtered and sorted shows for a browse page
+ */
+export function getBrowseList(slug: string): BrowseList | undefined {
+  const config = BROWSE_PAGES[slug];
+  if (!config) return undefined;
+
+  const allShows = getAllShows();
+  let filteredShows = allShows.filter(config.filter);
+
+  // Sort shows
+  if (config.sort === 'score') {
+    filteredShows = filteredShows.sort((a, b) =>
+      (b.criticScore?.score ?? 0) - (a.criticScore?.score ?? 0)
+    );
+  } else if (config.sort === 'opening-date') {
+    filteredShows = filteredShows.sort((a, b) =>
+      new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
+    );
+  } else if (config.sort === 'closing-date') {
+    filteredShows = filteredShows.sort((a, b) => {
+      if (!a.closingDate) return 1;
+      if (!b.closingDate) return -1;
+      return new Date(a.closingDate).getTime() - new Date(b.closingDate).getTime();
+    });
+  } else if (config.sort === 'title') {
+    filteredShows = filteredShows.sort((a, b) =>
+      a.title.localeCompare(b.title)
+    );
+  }
+
+  // Apply limit if specified
+  if (config.limit) {
+    filteredShows = filteredShows.slice(0, config.limit);
+  }
+
+  return {
+    config,
+    shows: filteredShows,
+  };
+}
+
+/**
+ * Get all browse page slugs for static generation
+ */
+export function getAllBrowseSlugs(): string[] {
+  return getBrowseSlugsFromConfig();
+}
+
 // Export types
 export type { ComputedShow };
+export type { BrowsePageConfig } from '@/config/browse-pages';
