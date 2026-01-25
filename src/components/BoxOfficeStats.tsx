@@ -106,7 +106,7 @@ function StatCard({ value, label, wowChange, yoyChange }: StatCardProps) {
         {label}
       </div>
       {hasChanges && (
-        <div className="flex flex-col gap-0.5 mt-1 sm:mt-1.5">
+        <div className="flex flex-row flex-wrap justify-center gap-2 mt-1 sm:mt-1.5">
           <ChangeIndicator change={wowChange ?? null} label="WoW" />
           <ChangeIndicator change={yoyChange ?? null} label="YoY" />
         </div>
