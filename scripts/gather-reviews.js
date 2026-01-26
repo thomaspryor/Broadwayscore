@@ -302,6 +302,18 @@ function extractShowScoreReviews(html, showId) {
   let match;
   while ((match = outletUrlPattern.exec(html)) !== null) {
     const url = match[1];
+
+    // Skip non-review URLs (video platforms, social media, etc.)
+    const skipDomains = [
+      'youtube.com', 'youtu.be', 'vimeo.com',
+      'twitter.com', 'x.com', 'facebook.com', 'instagram.com',
+      'spotify.com', 'apple.com', 'music.amazon.com',
+      'show-score.com'  // Skip internal links
+    ];
+    if (skipDomains.some(domain => url.includes(domain))) {
+      continue;
+    }
+
     // Try to find outlet context nearby
     const contextStart = Math.max(0, match.index - 500);
     const context = html.substring(contextStart, match.index + match[0].length);
