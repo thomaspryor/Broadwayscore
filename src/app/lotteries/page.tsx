@@ -4,6 +4,7 @@ import { getAllShows, getLotteryRush, getLotteryRushLastUpdated, ShowLotteryRush
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
+import { LotteryTable } from '@/components/SortableLotteryRushTables';
 
 export const metadata: Metadata = {
   title: 'Broadway Lottery Tickets - Win Cheap Broadway Tickets',
@@ -255,7 +256,14 @@ export default function LotteriesPage() {
           </ol>
         </div>
 
-        {/* Show List */}
+        {/* Sortable Table */}
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-white mb-3">All Lotteries</h2>
+          <LotteryTable data={showsWithLottery.map(item => ({ show: item.show, lotteryData: item.lotteryData! }))} />
+        </div>
+
+        {/* Detailed Show Cards */}
+        <h2 className="text-lg font-bold text-white mb-3">Detailed View</h2>
         <div className="space-y-3">
           {showsWithLottery.map((item, index) => (
             <LotteryShowCard

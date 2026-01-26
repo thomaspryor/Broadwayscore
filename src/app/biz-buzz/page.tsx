@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getAllShows, getShowCommercial, getCommercialLastUpdated, CommercialDesignation } from '@/lib/data';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { RecoupTable, CapitalizationTable } from '@/components/SortableBizBuzzTables';
 
 export const metadata: Metadata = {
   title: 'Broadway Commercial Scorecard - Which Shows Make Money?',
@@ -164,57 +165,9 @@ export default function BizBuzzPage() {
         <section className="mb-12">
           <h2 className="text-xl font-bold text-white mb-4">Fastest to Recoup</h2>
           <p className="text-gray-400 text-sm mb-4">
-            Shows that earned back their investment fastest, ranked by weeks to recoupment.
+            Shows that earned back their investment fastest. Click column headers to sort.
           </p>
-          <div className="card overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-white/10 bg-surface-overlay">
-                    <th className="text-left py-3 px-4 text-gray-400 font-medium">#</th>
-                    <th className="text-left py-3 px-4 text-gray-400 font-medium">Show</th>
-                    <th className="text-right py-3 px-4 text-gray-400 font-medium">Weeks</th>
-                    <th className="text-right py-3 px-4 text-gray-400 font-medium hidden sm:table-cell">Capitalization</th>
-                    <th className="text-center py-3 px-4 text-gray-400 font-medium hidden md:table-cell">Designation</th>
-                    <th className="text-left py-3 px-4 text-gray-400 font-medium hidden lg:table-cell">Recouped</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {recoupedShows.slice(0, 15).map((item, index) => (
-                    <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                      <td className="py-3 px-4">
-                        <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                          index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
-                        }`}>
-                          {index + 1}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4">
-                        <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium">
-                          {item.show.title}
-                        </Link>
-                      </td>
-                      <td className="py-3 px-4 text-right">
-                        <span className="text-white font-bold">{item.commercial!.recoupedWeeks}</span>
-                        <span className="text-gray-500 ml-1">wks</span>
-                      </td>
-                      <td className="py-3 px-4 text-right text-gray-300 hidden sm:table-cell">
-                        {formatCurrency(item.commercial!.capitalization)}
-                      </td>
-                      <td className="py-3 px-4 text-center hidden md:table-cell">
-                        <span className={designationConfig[item.commercial!.designation].color}>
-                          {designationConfig[item.commercial!.designation].emoji} {item.commercial!.designation}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-gray-400 text-xs hidden lg:table-cell">
-                        {item.commercial!.recoupedDate}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <RecoupTable data={recoupedShows} />
         </section>
 
         {/* Highest Capitalization */}
@@ -223,66 +176,7 @@ export default function BizBuzzPage() {
           <p className="text-gray-400 text-sm mb-4">
             Broadway&apos;s biggest investments. Higher capitalization means more risk—and potentially higher reward.
           </p>
-          <div className="card overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-white/10 bg-surface-overlay">
-                    <th className="text-left py-3 px-4 text-gray-400 font-medium">#</th>
-                    <th className="text-left py-3 px-4 text-gray-400 font-medium">Show</th>
-                    <th className="text-right py-3 px-4 text-gray-400 font-medium">Capitalization</th>
-                    <th className="text-center py-3 px-4 text-gray-400 font-medium hidden sm:table-cell">Recouped?</th>
-                    <th className="text-center py-3 px-4 text-gray-400 font-medium hidden md:table-cell">Designation</th>
-                    <th className="text-center py-3 px-4 text-gray-400 font-medium hidden lg:table-cell">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {byCapitalization.slice(0, 15).map((item, index) => (
-                    <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                      <td className="py-3 px-4">
-                        <span className="text-gray-500 text-xs font-bold">
-                          {index + 1}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4">
-                        <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium">
-                          {item.show.title}
-                        </Link>
-                      </td>
-                      <td className="py-3 px-4 text-right text-white font-bold">
-                        {formatCurrency(item.commercial!.capitalization)}
-                      </td>
-                      <td className="py-3 px-4 text-center hidden sm:table-cell">
-                        {item.commercial!.recouped === true && (
-                          <span className="text-emerald-400">✓ Yes</span>
-                        )}
-                        {item.commercial!.recouped === false && (
-                          <span className="text-red-400">✗ No</span>
-                        )}
-                        {item.commercial!.recouped === null && (
-                          <span className="text-gray-500">—</span>
-                        )}
-                      </td>
-                      <td className="py-3 px-4 text-center hidden md:table-cell">
-                        <span className={designationConfig[item.commercial!.designation].color}>
-                          {designationConfig[item.commercial!.designation].emoji} {item.commercial!.designation}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-center hidden lg:table-cell">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                          item.show.status === 'open'
-                            ? 'bg-emerald-500/15 text-emerald-400'
-                            : 'bg-gray-500/15 text-gray-400'
-                        }`}>
-                          {item.show.status === 'open' ? 'Running' : 'Closed'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <CapitalizationTable data={byCapitalization} />
         </section>
 
         {/* By Designation Breakdown */}
