@@ -60,7 +60,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
   if (!hasLottery && !hasRush && !hasSRO) return null;
 
   return (
-    <section className="card p-5 sm:p-6 mb-6" aria-labelledby="lottery-rush-heading">
+    <section id="discount-tickets" className="card p-5 sm:p-6 mb-6 scroll-mt-20" aria-labelledby="lottery-rush-heading">
       <h2 id="lottery-rush-heading" className="text-lg font-bold text-white mb-4 flex items-center gap-2">
         <TicketIcon />
         Discount Tickets

@@ -644,8 +644,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </p>
           )}
 
-          {/* Links row: Official Site, Tickets, Trailer */}
-          {(show.officialUrl || show.trailerUrl || (show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed')) && (
+          {/* Links row: Official Site, Tickets, Trailer, Lottery/Rush */}
+          {(show.officialUrl || show.trailerUrl || (show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed') || (lotteryRush && show.status !== 'closed')) && (
             <div className="flex flex-wrap gap-2 mt-4">
               {/* Official Website */}
               {show.officialUrl && (
@@ -686,12 +686,20 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   Trailer
                 </a>
               )}
+
+              {/* Lottery/Rush Quick Link */}
+              {lotteryRush && show.status !== 'closed' && (
+                <a
+                  href="#discount-tickets"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 hover:text-emerald-300 text-xs font-medium transition-colors border border-emerald-500/30"
+                >
+                  <TicketIcon />
+                  {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
+                </a>
+              )}
             </div>
           )}
         </div>
-
-        {/* Lottery/Rush Tickets */}
-        {lotteryRush && <LotteryRushCard data={lotteryRush} showStatus={show.status} />}
 
         {/* Critics' Take - editorial summary */}
         {consensus && <CriticConsensusCard consensus={consensus} />}
@@ -716,11 +724,14 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           />
         )}
 
+        {/* Lottery/Rush Tickets - below Audience Buzz */}
+        {lotteryRush && <LotteryRushCard data={lotteryRush} showStatus={show.status} />}
+
+        {/* Awards - above Box Office */}
+        <AwardsCard showId={show.id} awards={awards} />
+
         {/* Box Office Stats */}
         {grosses && <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />}
-
-        {/* Awards */}
-        <AwardsCard showId={show.id} awards={awards} />
 
         {/* Cast & Creative */}
         {(show.cast || show.creativeTeam) && (
