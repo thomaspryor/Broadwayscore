@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getBrowseList, getAllBrowseSlugs } from '@/lib/data';
+import { getBrowseList, getAllBrowseSlugs, getShowGrosses } from '@/lib/data';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBrowsePageConfig, BROWSE_PAGES } from '@/config/browse-pages';
@@ -216,7 +216,21 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
                   <p className="text-gray-400 text-xs sm:text-sm truncate">
                     {show.venue} {show.runtime && `• ${show.runtime}`}
                   </p>
-                  {show.closingDate && (
+                  {config.sort === 'performances' ? (
+                    (() => {
+                      const grosses = getShowGrosses(show.slug);
+                      const performances = grosses?.allTime?.performances;
+                      return performances ? (
+                        <p className="text-emerald-400 text-xs mt-0.5 sm:mt-1">
+                          {performances.toLocaleString()} performances
+                        </p>
+                      ) : null;
+                    })()
+                  ) : show.status === 'previews' ? (
+                    <p className="text-purple-400 text-xs mt-0.5 sm:mt-1">
+                      Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </p>
+                  ) : show.closingDate && (
                     <p className="text-rose-400 text-xs mt-0.5 sm:mt-1">
                       Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     </p>

@@ -551,7 +551,17 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   </>
                 )}
                 <span className="text-gray-600">•</span>
-                <span>Opened {formatDate(show.openingDate)}</span>
+                {show.status === 'previews' ? (
+                  <span>Opens {formatDate(show.openingDate)}</span>
+                ) : show.closingDate ? (
+                  <>
+                    <span className="text-amber-400">Closes {formatDate(show.closingDate)}</span>
+                    <span className="text-gray-600">•</span>
+                    <span>Opened {formatDate(show.openingDate)}</span>
+                  </>
+                ) : (
+                  <span>Opened {formatDate(show.openingDate)}</span>
+                )}
               </div>
 
               {/* Score Box + Sentiment + Review Count - Metacritic style */}

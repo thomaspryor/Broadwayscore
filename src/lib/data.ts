@@ -712,6 +712,10 @@ export function getBrowseList(slug: string): BrowseList | undefined {
     filteredShows = filteredShows.sort((a, b) =>
       new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
     );
+  } else if (config.sort === 'opening-date-asc') {
+    filteredShows = filteredShows.sort((a, b) =>
+      new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime()
+    );
   } else if (config.sort === 'closing-date') {
     filteredShows = filteredShows.sort((a, b) => {
       if (!a.closingDate) return 1;
@@ -722,6 +726,14 @@ export function getBrowseList(slug: string): BrowseList | undefined {
     filteredShows = filteredShows.sort((a, b) =>
       a.title.localeCompare(b.title)
     );
+  } else if (config.sort === 'performances') {
+    filteredShows = filteredShows.sort((a, b) => {
+      const aGrosses = getShowGrosses(a.slug);
+      const bGrosses = getShowGrosses(b.slug);
+      const aPerf = aGrosses?.allTime?.performances ?? 0;
+      const bPerf = bGrosses?.allTime?.performances ?? 0;
+      return bPerf - aPerf;
+    });
   }
 
   // Apply limit if specified
