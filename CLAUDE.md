@@ -329,6 +329,10 @@ All automation runs via GitHub Actions - no local commands needed.
 - Weekly automated status updates
 - New show discovery automation
 - User-submitted review system with AI validation (automated approval & scraping)
+- **Site feedback system** with AI categorization
+  - Formspree-powered form at `/feedback`
+  - Weekly digest with automated categorization (Bug, Feature, Content Error, Praise, Other)
+  - Priority assignment and recommended actions via Claude API
 - **Critics' Take** - LLM-generated 2-sentence editorial summaries
   - Updates weekly if 3+ new reviews added
   - Displayed on show pages between synopsis and reviews
