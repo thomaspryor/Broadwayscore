@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-26T23:39:48.287Z",
+  "runDate": "2026-01-26T23:40:18.198Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "our-town-2024",
+    "showFilter": "wicked-2003",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 169,
-    "failed": 80,
+    "processed": 173,
+    "failed": 78,
     "skipped": 0,
-    "successRate": "67.9%"
+    "successRate": "68.9%"
   },
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 13,
     "scrapingbee": 14,
-    "brightdata": 15,
-    "archive": 123
+    "brightdata": 16,
+    "archive": 130
   },
   "statistics": {
-    "tier1Attempts": 19,
-    "tier1Success": 5,
-    "tier2Attempts": 14,
+    "tier1Attempts": 21,
+    "tier1Success": 1,
+    "tier2Attempts": 19,
     "tier2Success": 1,
-    "tier3Attempts": 13,
-    "tier3Success": 2,
-    "tier4Attempts": 13,
-    "tier4Success": 3,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 60
+    "tier3Attempts": 18,
+    "tier3Success": 3,
+    "tier4Attempts": 17,
+    "tier4Success": 10,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 120
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -193,17 +193,21 @@
     "death-becomes-her-2024/wsj--charles-isherwood.json",
     "death-of-a-salesman-2026/broadwaynews-com--unknown.json",
     "death-of-a-salesman-2026/deadline-com--unknown.json",
-    "our-town-2024/culturesauce-com--unknown.json",
-    "our-town-2024/lightingandsoundamerica-com--unknown.json",
-    "our-town-2024/newyorktheater-me--unknown.json",
-    "our-town-2024/pagesonstages-com--unknown.json",
-    "our-town-2024/talkinbroadway-com--unknown.json",
-    "our-town-2024/theaterlife-com--unknown.json",
-    "our-town-2024/theatermania-com--unknown.json",
-    "our-town-2024/theaterscene-net--unknown.json",
-    "our-town-2024/theatrereviews-com--unknown.json",
-    "our-town-2024/thefrontrowcenter-com--unknown.json",
-    "our-town-2024/wsj--charles-isherwood.json"
+    "wicked-2003/NYP--clive-barnes.json",
+    "wicked-2003/TIME--richard-zoglin.json",
+    "wicked-2003/bergen-record--robert-feldberg.json",
+    "wicked-2003/daily-beast--kevin-fallon.json",
+    "wicked-2003/front-row-center--stanford-friedman.json",
+    "wicked-2003/new-york-theater--jonathan-mandell.json",
+    "wicked-2003/ny-daily-news--howard-kissel.json",
+    "wicked-2003/observer--rex-reed.json",
+    "wicked-2003/talkin-broadway--matthew-murray.json",
+    "wicked-2003/theatermania--barbara-siegel.json",
+    "wicked-2003/theatre-is-easy--dan-dinero.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/usa-today--elysa-gardner.json",
+    "wicked-2003/village-voice--michael-feingold.json",
+    "wicked-2003/wsj--terry-teachout.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -278,14 +282,12 @@
     "death-becomes-her-2024/guardian--benjamin-lee.json",
     "death-becomes-her-2024/nypost--johnny-oleksinski.json",
     "death-of-a-salesman-2026/ew-com--unknown.json",
-    "our-town-2024/chtrib--chris-jones.json",
-    "our-town-2024/guardian--adrian-horton.json",
-    "our-town-2024/interestedbystander-com--unknown.json",
-    "our-town-2024/nyp--johnny-oleksinski.json",
-    "our-town-2024/nypost--johnny-oleksinski.json",
-    "our-town-2024/tman--jesse-green.json",
-    "our-town-2024/usatoday--charles-isherwood.json",
-    "our-town-2024/washpost--peter-marks.json"
+    "wicked-2003/AP--michael-kuchwara.json",
+    "wicked-2003/NEWSDAY--linda-winer.json",
+    "wicked-2003/curtainup--elyse-sommer.json",
+    "wicked-2003/journal-news--jacques-le-sourd.json",
+    "wicked-2003/star-ledger--michael-sommers.json",
+    "wicked-2003/washington-post--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -301,11 +303,7 @@
       "back-to-the-future-2023/theaterscene-net--unknown.json",
       "back-to-the-future-2023/theatrereviews-com--unknown.json",
       "death-of-a-salesman-2026/broadwaynews-com--unknown.json",
-      "our-town-2024/culturesauce-com--unknown.json",
-      "our-town-2024/lightingandsoundamerica-com--unknown.json",
-      "our-town-2024/pagesonstages-com--unknown.json",
-      "our-town-2024/theaterlife-com--unknown.json",
-      "our-town-2024/theatrereviews-com--unknown.json"
+      "wicked-2003/timeout--david-cote.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -321,7 +319,7 @@
       "cabaret-2024/timeout--adam-feldman.json",
       "chess-2025/ew--shania-russell.json",
       "death-becomes-her-2024/ew--dalton-ross.json",
-      "our-town-2024/theaterscene-net--unknown.json"
+      "wicked-2003/village-voice--michael-feingold.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -337,8 +335,9 @@
       "cabaret-2024/daily-beast--tim-teeman.json",
       "chess-2025/daily-beast--tim-teeman.json",
       "chess-2025/timeout-ny--adam-feldman.json",
-      "our-town-2024/newyorktheater-me--unknown.json",
-      "our-town-2024/talkinbroadway-com--unknown.json"
+      "wicked-2003/daily-beast--kevin-fallon.json",
+      "wicked-2003/new-york-theater--jonathan-mandell.json",
+      "wicked-2003/talkin-broadway--matthew-murray.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -461,9 +460,16 @@
       "death-becomes-her-2024/thewrap--robert-hofler.json",
       "death-becomes-her-2024/wsj--charles-isherwood.json",
       "death-of-a-salesman-2026/deadline-com--unknown.json",
-      "our-town-2024/theatermania-com--unknown.json",
-      "our-town-2024/thefrontrowcenter-com--unknown.json",
-      "our-town-2024/wsj--charles-isherwood.json"
+      "wicked-2003/NYP--clive-barnes.json",
+      "wicked-2003/TIME--richard-zoglin.json",
+      "wicked-2003/bergen-record--robert-feldberg.json",
+      "wicked-2003/front-row-center--stanford-friedman.json",
+      "wicked-2003/ny-daily-news--howard-kissel.json",
+      "wicked-2003/observer--rex-reed.json",
+      "wicked-2003/theatermania--barbara-siegel.json",
+      "wicked-2003/theatre-is-easy--dan-dinero.json",
+      "wicked-2003/usa-today--elysa-gardner.json",
+      "wicked-2003/wsj--terry-teachout.json"
     ]
   }
 }
