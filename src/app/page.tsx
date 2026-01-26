@@ -3,7 +3,7 @@
 import { useMemo, memo, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { getAllShows, ComputedShow, getDataStats, getUpcomingShows, getAudienceBuzz, getAudienceBuzzColor, AudienceBuzzDesignation } from '@/lib/data';
+import { getAllShows, ComputedShow, getDataStats, getUpcomingShows, getAudienceBuzz } from '@/lib/data';
 import { getOptimizedImageUrl } from '@/lib/images';
 
 // URL parameter values
@@ -253,7 +253,6 @@ function ChevronRightIcon() {
 const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: number; hideStatus: boolean }) {
   const score = show.criticScore?.score;
   const isRevival = show.type === 'revival';
-  const audienceBuzz = getAudienceBuzz(show.id);
 
   return (
     <Link
@@ -311,37 +310,18 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
         </p>
       </div>
 
-      {/* Scores Section - Audience Buzz + Critic Score */}
-      <div className="flex-shrink-0 flex items-center gap-2">
-        {/* Audience Buzz - designation badge only, no numeric score */}
-        {audienceBuzz && (
-          <div className="flex flex-col items-center gap-1">
-            <div
-              className={`w-12 h-12 sm:w-14 sm:h-14 rounded-lg flex items-center justify-center text-2xl ${getAudienceBuzzColor(audienceBuzz.designation).bgClass} border ${getAudienceBuzzColor(audienceBuzz.designation).borderClass}`}
-              title={`Audience: ${audienceBuzz.designation}`}
-            >
-              {audienceBuzz.designation === 'Loving It' && '❤️'}
-              {audienceBuzz.designation === 'Liking It' && '👍'}
-              {audienceBuzz.designation === 'Take-it-or-Leave-it' && '🤷'}
-              {audienceBuzz.designation === 'Loathing It' && '👎'}
-            </div>
-            <span className="text-[9px] text-gray-500 uppercase tracking-wide font-medium">Buzz</span>
-          </div>
+      {/* Score - fixed height to match thumbnail for consistent alignment */}
+      <div className="flex-shrink-0 w-20 sm:w-24 h-20 sm:h-24 flex flex-col items-center justify-start pt-1">
+        {show.criticScore && getScoreTier(score) && (
+          <span
+            className="text-[10px] font-semibold mb-2 uppercase tracking-wide"
+            style={{ color: getScoreTier(score)?.color }}
+            title={getScoreTier(score)?.tooltip}
+          >
+            {getScoreTier(score)?.label}
+          </span>
         )}
-
-        {/* Critic Score - main score on the right */}
-        <div className="w-20 sm:w-24 h-20 sm:h-24 flex flex-col items-center justify-start pt-1">
-          {show.criticScore && getScoreTier(score) && (
-            <span
-              className="text-[10px] font-semibold mb-2 uppercase tracking-wide"
-              style={{ color: getScoreTier(score)?.color }}
-              title={getScoreTier(score)?.tooltip}
-            >
-              {getScoreTier(score)?.label}
-            </span>
-          )}
-          <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} status={show.status} />
-        </div>
+        <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} status={show.status} />
       </div>
     </Link>
   );
