@@ -727,9 +727,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           />
         )}
 
-        {/* Lottery/Rush Tickets - below Audience Buzz */}
-        {lotteryRush && <LotteryRushCard data={lotteryRush} showStatus={show.status} />}
-
         {/* Awards - above Box Office */}
         <AwardsCard showId={show.id} awards={awards} />
 
@@ -738,6 +735,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Commercial Performance / Biz Buzz */}
         {commercial && <BizBuzzCard commercial={commercial} showTitle={show.title} />}
+
+        {/* Lottery/Rush Tickets - below Commercial Performance */}
+        {lotteryRush && <LotteryRushCard data={lotteryRush} showStatus={show.status} />}
 
         {/* Cast & Creative */}
         {(show.cast || show.creativeTeam) && (

@@ -310,10 +310,10 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
       </div>
 
       {/* Score - fixed height to match thumbnail for consistent alignment */}
-      <div className="flex-shrink-0 w-20 sm:w-24 h-20 sm:h-24 flex flex-col items-center justify-center">
+      <div className="flex-shrink-0 w-20 sm:w-24 h-20 sm:h-24 flex flex-col items-center justify-start pt-1">
         {show.criticScore && getScoreTier(score) && (
           <span
-            className="text-[10px] font-semibold mb-1 uppercase tracking-wide"
+            className="text-[10px] font-semibold mb-2 uppercase tracking-wide"
             style={{ color: getScoreTier(score)?.color }}
             title={getScoreTier(score)?.tooltip}
           >
@@ -594,7 +594,7 @@ function HomePageInner() {
       {/* Status & Sort Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm">
         <div className="flex items-center gap-1 sm:gap-2 flex-wrap" role="group" aria-label="Filter by status">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">STATUS</span>
+          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">STATUS:</span>
           {(['now_playing', 'all', 'closed'] as const).map((s) => (
             <button
               key={s}
@@ -610,7 +610,7 @@ function HomePageInner() {
         </div>
 
         <div className="flex items-center gap-1 sm:gap-2 flex-wrap" role="group" aria-label="Sort shows">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT</span>
+          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
           {(['recent', 'score_desc', 'alpha', 'closing_soon'] as const).map((s) => (
             <button
               key={s}
@@ -620,7 +620,7 @@ function HomePageInner() {
                 sort === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
               }`}
             >
-              {s === 'recent' ? 'NEW' : s === 'score_desc' ? 'TOP' : s === 'alpha' ? 'A-Z' : 'CLOSING'}
+              {s === 'recent' ? 'NEWEST' : s === 'score_desc' ? 'HIGHEST' : s === 'alpha' ? 'A-Z' : 'CLOSING'}
             </button>
           ))}
         </div>
