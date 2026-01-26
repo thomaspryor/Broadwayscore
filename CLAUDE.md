@@ -137,8 +137,9 @@ data/
   historical-shows-pending.json   # Auto-generated: historical shows awaiting metadata
   show-score.json                 # Show Score aggregator data (audience scores + critic reviews)
   show-score-urls.json            # URL mapping for Show Score pages
-  audience.json                   # (Future) Audience scores
-  buzz.json                       # (Future) Social buzz data
+  audience-buzz.json              # Audience Buzz data (Show Score, Mezzanine, Reddit)
+  audience.json                   # (Legacy/Future) Audience scores
+  buzz.json                       # (Legacy/Future) Social buzz data
   review-texts/           # Individual review JSON files by show
     {show-id}/            # e.g., hamilton-2015/, wicked-2003/
       {outlet}--{critic}.json  # e.g., nytimes--ben-brantley.json
@@ -209,6 +210,37 @@ data/
 - ❌ ATP prev week/YoY: not provided
 - ✅ All-time stats: gross, performances, attendance (all shows)
 
+### Audience Buzz Schema (audience-buzz.json)
+```typescript
+{
+  _meta: { lastUpdated, sources, notes },
+  shows: {
+    [showId: string]: {
+      title: string,
+      designation: "Loving It" | "Liking It" | "Take-it-or-Leave-it" | "Loathing It",
+      combinedScore: number,  // Weighted: ShowScore 40%, Mezzanine 40%, Reddit 20%
+      sources: {
+        showScore?: { score: number, reviewCount: number },
+        mezzanine?: { score: number, reviewCount: number, starRating: number },
+        reddit?: {
+          score: number,
+          reviewCount: number,
+          lastUpdated: string,
+          sentiment: { enthusiastic, positive, mixed, negative },  // percentages
+          recommendations: number,
+          positiveRate: number  // enthusiastic + positive combined
+        }
+      }
+    }
+  }
+}
+```
+
+**Audience Buzz Sources:**
+- **Show Score** (40%): Aggregates audience reviews with 0-100 scores
+- **Mezzanine** (40%): Aggregates audience reviews with star ratings (converted to %)
+- **Reddit** (20%): Sentiment analysis from r/Broadway discussions (monthly update)
+
 ## Key Files
 - `src/lib/engine.ts` - Scoring engine + TypeScript interfaces
 - `src/lib/data.ts` - Data loading layer (includes grosses data functions)
@@ -220,6 +252,7 @@ data/
 - `scripts/discover-historical-shows.js` - Discovers closed shows from past seasons (manual trigger)
 - `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses scraper (Playwright)
 - `scripts/scrape-alltime.ts` - BroadwayWorld all-time stats scraper (Playwright)
+- `scripts/scrape-reddit-sentiment.js` - Reddit r/Broadway sentiment scraper (ScrapingBee + Claude Opus)
 - `scripts/collect-review-texts-v2.js` - Enhanced review text scraper with stealth mode, ScrapingBee fallback, Archive.org fallback
 - `scripts/audit-scores.js` - Validates all review scores, flags wrong conversions, sentiment placeholders, duplicates
 - `scripts/fix-scores.js` - Automated fix for common scoring issues (wrong star/letter conversions)
@@ -272,6 +305,22 @@ All automation runs via GitHub Actions - no local commands needed.
   - If approved: Automatically scrapes review and adds to database
   - Posts validation result as issue comment
   - Closes issue when successfully processed
+
+### `.github/workflows/update-reddit-sentiment.yml`
+- **Runs:** Monthly (1st of each month at 10am UTC) or manually
+- **Does:**
+  - Scrapes r/Broadway for show discussions and reviews
+  - Uses Claude Opus for sentiment analysis (enthusiastic/positive/mixed/negative)
+  - Updates `data/audience-buzz.json` with Reddit scores
+  - Processes both open AND closed shows
+- **Manual trigger options:**
+  - `show`: Process specific show ID (e.g., `maybe-happy-ending-2024`)
+  - `limit`: Limit number of shows to process (default: 50)
+- **Technical notes:**
+  - Uses ScrapingBee with premium proxy to access Reddit
+  - Generic titles (The Outsiders, Chicago, etc.) use Broadway-qualified searches to avoid movie/book noise
+  - Prioritizes Review-tagged posts for better signal
+  - Reddit score weighted at 20% in combined Audience Buzz score
 - **User-facing page:** `/submit-review` (accessible from navigation)
 - **Issue template:** `.github/ISSUE_TEMPLATE/missing-review.yml`
 - **Validation script:** `scripts/validate-review-submission.js`
