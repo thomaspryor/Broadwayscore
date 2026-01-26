@@ -141,16 +141,25 @@ Important: Only report a review if you actually find one via web search. Do not 
 /**
  * Search aggregator for show reviews using simple HTTP
  */
-async function searchAggregator(aggregatorName, searchUrl) {
+async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
   return new Promise((resolve) => {
     const req = https.get(searchUrl, { timeout: 15000 }, (res) => {
       if (res.statusCode === 200) {
         let data = '';
         res.on('data', chunk => data += chunk);
-        res.on('end', () => resolve({ found: true, html: data }));
+        res.on('end', () => resolve({ found: true, html: data, finalUrl: searchUrl }));
       } else if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        // Follow redirect
-        searchAggregator(aggregatorName, res.headers.location).then(resolve);
+        // Check if redirect goes to homepage (not what we want)
+        const redirectUrl = res.headers.location;
+        if (redirectUrl.includes('/shows/all') || redirectUrl.endsWith('/shows')) {
+          // Redirected to homepage - this URL doesn't exist
+          resolve({ found: false, redirectedToHomepage: true });
+        } else if (maxRedirects > 0) {
+          // Follow redirect
+          searchAggregator(aggregatorName, redirectUrl, maxRedirects - 1).then(resolve);
+        } else {
+          resolve({ found: false, tooManyRedirects: true });
+        }
       } else {
         resolve({ found: false, status: res.statusCode });
       }
@@ -194,10 +203,22 @@ async function searchDTLI(show) {
  * Try to find show on Show Score
  */
 async function searchShowScore(show) {
+  // Show Score uses various URL patterns - try many variations
+  const year = new Date(show.openingDate).getFullYear();
+  const titleSlug = slugify(show.title);
+  const titleNoColonSlug = slugify(show.title.replace(/:/g, ''));
+
   const variations = [
     show.slug,
-    slugify(show.title),
-    slugify(show.title.replace(/:/g, ''))
+    titleSlug,
+    titleNoColonSlug,
+    // Show Score often appends "-broadway" to Broadway show slugs
+    `${titleSlug}-broadway`,
+    `${titleNoColonSlug}-broadway`,
+    `${show.slug}-broadway`,
+    // Some shows include the year
+    `${titleSlug}-${year}`,
+    `${titleNoColonSlug}-${year}`,
   ];
 
   console.log('  Searching Show Score...');
@@ -205,7 +226,13 @@ async function searchShowScore(show) {
   for (const slug of [...new Set(variations)]) {
     const url = `https://www.show-score.com/broadway-shows/${slug}`;
     const result = await searchAggregator('ShowScore', url);
-    if (result.found && result.html && result.html.includes('score')) {
+
+    // Check that we got actual show content, not the homepage
+    // The homepage has title "NYC Theatre Reviews and Tickets"
+    // Show pages have the show name in the title
+    if (result.found && result.html &&
+        result.html.includes('score') &&
+        !result.html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>')) {
       console.log(`    ✓ Found at: ${url}`);
       return { url, html: result.html };
     }
