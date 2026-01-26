@@ -3,13 +3,14 @@
 import { useMemo, memo, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { getAllShows, ComputedShow, getDataStats, getUpcomingShows } from '@/lib/data';
+import { getAllShows, ComputedShow, getDataStats, getUpcomingShows, getAudienceBuzz } from '@/lib/data';
 import { getOptimizedImageUrl } from '@/lib/images';
 
 // URL parameter values
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'all';
-type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'closing_soon';
+type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'closing_soon' | 'audience_buzz';
 type TypeParam = 'all' | 'musical' | 'play';
+type ScoreModeParam = 'critics' | 'audience';
 
 // Internal filter values
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews';
@@ -18,6 +19,7 @@ type StatusFilter = 'all' | 'open' | 'closed' | 'previews';
 const DEFAULT_STATUS: StatusParam = 'now_playing';
 const DEFAULT_SORT: SortParam = 'recent';
 const DEFAULT_TYPE: TypeParam = 'all';
+const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
 
 // Map URL params to internal values
 const statusParamToFilter: Record<StatusParam, StatusFilter> = {
@@ -41,6 +43,7 @@ const sortLabels: Record<SortParam, string> = {
   score_asc: 'Lowest Rated',
   alpha: 'A-Z',
   closing_soon: 'Closing Soon',
+  audience_buzz: 'Audience Buzz',
 };
 
 const typeLabels: Record<TypeParam, string> = {
@@ -63,24 +66,28 @@ const SCORE_TIERS = {
     tooltip: 'Strong choice—most people will have a great time.',
     range: '75-84',
     color: '#22c55e',
+    glow: false,
   },
   worthSeeing: {
     label: 'Worth Seeing',
     tooltip: 'Good, with caveats. Best if the premise/cast/genre is your thing.',
     range: '65-74',
     color: '#14b8a6',
+    glow: false,
   },
   skippable: {
     label: 'Skippable',
     tooltip: 'Optional. Fine to miss unless you\'re a completist or super fan.',
     range: '55-64',
     color: '#f59e0b',
+    glow: false,
   },
   stayAway: {
     label: 'Stay Away',
-    tooltip: 'Not recommended. Your time and money are better spent elsewhere.',
+    tooltip: 'Not recommended—save your time and money.',
     range: '<55',
     color: '#ef4444',
+    glow: false,
   },
 };
 
@@ -94,12 +101,21 @@ function getScoreTier(score: number | null | undefined) {
   return SCORE_TIERS.stayAway;
 }
 
-function ScoreBadge({ score, size = 'md', reviewCount }: { score?: number | null; size?: 'sm' | 'md' | 'lg'; reviewCount?: number }) {
+function ScoreBadge({ score, size = 'md', reviewCount, status }: { score?: number | null; size?: 'sm' | 'md' | 'lg'; reviewCount?: number; status?: string }) {
   const sizeClass = {
     sm: 'w-11 h-11 text-lg rounded-lg',
     md: 'w-14 h-14 text-2xl rounded-xl',
-    lg: 'w-16 h-16 text-3xl rounded-xl',
+    lg: 'w-16 h-16 sm:w-20 sm:h-20 text-3xl rounded-xl',
   }[size];
+
+  // Show TBD for previews shows
+  if (status === 'previews') {
+    return (
+      <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`}>
+        TBD
+      </div>
+    );
+  }
 
   // Show TBD if fewer than 5 reviews
   if (reviewCount !== undefined && reviewCount < 5) {
@@ -240,9 +256,39 @@ function ChevronRightIcon() {
   );
 }
 
-const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: number; hideStatus: boolean }) {
-  const score = show.criticScore?.score;
+const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: { show: ComputedShow; index: number; hideStatus: boolean; scoreMode: ScoreModeParam }) {
   const isRevival = show.type === 'revival';
+
+  // Get the appropriate score based on mode
+  let score: number | null | undefined;
+  let label: string | undefined;
+  let tier: typeof SCORE_TIERS.mustSee | null = null;
+  let audienceIcon: string | null = null;
+
+  if (scoreMode === 'audience') {
+    const audienceBuzz = getAudienceBuzz(show.id);
+    if (audienceBuzz) {
+      score = audienceBuzz.combinedScore;  // Used for sorting only, never displayed
+      label = audienceBuzz.designation;
+      // Map audience designation to colors and emojis
+      if (audienceBuzz.designation === 'Loving') {
+        tier = { label: 'Loving', color: '#22c55e', tooltip: 'Audiences love it', range: '', glow: false };
+        audienceIcon = '🔥';
+      } else if (audienceBuzz.designation === 'Liking') {
+        tier = { label: 'Liking', color: '#14b8a6', tooltip: 'Audiences like it', range: '', glow: false };
+        audienceIcon = '👍';
+      } else if (audienceBuzz.designation === 'Shrugging') {
+        tier = { label: 'Shrugging', color: '#f59e0b', tooltip: 'Mixed audience reaction', range: '', glow: false };
+        audienceIcon = '🤷';
+      } else if (audienceBuzz.designation === 'Loathing') {
+        tier = { label: 'Loathing', color: '#ef4444', tooltip: 'Audiences dislike it', range: '', glow: false };
+        audienceIcon = '💩';
+      }
+    }
+  } else {
+    score = show.criticScore?.score;
+    tier = getScoreTier(score);
+  }
 
   return (
     <Link
@@ -252,7 +298,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
       style={{ animationDelay: `${index * 30}ms` }}
     >
       {/* Thumbnail - larger square image */}
-      <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-surface-overlay">
+      <div className="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-surface-overlay">
         {show.images?.thumbnail ? (
           <img
             src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
@@ -260,14 +306,17 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
             aria-hidden="true"
             loading={index < 4 ? "eager" : "lazy"}
             fetchPriority={index < 4 ? "high" : "auto"}
-            width={96}
-            height={96}
+            width={112}
+            height={112}
             decoding="async"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 will-change-transform"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl" aria-hidden="true">
-            🎭
+          <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 px-2" aria-hidden="true">
+            <div className="text-2xl mb-0.5">🎭</div>
+            {show.status === 'previews' && (
+              <div className="text-[9px] text-gray-500 text-center font-medium leading-tight">Images<br/>soon</div>
+            )}
           </div>
         )}
       </div>
@@ -283,12 +332,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
           {show.limitedRun && <LimitedRunBadge />}
           {!hideStatus && <StatusBadge status={show.status} />}
         </div>
-        <p className="text-sm text-gray-400 mt-1.5 truncate">
-          {show.venue}
-          <span className="text-gray-600 mx-1.5">·</span>
-          <span className="text-gray-400">
-            Opened {formatOpeningDate(show.openingDate)}
-          </span>
+        <p className="text-sm text-gray-400 mt-2.5 truncate">
+          {show.status === 'previews' ? 'Opens' : 'Opened'} {formatOpeningDate(show.openingDate)}
           {show.closingDate && (
             <span className="text-amber-400">
               {' '}• Closing {formatOpeningDate(show.closingDate)}
@@ -297,18 +342,50 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
         </p>
       </div>
 
-      {/* Score - fixed height to match thumbnail for consistent alignment */}
-      <div className="flex-shrink-0 w-20 sm:w-24 h-20 sm:h-24 flex flex-col items-center justify-center">
-        {show.criticScore && getScoreTier(score) && (
-          <span
-            className="text-[10px] font-semibold mb-1 uppercase tracking-wide"
-            style={{ color: getScoreTier(score)?.color }}
-            title={getScoreTier(score)?.tooltip}
-          >
-            {getScoreTier(score)?.label}
-          </span>
+      {/* Score Badge */}
+      <div className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 sm:w-24">
+        {scoreMode === 'audience' ? (
+          // Audience mode: Show designation badge with emoji (no numeric score)
+          tier && audienceIcon && (
+            <div className="flex flex-col items-center gap-1.5 w-full">
+              <div
+                className="text-5xl sm:text-6xl leading-none flex items-center justify-center"
+                aria-hidden="true"
+              >
+                {audienceIcon}
+              </div>
+              <span
+                className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider whitespace-nowrap px-2.5 py-1 rounded-md text-center w-full"
+                style={{
+                  color: tier.color,
+                  backgroundColor: `${tier.color}20`,
+                }}
+                title={tier.tooltip}
+              >
+                {tier.label}
+              </span>
+            </div>
+          )
+        ) : (
+          // Critics mode: Show tier label + numeric score badge
+          <>
+            {tier && (
+              <span
+                className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
+                style={{ color: tier.color }}
+                title={tier.tooltip}
+              >
+                {tier.label}
+              </span>
+            )}
+            <ScoreBadge
+              score={score}
+              size="lg"
+              reviewCount={show.criticScore?.reviewCount}
+              status={show.status}
+            />
+          </>
         )}
-        <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} />
       </div>
     </Link>
   );
@@ -337,8 +414,11 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-2xl" aria-hidden="true">
-            🎭
+          <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 px-2" aria-hidden="true">
+            <div className="text-2xl mb-1">🎭</div>
+            {show.status === 'previews' && (
+              <div className="text-[10px] text-gray-500 text-center font-medium">Images<br/>coming soon</div>
+            )}
           </div>
         )}
         {/* Score overlay */}
@@ -398,12 +478,14 @@ function HomePageInner() {
   const statusParam = (searchParams.get('status') as StatusParam) || DEFAULT_STATUS;
   const sortParam = (searchParams.get('sort') as SortParam) || DEFAULT_SORT;
   const typeParam = (searchParams.get('type') as TypeParam) || DEFAULT_TYPE;
+  const scoreModeParam = (searchParams.get('scoreMode') as ScoreModeParam) || DEFAULT_SCORE_MODE;
   const searchQuery = searchParams.get('q') || '';
 
   // Validate params (use default if invalid)
   const status: StatusParam = ['now_playing', 'closed', 'upcoming', 'all'].includes(statusParam) ? statusParam : DEFAULT_STATUS;
-  const sort: SortParam = ['recent', 'score_desc', 'score_asc', 'alpha', 'closing_soon'].includes(sortParam) ? sortParam : DEFAULT_SORT;
+  const sort: SortParam = ['recent', 'score_desc', 'score_asc', 'alpha', 'closing_soon', 'audience_buzz'].includes(sortParam) ? sortParam : DEFAULT_SORT;
   const type: TypeParam = ['all', 'musical', 'play'].includes(typeParam) ? typeParam : DEFAULT_TYPE;
+  const scoreMode: ScoreModeParam = ['critics', 'audience'].includes(scoreModeParam) ? scoreModeParam : DEFAULT_SCORE_MODE;
 
   // Internal status filter value
   const statusFilter = statusParamToFilter[status];
@@ -421,6 +503,7 @@ function HomePageInner() {
           (key === 'status' && value === DEFAULT_STATUS) ||
           (key === 'sort' && value === DEFAULT_SORT) ||
           (key === 'type' && value === DEFAULT_TYPE) ||
+          (key === 'scoreMode' && value === DEFAULT_SCORE_MODE) ||
           (key === 'q' && value === '');
 
         if (isDefault) {
@@ -436,7 +519,7 @@ function HomePageInner() {
   }, [searchParams, pathname, router]);
 
   // Check if any non-default filters are active
-  const hasActiveFilters = status !== DEFAULT_STATUS || sort !== DEFAULT_SORT || type !== DEFAULT_TYPE || searchQuery !== '';
+  const hasActiveFilters = status !== DEFAULT_STATUS || sort !== DEFAULT_SORT || type !== DEFAULT_TYPE || scoreMode !== DEFAULT_SCORE_MODE || searchQuery !== '';
 
   // Clear all filters
   const clearAllFilters = useCallback(() => {
@@ -459,8 +542,7 @@ function HomePageInner() {
         const openDate = new Date(show.openingDate);
         return isMusical && show.status === 'open' && openDate >= twelveMonthsAgo && show.criticScore?.score;
       })
-      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
-      .slice(0, 10);
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows, twelveMonthsAgo]);
 
   const bestNewPlays = useMemo(() => {
@@ -469,15 +551,23 @@ function HomePageInner() {
         const openDate = new Date(show.openingDate);
         return show.type === 'play' && show.status === 'open' && openDate >= twelveMonthsAgo && show.criticScore?.score;
       })
-      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
-      .slice(0, 10);
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows, twelveMonthsAgo]);
 
   const upcomingShows = useMemo(() => getUpcomingShows(), []);
 
   const filteredAndSortedShows = useMemo(() => {
-    // Only include shows with reviews
-    let result = shows.filter(show => show.criticScore && show.criticScore.reviewCount > 0);
+    // Filter based on score mode
+    let result = shows.filter(show => {
+      if (scoreMode === 'audience') {
+        // Only show shows with audience buzz data
+        const buzz = getAudienceBuzz(show.id);
+        return buzz !== null;
+      } else {
+        // Only show shows with critic reviews
+        return show.criticScore && show.criticScore.reviewCount > 0;
+      }
+    });
 
     // Status filter
     if (statusFilter !== 'all') {
@@ -501,13 +591,39 @@ function HomePageInner() {
       );
     }
 
+    // Filter for closing soon - only show shows with closing dates
+    if (sort === 'closing_soon') {
+      result = result.filter(show => show.closingDate !== null && show.closingDate !== undefined);
+    }
+
     // Sort
     result.sort((a, b) => {
       switch (sort) {
-        case 'score_desc':
+        case 'score_desc': {
+          if (scoreMode === 'audience') {
+            const aBuzz = getAudienceBuzz(a.id);
+            const bBuzz = getAudienceBuzz(b.id);
+            return (bBuzz?.combinedScore ?? -1) - (aBuzz?.combinedScore ?? -1);
+          }
           return (b.criticScore?.score ?? -1) - (a.criticScore?.score ?? -1);
-        case 'score_asc':
+        }
+        case 'score_asc': {
+          if (scoreMode === 'audience') {
+            const aBuzz = getAudienceBuzz(a.id);
+            const bBuzz = getAudienceBuzz(b.id);
+            return (aBuzz?.combinedScore ?? -1) - (bBuzz?.combinedScore ?? -1);
+          }
           return (a.criticScore?.score ?? -1) - (b.criticScore?.score ?? -1);
+        }
+        case 'audience_buzz': {
+          // Sort by audience buzz combined score (highest first)
+          // NOTE: Numeric scores are used ONLY for sorting, never displayed to users
+          const aBuzz = getAudienceBuzz(a.id);
+          const bBuzz = getAudienceBuzz(b.id);
+          const aScore = aBuzz?.combinedScore ?? -1;
+          const bScore = bBuzz?.combinedScore ?? -1;
+          return bScore - aScore;
+        }
         case 'alpha':
           return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
         case 'closing_soon': {
@@ -524,19 +640,19 @@ function HomePageInner() {
     });
 
     return result;
-  }, [shows, statusFilter, type, searchQuery, sort]);
+  }, [shows, statusFilter, type, searchQuery, sort, scoreMode]);
 
   // Hide status chip when it would be redundant
   const shouldHideStatus = statusFilter !== 'all';
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      {/* Hero Header */}
-      <div className="mb-8 sm:mb-10">
-        <h1 className="text-5xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight">
+      {/* Hero - Large heading on desktop only */}
+      <div className="mb-6 sm:mb-8">
+        <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
           Broadway<span className="text-gradient">Scorecard</span>
         </h1>
-        <p className="text-gray-400 text-lg sm:text-xl">
+        <p className="text-gray-400 text-base sm:text-lg">
           Every show. Every review. One score.
         </p>
       </div>
@@ -558,28 +674,56 @@ function HomePageInner() {
         />
       </div>
 
-      {/* Type Filter Pills */}
-      <div className="flex items-center gap-2 mb-4" role="group" aria-label="Filter by type">
-        {(['all', 'musical', 'play'] as const).map((t) => (
-          <button
-            key={t}
-            onClick={() => updateParams({ type: t })}
-            aria-pressed={type === t}
-            className={`px-4 py-2.5 sm:py-2 rounded-full text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
-              type === t
-                ? 'bg-brand text-gray-900 shadow-glow-sm'
-                : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
-            }`}
-          >
-            {t === 'all' ? 'All' : t === 'musical' ? 'Musicals' : 'Plays'}
-          </button>
-        ))}
+      {/* Type Pills & Score Mode Toggle Row */}
+      <div className="flex items-center justify-between gap-4 mb-4">
+        {/* Type Filter Pills (Left) */}
+        <div className="flex items-center gap-2" role="group" aria-label="Filter by type">
+          {(['all', 'musical', 'play'] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => updateParams({ type: t })}
+              aria-pressed={type === t}
+              className={`px-4 py-2.5 sm:py-2 rounded-full text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
+                type === t
+                  ? 'bg-brand text-gray-900 shadow-glow-sm'
+                  : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
+              }`}
+            >
+              {t === 'all' ? 'All' : t === 'musical' ? 'Musicals' : 'Plays'}
+            </button>
+          ))}
+        </div>
+
+        {/* Score Mode Toggle (Right) - Segmented Control Style */}
+        <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score mode">
+          {(['critics', 'audience'] as const).map((mode) => (
+            <button
+              key={mode}
+              onClick={() => {
+                // When switching to audience mode, auto-set sort to highest
+                if (mode === 'audience') {
+                  updateParams({ scoreMode: mode, sort: 'score_desc' });
+                } else {
+                  updateParams({ scoreMode: mode });
+                }
+              }}
+              aria-pressed={scoreMode === mode}
+              className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-md text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
+                scoreMode === mode
+                  ? 'bg-white/10 text-white shadow-sm'
+                  : 'text-gray-500 hover:text-gray-300'
+              }`}
+            >
+              {mode === 'critics' ? 'Critics' : 'Audience'}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Status & Sort Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm">
         <div className="flex items-center gap-1 sm:gap-2 flex-wrap" role="group" aria-label="Filter by status">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">STATUS</span>
+          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">STATUS:</span>
           {(['now_playing', 'all', 'closed'] as const).map((s) => (
             <button
               key={s}
@@ -595,8 +739,8 @@ function HomePageInner() {
         </div>
 
         <div className="flex items-center gap-1 sm:gap-2 flex-wrap" role="group" aria-label="Sort shows">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT</span>
-          {(['recent', 'score_desc', 'alpha', 'closing_soon'] as const).map((s) => (
+          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
+          {(['recent', 'score_desc', 'audience_buzz', 'alpha', 'closing_soon'] as const).map((s) => (
             <button
               key={s}
               onClick={() => updateParams({ sort: s })}
@@ -605,7 +749,7 @@ function HomePageInner() {
                 sort === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
               }`}
             >
-              {s === 'recent' ? 'NEW' : s === 'score_desc' ? 'TOP' : s === 'alpha' ? 'A-Z' : 'CLOSING'}
+              {s === 'recent' ? 'NEWEST' : s === 'score_desc' ? 'HIGHEST' : s === 'audience_buzz' ? 'BUZZ' : s === 'alpha' ? 'A-Z' : 'CLOSING'}
             </button>
           ))}
         </div>
@@ -632,6 +776,12 @@ function HomePageInner() {
               onRemove={() => updateParams({ type: null })}
             />
           )}
+          {scoreMode !== DEFAULT_SCORE_MODE && (
+            <FilterChip
+              label={`Scores: ${scoreMode === 'critics' ? 'Critics' : 'Audience'}`}
+              onRemove={() => updateParams({ scoreMode: null })}
+            />
+          )}
           {searchQuery && (
             <FilterChip
               label={`Search: "${searchQuery}"`}
@@ -651,7 +801,7 @@ function HomePageInner() {
       <h2 className="sr-only">Broadway Shows</h2>
       <div className="space-y-3" role="list" aria-label="Broadway shows">
         {filteredAndSortedShows.map((show, index) => (
-          <ShowCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} />
+          <ShowCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
         ))}
       </div>
 
@@ -714,24 +864,24 @@ function HomePageInner() {
       {/* Featured Rows */}
       <div className="mt-12 pt-8 border-t border-white/5">
         <FeaturedRow
-          title="Best New Musicals of the Season"
+          title="Best Recent Musicals"
           shows={bestNewMusicals}
-          viewAllHref="/?type=musical&sort=score_desc"
+          viewAllHref="/browse/best-broadway-musicals"
         />
         <FeaturedRow
-          title="Best New Plays of the Season"
+          title="Best Recent Plays"
           shows={bestNewPlays}
-          viewAllHref="/?type=play&sort=score_desc"
+          viewAllHref="/browse/best-broadway-plays"
         />
         <FeaturedRow
           title="New & Upcoming"
           shows={upcomingShows}
-          viewAllHref="/?status=now_playing&sort=recent"
+          viewAllHref="/browse/upcoming-broadway-shows"
         />
       </div>
 
       {/* Total Review Count */}
-      <div className="mt-8 py-6 border-t border-white/5 text-center">
+      <div className="mt-6 pt-4 pb-2 border-t border-white/5 text-center">
         <p className="text-gray-400 text-sm">
           Aggregating <span className="text-white font-semibold">{getDataStats().totalReviews.toLocaleString()}</span> reviews and counting
         </p>
@@ -746,7 +896,7 @@ export default function HomePage() {
     <Suspense fallback={
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-8 sm:mb-10">
-          <h1 className="text-5xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight">
+          <h1 className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight">
             Broadway<span className="text-gradient">Scorecard</span>
           </h1>
           <p className="text-gray-400 text-lg sm:text-xl">

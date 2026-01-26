@@ -84,7 +84,7 @@ git push origin main
 
 ## Project Overview
 
-A website aggregating Broadway show reviews into composite "metascores" (like Metacritic for Broadway).
+A website aggregating Broadway show reviews into composite scores (independent Broadway-focused review aggregator).
 
 **Tech Stack:** Next.js 14, TypeScript, Tailwind CSS, static export
 
@@ -101,13 +101,14 @@ A website aggregating Broadway show reviews into composite "metascores" (like Me
 ### Shows Database
 - 27 currently open shows
 - 13 closed shows tracked
+- **Upcoming shows** (status: "previews") with opening dates and preview start dates
 - Full metadata: synopsis, cast, creative team, tags, age recommendations, theater addresses
 - Ticket links for all open shows (TodayTix + Telecharge/Ticketmaster)
 
 ## Scoring Methodology (V1 - Critics Only)
 
 ### Current Implementation
-- **Metascore = Critic Score** (simplified for V1)
+- **Composite Score = Critic Score** (simplified for V1)
 - Tier-weighted average of critic reviews
 
 ### Critic Score Calculation
@@ -129,14 +130,16 @@ Each review has:
 
 ```
 data/
-  shows.json              # Show metadata with full details
-  reviews.json            # Critic reviews with scores and original ratings
-  grosses.json            # Box office data (weekly + all-time stats)
-  new-shows-pending.json  # Auto-generated: new shows awaiting review data
-  show-score.json         # Show Score aggregator data (audience scores + critic reviews)
-  show-score-urls.json    # URL mapping for Show Score pages
-  audience.json           # (Future) Audience scores
-  buzz.json               # (Future) Social buzz data
+  shows.json                      # Show metadata with full details
+  reviews.json                    # Critic reviews with scores and original ratings
+  grosses.json                    # Box office data (weekly + all-time stats)
+  new-shows-pending.json          # Auto-generated: new shows awaiting review data
+  historical-shows-pending.json   # Auto-generated: historical shows awaiting metadata
+  show-score.json                 # Show Score aggregator data (audience scores + critic reviews)
+  show-score-urls.json            # URL mapping for Show Score pages
+  audience-buzz.json              # Audience Buzz data (Show Score, Mezzanine, Reddit)
+  audience.json                   # (Legacy/Future) Audience scores
+  buzz.json                       # (Legacy/Future) Social buzz data
   review-texts/           # Individual review JSON files by show
     {show-id}/            # e.g., hamilton-2015/, wicked-2003/
       {outlet}--{critic}.json  # e.g., nytimes--ben-brantley.json
@@ -155,12 +158,18 @@ data/
   id, title, slug, venue, openingDate, closingDate, status, type, runtime, intermissions,
   images: { hero, thumbnail, poster },
   synopsis, ageRecommendation, tags,
+  previewsStartDate,  // For upcoming shows (status: "previews")
   ticketLinks: [{ platform, url, priceFrom }],
   cast: [{ name, role }],
   creativeTeam: [{ name, role }],
   officialUrl, trailerUrl, theaterAddress
 }
 ```
+
+**Status values:**
+- `"open"` - Currently running (opening date has passed)
+- `"previews"` - Upcoming show (opening date is in future)
+- `"closed"` - Show has closed (closing date has passed)
 
 ### Grosses Schema (grosses.json)
 ```typescript
@@ -201,6 +210,49 @@ data/
 - ❌ ATP prev week/YoY: not provided
 - ✅ All-time stats: gross, performances, attendance (all shows)
 
+### Audience Buzz Schema (audience-buzz.json)
+```typescript
+{
+  _meta: { lastUpdated, sources, notes },
+  shows: {
+    [showId: string]: {
+      title: string,
+      designation: "Loving" | "Liking" | "Shrugging" | "Loathing",
+      // Thresholds: ❤️ Loving 88+, 👍 Liking 78-87, 🤷 Shrugging 68-77, 💩 Loathing 0-67
+      combinedScore: number,  // Weighted: SS/Mezz split by sample size (80%), Reddit fixed (20%)
+      sources: {
+        showScore?: { score: number, reviewCount: number },
+        mezzanine?: { score: number, reviewCount: number, starRating: number },
+        reddit?: {
+          score: number,
+          reviewCount: number,
+          lastUpdated: string,
+          sentiment: { enthusiastic, positive, mixed, negative },  // percentages
+          recommendations: number,
+          positiveRate: number  // enthusiastic + positive combined
+        }
+      }
+    }
+  }
+}
+```
+
+**Audience Buzz Weighting (Dynamic):**
+- **Reddit**: Fixed 20% when available (captures buzz/enthusiasm)
+- **Show Score & Mezzanine**: Split remaining 80% (or 100% if no Reddit) proportionally by sample size
+
+Example: Show Score has 3,000 reviews, Mezzanine has 1,000, Reddit available:
+- Show Score: (3000/4000) × 80% = 60%
+- Mezzanine: (1000/4000) × 80% = 20%
+- Reddit: 20%
+
+This gives more weight to sources with larger sample sizes.
+
+**Audience Buzz Sources:**
+- **Show Score**: Aggregates audience reviews with 0-100 scores (weekly automated)
+- **Mezzanine**: Aggregates audience reviews with star ratings (manual - iOS app only)
+- **Reddit**: Sentiment analysis from r/Broadway discussions (monthly automated)
+
 ## Key Files
 - `src/lib/engine.ts` - Scoring engine + TypeScript interfaces
 - `src/lib/data.ts` - Data loading layer (includes grosses data functions)
@@ -208,8 +260,11 @@ data/
 - `src/app/show/[slug]/page.tsx` - Individual show pages
 - `src/config/scoring.ts` - Scoring rules, tier weights, outlet mappings
 - `src/components/BoxOfficeStats.tsx` - Box office stats display component
+- `scripts/discover-new-shows.js` - Discovers new/upcoming shows from Broadway.org (runs daily)
+- `scripts/discover-historical-shows.js` - Discovers closed shows from past seasons (manual trigger)
 - `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses scraper (Playwright)
 - `scripts/scrape-alltime.ts` - BroadwayWorld all-time stats scraper (Playwright)
+- `scripts/scrape-reddit-sentiment.js` - Reddit r/Broadway sentiment scraper (ScrapingBee + Claude Opus)
 - `scripts/collect-review-texts-v2.js` - Enhanced review text scraper with stealth mode, ScrapingBee fallback, Archive.org fallback
 - `scripts/audit-scores.js` - Validates all review scores, flags wrong conversions, sentiment placeholders, duplicates
 - `scripts/fix-scores.js` - Automated fix for common scoring issues (wrong star/letter conversions)
@@ -220,8 +275,16 @@ data/
 All automation runs via GitHub Actions - no local commands needed.
 
 ### `.github/workflows/update-show-status.yml`
-- **Runs:** Every Monday at 6 AM UTC (or manually via GitHub UI)
-- **Does:** Updates show statuses, discovers new shows, auto-adds to database
+- **Runs:** Every day at 8 AM UTC (3 AM EST) (or manually via GitHub UI)
+- **Does:**
+  - Updates show statuses (open → closed when closing date passes)
+  - Transitions previews → open when opening date arrives
+  - Discovers new shows on Broadway.org
+  - Auto-adds new shows with status: "previews" if opening date is in future
+  - **Triggers for newly opened shows (previews → open):**
+    - `gather-reviews.yml` - Collects critic reviews
+    - `update-reddit-sentiment.yml` - Gets Reddit buzz data
+    - `update-show-score.yml` - Gets Show Score audience data
 
 ### `.github/workflows/gather-reviews.yml`
 - **Runs:** When new shows discovered (or manually triggered)
@@ -237,6 +300,96 @@ All automation runs via GitHub Actions - no local commands needed.
 - **Data source:** BroadwayWorld (grosses.cfm for weekly, grossescumulative.cfm for all-time)
 - **Note:** Data is typically released Monday/Tuesday after the week ends on Sunday
 - **Skips:** If data for the current week already exists (unless force=true)
+
+### `.github/workflows/discover-historical-shows.yml`
+- **Runs:** Manual trigger only (workflow_dispatch)
+- **Does:**
+  - Discovers closed Broadway shows from past seasons
+  - Works backwards through history (most recent first)
+  - Adds shows with status: "closed" and tag: "historical"
+  - Automatically triggers review gathering for all discovered shows
+- **Usage:** Specify seasons like `2024-2025,2023-2024` (one or two seasons at a time recommended)
+- **Strategy:** Start with most recent closed shows, gradually work back ~20 years
+- **Note:** Review gathering happens automatically after discovery (same process as new shows)
+
+### `.github/workflows/process-review-submission.yml`
+- **Runs:** When a GitHub issue is created/edited with the `review-submission` label
+- **Does:**
+  - Validates review submission using AI (Claude API)
+  - Checks: Valid URL, Broadway show, legitimate outlet, not duplicate
+  - If approved: Automatically scrapes review and adds to database
+  - Posts validation result as issue comment
+  - Closes issue when successfully processed
+
+### `.github/workflows/update-show-score.yml`
+- **Runs:**
+  - Weekly (Sundays at 12pm UTC) for all shows
+  - Automatically when shows transition previews → open (triggered by update-show-status.yml)
+  - Manually via GitHub UI
+- **Does:**
+  - Scrapes show-score.com for audience scores and review counts
+  - Updates `data/audience-buzz.json` with Show Score data
+  - Saves incrementally after each show (prevents data loss on timeout)
+- **Manual trigger options:**
+  - `show`: Process specific show ID
+  - `shows`: Comma-separated show IDs for batch processing
+  - `limit`: Limit number of shows to process (default: 50)
+- **Technical notes:**
+  - Uses ScrapingBee with JS rendering to fetch pages
+  - Extracts audience score from JSON-LD structured data
+  - Show Score weighted at 40% in combined Audience Buzz score
+  - 1-hour timeout with `if: always()` commit step
+- **Script:** `scripts/scrape-show-score-audience.js`
+
+### `.github/workflows/update-reddit-sentiment.yml`
+- **Runs:**
+  - Monthly (1st of each month at 10am UTC) for all shows
+  - Automatically when shows transition previews → open (triggered by update-show-status.yml)
+  - Manually via GitHub UI
+- **Does:**
+  - Scrapes r/Broadway for show discussions and reviews
+  - Uses Claude Opus for sentiment analysis (enthusiastic/positive/mixed/negative)
+  - Updates `data/audience-buzz.json` with Reddit scores
+  - Saves incrementally after each show (prevents data loss on timeout)
+- **Manual trigger options:**
+  - `show`: Process specific show ID (e.g., `maybe-happy-ending-2024`)
+  - `shows`: Comma-separated show IDs for batch processing (e.g., `hamilton-2015,wicked-2003`)
+  - `limit`: Limit number of shows to process (default: 50)
+- **Technical notes:**
+  - Uses ScrapingBee with premium proxy to access Reddit
+  - Generic titles (The Outsiders, Chicago, etc.) use Broadway-qualified searches to avoid movie/book noise
+  - Prioritizes Review-tagged posts for better signal
+  - Reddit score weighted at 20% in combined Audience Buzz score
+  - 2-hour timeout with `if: always()` commit step to save partial progress
+- **Script:** `scripts/scrape-reddit-sentiment.js`
+
+### `.github/workflows/process-review-submission.yml`
+- **User-facing page:** `/submit-review` (accessible from navigation)
+- **Issue template:** `.github/ISSUE_TEMPLATE/missing-review.yml`
+- **Validation script:** `scripts/validate-review-submission.js`
+
+### `.github/workflows/update-critic-consensus.yml`
+- **Runs:** Every Sunday at 2 AM UTC (9 PM ET Saturday) (or manually via GitHub UI)
+- **Does:**
+  - Generates concise "Critics' Take" editorial summaries for shows (1-2 short sentences, max 280 chars)
+  - Uses Claude API to analyze review texts and create summaries
+  - Only regenerates shows with 3+ new reviews since last update
+  - Updates `data/critic-consensus.json`
+- **Manual trigger:** Supports `force` flag to regenerate all shows
+- **Script:** `scripts/generate-critic-consensus.js`
+- **API:** Uses ANTHROPIC_API_KEY secret
+
+### `.github/workflows/process-feedback.yml`
+- **Runs:** Every Monday at 9 AM UTC (4 AM EST) (or manually via GitHub UI)
+- **Does:**
+  - Fetches feedback submissions from Formspree (last 7 days)
+  - AI categorizes feedback: Bug, Feature Request, Content Error, Praise, Other
+  - Assigns priority (High/Medium/Low) and recommended actions
+  - Creates GitHub issue with weekly digest
+- **User-facing page:** `/feedback` (accessible from navigation)
+- **Script:** `scripts/process-feedback.js`
+- **Setup guide:** `FORMSPREE-SETUP.md`
+- **Requires:** FORMSPREE_TOKEN secret (see setup guide)
 
 ## Deployment
 
@@ -267,6 +420,16 @@ All automation runs via GitHub Actions - no local commands needed.
 - Automated image fetching via GitHub Action
 - Weekly automated status updates
 - New show discovery automation
+- User-submitted review system with AI validation (automated approval & scraping)
+- **Site feedback system** with AI categorization
+  - Formspree-powered form at `/feedback`
+  - Weekly digest with automated categorization (Bug, Feature, Content Error, Praise, Other)
+  - Priority assignment and recommended actions via Claude API
+- **Critics' Take** - LLM-generated concise editorial summaries (1-2 short sentences, max 280 chars)
+  - Updates weekly if 3+ new reviews added
+  - Displayed on show pages between synopsis and reviews
+  - Script: `scripts/generate-critic-consensus.js`
+  - Data: `data/critic-consensus.json`
 
 ### Box Office Stats
 Show pages display box office data in two rows of stat cards:
@@ -289,24 +452,45 @@ Show pages display box office data in two rows of stat cards:
 - Red down arrow for negative changes
 - Only shows when comparison data is available
 
-### MCP Setup for Review Aggregators
+### Web Scraping Setup
 
-The review aggregator sites (DTLI, Show-Score, BroadwayWorld) block standard web requests. To access them, we use the ScrapingBee MCP server.
+**For GitHub Actions (automated scripts):**
 
-**Setup (one-time):**
-1. Get free API key (1,000 credits): https://www.scrapingbee.com/
-2. Edit `.mcp.json` in the project root - replace `YOUR_API_KEY_HERE` with your actual key
-3. **Start a NEW Claude Code session** (MCP servers only load at startup, not hot-reloaded)
+Scripts use the shared `scripts/lib/scraper.js` module with automatic fallback:
 
-**Usage:**
-Once configured, use the `scrapingbee_get_page_html` tool to fetch aggregator pages:
+1. **Bright Data** (primary) - Returns clean markdown
+2. **ScrapingBee** (fallback) - Returns HTML
+3. **Playwright** (last resort) - Browser automation
+
+**Environment Variables:**
+```bash
+BRIGHTDATA_TOKEN=3686bf13-cbde-4a91-b54a-f721a73c0ed0
+SCRAPINGBEE_API_KEY=TM5B2FK5G0BNFS2IL2T1OUGYJR7KP49UEYZ33KUUYWJ3NZC8ZJG6BMAXI83IQRD3017UTTNX5JISNDMW
 ```
-- didtheylikeit.com/shows/[show-name]/ → Get review count breakdown (thumbs up/flat/down)
-- show-score.com/broadway-shows/[show] → Get full critic review list with outlets
-- broadwayworld.com review roundups → Get additional outlets
+
+**Scripts that use scraping:**
+- `scripts/discover-new-shows.js` - Broadway.org show discovery
+- `scripts/check-closing-dates.js` - Closing date monitoring
+- `scripts/scrape-grosses.ts` - BroadwayWorld box office (uses Playwright directly)
+- `scripts/scrape-alltime.ts` - BroadwayWorld all-time stats (uses Playwright directly)
+
+**For Claude Code (MCP - local development):**
+
+MCP servers configured in `.mcp.json`:
+- **Bright Data MCP** - For all general scraping
+- **ScrapingBee MCP** - For aggregator sites (Note: Has 431 header errors, prefer Bright Data)
+- **Playwright MCP** - For complex JavaScript-heavy sites
+
+**Usage in Claude:**
+```
+Use mcp__brightdata__scrape_as_markdown tool to fetch pages
+Use Playwright MCP for BroadwayWorld and complex sites
 ```
 
-**Important:** Always cross-check our review count against these 3 aggregators before finalizing a show's reviews.
+**Important:** Always cross-check review counts against these 3 aggregators:
+- didtheylikeit.com/shows/[show-name]/
+- show-score.com/broadway-shows/[show]
+- broadwayworld.com review roundups
 
 ### Show Score Integration
 

@@ -1,12 +1,16 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding } from '@/lib/data';
+import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus, getLotteryRush, getShowCommercial } from '@/lib/data';
 import { generateShowSchema, generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
 import BoxOfficeStats from '@/components/BoxOfficeStats';
+import AwardsCard from '@/components/AwardsCard';
+import AudienceBuzzCard from '@/components/AudienceBuzzCard';
+import LotteryRushCard from '@/components/LotteryRushCard';
+import BizBuzzCard from '@/components/BizBuzzCard';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -68,12 +72,21 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-function ScoreBadge({ score, size = 'lg', reviewCount }: { score?: number | null; size?: 'md' | 'lg' | 'xl'; reviewCount?: number }) {
+function ScoreBadge({ score, size = 'lg', reviewCount, status }: { score?: number | null; size?: 'md' | 'lg' | 'xl'; reviewCount?: number; status?: string }) {
   const sizeClasses = {
     md: 'w-14 h-14 text-2xl rounded-xl',
     lg: 'w-20 h-20 text-4xl rounded-2xl',
     xl: 'w-24 h-24 text-5xl rounded-2xl',
   };
+
+  // Show TBD for previews shows
+  if (status === 'previews') {
+    return (
+      <div className={`${sizeClasses[size]} bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-extrabold`}>
+        TBD
+      </div>
+    );
+  }
 
   // Show TBD if fewer than 5 reviews
   if (reviewCount !== undefined && reviewCount < 5) {
@@ -286,20 +299,20 @@ function ScoreLabel({ score }: { score: number }) {
 function getSentimentLabel(score: number): { label: string; colorClass: string } {
   const roundedScore = Math.round(score);
   if (roundedScore >= 85) return { label: 'Must-See', colorClass: 'text-score-must-see' };
-  if (roundedScore >= 75) return { label: 'Great', colorClass: 'text-score-great' };
-  if (roundedScore >= 65) return { label: 'Good', colorClass: 'text-score-good' };
-  if (roundedScore >= 55) return { label: 'Tepid', colorClass: 'text-score-tepid' };
-  return { label: 'Skip', colorClass: 'text-score-skip' };
+  if (roundedScore >= 75) return { label: 'Recommended', colorClass: 'text-score-great' };
+  if (roundedScore >= 65) return { label: 'Worth Seeing', colorClass: 'text-score-good' };
+  if (roundedScore >= 55) return { label: 'Skippable', colorClass: 'text-score-tepid' };
+  return { label: 'Stay Away', colorClass: 'text-score-skip' };
 }
 
 interface ReviewForBreakdown {
-  reviewMetaScore: number;
+  reviewScore: number;
 }
 
 function ScoreBreakdownBar({ reviews }: { reviews: ReviewForBreakdown[] }) {
-  const positive = reviews.filter(r => r.reviewMetaScore >= 65).length;
-  const mixed = reviews.filter(r => r.reviewMetaScore >= 55 && r.reviewMetaScore < 65).length;
-  const negative = reviews.filter(r => r.reviewMetaScore < 55).length;
+  const positive = reviews.filter(r => r.reviewScore >= 65).length;
+  const mixed = reviews.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
+  const negative = reviews.filter(r => r.reviewScore < 55).length;
   const total = reviews.length;
 
   if (total === 0) return null;
@@ -356,12 +369,12 @@ function ScoreBreakdownBar({ reviews }: { reviews: ReviewForBreakdown[] }) {
   );
 }
 
-function CriticScoreSection({ score, reviewCount, reviews }: { score: number; reviewCount: number; reviews: ReviewForBreakdown[] }) {
+function CriticScoreSection({ score, reviewCount, reviews, status }: { score: number; reviewCount: number; reviews: ReviewForBreakdown[]; status?: string }) {
   const roundedScore = Math.round(score);
   const { label: sentimentLabel, colorClass } = getSentimentLabel(score);
 
-  // Show TBD if fewer than 5 reviews
-  const showTBD = reviewCount < 5;
+  // Show TBD for previews shows or if fewer than 5 reviews
+  const showTBD = status === 'previews' || reviewCount < 5;
 
   let scoreColorClass: string;
   if (roundedScore >= 85) {
@@ -446,6 +459,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const score = show.criticScore?.score;
   const grosses = getShowGrosses(params.slug);
   const weekEnding = getGrossesWeekEnding();
+  const awards = getShowAwards(show.id);
+  const audienceBuzz = getAudienceBuzz(show.id);
+  const consensus = getCriticConsensus(show.id);
+  const lotteryRush = getLotteryRush(show.id);
+  const commercial = getShowCommercial(show.slug);
 
   return (
     <>
@@ -464,136 +482,237 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           All Shows
         </Link>
 
-        {/* Header with Poster Card */}
-        <div className="flex gap-5 sm:gap-6 mb-5">
-          {/* Poster Card - fetchpriority high for LCP optimization */}
-          <div className="flex-shrink-0 w-28 sm:w-36 lg:w-44">
-            <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
-              {show.images?.poster ? (
-                <img
-                  src={getOptimizedImageUrl(show.images.poster, 'poster')}
-                  alt={show.title}
-                  width={176}
-                  height={264}
-                  decoding="async"
-                  fetchPriority="high"
-                  className="w-full h-full object-cover"
-                />
-              ) : show.images?.thumbnail ? (
-                <img
-                  src={getOptimizedImageUrl(show.images.thumbnail, 'poster')}
-                  alt={show.title}
-                  width={176}
-                  height={264}
-                  decoding="async"
-                  fetchPriority="high"
-                  className="w-full h-full object-cover"
-                />
-              ) : show.images?.hero ? (
-                <img
-                  src={getOptimizedImageUrl(show.images.hero, 'poster')}
-                  alt={show.title}
-                  width={176}
-                  height={264}
-                  decoding="async"
-                  fetchPriority="high"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                  <span className="text-4xl text-gray-600">🎭</span>
-                </div>
+        {/* Metacritic-style Header: Poster + Title/Score integrated */}
+        <div className="card p-4 sm:p-6 mb-6">
+          <div className="flex gap-4 sm:gap-6">
+            {/* Poster Card - fetchpriority high for LCP optimization */}
+            <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40">
+              <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
+                {show.images?.poster ? (
+                  <img
+                    src={getOptimizedImageUrl(show.images.poster, 'poster')}
+                    alt={show.title}
+                    width={176}
+                    height={264}
+                    decoding="async"
+                    fetchPriority="high"
+                    className="w-full h-full object-cover"
+                  />
+                ) : show.images?.thumbnail ? (
+                  <img
+                    src={getOptimizedImageUrl(show.images.thumbnail, 'poster')}
+                    alt={show.title}
+                    width={176}
+                    height={264}
+                    decoding="async"
+                    fetchPriority="high"
+                    className="w-full h-full object-cover"
+                  />
+                ) : show.images?.hero ? (
+                  <img
+                    src={getOptimizedImageUrl(show.images.hero, 'poster')}
+                    alt={show.title}
+                    width={176}
+                    height={264}
+                    decoding="async"
+                    fetchPriority="high"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                    <span className="text-4xl text-gray-600">🎭</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Right side: Title, Meta, Score Box, and Breakdown */}
+            <div className="flex-1 min-w-0">
+              {/* Pills row */}
+              <div className="flex flex-wrap items-center gap-1.5 mb-2">
+                <FormatPill type={show.type} />
+                <ProductionPill isRevival={show.type === 'revival'} />
+                {show.limitedRun && <LimitedRunBadge />}
+                <StatusBadge status={show.status} />
+              </div>
+
+              {/* Title */}
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight mb-2">
+                {show.title}
+              </h1>
+
+              {/* Meta line */}
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-gray-400 text-xs sm:text-sm mb-4">
+                <span className="text-gray-300">{show.venue}</span>
+                {show.runtime && (
+                  <>
+                    <span className="text-gray-600">•</span>
+                    <span>{show.runtime}</span>
+                  </>
+                )}
+                <span className="text-gray-600">•</span>
+                <span>Opened {formatDate(show.openingDate)}</span>
+              </div>
+
+              {/* Score Box + Sentiment + Review Count - Metacritic style */}
+              {(() => {
+                const reviewCount = show.criticScore?.reviewCount || 0;
+                const showTBD = show.status === 'previews' || reviewCount < 5;
+                const roundedScore = score ? Math.round(score) : null;
+                const sentiment = score ? getSentimentLabel(score) : null;
+
+                // Calculate breakdown
+                const reviews = show.criticScore?.reviews || [];
+                const positive = reviews.filter(r => r.reviewScore >= 65).length;
+                const mixed = reviews.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
+                const negative = reviews.filter(r => r.reviewScore < 55).length;
+                const total = reviews.length;
+                const positivePct = total > 0 ? Math.round((positive / total) * 100) : 0;
+                const mixedPct = total > 0 ? Math.round((mixed / total) * 100) : 0;
+                const negativePct = total > 0 ? Math.round((negative / total) * 100) : 0;
+
+                let scoreColorClass = 'bg-surface-overlay text-gray-400 border border-white/10';
+                if (!showTBD && roundedScore !== null) {
+                  if (roundedScore >= 85) scoreColorClass = 'score-must-see';
+                  else if (roundedScore >= 75) scoreColorClass = 'score-great';
+                  else if (roundedScore >= 65) scoreColorClass = 'score-good';
+                  else if (roundedScore >= 55) scoreColorClass = 'score-tepid';
+                  else scoreColorClass = 'score-skip';
+                }
+
+                return (
+                  <div className="space-y-3">
+                    {/* Score row */}
+                    <div className="flex items-center gap-3 sm:gap-4">
+                      {/* Score box */}
+                      <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}>
+                        <span className="text-2xl sm:text-4xl font-extrabold">
+                          {showTBD ? 'TBD' : roundedScore}
+                        </span>
+                      </div>
+                      {/* Sentiment and review count */}
+                      <div>
+                        {showTBD ? (
+                          <div className="text-base sm:text-lg font-bold text-gray-400">Awaiting Reviews</div>
+                        ) : sentiment && (
+                          <div className={`text-base sm:text-lg font-bold ${sentiment.colorClass}`}>{sentiment.label}</div>
+                        )}
+                        <a
+                          href="#critic-reviews"
+                          className="text-xs sm:text-sm text-gray-500 hover:text-brand transition-colors"
+                        >
+                          Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Breakdown bar */}
+                    {total > 0 && (
+                      <div className="space-y-1.5">
+                        <div className="h-2.5 rounded-full overflow-hidden flex bg-surface-overlay">
+                          {positivePct > 0 && <div className="bg-score-great h-full" style={{ width: `${positivePct}%` }} />}
+                          {mixedPct > 0 && <div className="bg-score-tepid h-full" style={{ width: `${mixedPct}%` }} />}
+                          {negativePct > 0 && <div className="bg-score-skip h-full" style={{ width: `${negativePct}%` }} />}
+                        </div>
+                        <div className="flex items-center gap-3 text-[10px] sm:text-xs">
+                          {positive > 0 && (
+                            <div className="flex items-center gap-1">
+                              <div className="w-2.5 h-2.5 rounded-sm bg-score-great" />
+                              <span className="text-gray-400">{positive} Positive</span>
+                            </div>
+                          )}
+                          {mixed > 0 && (
+                            <div className="flex items-center gap-1">
+                              <div className="w-2.5 h-2.5 rounded-sm bg-score-tepid" />
+                              <span className="text-gray-400">{mixed} Mixed</span>
+                            </div>
+                          )}
+                          {negative > 0 && (
+                            <div className="flex items-center gap-1">
+                              <div className="w-2.5 h-2.5 rounded-sm bg-score-skip" />
+                              <span className="text-gray-400">{negative} Negative</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
+
+          {/* Critics' Take - inline below the poster/score row */}
+          {consensus ? (
+            <div className="mt-4 pt-4 border-t border-white/5">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Critics&apos; Take</p>
+              <p className="text-gray-300 text-sm leading-relaxed">{consensus.text}</p>
+            </div>
+          ) : show.synopsis ? (
+            <p className="text-gray-400 text-sm leading-relaxed mt-4 pt-4 border-t border-white/5">
+              {show.synopsis}
+            </p>
+          ) : null}
+
+          {/* Links row: Official Site, Tickets, Trailer, Lottery/Rush */}
+          {(show.officialUrl || show.trailerUrl || (show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed') || (lotteryRush && show.status !== 'closed')) && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {/* Official Website */}
+              {show.officialUrl && (
+                <a
+                  href={show.officialUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
+                >
+                  <GlobeIcon />
+                  Official Site
+                </a>
+              )}
+
+              {/* Ticket Links */}
+              {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && show.ticketLinks.map((link, i) => (
+                <a
+                  key={i}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
+                >
+                  <TicketIcon />
+                  {link.platform}
+                </a>
+              ))}
+
+              {/* Trailer */}
+              {show.trailerUrl && (
+                <a
+                  href={show.trailerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
+                >
+                  <PlayIcon />
+                  Trailer
+                </a>
+              )}
+
+              {/* Lottery/Rush Quick Link */}
+              {lotteryRush && show.status !== 'closed' && (
+                <a
+                  href="#discount-tickets"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 hover:text-emerald-300 text-xs font-medium transition-colors border border-emerald-500/30"
+                >
+                  <TicketIcon />
+                  {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
+                </a>
               )}
             </div>
-          </div>
-
-          {/* Title & Meta */}
-          <div className="flex-1 min-w-0 pt-1 sm:pt-2">
-            <div className="flex flex-wrap items-center gap-1.5 mb-2">
-              <FormatPill type={show.type} />
-              <ProductionPill isRevival={show.type === 'revival'} />
-              {show.limitedRun && <LimitedRunBadge />}
-              <StatusBadge status={show.status} />
-            </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              {show.title}
-            </h1>
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-gray-400 text-sm">
-              <span className="text-gray-300">{show.venue}</span>
-              <span className="text-gray-600">•</span>
-              <span>{show.runtime}</span>
-              <span className="text-gray-600">•</span>
-              <span>Opened {formatDate(show.openingDate)}</span>
-            </div>
-            {/* Synopsis inline with header for better space usage */}
-            {show.synopsis && (
-              <p className="text-gray-400 text-sm sm:text-base leading-relaxed mt-3 line-clamp-3 sm:line-clamp-none">
-                {show.synopsis}
-              </p>
-            )}
-          </div>
+          )}
         </div>
 
-        {/* Critic Score Section */}
-        {score && show.criticScore && (
-          <CriticScoreSection
-            score={score}
-            reviewCount={show.criticScore.reviewCount}
-            reviews={show.criticScore.reviews}
-          />
-        )}
-
-        {/* Action Links - Official Site, Tickets, Trailer */}
-        {(show.officialUrl || show.trailerUrl || (show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed')) && (
-          <div className="flex flex-wrap gap-3 mb-8">
-            {/* Official Website */}
-            {show.officialUrl && (
-              <a
-                href={show.officialUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
-              >
-                <GlobeIcon />
-                Official Site
-              </a>
-            )}
-
-            {/* Ticket Links */}
-            {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && show.ticketLinks.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
-              >
-                <TicketIcon />
-                {link.platform}
-                {link.priceFrom && (
-                  <span className="text-gray-500 text-sm">from ${link.priceFrom}</span>
-                )}
-              </a>
-            ))}
-
-            {/* Trailer */}
-            {show.trailerUrl && (
-              <a
-                href={show.trailerUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
-              >
-                <PlayIcon />
-                Trailer
-              </a>
-            )}
-          </div>
-        )}
-
-
         {/* Critic Reviews */}
-        {show.criticScore && show.criticScore.reviews.length > 0 && (
+        {show.criticScore && show.criticScore.reviews.length > 0 ? (
           <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
@@ -602,10 +721,61 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
             <ReviewsList reviews={show.criticScore.reviews} initialCount={5} />
           </div>
+        ) : show.status === 'previews' && (
+          <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
+            <h2 className="text-lg font-bold text-white mb-3">Critic Reviews</h2>
+            <p className="text-gray-400 text-sm">
+              Reviews coming after opening night: <span className="text-white font-medium">{formatDate(show.openingDate)}</span>
+            </p>
+          </div>
         )}
 
+        {/* Audience Buzz Section - below Critic Reviews */}
+        {audienceBuzz ? (
+          <AudienceBuzzCard
+            buzz={audienceBuzz}
+            showScoreUrl={audienceBuzz.sources.showScore ? `https://www.show-score.com/broadway-shows/${show.slug}` : undefined}
+          />
+        ) : show.status === 'previews' && (
+          <section className="card p-5 sm:p-6 mb-6">
+            <h2 className="text-lg font-bold text-white mb-3">Audience Buzz</h2>
+            <p className="text-gray-400 text-sm">Audience data will be added once the show opens and reviews come in.</p>
+          </section>
+        )}
+
+        {/* Awards - above Box Office */}
+        <AwardsCard showId={show.id} awards={awards} />
+
         {/* Box Office Stats */}
-        {grosses && <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />}
+        {grosses ? (
+          <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
+        ) : show.status === 'previews' && (
+          <section className="card p-5 sm:p-6 mb-6">
+            <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
+            <p className="text-gray-400 text-sm">Box office data starts one week after previews begin.</p>
+          </section>
+        )}
+
+        {/* Commercial Performance / Biz Buzz */}
+        {commercial ? (
+          <BizBuzzCard commercial={commercial} showTitle={show.title} />
+        ) : show.status === 'previews' && (
+          <section className="card p-5 sm:p-6 mb-6">
+            <h2 className="text-lg font-bold text-white mb-3">Commercial Performance</h2>
+            <p className="text-gray-400 text-sm">Financial data not available yet.</p>
+          </section>
+        )}
+
+        {/* Lottery/Rush Tickets - below Commercial Performance, only show after previews start */}
+        {lotteryRush && (() => {
+          // Don't show until previews have started
+          if (show.previewsStartDate) {
+            const previewsStart = new Date(show.previewsStartDate);
+            const today = new Date();
+            if (today < previewsStart) return null;
+          }
+          return <LotteryRushCard data={lotteryRush} showStatus={show.status} />;
+        })()}
 
         {/* Cast & Creative */}
         {(show.cast || show.creativeTeam) && (
@@ -644,9 +814,15 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Details</h2>
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
             <div>
-              <dt className="text-gray-500">Opened</dt>
+              <dt className="text-gray-500">{show.status === 'previews' ? 'Opens' : 'Opened'}</dt>
               <dd className="text-white mt-0.5">{formatDate(show.openingDate)}</dd>
             </div>
+            {show.previewsStartDate && show.status === 'previews' && (
+              <div>
+                <dt className="text-gray-500">Previews Start</dt>
+                <dd className="text-white mt-0.5">{formatDate(show.previewsStartDate)}</dd>
+              </div>
+            )}
             {show.closingDate && (
               <div>
                 <dt className="text-gray-500">{show.status === 'closed' ? 'Closed' : 'Closes'}</dt>
@@ -687,6 +863,12 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 )}
               </dd>
             </div>
+            {show.synopsis && (
+              <div className="sm:col-span-2 pt-2 mt-2 border-t border-white/5">
+                <dt className="text-gray-500">Synopsis</dt>
+                <dd className="text-gray-300 mt-1 leading-relaxed">{show.synopsis}</dd>
+              </div>
+            )}
           </dl>
         </div>
 

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway show metadata - source of truth for all shows",
-    "lastUpdated": "2026-01-25",
+    "lastUpdated": "2026-01-26",
     "source": "Manual + Playbill/IBDB cross-reference"
   },
   "shows": [
@@ -28,7 +28,8 @@
         "comedy",
         "romantic",
         "new",
-        "lottery"
+        "lottery",
+        "rush"
       ],
       "officialUrl": "https://twostrangersmusical.com",
       "trailerUrl": "https://www.youtube.com/watch?v=two-strangers-trailer",
@@ -93,7 +94,8 @@
         "romantic",
         "tony-winner",
         "new",
-        "lottery"
+        "lottery",
+        "rush"
       ],
       "officialUrl": "https://maybehappyending.com",
       "theaterAddress": "111 W 44th St, New York, NY 10036",
@@ -154,7 +156,8 @@
         "musical",
         "drama",
         "tony-winner",
-        "lottery"
+        "lottery",
+        "rush"
       ],
       "officialUrl": "https://outsidersmusical.com",
       "theaterAddress": "242 W 45th St, New York, NY 10036",
@@ -206,14 +209,15 @@
         "musical",
         "drama",
         "jukebox",
-        "lottery"
+        "lottery",
+        "rush"
       ],
       "officialUrl": "https://hellskitchen.com",
       "theaterAddress": "225 W 44th St, New York, NY 10036",
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/hells-kitchen",
+          "url": "https://www.todaytix.com/nyc/shows/37579-hells-kitchen-broadway",
           "priceFrom": 79
         },
         {
@@ -260,7 +264,8 @@
         "comedy",
         "historical",
         "new",
-        "lottery"
+        "lottery",
+        "rush"
       ],
       "officialUrl": "https://operationbroadway.com",
       "theaterAddress": "252 W 45th St, New York, NY 10036",
@@ -307,14 +312,16 @@
       "tags": [
         "play",
         "comedy",
-        "lgbtq"
+        "lgbtq",
+        "lottery",
+        "rush"
       ],
       "officialUrl": "https://ohmaryplay.com",
       "theaterAddress": "149 W 45th St, New York, NY 10036",
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/oh-mary",
+          "url": "https://www.todaytix.com/nyc/shows/37743-oh-mary",
           "priceFrom": 49
         },
         {
@@ -362,7 +369,9 @@
         "musical",
         "drama",
         "classic",
-        "romantic"
+        "romantic",
+        "lottery",
+        "rush"
       ],
       "officialUrl": "https://broadwaygatsby.com",
       "theaterAddress": "1681 Broadway, New York, NY 10019",
@@ -426,14 +435,15 @@
       "tags": [
         "play",
         "thriller",
-        "new"
+        "new",
+        "rush"
       ],
       "officialUrl": "https://bugonbroadway.com",
       "theaterAddress": "261 W 47th St, New York, NY 10036",
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/bug-broadway",
+          "url": "https://www.todaytix.com/nyc/shows/45086-bug-on-broadway",
           "priceFrom": 59
         },
         {
@@ -491,8 +501,7 @@
         "fantasy",
         "classic",
         "iconic",
-        "lottery",
-        "rush"
+        "lottery"
       ],
       "officialUrl": "https://wickedthemusical.com",
       "theaterAddress": "222 W 51st St, New York, NY 10019",
@@ -922,7 +931,8 @@
         "historical",
         "tony-winner",
         "lottery",
-        "short"
+        "short",
+        "rush"
       ],
       "officialUrl": "https://sixonbroadway.com",
       "theaterAddress": "256 W 47th St, New York, NY 10036",
@@ -969,7 +979,8 @@
         "musical",
         "comedy",
         "tony-winner",
-        "lottery"
+        "lottery",
+        "rush"
       ],
       "officialUrl": "https://bookofmormonbroadway.com",
       "theaterAddress": "230 W 49th St, New York, NY 10019",
@@ -1017,7 +1028,8 @@
         "jukebox",
         "comedy",
         "lottery",
-        "accessible"
+        "accessible",
+        "rush"
       ],
       "officialUrl": "https://andjulietbroadway.com",
       "theaterAddress": "124 W 43rd St, New York, NY 10036",
@@ -1054,6 +1066,7 @@
       "openingDate": "2025-11-13",
       "closingDate": "2026-02-08",
       "status": "open",
+      "limitedRun": true,
       "type": "play",
       "runtime": "1h 40m",
       "intermissions": 0,
@@ -1078,8 +1091,10 @@
         "play",
         "drama",
         "classic",
-        "new"
-      ]
+        "new",
+        "rush"
+      ],
+      "officialUrl": "https://oedipustheplay.com/"
     },
     {
       "id": "harry-potter-2021",
@@ -1135,9 +1150,10 @@
       "slug": "mamma-mia",
       "venue": "Winter Garden Theatre",
       "openingDate": "2025-08-14",
-      "closingDate": null,
+      "closingDate": "2026-02-01",
       "status": "open",
-      "type": "musical",
+      "limitedRun": true,
+      "type": "revival",
       "runtime": "2h 30m",
       "intermissions": 1,
       "synopsis": "ABBA's hits tell the story of a young woman's search for her birth father on a Greek island paradise. A sunny, funny tale of love, laughter and friendship.",
@@ -1149,7 +1165,9 @@
         "romantic",
         "family",
         "lottery",
-        "accessible"
+        "accessible",
+        "rush",
+        "revival"
       ],
       "officialUrl": "https://mammamiabroadway.com",
       "theaterAddress": "1634 Broadway, New York, NY 10019",
@@ -1359,8 +1377,9 @@
       "slug": "marjorie-prime",
       "venue": "Helen Hayes Theater",
       "openingDate": "2025-12-08",
-      "closingDate": null,
+      "closingDate": "2026-02-15",
       "status": "open",
+      "limitedRun": true,
       "type": "play",
       "runtime": "1h 30m",
       "intermissions": 0,
@@ -1375,7 +1394,8 @@
         "play",
         "drama",
         "new",
-        "short"
+        "short",
+        "rush"
       ],
       "officialUrl": "https://marjorieprimebroadway.com",
       "theaterAddress": "240 W 44th St, New York, NY 10036",
@@ -1426,6 +1446,7 @@
       "openingDate": "2025-10-28",
       "closingDate": "2026-02-01",
       "status": "open",
+      "limitedRun": true,
       "type": "play",
       "runtime": "2h 30m",
       "intermissions": 1,
@@ -1439,7 +1460,9 @@
       "tags": [
         "play",
         "drama",
-        "new"
+        "new",
+        "lottery",
+        "rush"
       ],
       "theaterAddress": "256 W 47th St, New York, NY 10036",
       "ticketLinks": [
@@ -1453,7 +1476,8 @@
         }
       ],
       "cast": [],
-      "creativeTeam": []
+      "creativeTeam": [],
+      "officialUrl": "https://liberationbway.com/"
     },
     {
       "id": "boop-2025",
@@ -1505,8 +1529,8 @@
       "slug": "queen-of-versailles",
       "venue": "Barrymore Theatre",
       "openingDate": "2025-11-09",
-      "closingDate": null,
-      "status": "open",
+      "closingDate": "2025-12-21",
+      "status": "closed",
       "type": "musical",
       "runtime": "2h 30m",
       "intermissions": 1,
@@ -1540,7 +1564,8 @@
           "role": "Jackie Siegel"
         }
       ],
-      "creativeTeam": []
+      "creativeTeam": [],
+      "officialUrl": "https://queenofversaillesmusical.com/"
     },
     {
       "id": "death-becomes-her-2024",
@@ -1565,7 +1590,8 @@
         "comedy",
         "new",
         "tony-winner",
-        "lottery"
+        "lottery",
+        "rush"
       ],
       "theaterAddress": "205 W 46th St, New York, NY 10036",
       "ticketLinks": [
@@ -1592,7 +1618,8 @@
           "role": "Ernest Menville"
         }
       ],
-      "creativeTeam": []
+      "creativeTeam": [],
+      "officialUrl": "https://deathbecomesher.com/"
     },
     {
       "id": "buena-vista-social-club-2025",
@@ -1615,7 +1642,9 @@
       "tags": [
         "musical",
         "new",
-        "tony-winner"
+        "tony-winner",
+        "lottery",
+        "rush"
       ],
       "theaterAddress": "236 W 45th St, New York, NY 10036",
       "ticketLinks": [
@@ -1629,7 +1658,8 @@
         }
       ],
       "cast": [],
-      "creativeTeam": []
+      "creativeTeam": [],
+      "officialUrl": "https://buenavistamusical.com/"
     },
     {
       "id": "ragtime-2025",
@@ -1637,9 +1667,10 @@
       "slug": "ragtime",
       "venue": "Majestic Theatre",
       "openingDate": "2025-12-08",
-      "closingDate": null,
+      "closingDate": "2026-06-14",
       "status": "open",
-      "type": "musical",
+      "limitedRun": true,
+      "type": "revival",
       "runtime": "2h 50m",
       "intermissions": 1,
       "images": {
@@ -1653,7 +1684,8 @@
         "musical",
         "revival",
         "classic",
-        "drama"
+        "drama",
+        "lottery"
       ],
       "theaterAddress": "245 W 44th St, New York, NY 10036",
       "ticketLinks": [
@@ -1680,7 +1712,8 @@
           "name": "Lynn Ahrens",
           "role": "Lyrics"
         }
-      ]
+      ],
+      "officialUrl": "https://www.lct.org/shows/ragtime/"
     },
     {
       "id": "chess-2025",
@@ -1690,7 +1723,7 @@
       "openingDate": "2025-12-11",
       "closingDate": null,
       "status": "open",
-      "type": "musical",
+      "type": "revival",
       "runtime": "2h 30m",
       "intermissions": 1,
       "images": {
@@ -1702,9 +1735,11 @@
       "ageRecommendation": "Ages 12+",
       "tags": [
         "musical",
-        "new",
         "drama",
-        "romantic"
+        "romantic",
+        "lottery",
+        "rush",
+        "revival"
       ],
       "theaterAddress": "249 W 45th St, New York, NY 10036",
       "ticketLinks": [
@@ -1731,7 +1766,8 @@
           "name": "Tim Rice",
           "role": "Lyrics"
         }
-      ]
+      ],
+      "officialUrl": "https://chessbroadway.com/"
     },
     {
       "id": "just-in-time-2025",
@@ -1755,7 +1791,8 @@
         "musical",
         "biography",
         "jukebox",
-        "new"
+        "new",
+        "rush"
       ],
       "theaterAddress": "245 W 52nd St, New York, NY 10019",
       "ticketLinks": [
@@ -1769,7 +1806,8 @@
         }
       ],
       "cast": [],
-      "creativeTeam": []
+      "creativeTeam": [],
+      "officialUrl": "https://justintimebroadway.com/"
     },
     {
       "id": "the-roommate-2024",
@@ -1853,6 +1891,574 @@
       "theaterAddress": "1634 Broadway, New York, NY 10019",
       "cast": [],
       "creativeTeam": []
+    },
+    {
+      "id": "every-brilliant-thing-2026",
+      "title": "Every Brilliant Thing",
+      "slug": "every-brilliant-thing",
+      "venue": "Hudson Theatre",
+      "openingDate": "2026-02-21",
+      "closingDate": "2026-05-24",
+      "status": "previews",
+      "type": "play",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/3EZpl4xnZ9RstLpWmj4Jij/987265cf251a2c988c34ddd789adb5e9/EBT-113117-023955-October2025-TodayTix-1440x580__3_.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/1lYzDvnsC5JUlnkprxSzGO/fc74850858325e4613b5bdc6f05834d3/every_poster.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/1lYzDvnsC5JUlnkprxSzGO/fc74850858325e4613b5bdc6f05834d3/every_poster.png?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "play"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/45675-every-brilliant-thing",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [],
+      "officialUrl": null,
+      "trailerUrl": null,
+      "theaterAddress": "145 W 44th St, New York, NY 10036"
+    },
+    {
+      "id": "death-of-a-salesman-2026",
+      "title": "Death of a Salesman",
+      "slug": "death-of-a-salesman",
+      "venue": "Winter Garden Theatre",
+      "openingDate": "2026-03-06",
+      "closingDate": "2026-06-14",
+      "status": "previews",
+      "type": "revival",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/4HB1QZjeOA4pxg7TYFg3Je/2b36eb010c68d8f0a40bb945a354a7d8/DOAS_Todaytix_1600x1200_ProductionImage-Placeholder.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/6iTvRawlwgZ4S8uVdp5WOj/88cbb839fd10c29fdab4ebadf75f352c/Poster_480_x_720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/6iTvRawlwgZ4S8uVdp5WOj/88cbb839fd10c29fdab4ebadf75f352c/Poster_480_x_720.png?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "play",
+        "revival"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/45916-death-of-a-salesman",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [],
+      "officialUrl": null,
+      "trailerUrl": null,
+      "theaterAddress": "1634 Broadway, New York, NY 10019"
+    },
+    {
+      "id": "beaches-2026",
+      "title": "Beaches, A New Musical",
+      "slug": "beaches",
+      "venue": "Majestic Theatre",
+      "openingDate": "2026-03-27",
+      "closingDate": "2026-09-06",
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/4UBWrjFXrbLXeMrrmJDp5L/0269236225a37a798ab6f095d059bf88/Header__1_.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/3QKikGjmKldqCztxBYZLy5/b510e9928a376eec0c9ca97e1457b6b7/Poster_480_x_720__1_.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/3QKikGjmKldqCztxBYZLy5/b510e9928a376eec0c9ca97e1457b6b7/Poster_480_x_720__1_.png?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming",
+        "musical",
+        "new"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/46037-beaches",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [],
+      "officialUrl": null,
+      "trailerUrl": null,
+      "theaterAddress": "245 W 44th St, New York, NY 10036"
+    },
+    {
+      "id": "the-balusters-2026",
+      "title": "The Balusters",
+      "slug": "the-balusters",
+      "venue": "Samuel J. Friedman Theatre",
+      "openingDate": "2026-03-31",
+      "closingDate": "2026-05-24",
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/7dRanUyCvjU0lZohKFlNvR/cdb12cf338d7e56a2704e2bf23a8d9b2/P00132009_BLST_TodayTixAssets_TempArt_1600x1200_1.15.26_FINAL.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/4LpacXldTv4MaO7g4qPtoP/81f859c60f1c35fe6fe3851cac656053/P00132009_BLST_TodayTixAssets_TempArt_480x720_1.15.26_FINAL.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/4LpacXldTv4MaO7g4qPtoP/81f859c60f1c35fe6fe3851cac656053/P00132009_BLST_TodayTixAssets_TempArt_480x720_1.15.26_FINAL.jpg?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/44389-the-balusters-on-broadway",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": []
+    },
+    {
+      "id": "becky-shaw-2026",
+      "title": "Becky Shaw",
+      "slug": "becky-shaw",
+      "venue": "Hayes Theater",
+      "openingDate": "2026-03-18",
+      "closingDate": "2026-06-14",
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/6i49fAF5cAvRnco3dNrBq8/dd708821bc943ef3926c230fcfcea15a/TT-Becky-1600x1200.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/3pETvb7jDnKsJfWUjIUI7U/f39d0978e4fe72cf76a9191a9e563f74/TT-BeckyShaw-480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/3pETvb7jDnKsJfWUjIUI7U/f39d0978e4fe72cf76a9191a9e563f74/TT-BeckyShaw-480x720.jpg?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/44510-becky-shaw",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": []
+    },
+    {
+      "id": "cats-the-jellicle-ball-2026",
+      "title": "CATS: The Jellicle Ball",
+      "slug": "cats-the-jellicle-ball",
+      "venue": "Broadhurst Theatre",
+      "openingDate": "2026-03-18",
+      "closingDate": null,
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/2Q24FCrAUOPlxpHSVkoL1r/726528ed1856e15bfb0a40b62ad9663a/CATS_Jan_Todaytix_1600x1200_ProductionImage-Placeholder.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/fDDhklXmDmUruVjCx5LlX/d8f227e61bfb6619250376a0253ee760/CATS_Jan_Todaytix_480x720_PosterKeyArt.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/fDDhklXmDmUruVjCx5LlX/d8f227e61bfb6619250376a0253ee760/CATS_Jan_Todaytix_480x720_PosterKeyArt.png?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/39754-cats",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": []
+    },
+    {
+      "id": "dog-day-afternoon-2026",
+      "title": "Dog Day Afternoon",
+      "slug": "dog-day-afternoon",
+      "venue": "August Wilson Theatre",
+      "openingDate": "2026-03-10",
+      "closingDate": "2026-06-28",
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/54aS3S7U0SdC1mxKTZOo39/8338bfc27a18936e815cb263f9bb7356/DDA-TodayTix-1600x1200.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/5AuUJ8lhwqFyO3lyb3iTh4/1c658dc89d05b9cfa9b8c6e5c5ab43ef/DDA_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/5AuUJ8lhwqFyO3lyb3iTh4/1c658dc89d05b9cfa9b8c6e5c5ab43ef/DDA_TodayTix_480x720.png?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/44515-dog-day-afternoon",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": []
+    },
+    {
+      "id": "fallen-angels-2026",
+      "title": "Fallen Angels",
+      "slug": "fallen-angels",
+      "venue": "Todd Haimes Theatre",
+      "openingDate": "2026-03-27",
+      "closingDate": "2026-06-07",
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/53p8DROzcMsbUHyeNfNSdU/3530e6a864a440b3d7c295a881acf001/TodayTix_1600x1200_ProductionImages_Slide1.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/5Y53zhHtYi015OOYcveY7f/9ce327f5694907697cc0d98592abd8fa/TodayTix_480x720_Title.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/5Y53zhHtYi015OOYcveY7f/9ce327f5694907697cc0d98592abd8fa/TodayTix_480x720_Title.png?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/43904-fallen-angels-on-broadway",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": []
+    },
+    {
+      "id": "the-fear-of-13-2026",
+      "title": "The Fear of 13",
+      "slug": "the-fear-of-13",
+      "venue": "James Earl Jones Theatre",
+      "openingDate": "2026-03-19",
+      "closingDate": null,
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/24K5dUJumBu0qOXefM4hEM/58187fe3afd33d3bb245a72502d0f655/FO13-112899-024506-ThirdPartyAssets-TodayTix-1600x1200.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/6aqRFiMGlGMpLa1S2EpvMt/b18ca1ab0cd0cb4921a9beefc1343eaf/FO13-112899-024506-ThirdPartyAssets-TodayTix-480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/6aqRFiMGlGMpLa1S2EpvMt/b18ca1ab0cd0cb4921a9beefc1343eaf/FO13-112899-024506-ThirdPartyAssets-TodayTix-480x720.jpg?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/46121-the-fear-of-13-on-broadway",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": []
+    },
+    {
+      "id": "giant-2026",
+      "title": "Giant",
+      "slug": "giant",
+      "venue": "Music Box Theatre",
+      "openingDate": "2026-03-11",
+      "closingDate": "2026-06-28",
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/u98q6laWvPMgVHsqqBFVz/c3e4c9eaeb826e30cb82f7a1ad9021a0/Header.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/1OPdBa7lB9TbutJyQS940I/4e2ab5c25e41804b1defefb639f8b690/Poster_480_x_720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/1OPdBa7lB9TbutJyQS940I/4e2ab5c25e41804b1defefb639f8b690/Poster_480_x_720.png?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/45280-giant-on-broadway",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": []
+    },
+    {
+      "id": "joe-turners-come-and-gone-2026",
+      "title": "Joe Turner's Come and Gone",
+      "slug": "joe-turners-come-and-gone",
+      "venue": "Ethel Barrymore Theatre",
+      "openingDate": "2026-03-30",
+      "closingDate": "2026-07-12",
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/6uLUTB4YsVzYo8JdffUW6M/3f72d9ef272ca05aa8131e543c6db54d/JTCAG-TodayTixAssets-1600x1200-v2__1_.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/TwdSIm1DZxTfjtiFUEhxf/46bc15c116ddfed63ab0015318ac193b/JTCAG-ThirdPartyAssets-TodayTix-480x720__2_.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/TwdSIm1DZxTfjtiFUEhxf/46bc15c116ddfed63ab0015318ac193b/JTCAG-ThirdPartyAssets-TodayTix-480x720__2_.jpg?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/44747-joe-turners-come-and-gone-on-broadway",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": []
+    },
+    {
+      "id": "the-lost-boys-2026",
+      "title": "The Lost Boys",
+      "slug": "the-lost-boys",
+      "venue": "Palace Theatre",
+      "openingDate": "2026-03-27",
+      "closingDate": null,
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/4fhXsVtCYLiC2ZQEDqim9M/2ff288b0d2e73092975a3b30fa89e397/TLB_015_PA_TICKETING_ASSETS_OCT_2025_TODAYTIX_V1_1600x1200.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/5y6V3Nz4GFblLDae1wuiva/493d71bbae735462e41e7c39f1754342/TLB_015_PA_TICKETING_ASSETS_OCT_2025_TODAYTIX_V1_480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/5y6V3Nz4GFblLDae1wuiva/493d71bbae735462e41e7c39f1754342/TLB_015_PA_TICKETING_ASSETS_OCT_2025_TODAYTIX_V1_480x720.jpg?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/43812-the-lost-boys-on-broadway",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": []
+    },
+    {
+      "id": "proof-2026",
+      "title": "Proof",
+      "slug": "proof",
+      "venue": "Booth Theatre",
+      "openingDate": "2026-03-31",
+      "closingDate": "2026-07-19",
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/45003-proof-tickets",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": []
+    },
+    {
+      "id": "the-rocky-horror-show-2026",
+      "title": "The Rocky Horror Show",
+      "slug": "the-rocky-horror-show",
+      "venue": "Studio 54",
+      "openingDate": "2026-03-26",
+      "closingDate": "2026-06-21",
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/kkVGiSarx1DUPj5McZl8n/bc15dcc67b0a2ed2152d4e9f82bffe8c/TodayTix_1600x1200_Header.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/2a8KLdNJ3ISROztrDy8NWs/89ee0868bb9bb7ce70503088fbf174eb/TodayTix_480x720_Poster.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/2a8KLdNJ3ISROztrDy8NWs/89ee0868bb9bb7ce70503088fbf174eb/TodayTix_480x720_Poster.png?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/43905-the-rocky-horror-show-on-broadway",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": []
+    },
+    {
+      "id": "schmigadoon-2026",
+      "title": "Schmigadoon!",
+      "slug": "schmigadoon",
+      "venue": "Nederlander Theatre",
+      "openingDate": "2026-04-04",
+      "closingDate": "2026-09-06",
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/6xFG4FzxnBGfGvXv1BO5QJ/bd0c6d9d5cc76a5d70272d491acbeb3b/1600x1200.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/6xFG4FzxnBGfGvXv1BO5QJ/bd0c6d9d5cc76a5d70272d491acbeb3b/1600x1200.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/6xFG4FzxnBGfGvXv1BO5QJ/bd0c6d9d5cc76a5d70272d491acbeb3b/1600x1200.jpg?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/45429-schmigadoon-on-broadway",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": []
+    },
+    {
+      "id": "titanique-2026",
+      "title": "Titanique",
+      "slug": "titanique",
+      "venue": "St. James Theatre",
+      "openingDate": "2026-03-26",
+      "closingDate": "2026-07-12",
+      "status": "previews",
+      "type": "musical",
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/56kf944axB0w4Yrcx4Amq0/553b3571ec841e3ccbfa2b2542ce6f78/1600x1200_HEADER_IMAGE_TODAY_TIX_015602.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/6nwxIWxaSaOqah3uAEW80g/f45c09fc343f56eb2fdc4ff4eeafb97f/480x720_POSTER_TITANIQUE_TODAY_TIX_015602.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/6nwxIWxaSaOqah3uAEW80g/f45c09fc343f56eb2fdc4ff4eeafb97f/480x720_POSTER_TITANIQUE_TODAY_TIX_015602.jpg?fm=webp&q=90"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "tags": [
+        "upcoming"
+      ],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/25241-titanique",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": []
+    },
+    {
+      "id": "all-out-2025",
+      "title": "All Out: Comedy About Ambition",
+      "slug": "all-out",
+      "venue": "Nederlander Theatre",
+      "openingDate": "2026-01-25",
+      "closingDate": "2026-03-08",
+      "previewsStartDate": "2025-12-12",
+      "status": "open",
+      "type": "play",
+      "runtime": "1h 25m",
+      "intermissions": 0,
+      "images": {
+        "poster": "https://images.ctfassets.net/6pezt69ih962/37h1sYXVD969kMBfqXHAsn/d3984da102bee1b38ca824a0d95e6082/ALLO-0036W-FullGroupKeyArtTicketingSitesAssets-Poster-480x720_v1.jpg?fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/37h1sYXVD969kMBfqXHAsn/d3984da102bee1b38ca824a0d95e6082/ALLO-0036W-FullGroupKeyArtTicketingSitesAssets-Poster-480x720_v1.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "hero": "https://images.ctfassets.net/6pezt69ih962/5nR0xKRU276rLoLSf94B1A/eabd9a6fa3ff792b4139690c3b199b65/ALLO-0036W-FullGroupKeyArtTicketingSitesAssets-TodayTix-BroadwayDirect-ProductionPhoto-Or-Keyart-1600x1200_v1.jpg?fm=webp&q=90"
+      },
+      "synopsis": "From the writer of last year's runaway hit, All In: Comedy About Love, comes All Out: Comedy About Ambition. Here's how it works: a group of the funniest people on earth gather on Broadway (four at a time) to read hilarious stories by Simon Rich about ego, envy, greed, and basically just New Yorkers in general.",
+      "ageRecommendation": null,
+      "tags": [
+        "play",
+        "comedy",
+        "lottery",
+        "rush"
+      ],
+      "officialUrl": "https://www.alloutbroadway.com",
+      "theaterAddress": "208 West 41st Street, New York, NY 10036",
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/43819-all-out-comedy-about-ambition-on-broadway",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [
+        {
+          "name": "Simon Rich",
+          "role": "Writer"
+        },
+        {
+          "name": "Alex Timbers",
+          "role": "Director"
+        }
+      ]
     }
   ]
 }

@@ -3,16 +3,16 @@
 import { useState, useEffect, useRef } from 'react';
 
 interface AnimatedScoreDistributionProps {
-  reviews: { reviewMetaScore: number }[];
+  reviews: { reviewScore: number }[];
 }
 
 export default function AnimatedScoreDistribution({ reviews }: AnimatedScoreDistributionProps) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const high = reviews.filter(r => r.reviewMetaScore >= 65).length;
-  const medium = reviews.filter(r => r.reviewMetaScore >= 55 && r.reviewMetaScore < 65).length;
-  const low = reviews.filter(r => r.reviewMetaScore < 55).length;
+  const high = reviews.filter(r => r.reviewScore >= 65).length;
+  const medium = reviews.filter(r => r.reviewScore >= 55 && r.reviewScore < 65).length;
+  const low = reviews.filter(r => r.reviewScore < 55).length;
   const total = reviews.length;
 
   const highPct = Math.round((high / total) * 100);

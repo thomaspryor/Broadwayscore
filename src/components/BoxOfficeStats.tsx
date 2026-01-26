@@ -135,7 +135,7 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
 
   return (
     <div className="card p-5 sm:p-6 mb-8">
-      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Box Office</h2>
+      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Box Office Scorecard</h2>
 
       {/* This Week Row */}
       {hasThisWeek && grosses.thisWeek && (
