@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "What a brilliant piece of must-see Broadway. It’s Chekhovian, babe.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What a brilliant piece of must-see Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's Chekhovian, babe",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "What a brilliant piece of must-see Broadway.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The combination of 'brilliant,' 'must-see,' and comparison to Chekhov indicates unqualified enthusiasm and strong recommendation despite the brief format. | GPT-4o-mini: The review expresses unqualified enthusiasm and describes the show as a 'must-see', indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:50:02.857Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

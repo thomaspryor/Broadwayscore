@@ -10,10 +10,66 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "technical marvel but with soulless songs that are more obligatory than earned",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 43,
   "source": "bww-roundup",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-pan",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 28,
+      "performances": null,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "technical marvel",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "soulless songs that are more obligatory than earned",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "soulless songs",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite praising the technical production values, the critic's harsh criticism of the songs as 'soulless' and 'obligatory' suggests significant creative failures that undermine the overall experience. | GPT-4o-mini: The review highlights technical achievements but strongly criticizes the quality of the songs, leading to a negative overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:03:47.185Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

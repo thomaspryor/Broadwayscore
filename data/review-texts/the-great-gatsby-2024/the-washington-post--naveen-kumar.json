@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "III, offer grandly scaled Art Deco instead. Linda Cho’s costumes are Vegas shiny for the party people and elegant for the monied types. The production wears excess on its sleeveless flapper dresses. Naveen Kumar, The Washington Post: This revisionary attempt to turn “The Great Gatsby” into a clown car of passionate entanglements skids off the road when calamity is meant to strike. The second-act twists play out with the frenzy of a nighttime soap by Aaron Spelling, without any of the campy self-awareness. There is no ghastly reckoning with the follies of hedonism, just a rapid succession of abrupt ends. Chris Jones, The New York Daily News: That said, this new musical, as penned by Kait Kerrigan with music composed by Jason Howland and lyrics by Nathan Dylan, makes you feel very little, except when Howland’s lush melodies are reaching their climax. Even then, the feelings that flow are more admiration for Howland’s craft than the kind of emotion that flows back into an embrace of stor",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 37,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
@@ -17,5 +17,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 60,
+      "performances": null,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes you feel very little, except when Howland's lush melodies are reaching their climax",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "skids off the road when calamity is meant to strike",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "without any of the campy self-awareness",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critics find the musical emotionally hollow with major structural problems in the second act, though they acknowledge some craft in the music and production design. | GPT-4o-mini: The review expresses significant disappointment with the adaptation and emotional impact, leading to a strong negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:53:51.359Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

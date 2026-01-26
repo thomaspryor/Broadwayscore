@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Death Becomes Her has been reborn on Broadway as a rousing, raucously entertaining hit, the kind of big, box-ticking blockbuster that one can see sticking around for a long time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "rousing, raucously entertaining hit",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "big, box-ticking blockbuster",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sticking around for a long time",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language ('rousing', 'raucously entertaining hit', 'blockbuster') with prediction of commercial success indicates clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the production, indicating it is a must-see blockbuster.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:14:24.861Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

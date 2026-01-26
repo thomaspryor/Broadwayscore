@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "The show is so strong and enjoyable...Gray dances off with it.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 82,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 86,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is so strong and enjoyable",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Gray dances off with it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Gray dances off with it.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Clear positive language about both the show overall and a standout performance, but extremely brief excerpt limits confidence in full assessment. | GPT-4o-mini: The review expresses strong enjoyment and highlights a standout performance, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:19:12.625Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

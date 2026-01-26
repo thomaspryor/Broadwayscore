@@ -11,7 +11,7 @@
   "bwwExcerpt": "By the time of his death, at 37, in 1973, the show’s final descent into lugubrious eulogy — “He finished six years of grammar school in four years and got a scholarship medal besides,” Nina says — has swamped its early buoyancy with platitudes. Yet Groff is still swimming, right to the end. Dismayed as I was to endure so much else, I have to admit he’s giving one of Broadway’s best performances. So who’s sorry now?",
   "showScoreExcerpt": "\"Dismayed as I was to endure so much else, I have to admit heâs giving one of Broadwayâs best performances.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.nytimes.com/2025/04/26/theater/just-in-time-review-darin-groff.html",
@@ -25,5 +25,63 @@
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/just-in-time-2025/nytimes--jesse-green_2026-01-25.html",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 77.5,
+      "high": 100
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 83,
+      "performances": 92,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Just in Time is a helluva good time at the theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you're so well diverted and amused that you may not even notice when the ride you're on takes a few unconventional turns",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's finally about the joy of performance, and the escapism it provides not just for an audience but for a performer as well",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Feldman delivers consistent praise throughout, calling it 'a helluva good time' with particular acclaim for Groff's performance, Timbers' direction, and the show's smart theatrical conceits, with only minor reservations about Darin's limited song catalog. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the joy of the performance and the star quality of Jonathan Groff, indicating a strong recommendation to see the show. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:32:31.581Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 95,
+    "scoreDelta": 13,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (89 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

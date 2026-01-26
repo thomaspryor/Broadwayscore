@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"There's the magic of it all, depicted in visual effects in which even the most jaded audience members, burned out from years of comic-book movies' eye-popping CGI, will almost certainly find wonder...Thankfully, 'Cursed Child' is a loving depiction of the rest of Potter's world, a greatest-hits tour of beloved characters, settings and wizarding wonders, largely told through the eyes of two new characters who more than deserve their place in the Rowling canon.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 84,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "will almost certainly find wonder",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "loving depiction of the rest of Potter's world",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "more than deserve their place in the Rowling canon",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistent praise for the visual effects, story, and characters with strong positive language like 'magic,' 'wonder,' and 'loving depiction' indicates clear recommendation despite being an excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the visual effects and overall depiction of the Harry Potter world, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:29:09.666Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

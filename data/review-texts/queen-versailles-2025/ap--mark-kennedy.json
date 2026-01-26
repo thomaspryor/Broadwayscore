@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Chenoweth, who was born to be in a spangly dress and center stage on Broadway, is perfect for the role, an always-welcome jolt of in-on-it theatricality, but is let down by dialogue that’s not as funny as it could be and with a character too unfocused. Despite an out-of-town tryout in Boston, “The Queen of Versailles” still needs the stage filled with construction workers hammering in yellow vests. It’s not quite completed.     Brian",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-QUEEN-OF-VERSAILLES-Opens-on-Broadway-20251109",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-negative",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 79,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chenoweth, who was born to be in a spangly dress and center stage on Broadway, is perfect for the role",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "let down by dialogue that's not as funny as it could be and with a character too unfocused",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's not quite completed",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: While praising Chenoweth's performance, the critic clearly states the show 'is not quite completed' with unfunny dialogue and unfocused character development, indicating more problems than strengths. | GPT-4o-mini: The review highlights strong performances but points out significant weaknesses in the script and overall production, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:44:22.663Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

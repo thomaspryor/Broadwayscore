@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Entering the newly renovated Lyric Theater is an immersive magical experience...The play is an exhilarating escape into a fantasy tale of time travel filled with friendship, family, courage and magic. The ensemble cast was exceptional. The convincing special effects were haunting and surreal; the staging smart and effective. I was transported to a make believe world that came alive. I felt a kinship to the characters and transfixed immersed into this supernatural universe.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 89,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 93,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "an exhilarating escape into a fantasy tale",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I was transported to a make believe world that came alive",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The ensemble cast was exceptional",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently enthusiastic language with strong emotional engagement ('exhilarating', 'exceptional', 'transported') and praise for all production elements indicates a clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and highlights exceptional performances and immersive experience, indicating a must-see show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:26:12.001Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,7 +10,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "Flying DeLorean deserves the waves of applause; score gets by",
   "originalScore": "4 stars",
-  "assignedScore": 68,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "textStatus": "partial",
   "textWordCount": 215,
@@ -20,5 +20,61 @@
     "Word count too low: 215 (min: 300)"
   ],
   "textQuality": "partial",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Joshua Henry gives what’s destined to be a Tony-winning performance in this much-needed revival",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Lesley Manville and Mark Strong have disturbingly good chemistry as theater’s most famous twice-related couple",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Laurie Metcalf and Micah Stock star in Samuel D. Hunter's acclaimed drama",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review highlights strong performances and chemistry among the cast, indicating a positive recommendation overall despite the lack of specific details about the script or direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:02:35.534Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

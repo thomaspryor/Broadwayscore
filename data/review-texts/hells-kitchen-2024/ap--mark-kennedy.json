@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "o old cliches. It’s a show that’s true to its city. And at the end, when the cast sings the lyric “concrete jungle where dreams are made of,” the crowd walks out into Times Square fully believing it. Mark Kennedy, Associated Press : Outside this apartment building in the Hell’s Kitchen neighborhood — we get a clue the time is the early 1990s — are “roaches and the rats/heroin in the cracks.” But no criminality is shown — at worst some illegal krumping? — and the cops don’t actually brutalize those citizens deemed undesirable. They sort of just shoo them away. This is a sanitized New York for the M&M store tourists, despite the lyrics in Keys’ songs. Jonathan Mandell, New York Theater: If Dixon and Bean give swoon-worthy interpretations of some of Keys’ catchiest melodies, Kecia Lewis is on fire in Keys’ most moving and intense tune, “Perfect Way To Die.” The song is about a woman whose son has been shot dead. Nobody is shot dead in “Hell’s Kitchen.” There’s no indication that Miss Liza",
   "originalScore": null,
-  "assignedScore": 55,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HELLS-KITCHEN-Opens-On-Broadway-20240421",
@@ -17,5 +17,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-mixed-negative",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 35,
+      "music": 75,
+      "performances": 75,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a sanitized New York for the M&M store tourists, despite the lyrics in Keys' songs",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "If Dixon and Bean give swoon-worthy interpretations of some of Keys' catchiest melodies, Kecia Lewis is on fire",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "no criminality is shown — at worst some illegal krumping? — and the cops don't actually brutalize those citizens deemed undesirable",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Review praises performances and music but strongly critiques the show's sanitized portrayal of urban realities, suggesting disconnect between content and authenticity. | GPT-4o-mini: The review highlights strong performances but criticizes the sanitized portrayal of New York, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:30:28.581Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

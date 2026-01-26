@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"One perfect Broadway play...One of the most extraordinary stage presentations I've ever seen...Ultimately beyond the gorgeous stagecraft, the intriguing plot twists and the beautiful storytelling, this is a tale about fathers and sons...about coming to understand who you are and what you really want to be...I was so thoroughly engrossed in the play's world that I never expected I would have to leave...'Cursed Child' has a precision and clarity in its stagecraft that is rarely matched.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 95,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 93,
+      "music": null,
+      "performances": null,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "One perfect Broadway play",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "One of the most extraordinary stage presentations I've ever seen",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I was so thoroughly engrossed in the play's world that I never expected I would have to leave",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language throughout, calling it 'perfect,' 'extraordinary,' and praising the 'precision and clarity' of stagecraft with complete immersion in the experience. | GPT-4o-mini: The review expresses unqualified enthusiasm and praise for the production, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:27:10.984Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

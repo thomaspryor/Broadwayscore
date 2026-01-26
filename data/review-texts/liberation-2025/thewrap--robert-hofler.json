@@ -10,11 +10,67 @@
   "dtliExcerpt": "When Bess Wohl’s “Liberation” opened Off Broadway all the way back in February, it would have been ridiculous to grace it with best-of superlatives. Now that “Liberation” has opened on Broadway this Tuesday at the James Earl Jones Theatre, it’s entirely apt to write that it’s the year’s best play. There are only a few other new plays to open in 2025 and I’ve seen most of them in previews. Bank on it: “Liberation” remains the best.",
   "bwwExcerpt": "When Bess Wohl’s “Liberation” opened Off Broadway all the way back in February, it would have been ridiculous to grace it with best-of superlatives. Now that “Liberation” has opened on Broadway this Tuesday at the James Earl Jones Theatre, it’s entirely apt to write that it’s the year’s best play. There are only a few other new plays to open in 2025 and I’ve seen most of them in previews. Bank on it: “Liberation” remains the best.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's entirely apt to write that it's the year's best play",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Bank on it: 'Liberation' remains the best",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it would have been ridiculous to grace it with best-of superlatives",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critic explicitly calls it 'the year's best play' and doubles down with 'Bank on it' - clear superlative language indicating unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm and declares the play as the best of the year, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:34:36.386Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,7 +10,7 @@
   "bwwExcerpt": "But the additional-and perhaps the most powerful-enchantment of this particular trip to the theater is actually on our side of the footlights. Looking around me, I saw Hogwarts house colors, black robes, and wands filling the seats. When Jamie Parker made his first entrance as Harry Potter, and when Noma Dumezweni and Paul Thornley first appeared as Hermione and Ron, the already crackling energy in the dark auditorium erupted. (Later, I heard a woman actually scream in delight when a silhouette resembling that of Severus Snape began to glide forward, back to us, on the set's big central turntable.) This isn't normal entrance applause: The audience is cheering not for celebrities but for characters. Not that the actors aren't doing cheer-worthy work. On the contrary, they're turning in effective, endearing performances, from Parker's stubborn, struggling, still emotionally stunted Harry, to Thornley's dad-jokey Ron, to Dumezweni's restrained (but comically adept) Hermione and Poppy Miller's patient, not-to-be-messed-with Ginny.",
   "showScoreExcerpt": "\"Jam-packed with breakneck plot twists, charming performances, mind-bending spectacle, and, perhaps more surprisingly, moments of theatrical whimsy that feel, amidst the high-tech sorcery, delightfully simple...It effectively weaves serious themes with bouncy adventure narrative, it’s heartfelt and sometimes a touch hokey...You’re pretty much willing to forgive its shortcomings as it sweeps you along in a rush of rip-roaring, good-natured imagination.\"",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "textStatus": "complete",
@@ -23,5 +23,61 @@
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 88,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Cursed Child is a remarkable and fitting addition to the Potter canon",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "extravagantly entertaining",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you're pretty much willing to forgive its shortcomings as it sweeps you along in a rush of rip-roaring, good-natured imagination",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic calls it 'remarkable and fitting,' praises the performances and spectacular staging extensively, acknowledges minor flaws but frames them as easily forgivable given the overall entertainment value and theatrical magic. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its engaging storytelling, impressive performances, and theatrical spectacle, indicating a must-see experience for fans.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:29:34.613Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

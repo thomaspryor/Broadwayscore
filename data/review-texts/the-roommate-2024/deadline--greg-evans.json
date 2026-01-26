@@ -10,11 +10,67 @@
   "dtliExcerpt": "And those aren’t the only flaws in this awkwardly paced, abruptly mood-shifting tale of two very different women on the verge of old age looking to outrun their pasts and stake new claims on the future. Not even the ever-reliable director Jack O’Brien can get a firm grasp on this squiggly story, but at least he doesn’t have to make the effort alone: Who wouldn’t want Farrow and LuPone on their team?",
   "showScoreExcerpt": "\"The Roommate has Farrow and LuPone to lean into, and their appeal is not small.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "Down",
   "bwwExcerpt": "If The Roommate would have us believe that this Grace & Frankie could become Bonnie & Clyde in the blink of an eye, it at least does so with enough good humor and easy charm to keep our eye-rolling in relative check.",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 40.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": 74,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "those aren't the only flaws in this awkwardly paced, abruptly mood-shifting tale",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Not even the ever-reliable director Jack O'Brien can get a firm grasp on this squiggly story",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Who wouldn't want Farrow and LuPone on their team?",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic identifies multiple structural flaws and directorial struggles but clearly appreciates the star performers, creating a mixed recommendation that leans slightly positive due to the casting appeal. | GPT-4o-mini: The review highlights significant flaws in pacing and direction while only offering mild praise for the performances, leading to a negative overall recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:58:23.160Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

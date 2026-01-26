@@ -9,11 +9,57 @@
   "isFullReview": false,
   "showScoreExcerpt": "...Oh, Mary! delivers a solid 80 minutes of gut-busting laughs",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 79,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/oh-mary-broadway",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "delivers a solid 80 minutes of gut-busting laughs",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for comedy effectiveness ('gut-busting laughs') with 'solid' suggesting reliable entertainment value, indicating clear positive recommendation despite brief excerpt. | GPT-4o-mini: The review indicates strong enjoyment with a clear positive sentiment about the laughs provided by the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:41:43.320Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

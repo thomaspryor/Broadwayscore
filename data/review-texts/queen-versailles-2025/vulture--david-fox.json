@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "There is a two-hour-and-40-minute luxury-car crash happening at the St. James Theatre. If I were the litigious type, I’d be trying to figure out how to sue for whiplash. Instead, here I am staggering homewards, still trying to twist my head back into position after The Queen of Versailles. If you’re morbidly curious about the experience, you could try for tickets to the new musical by Stephen Schwartz and Lindsey Ferrentino, with Kristin Chenoweth glittering relentlessly at its center. Or you could save the money and have someone slap you back and forth with a large salmon.",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 23,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-QUEEN-OF-VERSAILLES-Opens-on-Broadway-20251109",
   "textStatus": "missing",
@@ -19,5 +19,61 @@
   "scoreConfidence": "medium",
   "dtliExcerpt": "There is a two-hour-and-40-minute luxury-car crash happening at the St. James Theatre. If I were the litigious type, I’d be trying to figure out how to sue for whiplash. Instead, here I am staggering homewards, still trying to twist my head back into position after The Queen of Versailles. If you’re morbidly curious about the experience, you could try for tickets to the new musical by Stephen Schwartz and Lindsey Ferrentino, with Kristin Chenoweth glittering relentlessly at its center. Or you could save the money and have someone slap you back and forth with a large salmon.",
   "dtliThumb": "Down",
-  "showScoreExcerpt": "\"The Queen of Versailles swerves and overcorrects like a drunk driver. Tonally, itâs all over the map...It is the confused, contorted product of a set of absolutely incompatible impulses\""
+  "showScoreExcerpt": "\"The Queen of Versailles swerves and overcorrects like a drunk driver. Tonally, itâs all over the map...It is the confused, contorted product of a set of absolutely incompatible impulses\"",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": 40,
+      "direction": 15
+    },
+    "keyPhrases": [
+      {
+        "quote": "luxury-car crash happening at the St. James Theatre",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "you could save the money and have someone slap you back and forth with a large salmon",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "swerves and overcorrects like a drunk driver",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses vivid metaphors comparing the show to a car crash and drunk driving, explicitly suggests audiences could skip it and get slapped with a salmon instead, indicating a clear pan with some acknowledgment of Chenoweth's star power. | GPT-4o-mini: The review is overwhelmingly negative, describing the show as a chaotic and painful experience, leading to a strong recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:45:55.362Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

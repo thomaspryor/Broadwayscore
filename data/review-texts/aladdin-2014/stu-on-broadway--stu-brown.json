@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Aladdin, while charming and fun, lacks the enchantment and savviness of Disney's most notable theatrical productions.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 65,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "charming and fun",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "lacks the enchantment and savviness of Disney's most notable theatrical productions",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "lacks the enchantment and savviness",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review gives qualified praise ('charming and fun') but then delivers a significant criticism comparing it unfavorably to Disney's better theatrical work, suggesting it's decent but disappointing relative to expectations. | GPT-4o-mini: The review indicates a generally positive experience but highlights significant shortcomings compared to other Disney productions, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:59:15.862Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

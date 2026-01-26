@@ -7,9 +7,65 @@
   "publishDate": "November 21, 2024",
   "fullText": "No matter how many improvements it has made, it is stuck with the foundational problems of the film. But the chance to see two theatrical masterminds go at it for a few hours is sufficient justification for the effort.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "No matter how many improvements it has made, it is stuck with the foundational problems of the film. But the chance to see two theatrical masterminds go at it for a few hours is sufficient justification for the effort.",
-  "showScoreExcerpt": "âThe chance to see two theatrical masterminds go at it for a few hours is sufficient justification for the effort.â"
+  "showScoreExcerpt": "âThe chance to see two theatrical masterminds go at it for a few hours is sufficient justification for the effort.â",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "stuck with the foundational problems of the film",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the chance to see two theatrical masterminds go at it for a few hours is sufficient justification for the effort",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the chance to see two theatrical masterminds go at it",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging fundamental flaws in the source material, the critic finds the star performances compelling enough to warrant attendance, landing in mixed-positive territory. | GPT-4o-mini: The review acknowledges significant issues with the source material but suggests that the experience of seeing talented creators is worthwhile, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:14:34.762Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

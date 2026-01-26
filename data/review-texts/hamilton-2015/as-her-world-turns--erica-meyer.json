@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"What can I say that hasn't already been said about this lauded new musical, perhaps the best this art form has seen in decades? It lives up to the hype. It is indeed brilliant...Composer, lyricist, and star Lin-Manuel Miranda seamlessly blends musical theater and hip hop in a wholly original way...'Hamilton' is as epic as 'Les Mis' and as relevant as a Jay Z album. It is nothing less than revolutionary.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 97,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 97,
+    "confidence": "high",
+    "range": {
+      "low": 90.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 95,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "perhaps the best this art form has seen in decades",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It is nothing less than revolutionary",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It lives up to the hype. It is indeed brilliant",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified superlative praise calling it 'revolutionary,' 'brilliant,' and 'perhaps the best this art form has seen in decades' with no reservations whatsoever. | GPT-4o-mini: The review expresses unqualified enthusiasm and superlative praise, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:20:22.538Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 98,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

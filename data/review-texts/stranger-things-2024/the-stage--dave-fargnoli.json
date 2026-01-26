@@ -10,7 +10,7 @@
   "bwwExcerpt": "The production has a strikingly cinematic aesthetic that seamlessly integrates video projections, live action and superbly achieved stage illusions. Groundbreaking work from visual effects designers Jamie Harrison, Chris Fisher and 59 Productions breathe life into the play’s unnatural world: otherworldly monsters pop up out of dark corners; wisps of animated smoke spiral into spectral shapes; flailing bodies are lifted into the air, tossed around and crushed by invisible forces.",
   "showScoreExcerpt": "“Based on the phenomenally popular Netflix series, this visually stunning retro-horror romp is audacious, exhilarating and relentlessly inventive...Subtlety is not the goal here, and this show never quite matches the series’ charming mix of nostalgia, hope and horror. But it is an extraordinary, gripping spectacle.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 0,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
@@ -23,5 +23,47 @@
     "Show title not found in text"
   ],
   "textQuality": "partial",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 0,
+    "confidence": "medium",
+    "range": {
+      "low": 0,
+      "high": 5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "GPT-4o-mini: The review does not contain any content related to the show itself, indicating a complete lack of recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:51:32.871Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 0,
+    "scoreDelta": 0,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (0 → Down) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

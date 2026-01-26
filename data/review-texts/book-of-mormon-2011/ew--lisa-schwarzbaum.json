@@ -10,7 +10,7 @@
   "bwwExcerpt": "A: Teaming with Avenue Q co-creator Robert Lopez (South Park creators Matt Stone and Trey Parker) to wrote a perfect book, music, and lyrics, they honor the traditions of great song-and-dance musical theater in all the best ways: Every detail of the production - choreographed with typical brilliance by Spamalot's Casey Nicholaw and codirected by Nicholaw and Parker - serves a purpose.",
   "showScoreExcerpt": "\"An exhilarating Broadway musical at once revolutionary and classic, funny and obscene, uncompromising in production standards and unafraid of just about anything else.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "textStatus": "complete",
@@ -25,5 +25,61 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "dtliExcerpt": "Don’t expect to find any members of the Mormon faith protesting outside “The Book of Mormon,” a tuneful, unabashedly silly and absolutely uproarious new musical by Matt Stone and Trey Parker.",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 92,
+      "music": 90,
+      "performances": 92,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "exhilarating Broadway musical at once revolutionary and classic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "they have done wonders far beyond the ken of Cartman and Kenny",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This is what 21st-century Broadway can be. If Broadway has the balls. Lord knows, The Book of Mormon does.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rave with superlatives throughout ('exhilarating,' 'spectacular,' 'rather perfect'), an A grade, predictions of Tony wins, and positioning the show as revolutionary for Broadway. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its originality, humor, and high production values, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:06:03.687Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

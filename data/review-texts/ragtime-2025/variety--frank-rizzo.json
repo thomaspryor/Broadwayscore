@@ -10,7 +10,7 @@
   "dtliExcerpt": "Home\n\n\tLegit\n\n\tReviews\n\n\tOct 16, 2025 8:00pm PT\t\n\n\t\t&#8216;Ragtime' Review: Broadway Revival Is a Timely, Glorious Panorama of Changing Times in America\n\n\t\t\t\t\t\t\t\tBy \n\n\tFrank Rizzo\n\n\t\t\tPlus Icon\n\n\t\t\t\t\tFrank Rizzo\t\t\n\n\t\t\t\t\tLatest\n\n\t&#8216;Ragtime' Review: Broadway Revival Is a Timely, Glorious Panorama of Changing Times in America\n\n\t3 months ago\t\n\n\t&#8216;Waiting for Godot' Review: Keanu Reeves and Alex Winter Bring a Cooler, Cosmic Take to This Broadway Waiting Game \n\n\t4 months ago\t\n\n\t&#8216;Call Me Izzy' Review: Jean Smart Dazzles in a Broadway Play That Treads All-Too-Familiar Territory\n\n\t7 months ago\t\n\n\tSee All\n\n\tWhether \"Ragtime\" is presented in productions mammoth (as in its 1998 premiere) or modest (the 2009 revival), the musical, adapted from E.L. Doctorow's kaleidoscopic 1975 novel, reverberates with the directness, passion and allegorical heft of an American folk epic.\n\n\tLear deBessonet opens her tenure as artistic director of Lincoln Center Theater with an expanded and exceptional version of the concert-plus production she staged at New York City Center during the weeks surrounding the presidential election last fall. It's a savvy choice given the positive reception it received, the show's panoramic scope and the ever-vital themes of the work.\n\n\t\t\t\t\tRelated Stories\t\t\n\n\t\t\t\t\tHow to Watch the 2026 Oscar Nominations Live",
   "showScoreExcerpt": "\"In productions large or small â or, here, imperfectly in-between, though still glorious â everything is the service of the show that creates with words, music and movement a grand American tapestry â tears and all.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "urlUpdated": "2026-01-23T05:27:32.724Z",
@@ -19,5 +19,61 @@
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "dtli",
-  "bwwExcerpt": "In productions large or small — or, here, imperfectly in-between, though still glorious — everything is the service of the show that creates with words, music and movement a grand American tapestry — tears and all."
+  "bwwExcerpt": "In productions large or small — or, here, imperfectly in-between, though still glorious — everything is the service of the show that creates with words, music and movement a grand American tapestry — tears and all.",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a thrilling experience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "feels a bit skimpy",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "It's achieved here only intermittently",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review opens with strong praise calling it 'thrilling' but immediately undercuts this with significant criticisms about the production feeling inadequate for the venue and only intermittently achieving its goals. | GPT-4o-mini: The review expresses a mix of excitement and disappointment, highlighting a thrilling experience but also noting shortcomings in stagecraft, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:47:56.226Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

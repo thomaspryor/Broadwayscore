@@ -10,12 +10,70 @@
   "dtliExcerpt": "Groff is undeniably great at bending a crowd around his little finger, and he’s working with an audience that’s delighted to be pandered to. He spends much of the show weaving through that crowd and traipsing up the aisles and back to find people to flirt and dance with, like a Labrador licking his way through a maze in search of treats. How could you deny this guy the adulation he craves?",
   "bwwExcerpt": "The energy verges from electric to manic, in a way that makes you wonder Is Jonathan Groff telling us that he would like to die mid-performance? All right, that’s an exaggeration, but it does move the question of what a star gets out of entertaining, and what an audience gets out of receiving that performance, right to the center of the show, more so than the specific biography of Darin himself. It’s like Prospero at the end of The Tempest turning to the audience to be, finally, released by their applause—if Prospero were wearing a tuxedo and crooning “Beyond the Sea.” Still, as you from crimes would pardoned be, let your indulgence set him free. Cue the megamix.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "dtli",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.vulture.com/article/theater-review-jonathan-groff-bobby-darin-in-just-in-time.html",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 79,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Groff is undeniably great at bending a crowd around his little finger",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "like a Labrador licking his way through a maze in search of treats",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "How could you deny this guy the adulation he craves?",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review praises Groff's charisma and crowd work while using backhanded metaphors that suggest the performance is more about audience pandering than substantial artistry. | GPT-4o-mini: The review highlights Groff's strong performance and crowd engagement but lacks a clear recommendation for the overall show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:33:10.467Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (71 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

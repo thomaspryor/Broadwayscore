@@ -11,7 +11,7 @@
   "bwwExcerpt": "*CRITIC'S PICK* As the plot follows the intersecting fortunes of those three characters’ families, each seeking to redeem the country’s promise at a time of tumultuous change, old-fashioned musical-theater pleasures are very much on offer: a multitudinous cast clad in sumptuous costumes; riveting vocals undergirded by a 28-piece orchestra; a sprinkling of spectacle descending from above and rising from below. It works as rousing entertainment, full stop.",
   "showScoreExcerpt": "\"The considerable beauty of this inspiriting show â full of complicated emotions about our diaspora nation â is streaked with melancholy.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html",
@@ -19,5 +19,61 @@
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "It works as rousing entertainment, full stop.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "old-fashioned musical-theater pleasures are very much on offer",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "riveting vocals undergirded by a 28-piece orchestra",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the production's entertainment value, musical elements, and spectacle with no negative caveats, concluding with an unqualified positive assessment. | GPT-4o-mini: The review expresses strong enthusiasm for the entertainment value and production quality, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:47:33.936Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

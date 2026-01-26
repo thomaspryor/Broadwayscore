@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "'Hadestown' is probably the most exciting musical to be seen in New York at present...Miss it at your own peril",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the most exciting musical to be seen in New York at present",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Miss it at your own peril",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "'Hadestown' is probably the most exciting musical to be seen in New York at present",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic declares this 'the most exciting musical' in New York and warns readers they'll regret missing it - unqualified superlatives with urgent recommendation language indicating a rave review. | GPT-4o-mini: The review expresses unqualified enthusiasm and a strong recommendation to see the show, indicating it is a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:18:57.175Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

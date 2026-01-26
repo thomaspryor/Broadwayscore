@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "'The Lion King' was astonishing, in the jaw-dropping manner of speaking. And today, 21 years later, it still is...Taymor, the avant-garde director to whom Disney entrusted the piece, outdid herself...Everything still looks wonderful, and looks practically brand new, too. One of the stunning elements for me, this time through, was the realization of how brilliantly this show moves...The hard-working ensemble is well-drilled and exceptional.",
   "originalScore": "5 stars",
-  "assignedScore": 88,
+  "assignedScore": 94,
   "source": "playwright-scraped",
   "needsFullText": false,
   "textStatus": "complete",
@@ -20,5 +20,61 @@
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/the-lion-king-1997/nystage-review--steven-suskin_2026-01-25.html",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 78,
+      "performances": 85,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "★★★★★ Long-Run Lookback: Disney's Tale of Simba Remains Awe-Inspiring",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Astonishing in 1997, and—yes—just as astonishing today",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "if it opened this season or in most any of the intervening 20 seasons, Taymor and company would likely be honored again and again",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: A 5-star review with sustained superlatives throughout ('awe-inspiring,' 'astonishing,' 'magic,' 'stunning') and explicit praise that the show remains as powerful today as when it opened, constituting an unqualified rave. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its lasting impact and excellence, which justifies a high score.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:54:45.987Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 93,
+    "openaiScore": 95,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

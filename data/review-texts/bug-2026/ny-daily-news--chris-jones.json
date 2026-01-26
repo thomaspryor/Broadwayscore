@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "If you’d told me at the time that I’d be at a Broadway opening night watching “Bug” 25 years later starring Letts’ very famous wife, Carrie Coon, I’d have suggested a good fantasy exterminator. And yet, demonstrably, “Bug,” a drama penned when Letts was still in his 20s, still had the capacity to shock some of the nice folks in the audience at Manhattan Theatre Club. At least judging by their involuntary screeches.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 77,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "still had the capacity to shock some of the nice folks in the audience",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "At least judging by their involuntary screeches",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "I'd have suggested a good fantasy exterminator",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The excerpt suggests the play retains its shocking power and effectiveness with audiences, but the tone is observational rather than clearly recommending attendance. | GPT-4o-mini: The review indicates a mixed but generally positive reaction, highlighting the shock value and audience engagement, particularly with performances, but lacks a strong overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:10:42.649Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

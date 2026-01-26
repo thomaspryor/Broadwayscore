@@ -7,7 +7,7 @@
   "publishDate": "2022-02-01",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 35,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "Nottage and director and choreographer Christopher Wheeldon have one of the greatest music catalogues in the world and yet don't seem to know how to handle it. Some pivotal songs - like \"For the Love of Money\" by The O'Jays - aren't by Jackson at all. And a large bulk of Jackson's songs used - inclu...",
@@ -15,5 +15,61 @@
   "textQuality": "missing",
   "sourceMethod": "stub",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 35,
+    "confidence": "high",
+    "range": {
+      "low": 30,
+      "high": 40
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 28,
+      "performances": null,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "don't seem to know how to handle it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Some pivotal songs - like \"For the Love of Money\" by The O'Jays - aren't by Jackson at all",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "some pivotal songs - like 'For the Love of Money' by The O'Jays - aren't by Jackson at all",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows clear criticism of the creative team's handling of Jackson's music catalog and questions about song choices, suggesting significant problems with the production's core elements. | GPT-4o-mini: The review expresses significant disappointment with the handling of the music and the selection of songs, indicating a clear negative sentiment towards the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:37:22.918Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 35,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

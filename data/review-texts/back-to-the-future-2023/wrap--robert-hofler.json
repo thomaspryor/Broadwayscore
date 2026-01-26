@@ -10,10 +10,66 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "Sherman brothers' score more engaging than Silvestri/Ballard's songs",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 48,
   "source": "bww-roundup",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 48,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 50,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sherman brothers' score more engaging than Silvestri/Ballard's songs",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Sherman brothers' score more engaging",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Silvestri/Ballard's songs",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This brief comparative statement suggests the current production's music is inferior to a previous version, indicating disappointment with a key element of the musical. | GPT-4o-mini: The review indicates a mixed sentiment, highlighting a positive aspect of the music while not providing strong overall enthusiasm or a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:04:12.770Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

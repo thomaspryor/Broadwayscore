@@ -9,11 +9,69 @@
   "isFullReview": false,
   "bwwExcerpt": "The show puts an interesting twist on the cliche of a past-his-prime singer becoming a nightclub nostalgia act – typically a sad, pitiable fate for a pop star instead presented as a victory, a return to form and homecoming worthy of one of the show’s most vivacious numbers. Both Darin and Groff understood the implicit contract of a performer: lend one’s time in exchange for entertainment. The retro style of show will appeal to some Broadway-heads more than others, but on that promise, at least, Groff more than delivers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.theguardian.com/stage/2025/apr/26/just-in-time-broadway-play-review",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 81,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Groff more than delivers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The retro style of show will appeal to some Broadway-heads more than others",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "presented as a victory, a return to form and homecoming worthy of one of the show's most vivacious numbers",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises Groff's performance and appreciates the show's conceptual approach, but acknowledges limited appeal with qualified recommendation language. | GPT-4o-mini: The review expresses a clear positive sentiment towards the performances and the unique twist on the story, indicating a recommendation to see the show despite some subjective appeal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:32:09.001Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (74 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

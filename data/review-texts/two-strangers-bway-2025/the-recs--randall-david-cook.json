@@ -9,11 +9,69 @@
   "isFullReview": false,
   "bwwExcerpt": "Director and choreographer Tim Jackson keeps all the entertaining city escapades zipping along, but even so the show stretches a bit too long, especially the second act, which still leaves a few questions hanging. More heft is needed to warrant the show’s two-hour running time. The desire for a bit more edge is cemented when, near the end of the show, Robin and Dougal sing a song titled ‘Dearly Beloved‘. Those words immediately brought to mind the start of the ecstatic ‘La Vie Bohème‘, the act-one closer from Rent, another musical that has an energetic number in a Lower East Side restaurant.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://therecs.co.uk/two-strangers-carry-a-cake-across-new-york/",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "keeps all the entertaining city escapades zipping along",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the show stretches a bit too long, especially the second act",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "More heft is needed to warrant the show's two-hour running time",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed review that praises the direction and pacing but criticizes the show's length and lack of substance, with no clear recommendation either way. | GPT-4o-mini: The review indicates a mixed experience, praising the direction but criticizing the pacing and depth of the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:59:27.724Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (64 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

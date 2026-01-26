@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "That it pauses to muse about the gender gap, the colossal failures of late capitalism makes it doubly impressive.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 77,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "doubly impressive",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "pauses to muse about the gender gap, the colossal failures of late capitalism",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "muse about the gender gap",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The phrase 'doubly impressive' suggests strong approval, with the critic appreciating the show's engagement with serious social themes. | GPT-4o-mini: The review indicates a positive sentiment towards the show's thematic depth, suggesting a recommendation despite the lack of explicit praise for specific elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:18:28.672Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

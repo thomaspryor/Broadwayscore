@@ -10,11 +10,67 @@
   "bwwExcerpt": "Nevertheless, the comparative simplicity of the teary tale at its center—love at first sight strikes boy and girl like lightning, they are separated for a decade, and then the couple reunites for a striding-into-the-sunset happy ending (before age and illness impinge)—left me dry-eyed and occasionally tempted to check my watch. This may put me in the minority, given the story’s proven success in other mediums, but for all its sweetness and polish “The Notebook” never rises to truly transporting heights—except when Ms. Plunkett, as the heroine, Allie, in her later years, and Dorian Harewood, as her husband, Noah, are the focus.",
   "showScoreExcerpt": "\"The musical moves the story forward in time. \"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "bww-roundup",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.wsj.com/articles/the-notebook-review-broadway-musical-nicholas-sparks-ingrid-michaelson-46fd2416",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 73,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "left me dry-eyed and occasionally tempted to check my watch",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "never rises to truly transporting heights—except when Ms. Plunkett... and Dorian Harewood... are the focus",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "for all its sweetness and polish",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic finds the central story predictable and emotionally uninvolving despite acknowledging its polish, with only specific performances providing moments of engagement. | GPT-4o-mini: The review expresses disappointment in the story's emotional impact while acknowledging strong performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:57:02.305Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"In Aladdin, the new Disney musical on Broadway, the genie grants theatergoers the first of their wishes – to be entertained.\"",
   "originalScore": null,
-  "assignedScore": 55,
+  "assignedScore": 74,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -20,5 +20,61 @@
   "textQuality": "full",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-mixed-negative",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 68,
+      "performances": 83,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "the genie grants theatergoers the first of their wishes – to be entertained",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This is a show that is massively fun to look at",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Chad Beguelin's book exceeds the acceptable quota of dumb jokes",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoys the spectacle and James Monroe Iglehart's performance but has significant reservations about the book's quality and some musical elements, resulting in a qualified positive recommendation. | GPT-4o-mini: The review highlights strong performances and visual spectacle while noting some weaknesses in the book and music, leading to a clear but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:58:27.734Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

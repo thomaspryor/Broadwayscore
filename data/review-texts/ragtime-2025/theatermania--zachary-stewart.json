@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "From the moment the chorus rises from the stage of the Vivian Beaumont Theater during the opening number of Ragtime, you know you’re in for something special—a big Broadway musical with what seems like a cast of thousands singing their hearts out over swelling strings and gutsy brass. This is a revival in the truest sense, returning to the stage one of the greatest musicals ever written, but also offering the unmistakable thrill of encountering a Broadway show in peak condition.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": 85,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "you know you're in for something special",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "one of the greatest musicals ever written",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the unmistakable thrill of encountering a Broadway show in peak condition",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong, enthusiastic praise calling it 'something special' and 'one of the greatest musicals ever written' with the production described as being in 'peak condition' signals clear recommendation despite being an excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm and highlights the revival's excellence, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:47:39.323Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "Quite possibly the most exciting new musical of the Broadway season...jazz/blues music is the right choice to revivify this story...",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 91,
   "source": "show-score",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.948Z",
@@ -21,5 +21,61 @@
   "textQuality": "full",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 81.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 92,
+      "performances": 88,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is a strikingly original work that retells one of western civilization's fundamental myths in a new and thoroughly insinuating way",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "aided by music so infectious that it's impossible not to start moving in your seat",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "If we get one or two more musicals with this much originality and verve, we will be looking at a season to remember",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic praises the show's striking originality, infectious music, and strong performances while noting it as a potential standout of the season, with only minor reservations about the story structure. | GPT-4o-mini: The review expresses unqualified enthusiasm for the originality, music, and performances of Hadestown, indicating it as a must-see production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:17:15.484Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 86,
+    "openaiScore": 95,
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

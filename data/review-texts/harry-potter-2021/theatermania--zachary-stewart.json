@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Some of the actors stumble over their lines as they race through the first half-hour. The sailing is much smoother after that, as the performers are allowed to settle into their characters and inhabit the magical world Tiffany has created with his team of designers...The leaner, meaner version onstage at the Lyric is actually a better play that has lost nothing in terms of production value.\"",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 72,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 65.5,
+      "high": 78.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 68,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Some of the actors stumble over their lines as they race through the first half-hour",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The sailing is much smoother after that, as the performers are allowed to settle into their characters",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "actually a better play that has lost nothing in terms of production value",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review balances early performance issues with overall improvement and strong praise for the production design and revised version, landing in qualified positive territory. | GPT-4o-mini: The review indicates a mixed experience with initial performance issues but ultimately appreciates the production's improvement and direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:28:26.411Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 70,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

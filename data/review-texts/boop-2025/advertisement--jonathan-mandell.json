@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Little of it feels original, and none of it feels necessary. But just like actual Betty Boop merchandise — the many toys, t-shirts, scrunchies and socks covered with her image –  “Boop!” doesn’t have to feel necessary; it’s fun. And the main reason for that is Jasmine Amy Rogers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "complete",
@@ -17,5 +17,61 @@
   "archivePath": "data/archives/reviews/boop-2025/advertisement--jonathan-mandell_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:28:17.570Z",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 69,
+      "performances": 77,
+      "direction": 69
+    },
+    "keyPhrases": [
+      {
+        "quote": "Little of it feels original, and none of it feels necessary. But just like actual Betty Boop merchandise – 'Boop!' doesn't have to feel necessary; it's fun.",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Rogers is making a spectacular Broadway debut",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The show starts feeling a bit…diffuse",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is decidedly mixed, praising the lead performance and design elements while criticizing the unoriginal, derivative plot and diffuse structure - ultimately finding it fun but unnecessary. | GPT-4o-mini: The review presents a mix of praise for the performances and design while expressing disappointment in the originality and coherence of the plot.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:07:43.157Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

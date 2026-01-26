@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "The production is the platonic ideal of a retro classic rebooted for Broadway, broadly appealing to audiences young and old (my showing was split between boomers and kids) but not particularly searing, recognizable but not terribly distinct, sincere and competent yet not resounding.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
   "designation": null,
@@ -17,5 +17,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 65,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "broadly appealing to audiences young and old",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "not particularly searing, recognizable but not terribly distinct",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "sincere and competent yet not resounding",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the production's broad appeal and competence but repeatedly emphasizes what it lacks - distinctiveness, impact, and memorability - resulting in lukewarm recommendation. | GPT-4o-mini: The review indicates a competent but unremarkable production, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:57:48.352Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "the play’s positive components do not make up for its faults. Broadway is the wrong medium for this story. Musicalizing the story does little to ground the audience in Jackie’s world and instead pulls and stretches the tale, when the themes alone could speak for themselves. The narrative would actually soar if it were given feature-film treatment. Additionally, adding the musical element further bastardizes this tale. Except for “Caviar Dreams,” the third song in Act One, none of the other selections are particularly memorable. Though the opening act is fairly intriguing, by the second act, the nearly three-hour-long performance began to drag, especially as the show’s tone shifted drastically.",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-QUEEN-OF-VERSAILLES-Opens-on-Broadway-20251109",
   "textStatus": "missing",
@@ -18,5 +18,61 @@
   "scoreSource": "enhanced-sentiment-negative",
   "scoreConfidence": "medium",
   "dtliExcerpt": "The performances, including a megatallented ensemble, are also excellent. As expected, Chenoweth is a force, and though Jackie isn’t really a “likable” figure, the Emmy Award winner draws out aspects of her personality that offer glimmers of sympathy for this toxicly positive billionaire woman.",
-  "dtliThumb": "Meh"
+  "dtliThumb": "Meh",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": 33,
+      "performances": 83,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play's positive components do not make up for its faults",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Broadway is the wrong medium for this story",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The performances, including a megatallented ensemble, are also excellent",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising the excellent performances, the critic fundamentally rejects the show as wrong for Broadway with unmemorable music and structural problems that drag the nearly three-hour production. | GPT-4o-mini: The review highlights significant flaws in the book and music while praising the performances, leading to a negative overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:45:43.119Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

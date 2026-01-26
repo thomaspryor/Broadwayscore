@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Wicked, a hideous mess of a musical that wants to be many different things, and rarely succeeds in being any of them. All this from a creative team that, aesthetically speaking, seems barely able to walk and chew gum at the same time.\"",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 13,
   "source": "show-score",
   "needsFullText": true,
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 13,
+    "confidence": "high",
+    "range": {
+      "low": 5.5,
+      "high": 20.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 20
+    },
+    "keyPhrases": [
+      {
+        "quote": "hideous mess of a musical",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "rarely succeeds in being any of them",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "aesthetically speaking, seems barely able to walk and chew gum at the same time",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses extremely harsh language ('hideous mess') and attacks both the material and creative team with no redeeming qualities mentioned, indicating an unqualified rejection. | GPT-4o-mini: The review is overwhelmingly negative, describing the musical as a 'hideous mess' and lacking in coherence, leading to a clear rejection of the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T06:02:26.355Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 15,
+    "openaiScore": 10,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

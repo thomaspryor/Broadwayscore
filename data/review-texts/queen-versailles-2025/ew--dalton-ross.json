@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "It’s a situation where Jackie has both won it all yet also lost it all at the same time, and the show seems prepared to end abruptly with its protagonist forced to confront her entire life's mission that has left her at this crossroads. But the moment is fleeting, as the orchestra strikes back up, the sharp edge is dulled, the curtain falls, and audiences are left to ponder how a show so big could also say so little.     Sara Holdren and Jesse",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-QUEEN-OF-VERSAILLES-Opens-on-Broadway-20251109",
   "textStatus": "missing",
@@ -17,5 +17,61 @@
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
-  "showScoreExcerpt": "âIn a year when Broadway has given us genuinely ambitious work grappling with what it means to be American, \"The Queen of Versailles\" offers only spectacle without insight, a palace with no one home. What were they thinking?â"
+  "showScoreExcerpt": "âIn a year when Broadway has given us genuinely ambitious work grappling with what it means to be American, \"The Queen of Versailles\" offers only spectacle without insight, a palace with no one home. What were they thinking?â",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "offers only spectacle without insight, a palace with no one home",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "how a show so big could also say so little",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "What were they thinking?",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a scathing assessment that attacks the show's fundamental lack of substance despite its spectacle, concluding with incredulous dismissal. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the lack of substance and insight in the production, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:44:39.317Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

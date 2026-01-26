@@ -9,11 +9,67 @@
   "isFullReview": false,
   "dtliExcerpt": "It may be given a glossy sheen and a smattering of good punch lines in The Roommate, but it sends us out into the night with the dull sensation of wondering what exactly we were clapping for.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 33,
   "source": "dtli",
   "dtliThumb": "Down",
   "bwwExcerpt": "This kind of surface-level engagement is all The Roommate can really withstand. Farrow and LuPone are fun to watch — especially Farrow, whose church-mouse character gradually blossoms with the demurely unhinged glee of a midwestern Mephistopheles — and Silverman has written a good number of funny th...",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 33,
+    "confidence": "medium",
+    "range": {
+      "low": 20.5,
+      "high": 45.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "sends us out into the night with the dull sensation of wondering what exactly we were clapping for",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "given a glossy sheen and a smattering of good punch lines",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "dull sensation of wondering what exactly we were clapping for",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges some positive elements (production values, some humor) but concludes with a fundamentally negative assessment that questions the show's purpose and leaves audiences unsatisfied. | GPT-4o-mini: The review expresses clear disappointment and confusion about the show's impact, indicating a strong recommendation against seeing it. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:58:56.457Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 25,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

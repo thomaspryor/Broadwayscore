@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Nixon’s Tess is vulnerable enough for you to sense the fear in her eyes, but this is an actress with a steely core and, indeed, Nixon turns on a dime when her character realizes, as I think many of us have or will, that this brave new world is short on both guardrails and moral principles. Burstein is equally effective as husband Jon, his warm eyes dancing with empathy, although we are not always so sure about that, given his programming skills. “Am I supposed not to notice she is being nicer to that thing than me?” Tess snaps at one point, bringing up another salient A.I. issue. Squibb, 96, whose Broadway career stretches back to her role as Electra in the original 1960 production of “Gypsy,” is implacably excellent. For the record, she is the oldest actress ever to open a Broadway show.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Up",
   "bwwExcerpt": "Nixon’s Tess is vulnerable enough for you to sense the fear in her eyes, but this is an actress with a steely core and, indeed, Nixon turns on a dime when her character realizes, as I think many of us have or will, that this brave new world is short on both guardrails and moral principles. Burstein ...",
@@ -22,5 +22,61 @@
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/marjorie-prime-2025/ny-daily-news--chris-jones_2026-01-25.html",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": null,
+      "performances": 83,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "this carefully calibrated 70-minute meditation on morality and memories exerts a gentle but insistent tug",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "But it doesn't doesn't dive deep enough to make a lasting impact",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the acting is seamless",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises performances and direction but criticizes the work for lacking depth and lasting impact, resulting in qualified appreciation rather than clear recommendation. | GPT-4o-mini: The review praises the performances and direction but criticizes the depth of the material, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:36:17.210Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

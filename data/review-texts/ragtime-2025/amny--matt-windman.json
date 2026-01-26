@@ -10,11 +10,67 @@
   "dtliExcerpt": "Twenty-five years after its original run, the musical roars back not with spectacle but with purpose, and in doing so, it may finally have found the moment it was meant for. This revival, now at Lincoln Center’s Vivian Beaumont Theater and expanded from last year’s high-powered City Center concert staging, arrives not as nostalgia but as a galvanizing statement, both thrilling and newly vital.",
   "bwwExcerpt": "Nichelle Lewis’s Sarah is heartbreaking, and she sings “Your Daddy’s Son” with raw, aching vulnerability. Ben Levi Ross captures Younger Brother’s naivety and the fervent militancy with which he hurls himself into causes. Shaina Taub makes a sharper, funnier Emma Goldman this time around, with her vocals far stronger than last year. Overall, the cast imbues the piece with life and cohesion, embodying the full scope of America’s promise and pain.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "roars back not with spectacle but with purpose",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "arrives not as nostalgia but as a galvanizing statement, both thrilling and newly vital",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it may finally have found the moment it was meant for",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language throughout ('roars back', 'galvanizing', 'thrilling', 'newly vital') with no caveats or criticisms, suggesting clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the revival's purpose and impact, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:46:25.030Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

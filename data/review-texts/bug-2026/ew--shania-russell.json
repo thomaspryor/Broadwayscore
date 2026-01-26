@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Here, there's a skin-crawling effect to watching the story unfold onstage. The Broadway production capitalizes on discomfort, keeping tension taut and surprises around every corner. Grade: B+",
   "originalScore": "B+",
-  "assignedScore": 87,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Carrie-Coon-Namir-Smallwood-and-More-Star-in-BUG-on-Broadway-20260108",
   "textStatus": "complete",
@@ -24,5 +24,61 @@
   "sourceMethod": "bww-roundup",
   "scoreSource": "extracted-grade",
   "dtliExcerpt": "Seen on Broadway, with greater polish and physical distance, “Bug” lands differently. The problem isn’t that “Bug” no longer makes sense. It’s that this time, I never fully went with it. I understood what the play was doing. I respected the craft. I appreciated the performances. But I didn’t surrender to the descent. Where the play once swept me into its fever dream, I remained aware, analytical, outside the experience. The bugs never got under my skin.",
-  "dtliThumb": "Meh"
+  "dtliThumb": "Meh",
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 92.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": null,
+      "performances": 89,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bug is all absorbing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Coon delivers a captivating performance, well-matched by Smallwood",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Grade: B+",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The B+ grade combined with consistent praise for performances, direction, and the play's psychological effectiveness indicates a clear positive recommendation despite the challenging subject matter. | GPT-4o-mini: The review expresses strong praise for the performances and direction, particularly highlighting Carrie Coon's captivating return, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:10:31.693Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 87,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

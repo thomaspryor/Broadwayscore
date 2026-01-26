@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "Daisy Fay Buchanan as a sympathetic couple caught in unfortunate Jazz Age circumstances. In other words, the transfiguration of F. Scott Fitzgerald’s The Great Gatsby is, sorry to report, a travesty. Caroline Cao, New York Theatre Guide: All in all, this Great Gatsby shies away from making us think hard of the blood spilled due to Gatsby’s dealings, which are relegated to lines of dialogue and the campy song “Shady.” Something about the production feels too spic and span by the time it ends: Missing is a mess left behind by the Roaring Twenties excess. I felt the warmth in The Great Gatsby, but it was begging to bring on the heat. Gloria Oladipo, The Guardian: The production splashes in excess, but of the Las Vegas residency kind. Golden-lacquered set pieces and a dizzying projection screen recreate the Gatsby mansion (and a bevy of other locations). The “nouveau riche” mansion isn’t as opulent or lush as one might imagine, feeling closer in spirit to a mega-church. Brian Scott Lipton,",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 67,
   "source": "bww-roundup",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:09:39.471Z",
@@ -24,5 +24,61 @@
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": 71,
+      "performances": 77,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "I could taste morsels of bliss in the Marc Bruni-directed musical adaptation",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Yet, its merits rarely rise to the eruptive 1920s Jazz Age environment",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I felt the warmth in The Great Gatsby, but it was begging to bring on the heat",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges strong performances and production values but consistently criticizes the adaptation for being too sanitized and missing the darker essence of the source material. | GPT-4o-mini: The review presents a mixed perspective, highlighting strong performances and production design while criticizing the adaptation's depth and character development.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:53:03.133Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "he imagined, but perhaps some of the novelty has worn off, because the characterizations seem less sharp and the vibe more “Invasion of the Body Snatchers” unsettling than I remember feeling before. Joe Dziemianowicz, New York Theatre Guide: But for all its clairvoyance and foresight about technology, Marjorie Prime’s most potent superpowers are its sensitivity and tenderness. Harrison’s spare, gently gripping script is a model of eloquent economy as the characters grapple with grief and what it means to truly love and remember someone. Chris Jones, The New York Daily News: Nixon’s Tess is vulnerable enough for you to sense the fear in her eyes, but this is an actress with a steely core and, indeed, Nixon turns on a dime when her character realizes, as I think many of us have or will, that this brave new world is short on both guardrails and moral principles. Burstein is equally effective as husband Jon, his warm eyes dancing with empathy, although we are not always so sure about that",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:03:12.529Z",
@@ -24,5 +24,61 @@
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": null,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "has assembled an A-list ensemble that hums like a finely tuned machine",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's a perceptive and prescient talker",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Harrison's spare, gently gripping script is a model of eloquent economy",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently positive language throughout with strong praise for performances, script, and relevance, plus positive audience reception data and clear enthusiasm from the critic. | GPT-4o-mini: The review highlights strong performances and a relevant, well-crafted script, indicating a clear recommendation for audiences interested in family dramas.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:35:47.259Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

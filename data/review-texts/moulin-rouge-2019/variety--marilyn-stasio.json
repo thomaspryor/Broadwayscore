@@ -20,5 +20,61 @@
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/moulin-rouge-2019/VARIETY--marilyn-stasio_2026-01-25.html",
   "textQuality": "partial",
-  "sourceMethod": "stub"
+  "sourceMethod": "stub",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 85,
+      "performances": 86,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "The luscious 2001 movie hit makes it successfully to the stage — elephant and all — in this gorgeously flashy version",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "let's revel in what Broadway actually can do for a beloved musical property: bring it to life",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there are plenty of satisfying numbers to make the show a hit on its own terms",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the spectacular production values, strong performances (especially Olivo and Burstein), and successful adaptation from film to stage, with only minor criticisms about cleanliness lacking bohemian edge and jukebox musical limitations. | GPT-4o-mini: The review expresses strong enthusiasm for the production's visuals and performances while acknowledging some limitations, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:40:30.113Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 85,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

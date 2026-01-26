@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"The landmark new musical presents a soulful, electrifying retelling of America's birth. Its ingenious use of hip-hop, a medium and a culture in many ways born from that oppression, to reclaim American history is nothing short of revolutionary...The musical's ability to combine the sensational with the theoretical is one of its greatest strengths.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 94,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "nothing short of revolutionary",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "soulful, electrifying retelling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "one of its greatest strengths",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses exceptionally strong superlatives like 'revolutionary,' 'electrifying,' and 'landmark' with no caveats or criticisms, indicating unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm and highlights the musical's innovative qualities, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:22:42.628Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

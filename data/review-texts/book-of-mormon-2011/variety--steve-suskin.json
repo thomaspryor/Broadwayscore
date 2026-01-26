@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Given the key contributors that \"South Park\" creators Trey Parker and Matt Stone teamed with for their first Broadway outing, one might expect \"The Book of Mormon\" to show the influences of \"Spamalot\" and \"Avenue Q.\" As it happens, this raucously funny new show surpasses both of those Tony winners, and handily so: Every song enhances the hilarity, expert staging heightens every gag, and the cast of fresh faces is blissfully good. Broadway hasn't seen anything like it since Mel Brooks came to town with \"The Producers,\" only \"Mormon\" has better songs.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "textStatus": "complete",
@@ -25,5 +25,61 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "dtliExcerpt": "Given the key contributors that \"South Park\" creators Trey Parker and Matt Stone teamed with for their first Broadway outing, one might expect \"The Book of Mormon\" to show the influences of \"Spamalot\" and \"Avenue Q.\" As it happens, this raucously funny new show surpasses both of those Tony winners, and handily so: Every song enhances the hilarity, expert staging heightens every gag, and the cast of fresh faces is blissfully good. Broadway hasn't seen anything like it since Mel Brooks came to town with \"The Producers,\" only \"Mormon\" has better songs.",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 95,
+      "performances": 90,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "this raucously funny new show surpasses both of those Tony winners, and handily so",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Broadway hasn't seen anything like it since Mel Brooks came to town with 'The Producers,' only 'Mormon' has better songs",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "approaches musical-comedy Rapture",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified rave with superlative language throughout, comparing favorably to Tony winners and declaring it approaches 'musical-comedy Rapture' with no significant criticisms. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's humor, performances, and production quality with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:07:21.309Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 93,
+    "openaiScore": 95,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

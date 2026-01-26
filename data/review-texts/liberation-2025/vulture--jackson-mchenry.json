@@ -11,12 +11,68 @@
   "bwwExcerpt": "Both times I’ve seen the play—Off Broadway this spring, now returning in a larger space on Broadway—I’ve felt unprepared for the emotional wallop it lands, the way that Wohl’s work becomes cosmically immense without leaving that gym basement. I think it gets there by staying so focused on the quietly radical thing these women are doing with each other, and which Wohl is making the rest of the audience engage in. Maybe you should be scared, because listening could change you too.",
   "showScoreExcerpt": "\"The play is constantly running a nail over divisions that seem untraversable, across politics, class, and race, but also across generation and gender, wondering if solidarity could possibly still form there. \"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "dtli",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.vulture.com/article/liberation-bess-wohl-theater-review-broadway-transfer.html",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "emotional wallop it lands",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "cosmically immense",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "listening could change you too",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses profound admiration for the play's emotional impact and transformative power, using intense language like 'emotional wallop' and 'cosmically immense' to convey strong enthusiasm. | GPT-4o-mini: The review expresses strong emotional impact and engagement with the play, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:34:59.394Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

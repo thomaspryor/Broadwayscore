@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"A fun treat for the kids for sure, and even the adults who loathe Disney's theatrical presence will find themselves enjoying the show.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 76,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -20,5 +20,61 @@
   "textQuality": "full",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 81.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 78,
+      "performances": 70,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "delivers a typical, yet fantastic musical experience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "As far as a Disney musical goes, Aladdin is unsurprisingly pretty good",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "even the adults who loathe Disney's theatrical presence will find themselves enjoying the show",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer clearly recommends the show with phrases like 'fantastic musical experience' and 'pretty good,' stating even Disney skeptics will enjoy it, despite some qualified praise and minor criticisms. | GPT-4o-mini: The review provides a clear positive recommendation for 'Aladdin', highlighting its entertainment value while acknowledging some limitations.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:00:11.260Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

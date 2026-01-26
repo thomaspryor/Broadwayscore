@@ -11,7 +11,7 @@
   "bwwExcerpt": "Chenoweth is a wonder, sounding a little bit country whenever Jackie is most herself, as in “Each and Every Day,” a love song to the infant Victoria; taking her high notes out for a spin in “The Royal We,” a duet with Marie Antoinette (Cassondra James); and convincing us for a moment, in a turn-on-a-dime song called “Grow the Light,” that Jackie has recalibrated her priorities. Not so. For the central character of this tale, living out her American dream, there is no point of satiation. There is only a vast emptiness that must be filled with more, more, more. Preferably, of course, dipped in gold.",
   "showScoreExcerpt": "Criticâs Pick: \"more than an entertaining biomusical with a hummable score. Directed by Michael Arden, itâs also a sociological fairy tale\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.nytimes.com/2025/11/09/theater/queen-of-versailles-broadway-chenoweth.html",
@@ -19,5 +19,61 @@
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chenoweth is a wonder",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "taking her high notes out for a spin",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "convincing us for a moment",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for Chenoweth's performance with specific musical examples, but this excerpt focuses narrowly on one performer without broader show assessment. | GPT-4o-mini: The review highlights strong performances, particularly by Chenoweth, indicating a clear recommendation despite not addressing other aspects of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:45:14.697Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

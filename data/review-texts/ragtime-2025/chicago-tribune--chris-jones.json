@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Better yet, the new focus plays into the strengths of an empathetic cast that sings the bejesus out of these famous songs. Joshua Henry’s Colehouse feels younger than typical, less initially polite, more impassioned and, of course, his voice is the stuff of standing ovations. Nichelle Lewis’ Sarah is more fragile, which makes her crushed optimism especially moving. As Tateh, Brandon Uranowitz focuses on energetic joy.  He expands the role and makes it all the more essential to the piece. Both Lewis and Ben Levi Ross, who plays the brooding Mother’s Younger Brother, bring qualities to those two characters I’ve never seen before. They are doing the best work of the night; Ross, especially, fleshes out what mostly has been a caricature.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "sings the bejesus out of these famous songs",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "his voice is the stuff of standing ovations",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "They are doing the best work of the night",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently enthusiastic praise for the cast's performances and vocal abilities with strong superlatives, though this appears to be an excerpt focusing primarily on performances rather than a complete review. | GPT-4o-mini: The review highlights strong performances and emotional depth, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:46:30.928Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

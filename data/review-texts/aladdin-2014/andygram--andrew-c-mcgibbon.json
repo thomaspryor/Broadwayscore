@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"The reason Aladdin works so well on the stage is that it always seemed destined for it. I'm happy to report that it makes the transition to stage seamlessly in a lavish and magical production.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 85,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -20,5 +20,61 @@
   "textQuality": "full",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 78,
+      "performances": 88,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'm happy to report that it makes the transition to stage seamlessly in a lavish and magical production that the whole family will enjoy",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This eye-popping evening of candy-colored costumes and pyrotechnically enhanced effects",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The reason Aladdin works so well on the stage is that it always seemed destined for it",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive review with enthusiastic praise for performances, production values, and family appeal, culminating in clear recommendation that it 'works so well' and the family 'will enjoy'. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting impressive performances, stunning visuals, and a seamless adaptation, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:57:04.711Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

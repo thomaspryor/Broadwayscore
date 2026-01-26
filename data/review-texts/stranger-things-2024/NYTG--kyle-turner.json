@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "s. Robert Hofler, The Wrap: Trefry’s stage play is a muddled, pedestrian prequel... What’s on stage at the Marquis resembles a jukebox musical comedy with lots of shock effects haphazardly thrown in. Kyle Turner, New York Theatre Guide: There’s the occasional feeling of disappointment that the show doesn’t lean less on the theatrics and focus on the richer themes in Trefry’s script, like Henry’s fear of hurting the girl he likes, Patty (Gabrielle Nevaeh), and how that relates to his relationship to his mother, or Patty’s own self-conception as an orphan in search of her absent mom. But Stranger Things: The First Shadow was probably never going to dig deep into these ideas. It was always going to be too busy dazzling to let its audience into the real darkness. Chris Jones, The New York Daily News: There are similarities of design with “Harry Potter,” and a few visual tricks that recall that prior enterprise, which in general has a lot more emotional pull than this newer one, which relie",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 40,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway-20241120",
@@ -24,5 +24,61 @@
   "textQuality": "excerpt",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-indicator-positive",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 30,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": null,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "muddled, pedestrian prequel",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "resembles a jukebox musical comedy with lots of shock effects haphazardly thrown in",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "always going to be too busy dazzling to let its audience into the real darkness",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Multiple critics express disappointment with a muddled, superficial production that prioritizes spectacle over substance, with no clear recommendation to see it. | GPT-4o-mini: The review is predominantly critical, highlighting muddled writing and a lack of depth, leading to a strong negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:50:29.831Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 35,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

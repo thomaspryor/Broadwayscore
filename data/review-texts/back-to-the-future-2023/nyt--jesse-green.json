@@ -10,7 +10,7 @@
   "showScoreExcerpt": "I have to admit that the car alone might be worth a ticket. It fills a deep Broadway longing for large objects performing audience flyovers - and, like the dear departed arthritic chandelier, may be doing so for the foreseeable future.",
   "bwwExcerpt": "mechanical, busy, distracting, foggy. Though large, it's less a full-scale new work than a semi-operable souvenir.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 45,
   "source": "show-score",
   "textWordCount": 1433,
   "textStatus": "complete",
@@ -20,5 +20,61 @@
   "textQuality": "full",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 45,
+      "performances": 58,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though large, it's less a full-scale new work than a semi-operable souvenir",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Making material shallower, even if cleverly, is not a great argument for adaptation",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "I have to admit that the car alone might be worth a ticket",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental problems with the adaptation's purpose and execution, calling it a 'semi-operable souvenir' that makes material shallower, with only technical spectacle and the DeLorean car providing redeeming value. | GPT-4o-mini: The review expresses significant disappointment in the adaptation's execution and overall concept, leading to a clear recommendation against seeing the show despite some positive elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:02:42.855Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,7 +10,7 @@
   "bwwExcerpt": "Standing ovations on Broadway are so common you might imagine the seats have been booby-trapped to eject patrons as the curtain calls begin. But at a recent performance of the brightly shining revival of “Ragtime,” the ovation came early—actually two came early—so transported was the audience by the emotional and musical potency of this panorama of America at the turn of the 20th century.",
   "showScoreExcerpt": "\"This sterling production, with its flawless cast and admirable trenchancy amid an extraordinarily complex plot, augurs well for her tenure.\"",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "textStatus": "missing",
@@ -19,5 +19,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-pan",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": 94,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "brightly shining revival",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sterling production, with its flawless cast",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "so transported was the audience by the emotional and musical potency",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified praise with superlatives like 'sterling,' 'flawless,' and 'brightly shining,' plus evidence of exceptional audience response with early standing ovations. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its emotional impact and quality of the cast, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:48:12.113Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

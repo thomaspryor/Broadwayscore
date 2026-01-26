@@ -7,7 +7,7 @@
   "publishDate": "2014-03-20",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 77,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "It's spritely directed and choreographed by Casey Nicholaw, well sung by a huge 35-person cast wearing an alarming number of harem pants, and hits that sweet spot Disney Theatrical Productions do so well, a saccharine fairy tale for the kids cut by some sly, vinegary quips for their parents......",
@@ -15,5 +15,61 @@
   "textQuality": "missing",
   "sourceMethod": "stub",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": 78,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "spritely directed and choreographed by Casey Nicholaw",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "well sung by a huge 35-person cast",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "hits that sweet spot Disney Theatrical Productions do so well",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the direction, performances, and Disney's formula execution with no significant criticisms, indicating a solid positive recommendation. | GPT-4o-mini: The review highlights strong direction and performances but lacks a clear recommendation, suggesting a positive yet cautious endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:57:10.915Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "It's Julie Taymor's puppetry that continues to astound...The problem is that the rest of the musical is not as good as Taymor's vision for the animals and their gorgeous ensemble numbers...Now, the beauty is there, but the show feels a bit worn...The few big numbers aside, much of the John-Rice score is middling '90s pop rock...That said, the performances, even now, are rather lovely...But you're not here for the performances. You're here for the puppets. And they're worth it.",
   "originalScore": "3 stars",
-  "assignedScore": 68,
+  "assignedScore": 65,
   "source": "playwright-scraped",
   "needsFullText": false,
   "textStatus": "complete",
@@ -20,5 +20,61 @@
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/the-lion-king-1997/nystage-review--jesse-oxfeld_2026-01-25.html",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 53,
+      "performances": 75,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's Julie Taymor's puppetry that continues to astound",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the show feels a bit worn",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "You're here for the puppets. And they're worth it.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The 3/5 star rating and mixed assessment praising Taymor's spectacular puppetry while criticizing the worn feel, weak book, and middling score creates a qualified recommendation that's more positive than negative. | GPT-4o-mini: While the puppetry and performances are praised, the review indicates significant weaknesses in the book and overall engagement, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:54:39.853Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

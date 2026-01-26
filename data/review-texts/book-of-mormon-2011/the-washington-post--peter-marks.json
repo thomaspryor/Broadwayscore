@@ -8,7 +8,7 @@
   "fullText": null,
   "showScoreExcerpt": "“Money can buy you happiness! If you’re in possession of a ticket, you’ve wisely secured a seat in the premier-class cabin of delirium.”",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 89,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "\"The Book of Mormon\" expresses a giddy contempt for that innocence, in one of the most joyously acidic bundles Broadway has unwrapped in years. (Applause, too, for set designer Scott Pask's gloomy rendering of an African village.) The sin it takes such fond aim at - blind faith - is one that this mu...",
@@ -20,5 +20,61 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "dtliExcerpt": "I know, I know: You’ve been indulging for years in a little scatological side business called “South Park.” But now, you’ve discovered your true calling — as the wit-spewing class clowns of Broadway.",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the most joyously acidic bundles Broadway has unwrapped in years",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Money can buy you happiness! If you're in possession of a ticket, you've wisely secured a seat in the premier-class cabin of delirium",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "you've discovered your true calling — as the wit-spewing class clowns of Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite being only an excerpt, the critic uses superlative language ('most joyously acidic bundles Broadway has unwrapped in years') and explicitly tells readers they've made a wise choice buying tickets, indicating strong enthusiasm. | GPT-4o-mini: The review expresses strong enthusiasm and praise for the production, indicating it as a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:07:03.265Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

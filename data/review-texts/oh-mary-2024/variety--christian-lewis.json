@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "The puns, bits, and gags zip by in quick succession, and the audience laughs nearly the entire 90 minutes. It is unquestionably the funniest, gayest, campiest play Broadway has seen in years.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 89,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/oh-mary-broadway",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the audience laughs nearly the entire 90 minutes",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "unquestionably the funniest, gayest, campiest play Broadway has seen in years",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The puns, bits, and gags zip by in quick succession",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise with superlative language ('unquestionably the funniest...in years') and evidence of sustained audience engagement throughout the show indicates a clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and enjoyment, labeling the play as a standout in its genre, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:42:38.507Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

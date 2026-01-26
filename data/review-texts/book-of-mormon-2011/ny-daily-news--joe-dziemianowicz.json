@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "It's a show where you catch yourself laughing one minute, mouth agape the next, eventually wiping away tears, and, finally, cheering. Stone and Parker are famous for their take-no-prisoners, nothing-is-sacred approach to humor. And Lopez knows about thumbing his nose at contemporary conventions. They all share credit for the book, music and lyrics. Silly, soulful and (no surprise with these guys) seriously rude, the score is consistently chipper and clever and keeps the pages in this \"Book\" turning smoothly.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "textStatus": "missing",
@@ -19,5 +19,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 88,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Oh boy, it's a real winner",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The show is blissfully original, irreverent, outspoken and hilarious",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "all that's tucked inside good -- no, great -- old-fashioned musical",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified enthusiasm with superlatives like 'real winner' and 'great' combined with emotional journey description and no reservations indicates a strong rave recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong praise for the show's originality and humor, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:06:27.077Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

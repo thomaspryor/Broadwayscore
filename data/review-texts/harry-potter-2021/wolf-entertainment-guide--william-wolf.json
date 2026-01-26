@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"The result is spectacular...The plot gets complicated, of course, but what's special about the play is the production...The visuals are enough to enthrall even the youngest in an audience. As for the story of working out the relationships, the issues and the dangers, the plot heavy on talk begins to wear some in Part 2, but sudden bursts of action liven things...Tiffany has done a great job in keeping most of the show eye-catching as well as trying to spin out the plot with clarity.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 74,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": null,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is spectacular",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the plot heavy on talk begins to wear some in Part 2",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Tiffany has done a great job in keeping most of the show eye-catching",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for visuals and production values balances criticism of a talky, wearing plot, resulting in a qualified positive recommendation. | GPT-4o-mini: The review expresses strong praise for the production and visuals while noting some issues with the plot, leading to a positive overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:29:51.965Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

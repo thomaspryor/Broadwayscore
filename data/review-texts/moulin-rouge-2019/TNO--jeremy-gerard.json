@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "After close to three hours I stumbled out of that fanciful world feeling somewhat pummeled by the heightened visual and aural, not to mention emotional, assault. Yet I woke up the next morning in love with the show. There's genius in that, I think.",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-pan",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "I woke up the next morning in love with the show",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "There's genius in that, I think",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "feeling somewhat pummeled by the heightened visual and aural, not to mention emotional, assault",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite initial overwhelming feelings, the critic's morning-after realization of being 'in love with the show' and recognition of 'genius' indicates strong positive recommendation with appreciation for the show's intentional emotional impact. | GPT-4o-mini: The review expresses initial overwhelm but ultimately concludes with a strong affection for the show, indicating a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:39:07.523Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "There’s ​such a ​throwback showbiz energy to discovering a major talent like Rogers that makes the marquee lights twinkle a bit brighter as you ​b​oop out ​o​f the theater and off to Sardi’s.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
   "textStatus": "missing",
@@ -19,5 +19,61 @@
   "scoreSource": null,
   "dtliExcerpt": "[Rogers] can do it all. As smiley, effervescent and, well, animated as t he actress is for most of the night, she finds power and emotional resonance in her 11 o’clock number “Something To Shout About.”",
   "dtliThumb": "Up",
-  "showScoreExcerpt": "\"She [Rogers] may be playing a two-dimensional character, but sheâs one heâck of a triple threat.\""
+  "showScoreExcerpt": "\"She [Rogers] may be playing a two-dimensional character, but sheâs one heâck of a triple threat.\"",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 87,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's such a throwback showbiz energy to discovering a major talent like Rogers that makes the marquee lights twinkle a bit brighter",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "she can do it all",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "she's one heck of a triple threat",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong enthusiasm for Rogers' performance with vivid, celebratory language about discovering a 'major talent' and being a 'triple threat,' though limited excerpt prevents full show assessment. | GPT-4o-mini: The review expresses strong praise for the lead performance and overall energy of the show, indicating a clear recommendation despite some reservations about character depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:08:33.889Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

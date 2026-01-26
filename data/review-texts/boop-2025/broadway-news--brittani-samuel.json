@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "In “Boop! The Musical,” the canonical cartoon recounts stints as a lion tamer, judge and hula dancer — professions lifted straight from her shorts. But evidently, Betty Boop missed a credit: magician. Because by the end of this new musical, she left us all boop-boop-a-bewitched.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "partial",
@@ -20,5 +20,63 @@
     "Word count too low: 245 (min: 300)"
   ],
   "textQuality": "partial",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 50,
+    "confidence": "low",
+    "range": {
+      "low": 20,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "big Broadway joy bomb",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "isn't original, but excites nonetheless with glittering stagecraft and a knockout star",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The new musical isn’t original, but excites nonetheless with glittering stagecraft and a knockout star.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This appears to be a truncated excerpt or navigation page rather than a complete review, making reliable scoring impossible with such limited substantive content. | GPT-4o-mini: The review expresses a clear positive sentiment towards the production, highlighting its excitement and stagecraft despite noting a lack of originality. | Note: Models differed by 50 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:07:57.452Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 75,
+    "scoreDelta": 50,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 50 points (Claude: 25, OpenAI: 75)"
+    ]
+  }
 }

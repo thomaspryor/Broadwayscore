@@ -10,10 +10,66 @@
   "dtliExcerpt": "The musical is already piercing and deeply felt and good. Just a few amendments to go, and, like a certain Constitution I could mention — it might be truly great.",
   "showScoreExcerpt": "\"Sheâs worked out a ruthless equation: What the women are doing is serious, and what the men are doing is absurd. For the apotheosis of Suffs, we would need to feel both the gravity and the buffoonery, and right now, the production contains too little of the latter.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is already piercing and deeply felt and good",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it might be truly great",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Just a few amendments to go",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic clearly likes the show ('piercing and deeply felt and good') and sees potential for greatness with minor improvements, indicating a positive recommendation despite acknowledging some flaws. | GPT-4o-mini: The review expresses a clear positive sentiment about the musical's emotional impact while suggesting it is not yet fully realized, indicating a solid recommendation with room for improvement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:52:33.762Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

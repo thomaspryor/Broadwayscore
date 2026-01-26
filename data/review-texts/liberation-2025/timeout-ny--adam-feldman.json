@@ -11,7 +11,7 @@
   "bwwExcerpt": "Five stars. Bess Wohl's feminist drama keeps the conversation going.",
   "showScoreExcerpt": "\"A searching and revealing drama about the achievements and limits of 1970s feminism, Liberation weaves different kinds of conversation into a multilayered narrativeâand, in doing so, serendipitously restores the very word conversation to its roots.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028",
   "dtliThumb": "Up",
@@ -20,5 +20,61 @@
   "archivePath": "data/archives/reviews/liberation-2025/timeout-ny--adam-feldman_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:14:21.838Z",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 93,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "5 out of 5 stars",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Whitney White's direction elicits a triumph of ensemble acting whose equipoise is a perfect realization of the play's own themes",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Liberation wants to get you talking, and it gives you plenty to talk about",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic awards 5/5 stars with consistent praise for the writing, direction, and performances, calling it a 'triumph of ensemble acting' and comparing it favorably to The Heidi Chronicles. | GPT-4o-mini: The review expresses unqualified enthusiasm for the play's writing, performances, and direction, indicating it is a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:34:46.618Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 87,
+    "openaiScore": 95,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

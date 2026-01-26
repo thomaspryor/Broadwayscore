@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "So my disappointment in the play is not due to some casualty of heart or humanity — the show’s got well-enough doses of both — but rather its missing sense of deeper purpose.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "complete",
@@ -17,5 +17,61 @@
   "archivePath": "data/archives/reviews/the-roommate-2024/broadway-news--brittani-samuel_2026-01-25.html",
   "textFetchedAt": "2026-01-25T05:28:50.187Z",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Megawatt performers Patti LuPone and Mia Farrow sprinkle stardust on playwright Jen Silverman's hollow comedy",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "less a bold, blockbuster-worthy event and more a slow-burn play",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "employs a familiar structure: two actors, one act, zero frills",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the play as 'hollow' while praising the star performances, indicating the material doesn't live up to the talent involved. | GPT-4o-mini: The review highlights strong performances but criticizes the script as hollow, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:58:11.862Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

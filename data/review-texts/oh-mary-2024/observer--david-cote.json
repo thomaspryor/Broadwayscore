@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "s have to rush to get their gags out, which makes them all the funnier because it both raises the stakes and keys into one of the key ingredients of great farce: the mutual experience of the chaotic. David Cote, Observer: Escola’s splendidly nasty queer romp has hiked up its petticoats and staggered uptown from a sold-out run at the Lucille Lortel Theatre, goosing a sleepy Broadway summer. I’m happy to report that although director Sam Pinkleton leveled up the production values (particularly in the musical finale), Oh, Mary! remains the same vicious, dirty-minded, bad-taste farce that delighted camp aficionados last winter. In a theater scene squeezed between the Scylla of nonprofit precarity and Charybdis of commercial desperation, Escola and their team offer audacity, flair, and a homing instinct for the audience funny bone. Bob Verini, New York Stage Review: The script, and the direction of Sam Pinkleton (erstwhile choreographer of Natasha, Pierre & the Great Comet of 1812), start t",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
@@ -17,5 +17,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 80,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "splendidly nasty queer romp",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "offer audacity, flair, and a homing instinct for the audience funny bone",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "remains the same vicious, dirty-minded, bad-taste farce that delighted camp aficionados",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review uses consistently enthusiastic language praising the show's audacity, humor, and successful transfer to Broadway, with specific appreciation for performances and direction. | GPT-4o-mini: The review expresses strong enthusiasm for the production's audacity and humor, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:42:12.253Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

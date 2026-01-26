@@ -8,11 +8,67 @@
   "fullText": "Breathtaking and exquisitely crafted, Hadestown is easily the most tautly constructed and beautifully realized musical on this side of Hamilton - a riveting, heart-wrenching, and sumptuous folk opera that vibrantly renders some of mankind's oldest and most enduring myths as an epic and compelling piece of modern musical theatre. Director Rachel Chavkin's imaginative vision alongside composer-lyricist Anais Mitchell's work create a seamless integration of musical theatre elements. The show is almost entirely sung, or else spoken in rhyme set to rhythm. The cast's vocal performances are commendable, particularly Eva Noblezada's purer voice, Amber Gray's control, Reeve Carney's falsetto, and Patrick Page's bass tones. The score offers a rocking, organic New Orleans big band exuberance that is fresh, vital, and unique among musical theatre scores. Hadestown is a triumph of craft and imagination, boldly poetic, rousingly political, and vividly beautiful. This musical triumph is a must-see.",
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 95,
   "source": "webfetch-scraped",
   "textStatus": "excerpt_only",
   "textQuality": "partial",
   "sourceMethod": "webfetch",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 92,
+      "music": 95,
+      "performances": 89,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hadestown is easily the most tautly constructed and beautifully realized musical on this side of Hamilton",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Hadestown is a triumph of craft and imagination, boldly poetic, rousingly political, and vividly beautiful",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This musical triumph is a must-see",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rave with superlatives throughout ('breathtaking', 'triumph', 'must-see'), prestigious comparisons to Hamilton, and explicit recommendation language. | GPT-4o-mini: The review expresses unqualified enthusiasm and highlights multiple strengths, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:18:34.107Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

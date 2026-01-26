@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Is it strictly for Potterheads? Not at all, though anyone going in cold, with no prior knowledge of the stories, will miss much of the clever cross-referencing of characters and events from throughout the series. A detailed recap starting with the key prophecy that propelled the entire saga and continuing with a breakdown of each of the seven novels is provided in the program and will be helpful to the uninitiated. But there's also a universal dimension to the human drama here - the challenges of parenting, the conflict between fathers and teenage sons burdened by intimidating legacies, the sustaining force of love and friendship, the eternal grip of the past - that will prove poignant and meaningful even to audiences unversed in the wizarding wars. I'm by no means a Potter obsessive but I was amazed, watching the plays, at how vividly these characters are embedded in our cultural consciousness. You can feel the electric charge in the theater even before the action begins, and it's highly infectious, whatever your prior exposure.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I was amazed, watching the plays, at how vividly these characters are embedded in our cultural consciousness",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You can feel the electric charge in the theater even before the action begins, and it's highly infectious",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there's also a universal dimension to the human drama here...that will prove poignant and meaningful",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic expresses genuine amazement and appreciation for the production's impact and universal themes, emphasizing the infectious theatrical energy and cultural resonance, despite acknowledging accessibility concerns for newcomers. | GPT-4o-mini: The review expresses a clear appreciation for the universal themes and the electric atmosphere of the production, indicating a strong recommendation despite some caveats about prior knowledge of the series.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:25:34.361Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

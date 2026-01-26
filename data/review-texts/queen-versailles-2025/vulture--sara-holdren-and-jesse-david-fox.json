@@ -10,11 +10,69 @@
   "bwwExcerpt": "There is a two-hour-and-40-minute luxury-car crash happening at the St. James Theatre. If I were the litigious type, I’d be trying to figure out how to sue for whiplash. Instead, here I am staggering homewards, still trying to twist my head back into position after The Queen of Versailles. If you’re morbidly curious about the experience, you could try for tickets to the new musical by Stephen Schwartz and Lindsey Ferrentino, with Kristin Chenoweth glittering relentlessly at its center. Or you could save the money and have someone slap you back and forth with a large salmon.",
   "showScoreExcerpt": "\"The Queen of Versailles swerves and overcorrects like a drunk driver. Tonally, itâs all over the map...It is the confused, contorted product of a set of absolutely incompatible impulses\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "source": "bww-roundup",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.vulture.com/article/theater-review-the-queen-of-versailles-broadway-burning-cauldron-fiery-fire.html",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": 45,
+      "direction": 15
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is a two-hour-and-40-minute luxury-car crash happening at the St. James Theatre",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "you could save the money and have someone slap you back and forth with a large salmon",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "swerves and overcorrects like a drunk driver. Tonally, itâs all over the map",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses vivid metaphors of physical violence and car crashes to describe the show as a complete disaster, with only grudging acknowledgment of Chenoweth's star power amid overwhelming condemnation. | GPT-4o-mini: The review is overwhelmingly negative, with harsh critiques of the show's coherence and overall experience, indicating a strong recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:46:01.502Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (20 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

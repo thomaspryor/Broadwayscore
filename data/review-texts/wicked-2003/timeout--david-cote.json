@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"A musical prequel to The Wizard of Oz, that explained how the Wicked Witch of the West got that way, and explored her true relationship to Glinda the Good Witch. A combination of outstanding elements.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 82,
   "source": "show-score",
   "needsFullText": true,
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 75.5,
+      "high": 88.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A combination of outstanding elements",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "explained how the Wicked Witch of the West got that way",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "A musical prequel to The Wizard of Oz",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The phrase 'combination of outstanding elements' is strong praise indicating clear recommendation, though the brief excerpt limits full assessment. | GPT-4o-mini: The review indicates a positive sentiment towards the musical's premise and elements, suggesting a strong recommendation despite lacking detailed critiques.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T06:02:10.530Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 80,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

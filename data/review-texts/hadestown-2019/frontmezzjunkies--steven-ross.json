@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "The 'Road to Hell' has never been finer...'Hadestown' delivers a deeply resonant and defiantly hopeful experience",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 89,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "never been finer",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "deeply resonant and defiantly hopeful experience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the 'Road to Hell' has never been finer",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong positive language with superlatives ('never been finer') and emotionally powerful descriptors ('deeply resonant', 'defiantly hopeful') indicate clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and positivity towards 'Hadestown', indicating it as a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:16:59.360Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "The thin narrative structure and minimal character development are not so much acted as felt in the expressive delivery of the songs...While not every aspect succeeds in presenting a cohesive story, its Broadway debut offers an innovative approach to the musical genre and an often electrifying experience in cutting-edge theater.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 70,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 70,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 45,
+      "music": 77,
+      "performances": null,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "often electrifying experience in cutting-edge theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The thin narrative structure and minimal character development",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "offers an innovative approach to the musical genre",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant structural flaws but is ultimately positive about the innovative theatrical experience and musical delivery, suggesting qualified recommendation. | GPT-4o-mini: The review highlights both innovative aspects and significant narrative weaknesses, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:16:32.842Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 68,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

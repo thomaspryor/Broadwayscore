@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "The show, for its many twisty turns, belongs squarely to its most consistent leads, its equally cursed children: Boyle and Clemmett, two fine English actors who, at 23 and 24, are as exceptional a leading pair as those Mormon boys or Wicked girls. Reprising their West End roles, both young men are formidable individually but meteoric together, specifically in their happy seizure of the central theme of this and Rowling's saga in general: friendship. Good friendship. The kind of friendship that trounces ostracization, that vanquishes evil, that draws power from the triumph of an inside joke as much as a shared tragedy. Boyle plays Scorpius, ostensibly Hogwarts' biggest outcast, with a ferocious nerve and mischievous wit; he's funny and heartbreaking and applies a vexing if effective quantity of outbursts to service his character's epiphanic moments. Clemmett, on the opposite hand, is an understated wonder; as the embittered but well-intentioned Albus, he has the less showy and perhaps more prohibitive role, but with a boyish charm Clemmett adroitly dodges pratfalls of teenage anguish and \"Ugh, dad!\" resentment to remain hugely likable and empathetic even as he creates disaster after disaster for himself. The sparks the two actors create together are so dynamic, their occasional absence onstage does not go unnoticed.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 87,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-mixed",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "as exceptional a leading pair as those Mormon boys or Wicked girls",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "meteoric together",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The sparks the two actors create together are so dynamic, their occasional absence onstage does not go unnoticed",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers effusive praise for the lead performances with superlative comparisons to other Broadway hits, using strong positive language like 'exceptional,' 'meteoric,' and 'dynamic' throughout. | GPT-4o-mini: The review highlights exceptional performances and strong chemistry between the leads, indicating a clear recommendation despite not discussing other aspects of the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:24:33.118Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 88,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

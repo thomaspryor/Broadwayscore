@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Little of it feels original, and none of it feels necessary. But just like actual Betty Boop merchandise — the many toys, t-shirts, scrunchies and socks covered with her image – ‘Boop!’ doesn’t have to feel necessary; it’s fun. And the main reason for that is Jasmine Amy Rogers.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Little of it feels original, and none of it feels necessary",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it's fun. And the main reason for that is Jasmine Amy Rogers",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "doesn't have to feel necessary; it's fun",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant flaws (unoriginal, unnecessary) but finds the show enjoyable primarily due to the lead performance, suggesting a qualified positive experience. | GPT-4o-mini: The review indicates that while the show lacks originality and necessity, it is still enjoyable, particularly due to the performance of Jasmine Amy Rogers, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:08:18.009Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

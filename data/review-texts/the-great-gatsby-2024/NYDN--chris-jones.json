@@ -10,7 +10,7 @@
   "bwwExcerpt": "out with the frenzy of a nighttime soap by Aaron Spelling, without any of the campy self-awareness. There is no ghastly reckoning with the follies of hedonism, just a rapid succession of abrupt ends. Chris Jones, The New York Daily News: That said, this new musical, as penned by Kait Kerrigan with music composed by Jason Howland and lyrics by Nathan Dylan, makes you feel very little, except when Howland’s lush melodies are reaching their climax. Even then, the feelings that flow are more admiration for Howland’s craft than the kind of emotion that flows back into an embrace of story. Emlyn Travis, Entertainment Weekly: Those attending Great Gatsby expecting nothing more than a glitzy, glamorous romp through the Roaring Twenties will find themselves satisfied, but others hoping to find a deeper take on the novel's exploration of the American dream, old money versus new money, and love will find themselves feeling adrift. The Great Gatsby is a great big Broadway extravaganza that may daz",
   "showScoreExcerpt": "“This is an inventive and intriguingly populist new staging of an iconic novel that already has informed all manner of adaptations. Here, it is genuinely hard to tell the actors from the customers, only the elegant design of Vanessa Leuck’s costumes offers a meaningful distinction.”",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
@@ -24,5 +24,61 @@
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 75,
+      "performances": 77,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "the very solid company certainly commits to the complexity of the whole thing",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "One might wish for more dramatic focus and a greater sense of events careening to an inevitable doom",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "this is an inventive and intriguingly populist new staging of an iconic novel",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds it an inventive staging with solid performances and audience engagement, but wishes for more dramatic focus and intensity, resulting in a qualified positive recommendation. | GPT-4o-mini: The review indicates a generally positive experience with strong performances and an inventive staging, but also expresses a desire for more dramatic focus and immersion, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:52:39.929Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

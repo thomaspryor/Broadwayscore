@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"This musical is full of glitz and is a big Broadway spectacular; it is also a charming story with a wonderfully catchy score. 'Wicked' is satisfying in a sparkly way, and also in a storytelling way...The popularity of 'Wicked' can be explained by the last minute or so of the first act. It is an incredibly successful merging of dramatic spectacle and character development - and is one of the few truly unforgettable moments I have seen in a Broadway musical.\"",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 85,
   "source": "show-score",
   "needsFullText": true,
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": 88,
+      "performances": null,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the few truly unforgettable moments I have seen in a Broadway musical",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "incredibly successful merging of dramatic spectacle and character development",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "satisfying in a sparkly way, and also in a storytelling way",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses strong superlatives like 'truly unforgettable' and 'incredibly successful' while praising both spectacle and storytelling elements, indicating clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's charm, catchy score, and memorable moments, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T06:02:02.806Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"It will always be known as the theatrical masterpiece that redefined how high-tech special effects should be done for the stage, but it is not merely a tour de force because of a bag of Broadway magic tricks. This is a classic saga of parents and children and the things in life threatening to tear them apart...They have taken beloved characters from Ms. Rowling's popular franchise of books and films and created a stage book that is accessible to everyone.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 84,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": null,
+      "performances": null,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "theatrical masterpiece that redefined how high-tech special effects should be done for the stage",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "not merely a tour de force because of a bag of Broadway magic tricks",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "created a stage book that is accessible to everyone",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Uses superlatives like 'theatrical masterpiece' and 'redefined' while emphasizing both technical excellence and substantive storytelling, indicating strong positive recommendation. | GPT-4o-mini: The review expresses strong admiration for the production's innovative use of technology and its emotional storytelling, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:27:43.762Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

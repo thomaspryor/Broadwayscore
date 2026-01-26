@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "le skewering the stuffy, educated British elite, SpitLip has done its due diligence by making room among the jokes to pay homage to the real man whose body was used as a pawn in a military operation. Shania Russell, Entertainment Weekly: And therein lies the magic of the show. Mincemeat is so flippantly funny — with its premise alone it asks us to laugh off the rise of facism — that you expect the laughter to never die out. But it's secretly full of heart, and unafraid to slam us back in our seats with an emotional wallop. Thom Geier, Culture Sauce: Malone, the lone cast member who isn’t credited as a co-author, is the real breakout here — and he’s blessed with the show’s best song, “Dear Bill,” a bittersweet love letter from the fiancée of the fake soldier that’s meant to be found on his person when he washes ashore, to lend an added verisimilitude to the plan. The tune works on that level magnificently, but it also taps into universal feelings of anxiety during wartime, the fears of",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250320",
@@ -24,5 +24,61 @@
   "textQuality": "excerpt",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 89,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "so flippantly funny — with its premise alone it asks us to laugh off the rise of facism — that you expect the laughter to never die out. But it's secretly full of heart, and unafraid to slam us back in our seats with an emotional wallop",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Malone... is the real breakout here — and he's blessed with the show's best song, 'Dear Bill,' a bittersweet love letter... The tune works on that level magnificently",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "making room among the jokes to pay homage to the real man whose body was used as a pawn in a military operation",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Multiple critics praise the show's balance of humor and heart, with specific acclaim for performances and songs, indicating strong positive reception despite being an excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the humor and emotional depth of the show, alongside praise for a standout performance, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:42:58.479Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

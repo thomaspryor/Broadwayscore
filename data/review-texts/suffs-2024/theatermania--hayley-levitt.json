@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "The score’s most successful numbers are the climactic protest songs that come at the end of each act: The shouts of “we won’t wait another day” and “the young are at the gates,” linking the suffragists of yore to the activists of today. These moments finally get your heart racing, just as Taub (an activist in her own right) has long proved capable of doing through her insightful and cathartic music. If only Suffs weren’t as splintered as the movement.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 74,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "These moments finally get your heart racing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "If only Suffs weren't as splintered as the movement",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Taub has long proved capable of doing through her insightful and cathartic music",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges strong musical moments and praises the composer's abilities, but concludes with significant structural criticism that prevents a positive recommendation. | GPT-4o-mini: The review highlights strong musical moments but expresses disappointment about the overall cohesion of the show, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:52:12.088Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

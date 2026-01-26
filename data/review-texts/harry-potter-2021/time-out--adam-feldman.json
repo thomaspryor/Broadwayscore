@@ -10,7 +10,7 @@
   "bwwExcerpt": "Harry Potter and the Cursed Child is haunted by death and pain; it is often suspenseful and sometimes downright frightening. Yet amid the cinematic tumult and dazzle of the densely action-packed plot, Thorne and Tiffany carve out quiet scenes of intimacy and tenderness. Great care has gone into creating each moment of this state-of-the-art adventure. It leaves its audience awestruck, spellbound and deeply satisfied.",
   "showScoreExcerpt": "\"5/5 stars...Despite its shrinking, 'Harry Potter and the Cursed Child' has kept most of its charm. The spectacular set pieces of John Tiffany’s production remain...The plotting sometimes feels more rushed than before. But the changes have the salutary effect of focusing the story on its most interesting new creations: the resentful Albus Potter (James Romney) and the unpopular Scorpius Malfoy (Brady Dalton Richards), whose bond has been reconceived in a significant way.\"",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "textStatus": "complete",
@@ -23,5 +23,61 @@
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 86,
+    "confidence": "high",
+    "range": {
+      "low": 78.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 84,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "Audiences who were put off by the previous version's tricky schedule and double price should catch the magic now",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It leaves its audience awestruck, spellbound and deeply satisfied",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Despite its shrinking, Harry Potter and the Cursed Child has kept most of its charm",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Clear positive recommendation with explicit encouragement to see the show, praising spectacular production values and performances despite some narrative concerns from the condensation. | GPT-4o-mini: The review expresses strong praise for the production's charm, direction, and overall experience while acknowledging some narrative cuts, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:28:58.181Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 88,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

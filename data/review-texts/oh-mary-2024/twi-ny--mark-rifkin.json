@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "Cole Escola's 'Oh, Mary!' is the funniest, most outrageous show I've seen this season.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 93,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/oh-mary-broadway",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 85.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "funniest, most outrageous show I've seen this season",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Cole Escola's 'Oh, Mary!'",
+        "sentiment": "neutral",
+        "strength": 1
+      },
+      {
+        "quote": "the funniest, most outrageous show I've seen this season.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Superlative language calling it the 'funniest, most outrageous show' of the season indicates unqualified enthusiasm and strong recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong recommendation, indicating it is a must-see show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:42:27.314Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 95,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

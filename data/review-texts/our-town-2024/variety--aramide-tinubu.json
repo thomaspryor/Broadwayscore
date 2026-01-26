@@ -11,10 +11,66 @@
   "bwwExcerpt": null,
   "showScoreExcerpt": "...it captures the most magnificent part of the human experience—life itself.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 91,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it captures the most magnificent part of the human experience—life itself",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "captures the most magnificent part of the human experience",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "life itself",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The phrase 'most magnificent part of the human experience' suggests profound appreciation and strong recommendation, but the extreme brevity of the excerpt makes confidence low. | GPT-4o-mini: The review expresses strong admiration for the show's ability to capture a profound aspect of human experience, indicating a high recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:43:54.017Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

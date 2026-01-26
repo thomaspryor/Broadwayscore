@@ -11,7 +11,7 @@
   "bwwExcerpt": "DeBessonet’s elegant direction contributes to the clarity. This is the same production that she premiered in semi-concert form last year at New York City Center (and which we discussed in an interview then), newly outfitted with a spare, effective set by David Korins and attractive abstract projections by 59 Studio. The very fine 2024 design team is otherwise intact: Linda Cho (costumes), Tom Watson (hair), Adam Honoré and Donald Holder (lights) and Kai Harada (sound). The beautifully full orchestra, led by music director James Moore, plays William David Brohn’s original orchestrations; Ragtime is not dance-driven, but choreographer Ellenore Scott keeps things moving when appropriate.",
   "showScoreExcerpt": "\"What he delivers in Ragtime is, quite simply, some of the most magnificent singing I have ever heard on Broadway\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "designation": "Critics_Choice",
@@ -21,5 +21,61 @@
   "archivePath": "data/archives/reviews/ragtime-2025/timeout-ny--adam-feldman_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:16:43.104Z",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 88,
+      "performances": 95,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "this Ragtime is an embarrassment of riches",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "What he delivers in Ragtime is, quite simply, some of the most magnificent singing I have ever heard on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I still have a few reservations about Ragtime: At nearly three hours, the show is too long",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: 4/5 star review with enthusiastic praise for Joshua Henry's 'magnificent' performance and the production's 'embarrassment of riches,' though tempered by specific reservations about length and moral complexity. | GPT-4o-mini: The review expresses strong praise for the production, performances, and music while acknowledging some reservations about length and thematic coherence, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:47:50.825Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

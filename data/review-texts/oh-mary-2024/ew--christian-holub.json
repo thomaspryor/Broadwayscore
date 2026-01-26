@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "h as Oh, Mary! did—and my reaction was shared by the rest of the audience, which burst into applause at the end of every scene. Fasten your seatbelts: This 80-minute show is a fast and wild joy ride. Christian Holub, Entertainment Weekly: Oh, Mary! is laugh-out-loud funny from the first moments; though much of the humor comes from Escola’s unbelievable delivery and the slapstick combination of actors on stage. But what makes Oh, Mary! such a fulfilling theatrical experience is that it also has a real message about the dangers of repression, both societal and personal. Letting people express themselves and live their truth may not solve every political problem, but it can certainly make life way more fun. Escola’s doing that, and the rest of us should too. Grade: A- Adrian Horton, The Guardian: The real Mary Todd Lincoln was, by most accounts, erratic, often bedridden by sadness and prone to lavish spending. Not exactly a comic figure, though in the hands of the inimitable Cole Escola,",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
@@ -26,5 +26,61 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "dtliExcerpt": "“Oh, Mary!” plays even better on Broadway than it did downtown at the Lucille Lortel Theater earlier this year. Experiencing this comedy with a few hundred more theatergoers takes the laughter from boisterous to atomic and the effect is absolutely radioactive.",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 82.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 90,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 80-minute show is a fast and wild joy ride",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "plays even better on Broadway than it did downtown",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Grade: A-",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Multiple critics give enthusiastic praise with an explicit A- grade, describing it as a 'joy ride' that works even better on Broadway, with strong audience response. | GPT-4o-mini: The review expresses strong enthusiasm for the humor and performances, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:41:49.000Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 87,
+    "openaiScore": 88,
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,11 +10,67 @@
   "dtliExcerpt": "The play speaks to itself, it speaks to us, and it encourages a dialogue straight back at it. In this sense, it is its own highly effective consciousness-raising exercise, looking at us in our present day where the principles of equality and progress are becoming derided and imperiled. What the women thought they were confronting and vanquishing in the early 1970s remains all too prescient.",
   "bwwExcerpt": "The play speaks to itself, it speaks to us, and it encourages a dialogue straight back at it. In this sense, it is its own highly effective consciousness-raising exercise, looking at us in our present day where the principles of equality and progress are becoming derided and imperiled. What the women thought they were confronting and vanquishing in the early 1970s remains all too prescient.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "highly effective consciousness-raising exercise",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "remains all too prescient",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it speaks to us, and it encourages a dialogue straight back at it",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the play's effectiveness and contemporary relevance, describing it as a 'highly effective consciousness-raising exercise' that speaks powerfully to current issues, indicating strong appreciation for the material's impact and timeliness. | GPT-4o-mini: The review expresses strong appreciation for the play's relevance and effectiveness in sparking dialogue, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:33:33.696Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

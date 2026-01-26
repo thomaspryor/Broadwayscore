@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "This A-list team has been able to create some genuinely arresting moments, but they are fleeting in a busy show that still doesn’t quite know what story it wants to tell. It’s like a house that continues to expand, the plaster seams of each new addition hideously apparent.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 48,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": null,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "some genuinely arresting moments, but they are fleeting",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "still doesn't quite know what story it wants to tell",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "like a house that continues to expand, the plaster seams of each new addition hideously apparent",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging some effective moments and an 'A-list team,' the critic emphasizes fundamental structural problems with storytelling and coherence, using a harsh architectural metaphor to describe the show's flaws. | GPT-4o-mini: The review acknowledges some strong moments but ultimately criticizes the show's lack of coherence, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:45:26.278Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

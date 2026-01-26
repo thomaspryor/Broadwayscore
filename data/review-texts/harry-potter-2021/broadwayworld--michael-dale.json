@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "From row P of the orchestra section of the cavernous Lyric Theatre, one might feel a bit disconnected from the characters and plot, especially with designer Christopher Jones' skeletal set adding to the hollowness, but admittedly, that might just be the result of my unfamiliarity with the play's backstory. Surely, judging from the enthusiastic responses throughout the two-parter, fans of the books and films were having a blast.",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-pan",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "one might feel a bit disconnected from the characters and plot",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "fans of the books and films were having a blast",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "that might just be the result of my unfamiliarity with the play's backstory",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Critic acknowledges personal disconnection and production issues while noting fan enthusiasm, but provides no clear recommendation and admits limited perspective due to unfamiliarity with source material. | GPT-4o-mini: The review expresses significant disconnection and criticism of the production design, but acknowledges that fans of the source material enjoyed it, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:23:32.956Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

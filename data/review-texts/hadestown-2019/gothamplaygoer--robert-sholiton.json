@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "The score is the main attraction...a lost opportunity of minor consequence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 63,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The score is the main attraction",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "a lost opportunity of minor consequence",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "a lost opportunity",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review dismisses the overall show as a 'lost opportunity' while only praising the music, indicating significant disappointment despite one redeeming element. | GPT-4o-mini: The review indicates that while the score has some merit, the overall impression is negative, suggesting a lack of compelling content.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:17:04.314Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

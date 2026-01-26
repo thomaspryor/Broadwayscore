@@ -10,10 +10,66 @@
   "dtliExcerpt": "For all the work this show does to illuminate the successes — and failures — of the women’s rights movement, and the constantly evolving nature of our politics, it focuses so much energy on seeming as timely as possible. But, as the suffs learn, movements transform; our government leaders change, as do the demands of the people on the picket line. It’s a lesson the musical should take to heart: You can’t live in the past, present and future of our nation’s politics all at once — at least not without losing your way.",
   "showScoreExcerpt": "\"âSuffsâ has a hefty two-hour-and-45-minute running time, after all, and though the musical isnât guilty of scolding, it is guilty of stifling an impressive â though exhausting â breadth of U.S. history through its contemporary lens.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": null,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "it focuses so much energy on seeming as timely as possible",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "You can't live in the past, present and future of our nation's politics all at once — at least not without losing your way",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "For all the work this show does to illuminate the successes — and failures — of the women's rights movement",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the show's fundamental approach as unfocused and trying too hard to be timely, suggesting it 'loses its way' despite acknowledging some illuminating content about women's rights. | GPT-4o-mini: The review expresses a mixed sentiment, acknowledging the show's thematic ambitions but criticizing its execution and coherence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:52:06.952Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

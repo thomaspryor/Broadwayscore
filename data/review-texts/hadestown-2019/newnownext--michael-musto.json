@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "'Hadestown' is full of feeling, movement, and journeys to the dark side...has effective elements.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 68,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "full of feeling, movement, and journeys to the dark side",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "has effective elements",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "'Hadestown' is full of feeling, movement, and journeys to the dark side",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses positive descriptors like 'full of feeling' and 'effective elements' but the language is quite restrained and general, suggesting modest approval rather than enthusiasm. | GPT-4o-mini: The review expresses some positive sentiments about the emotional depth and movement of the show but lacks strong enthusiasm or specific praise, leading to a mixed-positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:17:30.097Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 70,
+    "openaiScore": 65,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

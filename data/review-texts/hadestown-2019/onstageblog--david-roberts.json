@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "A faithful retelling of this epic myth with a deep connection to the present and the plight of the 99 percent. Patrick Page (Hades) and Amber Gray (Persephone) handily bring the King and Queen of Hadestown to electrifying heights with remarkable performances and stunning vocals. Mr. Page's range is astonishing and his low notes must be heard to be believed. Only the charming Damon Daunno seems to struggle with his role - his voice seems surprisingly unsteady and occasionally pitchy.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 79,
   "source": "webfetch-scraped",
   "note": "Off-Broadway NYTW production review",
   "textStatus": "excerpt_only",
   "textQuality": "missing",
   "sourceMethod": "webfetch",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "handily bring the King and Queen of Hadestown to electrifying heights with remarkable performances and stunning vocals",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Mr. Page's range is astonishing and his low notes must be heard to be believed",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "his voice seems surprisingly unsteady and occasionally pitchy",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the overall production, story relevance, and two lead performances, with only one performer receiving criticism, indicates a clear positive recommendation despite minor reservations. | GPT-4o-mini: The review highlights strong performances and vocal abilities while noting a minor issue with one actor, leading to a solid positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:18:14.300Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

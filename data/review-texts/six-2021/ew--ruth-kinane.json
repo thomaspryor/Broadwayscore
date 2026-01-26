@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "ering yet another #MeToo story. Those theatrical commonplaces aside, \"Six\" is a needed antidote to \"Anastasia,\" \"Frozen,\" \"Jagged Little Pill,\" \"Wicked\" and other pompous shows of female empowerment. Ruth Kinane, Entertainment Weekly : Sitting in a theater packed with fellow fully-vaccinated, mask-wearing Broadway lovers brings a sense of solidarity and camaraderie to the atmosphere, a vibe mirrored on-stage by the cast s girl-group dynamic. Add to that the joy that s always been the DNA of this production, and Six truly is the top ticket to celebrate the return of the live stage show. Look, if a somber play is your idea of Broadway s best, then by all mean, enjoy! But if you re up for a euphoric celebration of the musical medium, Six is queen of the castle. Long may it reign. Johnny Oleksinski, The New York Post : \"Six\" is more of a concert than a traditional book musical, though, with nine numbers and a megamix crammed into a quick 80 minutes. The songs here, by Toby Marlow and Lucy",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211004",
@@ -27,5 +27,61 @@
   "scoreConfidence": "low",
   "dtliExcerpt": "So let the cares of this world roll away. Heck, let the cares of 16th-century England dissolve. This is one liberation in which you don’t have to lift a finger. Queens are doing it for themselves.",
   "dtliThumb": "Up",
-  "showScoreExcerpt": "\"not what you might call a traditional musical, nor what formerly would have been considered a well-crafted one. But it has mass appeal, immediacy, enthusiasm, and an incredibly high sense of style; and it revels in what used to be called “girl power” but can now more properly be described as simply, or not-so-simply, power.\""
+  "showScoreExcerpt": "\"not what you might call a traditional musical, nor what formerly would have been considered a well-crafted one. But it has mass appeal, immediacy, enthusiasm, and an incredibly high sense of style; and it revels in what used to be called “girl power” but can now more properly be described as simply, or not-so-simply, power.\"",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 78,
+      "performances": 82,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Six truly is the top ticket to celebrate the return of the live stage show",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "if you're up for a euphoric celebration of the musical medium, Six is queen of the castle. Long may it reign",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it has mass appeal, immediacy, enthusiasm, and an incredibly high sense of style",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Multiple critics offer strong praise with superlative language ('top ticket', 'queen of the castle', 'euphoric celebration') and clear recommendations despite acknowledging it's non-traditional, indicating solid positive territory. | GPT-4o-mini: The review expresses strong enthusiasm for 'Six' as a celebration of musical theater, highlighting its appeal and energy, which supports a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:49:07.345Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

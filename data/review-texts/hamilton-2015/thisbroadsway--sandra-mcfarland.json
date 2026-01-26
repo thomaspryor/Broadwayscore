@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"You will never enjoy a story of the American Revolution more than this one as written and told by Lin-Manuel Miranda...This was not so much about the story for me as it was about how the story was told by this beautifully sculpted and colorful; mainly African-American and Latino cast...This production is truly masterful, and brings a modern twist to nearly 300-year-old history...This show fills the stage, and will fill every one of your senses.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 94,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 95,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "You will never enjoy a story of the American Revolution more than this one",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This production is truly masterful",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This show fills the stage, and will fill every one of your senses",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified superlatives like 'masterful,' 'never enjoy...more,' and 'fills every one of your senses' indicate a rave review with no reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm and praise for the production, indicating it is a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:22:24.815Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

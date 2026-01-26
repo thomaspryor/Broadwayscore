@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Director Jessica Stone beautifully navigates the musical’s tricky order: execute the level of physical extravagance any circus-musical hybrid of this monumental scale demands, but keep Jacob’s potent, time-leaping personal story intact.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "complete",
@@ -17,5 +17,61 @@
   "archivePath": "data/archives/reviews/water-for-elephants-2024/broadway-news--brittani-samuel_2026-01-25.html",
   "textFetchedAt": "2026-01-25T05:31:47.467Z",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 63,
+      "performances": 82,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Jessica Stone beautifully navigates the musical's tricky order",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "To say that Jacob's adventures hold as much weight here as all the spectacle would be a lie",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "a heartwarming metaphor for all who go see this charming show",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the direction, choreography, and puppetry while acknowledging weaknesses in the book and score, ultimately calling it 'charming' with specific recommendation language. | GPT-4o-mini: The review highlights strong direction and performances while noting some limitations in the music and narrative, leading to a positive overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:59:34.584Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

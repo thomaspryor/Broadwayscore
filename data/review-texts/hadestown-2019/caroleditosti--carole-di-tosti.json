@@ -9,10 +9,61 @@
   "isFullReview": false,
   "showScoreExcerpt": "'Hadestown' is a breathtaking journey, into a phantasmagorical world whose musical pageantry...",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 90,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Hadestown' is a breathtaking journey",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "into a phantasmagorical world",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review expresses strong enthusiasm and admiration for 'Hadestown', indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:16:18.400Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

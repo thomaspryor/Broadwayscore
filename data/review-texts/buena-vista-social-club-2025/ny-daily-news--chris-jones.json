@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The question of the night is the choice between selling out their souls to the vapid American tourists at the Tropicana nightclub (bad) or singing for their own people on the wrong side of the tracks (good). They try to make both work even as this relentlessly preachy show wants them to learn to pay more attention to their backup singers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "complete",
@@ -18,5 +18,61 @@
   "textFetchMethod": "playwright",
   "archivePath": "data/archives/reviews/buena-vista-social-club-2025/ny-daily-news--chris-jones_2026-01-25.html",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 83,
+      "performances": 79,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "that's enough to make the show a consistent pleasure, notwithstanding the lack of any bona fide surprises",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The story is predictably moralistic and, frankly, more worried about conforming to contemporary mores than accurately representing what was going on in Cuba in the 1950s",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Still, few people in the house are there for the story. They bought tickets to hear the great music and watch the thrilling dance",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly acknowledges the show's weak book but enthusiastically praises the music, dance, and performances, ultimately finding it a 'consistent pleasure' worth attending for its musical artistry. | GPT-4o-mini: The review highlights strong musical performances and dance but critiques the predictable and moralistic story, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:09:44.736Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

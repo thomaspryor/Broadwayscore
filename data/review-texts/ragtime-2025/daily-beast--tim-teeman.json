@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "At the end of three hours of Joshua Henry, Nichelle Lewis, and the company’s gorgeous singing, and a powerfully staged story of racism, immigration, and history that meaningfully echoes to the present-day, you may be wrung out in the best way by this enthrallingly mounted, directed, acted, and sung production (booking to Jan. 4, 2026). The melodically thunderous presence of Henry and this phenomenal company—they meld so beautifully as a collective—are the spellbinding reasons to book a ticket pronto.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 95,
+      "performances": 95,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "enthrallingly mounted, directed, acted, and sung production",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "spellbinding reasons to book a ticket pronto",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "wrung out in the best way",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified praise across all production elements with superlatives like 'enthrallingly,' 'spellbinding,' and explicit urgent recommendation to 'book a ticket pronto.' | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and production quality, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:46:43.270Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

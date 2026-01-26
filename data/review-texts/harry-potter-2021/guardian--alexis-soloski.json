@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "As Cursed Child is one of the most plot-heavy texts to appear on Broadway since melodrama became déclassé and suspense is the spell that keeps it whooshing along, it would be unsporting to say much more. Still, fans of the source texts (who cheered and gasped their way through a recent, all-day performance, were treated to some familiar faces. And maybe some faceless faces, too. Cynics not already ensorcelled will wonder if Harry Potter belongs on Broadway at all and some of that wondering is valid. Like Frozen and Mean Girls and Escape to Margaritaville it's another show capitalizing on a known and already popular quantity. It is in dialogue with its fans (how else to explain the screams of delight when Moaning Myrtle appears?) and will deeply perplex anyone who hasn't read the delightful books or seen the so-so movies.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "suspense is the spell that keeps it whooshing along",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Cynics not already ensorcelled will wonder if Harry Potter belongs on Broadway at all and some of that wondering is valid",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "will deeply perplex anyone who hasn't read the delightful books",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges the show's entertainment value and fan appeal while expressing valid concerns about its Broadway worthiness and accessibility to non-fans. | GPT-4o-mini: The review presents a mixed perspective, acknowledging fan engagement while questioning the show's broader appeal and relevance, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:25:28.104Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

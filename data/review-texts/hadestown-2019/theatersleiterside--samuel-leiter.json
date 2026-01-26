@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "Tunefully delicious, theatrically tasty...While not its strongest feature, 'Hadestown''s book now...",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 85,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tunefully delicious, theatrically tasty",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "While not its strongest feature, 'Hadestown''s book now",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Tunefully delicious",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The strong praise for the musical elements ('tunefully delicious') outweighs the mild criticism of the book, suggesting overall positive recommendation despite reservations. | GPT-4o-mini: The review expresses positive sentiments about the musical's qualities, suggesting a clear recommendation despite mentioning the book as not its strongest feature.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:19:02.790Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

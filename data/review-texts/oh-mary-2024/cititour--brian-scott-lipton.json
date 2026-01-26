@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "This don't-miss farce is a complete tour de force for...writer and actor Cole Escola",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/oh-mary-broadway",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 95,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "don't-miss farce",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "complete tour de force",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "this don't-miss farce",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The combination of 'don't-miss' (explicit strong recommendation) and 'complete tour de force' (superlative praise) indicates unqualified enthusiasm despite the brief excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting it as a must-see and praising the lead's performance as a tour de force.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:41:37.897Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

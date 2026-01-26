@@ -9,11 +9,69 @@
   "isFullReview": false,
   "bwwExcerpt": "Instead, Brunstetter’s book, which spreads thin as it flits back and forth through a half-century, resists delineating the central pair with much of any identifying detail. Allie still likes to paint and Noah is good with lumber, but an effort to maximize their relatability winds up sacrificing their flesh and blood. The roles can be played by different actors because there’s nothing very particular about either character. The result is anodyne — and lacks the erotic charge of an attraction with distinct flavor set against a recognizable world.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 33,
   "source": "bww-roundup",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.washingtonpost.com/entertainment/theater/2024/03/14/the-notebook-review-broadway-musical/",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 33,
+    "confidence": "high",
+    "range": {
+      "low": 25.5,
+      "high": 40.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is anodyne — and lacks the erotic charge",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "an effort to maximize their relatability winds up sacrificing their flesh and blood",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there's nothing very particular about either character",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws in the book's characterization and world-building, describing the result as 'anodyne' and lacking emotional impact, which are serious structural criticisms. | GPT-4o-mini: The review is predominantly negative, criticizing the book for its lack of depth and character development, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:56:56.696Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (33 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

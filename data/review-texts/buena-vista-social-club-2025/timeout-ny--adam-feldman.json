@@ -7,8 +7,64 @@
   "publishDate": "March 19, 2025",
   "fullText": "Buena Vista Social Club offers an irresistible tropical vacation. A celebration of Cuban musical history, it’s a getaway and a gateway.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "dtliThumb": "Up",
   "source": "dtli",
-  "dtliExcerpt": "Buena Vista Social Club offers an irresistible tropical vacation. A celebration of Cuban musical history, it’s a getaway and a gateway."
+  "dtliExcerpt": "Buena Vista Social Club offers an irresistible tropical vacation. A celebration of Cuban musical history, it’s a getaway and a gateway.",
+  "llmScore": {
+    "score": 84,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 82,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "irresistible tropical vacation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A celebration of Cuban musical history",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "it's a getaway and a gateway",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review uses strongly positive language like 'irresistible' and frames the show as both entertaining ('tropical vacation') and culturally valuable ('celebration'), suggesting clear recommendation despite the brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm and an unqualified recommendation for the show as a vibrant celebration of music and culture. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:10:02.442Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

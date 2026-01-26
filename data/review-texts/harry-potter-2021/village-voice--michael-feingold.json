@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Slackly structured, verbose, stylistically muddled, overwrought mishmash...Makes elaborate forays into flashbacks that seem included purely to rouse Potter-fan sentiment...The dialogue, often weighed down by the soggily earnest tone of after-school specials, seems to drag on too long in nearly every scene...A great deal of the acting is shrill...If the rest of 'The Cursed Child' were as carefully built and precisely timed as its effects, the show would cast a genuinely bewitching spell.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 25,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 18,
+      "music": null,
+      "performances": 30,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "Slackly structured, verbose, stylistically muddled, overwrought mishmash",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "A great deal of the acting is shrill",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "If the rest of 'The Cursed Child' were as carefully built and precisely timed as its effects, the show would cast a genuinely bewitching spell",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This is a clear pan with harsh criticism of structure, dialogue, and performances, offering only conditional praise for technical effects while warning the show fails to deliver. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the structure, dialogue, and performances, indicating a strong rejection of the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:29:28.213Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

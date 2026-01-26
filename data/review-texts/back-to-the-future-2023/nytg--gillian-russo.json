@@ -10,7 +10,7 @@
   "showScoreExcerpt": "'Back to the Future' emerges, and continues to be regarded, as a funny, cult-classic romp. The musical adaptation... honors all these views at once and gives 'Back to the Future' the larger-than-life presentation it deserves.",
   "bwwExcerpt": "writers ultimately succeed in building the show's momentum and narrative heft",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 81,
   "source": "show-score",
   "textStatus": "complete",
   "textWordCount": 1577,
@@ -19,5 +19,61 @@
   "textQuality": "full",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 69,
+      "music": 78,
+      "performances": 87,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "gives Back to the Future the larger-than-life presentation it deserves",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "New York Theatre Guide's four-star review",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A third of the score could have otherwise been cut",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: A clear four-star review with strong praise for performances, design, and spectacle, though with measured criticism of the score's length and pacing issues. | GPT-4o-mini: The review expresses strong enthusiasm for the production's design and performances while noting some issues with the score, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:02:50.030Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

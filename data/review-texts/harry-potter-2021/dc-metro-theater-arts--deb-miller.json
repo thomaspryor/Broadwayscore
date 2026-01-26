@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Amazing bursts of magic that dazzle in the darkness, distinctive characterizations of a host of eccentric, endearing, and evil personalities by an enthralling cast...Under Tiffany's masterful direction, the depth and richness of the characters' emotions and psychology are never lost amidst the captivating spectacle. There is a fine balance between surreal fantasy and universal feelings...unsurpassed production values...truly superlative work.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 94,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 93,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "Amazing bursts of magic that dazzle in the darkness",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Under Tiffany's masterful direction",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "truly superlative work",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is unqualified praise with multiple superlatives ('amazing', 'masterful', 'superlative') and no negative elements or caveats mentioned. | GPT-4o-mini: The review expresses unqualified enthusiasm and superlative praise for the direction and performances, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:24:06.269Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

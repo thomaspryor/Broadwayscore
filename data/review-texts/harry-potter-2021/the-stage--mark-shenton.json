@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"It remains utterly gripping and entirely original in its own right...Tiffany's urgent, theatrical production is a continuing marvel, boasting absolutely brilliant effects but always remaining foregrounded in the storytelling...At this show's heart is its humanity, and how it poignantly addresses themes of parental legacy, loss and regret. This is why - beyond all the hype...this Broadway production looks sure to replicate the stratospheric success it has enjoyed in the West End.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 91,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "utterly gripping and entirely original",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "continuing marvel, boasting absolutely brilliant effects",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "looks sure to replicate the stratospheric success",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong superlatives throughout ('utterly gripping', 'entirely original', 'continuing marvel', 'absolutely brilliant') with prediction of 'stratospheric success' indicates unqualified enthusiasm. | GPT-4o-mini: The review expresses strong enthusiasm for the production's originality, direction, and thematic depth, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:28:01.021Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

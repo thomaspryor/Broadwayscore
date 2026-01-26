@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "Practically every single thing about 'Hadestown' is perfect...She has created a god among musicals.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Practically every single thing about 'Hadestown' is perfect",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "She has created a god among musicals",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "She has created a god among musicals.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Uses absolute superlatives like 'perfect' and 'god among musicals' indicating unqualified enthusiasm and highest recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and praise, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:17:20.017Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

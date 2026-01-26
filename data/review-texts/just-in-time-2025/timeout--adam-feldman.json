@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "First things first: Just in Time is a helluva good time at the theater. It’s not just that, but that’s the baseline. Staged in a dazzling rush by Alex Timbers, the show summons the spirit of a 1960s concert at the Copacabana by the pop crooner Bobby Darin—as reincarnated by one of Broadway’s most winsome leading men, the radiant sweetie Jonathan Groff, who gives the performance his considerable all. You laugh, you smile, your heart breaks a little, you swing along with the brassy band, and you’re so well diverted and amused that you may not even notice when the ride you’re on takes a few unconventional turns.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff",
@@ -20,5 +20,61 @@
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
   "dtliExcerpt": "Just in Time is a helluva good time at the theater. It’s not just that, but that’s the baseline. Staged in a dazzling rush by Alex Timbers, the show summons the spirit of a 1960s concert at the Copacabana by the pop crooner Bobby Darin—as reincarnated by one of Broadway’s most winsome leading men, the radiant sweetie Jonathan Groff, who gives the performance his considerable all. You laugh, you smile, your heart breaks a little, you swing along with the brassy band, and you’re so well diverted and amused that you may not even notice when the ride you’re on takes a few unconventional turns.",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": 85,
+      "performances": 89,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "Just in Time is a helluva good time at the theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you're so well diverted and amused that you may not even notice when the ride you're on takes a few unconventional turns",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "But this is really Groff's show",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: 4/5 stars with enthusiastic opening, consistent praise for Groff's performance and production values, and clear entertainment value throughout despite minor structural observations. | GPT-4o-mini: The review expresses strong enthusiasm for the production, praising the performances and overall enjoyment, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:32:51.121Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

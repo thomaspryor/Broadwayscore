@@ -9,11 +9,62 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"A theatrical experience unlike any other, thanks to director Julie Taymor...\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score",
   "designation": null,
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "A theatrical experience unlike any other",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "thanks to director Julie Taymor",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The phrase 'theatrical experience unlike any other' suggests strong positive sentiment and uniqueness, with specific praise for Taymor's direction indicating quality production values. | GPT-4o-mini: The review indicates strong praise for the unique theatrical experience and the direction, suggesting a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:55:01.144Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

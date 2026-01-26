@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "There is nothing surprising in the show, which opens tonight on Broadway. This is a slickly corporate, officially sanctioned slice of legacy clean-up. Two and a half hours of glittery hagiography. If you expect a musical that examines Jackson's life, controversies, and legacy, forget it. If you want to see anything which even mildly challenges the deification of Jackson, or interrogates his celebrity and actions with depth and nuance, this is not the show for you.",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 20,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MJ-Opens-on-Broadway--See-What-the-Critics-Are-Saying-20220201",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "enhanced-sentiment-negative",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is nothing surprising in the show",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "slickly corporate, officially sanctioned slice of legacy clean-up",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Two and a half hours of glittery hagiography",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic systematically dismantles the show as superficial, corporate-manufactured hagiography that fails to examine its subject with any depth or critical perspective. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the lack of depth and nuance, leading to a clear rejection of the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:37:34.396Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Harrison’s story is topical, that’s for sure. Frighteningly so. What elevates it above the ripped-from-the-headlines hackery of, say, so many political dramas co-written by Wikipedia is that it’s also profoundly human and lump-in-the-throat relatable without ever toppling over into boo-hoo sentimentality. The play exposes its audience’s emotional weaknesses like few others do. I reckon that most ticket-buyers will silently ask themselves if they would buy a Prime if they had the chance. And they’d probably be uncomfortable with their honest answer.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Opens-On-Broadway-Starring-Cynthia-Nixon-June-Squibb-Danny-Burstein-and-More-20251208",
   "textStatus": "missing",
@@ -18,5 +18,61 @@
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "dtliExcerpt": "From the moment June Squibb takes the stage at the Hayes Theater in “Marjorie Prime,” you feel lucky to be in her presence. The stage and screen legend is back home on Broadway, where she got her start in “Gypsy” opposite Ethel Merman in 1960, for the first time in eight years. In between being on the boards, she’s been hard at work making films, giving wonderful lead performances in “Thelma” and “Eleanor the Great.” At a spry 96 years old, Squibb is, at long last, in her title-character era.",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": null,
+      "performances": 89,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What elevates it above the ripped-from-the-headlines hackery of, say, so many political dramas co-written by Wikipedia is that it's also profoundly human and lump-in-the-throat relatable",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "From the moment June Squibb takes the stage at the Hayes Theater in 'Marjorie Prime,' you feel lucky to be in her presence",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The play exposes its audience's emotional weaknesses like few others do",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for both the script's emotional depth and June Squibb's commanding performance, with language like 'profoundly human,' 'lump-in-the-throat relatable,' and 'you feel lucky to be in her presence' indicating clear recommendation despite no explicit stars or directive. | GPT-4o-mini: The review expresses strong appreciation for the emotional depth of the play and particularly highlights the performance of June Squibb, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:36:23.877Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

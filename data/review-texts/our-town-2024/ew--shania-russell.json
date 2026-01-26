@@ -11,7 +11,7 @@
   "bwwExcerpt": "Not coincidentally, the most striking aspects of this particular production are baked into the DNA of Wilder’s timeless play. There’s something undefinable missing: perhaps a cut line that was the secret skeleton key or merely the fact of changing the pacing and losing the reality of the show’s slow...",
   "showScoreExcerpt": "Leon's inclusive approach to casting means the play better reflects life as we know it.",
   "originalScore": "B",
-  "assignedScore": 83,
+  "assignedScore": 74,
   "source": "show-score",
   "textStatus": "complete",
   "textWordCount": 1855,
@@ -19,5 +19,61 @@
   "textFetchedAt": "2026-01-25T05:04:44.559Z",
   "textQuality": "full",
   "sourceMethod": "showscore",
-  "scoreSource": "extracted-grade"
+  "scoreSource": "extracted-grade",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 79,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's something undefinable missing: perhaps a cut line that was the secret skeleton key or merely the fact of changing the pacing and losing the reality of the show's slow simplicity",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Leon preserves this, as do his actors. Zoey Deutch, making her Broadway debut, is as instantly likable as ever",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Grade: B",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The B grade and mixed praise for performances balanced against clear concerns about pacing changes and something 'missing' from the production indicates a qualified positive recommendation. | GPT-4o-mini: The review expresses a clear recommendation with praise for the performances and direction, despite some reservations about pacing and emotional impact.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:43:22.653Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

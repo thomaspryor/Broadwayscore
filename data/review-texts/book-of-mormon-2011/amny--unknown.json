@@ -7,8 +7,64 @@
   "publishDate": "March 24, 2011",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "dtliThumb": "Up",
   "source": "dtli",
-  "dtliExcerpt": "Don’t expect to find any members of the Mormon faith protesting outside “The Book of Mormon,” a tuneful, unabashedly silly and absolutely uproarious new musical by Matt Stone and Trey Parker."
+  "dtliExcerpt": "Don’t expect to find any members of the Mormon faith protesting outside “The Book of Mormon,” a tuneful, unabashedly silly and absolutely uproarious new musical by Matt Stone and Trey Parker.",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "absolutely uproarious",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "tuneful, unabashedly silly",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "tuneful, unabashedly silly and absolutely uproarious",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong positive language like 'absolutely uproarious' and 'tuneful' indicates clear enthusiasm and recommendation despite the excerpt being very brief. | GPT-4o-mini: The review expresses strong enthusiasm for the musical, highlighting its humor and entertainment value, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:05:23.920Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

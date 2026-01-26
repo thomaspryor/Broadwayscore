@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "ut sense of humor, which would crash and burn onstage. Instead, he focuses on grandiose emotions, sensuality and the storybook sensation of first love, for which Tveit's puppy-dog innocence is ideal. Robert Hofler, TheWrap : Under the direction of Alex Timbers, a veteran of movie-to-stage musicals like \"Rocky\" and \"Beetlejuice,\" \"Moulin Rouge!\" re-creates that pre-show pandemonium only twice during the show itself and once again at the curtain call. Too often the stage musical gets bogged down in John Logan's uninspired book, which poorly mimics Baz Luhrmann's 2001 film about the consumptive cabaret courtesan Satine (Karen Olivo), who makes the mistake of falling in love with a novice composer named Christian (Aaron Tveit) when she's supposed to be bedding the wealthy Duke of Monroth (Tam Mutu). Patrick Ryan, USA Today : Imagine Lady Gaga's \"Bad Romance,\" but as a steamy Spanish tango. Now imagine that's been mashed up with Britney Spears' \"Toxic\" and The White Stripes' \"Seven Nation A",
   "originalScore": "A",
-  "assignedScore": 93,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
-  "scoreSource": "extracted-grade"
+  "scoreSource": "extracted-grade",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": 70,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "Too often the stage musical gets bogged down in John Logan's uninspired book",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Tveit's puppy-dog innocence is ideal",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "poorly mimics Baz Luhrmann's 2001 film",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the book as 'uninspired' and notes the production 'gets bogged down' too often, with some praise for individual performances but overall mixed-negative sentiment. | GPT-4o-mini: The review highlights significant issues with the book while praising the performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:39:32.126Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

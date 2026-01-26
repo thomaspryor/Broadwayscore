@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "The bottom line is that the show we all hoped would set Broadway on its ear, simply pats it on its back, providing us with generic pastiche comedy and timidly tepid satire.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 29,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "enhanced-sentiment-lean-negative",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 20.5,
+      "high": 37.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": null,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "simply pats it on its back",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "generic pastiche comedy and timidly tepid satire",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "the show we all hoped would set Broadway on its ear",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses clear disappointment with a show that fails to meet expectations, describing it as 'generic' and 'timidly tepid' - strong negative language indicating a clear pan. | GPT-4o-mini: The review expresses strong disappointment and criticism of the show's lack of originality and impact, indicating a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:07:08.594Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": 25,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

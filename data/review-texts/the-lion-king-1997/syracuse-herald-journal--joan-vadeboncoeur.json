@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"An exciting piece of theater for everyone but especially for those unfamiliar with Disney's brilliant, Oscar-winning 1994 animated film...\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 77,
   "source": "show-score",
   "designation": null,
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An exciting piece of theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "for everyone",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Disney's brilliant, Oscar-winning 1994 animated film",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic calls it 'exciting' theater and recommends it broadly 'for everyone,' indicating clear positive sentiment, but the excerpt is too brief to assess full enthusiasm level. | GPT-4o-mini: The review expresses a clear positive sentiment about the theater experience, particularly for newcomers to the original film, indicating a recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:55:06.429Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

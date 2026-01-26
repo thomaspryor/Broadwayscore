@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a story that speaks to now, and I really wish I could hear it clearly over the hideous shouting of auteur Rebecca Frecknall’s grotesque production at the August Wilson Theatre, where it arrives on a wave of acclaim from across the pond (the West End run is ongoing).",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "dtli",
   "dtliThumb": "Down",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": 15
+    },
+    "keyPhrases": [
+      {
+        "quote": "hideous shouting of auteur Rebecca Frecknall's grotesque production",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "This is a story that speaks to now",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "I really wish I could hear it clearly",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: While the critic appreciates the story's relevance, they deliver scathing criticism of the production with extremely harsh language ('hideous', 'grotesque'), indicating they cannot recommend this specific staging. | GPT-4o-mini: The review expresses strong dissatisfaction with the production, indicating a clear negative sentiment towards the overall experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:12:33.353Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

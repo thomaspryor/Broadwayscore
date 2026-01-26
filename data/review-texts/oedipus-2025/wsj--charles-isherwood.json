@@ -8,7 +8,7 @@
   "fullText": null,
   "showScoreExcerpt": "\"I thought what might follow would be Mr. Ickeâs most provocativeâand logical and interestingâdeparture from Sophocles, an ending of a more ambiguous and less gruesome kind. \"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "I thought what might follow would be Mr. Icke’s most provocative—and logical and interesting—departure from Sophocles, an ending of a more ambiguous and less gruesome kind. Instead he reverts to tradition. It’s an understandable move: Many might feel shortchanged if Mr. Icke had chosen otherwise. Ne...",
@@ -18,5 +18,61 @@
   "textQuality": "missing",
   "sourceMethod": "stub",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 53,
+    "confidence": "high",
+    "range": {
+      "low": 45.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "most provocative—and logical and interesting—departure from Sophocles",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Instead he reverts to tradition. It's an understandable move",
+        "sentiment": "negative",
+        "strength": 2
+      },
+      {
+        "quote": "Mr. Icke’s most provocative—and logical and interesting—departure from Sophocles",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The fragment shows the critic praising Icke's creative potential but expressing disappointment that he chose a conventional ending instead of a more provocative departure. | GPT-4o-mini: The review expresses disappointment in the director's choice to revert to tradition rather than take a more innovative approach, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:41:20.552Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 50,
+    "openaiScore": 55,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"It's a smart idea, playing directly to the Gen Y-ers, who grew up reading and loving the Potter books...It's hard even for Potterheads, who cheer loudly whenever a familiar name or place is mentioned, to follow what's going on. But plot is just a Maguffin for Rowling who has always been far more interested in the atmospheric setting of the world she created and the emotional connections between the people who populate it. Thorne and Tiffany remain true to that spirit.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 64,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's hard even for Potterheads, who cheer loudly whenever a familiar name or place is mentioned, to follow what's going on",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Thorne and Tiffany remain true to that spirit",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "It's a smart idea, playing directly to the Gen Y-ers, who grew up reading and loving the Potter books",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges the show's smart targeting and faithful spirit to the source material, but criticizes the confusing plot structure, resulting in a mixed recommendation that leans slightly positive. | GPT-4o-mini: The review indicates a mixed response, acknowledging both the atmospheric qualities and the difficulty in following the plot, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:23:17.004Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 60,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

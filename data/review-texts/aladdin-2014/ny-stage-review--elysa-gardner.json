@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"What makes 'Aladdin' a successful stage adaptation...is the clever but laid-back humor—rife with jokes and word play that defy demographic barriers...coursing through its gentle, unselfconscious crit.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 82,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -20,5 +20,61 @@
   "textQuality": "full",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 70,
+      "performances": 78,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical is still a balm and a tonic—with perhaps a bit more punch nowadays",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "What makes Aladdin a more successful stage adaptation than either Beast or Mermaid is the clever but laid-back humor",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Aladdin's score isn't its strongest asset",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: 4/5 stars with consistent praise for direction, humor, and social relevance, minor reservations about music quality, overall clear recommendation as enduring entertainment. | GPT-4o-mini: The review expresses strong praise for the production's humor, relevance, and performances while acknowledging its enduring appeal, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:58:51.184Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

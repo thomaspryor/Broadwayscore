@@ -7,7 +7,7 @@
   "publishDate": "2024-04-19",
   "fullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 80,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "At over three hours long, Stereophonic never feels like too much. And the extended runtime works to the show’s advantage in that it puts the audience into marathon mode with the band itself as they approach a year of recording and re-recording. It’s a riveting, painful, funny, intense, toe-tapping j...",
@@ -23,5 +23,61 @@
   "textQuality": "excerpt",
   "sourceMethod": "stub",
   "scoreSource": "sentiment-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "never feels like too much",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "riveting, painful, funny, intense, toe-tapping",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "works to the show's advantage",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review contains strong positive language ('riveting', 'intense', 'toe-tapping') and addresses potential concerns about runtime positively, but the excerpt cuts off mid-sentence making final assessment uncertain. | GPT-4o-mini: The review expresses strong enthusiasm for the show's extended runtime and its engaging qualities, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:49:36.259Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 85,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

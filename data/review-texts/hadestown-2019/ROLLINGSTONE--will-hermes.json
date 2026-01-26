@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "De Shields' narration to advance the plot instead of her occasionally repetitive songs. And the fact remains that there's just not much story here - not nearly enough for a two and a half hour show. Will Hermes, Rolling Stone : This chilling scene remains the centerpiece of Hadestown , a love story and class-struggle parable based on the Orpheus myth that arrives on the same Broadway stage Bruce Springsteen worked for 14 months prior. The cast has changed from Mitchell's original LP (where Bon Iver's Justin Vernon, The Low Anthem's Ben Knox Miller and activist folk hero Ani DiFranco joined Mitchell and Brown in the leads). But the work's musical integrity and proletariat spirit remains largely intact. Tim Teeman, Daily Beast : Hadestown has so much fun telling, as it puts it, this \"sad tale\" that even though this retelling of a well-trodden Greek myth feels slight, it also makes for a joyful performance. Ana&iuml;s Mitchell's musical, which opens on Broadway tonight at the Walter Kerr",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
@@ -17,5 +17,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 73,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's just not much story here - not nearly enough for a two and a half hour show",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the work's musical integrity and proletariat spirit remains largely intact",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "makes for a joyful performance",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed signals with praise for musical elements and spirit but significant criticism of story structure and length, suggesting qualified recommendation. | GPT-4o-mini: The review presents a mix of positive comments about the musical's joyful performance and integrity, but significant criticism regarding the story's depth leads to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:15:15.082Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

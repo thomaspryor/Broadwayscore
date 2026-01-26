@@ -16,5 +16,61 @@
   "archivePath": "data/archives/reviews/moulin-rouge-2019/mashable--erin-strecker_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:58:33.121Z",
   "textQuality": "partial",
-  "sourceMethod": "stub"
+  "sourceMethod": "stub",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": 89,
+      "performances": 85,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "This bombastic, enchanting and altogether magical Broadway musical",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This is the best of what a jukebox musical can be; a thrilling burst of color and chorus and nostalgia and bold reimagining",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "My advice? Surrender to the music and the glitzy madness and enjoy this euphoric fantasia for what it is",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic gives enthusiastic praise for the spectacle, music, and performances with superlatives like 'magical' and 'best of what a jukebox musical can be,' while acknowledging thin plot and some emotional beats feeling artificial - overall a clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the spectacle and music, with minor reservations about emotional depth.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:39:57.756Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

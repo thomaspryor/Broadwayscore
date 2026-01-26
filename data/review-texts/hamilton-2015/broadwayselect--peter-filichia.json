@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Miranda puts eloquence in every mouth...'Hamilton' does offer enough musical theater touchstones to please the purist...Tom Kail's direction and Andy Blankenbuehler's choreography make for a seamless, sure-handed musical replete with stunning stage pictures...So Miranda has become one of those comparatively rare musical theater writers who follows his first success ('In the Heights') with a much greater triumph.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 89,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 88,
+      "performances": null,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "much greater triumph",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "seamless, sure-handed musical replete with stunning stage pictures",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Miranda puts eloquence in every mouth",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong unqualified praise calling Hamilton a 'triumph' superior to Miranda's previous success, with specific acclaim for writing, direction, and choreography. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its direction and overall impact as a significant triumph in musical theater.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:20:43.187Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

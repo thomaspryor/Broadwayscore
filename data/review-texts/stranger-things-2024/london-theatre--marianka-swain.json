@@ -10,7 +10,7 @@
   "bwwExcerpt": "At times, when we’re plunged into darkness, with only torch beams to guide us, it feels like a return to telling spooky tales around a campfire. Budding director Joyce also preaches the power of stories – and that becomes a key Hamlet-riffing plot point. This astounding show definitely feels like a new chapter in theatre. It’s out of this world.",
   "showScoreExcerpt": "“Netflix makes its stage debut in spectacular fashion with this keenly anticipated – and, I can happily reveal, totally awe-inspiring – theatrical version of the streamer’s hit sci-fi series ‘Stranger Things.’ Crucially, it’s a must-see not just for superfans, but for anyone excited by boundary-pushing theatre that harnesses jaw-dropping special effects while telling a very relatable human story.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.londontheatre.co.uk/reviews/stranger-things-the-first-shadow-review-phoenix-theatre",
@@ -19,5 +19,61 @@
   "archivePath": "data/archives/reviews/stranger-things-2024/london-theatre--marianka-swain_2026-01-25.html",
   "textFetchedAt": "2026-01-25T05:14:27.383Z",
   "textQuality": "full",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 93,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "totally awe-inspiring – theatrical version of the streamer's hit sci-fi series Stranger Things. Crucially, it's a must-see not just for superfans, but for anyone excited by boundary-pushing theatre",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This astounding show definitely feels like a new chapter in theatre. It's out of this world.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "five-star review",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is clearly a five-star rave review with superlative language like 'totally awe-inspiring,' 'must-see,' 'astounding,' and 'out of this world,' combined with detailed praise for all production elements. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong praise for both the production and performances, indicating it is a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:51:05.070Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

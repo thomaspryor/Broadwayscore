@@ -10,7 +10,7 @@
   "dtliExcerpt": "[Rogers] can do it all. As smiley, effervescent and, well, animated as t he actress is for most of the night, she finds power and emotional resonance in her 11 o’clock number “Something To Shout About.”",
   "showScoreExcerpt": "\"She [Rogers] may be playing a two-dimensional character, but sheâs one heâck of a triple threat.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "complete",
@@ -19,5 +19,61 @@
   "textFetchMethod": "playwright",
   "archivePath": "data/archives/reviews/boop-2025/nypost--johnny-oleksinski_2026-01-25.html",
   "textQuality": "partial",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 68,
+      "performances": 87,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "a fun if not fantastic musical",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "I mostly enjoyed the bump-free ride to a happy ending",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The basic and predictable book from writer Bob Martin",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic enjoys the show despite acknowledging significant flaws in the book, praising Rogers' star-making performance and the production values while accepting the material's limitations. | GPT-4o-mini: The review expresses clear enjoyment of the lead performance and the overall experience, despite some reservations about the book and plot.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:08:40.690Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

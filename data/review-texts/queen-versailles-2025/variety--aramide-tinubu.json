@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "The performances, including a megatallented ensemble, are also excellent. As expected, Chenoweth is a force, and though Jackie isn’t really a “likable” figure, the Emmy Award winner draws out aspects of her personality that offer glimmers of sympathy for this toxicly positive billionaire woman.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 81.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The performances, including a megatallented ensemble, are also excellent",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Chenoweth is a force",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "draws out aspects of her personality that offer glimmers of sympathy",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances and Chenoweth specifically, but this excerpt lacks context about other production elements and overall recommendation. | GPT-4o-mini: The review highlights excellent performances, particularly by Chenoweth, indicating a clear recommendation despite some complexity in the character portrayal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:45:48.858Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

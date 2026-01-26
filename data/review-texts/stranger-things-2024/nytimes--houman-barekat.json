@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Directed by Stephen Daldry (“Billy Elliot: The Musical”; “The Crown”) and written by Kate Trefry and Jack Thorne in collaboration with the TV show’s creators, the Duffer brothers, the show runs at the Phoenix Theater, in London, through Aug. 25, 2024. It’s a gaudy, vertiginous fairground ride of a play, exactly what you’d expect from a show co-produced by Netflix: Cheap thrills, expensively made.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "bww-roundup",
   "bwwThumb": "Down",
   "bwwUrl": "https://www.nytimes.com/2023/12/14/theater/stranger-things-the-first-shadow-london.html?smid=nytcore-ios-share&referringSource=articleShare",
   "designation": null,
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a gaudy, vertiginous fairground ride of a play",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Cheap thrills, expensively made",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "exactly what you'd expect from a show co-produced by Netflix",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic dismisses the show as superficial entertainment with 'cheap thrills' despite expensive production values, using clearly pejorative language throughout. | GPT-4o-mini: The review indicates a lack of substance and depth, highlighting a focus on superficial entertainment rather than quality storytelling or production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:51:10.226Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

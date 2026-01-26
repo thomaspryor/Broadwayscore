@@ -7,8 +7,59 @@
   "publishDate": "March 24, 2011",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "dtliThumb": "Up",
   "source": "dtli",
-  "dtliExcerpt": "I know, I know: You’ve been indulging for years in a little scatological side business called “South Park.” But now, you’ve discovered your true calling — as the wit-spewing class clowns of Broadway."
+  "dtliExcerpt": "I know, I know: You’ve been indulging for years in a little scatological side business called “South Park.” But now, you’ve discovered your true calling — as the wit-spewing class clowns of Broadway.",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you've discovered your true calling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "wit-spewing class clowns of Broadway",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic suggests the creators have found their 'true calling' on Broadway and praises their wit, indicating positive sentiment despite the brief excerpt. | GPT-4o-mini: The review suggests a positive sentiment towards the production, highlighting its wit and humor, though it lacks specific details.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:07:31.949Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

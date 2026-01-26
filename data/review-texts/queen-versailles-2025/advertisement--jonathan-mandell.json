@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The production is impressively designed and wonderfully acted; the show has a pleasant enough new score by a high-profile composer who’s on a roll (his 1976 musical “The Baker’s Wife” is opening later this week Off-Broadway, and “Wicked: For Good” is being released later this month.) But it doesn’t adequately answer for me Sondheim’s essential question: Why should this be a musical?",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "complete",
@@ -17,5 +17,61 @@
   "archivePath": "data/archives/reviews/queen-versailles-2025/advertisement--jonathan-mandell_2026-01-25.html",
   "textFetchedAt": "2026-01-25T05:06:25.969Z",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 60,
+      "performances": 73,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Queen of Versailles nevertheless largely comes off as the Broadway equivalent of a Reality TV show",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The production is impressively designed and wonderfully acted",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "But it doesn't adequately answer for me Sondheim's essential question: Why should this be a musical?",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer acknowledges strong production values and performances but fundamentally questions the show's purpose and criticizes its shallow social commentary, resulting in a mixed recommendation that leans slightly positive due to craft elements. | GPT-4o-mini: The review presents a mixed view, praising the performances and design while criticizing the depth and relevance of the material, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:44:16.638Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

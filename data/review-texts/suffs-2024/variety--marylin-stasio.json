@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Over the course of this almost three-hour show (which could be even longer to better accommodate the stuffed-and-rushed second act), Taub manages to dramatize the complex origins and contentious development of the women’s rights movement by filtering it through the political coming-of-age narrative of Alice Paul, one of its seminal leaders. Making this a genuine tour de force, the composer-lyricist-writer also plays this central role.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Making this a genuine tour de force, the composer-lyricist-writer also plays this central role",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Taub manages to dramatize the complex origins and contentious development of the women's rights movement",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "stuffed-and-rushed second act",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the ambitious scope and calls the lead performance a 'genuine tour de force' while noting structural issues with pacing, indicating a positive but not unqualified recommendation. | GPT-4o-mini: The review highlights a strong central performance and an ambitious narrative but notes significant pacing issues, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:52:28.483Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

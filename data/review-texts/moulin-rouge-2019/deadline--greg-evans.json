@@ -9,10 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Most, though, remember to turn the damn spigot off.",
   "originalScore": "Negative",
-  "assignedScore": 48,
+  "assignedScore": 38,
   "source": "reviews-json-stub",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "stub",
-  "showScoreExcerpt": "\"âMoulin Rouge! The Musicalâ Review: All You Need Is Love Songs By The Dozens\""
+  "showScoreExcerpt": "\"âMoulin Rouge! The Musicalâ Review: All You Need Is Love Songs By The Dozens\"",
+  "llmScore": {
+    "score": 38,
+    "confidence": "low",
+    "range": {
+      "low": 20.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Most, though, remember to turn the damn spigot off",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Most, though, remember to turn the damn spigot off.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "All You Need Is Love Songs By The Dozens",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The metaphor about turning off a spigot suggests the show is excessive and overwrought, implying poor creative restraint. | GPT-4o-mini: The review lacks clear positive or negative sentiment, suggesting a mixed recommendation. | Note: Models differed by 25 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:39:41.188Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 50,
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 25, OpenAI: 50)"
+    ]
+  }
 }

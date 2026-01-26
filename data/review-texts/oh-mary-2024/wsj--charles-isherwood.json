@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "“Oh, Mary!” is directed by Sam Pinkleton at a breakneck speed that both allows room for the best jokes to harvest their share of laughter while never letting even the lesser gags land with a thud. The entire cast excels at physical comedy, particularly Escola, whose Mary, after seducing her acting teacher on top of Abraham’s desk, must find a dignified way to descend from it, with ingeniously amusing results. I have a pretty low threshold for the coarseness of much low comedy, and plenty of the humor in “Oh, Mary!” is so low it qualifies as subterranean. But Escola’s brilliantly loopy writing and knockabout performance—which also recalls the great gifts of Carol Burnett—won me over.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 76,
+      "music": null,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Escola's brilliantly loopy writing and knockabout performance—which also recalls the great gifts of Carol Burnett—won me over",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The entire cast excels at physical comedy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I have a pretty low threshold for the coarseness of much low comedy, and plenty of the humor in 'Oh, Mary!' is so low it qualifies as subterranean",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging the crude humor as potentially off-putting, the critic was ultimately 'won over' by the writing and performances, praising the direction, cast, and comparing the lead to Carol Burnett. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some reservations about the humor, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:42:44.657Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

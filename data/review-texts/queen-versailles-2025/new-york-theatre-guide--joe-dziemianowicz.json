@@ -9,12 +9,70 @@
   "isFullReview": false,
   "bwwExcerpt": "Make no mistake, diminutive Tony-winning dynamo Chenoweth works overtime. In short skirts and plunging tops, she showcases her comic chops while fully deploying her voice: big belt, soaring soprano, and warm, mellow middle tones. Like a timeshare broker, she’s up there selling her character and the show. (It's a contrast from the documentary, where the real Jackie appears more low-key, not exaggerated or overtly performing.)",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-QUEEN-OF-VERSAILLES-Opens-on-Broadway-20251109",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 61,
+    "confidence": "low",
+    "range": {
+      "low": 47,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like a timeshare broker, she's up there selling her character and the show",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "diminutive Tony-winning dynamo Chenoweth works overtime",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "she showcases her comic chops while fully deploying her voice",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt praises Chenoweth's performance skills but suggests she's overcompensating ('works overtime', 'timeshare broker') for material that may need selling, creating mixed signals about the show's overall quality. | GPT-4o-mini: The review highlights strong performances, particularly by Chenoweth, but lacks a clear overall recommendation for the show itself. | Note: Models differed by 18 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:44:57.681Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 70,
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 18 points (Claude: 52, OpenAI: 70)"
+    ]
+  }
 }

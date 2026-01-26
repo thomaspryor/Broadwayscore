@@ -7,8 +7,64 @@
   "publishDate": "April 26, 2025",
   "fullText": "Watch out, Hugh Jackman! Jonathan Groff is coming for your crown as Broadway’s greatest showman. And he’s got the slickest attraction in town as ammo.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "dtliThumb": "Up",
   "source": "dtli",
-  "dtliExcerpt": "Watch out, Hugh Jackman! Jonathan Groff is coming for your crown as Broadway’s greatest showman. And he’s got the slickest attraction in town as ammo."
+  "dtliExcerpt": "Watch out, Hugh Jackman! Jonathan Groff is coming for your crown as Broadway’s greatest showman. And he’s got the slickest attraction in town as ammo.",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jonathan Groff is coming for your crown as Broadway's greatest showman",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "he's got the slickest attraction in town as ammo",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Jonathan Groff is coming for your crown as Broadway’s greatest showman.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review uses superlative language comparing Groff to Hugh Jackman and calling the show the 'slickest attraction in town,' indicating strong enthusiasm despite being a brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for Jonathan Groff's performance, indicating a must-see quality.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:31:22.683Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

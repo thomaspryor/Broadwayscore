@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "It still is. She doesn’t have a mastery of the Beaumont’s huge thrust yet. And so this is an overly presentational staging in which actors other than Ross struggle to connect to one another, which is partly why the experience is mostly unmoving even as songs desperately beg us to cry.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "textStatus": "missing",
@@ -18,5 +18,61 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "dtliExcerpt": "The original Broadway production in 1998 featured career-changing performances from Brian Stokes Mitchell, Audra McDonald and Marin Mazzie. Now, in 2025, you feel every bit as fortunate to be basking in the radiant glow of Caissie Levy playing Mother, Ben Levi Ross as Mother’s Younger Brother and especially the golden-voiced Joshua Henry as Harlem piano player Coalhouse Walker. The revival’s power is all in the pipes.",
-  "dtliThumb": "Meh"
+  "dtliThumb": "Meh",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": 80,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "you feel every bit as fortunate to be basking in the radiant glow of Caissie Levy playing Mother, Ben Levi Ross as Mother's Younger Brother and especially the golden-voiced Joshua Henry",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "this is an overly presentational staging in which actors other than Ross struggle to connect to one another",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The revival's power is all in the pipes",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review that praises exceptional vocal performances but criticizes the staging and direction, suggesting the production succeeds on musical merits alone. | GPT-4o-mini: The review highlights strong performances but criticizes the direction and overall emotional impact, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:47:22.698Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,12 +9,68 @@
   "isFullReview": true,
   "dtliExcerpt": "The makers of any show based on a famous person's life must answer crucial questions: Is the figure well-known enough to draw audiences? If not, is the lead actor sufficiently famous to carry the show? Darin remains a recognizable name but not particularly well-remembered among general audiences. He died at 37 in 1973 and is primarily recalled for songs like Splish Splash, Dream Lover, Mack the Knife, and Beyond the Sea.\n\nJust in Time showcases these songs brilliantly with considerable pizzazz. It functions as a lovely concert rather than revealing biographical material about Darin's actual life. Darin lived with constant awareness that his weakened heart might claim him young—which it did. He discovered his presumed mother (Michele Pawk, exceptional) was actually his grandmother, and his supposed sister (Emily Bergl) was his biological mother.\n\nGroff opens with witty self-awareness, noting whether you're a fan of Bobby Darin, or one of the twelve people who watched Mindhunter—it doesn't matter. Director Alex Timbers and designer Derek McLane transform Circle in the Square into a nightclub environment. Supporting performances shine, with backing singers delivering shimmeringly and Lawrence and Henningsen performing impressively.\n\nHowever, momentum falters during the Darin-Dee marriage examination. The show hints at Darin's cruel side but doesn't explore it thoroughly. The relationship between Darin and his not-mother Polly resonates more effectively. Her appearance as a ghost later delivers what might be Broadway's funniest line this season.\n\nGroff makes clear the intention of Just in Time at its end: Doing this was when he felt the most alive. Honestly? Same. This can only happen in this room, right now, with you, and it'll never happen quite the same way again. The creators frame this as theater's transformative power, honoring performers who served that purpose.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 35,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T23:35:00.000Z",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "dtli",
-  "bwwExcerpt": "Groff makes clear the intention of Just in Time, indeed any show, at its end. “Doing this was when he (Darin) felt the most alive,” he says. “Honestly? Same. This can only happen in this room, right now, with you, and it’ll never happen quite the same way again.” That may read as hokey on the page, ..."
+  "bwwExcerpt": "Groff makes clear the intention of Just in Time, indeed any show, at its end. “Doing this was when he (Darin) felt the most alive,” he says. “Honestly? Same. This can only happen in this room, right now, with you, and it’ll never happen quite the same way again.” That may read as hokey on the page, ...",
+  "llmScore": {
+    "score": 35,
+    "confidence": "high",
+    "range": {
+      "low": 30,
+      "high": 40
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "loses momentum, indeed becomes a lethargic drag",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "unfocused, dull examination",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "scratches the surface...but it doesn't dwell there",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is predominantly critical, describing the show as a 'lethargic drag' with 'unfocused, dull' content that fails to explore its own dramatic potential. | GPT-4o-mini: The review expresses significant dissatisfaction with the show's pacing and focus, indicating a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:31:47.919Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 35,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

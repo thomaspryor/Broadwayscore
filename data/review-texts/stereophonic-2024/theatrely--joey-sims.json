@@ -7,8 +7,64 @@
   "publishDate": "April 19, 2024",
   "fullText": "For three glorious hours, Stereophonic drops its audience into a unique agony: the pursuit of artistic perfection. David Adjimi’s astounding new work, itself near-perfect, captures the wondrous highs and excruciating lows of the creative process with a hilarious, painstaking precision. You’ll want to live in this play forever.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "dtliThumb": "Up",
   "source": "dtli",
-  "dtliExcerpt": "For three glorious hours, Stereophonic drops its audience into a unique agony: the pursuit of artistic perfection. David Adjimi’s astounding new work, itself near-perfect, captures the wondrous highs and excruciating lows of the creative process with a hilarious, painstaking precision. You’ll want to live in this play forever."
+  "dtliExcerpt": "For three glorious hours, Stereophonic drops its audience into a unique agony: the pursuit of artistic perfection. David Adjimi’s astounding new work, itself near-perfect, captures the wondrous highs and excruciating lows of the creative process with a hilarious, painstaking precision. You’ll want to live in this play forever.",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "David Adjimi's astounding new work, itself near-perfect",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "You'll want to live in this play forever",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "For three glorious hours, Stereophonic drops its audience into a unique agony",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified praise with superlatives like 'astounding', 'near-perfect', and 'glorious', culminating in the ultimate recommendation that audiences will want to live in this show forever. | GPT-4o-mini: The review expresses unqualified enthusiasm and praise for the work, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:50:08.078Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

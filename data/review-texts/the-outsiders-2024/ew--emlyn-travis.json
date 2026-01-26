@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "and the other is just trying not to die while crossing from the wrong side of the tracks. And this sanitization makes the musical feel oddly superficial. It approaches its subjects from the outside. Emlyn Travis, Entertainment Weekly: For many, The Outsiders is a story that not only remains as raw and relatable as when they first read it, but also pushed the very boundaries of young adult fiction with its insightful ruminations on brotherhood, identity, and the cycles of grief and violence. While its musical adaptation may have its squabbles, its heart of gold still remains firmly intact. Grade: B Chris Jones, Chicago Tribune: It also doesn’t help that the young guy’s love interest drops away from the narrative. All in all, and with all due respect to the many capable artists here and the fame of the book, the emotional landscape just has not been shaped to fit the needs of a Broadway musical. “The Outsiders” needed greater expansion of character, a gentler, simpler touch, a better se",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 46,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
@@ -26,5 +26,61 @@
   "scoreSource": "sentiment-mixed",
   "scoreConfidence": "low",
   "dtliExcerpt": "However, the book (by playwright Adam Rapp and Justine Levine), which stays dutifully true to the novel, has difficulty reconciling bursts of excitement with the plotting and character details of the novel, with Brody Grant (who looks far too mature to be playing the sensitive 14-year-old Ponyboy Curtis) slowly narrating exposition to the audience and sentimental solos that stop the show in its tracks. By act two, the show felt like a mechanical procession of plot progression and teen melodrama.",
-  "dtliThumb": "Meh"
+  "dtliThumb": "Meh",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 55,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes the musical feel oddly superficial. It approaches its subjects from the outside",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the emotional landscape just has not been shaped to fit the needs of a Broadway musical",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "By act two, the show felt like a mechanical procession of plot progression and teen melodrama",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Multiple critics express fundamental structural problems with the adaptation, calling it 'superficial,' 'mechanical,' and poorly suited for Broadway, despite acknowledging some capable artistry. | GPT-4o-mini: The review expresses significant concerns about the adaptation's emotional depth and character development while acknowledging some positive aspects, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:57:43.544Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

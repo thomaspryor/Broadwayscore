@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"You need somebody adept in theatrical magic to make this dazzle...and Tiffany fits the bill perfectly...He isn't shy about going big and high-tech...As Albus, Clemmett gives a marvelously shaded performance, capturing both his pain and youthful sense of wonder. Scorpius is a much more colorful character, and Boyle goes deliciously over-the-top without ever losing this emotional thread of this lonely boy. Jennings gives his usual excellent all...Recommended.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 84,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 89,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "fits the bill perfectly",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "marvelously shaded performance",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Recommended",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Clear positive recommendation with strong praise for direction and multiple standout performances, culminating in explicit 'Recommended' verdict. | GPT-4o-mini: The review expresses strong praise for the performances and direction, culminating in a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:24:25.345Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

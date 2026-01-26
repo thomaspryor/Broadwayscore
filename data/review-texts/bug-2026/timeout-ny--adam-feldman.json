@@ -7,9 +7,65 @@
   "publishDate": "January 8, 2026",
   "fullText": "The slipperiness of ostensible skepticism into utter credulity is what makes Bug continue to resonate so powerfully today. This is not just a particularly lurid folie à deux involving a peculiar variety of Ekbom Syndrome. It speaks to a larger crisis that has only expanded since Letts wrote the play: a twisted culture of conspiracy, exemplified by phenomena like QAnon and Pizzagate, that attracts broken people into collective psychosis. That’s the genuine horror built into this play, and perhaps also its most soothing aspect. In Bug, at least, the contagion is contained.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "The slipperiness of ostensible skepticism into utter credulity is what makes Bug continue to resonate so powerfully today. This is not just a particularly lurid folie à deux involving a peculiar variety of Ekbom Syndrome. It speaks to a larger crisis that has only expanded since Letts wrote the play: a twisted culture of conspiracy, exemplified by phenomena like QAnon and Pizzagate, that attracts broken people into collective psychosis. That’s the genuine horror built into this play, and perhaps also its most soothing aspect. In Bug, at least, the contagion is contained.",
-  "showScoreExcerpt": "\"The slipperiness of ostensible skepticism into utter credulity is what makes Bug continue to resonate so powerfully today.\""
+  "showScoreExcerpt": "\"The slipperiness of ostensible skepticism into utter credulity is what makes Bug continue to resonate so powerfully today.\"",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes Bug continue to resonate so powerfully today",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "That's the genuine horror built into this play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "speaks to a larger crisis that has only expanded since Letts wrote the play",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the play's continued relevance and powerful thematic resonance with contemporary issues, indicating strong appreciation for the material's enduring impact. | GPT-4o-mini: The review highlights the play's powerful resonance and relevance, indicating a strong recommendation despite not explicitly stating 'see it'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:10:47.547Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

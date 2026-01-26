@@ -9,11 +9,67 @@
   "isFullReview": false,
   "bwwExcerpt": "With tongue in cheek and heart in hand, not to mention assorted other body parts splitting, contorting and can-canning up a storm, 'Moulin Rouge' is a jukebox musical on steroids. And thanks to a very savvy adaptation from book writer John Logan and director Alex Timbers, it's paced for maximum pleasure. Still erotically antic with near non-stop dancing courtesy Sonya Tayeh's exhilarating choreography, it's also emotionally engaging, which says quite a lot for a show that doesn't seem to take itself all that seriously.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "paced for maximum pleasure",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "exhilarating choreography",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "emotionally engaging, which says quite a lot for a show that doesn't seem to take itself all that seriously",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises key creative elements (adaptation, direction, choreography) while acknowledging the show's campy nature as a strength rather than weakness, indicating clear recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the show's pacing, choreography, and emotional engagement, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:38:14.924Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

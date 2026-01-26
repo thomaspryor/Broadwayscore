@@ -10,7 +10,7 @@
   "bwwExcerpt": "ellent company of actors achieve more fully-realized performances. There are certainly worse ways to spend and evening than with a musical so visually gorgeous and vibrantly performed. Sarah Holdren, Vulture : For all its splashy, glittery, high-kicking, butt-cheek-baring, sword-swallowing maximalism, Moulin Rouge! is something more unsettling than not good. It's not even very interesting. There's a shapelessness about it, a weird enervation underneath the flash and bang. It's directed by Alex Timbers, but it feels like it was assembled by committee, even by algorithm. The show veers broadly away from its beloved-by-millennials-everywhere source material, which in itself is no crime. But the path its creators have taken is one long trip through the Kingdom of Pandering, with multiple pit stops in the Meadows of Cutesiness and the Forest of Flat Characters. Everywhere it should be filthy, it's scrubbed aggressively clean, yet somehow it's still a hot mess. Adam Feldman, Time Out New Yor",
   "showScoreExcerpt": "\"'Moulin Rouge!' Is Broadwayâs Biggest Karaoke Night. It commits singlemindedly to stuffing as many additional hit tracks as possible.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
@@ -28,5 +28,61 @@
   "textQuality": "partial",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": 30,
+      "performances": 43,
+      "direction": 18
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not even very interesting. There's a shapelessness about it, a weird enervation underneath the flash and bang.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It's two and a half hours of karaoke on a multimillion-dollar budget.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The real frustration of Moulin Rouge! is that it feels so completely like a product. Underneath its pulsing, crimson exterior, it's creepily cold-blooded.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a scathing pan, calling it 'not even very interesting,' comparing it to expensive karaoke, and describing it as a soulless product that never moves or even titillates audiences. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the show for its lack of substance, poor direction, and failure to engage emotionally, leading to a strong recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:39:19.894Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

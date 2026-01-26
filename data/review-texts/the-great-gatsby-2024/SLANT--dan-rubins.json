@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "the soundtrack to Jack Clayton’s 1974 movie adaptation did, nor a spirit of wild abandon, like the soundtrack to Baz Luhrmann’s 2013 take. The score to this “Great Gatsby” is missing a vital urgency. Dan Rubins, Slant Magazine: And while any adaptation of The Great Gatsby has to thread the needle between wowing audiences with opulence and inviting critique of the ostentatious hollow center (those pyrotechnics are surely ironic, right?), the show’s final images seem to find that balance successfully. “I don’t want to live here, but I never want to leave,” the bombastically independent Jordan Baker (Samantha Pauly) sings as she enters one of Gatsby’s extravagant parties. That’s about right: If The Great Gatsby doesn’t have the makings of a long-term Broadway resident, it’s become, in its newly minted tension and decadence, a welcome visitor. Christian Lewis, Variety: For any fan of “The Great Gatsby,” though, it’s likely you’ll have moments of wanting more, of missing out on all the subt",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 10,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
@@ -24,5 +24,51 @@
   "textQuality": "excerpt",
   "sourceMethod": "bww-roundup",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 10,
+    "confidence": "medium",
+    "range": {
+      "low": 5,
+      "high": 15
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "No hay banda! There is no band.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review indicates a lack of essential musical elements, suggesting a clear rejection of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:53:17.655Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 10,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

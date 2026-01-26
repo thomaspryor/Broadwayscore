@@ -7,7 +7,63 @@
   "publishDate": "August 6, 2018",
   "fullText": "BOSTON — The jukebox has exploded.\r\n\r\nIts pieces zoom through the air like candy-colored shrapnel, whizzing by before the memory can tag them and making the blandly familiar sound enticingly exotic. I’m talking about the recycled pop hits, mostly of a romantic stripe, that make up the seemingly infinite song list of “Moulin Rouge! The Musical,” at the Emerson Colonial Theater here.\r\n\r\nBy the end of this smart, shameless and extravagantly entertaining production, adapted from Baz Luhrmann’s 2001 movie, you’ll think you’ve heard fragments of every Top 40 song of lust and longing that has been whispered, screamed or crooned into your ear during the past several decades. You may even believe that once upon a time you loved them all.\r\n\r\nPart of the genius of Mr. Luhrmann’s original version — which starred Nicole Kidman and Ewan McGregor as doomed lovers in a Bohemian, fin-de-siècle Paris — was that it put mainstream, latter-day radio songs into the context of a verismo costume opera like “La Traviata.” Not for nothing was Elton’s John’s “Your Song” the ballad most memorably shared by the film’s leading lovers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 88,
+      "performances": null,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "smart, shameless and extravagantly entertaining production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Part of the genius of Mr. Luhrmann's original version",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "making the blandly familiar sound enticingly exotic",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses consistently positive language like 'smart', 'extravagantly entertaining', and 'genius' while praising the musical concept and production approach without significant reservations. | GPT-4o-mini: The review expresses strong enthusiasm for the production's entertainment value and musical integration, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:40:08.079Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

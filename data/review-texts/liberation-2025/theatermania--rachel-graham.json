@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Since seeing it earlier this year, I’ve found myself mentally comparing everything else onstage to Liberation, and frankly, not many other shows compare. Liberation is a must see.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I've found myself mentally comparing everything else onstage to Liberation, and frankly, not many other shows compare",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Liberation is a must see",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Liberation is a must see.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses the strongest possible language - 'must see' - and positions the show as the gold standard against which all other theater is measured. | GPT-4o-mini: The review expresses unqualified enthusiasm and a strong recommendation to see the show, indicating it stands out significantly compared to others.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:34:29.426Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

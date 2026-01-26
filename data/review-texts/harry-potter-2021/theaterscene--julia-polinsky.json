@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"After a somewhat slow start, crammed with exposition, 'Harry Potter and the Cursed Child'...will have you in its spell...Lots and lots of eye-filling magic...Some of the most breathtaking stagecraft ever made...That's really the best part of the show...A transformed Lyric Theatre draws you in to the Potter world from moment one...Even a Scrooge-level cynic would be enchanted by this theater, the wonderful design, and the terrific theatrical illusions, made to enfold you completely.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 84,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": null,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "will have you in its spell",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Some of the most breathtaking stagecraft ever made",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Even a Scrooge-level cynic would be enchanted",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging a slow start with exposition issues, the critic delivers enthusiastic praise for the production design and theatrical magic, with superlatives like 'breathtaking stagecraft ever made' and confident assertions about enchanting even cynics. | GPT-4o-mini: The review expresses strong enthusiasm for the show's magical elements and stagecraft, leading to a clear recommendation despite a slow start.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:28:33.903Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

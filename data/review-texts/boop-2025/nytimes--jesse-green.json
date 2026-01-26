@@ -11,7 +11,7 @@
   "bwwExcerpt": "But none of that explains or justifies the show’s existence. Nor, despite enormous effort, can the book by Bob Martin. In building a case for a vintage piece of intellectual property — Betty was born as a half-dog in 1930 — Martin winds up replicating the kind of musical he roasted in ‘The Drowsy Chaperone’... That show’s imaginary ‘Eleanor! The Eleanor Roosevelt Musical,’ is no less ludicrous than the real-life ‘Boop! The Musical.’",
   "showScoreExcerpt": "\"The It girl with the spit curl looks great for 100, but her Broadway musical, which feels like one big merch grab, is boop-boop-a-donât\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
   "designation": null,
@@ -50,5 +50,61 @@
   ],
   "fetchTier": 4,
   "archiveOrgTimestamp": "20250726174952",
-  "archiveOrgUrl": "http://web.archive.org/web/20250726174952/https://www.nytimes.com/2025/04/07/theater/boop-the-musical-review-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250726174952/https://www.nytimes.com/2025/04/07/theater/boop-the-musical-review-broadway.html",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 73,
+      "performances": 81,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "a well-crafted, charmingly performed, highly professional production that nobody asked for",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "none of that explains or justifies the show's existence",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "a merch grab — in the lobby a plushie Pudgy goes for $35 — is not the same as a musical",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising performances, music, and production values, the critic fundamentally questions the show's reason for existing and condemns it as a commercial cash grab rather than genuine theater. | GPT-4o-mini: The review expresses significant disappointment with the show's concept and execution, despite acknowledging strong performances and music, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:08:46.723Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

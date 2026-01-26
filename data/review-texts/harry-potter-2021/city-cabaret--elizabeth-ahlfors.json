@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"A familiarity with Rowling's seven-book world is the key to how much you will enjoy this ambitious spectacle. Newbies can expect complications following the plot but be assured that the slick, production values do the trick of electrifying entertainment...For Potterheads, it is a treat, a plot heavy on adventures, dazzling thrills and quick cuts, but it is also laden with too much repetition and trimming would certainly help.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 69,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 69,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "slick, production values do the trick of electrifying entertainment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "laden with too much repetition and trimming would certainly help",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "For Potterheads, it is a treat",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review that praises production values and appeals to fans but criticizes plot issues and length, suggesting conditional enjoyment based on Potter knowledge. | GPT-4o-mini: The review expresses enjoyment for fans of the series but highlights significant issues with repetition, leading to a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:23:48.392Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

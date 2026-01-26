@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "'Hadestown' is the best new musical I have seen in years...overflowing with rich, lively music.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 93,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "best new musical I have seen in years",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "overflowing with rich, lively music",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "'Hadestown' is the best new musical I have seen in years",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Superlative language ('best in years') combined with enthusiastic praise for the music indicates unqualified enthusiasm despite the brief excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm and high praise for the musical, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:18:23.910Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

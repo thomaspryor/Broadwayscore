@@ -10,7 +10,7 @@
   "bwwExcerpt": "Pandering, with multiple pit stops in the Meadows of Cutesiness and the Forest of Flat Characters. Everywhere it should be filthy, it's scrubbed aggressively clean, yet somehow it's still a hot mess. Adam Feldman, Time Out New York : Red alert! Red alert! If you're the kind of person who frets that jukebox musicals are taking over Broadway, prepare to tilt at the windmill that is the gorgeous, gaudy, spectacularly overstuffed Moulin Rouge! The Musical . Directed with opulent showmanship by Alex Timbers, this adaptation of Baz Luhrmann's 2001 movie may be costume jewelry, but its shine is dazzling. Peter Marks, Washington Post : The antic unconventionality of director Baz Luhrmann's 2001 pop phenomenon \"Moulin Rouge!\" has been transformed into an eye-and-ear-pleasing - and altogether conventional - Broadway musical. With a glorious set by Derek McLane, more than 70 pop songs, and dynamic lead performances from Karen Olivo and Aaron Tveit, the show is engineered for an evening of easily",
   "showScoreExcerpt": "ââââ \"Red alert! Red alert! If you're the kind of person who frets that jukebox musicals are taking over Broadway, prepare to tilt at the windmill that is the gorgeous, gaudy, spectacularly overstuffed 'Moulin Rouge! The Musical.' Directed with opulent showmanship by Alex Timbers, this adaptation of Baz Luhrmann's 2001 movie may be costume jewelry, but its shine is dazzling.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
@@ -21,5 +21,63 @@
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 69,
+    "confidence": "low",
+    "range": {
+      "low": 55,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 76,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "gorgeous, gaudy, spectacularly overstuffed",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "may be costume jewelry, but its shine is dazzling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "engineered for an evening of easily",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite some reservations about conventionality and surface-level appeal, the critic clearly praises the visual spectacle, performances, and overall entertainment value with enthusiastic language. | GPT-4o-mini: The review contains both praise for the production's visual appeal and performances, but also significant criticism regarding its substance and character depth, leading to a mixed recommendation. | Note: Models differed by 18 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:39:01.476Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 60,
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 18 points (Claude: 78, OpenAI: 60)"
+    ]
+  }
 }

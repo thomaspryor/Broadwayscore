@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Though, cushioning that reality a great deal is the production's stagecraft, a ceaseless spell of practical magic, both simple and intricate. Tiffany spares no indulgence as his lavish production unfolds, giving us acrobatic wand fights, polyjuice transformations, flying Dementors, and a stunt involving water that still has me boggled. There's a giddy bravado to a lot of this stuff, but the play isn't showing off to show off. Tiffany smartly contextualizes the spectacle, figuring out how to make a live Harry Potter show feel magical in a way that's unique to the theater. The \"what are they going to do next, and how are they going to do it\" of it all becomes an integral part of the experience, as much of an adventure as the story itself. The special effects only overwhelm toward the end, when the play has exhausted most of its energy and all the flames and flying starts to feel like a Universal Studios stunt show rather than a full-bodied piece of theater. Mostly, though, The Cursed Child's wizardry is plucky, thrilling, and well-proportioned.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Cursed Child's wizardry is plucky, thrilling, and well-proportioned",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Tiffany smartly contextualizes the spectacle, figuring out how to make a live Harry Potter show feel magical in a way that's unique to the theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The special effects only overwhelm toward the end, when the play has exhausted most of its energy and all the flames and flying starts to feel like a Universal Studios stunt show rather than a full-bodied piece of theater",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is predominantly positive about the production's stagecraft and direction, with strong praise for the theatrical magic and smart integration of spectacle, though it notes some weakening toward the end. | GPT-4o-mini: The review expresses strong admiration for the production's stagecraft and overall experience, despite some reservations about the effects towards the end.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:29:15.625Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "The bombastic musical that opened Thursday at the Gerald Schoenfeld Theatre is about a love for the ages but has understated songs by Ingrid Michaelson, who offers coffee house vibes instead of passion’s thunder. The book by Bekah Brunstetter loses gas well before it’s over and piles on the melodrama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 34,
   "source": "bww-roundup",
   "bwwThumb": "Down",
   "bwwUrl": "https://apnews.com/article/notebook-musical-broadway-review-75ff86fdfa180065618c886e5e0891d3",
@@ -17,5 +17,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "dtliExcerpt": "Much beloved is the 2004 movie version in which an old man tries to reawaken his wife’s memory by reading aloud from her notebook. The new musical gets half the story right. Unfortunately, it’s the wrong half. Or the wrong third, as it turns out in this unusually cast production.",
-  "dtliThumb": "Down"
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 34,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 43
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 33,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The book by Bekah Brunstetter loses gas well before it's over and piles on the melodrama",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "has understated songs by Ingrid Michaelson, who offers coffee house vibes instead of passion's thunder",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The new musical gets half the story right. Unfortunately, it's the wrong half",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review systematically criticizes the musical's core elements - the songs are too understated for the material, the book runs out of steam and becomes melodramatic, and the adaptation fundamentally gets the story wrong, with no redeeming qualities mentioned. | GPT-4o-mini: The review expresses strong dissatisfaction with both the book and music, indicating a clear rejection of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:55:23.202Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 30,
+    "scoreDelta": 8,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

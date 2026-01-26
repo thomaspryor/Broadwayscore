@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "A poetic folk opera...emotionally resonant, and uniquely refined.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 84,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "poetic folk opera",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "emotionally resonant",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "uniquely refined",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Three consistently positive descriptors suggest strong appreciation, but the excerpt is too brief to assess full recommendation strength or identify any reservations. | GPT-4o-mini: The review expresses strong appreciation for the show's emotional depth and artistic quality, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:18:08.628Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

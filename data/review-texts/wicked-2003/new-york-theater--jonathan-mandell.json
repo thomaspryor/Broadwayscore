@@ -9,12 +9,63 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Everything looks so tangible, touchable...an argument for live theater\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score",
   "needsFullText": true,
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Everything looks so tangible, touchable",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "an argument for live theater",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt praises the production's physical qualities and positions it as validating live theater's value, suggesting positive recommendation despite very limited text. | GPT-4o-mini: The review expresses a strong positive sentiment about the experience of live theater, suggesting a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T06:01:03.659Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

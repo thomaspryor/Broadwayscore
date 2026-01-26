@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "n here, they struggle to know where to go. So while this show held me for Act One with its considerable charm, by Act Two, it was hitting turbulence. 90 minutes and out would have been a better plan. Robert Hofler, The Wrap: Jim Barne and Kit Buchan wrote the songs and the book for this rom-com two-hander, and they begin “Two Strangers” with real promise. The young man Dougal (Tutty) is newly arrived at JFK from London and eager to meet his American father for the very first time. Dad’s getting married and the bride’s sister, Robin (Pitts), picks him up at the airport. As meet-cutes go, this one turns very problematic in Act 2, if not before. Jonathan Mandell, New York Theater: But then I thought: It’s symbolic of the unsettled lives of these two young characters. And it shows a bit of resourcefulness: Sometimes the piles of luggage seem to suggest a Manhattan avenue lined with skyscrapers, sometimes a hill in Central Park in a snowy Central Park. And I suppose one might consider the w",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 56,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20250109",
@@ -19,5 +19,61 @@
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "dtliExcerpt": "“Two Strangers” is one of those rom-coms where the two lovers are wrong for each other. He’s too boyish, she’s too brittle. It’s a new soul/old soul dynamic. That frisson works initially because, in a story too complicated to tell here, he sets her up with another guy on a dating app. Maybe Dougal and Robin will just become very good friends. Unfortunately, no.",
-  "dtliThumb": "Down"
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 56,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": null,
+      "performances": 65,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "this show held me for Act One with its considerable charm, by Act Two, it was hitting turbulence",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "they begin 'Two Strangers' with real promise",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "90 minutes and out would have been a better plan",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Critics acknowledge the show's initial charm and promise but express significant disappointment with Act Two's problems and overall structure, resulting in a qualified mixed assessment without clear recommendation. | GPT-4o-mini: The review indicates some charm and promise in the first act but expresses disappointment in the second act, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:59:08.166Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 60,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

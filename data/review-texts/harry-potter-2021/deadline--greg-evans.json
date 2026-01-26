@@ -7,7 +7,7 @@
   "publishDate": "2021-12-07",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "The production's magic is hardly limited to well-choreographed transitions, though, with illusions ranging from the seemingly high-tech - lightning streams of flame, or a dreamlike effect that has the entire set shimmering with every jump in time - to age-old stage trickery modernized and perfected ...",
@@ -15,5 +15,61 @@
   "textQuality": "missing",
   "sourceMethod": "stub",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production's magic is hardly limited to well-choreographed transitions",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "age-old stage trickery modernized and perfected",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "illusions ranging from the seemingly high-tech - lightning streams of flame",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Fragment shows clear admiration for production values and technical execution with praise for 'magic,' 'well-choreographed,' and 'perfected,' but excerpt is too limited to assess overall recommendation strength. | GPT-4o-mini: The review highlights impressive production elements and creativity, indicating a strong recommendation despite the lack of explicit praise for the script or performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:24:17.372Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

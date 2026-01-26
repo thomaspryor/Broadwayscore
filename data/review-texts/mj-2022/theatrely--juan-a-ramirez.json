@@ -7,8 +7,64 @@
   "publishDate": "February 1, 2022",
   "fullText": "The sharp, talented cast sold me on music Jackson himself often couldn’t, and the story not only addresses the allegations, however sideways, but raises a defiant middle finger to anyone who dares bring up concerns about the late performer’s conduct when discussing his legacy. Of course, as the words “child sexual assault” would make for kind of a musical theatre bummer, the “allegations” leveled against him only amount to whether he sleeps in an oxygen chamber or got a nose job.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "dtliThumb": "Down",
   "source": "dtli",
-  "dtliExcerpt": "The sharp, talented cast sold me on music Jackson himself often couldn’t, and the story not only addresses the allegations, however sideways, but raises a defiant middle finger to anyone who dares bring up concerns about the late performer’s conduct when discussing his legacy. Of course, as the words “child sexual assault” would make for kind of a musical theatre bummer, the “allegations” leveled against him only amount to whether he sleeps in an oxygen chamber or got a nose job."
+  "dtliExcerpt": "The sharp, talented cast sold me on music Jackson himself often couldn’t, and the story not only addresses the allegations, however sideways, but raises a defiant middle finger to anyone who dares bring up concerns about the late performer’s conduct when discussing his legacy. Of course, as the words “child sexual assault” would make for kind of a musical theatre bummer, the “allegations” leveled against him only amount to whether he sleeps in an oxygen chamber or got a nose job.",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 40,
+      "performances": 73,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The sharp, talented cast sold me on music Jackson himself often couldn't",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "raises a defiant middle finger to anyone who dares bring up concerns about the late performer's conduct",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the 'allegations' leveled against him only amount to whether he sleeps in an oxygen chamber or got a nose job",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: While praising the cast's ability to elevate weak material, the critic is clearly troubled by the show's avoidance of serious issues and sanitized portrayal of Jackson's legacy. | GPT-4o-mini: The review highlights strong performances but expresses significant concerns about the story's handling of sensitive topics, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:37:52.214Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "tory for Netflix viewers, and as such, when it comes to the story, the play’s fan service lies mostly in the recreation of iconic images from the series and in the supporting cast laying Easter eggs. Robert Hofler, The Wrap: Trefry’s stage play is a muddled, pedestrian prequel... What’s on stage at the Marquis resembles a jukebox musical comedy with lots of shock effects haphazardly thrown in. Kyle Turner, New York Theatre Guide: There’s the occasional feeling of disappointment that the show doesn’t lean less on the theatrics and focus on the richer themes in Trefry’s script, like Henry’s fear of hurting the girl he likes, Patty (Gabrielle Nevaeh), and how that relates to his relationship to his mother, or Patty’s own self-conception as an orphan in search of her absent mom. But Stranger Things: The First Shadow was probably never going to dig deep into these ideas. It was always going to be too busy dazzling to let its audience into the real darkness. Chris Jones, The New York Daily N",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 39,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway-20241120",
@@ -19,5 +19,61 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "dtliExcerpt": "The Netflix series, at its best, delivers a gritty film noir quality to this supernatural tale. What’s on stage at the Marquis resembles a jukebox musical comedy with lots of shock effects haphazardly thrown in.",
-  "dtliThumb": "Down"
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": null,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "Trefry's stage play is a muddled, pedestrian prequel",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "What's on stage at the Marquis resembles a jukebox musical comedy with lots of shock effects haphazardly thrown in",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There's the occasional feeling of disappointment that the show doesn't lean less on the theatrics and focus on the richer themes",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Multiple critics describe the production as muddled, pedestrian, and disappointing, with emphasis on superficial theatrics over substantive storytelling, indicating a clear negative recommendation despite some acknowledgment of potential themes. | GPT-4o-mini: The review is predominantly negative, criticizing the script and overall execution while indicating disappointment in the lack of depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:50:36.042Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

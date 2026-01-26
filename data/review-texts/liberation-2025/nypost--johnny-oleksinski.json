@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "All of the performances are terrific, perfectly pitched by director Whitney White, and the actresses click formidably as a unit. However, as individuals, Susan, Isadora, Celeste and Dora are there, in large part, to deliver punchlines and illustrate points. Two characters are miles more involving than the rest. The soul of “Liberation” belongs to Margie and Lizzie.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 84,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "All of the performances are terrific, perfectly pitched by director Whitney White",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "However, as individuals, Susan, Isadora, Celeste and Dora are there, in large part, to deliver punchlines and illustrate points",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Two characters are miles more involving than the rest",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances and direction is undercut by criticism that most characters are underdeveloped and only serve functional purposes rather than being compelling individuals. | GPT-4o-mini: While the performances are highly praised, the review indicates that some characters lack depth, leading to a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:34:09.801Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

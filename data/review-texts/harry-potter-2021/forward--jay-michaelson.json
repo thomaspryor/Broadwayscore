@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Underneath all of the whimsy, cuteness, and nostalgia, this play is dark...Filled with action, humor, and adventure. The magic of the wizarding world is conveyed by a truly amazing combination of choreography, set design, and old-fashioned magic tricks...Not everything is perfect...But there were many times when I gaped in amazement, choked up, laughed, cheered, and felt the warmth of old friends I thought I'd never see again...A spectacle, but it's also a courageous work of art.\"",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 81,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "many times when I gaped in amazement, choked up, laughed, cheered, and felt the warmth of old friends",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "A spectacle, but it's also a courageous work of art",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Not everything is perfect",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging imperfections, the critic describes strong emotional engagement and calls it both a spectacle and courageous art, indicating clear recommendation. | GPT-4o-mini: The review expresses strong admiration for the production's creativity and emotional impact, despite acknowledging some imperfections.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:24:57.978Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"It's not a rehash of the books and movies - it's a thrilling continuation of the Potter saga...A triumph of epic proportions, not only heaven for Potterheads, but a marvel of stagecraft that will soon be the stuff of legend...The story - dark, dazzling, and more soulful than anything on screen...Eyes will pop and jaws will drop at the theatrical wizardry...It's more than the best new play of the season. It's some kind of miracle.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 96,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 96,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 94,
+      "music": null,
+      "performances": null,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "A triumph of epic proportions",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's more than the best new play of the season. It's some kind of miracle.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a marvel of stagecraft that will soon be the stuff of legend",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified rave with superlatives like 'triumph,' 'miracle,' and 'legend,' expressing the highest level of enthusiasm and recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and superlative praise, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:27:27.862Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 97,
+    "openaiScore": 95,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Suffice to say, \"Aladdin\" bears no resemblance to Nicholaw's previous laugh-filled Broadway effort, \"The Book of Mormon.\"...And neither does Chad Beguelin's book, which is loaded with some clever \"Sesame Street\" word play but finds no magic whatsoever in a story rife with magic lanterns, carpets, genies and sultry Arabian nights. Will children get the humor in send-ups of old tap and soft-shoe numbers? Isn't mocking stage traditions a rather cynical way to introduce children to the theater?",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 34,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 34,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 43
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": null,
+      "performances": null,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "finds no magic whatsoever in a story rife with magic lanterns, carpets, genies and sultry Arabian nights",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "loaded with some clever 'Sesame Street' word play",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "Isn't mocking stage traditions a rather cynical way to introduce children to the theater?",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws in the book and direction, calling the approach 'cynical' and saying it 'finds no magic whatsoever,' with only minor praise for wordplay. | GPT-4o-mini: The review expresses significant disappointment in the book and overall experience, indicating a clear rejection of the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:59:51.758Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 30,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

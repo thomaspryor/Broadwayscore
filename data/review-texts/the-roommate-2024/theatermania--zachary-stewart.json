@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "The Roommate is not exactly the feel-good comedy of the year, but it will make you laugh and think a little harder about whom you discount in life — at your own peril. It may also make you want to give your mother a call. You never know what kind of trouble she might be getting up to.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 65.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it will make you laugh and think a little harder",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Roommate is not exactly the feel-good comedy of the year",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "You never know what kind of trouble she might be getting up to",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review clearly recommends the show with positive outcomes (laughs, thoughtfulness) and engaging themes, despite a mild caveat about it not being the year's best comedy. | GPT-4o-mini: The review indicates a thoughtful experience with some humor, but lacks strong enthusiasm, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:58:34.525Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

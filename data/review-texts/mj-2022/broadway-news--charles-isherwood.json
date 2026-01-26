@@ -7,8 +7,64 @@
   "publishDate": "February 1, 2022",
   "fullText": "And yet — you knew that was coming, didn’t you? — for all its surface flash and stylish presentation, “MJ” comes across, like most jukebox/bio-musical hybrids, as superficial fan-bait: a glossy but unrevelatory moonwalk through the ups and downs (mostly the ups) of Jackson’s career.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "dtliThumb": "Down",
   "source": "dtli",
-  "dtliExcerpt": "And yet — you knew that was coming, didn’t you? — for all its surface flash and stylish presentation, “MJ” comes across, like most jukebox/bio-musical hybrids, as superficial fan-bait: a glossy but unrevelatory moonwalk through the ups and downs (mostly the ups) of Jackson’s career."
+  "dtliExcerpt": "And yet — you knew that was coming, didn’t you? — for all its surface flash and stylish presentation, “MJ” comes across, like most jukebox/bio-musical hybrids, as superficial fan-bait: a glossy but unrevelatory moonwalk through the ups and downs (mostly the ups) of Jackson’s career.",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 53
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "superficial fan-bait",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "glossy but unrevelatory moonwalk",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "surface flash and stylish presentation",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges production values but dismisses the show as superficial fan service with no depth or revelation. | GPT-4o-mini: The review expresses strong criticism of the show's superficiality and lack of depth, indicating a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:37:28.732Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 40,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

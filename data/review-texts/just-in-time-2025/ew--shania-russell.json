@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "The energy of Just in Time is its greatest tribute to Darin: a recreation of his natural habitat buoyed by the dazzling charm of its stars. Everything from the stunning lighting design (courtesy of Justin Townsend) to Groff's crooning vocals emulates a '50s night club. And therein lies the real surprise of the show — beyond honoring Darin in particular, it serves as a love letter to live music.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://ew.com/just-in-time-review-jonathan-groff-irresistible-bobby-darin-11721853",
@@ -17,5 +17,63 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "dtliExcerpt": "When Groff is singing and dancing (stunning choreography by Shannon Lewis), “Just in Time” absolutely dazzles. It doesn’t matter if what’s happening on stage ever makes you think of Bobby Darin. But Groff doesn’t always sing and dance, and when he or anybody else stops to recite dialogue from Leight and Oliver’s book, “Just in Time” simply deadens. Since Timbers also receives a “developed by” credit here, he should have developed a completely different book.",
-  "dtliThumb": "Meh"
+  "dtliThumb": "Meh",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": 83,
+      "performances": 82,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "When Groff is singing and dancing, 'Just in Time' absolutely dazzles",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "when he or anybody else stops to recite dialogue from Leight and Oliver's book, 'Just in Time' simply deadens",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "he should have developed a completely different book",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is sharply divided between high praise for performances/music/design when characters sing and dance versus harsh criticism of the book/dialogue that 'deadens' the show. | GPT-4o-mini: The review highlights strong performances and music but criticizes the book, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:32:01.103Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (64 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Your milage may vary. My husband was a wreck after just the first act, but I wasn’t as moved by the musical as I was the film, a form that is simultaneously more intimate and frighteningly real.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Your milage may vary",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "My husband was a wreck after just the first act",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "I wasn't as moved by the musical as I was the film",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer explicitly states the experience will vary by person and expresses personal disappointment compared to the film version, indicating a lukewarm mixed reaction. | GPT-4o-mini: The review expresses a mixed sentiment, indicating a lack of strong emotional impact compared to the film, suggesting a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:56:28.392Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

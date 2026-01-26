@@ -11,10 +11,66 @@
   "bwwExcerpt": "And though some of the effectiveness of the revival is clearly the result of Kenny Leon’s swift and unsentimental direction, and of a fine cast led by the mercilessly acute Jim Parsons as the Stage Manager, we must begin with wonder and admiration for the play itself. In its portrait of “the life of...",
   "showScoreExcerpt": "...it's unbearable: in its beauty, yes, but more so in its refusal to offer beauty as a cure when it is only, at best, a comfort.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 85,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-negative",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 92,
+      "music": null,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "we must begin with wonder and admiration for the play itself",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "mercilessly acute Jim Parsons as the Stage Manager",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's unbearable: in its beauty, yes, but more so in its refusal to offer beauty as a cure",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic expresses 'wonder and admiration' for the play with superlative language about both the material and production, despite the excerpt being incomplete. | GPT-4o-mini: The review expresses strong admiration for the play and its direction, alongside high praise for the lead performance, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:43:44.262Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,10 +9,66 @@
   "isFullReview": false,
   "bwwExcerpt": "These days, most Broadway theatergoers don't so much want to see a show as take a warm bath inside of one. We crave relief from our growing terror of physical intimacy and our technology-fueled loneliness. What used to pass as immersive theatrical entertainment is, as we end this panicked second dec...",
   "originalScore": "Sentiment: Mixed",
-  "assignedScore": 72,
+  "assignedScore": 83,
   "source": "bww-roundup",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
-  "showScoreExcerpt": "\"Broadwayâs âMoulin Rouge! The Musicalâ is dazzling, decadent live translation of 2001 movie.\""
+  "showScoreExcerpt": "\"Broadwayâs âMoulin Rouge! The Musicalâ is dazzling, decadent live translation of 2001 movie.\"",
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 75.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "dazzling, decadent live translation of 2001 movie",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "We crave relief from our growing terror of physical intimacy and our technology-fueled loneliness",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "Broadway’s ‘Moulin Rouge! The Musical’ is dazzling, decadent live translation of 2001 movie.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The headline describes the show as 'dazzling' and 'decadent' which are strong positive descriptors, though the full review text appears cut off limiting confidence. | GPT-4o-mini: The review expresses positive sentiment towards the production's dazzling qualities, indicating a strong recommendation despite some abstract commentary on audience desires.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:38:20.066Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 80,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

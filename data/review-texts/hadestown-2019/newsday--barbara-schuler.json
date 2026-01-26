@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "The poignant, enchanting story is notable mostly for its memorable music and especially haunting lyrics.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 74,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 83,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "poignant, enchanting story",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "memorable music and especially haunting lyrics",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "notable mostly for",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review praises the story as 'poignant' and 'enchanting' and strongly commends the music and lyrics, but the phrase 'notable mostly for' suggests these elements carry the show rather than everything being equally strong. | GPT-4o-mini: The review highlights the music and lyrics positively, suggesting a clear recommendation despite not addressing other elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:17:35.201Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

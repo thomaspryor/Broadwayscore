@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Large but agile, Iglehart then leads the singing and dancing in \"Friend Like Me,\" a wonderfully over-the-top moment of celebration. Casey Nicholaw hasn't directed the show very nimbly, but his choreography for this number is invigorating. \"Aladdin\" ends with the hero and Jasmine floating through the night sky on a magic carpet. It's a lovely image, but too little, too late.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "bwwThumb": null,
   "bwwUrl": "http://www.northjersey.com/arts-and-entertainment/theater/aladdin-loses-its-magic-1.747278",
@@ -17,5 +17,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 70,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "Casey Nicholaw hasn't directed the show very nimbly",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's a lovely image, but too little, too late",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "wonderfully over-the-top moment of celebration",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: While praising individual performances and moments, the critic delivers pointed criticism of the direction and concludes the show's few strengths are insufficient to redeem the overall experience. | GPT-4o-mini: The review highlights strong performances but criticizes the direction, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:58:39.321Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

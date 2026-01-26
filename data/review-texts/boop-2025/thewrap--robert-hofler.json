@@ -10,7 +10,7 @@
   "dtliExcerpt": "It’s difficult to say what’s more embarrassing: the people in Disney outfits out on the street or the chorus at the Broadhurst in costumes that look just as seedy and smelly. Pooph, anyone?",
   "bwwExcerpt": "Foster and lyricist Susan Birkenhead load ‘Boop!’ with so many anthems they appear to be auditioning for some new ‘I Love NY’ ad campaign. As for Foster’s tunes, you will leave the Broadhurst humming them, because you’ve heard them all before, whether it is caterwauling gospel or anemic jazz or the ubiquitous female power ballad.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
   "dtliThumb": "Down",
@@ -20,5 +20,61 @@
   "textFetchMethod": "archive.org",
   "archivePath": "data/archives/reviews/boop-2025/thewrap--robert-hofler_2026-01-25.html",
   "textQuality": "partial",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 13,
+      "music": 23,
+      "performances": 33,
+      "direction": 18
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's 'boop-oop-a-doop' for a show that needs a good spritz of Pooph",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "nearly two hours of total tedium",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It's difficult to say what's more embarrassing",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This is a scathing pan that criticizes virtually every aspect of the production with harsh language like 'total tedium' and 'embarrassing,' offering no genuine recommendation to see the show. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the script, music, and overall execution, leading to a strong recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:09:11.220Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

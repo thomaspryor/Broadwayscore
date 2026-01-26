@@ -7,7 +7,7 @@
   "publishDate": "2026-01-08",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "textStatus": "missing",
@@ -15,5 +15,61 @@
   "sourceMethod": "stub",
   "scoreStatus": "TO_BE_CALCULATED",
   "scoreSource": null,
-  "showScoreExcerpt": "\"It's near impossible not to peek through your fingers: Bug is all absorbing.\""
+  "showScoreExcerpt": "\"It's near impossible not to peek through your fingers: Bug is all absorbing.\"",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "near impossible not to peek through your fingers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Bug is all absorbing",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's near impossible not to peek through your fingers",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review describes an intensely engaging theatrical experience with strong visceral impact, suggesting high recommendation despite the brevity. | GPT-4o-mini: The review expresses strong enthusiasm and engagement with the show, indicating it is a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:10:15.272Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

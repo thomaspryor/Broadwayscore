@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "As you'd probably expect, the show's potty-mouth creators do not refrain from using explicit language. But in spite of the curse words, \"The Book of Mormon\" is an upbeat, even sentimental musical that combines Rodgers & Hammerstein, \"Les Miz\"-style powerhouse ballads and tap dancing.",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-pan",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "upbeat, even sentimental musical",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "combines Rodgers & Hammerstein, 'Les Miz'-style powerhouse ballads and tap dancing",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the show's potty-mouth creators do not refrain from using explicit language",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review describes the show in positive terms ('upbeat, sentimental') and favorably compares it to classic musicals, but this appears to be a brief excerpt without a clear recommendation or comprehensive assessment. | GPT-4o-mini: The review expresses a clear positive sentiment towards the show's upbeat nature and musical qualities, despite mentioning explicit language.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:05:17.845Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

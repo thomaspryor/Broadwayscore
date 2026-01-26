@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Of course, audiences are obviously bringing great expectations to the work, given the beloved (an understatement) films and books. Cursed Child goes out of its way to differentiate itself: The music, by Imogen Heap(!), is ominous and suspenseful, but it's not the John Williams theme you're so used to. Yes, you'll see fan-favorite characters like Dumbledore and Hagrid, but thankfully, no one is doing just their best impression of the movies. The play its own thing, and it's easy to see actors rotating into this work and making it their own for a solid run over the next decade or more. When my audience made its way toward the lobby after both parts, the overwhelming response to the most expensive non-musical play ever produced on Broadway seemed to be stunned wonder. It's a sensory overload that will have you hoping against hope that after all this time, your Hogwarts acceptance letter may still be just around the corner.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 79,
+      "performances": 80,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "the overwhelming response to the most expensive non-musical play ever produced on Broadway seemed to be stunned wonder",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's a sensory overload that will have you hoping against hope that after all this time, your Hogwarts acceptance letter may still be just around the corner",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The play its own thing, and it's easy to see actors rotating into this work and making it their own for a solid run over the next decade or more",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review expresses clear enthusiasm for the production's immersive qualities and theatrical impact, with audience reaction described as 'stunned wonder' and the critic noting the show's ability to transport viewers back to the magical world. | GPT-4o-mini: The review expresses strong enthusiasm for the production's unique qualities and audience reactions, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:25:54.864Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,7 +10,7 @@
   "bwwExcerpt": "uction starts with how brilliantly cast it is, from top to bottom. By the end of the opening song, called “Tulsa ’67,” we have somehow already met and grown inexplicably fond of every single Greaser. Charles Isherwood, Wall Street Journal: The musical’s cast shouldn’t leave anyone pining for starshine, so assured are its members in embodying the characters not as familiar pop-culture figures but as the raw, wounded, volatile and sensitive people they are. Teller of the tale, if not leader of the pack, is Brody Grant’s Ponyboy, the youngest of three brothers whose parents died in a car accident, with the oldest, Darrel, played by a touchingly conflicted Brent Comer, unhappily taking charge, while the middle boy, Sodapop (a buoyant, sometimes shirtless Jason Schmidt, winning the beefcake prize), tries to soothe the tension between his siblings. Average Rating: 69.5% REVIEW ROUNDUP REAL-TIME ALERTS To read more reviews, click here ! Discuss the show on the BroadwayWorld Forum Buy Tickets",
   "showScoreExcerpt": "“ 'The Outsiders' will hit the bull’s-eye.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
@@ -20,5 +20,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 87,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "brilliantly cast it is, from top to bottom",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "so assured are its members in embodying the characters not as familiar pop-culture figures but as the raw, wounded, volatile and sensitive people they are",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "'The Outsiders' will hit the bull's-eye",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for casting and performances throughout, with specific positive details about individual actors and an explicit prediction of success, indicating clear recommendation despite being an excerpt. | GPT-4o-mini: The review expresses strong praise for the performances and the cast's ability to embody their characters, leading to a clear positive recommendation despite a lack of detail on other aspects.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:58:06.536Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

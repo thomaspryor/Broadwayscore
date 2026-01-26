@@ -10,11 +10,69 @@
   "bwwExcerpt": "If I had to take bets on how many actual tears The Notebook The Musical manages to jerk — well, I wouldn’t advise anyone to bring a bucket. With prosaic direction and a strangely heavy and sterile aesthetic sense that feels, despite Schele Williams’s presence as a co-director, all too similar to Michael Greif’s other productions this season, as well as a surprisingly beige slate of songs by the folk-pop artist Ingrid Michaelson, the show disappears from memory almost moment to moment. It’s almost enough to make one want to reference the half of the story’s plot that deals with dementia.",
   "showScoreExcerpt": "\"The Notebookâs songs at times barely make lyrical sense.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "bww-roundup",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 20,
+      "performances": null,
+      "direction": 23
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show disappears from memory almost moment to moment",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "prosaic direction and a strangely heavy and sterile aesthetic sense",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "surprisingly beige slate of songs",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is consistently negative across all creative elements with harsh criticisms of direction, music, and overall impact, describing the show as forgettable and making a sarcastic reference to the dementia plot. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the direction, aesthetic, and music quality, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:56:51.373Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (23 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

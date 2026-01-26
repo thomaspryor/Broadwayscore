@@ -11,7 +11,7 @@
   "bwwExcerpt": "“Boop!” shows that cartoon makeovers may be an enticing novelty, but to really succeed it first needs to be well drawn.",
   "showScoreExcerpt": "\"Rogers is a delightful embodiment of Betty, a cartoon that she makes just human enough\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
   "dtliThumb": "Meh",
@@ -21,5 +21,61 @@
   "textFetchMethod": "playwright",
   "archivePath": "data/archives/reviews/boop-2025/variety--frank-rizzo_2026-01-25.html",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 73,
+      "performances": 77,
+      "direction": 67
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sometimes that's enough, at least for live mainstream entertainment with girl-empowerment themes, aimed at family-centric markets and with great merchandizing potential. Other times it just feels like a knockoff.",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Martin's script has little of the wit and originality which propelled his clash-of-worlds scripts for 'The Drowsy Chaperone' and 'The Prom.' His 'Boop' book only elicits the occasional big laugh",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "That's when Jerry Mitchell's choreography kicks in with the ensemble in top, tip-tap form. The score — with music and arrangements by David Foster, lyrics by Susan Birkenhead and orchestrations by Doug Besterman — is tuneful, fizzy and fun.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is clearly mixed, praising the performances, choreography, and music while criticizing the weak book and derivative concept, ultimately suggesting it works 'sometimes' but feels like a 'knockoff' other times. | GPT-4o-mini: The review presents a mix of positive elements, particularly in performances and music, but highlights significant weaknesses in the book and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:09:25.901Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

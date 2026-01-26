@@ -10,7 +10,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "unlike the DeLorean, Back to the Future: The Musical itself never quite hits 88 miles an hour, but Roger Bart is always putting the pedal to the metal. If you're going to throw a time machine onto a Broadway stage, why not do it with some style?",
   "originalScore": "B",
-  "assignedScore": 67,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "textStatus": "partial",
   "textWordCount": 59,
@@ -21,5 +21,61 @@
     "Show title not found in text"
   ],
   "textQuality": "excerpt",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 73,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "never quite hits 88 miles an hour",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Roger Bart is always putting the pedal to the metal",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "why not do it with some style?",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed signals with clear praise for Roger Bart's performance but criticism that the show overall lacks energy, suggesting a qualified recommendation with reservations. | GPT-4o-mini: The review indicates a mixed experience, with some praise for performances but an overall sense that the show doesn't fully deliver on its potential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:02:01.152Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Like Christmas Day and sex with supermodels, Broadway seasons are often far more exciting during the anticipation stage. Over the past two months, four new eagerly anticipated musicals have opened, and the first three — The Scarlet Pimpernel, Triumph of Love, and Side Show — made this season look like no exception to the rule. But then, on Nov. 13, The Lion King bounded onto the stage, and Broadway roared. Based on Disney's blockbuster 1994 animated feature, the musical version of The Lion King might have been mounted like the spectacular but ice-showish Beauty and the Beast, which is still charming children and making money a few blocks away. Fortunately, Disney didn't leave well enough alone. To bring The Lion King into three dimensions, Disney tapped Julie Taymor, an experimental director known for her cerebral productions meshing puppetry and poetry. The unlikely partnership has turned the most successful animated film in Disney's history into the most exciting Broadway experience since Rent routed the Great White Way into the '90s two seasons ago.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "partial",
@@ -21,5 +21,61 @@
   ],
   "textQuality": "excerpt",
   "sourceMethod": "dtli",
-  "showScoreExcerpt": "\"'The Lion King' was astonishing, in the jaw-dropping manner of speaking. And today, 21 years later, it still is...Taymor, the avant-garde director to whom Disney entrusted the piece, outdid herself...Everything still looks wonderful, and looks practically brand new, too. One of the stunning elements for me, this time through, was the realization of how brilliantly this show moves...The hard-working ensemble is well-drilled and exceptional.\""
+  "showScoreExcerpt": "\"'The Lion King' was astonishing, in the jaw-dropping manner of speaking. And today, 21 years later, it still is...Taymor, the avant-garde director to whom Disney entrusted the piece, outdid herself...Everything still looks wonderful, and looks practically brand new, too. One of the stunning elements for me, this time through, was the realization of how brilliantly this show moves...The hard-working ensemble is well-drilled and exceptional.\"",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 89,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "the most exciting Broadway experience since Rent routed the Great White Way into the '90s two seasons ago",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "astonishing, in the jaw-dropping manner of speaking. And today, 21 years later, it still is",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Taymor, the avant-garde director to whom Disney entrusted the piece, outdid herself",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses superlative language calling it 'the most exciting Broadway experience since Rent' and 'astonishing' with praise for direction and lasting power over 21 years. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its innovative direction and exceptional ensemble, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:54:24.025Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "I seriously doubt many audience members will regret their attendance at “The Roommate.” You just don’t see performances like the one delivered by Farrow, now 79, very often.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 87,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I seriously doubt many audience members will regret their attendance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You just don't see performances like the one delivered by Farrow, now 79, very often",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "You just don’t see performances like the one delivered by Farrow, now 79, very often.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic gives a clear positive recommendation based on an exceptional lead performance, suggesting audiences won't regret attending. | GPT-4o-mini: The review expresses a clear positive sentiment towards the performance, particularly highlighting the uniqueness of the lead actor's work, but lacks broader context about the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:58:17.081Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

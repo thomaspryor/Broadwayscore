@@ -10,7 +10,7 @@
   "dtliExcerpt": "We may not know Betty Boop deeply, but we can agree she has that certain “It” quality that has made her stick around for nearly a century, even if just on lunchboxes. I wish, after seeing this musical, I were closer to identifying why.",
   "showScoreExcerpt": "\"Unsteadiness in premise can be covered for by verve of execution, which Boop! does find here and there\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "complete",
@@ -19,5 +19,61 @@
   "textFetchMethod": "archive.org",
   "archivePath": "data/archives/reviews/boop-2025/vulture--jackson-mchenry_2026-01-25.html",
   "textQuality": "partial",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 55,
+      "performances": 70,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "that's awfully unsteady ground on which to build a musical",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the thing adds up to less than the sum of its bits",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Rogers has the kind of charm and ease with physical comedy that makes you resort to old-fashioned forms of praise: a cutup, a laugh riot, a real pistol",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds significant structural and conceptual flaws in the musical while praising individual elements like Rogers' performance, ultimately concluding it's too scattered and incoherent to recommend. | GPT-4o-mini: The review presents a mix of praise for performances and choreography but highlights significant issues with the book and overall coherence, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:09:32.495Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,10 +10,66 @@
   "dtliExcerpt": "Naturally, though, it’s Groff’s energy and charisma that anchor Just in Time. The brilliance of the show’s opening is that, by creating a staged-concert atmosphere from the start, it frees us from the need to compare him to Darin and instead foregrounds Groff’s own passion for telling his story. Groff even concludes the evening with an unexpectedly eloquent tribute to the evanescent yet transcendent power of theater. How rare it is for a jukebox bio-musical to feel like it comes genuinely from the heart.",
   "showScoreExcerpt": "âNaturally, though, itâs Groffâs energy and charisma that anchor Just in Time.â",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's Groff's energy and charisma that anchor Just in Time",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The brilliance of the show's opening",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "How rare it is for a jukebox bio-musical to feel like it comes genuinely from the heart",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for Groff's performance and the show's concept, with the critic highlighting the production's emotional authenticity and clever staging approach, indicating clear recommendation despite being an excerpt. | GPT-4o-mini: The review highlights Groff's strong performance and the heartfelt nature of the show, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:32:38.615Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

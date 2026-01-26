@@ -10,7 +10,7 @@
   "bwwExcerpt": "As in many a Disney stage production, the big showstopper isn't even human: During ''A Whole New World,'' a flying carpet carries our lovers aloft in a night-time ride, swooping and spinning with how'd-they-do-that wonder. (Jim Steinmeyer and Jeremy Chernick are credited with designing the onstage illusions and special effects.) It deserves its own curtain call.",
   "showScoreExcerpt": "\"This is one of the better Disney stage musicals, complete with several eye-popping production numbers.\"",
   "originalScore": "B",
-  "assignedScore": 83,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
   "textStatus": "complete",
@@ -20,5 +20,61 @@
   "archivePath": "data/archives/reviews/aladdin-2014/ew--thom-geier_2026-01-25.html",
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
-  "scoreSource": "extracted-grade"
+  "scoreSource": "extracted-grade",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 80,
+      "performances": 68,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Overall, this is one of the better Disney stage musicals",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "complete with several eye-popping production numbers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "B",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The B grade and explicit statement that it's 'one of the better Disney stage musicals' signals a clear recommendation despite mixed individual elements and some criticisms. | GPT-4o-mini: The review expresses a clear recommendation with praise for the music and production, despite some reservations about performances and character depth.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:57:46.763Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

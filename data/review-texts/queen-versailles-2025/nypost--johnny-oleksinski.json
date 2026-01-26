@@ -10,11 +10,67 @@
   "dtliExcerpt": "I hoped the tag-team of Chenoweth and Arden would have magic to do. No such luck. The actress is a theatrical force, as everybody knows, but Simone Biles can’t do a back handspring on a toothpick, either. With skin-deep material to work with, Chenoweth transparently leans into broad yuks like she’s serving donuts for dinner. If only her long-anticipated return could be returned.",
   "bwwExcerpt": "Arden, who delivered a brilliant new musical with “Maybe Happy Ending” last season, drops the ball by juggling too many. The sub-Zoom call live videos as the documentary filmmakers shoot, an intellectually lazy 1661 frame story at the French court of Louis XVI and Marie Antoinette that should’ve gotten the guillotine in early development and unappealing staging on a drab construction site all come to naught.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 27,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-QUEEN-OF-VERSAILLES-Opens-on-Broadway-20251109",
   "dtliThumb": "Down",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 27,
+    "confidence": "high",
+    "range": {
+      "low": 20.5,
+      "high": 33.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": 38,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If only her long-anticipated return could be returned",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "With skin-deep material to work with, Chenoweth transparently leans into broad yuks like she's serving donuts for dinner",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I hoped the tag-team of Chenoweth and Arden would have magic to do. No such luck",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a clear pan with harsh metaphors and disappointment, explicitly wishing the show could be 'returned' despite acknowledging Chenoweth's talent. | GPT-4o-mini: The review expresses strong disappointment in the material and overall experience, indicating a clear rejection of the production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:45:08.961Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 28,
+    "openaiScore": 25,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

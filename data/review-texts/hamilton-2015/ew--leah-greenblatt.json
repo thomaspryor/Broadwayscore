@@ -9,11 +9,67 @@
   "isFullReview": false,
   "bwwExcerpt": "Miranda's singular gift for storytelling and wordplay makes even the Federalist Papers sound sexy, but the play's intrigue come mostly from its potent stew of friendship and romance and outsize ambition; it's as if House of Cards were folded into a sort of Days of Our Colonial Lives fever dream, then filtered through the minds of Tupac and Sondheim. It's that strange and that spectacular, and you'd be crazy to miss it. A",
   "originalScore": "A",
-  "assignedScore": 93,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-Updating-LIVE-20150806",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
-  "scoreSource": "extracted-grade"
+  "scoreSource": "extracted-grade",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 92,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's that strange and that spectacular, and you'd be crazy to miss it",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Miranda's singular gift for storytelling and wordplay makes even the Federalist Papers sound sexy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic gives an 'A' grade with unqualified enthusiasm ('spectacular') and an explicit strong recommendation ('you'd be crazy to miss it'), placing this firmly in rave territory. | GPT-4o-mini: The review expresses unqualified enthusiasm and a strong recommendation to see the show, indicating it is a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:21:04.666Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "You may look at all this differently. But I have to say that selling a dinner “upgrade” to the “Pineapple Room” offends me. That fruit is what Herr Schultz offers to his love, prior to being shipped off to a concentration camp, or so the show strongly implies, given that he is already in the Nazis’ sights. In this show, fruit is a symbol of generosity and love in a world of horrors. It’s not a flavor of costly cocktail nor a high-end status symbol. How gross.",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 23,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-pan",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "selling a dinner \"upgrade\" to the \"Pineapple Room\" offends me",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's not a flavor of costly cocktail nor a high-end status symbol. How gross.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "selling a dinner 'upgrade' to the 'Pineapple Room' offends me",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This excerpt focuses entirely on harsh criticism of the production's commercialization choices, showing strong moral offense without any positive elements or actual theatrical review content. | GPT-4o-mini: The review expresses strong disapproval of the show's commercialization and its implications, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:12:02.090Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

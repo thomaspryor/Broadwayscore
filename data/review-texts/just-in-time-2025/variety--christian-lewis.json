@@ -11,12 +11,70 @@
   "bwwExcerpt": "Contrary to its title, “Just in Time” is anything but timely, since the window of Darin’s relevancy has long gone. Even Darin himself admits in the show that by 1968 he was “yesterday’s news.” Just in time for what, we might ask? Do we really need a whole musical about a straight white man with a few hit songs in the 60s? For that matter, do we need multiple? This is in fact the second Bobby Darin musical (the other, “Dream Lover,” premiered in Australia in 2016), not to mention the Kevin Spacey-led biopic, “Beyond the Sea” from 2004. Does Bobby Darrin really merit this much attention?",
   "showScoreExcerpt": "âContrary to its title, âJust in Timeâ is anything but timely, since the window of Darinâs relevancy has long gone.â",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "dtli",
   "bwwThumb": "Meh",
   "bwwUrl": "https://variety.com/2025/legit/reviews/just-in-time-review-jonathan-groff-broadway-musical-1236379177/",
   "dtliThumb": "Down",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 41,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": null,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "fail to go beyond the concert conceit, and never give us a real portrait of Darin",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Groff and the team obviously love him and his work, but are we meant to?",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "fail to go beyond the concert conceit",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic identifies fundamental failures in direction and book writing, questioning the show's purpose and clarity while noting it fails to provide meaningful character development. | GPT-4o-mini: The review expresses significant disappointment in the production's failure to provide depth and clarity, leading to a strong negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:33:04.210Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (41 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

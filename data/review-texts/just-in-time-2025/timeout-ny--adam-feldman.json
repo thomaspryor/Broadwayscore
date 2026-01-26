@@ -7,7 +7,63 @@
   "publishDate": "April 26, 2025",
   "fullText": "Just in Time is a helluva good time at the theater. It’s not just that, but that’s the baseline. Staged in a dazzling rush by Alex Timbers, the show summons the spirit of a 1960s concert at the Copacabana by the pop crooner Bobby Darin—as reincarnated by one of Broadway’s most winsome leading men, the radiant sweetie Jonathan Groff, who gives the performance his considerable all. You laugh, you smile, your heart breaks a little, you swing along with the brassy band, and you’re so well diverted and amused that you may not even notice when the ride you’re on takes a few unconventional turns.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 82,
+      "performances": 92,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Just in Time is a helluva good time at the theater",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the radiant sweetie Jonathan Groff, who gives the performance his considerable all",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you're so well diverted and amused",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Opening with 'helluva good time' and consistent enthusiastic praise for performances, direction, and overall experience signals a strong positive recommendation with rave-level language. | GPT-4o-mini: The review expresses strong enthusiasm for the production, particularly praising the performances and direction, indicating it is a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:32:58.047Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

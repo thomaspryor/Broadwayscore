@@ -7,8 +7,64 @@
   "publishDate": "February 1, 2022",
   "fullText": "Of course, there will always be people who find nothing enjoyable about Michael Jackson. They don't think such a problematic artist deserves a platform, and they will bristle at Nottage's propagandistic portrayal of Jackson as a kind of pop music E.T. — simultaneously wonderous and too fragile for our fallen world. MJ is not for them. Rather, it is for the millions of Michael Jackson fans whose fealty to the King of Pop remains unbroken, and who are eager to have a good time in a Broadway theater with songs they already know and love. They won't be disappointed by MJ. I suspect it's going to be a big fat hit.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "dtliThumb": "Up",
   "source": "dtli",
-  "dtliExcerpt": "Of course, there will always be people who find nothing enjoyable about Michael Jackson. They don't think such a problematic artist deserves a platform, and they will bristle at Nottage's propagandistic portrayal of Jackson as a kind of pop music E.T. — simultaneously wonderous and too fragile for our fallen world. MJ is not for them. Rather, it is for the millions of Michael Jackson fans whose fealty to the King of Pop remains unbroken, and who are eager to have a good time in a Broadway theater with songs they already know and love. They won't be disappointed by MJ. I suspect it's going to be a big fat hit."
+  "dtliExcerpt": "Of course, there will always be people who find nothing enjoyable about Michael Jackson. They don't think such a problematic artist deserves a platform, and they will bristle at Nottage's propagandistic portrayal of Jackson as a kind of pop music E.T. — simultaneously wonderous and too fragile for our fallen world. MJ is not for them. Rather, it is for the millions of Michael Jackson fans whose fealty to the King of Pop remains unbroken, and who are eager to have a good time in a Broadway theater with songs they already know and love. They won't be disappointed by MJ. I suspect it's going to be a big fat hit.",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They won't be disappointed by MJ. I suspect it's going to be a big fat hit.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "MJ is not for them",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "eager to have a good time in a Broadway theater with songs they already know and love",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's limitations and divisive subject matter but clearly predicts audience satisfaction and commercial success for its target demographic. | GPT-4o-mini: The review indicates a clear recommendation for Michael Jackson fans, suggesting a positive experience, though it acknowledges that it may not appeal to everyone.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:37:45.550Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Toby Marlow and Lucy Moss' score is immediately hummable in the way that only derivative disco music can be. The often witty book, built around a competition among the six wives of Henry VIII, borrows a lot from \"RuPaul's Drag Race\" while offering yet another #MeToo story. Those theatrical commonplaces aside, \"Six\" is a needed antidote to \"Anastasia,\" \"Frozen,\" \"Jagged Little Pill,\" \"Wicked\" and other pompous shows of female empowerment.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 71,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211003",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 73,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "immediately hummable in the way that only derivative disco music can be",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "often witty book",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "needed antidote to 'Anastasia,' 'Frozen,' 'Jagged Little Pill,' 'Wicked' and other pompous shows",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges derivative elements but praises the witty book and positions Six as a refreshing alternative to other female empowerment musicals, suggesting qualified approval despite reservations. | GPT-4o-mini: The review expresses a generally positive view of the show's wit and music while acknowledging some derivative aspects, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:49:25.402Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

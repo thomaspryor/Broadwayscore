@@ -7,9 +7,65 @@
   "publishDate": "November 16, 2025",
   "fullText": "While I found myself longing for a wholly heartfelt Chess — whatever that might be — I also enjoyed the peppery, style-forward way that this production almost makes the amoebic musical itself a tragicomic plot point. In the unending battle between sincerity and snark, I’m afraid I have to call this particular showdown a draw.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "While I found myself longing for a wholly heartfelt Chess — whatever that might be — I also enjoyed the peppery, style-forward way that this production almost makes the amoebic musical itself a tragicomic plot point. In the unending battle between sincerity and snark, I’m afraid I have to call this particular showdown a draw.",
-  "showScoreExcerpt": "\"In the unending battle between sincerity and snark, Iâm afraid I have to call this particular showdown a draw.\""
+  "showScoreExcerpt": "\"In the unending battle between sincerity and snark, Iâm afraid I have to call this particular showdown a draw.\"",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 62
+    },
+    "keyPhrases": [
+      {
+        "quote": "I found myself longing for a wholly heartfelt Chess",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "I also enjoyed the peppery, style-forward way that this production",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "I have to call this particular showdown a draw",
+        "sentiment": "neutral",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls the experience 'a draw' between positive and negative elements, indicating a perfectly mixed review where enjoyment of the production's style is balanced against disappointment with the material itself. | GPT-4o-mini: The review expresses mixed feelings, appreciating some stylistic elements while ultimately feeling unsatisfied, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:13:32.124Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

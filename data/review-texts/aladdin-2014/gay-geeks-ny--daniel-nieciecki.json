@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"I had the privilege to experience an excellent example of Adaptation Decay on Sunday in a performance of the latest Disney animated film to be translated into the medium of Broadway musical theater.\"",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 25,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -20,5 +20,61 @@
   "textQuality": "full",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-mixed-positive",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": 45,
+      "performances": 73,
+      "direction": 23
+    },
+    "keyPhrases": [
+      {
+        "quote": "I cannot in good conscience recommend that anyone pay full price for this show",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "They debase an entertaining cinema experience into a grueling endurance test",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "James Monroe Inglehart was phenomenal in the role of the Genie",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states they cannot recommend paying full price, describes the show as a 'grueling endurance test,' and systematically criticizes the adaptation choices while praising only individual performances. | GPT-4o-mini: The review is overwhelmingly negative about the adaptation of Aladdin, with only a few positive remarks about performances, leading to a strong recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:57:58.805Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

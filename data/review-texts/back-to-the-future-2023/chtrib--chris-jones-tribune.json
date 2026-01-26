@@ -10,10 +10,66 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "This thing just never breathes - lacks reflection and emotional depth. The musical constantly makes easier, cheaper choices, dropping its own aesthetic rules if it serves a joke in the moment.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "enhanced-sentiment-lean-positive",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "This thing just never breathes - lacks reflection and emotional depth",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "constantly makes easier, cheaper choices",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "dropping its own aesthetic rules if it serves a joke in the moment",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic delivers harsh criticism of the musical's fundamental artistic choices, calling it emotionally shallow and aesthetically inconsistent without any counterbalancing praise. | GPT-4o-mini: The review expresses strong criticism of the musical's lack of depth and reliance on cheap choices, indicating a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:01:48.294Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

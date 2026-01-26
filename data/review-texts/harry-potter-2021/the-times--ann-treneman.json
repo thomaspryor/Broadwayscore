@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "This play, in two parts and at five hours plus, centres on the perils of childhood, particularly when there is a lack of love. Friendship, loyalty, betrayal, fear, evil. It's all kicking off in Potterland. The pacing is slow but as all Rowling fans know, she won't be hurried. Thankfully, the plot is ingenious, the characters superb and the set by Christine Jones atmospheric. The magic is well beyond abracadabra levels. (Aladdin, playing just a few streets away here, eat your heart out.) The stagecraft is out of this world, literally.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": null,
+      "performances": 85,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "the plot is ingenious, the characters superb and the set by Christine Jones atmospheric",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The stagecraft is out of this world, literally",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The pacing is slow but as all Rowling fans know, she won't be hurried",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise for plot, characters, and stagecraft with superlative language ('ingenious', 'superb', 'out of this world') outweighs the minor pacing concern, indicating clear recommendation. | GPT-4o-mini: The review highlights strong elements in plot, characters, and production design while acknowledging a slow pace, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:28:07.021Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,10 +10,66 @@
   "dtliExcerpt": "“Liberation” is a brilliant, well-acted, and sobering account of the women’s rights movement, complicity, and the lens through which we view our caretakers — namely, our mothers.",
   "showScoreExcerpt": "\"Liberation is a brilliant, well-acted, and sobering account of the womenâs rights movement, complicity, and the lens through which we view our caretakers â namely, our mothers.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 78.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "brilliant, well-acted, and sobering account",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "brilliant",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "well-acted",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses strong positive language ('brilliant', 'well-acted') to describe both the material and performances, indicating clear recommendation despite the serious subject matter. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its brilliance and strong performances, indicating a must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:34:52.345Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

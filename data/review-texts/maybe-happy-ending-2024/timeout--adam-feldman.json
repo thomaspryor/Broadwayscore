@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Can a show as strange and special as Maybe Happy Ending find a place for itself on Broadway today? I like to think that maybe it can. But as the show reminds us, everything is ephemeral: “We have a shelf life, you know that,” says Claire. “It’s the way that it has to be.” The fact that this show is casting its firefly glow on Broadway at all feels like a gift. In its gentle robot way, it helps us see ourselves through freshly brushed eyes.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112",
   "textStatus": "missing",
@@ -19,5 +19,61 @@
   "scoreConfidence": "medium",
   "dtliExcerpt": "Arden and his actors approach the material with a delicate touch; they trust the romantic comedy to be charming, which it is, and let the wistfulness emerge naturally.",
   "dtliThumb": "Up",
-  "showScoreExcerpt": "\"Maybe Happy Ending stands out for both its intimacy and its originality. Arden and his actors approach the material with a delicate touch; they trust the romantic comedy to be charming, which it is, and let the wistfulness emerge naturally.\""
+  "showScoreExcerpt": "\"Maybe Happy Ending stands out for both its intimacy and its originality. Arden and his actors approach the material with a delicate touch; they trust the romantic comedy to be charming, which it is, and let the wistfulness emerge naturally.\"",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "The fact that this show is casting its firefly glow on Broadway at all feels like a gift",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Maybe Happy Ending stands out for both its intimacy and its originality",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "they trust the romantic comedy to be charming, which it is",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic expresses clear appreciation for the show's uniqueness and charm, calling it a 'gift' and praising its intimacy and originality, though with some uncertainty about its Broadway viability. | GPT-4o-mini: The review expresses a strong appreciation for the show's charm and originality, indicating a clear recommendation despite some uncertainty about its broader appeal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:37:00.888Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

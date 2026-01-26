@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Audiences seeing Bug for the first time, then, may well be transfixed, albeit temporarily. Anyone familiar with an earlier production or the William Friedkin film (which introduces some ambiguities to the story’s ending) might start to wonder if maybe Agnes and Peter are ultimately a little thin as characters – if they’re worth the intensity that Coon and Smallwood invest into this production. It’s probably not fair to compare a 100-minute early work from Letts to a towering masterpiece like August: Osage County, his Broadway debut from 2007. At the same time, Letts has clearly evolved as a writer since Bug, and it’s hard not to come away from this production wondering how he might address the contemporary version of this drug-addled psychological unmooring. It’s not so much that this production of Bug is outdated; more accurately, it’s got way too much competition, on stage and off.     Matthew Wexler, One-Minute Critic: Director David Cromer (Dead Outlaw, Meet the Cartozians) keeps the play’s focus tight and the performances brisk within the confines of scenic designer Takeshi Kata’s oppressive motel room-turned bunker. But it’s Coon and Smallwood’s performances that make us question how far we’ll go to not feel alone, regardless of the outcome.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Carrie-Coon-Namir-Smallwood-and-More-Star-in-BUG-on-Broadway-20260108",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 81,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's Coon and Smallwood's performances that make us question how far we'll go to not feel alone",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Agnes and Peter are ultimately a little thin as characters – if they're worth the intensity that Coon and Smallwood invest",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "it's hard not to come away from this production wondering how he might address the contemporary version",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the performances and direction but questions the material's contemporary relevance and character depth, creating a mixed recommendation that acknowledges merit while expressing reservations. | GPT-4o-mini: The review acknowledges strong performances but raises concerns about character depth and competition with other works, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:10:37.273Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

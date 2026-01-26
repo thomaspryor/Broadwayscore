@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"With a refreshing book, profoundly innovative music that includes hip-hop, jazz, blues, R&B, and Broadway, and scintillating lyrics, 'Hamilton' exceeds all expectations of theatergoers and rocks the stage with engaging performances and exhilarating choreography...The diverse cast is uniformly outstanding and brilliant...Andy Blankenbuehler's choreography is innovative and precise.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 95,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 98,
+      "performances": 95,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "exceeds all expectations of theatergoers and rocks the stage",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "profoundly innovative music",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "diverse cast is uniformly outstanding and brilliant",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified praise with superlatives like 'exceeds all expectations,' 'profoundly innovative,' 'outstanding and brilliant,' and 'rocks the stage' indicates a clear rave review with enthusiastic recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and praise for multiple aspects of the production, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:22:14.177Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

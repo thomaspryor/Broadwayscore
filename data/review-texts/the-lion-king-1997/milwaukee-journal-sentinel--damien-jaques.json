@@ -9,11 +9,64 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Julie Taymor's staging is nothing short of miraculous...\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score",
   "designation": null,
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 68,
+    "confidence": "low",
+    "range": {
+      "low": 40.5,
+      "high": 95.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Julie Taymor's staging is nothing short of miraculous",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Julie Taymor's staging is nothing short of miraculous...",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This fragment shows extremely high praise for direction but provides no information about overall recommendation, other components, or the critic's final verdict. | GPT-4o-mini: The use of 'miraculous' indicates unqualified enthusiasm for the direction, suggesting a strong recommendation to see the show. | Note: Models differed by 45 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:54:28.995Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 90,
+    "scoreDelta": 45,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 45 points (Claude: 45, OpenAI: 90)"
+    ]
+  }
 }

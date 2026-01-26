@@ -10,7 +10,7 @@
   "dtliExcerpt": "Yes, it’s kid-friendly. Yes, it’s visually slick. But it’s also toothless. A show about a boundary-pushing cartoon icon shouldn’t feel this safe or generic. Betty Boop may be ready for her close-up, but this isn’t the vehicle she deserves. You are better off watching the original animated shorts on YouTube.",
   "bwwExcerpt": "Yes, it’s kid-friendly. Yes, it’s visually slick. But it’s also toothless. A show about a boundary-pushing cartoon icon shouldn’t feel this safe or generic. Betty Boop may be ready for her close-up, but this isn’t the vehicle she deserves. You are better off watching the original animated shorts on YouTube.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 34,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
   "dtliThumb": "Down",
@@ -20,5 +20,61 @@
   "textFetchMethod": "playwright",
   "archivePath": "data/archives/reviews/boop-2025/amny--matt-windman_2026-01-25.html",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 34,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 43
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 30,
+      "performances": 48,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "polished, peppy, and painfully underwhelming",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "You are better off watching the original animated shorts on YouTube",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "A show about a boundary-pushing cartoon icon shouldn't feel this safe or generic",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is predominantly negative with harsh criticism of the book, music, and overall execution, explicitly telling readers they're 'better off' skipping the show for YouTube videos instead. | GPT-4o-mini: The review is overwhelmingly critical, highlighting numerous flaws in the script, music, and overall execution, leading to a strong recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:07:52.405Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 30,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

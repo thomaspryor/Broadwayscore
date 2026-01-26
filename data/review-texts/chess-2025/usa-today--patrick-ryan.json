@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "As directed by Michael Mayer (“Spring Awakening”), this too often feels like a “Chess” revival that is embarrassed by its own existence. Rather than earnestly leaning into the melodrama, the show constantly undercuts its emotional moments with a punchline, which quickly becomes more exhausting than charming.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "complete",
@@ -17,5 +17,61 @@
   "archivePath": "data/archives/reviews/chess-2025/usa-today--patrick-ryan_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:35:49.255Z",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 80,
+      "performances": 87,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "Let's just call it a draw",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "impossible not to fall under the spell of this powerhouse cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a smugly satisfied approach that would be borderline intolerable if it weren't for the dazzling constellation of stars",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls it 'a draw' - praising the stellar performances while criticizing the book, direction, and meta approach, landing squarely in mixed territory. | GPT-4o-mini: The review acknowledges strong performances and catchy music but criticizes the muddled book and direction, leading to a mixed recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:13:49.825Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

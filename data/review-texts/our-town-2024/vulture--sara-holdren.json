@@ -11,10 +11,66 @@
   "bwwExcerpt": "That fundamental drive — that feeling of questing clarity, of the necessity of returning to an old play to excavate its glowing, undiminished heart — is what Kenny Leon’s new Broadway production lacks. It’s not painful, but it’s far from revelatory. In certain ways it treads safely down the middle o...",
   "showScoreExcerpt": "...with a play like Our Town — where its enduring miracle is both its granular mundanity and its immensity — the imagination is going to start firing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not painful, but it's far from revelatory",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Kenny Leon's new Broadway production lacks",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "it treads safely down the middle",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the production for lacking the essential drive and revelatory quality that Our Town requires, describing it as safe and middle-of-the-road rather than transformative. | GPT-4o-mini: The review expresses disappointment in the production's lack of depth and imagination, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:43:59.505Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

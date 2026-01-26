@@ -10,11 +10,67 @@
   "dtliExcerpt": "If, like me, you are highly susceptible to sawdust and tinsel, then much of Water for Elephants will delight on the basis of spectacle alone — and that’s okay.",
   "showScoreExcerpt": "\"...much of 'Water for Elephants' will delight on the basis of spectacle alone\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Up",
   "bwwExcerpt": "in the case of Water for Elephants, whenever we leave the sappy present behind, there’s suddenly a great deal to enjoy. As is so frequently the case, the show’s stagecraft outstrips its script by a mile. Under Jessica Stone’s exuberant direction, a huge ensemble of ridiculously talented acrobats ebb...",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "much of Water for Elephants will delight on the basis of spectacle alone",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "and that's okay",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "highly susceptible to sawdust and tinsel",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show will delight those susceptible to spectacle but the conditional framing and lukewarm endorsement ('that's okay') suggests qualified approval rather than strong recommendation. | GPT-4o-mini: The review indicates enjoyment of the spectacle but lacks a strong overall recommendation, suggesting a mixed-positive sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T06:00:00.771Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

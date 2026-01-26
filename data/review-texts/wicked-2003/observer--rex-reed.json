@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Nothing in Oz, you see, happened the way Judy Garland thought it did. In 'Wicked', the ruby slippers aren't even red. So, all ye who enter here, check your cynicism at the door and get in touch with the little kid inside you who's been begging to get out. Neither of you will want to leave 'Wicked.'\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score",
   "needsFullText": true,
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "check your cynicism at the door and get in touch with the little kid inside you who's been begging to get out",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Neither of you will want to leave 'Wicked.'",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "check your cynicism at the door",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review expresses strong enthusiasm with explicit recommendation language about not wanting to leave, though the brief excerpt limits confidence in the full assessment. | GPT-4o-mini: The review expresses strong enthusiasm and a clear recommendation to see the show, indicating it's a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T06:01:30.413Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

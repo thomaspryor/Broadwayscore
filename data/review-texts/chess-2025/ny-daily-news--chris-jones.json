@@ -10,7 +10,7 @@
   "dtliExcerpt": "This is the Broadway show of the fall that some will claim to dislike and yet most everyone will enjoy, even if that has to be in secret. Happily, that’s a match for one of the main themes of a 1980s musical that always saw geopolitics, even the dangers of nuclear proliferation, as games played by those who merely enjoyed the strategizing.",
   "showScoreExcerpt": "\"This is the Broadway show of the fall that some will claim to dislike and yet most everyone will enjoy, even if that has to be in secret. \"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "complete",
@@ -21,5 +21,61 @@
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/chess-2025/ny-daily-news--chris-jones_2026-01-25.html",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 45,
+      "music": 88,
+      "performances": 90,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is the Broadway show of the fall that some will claim to dislike and yet most everyone will enjoy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "What better way do you have in mind to pass your leisure hours?",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "All of the performances are bravissimo or bravissima",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging the show's ridiculous plot and moral emptiness, the critic celebrates the powerhouse performances, classic songs, and guilty pleasure entertainment value, positioning it as an enjoyable Broadway experience. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and music while acknowledging the show's absurdities, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:13:38.543Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

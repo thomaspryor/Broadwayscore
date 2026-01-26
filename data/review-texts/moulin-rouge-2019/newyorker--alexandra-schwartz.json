@@ -9,12 +9,70 @@
   "isFullReview": false,
   "showScoreExcerpt": "A Millennial Reboot of Chekhov, and 'Moulin Rouge!' on Broadway. Halley Feiffer translates 'Three Sisters' into Internet-speak, and Baz Luhrmann's glitzy movie comes into its own onstage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score",
   "needsFullText": true,
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 63,
+    "confidence": "low",
+    "range": {
+      "low": 45.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "translates 'Three Sisters' into Internet-speak",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "comes into its own onstage",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "A Millennial Reboot of Chekhov",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This appears to be a headline or brief description rather than a full review, providing minimal evaluative content to assess recommendation strength. | GPT-4o-mini: The review indicates a positive take on the adaptation and its contemporary relevance, suggesting a recommendation to see it. | Note: Models differed by 25 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:40:02.471Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 50,
+    "openaiScore": 75,
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 50, OpenAI: 75)"
+    ]
+  }
 }

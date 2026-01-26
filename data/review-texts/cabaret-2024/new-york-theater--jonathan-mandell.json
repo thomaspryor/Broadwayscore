@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Luckily there are two performances that do more than their share in trying to right the imbalance.  Bebe Neuwirth is exquisite as Fraulein Schneider, the landlady of the boarding house where Clifford rents a room; she brings attention to songs that are not normally among the most memorable in the musical – “So What” and “What Would You Do,” — which drive home the real-life despair and high stakes then facing people in Germany. Her performance is matched by Steven Skybell, as Herr Schultz, one of her boarders. The two older characters gently fall in love, accompanied by some lovely melodies, “It Couldn’t Please Me More,” and  “Married.”  In the most effective scene in which the Emcee participates:, he wraps a wine glass in a napkin and steps on it – central to the traditional Jewish marriage ritual – but it’s accompanied not by hurrahs, but by a loud boom, darkness,  the sound of glass shattering, and the lights up on a fluttering of what might literally be stage confetti, but hits like a preview of Kristallnacht.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 63.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 72,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bebe Neuwirth is exquisite as Fraulein Schneider",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "do more than their share in trying to right the imbalance",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "In the most effective scene in which the Emcee participates",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises specific performances highly but implies broader production imbalances that these standout elements are working to overcome. | GPT-4o-mini: The review highlights strong performances, particularly from Neuwirth and Skybell, suggesting a positive recommendation despite not addressing the overall production or script quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:11:51.569Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 75,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

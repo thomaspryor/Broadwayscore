@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Newcomer Brody Grant, with a record-deal-ready voice and a grounded teenage vulnerability, makes a sublime debut in the role. He’s the sort of bookworm heartthrob you’re more likely to find on Netflix nowadays than Broadway. But the shrewdness of director Danya Taymor’s production starts with how brilliantly cast it is, from top to bottom. By the end of the opening song, called “Tulsa ’67,” we have somehow already met and grown inexplicably fond of every single Greaser.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
   "textStatus": "missing",
@@ -19,5 +19,61 @@
   "scoreConfidence": "medium",
   "dtliExcerpt": "The song turns out to be representative of the entire shattering-yet-optimistic musical it’s part of. Driven by authenticity, earnestness, youth and ample heart, “The Outsiders” is very much an outsider itself.",
   "dtliThumb": "Up",
-  "showScoreExcerpt": "\"The tender tune, accompanied by an acoustic guitar...it’s a moment of pure catharsis\""
+  "showScoreExcerpt": "\"The tender tune, accompanied by an acoustic guitar...it’s a moment of pure catharsis\"",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 93,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes a sublime debut in the role",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "shrewdness of director Danya Taymor's production starts with how brilliantly cast it is, from top to bottom",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a moment of pure catharsis",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances ('sublime debut'), direction ('shrewdness', 'brilliantly cast'), and emotional impact ('pure catharsis') with language indicating clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:57:53.668Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

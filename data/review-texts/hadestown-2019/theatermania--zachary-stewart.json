@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "The smartest new musical on Broadway. The production is visually and aurally stunning. Rachel Hauck's multi-tiered set conjures the French Quarter with a breathtaking scene transition where its stucco walls fall away to reveal the enormity of the Hadestown mine. Sound designers Nevin Steinberg and Jessica Paz ensured every one of Mitchell's lyrics was audible. However, the protagonist comes across as a shiftless dude with a guitar and few marketable skills, making it difficult to root for him. While recognizing the show's commentary on nativism through the character of Hades as a wall-building tycoon, the message is on the nose. Despite praising the production design, music, and performances, the show left no emotional impact. A musical fated to be the snob hit of this Broadway season - formally accomplished but ultimately more intellectually engaging than emotionally satisfying.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 92,
   "source": "webfetch-scraped",
   "textStatus": "complete",
   "urlSource": "show-score",
@@ -21,5 +21,61 @@
   "textQuality": "full",
   "sourceMethod": "webfetch",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 90,
+      "performances": 92,
+      "direction": 91
+    },
+    "keyPhrases": [
+      {
+        "quote": "As meaningful as it is melodic, this is a must-see for connoisseurs of innovative musical theater",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Even if you are not a fan of folk music, it will be difficult to resist this tuneful and visually spectacular production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Everything about Hadestown is designed to grab your attention and pull you into the story",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review contains explicit 'must-see' language, consistent praise across all production elements, and strong positive language throughout with no significant reservations. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the production's innovation, performances, and design, with no significant reservations noted.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:18:46.160Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

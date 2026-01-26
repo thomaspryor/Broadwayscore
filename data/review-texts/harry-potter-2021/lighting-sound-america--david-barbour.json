@@ -15,5 +15,61 @@
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 89,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "cracking good story, featuring J. K. Rowling's trademark airtight construction and psychological acuity",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "keep us utterly engrossed in this five-hour saga",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there's plenty of stage magic, all of it breathtaking",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Enthusiastic praise for storytelling, construction, and spectacle with superlatives like 'cracking good,' 'breathtaking,' and 'utterly engrossed' indicates strong recommendation despite five-hour length. | GPT-4o-mini: The review expresses strong enthusiasm for the storytelling and production quality, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:25:41.045Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

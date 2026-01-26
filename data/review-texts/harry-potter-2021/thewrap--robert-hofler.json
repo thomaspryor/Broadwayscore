@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Despite the show's reported record-breaking $68 million price tag, Tiffany has wisely chosen to give the \"Cursed Child\" a low-tech look. As long as parents don't have to take out a mortgage to purchase the tickets, the two-part play is great children's theater that in no way attempts to replicate the movies. The stage versions of \"Mary Poppins\" and \"Chitty Chitty Bang Bang\" dumbed the imagination with their literal interpretations. Tiffany avoids that visual trap by suggesting a train, for example, rather than presenting one on stage. The Hogwarts School of Witchcraft and Wizardry is little more than two moving staircases, and yet, in one illuminating sequence those steps conjure up dozens of locales in the imagination of any theatergoer, young or old.",
   "originalScore": null,
-  "assignedScore": 55,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-mixed-negative",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "the two-part play is great children's theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Tiffany has wisely chosen to give the 'Cursed Child' a low-tech look",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "those steps conjure up dozens of locales in the imagination of any theatergoer, young or old",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer clearly praises the production's creative direction and staging choices, calling it 'great children's theater' while appreciating the imaginative low-tech approach over literal interpretations. | GPT-4o-mini: The review expresses strong approval of the show's imaginative approach and its suitability for children, indicating a clear recommendation despite a lack of specific praise for performances or the script.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:28:52.495Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

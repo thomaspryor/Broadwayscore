@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Liberation may not be able to answer life's difficult questions, but it knows that it's important to foster these conversations and to come together to try our best to make the world a better place — especially when history often seems hellbent on repeating itself. And, four steps out of the theater, it's clear that messaging has hit its mark when a young woman turns to her friend and brightly declares, \"I'm fired up!\" Grade: B+",
   "originalScore": "B+",
-  "assignedScore": 87,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028",
   "textStatus": "missing",
@@ -17,5 +17,61 @@
   "sourceMethod": "bww-roundup",
   "scoreSource": "extracted-grade",
   "dtliExcerpt": "When Bess Wohl’s “Liberation” opened Off Broadway all the way back in February, it would have been ridiculous to grace it with best-of superlatives. Now that “Liberation” has opened on Broadway this Tuesday at the James Earl Jones Theatre, it’s entirely apt to write that it’s the year’s best play. There are only a few other new plays to open in 2025 and I’ve seen most of them in previews. Bank on it: “Liberation” remains the best.",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's entirely apt to write that it's the year's best play",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Grade: B+",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I'm fired up!",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic gives a B+ grade and explicitly calls it 'the year's best play,' indicating strong positive recommendation despite acknowledging the limited competition. | GPT-4o-mini: The review expresses strong enthusiasm for 'Liberation', calling it the year's best play and highlighting its impactful messaging.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:33:39.028Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

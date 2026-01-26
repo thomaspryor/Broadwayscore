@@ -7,8 +7,59 @@
   "publishDate": "March 24, 2011",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "dtliThumb": "Up",
   "source": "dtli",
-  "dtliExcerpt": "The Bottom Line: The first Broadway musical from the “South Park” team will have the comedy faithful flocking."
+  "dtliExcerpt": "The Bottom Line: The first Broadway musical from the “South Park” team will have the comedy faithful flocking.",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "will have the comedy faithful flocking",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The first Broadway musical from the 'South Park' team",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The prediction that 'comedy faithful will be flocking' suggests strong audience appeal and a positive recommendation, though the brief nature of this excerpt limits confidence in the score. | GPT-4o-mini: The review indicates a strong appeal for fans of the creators, suggesting a positive recommendation for the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:06:14.156Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

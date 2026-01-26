@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "A rich plum cake of a folk opera showcasing Anais Mitchell's original songwork transformed into theatrical form. Director Rachel Chavkin's innovative staging utilizes multiple levels and walkways, along with Bradley King's lighting design. Innocence and honesty radiate from the lovely Nabiyah Be as Eurydice. Patrick Page's commanding presence as Hades and Amber Gray's nuanced performance as Persephone are highlights. At two hours and ten minutes, it's only slightly overweight, with occasional moments of being overly explicit and repetitive. A rare treat well worth a visit for those interested in contemporary musical theater.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 79,
   "source": "webfetch-scraped",
   "note": "Off-Broadway NYTW production review",
   "textStatus": "excerpt_only",
   "textQuality": "missing",
   "sourceMethod": "webfetch",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 82,
+      "performances": 83,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "A rare treat well worth a visit for those interested in contemporary musical theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A rich plum cake of a folk opera showcasing Anais Mitchell's original songwork",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "At two hours and ten minutes, it's only slightly overweight, with occasional moments of being overly explicit and repetitive",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Clear positive recommendation with enthusiastic praise for music, performances, and direction, with only minor reservations about length and occasional repetition. | GPT-4o-mini: The review expresses strong praise for the performances and direction, with minor reservations about length and repetitiveness, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:16:38.656Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

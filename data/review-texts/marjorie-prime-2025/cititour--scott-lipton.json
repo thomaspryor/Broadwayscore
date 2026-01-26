@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Unsurprisingly, Harrison has more questions and conundrums to pose in this taut 80-minute play about the trials of aging and the nature of memory. But the work (a finalist for the Pulitzer Prize) is more than a mere intellectual exercise or adventure in science-fiction. (If you are a movie nut and very good at math, you’ll realize the work is actually set in 2062.) It’s a decidedly human drama.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Opens-On-Broadway-Starring-Cynthia-Nixon-June-Squibb-Danny-Burstein-and-More-20251208",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "more than a mere intellectual exercise or adventure in science-fiction",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "It's a decidedly human drama",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "taut 80-minute play about the trials of aging and the nature of memory",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic describes the play positively as 'taut' and 'decidedly human drama' that transcends being a 'mere intellectual exercise,' suggesting appreciation for the work's depth, but the excerpt lacks clear recommendation language or stronger evaluative terms. | GPT-4o-mini: The review indicates a clear recommendation with positive sentiments about the play's themes and execution, though it lacks explicit enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:36:00.802Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

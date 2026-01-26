@@ -8,7 +8,7 @@
   "fullText": null,
   "showScoreExcerpt": "\"This version of 'Aladdin' will doubtless keep your kiddies happy; for adults, one would like to press Iglehart in the cause of conjuring a desert kingdom of richer enchantments.\"",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 61,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "\"Animated\" doesn't begin to describe the frantic, screwball version of Disney's \"Aladdin\" that opened Thursday night on Broadway at the New Amsterdam Theatre, with a bushel of new songs and a Genie who works so hard you wouldn't be stunned to find him continuing to grant wishes at the stage door....",
@@ -18,5 +18,61 @@
   "textQuality": "missing",
   "sourceMethod": "stub",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 65,
+      "performances": 75,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "This version of 'Aladdin' will doubtless keep your kiddies happy",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "for adults, one would like to press Iglehart in the cause of conjuring a desert kingdom of richer enchantments",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "a Genie who works so hard you wouldn't be stunned to find him continuing to grant wishes at the stage door",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges the show's appeal for children and praises Iglehart's energetic performance, but clearly finds it lacking in sophistication for adult audiences, suggesting a qualified recommendation. | GPT-4o-mini: The review expresses enjoyment for the energetic production aimed at children but suggests a lack of depth for adult audiences, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:59:32.482Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

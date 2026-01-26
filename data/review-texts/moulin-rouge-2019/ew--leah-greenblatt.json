@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "A smart, shameless and extravagantly entertaining production.",
   "originalScore": "B+",
-  "assignedScore": 80,
+  "assignedScore": 87,
   "source": "reviews-json-stub",
   "textStatus": "partial",
   "textWordCount": 59,
@@ -21,5 +21,61 @@
   ],
   "textQuality": "excerpt",
   "sourceMethod": "stub",
-  "showScoreExcerpt": "\"A Millennial Reboot of Chekhov, and 'Moulin Rouge!' on Broadway. Halley Feiffer translates 'Three Sisters' into Internet-speak, and Baz Luhrmannâs glitzy movie comes into its own onstage.\""
+  "showScoreExcerpt": "\"A Millennial Reboot of Chekhov, and 'Moulin Rouge!' on Broadway. Halley Feiffer translates 'Three Sisters' into Internet-speak, and Baz Luhrmannâs glitzy movie comes into its own onstage.\"",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 78.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "smart, shameless and extravagantly entertaining production",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "comes into its own onstage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A smart, shameless and extravagantly entertaining production.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong positive language with 'extravagantly entertaining' and 'smart' indicates clear recommendation, though brief excerpt limits confidence. | GPT-4o-mini: The review expresses strong enthusiasm and excitement about the production, indicating it is a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:39:46.845Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Spell-binding...Takes stage magic to an entirely new level...The script is certainly not stellar...Some bizarre pacing issues...But these flaws are entirely with the script, in production there is so much magic that it is all too easy to get swept up and not even notice the problems in the writing...The extended choreographic transitions are unnecessary...But just as the magic saves any textual issues, the fantastic music gives the choreography a pass.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 74,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 43,
+      "music": 80,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Spell-binding...Takes stage magic to an entirely new level",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The script is certainly not stellar...Some bizarre pacing issues",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there is so much magic that it is all too easy to get swept up and not even notice the problems",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite significant script flaws, the critic is clearly swept away by the production's magic and music, suggesting the overall experience overcomes the writing problems enough to recommend seeing it. | GPT-4o-mini: The review expresses strong enthusiasm for the production's magic and music while acknowledging significant flaws in the script, leading to a positive overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:26:04.041Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

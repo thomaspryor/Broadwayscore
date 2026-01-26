@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Great expectations can be a problem when you’re seeing a Broadway show: You don’t always get what you hope for. It’s all too easy to expect great things when the show is a masterpiece like Cabaret: an exhilarating and ultimately chilling depiction of Berlin in the early 1930s that has been made into a classic movie and was revived exquisitely less than a decade ago. The risk of disappointment is even larger when the cast includes many actors you admire—led by Eddie Redmayne as the Emcee of the show’s decadent Kit Kat Club—and when the production arrives, as this one has, on a wave of raves from London. To guard against this problem, I made an active effort to lower my expectations before seeing the latest version of Cabaret. But my lowered expectations failed. They weren’t low enough.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 13,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421",
   "textStatus": "missing",
@@ -18,5 +18,61 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "dtliExcerpt": "For this you should leave home? Pick up your knitting, your book, your broom, whatever. Life’s too short for this Cabaret.",
-  "dtliThumb": "Down"
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 13,
+    "confidence": "high",
+    "range": {
+      "low": 5.5,
+      "high": 20.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For this you should leave home? Pick up your knitting, your book, your broom, whatever. Life's too short for this Cabaret.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "But my lowered expectations failed. They weren't low enough.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The risk of disappointment is even larger when the cast includes many actors you admire—led by Eddie Redmayne as the Emcee",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly tells readers to stay home and do literally anything else instead of seeing this production, delivering an unqualified rejection despite high expectations. | GPT-4o-mini: The review expresses strong disappointment and suggests avoiding the show altogether, indicating a clear pan.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:12:44.891Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 15,
+    "openaiScore": 10,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

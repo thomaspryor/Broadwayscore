@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"It may not be completely out of this world, but it will absolutely lift your spirits.\"",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 86,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -20,5 +20,61 @@
   "textQuality": "full",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 84,
+      "performances": 90,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "these few minute are worth the cost of your entire ticket",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it's a bonus to finally see a show that has as much magic as Aladdin",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It may not be completely out of this world, but it will absolutely lift your spirits",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review offers enthusiastic praise for specific production numbers and performances, explicitly states moments are 'worth the cost of your entire ticket,' and concludes with clear recommendation that the show 'will absolutely lift your spirits,' despite minor reservations. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting standout performances and inventive direction, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:57:35.585Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,10 +10,66 @@
   "dtliExcerpt": "There is a two-hour-and-40-minute luxury-car crash happening at the St. James Theatre. If I were the litigious type, I’d be trying to figure out how to sue for whiplash. Instead, here I am staggering homewards, still trying to twist my head back into position after The Queen of Versailles. If you’re morbidly curious about the experience, you could try for tickets to the new musical by Stephen Schwartz and Lindsey Ferrentino, with Kristin Chenoweth glittering relentlessly at its center. Or you could save the money and have someone slap you back and forth with a large salmon.",
   "showScoreExcerpt": "\"The Queen of Versailles swerves and overcorrects like a drunk driver. Tonally, itâs all over the map...It is the confused, contorted product of a set of absolutely incompatible impulses\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "dtli",
   "dtliThumb": "Down",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 40,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is a two-hour-and-40-minute luxury-car crash happening at the St. James Theatre",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "you could save the money and have someone slap you back and forth with a large salmon",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Kristin Chenoweth glittering relentlessly at its center",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic uses vivid metaphors of physical violence and pain ('car crash', 'whiplash', 'slapped with a salmon') to describe the show as an endurance test, clearly warning audiences away despite acknowledging Chenoweth's presence. | GPT-4o-mini: The review is overwhelmingly negative, with no redeeming qualities mentioned and a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:46:07.757Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "g. Naveen Kumar, The Washington Post: The non-musical show... is a chaotic fire hose of fan-service with enough sensory stimulation to make even the most experienced gamer want to puke just a little. Charles Isherwood, The Wall Street Journal: The production is technically impressive in all respects, but when the sinister Dr. Brenner (Alex Breaux)—Matthew Modine in the series—made his ominous appearance at the close of the first act, I fantasized about pulling him aside to ask for a sedative. Although in truth the show itself was already soporific enough. Adam Feldman, Time Out New York: When Daldry and Martin bring the show's best elements together—McCartney’s acting, Miriam Buether’s sets, Brigitte Reiffenstuel’s costumes, Jon Clark’s lighting, Paul Arditti’s sound, the production group 59’s video design and effects—the production is like a breathtaking theme-park ride. And as with a roller coaster, there are longueurs as the show chugs up to where it needs to be to deliver the next",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 46,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway-20241120",
@@ -17,5 +17,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 70,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "chaotic fire hose of fan-service with enough sensory stimulation to make even the most experienced gamer want to puke just a little",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "technically impressive in all respects",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the production is like a breathtaking theme-park ride",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed signals with technical praise and impressive production elements balanced against criticism of chaotic pacing and soporific storytelling, suggesting conditional recommendation based on audience preferences. | GPT-4o-mini: The review expresses significant disappointment with the overall experience, describing it as chaotic and soporific, despite acknowledging some technical merits. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:51:55.330Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 40,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

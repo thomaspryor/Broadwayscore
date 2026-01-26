@@ -7,7 +7,63 @@
   "publishDate": "March 24, 2011",
   "fullText": "Given the key contributors that \"South Park\" creators Trey Parker and Matt Stone teamed with for their first Broadway outing, one might expect \"The Book of Mormon\" to show the influences of \"Spamalot\" and \"Avenue Q.\" As it happens, this raucously funny new show surpasses both of those Tony winners, and handily so: Every song enhances the hilarity, expert staging heightens every gag, and the cast of fresh faces is blissfully good. Broadway hasn't seen anything like it since Mel Brooks came to town with \"The Producers,\" only \"Mormon\" has better songs.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 98,
+      "performances": 93,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "this raucously funny new show surpasses both of those Tony winners, and handily so",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Every song enhances the hilarity, expert staging heightens every gag, and the cast of fresh faces is blissfully good",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Broadway hasn't seen anything like it since Mel Brooks came to town with 'The Producers,' only 'Mormon' has better songs",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified praise with superlatives like 'raucously funny,' 'surpasses,' 'handily so,' 'expert,' and 'blissfully good,' plus comparison to acclaimed hits while claiming superiority. | GPT-4o-mini: The review expresses unqualified enthusiasm and compares it favorably to previous Broadway hits, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:07:27.014Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

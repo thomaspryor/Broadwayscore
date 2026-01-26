@@ -9,11 +9,67 @@
   "isFullReview": false,
   "bwwExcerpt": "“We need something a little theatrical.” Boy, does excited Bob Newby (Christopher Buckley) get his wish. He’s trying to solve a staging problem in “The Dark of the Moon,” the school play he and the other kids are secretly putting on in Hawkins, Ind., in 1959. But audiences watching “Stranger Things: The First Shadow” will likely greet the line with a wry smile because immense, intense theatricality is there for all to see. Are the three plot-driven hours of virtuoso, state-of-the-art stagecraft always matched by sustained drama? Not quite. Does that matter? Not at all.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": null,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "immense, intense theatricality is there for all to see",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "three plot-driven hours of virtuoso, state-of-the-art stagecraft",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Are the three plot-driven hours of virtuoso, state-of-the-art stagecraft always matched by sustained drama? Not quite. Does that matter? Not at all.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging dramatic shortcomings, the critic celebrates the spectacular stagecraft and concludes the theatrical experience transcends its narrative flaws with 'Does that matter? Not at all.' | GPT-4o-mini: The review expresses a clear appreciation for the theatricality and production quality, despite some reservations about the drama, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:51:49.117Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

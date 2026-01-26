@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"There is a wonderful cast of 40, mostly imported from London, a striking set design by Christine Jones evocatively lit by Neil Austin, terrific movement direction by Steven Hoggett, excellent costumes by Katrina Lindsay and seamless direction by John Tiffany. The illusions and magic by Jamie Harrison are often breathtaking...The problem for me was that I found the plot both convoluted and repetitious. It did not succeed in holding my interested for over five hours.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 56,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 56,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": 85,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is a wonderful cast of 40, mostly imported from London, a striking set design by Christine Jones evocatively lit by Neil Austin, terrific movement direction by Steven Hoggett",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The problem for me was that I found the plot both convoluted and repetitious",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It did not succeed in holding my interested for over five hours",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic praises nearly every production element with strong language but completely loses interest due to fundamental story problems over a five-hour runtime, creating a classic mixed review where craft excellence can't overcome material weaknesses. | GPT-4o-mini: While the production boasts strong performances and impressive design, the convoluted plot significantly detracts from the overall experience, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:25:21.077Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 60,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Those who have only the barest familiarity (or none) with the Potter books will be at a disadvantage, so it's best to go with someone who knows them...Although there are serious moments of human interest in the dramatic interactions among the play's friends and family member characters, audiences...are likely to be entranced mostly by the spectacle...While the...cast speaks the wordy dialogue precisely, the driving pace and need to reach ears in the large house...forces much of it to be shouted.\"",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 61,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-pan",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 65,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "audiences...are likely to be entranced mostly by the spectacle",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Those who have only the barest familiarity (or none) with the Potter books will be at a disadvantage",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the driving pace and need to reach ears in the large house...forces much of it to be shouted",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Review acknowledges the spectacle will enthrall audiences but criticizes accessibility issues and delivery problems, suggesting a qualified recommendation dependent on prior knowledge. | GPT-4o-mini: The review expresses a mixed sentiment, highlighting both the spectacle and the challenges of the production, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:28:46.552Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

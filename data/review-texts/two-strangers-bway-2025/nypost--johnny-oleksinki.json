@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "it explodes with an old-fashioned song-and-dance number (“American Express”), the pair dressed to the nines, sweeping Fred-and-Gingerishly through the city for one night of expense and extravagance. Johnny Oleksinki, The New York Post: The musical comes dangerously close to cloying sentimentality at times, but Dougal’s dry sense of humor and Tutty’s first-class delivery prevents the story from ever getting too soupy. Chris Jones, The New York Daily News: Stories with odd couples on the edge of Eros, so to speak, can be very effective (see the movie “Lost in Translation” or the musical “The Band’s Visit“) but if writers choose to have their couple get naked and hit the sheets, in this case at the Plaza Hotel, since we’re all about New York aspiration here, they struggle to know where to go. So while this show held me for Act One with its considerable charm, by Act Two, it was hitting turbulence. 90 minutes and out would have been a better plan. Robert Hofler, The Wrap: Jim Barne and Ki",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://nypost.com/2025/11/20/entertainment/two-strangers-carry-a-cake-across-new-york-review-a-hilarious-new-star-bursts-onto-broadway/",
@@ -17,5 +17,63 @@
   "needsFullText": false,
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 75,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "comes dangerously close to cloying sentimentality at times",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "held me for Act One with its considerable charm, by Act Two, it was hitting turbulence",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Tutty's first-class delivery prevents the story from ever getting too soupy",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review that praises performances and Act One charm but criticizes structural problems and Act Two decline, with no clear recommendation either way. | GPT-4o-mini: The review indicates a mix of charm and sentimentality issues, with a stronger first act but a decline in the second, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:59:15.494Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (62 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

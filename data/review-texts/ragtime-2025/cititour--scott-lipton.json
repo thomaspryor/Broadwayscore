@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Although many people may recall the opulence of the original Broadway production, this more minimalist version is frankly more effective, allowing one to focus on the plot and the performances. David Korins' set is decidedly but intelligently spare, relying primarily on two large stepladders and a few well-chosen set pieces (including a Model T Ford). Linda Cho’s period costumes are quite impressive. Adam Honore’s lighting design and 59 Studio’s projection designs both help fill the vast Beaumont stage. Finally, Ellenore Scott’s spot-on choreography is thoughtful and often makes up for the lack of scenery. Yes, it's sad that 2025 proves to be the right time for “Ragtime,” but that doesn’t mean you should pass up the chance to witness this truly unforgettable production.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-mixed",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "this more minimalist version is frankly more effective",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you should not pass up the chance to witness this truly unforgettable production",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Linda Cho's period costumes are quite impressive",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive recommendation with detailed praise for design elements and explicit advice not to miss this 'truly unforgettable production.' | GPT-4o-mini: The review expresses strong enthusiasm for the production's effectiveness and design, indicating it is a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:46:36.441Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

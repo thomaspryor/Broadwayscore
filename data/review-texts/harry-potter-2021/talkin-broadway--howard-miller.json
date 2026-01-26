@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Beyond the hype, the entertaining appearances by characters long familiar to fans, and the impressive stage magic...there is an even greater magic going on here. It is the spell that is cast by a well-crafted story...While Part I is mostly a hodgepodge of soft-sell character-introducing scenes, excursions into nostalgia, and modest bits of conjuring, do stick around. Because by the end of Part II, you will come to understand that this is...a fitting addition to the realm of Potter.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 74,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 76,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "there is an even greater magic going on here. It is the spell that is cast by a well-crafted story",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Part I is mostly a hodgepodge of soft-sell character-introducing scenes",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "a fitting addition to the realm of Potter",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite criticizing Part I as a 'hodgepodge,' the critic ultimately endorses the show as 'a fitting addition' with praise for the 'well-crafted story' and urges audiences to 'stick around,' indicating a clear positive recommendation. | GPT-4o-mini: The review indicates a generally positive sentiment towards the story while acknowledging some weaknesses in Part I, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:27:49.729Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

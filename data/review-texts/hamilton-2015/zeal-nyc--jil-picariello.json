@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"It's even better than I remembered. 'Hamilton' is something entirely new to Broadway. And also something entirely old...You'll leave 'Hamilton' humming. And teary-eyed. And in awe that someone - Lin-Manuel Miranda in this case - can conceive of, write, and star in something so moving, so compelling, so...well, genius.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 95,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": 95,
+      "performances": 95,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You'll leave 'Hamilton' humming. And teary-eyed. And in awe",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "something so moving, so compelling, so...well, genius",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's even better than I remembered",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified praise using superlatives like 'genius' and describing profound emotional impact, with the critic calling it 'entirely new to Broadway' and expressing pure awe. | GPT-4o-mini: The review expresses unqualified enthusiasm and admiration for the show, indicating it is a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:23:06.194Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

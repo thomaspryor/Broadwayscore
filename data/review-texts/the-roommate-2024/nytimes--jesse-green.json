@@ -10,11 +10,67 @@
   "dtliExcerpt": "The problem is that this version of “The Roommate,” working backward from that fact, delivers a pair of very satisfying performances that cancels out the play. You’ll remember LuPone’s sneers and Farrow’s tears — not what caused them.",
   "showScoreExcerpt": "“The problem is that this version of ‘The Roommate,’ working backward from that fact, delivers a pair of very satisfying performances that cancels out the play.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 47,
   "source": "dtli",
   "dtliThumb": "Meh",
   "bwwExcerpt": "Most of what either woman says in “The Roommate,” which opened Thursday at the Booth Theater, is greeted by one or the other response. The two actors, old friends and old hands, play beautifully off each other, expertly riding the seesaw of a play, by Jen Silverman, that throws a Bronx grifter looki...",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 47,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 53.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": 76,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "delivers a pair of very satisfying performances that cancels out the play",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "You'll remember LuPone's sneers and Farrow's tears — not what caused them",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "very satisfying performances",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances highly but suggests they can't overcome fundamental flaws in the play itself, creating a mixed-negative experience where strong acting isn't enough to recommend the show. | GPT-4o-mini: While the performances are praised, the overall impact of the play is deemed unsatisfactory, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:58:28.880Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

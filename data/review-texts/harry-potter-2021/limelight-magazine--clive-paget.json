@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"The design team has created a magical space...Compelling storytelling...thrillingly inventive staging...For all its magic and mayhem, at the heart of the play lie universal themes of friendship, loyalty, trust and the old truism that history has a habit of repeating itself...A fast-paced Rubik's cube type affair with the kind of reveals that make Potter aficionados gasp out loud...A play with great heart and many lessons to teach.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 87,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "magical space...Compelling storytelling...thrillingly inventive staging",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "A fast-paced Rubik's cube type affair with the kind of reveals that make Potter aficionados gasp out loud",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A play with great heart and many lessons to teach",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently enthusiastic language with superlatives like 'magical,' 'thrillingly inventive,' and 'compelling' throughout, plus strong praise for both technical elements and storytelling without any qualifying criticisms. | GPT-4o-mini: The review expresses strong enthusiasm for the production's design and storytelling, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:25:47.058Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 88,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

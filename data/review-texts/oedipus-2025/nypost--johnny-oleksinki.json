@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Reid, Strong and Manville are transfixing as awful revelation after revelation comes to light. Strong’s nice guy gives way to brutishness and boiling blood, and Manville’s heretofore stalwart Jocasta crushingly crumples when the grotesque truth is finally revealed.     Brian",
   "originalScore": null,
-  "assignedScore": 55,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Mark-Strong-and-Lesley-Manville-Star-in-OEDIPUS-on-Broadway-20251113",
   "textStatus": "missing",
@@ -19,5 +19,61 @@
   "scoreConfidence": "low",
   "dtliExcerpt": "Reid, Strong and Manville are transfixing as awful revelation after revelation comes to light. Strong’s nice guy gives way to brutishness and boiling blood, and Manville’s heretofore stalwart Jocasta crushingly crumples when the grotesque truth is finally revealed.",
   "dtliThumb": "Up",
-  "showScoreExcerpt": "\"Most of the play takes place in real time in Oedipusâ sleek living room. And Icke puts a pulse-pounding clock onstage that counts down to the election results. But we all know itâs leading up to much more than that.\""
+  "showScoreExcerpt": "\"Most of the play takes place in real time in Oedipusâ sleek living room. And Icke puts a pulse-pounding clock onstage that counts down to the election results. But we all know itâs leading up to much more than that.\"",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Reid, Strong and Manville are transfixing as awful revelation after revelation comes to light",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Strong's nice guy gives way to brutishness and boiling blood",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Icke puts a pulse-pounding clock onstage that counts down to the election results",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the lead performances as 'transfixing' and appreciation for directorial choices like the countdown clock suggest clear recommendation despite being only an excerpt. | GPT-4o-mini: The review highlights strong performances and effective direction, indicating a solid recommendation despite the lack of detailed critique on the script.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:41:14.573Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

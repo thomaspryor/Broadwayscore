@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "But the manner in which “Just in Time” unfolds is mercilessly predictable, so the beats rarely surprise; we feel every snap coming. For what it’s worth, Groff, Lawrence and Henningsen don’t seem to mind — they’re having a howling good time slipping into these characters’ shoes.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "partial",
@@ -20,5 +20,56 @@
     "Word count too low: 245 (min: 300)"
   ],
   "textQuality": "partial",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Just in Time’ is safe, swoonful concert-style theater",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "star Jonathan Groff’s got the magic, vintage touch",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review indicates a mixed sentiment with some positive notes about the performances but lacks strong enthusiasm or clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:31:35.087Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 60,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

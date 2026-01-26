@@ -7,7 +7,7 @@
   "publishDate": "2024-04-20",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 64,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "The play, which opened Friday at the Golden Theatre, is a hypernaturalistic meditation on the thrill, and also the danger, of collaborating on art — the compromises, the egos and the joys. It’s an ode not just to the music business but perhaps to the theater world, too.",
@@ -15,5 +15,63 @@
   "textQuality": "missing",
   "sourceMethod": "stub",
   "scoreSource": "sentiment-pan",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 64,
+    "confidence": "low",
+    "range": {
+      "low": 47.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "hypernaturalistic meditation on the thrill, and also the danger, of collaborating on art",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "It's an ode not just to the music business but perhaps to the theater world, too",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "a hypernaturalistic meditation on the thrill, and also the danger, of collaborating on art",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt provides thematic description without clear evaluative language or recommendation signals, making it impossible to determine the critic's actual sentiment toward the production. | GPT-4o-mini: The review expresses a positive sentiment towards the themes and concepts of the play, indicating a clear recommendation despite lacking specific praise for performances or direction. | Note: Models differed by 23 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:49:30.775Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 75,
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 23 points (Claude: 52, OpenAI: 75)"
+    ]
+  }
 }

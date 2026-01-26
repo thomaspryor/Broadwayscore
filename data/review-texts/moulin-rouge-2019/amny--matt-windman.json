@@ -9,9 +9,65 @@
   "isFullReview": false,
   "bwwExcerpt": "Not unlike earlier botched attempts at bringing visually distinct movie musicals to the stage.",
   "originalScore": "Negative",
-  "assignedScore": 45,
+  "assignedScore": 25,
   "source": "reviews-json-stub",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "stub"
+  "sourceMethod": "stub",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "botched attempts",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Not unlike earlier botched attempts",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "botched attempts at bringing visually distinct movie musicals to the stage",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls this a 'botched attempt' and compares it unfavorably to other failed adaptations, indicating a clear negative assessment. | GPT-4o-mini: The review indicates a strong negative sentiment by comparing the production unfavorably to previous failed adaptations, suggesting a lack of quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:39:36.976Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

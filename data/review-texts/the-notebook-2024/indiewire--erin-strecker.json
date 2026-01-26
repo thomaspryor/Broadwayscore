@@ -9,11 +9,67 @@
   "isFullReview": false,
   "bwwExcerpt": "And boy, are there lows. It’s a great credit to the production that as the horrors of dementia come into focus the show doesn’t fully drown in the tears (SO many tears!) of audience members. Instead, we’re left with a soft landing of sorts, thanks to the restrained, emotional performances of Harewood and Plunkett, melding the hopelessness of a disease with the hope that must come through in some way in all musicals — even the tragedies. If fans are left wishing they’d gotten a bit more time with people they’ve grown to care about, well, don’t we all.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.indiewire.com/criticism/culture/the-notebook-broadway-musical-review-1234964639/",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 79,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a great credit to the production that as the horrors of dementia come into focus the show doesn't fully drown in the tears",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the restrained, emotional performances of Harewood and Plunkett",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "If fans are left wishing they'd gotten a bit more time with people they've grown to care about",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges significant challenges ('horrors', 'SO many tears') but praises the production's handling of difficult material and strong performances, suggesting a qualified recommendation despite the heavy subject matter. | GPT-4o-mini: The review highlights strong performances and emotional impact but indicates some dissatisfaction with the overall experience, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:55:51.631Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

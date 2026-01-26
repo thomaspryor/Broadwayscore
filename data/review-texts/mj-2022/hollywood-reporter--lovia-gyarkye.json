@@ -7,9 +7,65 @@
   "publishDate": "February 1, 2022",
   "fullText": "MJ, a remarkable Broadway musical written by Lynn Nottage and directed and choreographed by Christopher Wheeldon, deftly probes this weighty topic. The show was produced by arrangement with the musician’s estate, and uses Jackson’s archives and place within the public’s imagination to conduct a Freudian analysis of the artist’s life. How do you tell a story of a person who dissolved into the roles he created for himself and the roles the public created for him? Well, it depends on where and when you start.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "MJ, a remarkable Broadway musical written by Lynn Nottage and directed and choreographed by Christopher Wheeldon, deftly probes this weighty topic. The show was produced by arrangement with the musician’s estate, and uses Jackson’s archives and place within the public’s imagination to conduct a Freudian analysis of the artist’s life. How do you tell a story of a person who dissolved into the roles he created for himself and the roles the public created for him? Well, it depends on where and when you start.",
-  "showScoreExcerpt": "\"During a preview I attended, an audience member rose to her feet and waved her hands in the air, as if she had caught the Holy Spirit: an affirmation that to be in Jacksonâs presence â even if only through gifted performers â is to experience a spiritual rapture. \n\nMJ, like its subject, is captivating and hard to shake. The musical takes audiences through Jacksonâs life and catalog with impressive ease, expertly chronicling major milestones.\""
+  "showScoreExcerpt": "\"During a preview I attended, an audience member rose to her feet and waved her hands in the air, as if she had caught the Holy Spirit: an affirmation that to be in Jacksonâs presence â even if only through gifted performers â is to experience a spiritual rapture. \n\nMJ, like its subject, is captivating and hard to shake. The musical takes audiences through Jacksonâs life and catalog with impressive ease, expertly chronicling major milestones.\"",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "a remarkable Broadway musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "deftly probes this weighty topic",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "uses Jackson's archives and place within the public's imagination to conduct a Freudian analysis",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic calls it 'remarkable' and praises how it 'deftly probes' complex subject matter, suggesting appreciation for the artistic approach, but this appears to be an excerpt from a longer review. | GPT-4o-mini: The review expresses strong admiration for the musical's thematic depth and production quality, indicating a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:37:39.917Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

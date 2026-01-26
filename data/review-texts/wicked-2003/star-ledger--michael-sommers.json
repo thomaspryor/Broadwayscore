@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"A marvel of organization and inventiveness. Lusciously composed, smartly written and beautifully staged, 'Wicked' is one of the rare shows in town that justifies a $100 ticket. The cost is easily paid back in memories alone.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 94,
   "source": "show-score",
   "needsFullText": true,
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "A marvel of organization and inventiveness",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "one of the rare shows in town that justifies a $100 ticket",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The cost is easily paid back in memories alone",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified praise with superlatives ('marvel'), explicit value assertion, and strong endorsement of the complete theatrical experience. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong praise, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T06:01:39.326Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "irritation there and elsewhere at the broadness of the narrative strokes. But kudos to Keys for making her younger self a needy pain in the neck, otherwise known as an artistically inclined teenager. Elysa Gardner, The New York Sun: The show has nonetheless arrived at the Shubert Theatre, with its excellent principal cast (lovingly directed by Michael Greif) and its buoyant book and score intact — and, for the most part, the transition feels seamless. The company is led by the bubbly Maleah Joi Moon, who made her professional debut in the Public staging as 17-year-old Ali, a character brd on the young Ms. Keys, though there are striking differences: At Ali’s age, Ms. Keys had already graduated the Professional Performing Arts School at the top of her class and was securing the record contract that would make her a sensation three years later. Johnny Oleksinski, New York Post: Along with choreographer Camille A. Brown, whose dances burst with unrestrained youth and Manhattan chutzpah, t",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HELLS-KITCHEN-Opens-On-Broadway-20240421",
@@ -24,5 +24,61 @@
   "textQuality": "partial",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 75,
+      "performances": 80,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "excellent principal cast (lovingly directed by Michael Greif)",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "buoyant book and score intact — and, for the most part, the transition feels seamless",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "dances burst with unrestrained youth and Manhattan chutzpah",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Multiple critics praise the cast, direction, score, and choreography with strong positive language, though the excerpt appears incomplete and contains some minor criticisms about narrative broadness. | GPT-4o-mini: The review highlights strong performances and a solid book, but notes some narrative issues, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:30:14.707Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

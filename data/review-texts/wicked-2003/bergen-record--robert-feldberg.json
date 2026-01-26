@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"'Wicked' tries, in its ambition, to do so much that it's inevitable that it fails to be a smooth, cohesive show. It's too long - two-hours-45- minutes - and it often has a lumbering quality. But its reach, its attempt to be meaty and relevant and theatrical, is not only admirable, it's stimulating. This is a musical that offers many pleasures as you watch it, and - this is rare - also stays with you.\"",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 71,
   "source": "show-score",
   "needsFullText": true,
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-negative",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": null,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "its reach, its attempt to be meaty and relevant and theatrical, is not only admirable, it's stimulating",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This is a musical that offers many pleasures as you watch it, and - this is rare - also stays with you",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's too long - two-hours-45- minutes - and it often has a lumbering quality",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging significant flaws (length, pacing issues), the critic emphasizes the show's ambitious reach, stimulating qualities, and lasting impact, indicating a qualified recommendation. | GPT-4o-mini: The review expresses both admiration for the show's ambition and significant reservations about its execution, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T06:00:29.876Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

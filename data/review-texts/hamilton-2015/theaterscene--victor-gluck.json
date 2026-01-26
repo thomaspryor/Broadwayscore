@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"'Hamilton' does for the American Revolution what 'Les Miserables' does for French 19th century history. However, its contemporary sound turns 'Hamilton' into a theatrical revolution that is just short of titanic. From the expert cast to the impeccable design team to the splendid score and text, 'Hamilton' makes musical theater history. Just a warning: don't come tired! 'Hamilton' is fast moving and jam-packed with information. You will want all your faculties about you.\"",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 94,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-negative",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 95,
+      "performances": 90,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hamilton makes musical theater history",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a theatrical revolution that is just short of titanic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "From the expert cast to the impeccable design team to the splendid score and text",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified praise with superlatives like 'makes musical theater history' and 'theatrical revolution' combined with praise for every element indicates a clear rave recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for 'Hamilton', highlighting its historical significance and quality, leading to a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:22:01.986Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

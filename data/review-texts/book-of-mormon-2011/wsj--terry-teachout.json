@@ -7,7 +7,7 @@
   "publishDate": "2011-03-24",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "Trey Parker and Matt Stone, the naughty boys of \"South Park,\" have teamed up with Robert Lopez, one of the co-creators of \"Avenue Q,\" and the results of their collaboration are pretty much what you'd expect: slick and smutty. \"The Book of Mormon\" is the first musical to open on Broadway since \"La Ca...",
@@ -15,5 +15,63 @@
   "textQuality": "missing",
   "sourceMethod": "stub",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 58,
+    "confidence": "low",
+    "range": {
+      "low": 40.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "results of their collaboration are pretty much what you'd expect",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "slick and smutty",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the results of their collaboration are pretty much what you'd expect",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The fragment suggests predictable material described as 'slick and smutty' which reads as faint praise at best, but the review is too incomplete to determine the critic's actual recommendation. | GPT-4o-mini: The review hints at a mix of expectations and typical style without strong enthusiasm or clear recommendation. | Note: Models differed by 25 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:07:37.541Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 70,
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 45, OpenAI: 70)"
+    ]
+  }
 }

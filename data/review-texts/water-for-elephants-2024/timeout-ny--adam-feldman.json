@@ -10,11 +10,67 @@
   "dtliExcerpt": "Step right up, come one, come all, ladies and gentlemen, boys and girls, step right up to the greatest—well, okay, not the greatest show on Broadway, but a dang fine show nonetheless.",
   "showScoreExcerpt": "\"The main attraction is the pull of the circus itself.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "Up",
   "bwwExcerpt": "Step right up, come one, come all, ladies and gentlemen, boys and girls, step right up to the greatest—well, okay, not the greatest show on Broadway, but a dang fine show nonetheless. Although Water for Elephants is set at a circus, and includes several moments of thrilling spectacle, what makes it ...",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "not the greatest show on Broadway, but a dang fine show nonetheless",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Step right up, come one, come all",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "not the greatest show on Broadway",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses circus barker language to enthusiastically invite audiences while explicitly calling it 'a dang fine show' despite acknowledging it's not the greatest, indicating clear positive recommendation. | GPT-4o-mini: The review expresses a generally positive sentiment but with a notable caveat about not being the greatest, indicating a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:59:55.595Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

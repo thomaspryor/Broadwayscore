@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": ". David Cote, Observer: Operation Mincemeat is totally lovable and expertly zany, with Big Let’s Put on a Show Energy. See it now before SpitLip’s visas are revoked and they get thrown in Guantánamo. Caroline Cao, New York Theatre Guide: Operation Mincemeat is a cup of British comedy, sometimes with drawn-out humor to a fault — not for every American. But it also captures the Hollywood hagiographic, the self-deprecating, the ironic, and the tragic that will make you gasp. Chris Jones, The New York Daily News: While it’s a retro wartime story, the overall sensibility here is both contemporary and self-aware, filled with sly critiques of the domination of wartime intelligence services by members of the British ruling class, exerting their sexist ways. For the most part, the show is composed of zany humor that bleeds into comic songs with witty internal rhymes (the songs of Tim Minchin are a helpful comparative). Andrew Martini, Theatrely: There’s a real, beating heart at the center of th",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 83,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250320",
@@ -20,5 +20,61 @@
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 88,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Operation Mincemeat is blessed with a firecracker five-person cast. Even if its sense of British humor is not your cup of tea, it's hard not to be in awe at its comedic and dramatic audacity.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a cup of British comedy, sometimes with drawn-out humor to a fault — not for every American",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "ensure a well-oiled engine of comedic and dramatic moving parts amid the music",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Review gives clear praise for the cast, direction, and production values while acknowledging the British humor may not appeal to all American audiences, but concludes with strong admiration for the show's audacity. | GPT-4o-mini: The review expresses strong praise for the performances and direction, with minor caveats about humor appeal, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:42:52.250Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

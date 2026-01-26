@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Harrison, in his poetic but sometimes cliched language, suggests it is a little bit of both. Our time on Earth is terribly fleeting, and isn’t that sad? But also some part of us does linger on in those who knew us, those who tell our stories, who reach fondly for us in moments of nostalgia. If tech can somehow aid in that, perhaps we should let it. Marjorie Prime is frustratingly ambivalent about that idea, tossing it around and wanly entertaining both sides of the argument before it ventures off into what perhaps interests Harrison more. With its tech conceit set aside, Marjorie Prime is mostly a story of trauma echoing through generations of a family, which is a quite common theme within the American theater canon.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 54,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Opens-On-Broadway-Starring-Cynthia-Nixon-June-Squibb-Danny-Burstein-and-More-20251208",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Marjorie Prime is frustratingly ambivalent about that idea",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "poetic but sometimes cliched language",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "quite common theme within the American theater canon",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic finds the play 'frustratingly ambivalent' and criticizes it for being cliched and common, with no clear positive elements to balance these significant reservations. | GPT-4o-mini: The review expresses mixed feelings about the show's themes and execution, indicating a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:36:11.292Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

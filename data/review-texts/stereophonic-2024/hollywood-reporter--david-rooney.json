@@ -7,8 +7,64 @@
   "publishDate": "April 19, 2024",
   "fullText": "Arguably the best new American drama since Annie Baker’s The Flick, David Adjmi’s Stereophonic shares both a hyper-naturalistic style and a sprawling three-hour running time with that 2013 masterwork.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "dtliThumb": "Up",
   "source": "dtli",
-  "dtliExcerpt": "Arguably the best new American drama since Annie Baker’s The Flick, David Adjmi’s Stereophonic shares both a hyper-naturalistic style and a sprawling three-hour running time with that 2013 masterwork."
+  "dtliExcerpt": "Arguably the best new American drama since Annie Baker’s The Flick, David Adjmi’s Stereophonic shares both a hyper-naturalistic style and a sprawling three-hour running time with that 2013 masterwork.",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 80.5,
+      "high": 97.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Arguably the best new American drama since Annie Baker's The Flick",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "shares both a hyper-naturalistic style and a sprawling three-hour running time with that 2013 masterwork",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the best new American drama since Annie Baker’s The Flick",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Opening with 'arguably the best new American drama' since a acclaimed masterwork signals exceptional praise and strong recommendation despite being a brief excerpt. | GPT-4o-mini: The review indicates strong praise by comparing it favorably to a notable work, suggesting a solid recommendation despite lacking explicit endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:49:46.767Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

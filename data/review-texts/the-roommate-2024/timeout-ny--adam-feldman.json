@@ -10,11 +10,67 @@
   "dtliExcerpt": "A variation on odd-couple themes, the play tills land that has been farmed many times. Yet it finds freshness in the familiar through a series of small twists—and, in Farrow’s star turn, an enchanting revelation.",
   "showScoreExcerpt": "\"Sometimes the old can be full of surprises. That’s the running premise of The Roommate, which brings together two very different senior citizens\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Up",
   "bwwExcerpt": "Sometimes the old can be full of surprises. That’s the running premise of The Roommate, which brings together two very different senior citizens—Sharon, an unworldly Iowan played by Mia Farrow, and her new housemate, Robyn, a streetwise Bronx transplant played by Patti LuPone—and sends them down pat...",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 83,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "finds freshness in the familiar through a series of small twists",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "an enchanting revelation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "tills land that has been farmed many times",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging familiar material, the critic emphasizes how the production finds freshness and particularly praises Farrow's performance as 'enchanting,' indicating clear recommendation. | GPT-4o-mini: The review expresses a clear positive sentiment, particularly highlighting the performances and the fresh take on familiar themes, indicating a recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:58:45.578Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

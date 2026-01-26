@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Stereophonic, one of Broadway’s most striking plays of the season, is an allegory of industry greed and artistry. But the play, as a work itself, serves as a triumphant example of what happens when art has the time to develop, to home in on the basics of craft, character and spirit.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Rock-N-Roll-Drama-STEREOPHONIC-Opens-On-Broadway-20240419",
   "designation": "Recommended",
@@ -17,5 +17,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of Broadway's most striking plays of the season",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "serves as a triumphant example",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "art has the time to develop, to home in on the basics of craft, character and spirit",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language including 'most striking' and 'triumphant example' with praise for craft and artistry indicates clear recommendation despite being a brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm and praise for the play's artistic qualities, indicating a must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:49:41.626Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

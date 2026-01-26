@@ -9,11 +9,67 @@
   "isFullReview": false,
   "dtliExcerpt": "This history reads like pretty dry stuff, but right from that beginning chorus, “Suffs” is anything but. This sung-through musical is rousing entertainment for all of its nearly “three hours straight,” and much of the delight comes from seeing how Taub manipulates the material to make it fun.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "bwwExcerpt": "“Suffs” entertains because Taub makes her show all about the women, and she makes those women committed but very flawed individuals. Let’s not call them cat fights, but “Suffs” is filled with rivalries between the radical Alice Paul (Taub) of the National Woman’s Party and the more establishment-min...",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "rousing entertainment for all of its nearly three hours straight",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "much of the delight comes from seeing how Taub manipulates the material to make it fun",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This history reads like pretty dry stuff, but right from that beginning chorus, 'Suffs' is anything but",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive language about entertainment value and director's skill in making potentially dry material engaging and fun throughout a long runtime. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's entertainment value and creativity, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:52:17.533Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

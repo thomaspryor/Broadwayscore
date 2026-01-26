@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Depending on one's inclination, \"MJ\" can be seen as a slick and lively tribute concert (with dancers, back-up singers, Jackson impersonators, and elaborate homage choreography), a by-the-numbers bio-jukebox musical (really not so different from all the others out there), or a defiant public relations effort to rebrand and refocus Jackson's image, reputation, and legacy.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 57,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MJ-Opens-on-Broadway--See-What-the-Critics-Are-Saying-20220201",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "slick and lively tribute concert",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "by-the-numbers bio-jukebox musical (really not so different from all the others out there)",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "defiant public relations effort to rebrand and refocus Jackson's image",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic presents three possible interpretations of the show without endorsing any, suggesting a noncommittal, analytical stance that leans slightly negative due to dismissing it as formulaic and potentially manipulative. | GPT-4o-mini: The review presents a mixed view, acknowledging some entertainment value while critiquing the show as formulaic and lacking originality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:37:17.563Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

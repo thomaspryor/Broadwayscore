@@ -7,9 +7,65 @@
   "publishDate": "April 22, 2014",
   "fullText": "Broadway's busiest revolving door, better known as the nearly 10-year-old revival of Chicago, has someone new passing through: the R&B superstar with the single moniker of Usher has joined the company through October 1. The 27-year-old, baby-faced Grammy Award winner is the latest performer to wear the dapper duds of silver-tongued lawyer Billy Flynn, and while he's a good two or three decades younger than most of his predecessors, the tuxedo fits decently enough. He won't linger in the memory — like Jerry Orbach or James Naughton — but neither does he embarrass himself or producers Barry and Fran Weissler, who tapped him for the role.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "dtliThumb": null,
   "source": "dtli",
   "dtliExcerpt": "Broadway's busiest revolving door, better known as the nearly 10-year-old revival of Chicago, has someone new passing through: the R&B superstar with the single moniker of Usher has joined the company through October 1. The 27-year-old, baby-faced Grammy Award winner is the latest performer to wear the dapper duds of silver-tongued lawyer Billy Flynn, and while he's a good two or three decades younger than most of his predecessors, the tuxedo fits decently enough. He won't linger in the memory — like Jerry Orbach or James Naughton — but neither does he embarrass himself or producers Barry and Fran Weissler, who tapped him for the role.",
-  "showScoreExcerpt": "“I am typically of the opinion that no show has any business occupying a Broadway house for more than a decade: Theater is ephemeral, and the magic tends to wear off as the years pass and performances become stale. ’Chicago’ makes this a difficult position to maintain. Ten thousand performances later, it's still dazzling.”"
+  "showScoreExcerpt": "“I am typically of the opinion that no show has any business occupying a Broadway house for more than a decade: Theater is ephemeral, and the magic tends to wear off as the years pass and performances become stale. ’Chicago’ makes this a difficult position to maintain. Ten thousand performances later, it's still dazzling.”",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 63,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the tuxedo fits decently enough",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "He won't linger in the memory — like Jerry Orbach or James Naughton — but neither does he embarrass himself",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "while he's a good two or three decades younger than most of his predecessors",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review is notably neutral about Usher's performance, praising him for being adequate ('fits decently enough') and not embarrassing but explicitly stating he won't be memorable like previous stars. | GPT-4o-mini: The review indicates a mixed response to Usher's performance, acknowledging he does not embarrass but fails to leave a lasting impression, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:14:12.761Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

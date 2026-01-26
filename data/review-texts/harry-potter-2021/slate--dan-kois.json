@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Tiffany's production leans heavily on stagecraft to bring the play's often subtext-free lines to life. When it fails, it exposes what's under the tricks: a story that can feel awfully mundane. When it succeeds, that ingenious theatricality can make audiences believe that magic is real...Read the script for the first part, then buy tickets to Part 2, which contains all the production's most wondrous special effects...Skipping Part 1 means you get to miss some painfully clunky exposition.\"",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 59,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-negative",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": null,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "a story that can feel awfully mundane",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "that ingenious theatricality can make audiences believe that magic is real",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "buy tickets to Part 2, which contains all the production's most wondrous special effects",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic gives qualified praise for the production's stagecraft and special effects while criticizing the script as mundane with clunky exposition, suggesting audiences should only see Part 2. | GPT-4o-mini: The review presents a mixed view, highlighting both the production's strengths in stagecraft and its weaknesses in storytelling, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:27:33.395Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

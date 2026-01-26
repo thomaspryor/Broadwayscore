@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "In addition to Moon and Bean’s sensational vocal range, “Hell’s Kitchen” illustrates how tender mother/daughter relationships can be. It also reflects the issues underlying New York City in the ’90s while demonstrating the impact of loss, absentee fathers and over-policing in communities of color. Since the play runs at a lengthy 2 hours and 30 minutes (including an intermission), these themes are often drawn out and sometimes feel cliché, bordering on corny. However, the absolute dynamism of the cast keeps the show from falling into pure melodrama.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HELLS-KITCHEN-Opens-on-Broadway-20240420",
   "urlUpdated": "2026-01-23T05:34:29.387Z",
@@ -20,5 +20,61 @@
   "scoreConfidence": "medium",
   "dtliExcerpt": "“Hell’s Kitchen” is a sparkling story paying homage to New York, to that beautiful and heartbreaking transition between girlhood and womanhood and to the women who hold our hands through it all.",
   "dtliThumb": "Up",
-  "showScoreExcerpt": "\"...a sparkling story paying homage to New York\""
+  "showScoreExcerpt": "\"...a sparkling story paying homage to New York\"",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": 85,
+      "performances": 87,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "a sparkling story paying homage to New York",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "these themes are often drawn out and sometimes feel cliché, bordering on corny",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the absolute dynamism of the cast keeps the show from falling into pure melodrama",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the vocal performances and cast dynamism while acknowledging significant structural flaws (lengthy runtime, clichéd themes), resulting in a qualified positive recommendation. | GPT-4o-mini: The review highlights strong performances and a heartfelt story but notes some thematic clichés, leading to a solid but not enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:31:17.665Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

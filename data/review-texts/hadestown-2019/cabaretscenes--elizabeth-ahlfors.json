@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "The cast is accompanied by a superb on-stage band, bringing fresh creativity to this musical season.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 70,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 78,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "superb on-stage band",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "bringing fresh creativity to this musical season",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "fresh creativity",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Brief excerpt with positive elements (superb band, fresh creativity) but lacks overall show assessment or clear recommendation. | GPT-4o-mini: The review highlights the quality of the on-stage band and their creativity, indicating a positive recommendation for the musical.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:16:04.289Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 75,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

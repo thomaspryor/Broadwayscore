@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Everything else in Aladdin is, like the endlessly expansive desert in which it's set, dusty and unwelcoming.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "dusty and unwelcoming",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Everything else in Aladdin is",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Everything else in Aladdin is, like the endlessly expansive desert in which it's set, dusty and unwelcoming.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic dismisses virtually everything about the production as 'dusty and unwelcoming,' suggesting a comprehensive rejection of the show's quality. | GPT-4o-mini: The review conveys a strong negative sentiment, describing the show as 'dusty and unwelcoming', indicating a clear rejection of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:59:20.811Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

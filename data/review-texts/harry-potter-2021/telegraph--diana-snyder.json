@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "The play - whose story is credited to Rowling, playwright Jack Thorne and director John Tiffany - has an emotional honesty that, like the books, never sinks into sentimentality and guarantees its endurance. At its essence is a story about parents and children, specifically fathers and sons, struggling to connect with a loved one they can't understand.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-indicator-positive",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has an emotional honesty that, like the books, never sinks into sentimentality and guarantees its endurance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "At its essence is a story about parents and children, specifically fathers and sons, struggling to connect",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "emotional honesty that, like the books, never sinks into sentimentality",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the play's emotional authenticity and thematic depth, comparing it favorably to the beloved books and suggesting lasting value, indicating a clear positive recommendation despite the excerpt's brevity. | GPT-4o-mini: The review highlights emotional depth and connection in the story, indicating a strong recommendation despite the lack of specific praise for performances or direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:27:55.696Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

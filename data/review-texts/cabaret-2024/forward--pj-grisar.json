@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "The triumph of this iteration is how it anticipates its audience, teasing them with frothy liberation before making them gasp at Nazi armbands and shattered windows. As the Emcee oversees, or even appears at times to orchestrate, these national contradictions, it’s hard not to feel queasy at the dissonance. Particularly, I’d imagine, if you paid the upcharge for a stage-side meal. When the drumroll closes the show, a new aesthetic takes hold, complete in its muted menace. Dramatic irony is the play’s engine; we know there’s no changing the outcome. But when we sit pretty at the Kit Kat Club — tipsy, titillated, terrified — it’s not too late for us.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://forward.com/culture/theater/604684/cabaret-broadway-eddie-redmayne-gayle-rankin-review/",
@@ -19,5 +19,61 @@
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/cabaret-2024/forward--pj-grisar_2026-01-25.html",
   "textQuality": "partial",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "The triumph of this iteration is how it anticipates its audience, teasing them with frothy liberation before making them gasp at Nazi armbands and shattered windows",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "As Sally, Gayle Rankin, perhaps best known for Netflix's GLOW, makes even her novelty numbers feel like one-act plays",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Redmayne's Emcee is the most fluid yet... He is not so much a character as he is a premonition",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises this as a 'triumph' with excellent performances and innovative staging that effectively serves the material's themes, with only minor reservations about plot feasibility. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some limitations in the book, leading to a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:11:46.006Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

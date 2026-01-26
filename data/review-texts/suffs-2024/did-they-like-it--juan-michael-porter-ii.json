@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Shaina Taub has spent eight years researching and condensing the adventures of women’s rights activist Alice Paul and her cronies into a manageable tale. Despite the comparatively concise final product, at nearly three hours in runtime, Suffs (shorthand for women who fought to win the right to vote) still feels too long to absorb in one sitting. Though well crafted by Taub―who wrote the book, music, and lyrics―beautifully performed by the cast of 20 women, and neatly directed by Leigh Silverman, the show could stand to jettison approximately 30 minutes of its repetitive slogans, anthems, chants, and “this is who I am” songs.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 63,
+      "music": 60,
+      "performances": 80,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "well crafted by Taub―who wrote the book, music, and lyrics―beautifully performed by the cast of 20 women, and neatly directed by Leigh Silverman",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "still feels too long to absorb in one sitting",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the show could stand to jettison approximately 30 minutes of its repetitive slogans, anthems, chants",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges strong craft and performances but criticizes significant structural problems (length, repetition), resulting in a qualified mixed recommendation. | GPT-4o-mini: The review acknowledges strong performances and craftsmanship but highlights significant issues with length and repetitiveness, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:52:00.980Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

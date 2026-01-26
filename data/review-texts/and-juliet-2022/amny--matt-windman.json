@@ -10,7 +10,7 @@
   "dtliExcerpt": null,
   "showScoreExcerpt": "\"The glam, glossy, and tongue-in-cheek new jukebox musical '& Juliet' proposes an intriguing solution to the dilemma faced every year by high school English teachers who struggle over how to get their students interested in Shakespeare.\"",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 69,
   "source": "show-score",
   "dtliThumb": null,
   "designation": null,
@@ -23,5 +23,61 @@
   "textQuality": "full",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-negative",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 69,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 79,
+      "performances": 75,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "David West Read's book, which celebrates individuality, women's rights, and values of diversity, equality, and inclusion, is winding in nature (covering the romances of no less than four couples) and quickly becomes tedious and didactic",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "many of the songs are inserted in ways that are surprising and clever, displaying a kind of maturity within the jukebox musical genre",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the fashionable flare and youthful exuberance on display in '& Juliet' are often entrancing, and Martin's songs are undeniably catchy",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review balances significant criticism of the book as 'tedious and didactic' with praise for the music, performances, and production values, landing in mixed territory with more positive than negative elements overall. | GPT-4o-mini: While the review highlights catchy music and strong performances, it also notes significant flaws in the book and character development, leading to a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:01:07.307Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

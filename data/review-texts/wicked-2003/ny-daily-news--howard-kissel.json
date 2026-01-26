@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "\"Wicked,\" the \"prequel\" to \"The Wizard of Oz,\" is an interminable show with no dramatic logic or emotional center.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 18,
   "source": "dtli",
   "dtliThumb": "Down",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 18,
+    "confidence": "medium",
+    "range": {
+      "low": 5.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 13,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "interminable show",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "no dramatic logic or emotional center",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "\"Wicked,\" the \"prequel\" to \"The Wizard of Oz,\" is an interminable show",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review delivers harsh fundamental criticisms of the show's structure and emotional core with no qualifying positive elements. | GPT-4o-mini: The review expresses strong disapproval of the show, describing it as interminable and lacking in dramatic coherence. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T06:01:16.363Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 10,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

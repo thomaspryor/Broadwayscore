@@ -11,7 +11,7 @@
   "bwwExcerpt": null,
   "showScoreExcerpt": "In a way, this production of Our Town is a triumph over that feeling of hopelessness — live theatre returned and continues to thrive — but it also has an important message, asking us to experience every day of our lives to the fullest.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 74,
   "source": "show-score",
   "textStatus": "complete",
   "textWordCount": 822,
@@ -20,5 +20,61 @@
   "textQuality": "full",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 73,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jim Parsons, in the iconic role of the Stage Manager, is the heart of this production in more ways than one",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Unfortunately, a lack of chemistry between the two other main characters, young lovers George Gibbs and Emily Webb, keeps the production from achieving a certain pathos overall",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "In a way, this production of Our Town is a triumph over that feeling of hopelessness",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises Parsons' performance and Leon's direction while noting significant chemistry issues between lead characters, resulting in a qualified positive recommendation that acknowledges both strengths and meaningful limitations. | GPT-4o-mini: The review expresses a clear recommendation with praise for the cast and direction, despite noting some weaknesses in character chemistry.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:43:28.524Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

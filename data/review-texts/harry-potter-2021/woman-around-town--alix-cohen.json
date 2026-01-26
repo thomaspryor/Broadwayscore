@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"The good news is that this somewhat overstuffed production is, in fact, a rip-roaring good yarn that actually seems like a continuation...Complex relationships, especially between parent and child and between friends are paramount to the two plays. Writing is sensitive and insightful. True to Rowling, rose-colored glasses are nowhere in sight...Tiffany helms intimate emotional scenes, active peril, comic magic, and crowds with equal skill. Character definition is particularly astute.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 79,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "rip-roaring good yarn",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Writing is sensitive and insightful",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "somewhat overstuffed production",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise for writing quality and direction with enthusiastic language like 'rip-roaring good yarn,' tempered only by minor criticism of being 'overstuffed.' | GPT-4o-mini: The review expresses strong praise for the writing and direction, indicating a clear recommendation despite noting the production is somewhat overstuffed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:29:57.414Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

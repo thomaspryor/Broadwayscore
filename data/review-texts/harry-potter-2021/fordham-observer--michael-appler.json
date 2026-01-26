@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"A piece of theater so intensely enchanting, its wizardry a thing of hypnosis...A theatrical experience that defies all imagination of the possibilities of stage and theater...The stunning, breathtaking illusions that furnish this show are enough to forever entrust 'Cursed Child' among the most thrilling, awe-inspiring experiences ever to be mounted on Broadway....First-rate acting...The characters presented on stage feel genuinely and vividly like the text-bound creations.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 95,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 89.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 92,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "A piece of theater so intensely enchanting, its wizardry a thing of hypnosis",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "among the most thrilling, awe-inspiring experiences ever to be mounted on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "A theatrical experience that defies all imagination of the possibilities of stage and theater",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified rave with multiple superlatives positioning this among the greatest Broadway experiences ever, focusing heavily on the magical production elements. | GPT-4o-mini: The review expresses unqualified enthusiasm and superlative praise for the production, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:24:51.004Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 94,
+    "openaiScore": 95,
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

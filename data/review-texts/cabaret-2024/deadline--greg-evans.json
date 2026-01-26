@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "The promise of an overwhelming theatrical event just never quite makes good on itself, certainly not with Rankin’s teary, intentionally overwrought delivery of the title song. We get it. Sally isn’t meant to be a big star. I’d still rather hear Liza.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 39,
+    "confidence": "medium",
+    "range": {
+      "low": 30.5,
+      "high": 47.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 35,
+      "performances": 34,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The promise of an overwhelming theatrical event just never quite makes good on itself",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "teary, intentionally overwrought delivery of the title song",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "I'd still rather hear Liza",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review expresses clear disappointment that the production fails to deliver on its theatrical promise, with specific criticism of the lead performance and an unfavorable comparison to Liza Minnelli. | GPT-4o-mini: The review expresses significant disappointment with the performance and overall production, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:11:34.237Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 35,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

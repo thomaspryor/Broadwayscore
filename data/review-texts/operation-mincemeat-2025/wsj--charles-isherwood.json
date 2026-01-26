@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "t rather inside the pocket of a stolen corpse. Jesse Green, The New York Times: I enjoyed ‘Operation Mincemeat’ well enough, but I would have enjoyed it much more if I thought that were true onstage. Charles Isherwood, The Wall Street Journal: But the limited run has been extended more than once, and the surprise sensation of the Broadway season has been the unabashedly silly ‘Oh, Mary!,’ which also lampoons history, albeit more cavalierly. Audiences are always receptive to flights into jubilant escapism—perhaps particularly now—and this plucky musical provides it in generous doses. Sara Holdren, Vulture: Operation Mincemeat isn’t exactly blazingly clever—the jokes fly thick and fast, and they tend toward broad grin-crackers rather than breathless zingers—but it overflows with good humor and heartfelt commitment… While some moments certainly sizzle more than others, there’s more than enough sincerity and goofy charisma on stage to keep the show powered. Frank Rizzo, Variety: Though the",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250320",
@@ -17,5 +17,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 69,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I enjoyed 'Operation Mincemeat' well enough, but I would have enjoyed it much more if I thought that were true onstage",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "overflows with good humor and heartfelt commitment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there's more than enough sincerity and goofy charisma on stage to keep the show powered",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Multiple critics offer qualified praise with reservations - Green enjoys it 'well enough' but suggests something is missing, while Holdren finds it not 'blazingly clever' but appreciates the commitment and charm. | GPT-4o-mini: The review expresses enjoyment and highlights the show's humor and sincerity, but also notes a lack of cleverness, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:43:15.690Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "A hardworking and very effective Coon is left to maintain dramatic tension. In her TV triumphs as plucky social climbers (The Gilded Age and The White Lotus), Coon’s fresh beauty and vivacious yet sensible vigor has elevated so-so scripts. She makes a smart and relatable protagonist either in nineteenth-century bustle or Thai resort muumuu. Adopting a Southern-Midwestern twang and artfully revealing the full depth of Agnes’s trauma and hunger for meaning, Coon relishes the scuzz and grace of Agnes, even if her dance partner’s limp.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://4columns.org/cote-david/bug",
@@ -21,5 +21,63 @@
     "Show title not found in text"
   ],
   "textQuality": "full",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 74,
+      "music": null,
+      "performances": 61,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "vivid but lopsided production",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "It's in the acting, in all honesty, where cracks start to show",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The design for this production...is a model of high-def realism",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the script's relevance and the production design extensively, but delivers significant criticism of the lead male performance, creating a mixed recommendation that acknowledges both strengths and notable weaknesses. | GPT-4o-mini: The review highlights strong production elements and a standout performance by Coon, but significant issues with Smallwood's performance lead to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:10:10.329Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (67 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

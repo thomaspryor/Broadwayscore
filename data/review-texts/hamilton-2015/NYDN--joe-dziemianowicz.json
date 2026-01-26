@@ -10,7 +10,7 @@
   "bwwExcerpt": "ar and peace inevitably prop up the people in his midst, though his failures are profound on the homefront...Turns out, once you've gotten over the first wow, there's plenty more wow to be uncovered. Joe Dziemianowicz, New York Daily News : With \"Hamilton,\" Broadway is officially the coolest place on the planet. And the smartest. And most exhilarating...It's even richer and more eloquent since its run earlier this year at the Public Theater...Hip hop is one flavor of the score. It's as if the speechmaking Founding Fathers are in the next room. And it's a deft way to depict the often-fractious relationships between these competitive 18th-century power players...But to call this a \"hip hop musical\" is simplistic: rhythm and blues, jazz and Broadway are also part of a work that nods to Rodgers and Hammerstein, Gilbert and Sullivan and beyond. Since the Off-Broadway run, performances have all deepened, including Miranda's. He better conveys Hamilton's cockiness, contrition and all-too-huma",
   "showScoreExcerpt": "\"With 'Hamilton,' Broadway is officially the coolest place on the planet. And the smartest. And most exhilarating. Yes, composer, lyricist, author and leading man Lin-Manuel Miranda’s magical musical tour of the life of the '10-dollar Founding Father,' Alexander Hamilton, is that great. It’s even richer and more eloquent since its run earlier this year at the Public Theater.\"",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-20150806",
@@ -24,5 +24,61 @@
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 89.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 95,
+      "performances": 91,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "With 'Hamilton,' Broadway is officially the coolest place on the planet. And the smartest. And most exhilarating.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Any great Broadway classic — and 'Hamilton' is one for the ages",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "If only every history lesson — and Broadway musical — dazzled so completely.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rave with superlatives throughout ('magical,' 'one for the ages,' 'dazzled so completely') and only the most minor criticisms that don't diminish the overwhelming enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm for 'Hamilton', highlighting its complexity, performances, and overall theatrical experience, with only minor caveats.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:19:36.005Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 94,
+    "openaiScore": 95,
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

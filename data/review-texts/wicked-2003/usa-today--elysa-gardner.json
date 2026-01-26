@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Remember the last time an original Broadway musical made you laugh, cry and think — in the right places, and for the right reasons?",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 75.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "made you laugh, cry and think — in the right places, and for the right reasons",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "made you laugh, cry and think",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "in the right places, and for the right reasons",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The rhetorical question strongly implies this show achieves the rare feat of hitting all the right emotional and intellectual notes, suggesting high recommendation despite the brevity. | GPT-4o-mini: The review hints at a strong emotional impact, suggesting a positive recommendation, though it lacks explicit praise or detailed analysis.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T06:02:17.445Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 80,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

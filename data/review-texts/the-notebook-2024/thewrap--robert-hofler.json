@@ -10,12 +10,68 @@
   "dtliExcerpt": "Much beloved is the 2004 movie version in which an old man tries to reawaken his wife’s memory by reading aloud from her notebook. The new musical gets half the story right. Unfortunately, it’s the wrong half. Or the wrong third, as it turns out in this unusually cast production.",
   "bwwExcerpt": "Brunstetter’s script advises that the sets (by David Zinn and Brett J. Banakis) and costumes (by Paloma Young) “feel timeless.” That approach sometimes works for a classic tragedy, but a melodrama like “The Notebook” needs context. In this musical, the only thing keeping Allie and Noah apart is her rather uppity parents (Andrea Burns and Charles E. Wallace). Ingrid Michaelson’s score is middle-of-the-road pop. It’s pleasant. It’s easy on the ears. It’s not in any way what this musical needs to be, which is soaring and romantic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "dtli",
   "bwwThumb": "Down",
   "bwwUrl": "https://www.thewrap.com/the-notebook-broadway-review-ingrid-michaelson/",
   "dtliThumb": "Down",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new musical gets half the story right. Unfortunately, it's the wrong half.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Much beloved is the 2004 movie version",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "Or the wrong third, as it turns out in this unusually cast production",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly indicates fundamental structural problems with the adaptation, suggesting it focuses on the wrong aspects of the beloved source material. | GPT-4o-mini: The review expresses significant disappointment with the adaptation, indicating a clear negative sentiment towards the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:56:34.502Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

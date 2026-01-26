@@ -10,10 +10,66 @@
   "showScoreExcerpt": "The musical has been staged in lavish style...And the DeLorean, with its glowing neon trim, has been glamorized effectively...But the musical as a whole never achieves liftoff, or even the stage equivalent of 88 miles an hour. It cruises along in a low gear for almost three hours.",
   "bwwExcerpt": "avoiding having to view the sluggish slog that is the stage adaptation",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 33,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-negative",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 33,
+    "confidence": "high",
+    "range": {
+      "low": 25.5,
+      "high": 40.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "sluggish slog that is the stage adaptation",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "musical as a whole never achieves liftoff",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "cruises along in a low gear for almost three hours",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging lavish production values and effective staging elements, the critic fundamentally characterizes the show as a 'sluggish slog' that fails to engage, making it difficult to recommend. | GPT-4o-mini: The review expresses strong dissatisfaction with the overall experience of the musical, indicating a clear rejection of the adaptation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:04:21.189Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

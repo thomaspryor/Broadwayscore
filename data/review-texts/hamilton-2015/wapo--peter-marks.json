@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"'Hamilton' is a captivating mirror of the man whose life it surveys: blazingly original, restlessly innovative, magnetic from start to finish...The intense pride you feel on an evening such as this, when America's story is retold with such style, verve and imagination, is not of a sort that's come by easily on Broadway. There's a magnitude of joy summoned here that suggests that King George is absolutely right. You most certainly will want to be back.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 95,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "blazingly original, restlessly innovative, magnetic from start to finish",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "There's a magnitude of joy summoned here",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "You most certainly will want to be back",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This is unqualified praise using superlatives like 'blazingly original' and 'magnitude of joy,' with an explicit recommendation that audiences will want to return. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong emotional impact, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:22:54.460Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

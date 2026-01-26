@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "tching up with Escola’s work, let’s hope more people travel all over the world to see Mary’s “short legs and long medleys.” Or at least enough to turn a strictly limited run into a Broadway mainstay. Austin Fimmano, New York Theatre Guide: Together with James Scully as Mary’s handsome drama teacher, Bianca Leigh as Mary’s long-suffering chaperone, and Tony Macht as Abe’s extremely pliant assistant, the entire ensemble elevates very silly jokes into a work of art that keeps you riveted from start to finish. Suffice it to say that when the lights went up after the curtain call, my guest and I agreed we had literally laughed until our faces hurt. Average Rating: 93.5% REVIEW ROUNDUP REAL-TIME ALERTS To read more reviews, click here ! Discuss the show on the BroadwayWorld Forum Buy Tickets to Oh, Mary! Opening Night Coverage Photos: OH, MARY! Takes Its Opening Night Bows On Broadway Photos: Company of OH, MARY! Hits The Red Carpet On Opening Night Photos: Austin Butler, Kaia Gerber, LuPone",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
@@ -24,5 +24,61 @@
   "textQuality": "excerpt",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-indicator-positive",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 95,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the entire ensemble elevates very silly jokes into a work of art that keeps you riveted from start to finish",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "we had literally laughed until our faces hurt",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "let's hope more people travel all over the world to see",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Enthusiastic praise with superlatives ('work of art', 'riveted from start to finish') and strong physical reaction ('laughed until our faces hurt') indicates an unqualified rave recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and the overall experience, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:41:32.509Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

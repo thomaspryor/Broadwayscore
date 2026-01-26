@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Whatever the extent of your Potter training, prepare to be dazzled. The special effects are awe-inspiring...The design team works overtime...Add to that some first-rate acting among the 40-member cast...The storytelling that is most satisfying for the less Potter-obsessed are those elements that make 'Harry Potter and the Cursed Child' feel like the theatrical equivalent of a Young Adult Novel - its exploration of adolescent friendships and father-son relationships.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 84,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 83,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "prepare to be dazzled. The special effects are awe-inspiring",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Add to that some first-rate acting among the 40-member cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The storytelling that is most satisfying for the less Potter-obsessed",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for technical elements, design, and performances with enthusiastic language like 'dazzled' and 'awe-inspiring' indicates clear recommendation despite some qualification about Potter knowledge. | GPT-4o-mini: The review highlights impressive special effects and strong performances, indicating a clear recommendation despite some reservations about the storytelling's appeal to non-fans.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:24:12.043Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

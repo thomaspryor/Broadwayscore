@@ -9,10 +9,66 @@
   "isFullReview": false,
   "showScoreExcerpt": "With a decade-long peripatetic journey of development and furbishing, 'Hadestown' has finally ignited on Broadway.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null
+  "scoreSource": null,
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 75.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has finally ignited on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "decade-long peripatetic journey of development and furbishing",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "finally ignited on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The phrase 'finally ignited' suggests strong success after a long development process, indicating positive recommendation despite the brief excerpt. | GPT-4o-mini: The review indicates a strong positive sentiment about the show's arrival on Broadway, suggesting it is worth seeing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:17:24.805Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 85,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

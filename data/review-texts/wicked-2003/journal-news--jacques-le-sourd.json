@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"To begin with, it looks like a million dollars - or, to be more precise, like every dime of the $14 million that has been spent on it. Dare we say it? Here's a Broadway show where the ticket price doesn't seem inflated. You will actually feel that you got $100 worth of entertainment - and then some... The show and its many parts do coalesce to create a believable, and extremely thought-provoking, alternate universe, with music, sets, costumes and performances that simply take your breath away.\"",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 89,
   "source": "show-score",
   "needsFullText": true,
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-pan",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": 90,
+      "direction": 91
+    },
+    "keyPhrases": [
+      {
+        "quote": "You will actually feel that you got $100 worth of entertainment - and then some",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "music, sets, costumes and performances that simply take your breath away",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a believable, and extremely thought-provoking, alternate universe",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language throughout, explicitly states the show exceeds its high ticket price value, and praises every production element as 'breathtaking' with no caveats or reservations. | GPT-4o-mini: The review expresses strong enthusiasm and highlights the production's high quality and entertainment value, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T06:00:58.159Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

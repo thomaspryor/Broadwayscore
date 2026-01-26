@@ -7,7 +7,7 @@
   "publishDate": "2014-03-20",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 78,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "The carpet flies, kids, and it's awesome. Aladdin, an urchin from the streets, and Princess Jasmine float far away into the extremely twinkly sky. Such awesomeness, of course, is to be expected from \"Aladdin,\" Disney's latest Broadway translation of a beloved animated fantasy. But what's a whole new...",
@@ -15,5 +15,61 @@
   "textQuality": "missing",
   "sourceMethod": "stub",
   "scoreSource": "sentiment-pan",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "The carpet flies, kids, and it's awesome",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Such awesomeness, of course, is to be expected from 'Aladdin,' Disney's latest Broadway translation of a beloved animated fantasy",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The carpet flies, kids, and it's awesome.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows clear enthusiasm for the production values and spectacle, using 'awesome' twice and emphasizing the magical elements, but is too brief to determine full recommendation strength. | GPT-4o-mini: The review expresses enthusiasm for the production's spectacle and magic, indicating a strong recommendation despite lacking detailed critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:58:32.954Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

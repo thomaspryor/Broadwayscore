@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Well, I say, 'thank you for the musical.' 'Mamma Mia!' is a much-needed vacation from all the seriousness and drear. And its foundations could withstand a nuclear blast. The foremother of the old-pop-songs-in-a-new-story genre is still the very best in the game.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://nypost.com/2025/08/15/entertainment/mamma-mia-review-back-on-broadway-a-much-needed-summer-splash-of-abba/",
@@ -22,5 +22,61 @@
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/mamma-mia-2025/nypost--johnny-oleksinki_2026-01-25.html",
   "textQuality": "full",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 88,
+      "performances": 75,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "flamboyantly worth the wait",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "one of those nights when you sit back and let a nutty kind of joy just sweep over you",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "you'll be so happy you'll think you've just become a grandparent",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic expresses unqualified enthusiasm with superlative language about the show being 'worth the wait' and creating pure joy, despite some minor reservations about certain performances. | GPT-4o-mini: The review expresses strong enthusiasm for the production, praising the book and music while noting some performance inconsistencies, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:35:32.038Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 88,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"This production fulfills the richness of Rowling's story telling...Only the essential elements of theater craft reign here...We're captured by the innocence of child's play...All of this requiring nothing more than the richness of theatrical imagination and childlike inspiration...Wonderfully well cast...What is most interesting about the acting style is its truthfulness and immediacy...The acting focuses on the essence of character, rather than its personal or idiosyncratic aspects...Highly enjoyable.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 84,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 89,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production fulfills the richness of Rowling's story telling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Wonderfully well cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Highly enjoyable",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language throughout with praise for storytelling, casting, and theatrical craft, culminating in 'highly enjoyable' recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and overall enjoyment, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:28:11.907Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

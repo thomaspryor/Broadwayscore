@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"In his stylish and electrifying 'Hamilton,' Miranda fuses the immediacy and storytelling power of hip-hop and R&B with the revolutionary passions of a new nation heaving itself into existence... Arriving on Broadway burdened with the weight of expectation, having become a much-coveted ticket, 'Hamilton' proves more than able to carry that weight. This musical is young, scrappy, hungry - and exhilarating.\"",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "stylish and electrifying",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "proves more than able to carry that weight",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "young, scrappy, hungry - and exhilarating",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong superlative language ('electrifying', 'exhilarating') with no caveats and praise for surpassing high expectations indicates unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong praise for the production, indicating it is a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:20:37.790Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "The original Broadway production in 1998 featured career-changing performances from Brian Stokes Mitchell, Audra McDonald and Marin Mazzie. Now, in 2025, you feel every bit as fortunate to be basking in the radiant glow of Caissie Levy playing Mother, Ben Levi Ross as Mother’s Younger Brother and especially the golden-voiced Joshua Henry as Harlem piano player Coalhouse Walker. The revival’s power is all in the pipes.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 89,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you feel every bit as fortunate to be basking in the radiant glow",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "especially the golden-voiced Joshua Henry",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The revival's power is all in the pipes",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the vocal performances with language like 'radiant glow' and 'golden-voiced' indicates clear recommendation, though focus is narrow. | GPT-4o-mini: The review expresses strong praise for the performances, particularly highlighting the lead actors' talents, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:47:28.543Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

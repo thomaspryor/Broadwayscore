@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Aside from the tonic of Iglehart's djinn, however, Aladdin is short on magic. Director Casey Nicholaw fills the stage with activity, and Jonathan Freeman and Don Darryl Rivera offer ripe turns as a villainous vizier and his squawking sidekick. But the plotting drifts into weightless silliness, with a surfeit of generic padding and glitz. There's the rub: The musical is called Aladdin, but seems content to be Prince Ali.-Theater review by Adam Feldman",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 54,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
   "textStatus": "complete",
@@ -23,5 +23,61 @@
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-negative",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 60,
+      "performances": 70,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "Aladdin is short on magic",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The musical's high point is the hard-sell 'Friend Like Me'",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "A carpet with colorful patterns but little texture",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges some entertainment value and strong performances (particularly Iglehart's Genie) but ultimately finds the show lacking in substance and magic, describing it as generic tourist-friendly fare. | GPT-4o-mini: The review highlights some enjoyable performances and musical numbers but ultimately criticizes the weak plot and lack of depth, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:00:04.277Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

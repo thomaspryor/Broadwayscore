@@ -10,11 +10,67 @@
   "bwwExcerpt": "Everyone's heard of The Notebook. Whether it’s through reading Nicholas Sparks’ best-selling debut novel or its 2004 blockbuster adaptation starring Ryan Gosling and Rachel McAdams, most can recall some semblance of Noah and Allie’s whirlwind romance — or, at the very least, their propensity for arguing and dramatic kisses in the rain. Now, The Notebook is leaping off the page and onto the stage in a poignant new musical that is, without a doubt, its finest adaptation yet.",
   "showScoreExcerpt": "\"The Notebook is leaping off the page and onto the stage...its finest adaptation yet.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://ew.com/the-notebook-musical-review-nicholas-sparks-broadway-8609026",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "its finest adaptation yet",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a poignant new musical that is, without a doubt",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Notebook is leaping off the page and onto the stage",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic declares this definitively 'the finest adaptation yet' with 'without a doubt,' indicating strong enthusiasm and clear recommendation despite the brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the musical as the best adaptation of The Notebook, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:55:38.858Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

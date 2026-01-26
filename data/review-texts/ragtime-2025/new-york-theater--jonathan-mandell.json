@@ -16,5 +16,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "credible, impassioned performances and their golden voices",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "One can question whether 'Ragtime' will be considered one of the great American musicals",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "still feel grateful to have been able to witness Joshua Henry, the Baritenor of Broadway, deliver a shattering 'Make them hear you'",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review strongly praises the performances and music while acknowledging questions about the show's greatness, but the gratitude expressed for witnessing the production indicates clear positive recommendation. | GPT-4o-mini: The review expresses strong appreciation for the performances and overall production quality, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:47:10.773Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

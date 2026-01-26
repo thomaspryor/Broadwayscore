@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Zach Chance (better known as the band Jamestown Revival) proves a perfectly respectable effort with many laudable elements. What it mostly seems to lack is a reason for being. Elisabeth Vincentelli, The Washington Post: And therein lies the problem: The show overexplains everything, all the time. Hinton knew exactly how much to say and when — the paperback edition of “The Outsiders” is just 180 concise, evocative pages that let us discover things along with Ponyboy. Here, both the book and the songs tend to underestimate the audience’s intelligence. (This is surprising coming from Rapp, who is usually not afraid of ambiguity.) Matt Windman, amNY: At its best, “The Outsiders”(which is directed by Danya Taymor, “Pass Over”) is fresh and rambunctious, with an attractive period country-pop score by Jamestown Revival (Jonathan Clay and Zach Chance) and Justine Levine (with plainspoken lyrics and pulsating music reminiscent of Jason Robert Brown), well-executed choreography by Rick Kuperman",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 57,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
@@ -18,5 +18,61 @@
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
-  "showScoreExcerpt": "\"...has great visual touches but falters when the characters open their mouths\""
+  "showScoreExcerpt": "\"...has great visual touches but falters when the characters open their mouths\"",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": 70,
+      "performances": null,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "What it mostly seems to lack is a reason for being",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "At its best, 'The Outsiders' is fresh and rambunctious, with an attractive period country-pop score",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "has great visual touches but falters when the characters open their mouths",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Multiple critics find significant flaws in the book and dialogue while praising musical and visual elements, resulting in a mixed reception with no clear recommendation. | GPT-4o-mini: The review highlights both strengths in the music and visuals but is predominantly negative about the script and overall execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:57:32.068Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

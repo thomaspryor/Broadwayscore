@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "In Bess Wohl’s galvanizing show of the hour “Liberation,” directed by Whitney White, the women in a nineteen-seventies consciousness-raising group wrestle with questions political (should they join a general strike?) and personal (can they celebrate their own naked bodies?) while building solidarity and coalition. Susannah Flood, in the role of a lifetime, addresses us directly, playing both Wohl’s avatar and Lizzie, a fictionalized version of Wohl’s own mother.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "complete",
@@ -17,5 +17,61 @@
   "archivePath": "data/archives/reviews/liberation-2025/new-yorker--helen-shaw_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:49:11.068Z",
   "textQuality": "full",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 70.5,
+      "high": 87.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 84,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "In Bess Wohl's galvanizing show of the hour 'Liberation,' directed by Whitney White, the women in a nineteen-seventies consciousness-raising group wrestle with questions political and personal while building solidarity and coalition",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Susannah Flood, in the role of a lifetime, addresses us directly",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Somehow, in honoring the group's women, from the rageful housewife Margie (Betsy Aidem) to the radical author Celeste (Kristolyn Lloyd), Flood's outpouring becomes a lament",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic calls 'Liberation' a 'galvanizing show of the hour' and praises Flood's 'role of a lifetime' performance, with strong appreciation for the direction, ensemble work, and thematic resonance. | GPT-4o-mini: The review expresses clear praise for the performances and themes, indicating a solid recommendation despite some thematic complexity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:34:03.945Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 75,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Those attending Great Gatsby expecting nothing more than a glitzy, glamorous romp through the Roaring Twenties will find themselves satisfied, but others hoping to find a deeper take on the novel's exploration of the American dream, old money versus new money, and love will find themselves feeling adrift. The Great Gatsby is a great big Broadway extravaganza that may dazzle viewers at first but, much like the green light, perfection remains close, yet just out of reach. C+     Sandy MacDonald, New York Stage Review: That message comes through clearly here, despite the production team’s penchant for bells and whistles. If all you’re seeking is a spectacle, you will get one. For some real resonance and depth, though, you may just have to wait a while—or reread the book.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425",
   "textStatus": "missing",
@@ -18,5 +18,61 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "dtliExcerpt": "Jay Gatsby lives in West Egg. Daisy Buchanan lives in East Egg. And the new musical about them that opened Thursday at the Broadway Theatre lays a big egg.",
-  "dtliThumb": "Down"
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": null,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "C+",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "lays a big egg",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Those attending Great Gatsby expecting nothing more than a glitzy, glamorous romp through the Roaring Twenties will find themselves satisfied",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The C+ grade and phrase 'lays a big egg' signal clear disappointment, though the critic acknowledges it works as pure spectacle for some audiences. | GPT-4o-mini: The review expresses significant disappointment in the production's depth and execution, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:53:28.926Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 42,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

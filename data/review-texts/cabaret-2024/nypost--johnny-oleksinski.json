@@ -10,7 +10,7 @@
   "dtliExcerpt": "Enjoy the buzz, because it wears off quickly. Once seated inside the similarly reconfigured theater space, the revival of John Kander and Fred Ebb’s classic musical “Cabaret, which opened Sunday night on Broadway, begins, and our response shifts a tad.",
   "bwwExcerpt": "Yet the pricey bells and whistles distract from what is a so-so, overly dreary staging that is often undermined by its own overwrought machinations. Undeniably slick and handsome, this two-hour-and-forty-five-minute musical feels much longer than it should. That’s because, bizarrely for a production that is so determined to get its audience wasted, it’s hesitant to have too much fun itself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421",
   "dtliThumb": "Meh",
@@ -20,5 +20,61 @@
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/cabaret-2024/nypost--johnny-oleksinski_2026-01-25.html",
   "textQuality": "partial",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": 64,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show does not make for an unsatisfying night out in New York. There's plenty to admire",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the pricey bells and whistles distract from what is a so-so, overly dreary staging that is often undermined by its own overwrought machinations",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "this two-hour-and-forty-five-minute musical feels much longer than it should",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges impressive design and some strong performances (especially Redmayne and Neuwirth) but finds the overall production 'so-so' and 'overly dreary' with significant structural problems and lack of chemistry between leads. | GPT-4o-mini: The review expresses admiration for the atmosphere and some performances but ultimately critiques the production's direction and overall execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:12:08.479Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

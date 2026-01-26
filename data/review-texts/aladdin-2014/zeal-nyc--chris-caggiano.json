@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"From where I sat, Aladdin was diverting, to be sure, but ultimately uninspired...it feels like a passable summer-stock production with a Broadway budget. The look is lush and colorful, but the production lacks magic.\"",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 57,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -20,5 +20,61 @@
   "textQuality": "full",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-mixed-positive",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": 53,
+      "performances": 70,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "Aladdin was diverting, to be sure, but ultimately uninspired",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Aladdin feels like a passable summer-stock production with a Broadway budget",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Instead, it's pleasant but forgettable",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show 'diverting' and acknowledges some positives but repeatedly emphasizes disappointment, calling it 'uninspired,' 'sluggish,' and 'forgettable' with particular criticism of the direction and book. | GPT-4o-mini: The review expresses significant disappointment with the overall production while acknowledging some positive elements, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:00:45.780Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

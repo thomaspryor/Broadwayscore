@@ -10,7 +10,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "theme park ride with songs causing sensory overload and auditory assault",
   "originalScore": "2 stars",
-  "assignedScore": 38,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "textStatus": "partial",
   "textWordCount": 215,
@@ -20,5 +20,61 @@
     "Word count too low: 215 (min: 300)"
   ],
   "textQuality": "partial",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Joshua Henry gives what’s destined to be a Tony-winning performance",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Lesley Manville and Mark Strong have disturbingly good chemistry",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Erica Schmidt’s world premiere dramedy skewers a self-absorbed filmmaker",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review contains multiple positive mentions of performances, suggesting a strong recommendation despite a lack of detailed critique on the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:02:24.143Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "But for all its irreverence - and there's enough off-color insouciance to offend church ladies of every denomination - \"The Book of Mormon\" has the old-fashioned musical comedy heart of adults who spent much of their adolescence lip-syncing to original cast albums in their finished basements.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "bwwThumb": null,
   "bwwUrl": "http://latimesblogs.latimes.com/culturemonster/2011/03/theater-review-the-book-of-mormon-at-the-eugene-oneill-theatre.html",
@@ -20,5 +20,61 @@
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 76,
+      "music": 88,
+      "performances": 83,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show is not without good intentions and, in any case, vindicates itself with musical panache",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The songs, often inspired lampoons of contemporary Broadway styles, are as catchy as they are clever",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I found myself eventually acclimating to the profane absurdities and wondering how the faltering plot would eventually sort itself out",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: McNulty clearly recommends the show despite noting plot weaknesses, praising the musical theater craft, performances, and concluding it 'vindicates itself with musical panache.' | GPT-4o-mini: The review expresses strong praise for the musical's humor, catchy songs, and performances while acknowledging some minor issues, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:06:51.804Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

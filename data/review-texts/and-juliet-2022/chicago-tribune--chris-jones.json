@@ -7,8 +7,64 @@
   "publishDate": "November 17, 2022",
   "fullText": "This nonstop party-empowerment show gets its theme of feminist revisionist British history from “Six,” its Shakespearean humor from “Something Rotten,” its nonbinary savvy from “Head Over Heels,” and its collage-like spectacle from “Moulin Rouge.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "dtliThumb": "Up",
   "source": "dtli",
-  "dtliExcerpt": "This nonstop party-empowerment show gets its theme of feminist revisionist British history from “Six,” its Shakespearean humor from “Something Rotten,” its nonbinary savvy from “Head Over Heels,” and its collage-like spectacle from “Moulin Rouge.”"
+  "dtliExcerpt": "This nonstop party-empowerment show gets its theme of feminist revisionist British history from “Six,” its Shakespearean humor from “Something Rotten,” its nonbinary savvy from “Head Over Heels,” and its collage-like spectacle from “Moulin Rouge.”",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This nonstop party-empowerment show",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "gets its theme of feminist revisionist British history from \"Six,\" its Shakespearean humor from \"Something Rotten,\" its nonbinary savvy from \"Head Over Heels,\" and its collage-like spectacle from \"Moulin Rouge.\"",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "nonstop party-empowerment show",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This appears to be a single descriptive sentence that neither recommends nor criticizes, making it impossible to determine the critic's actual recommendation strength. | GPT-4o-mini: The review highlights positive aspects of the show but lacks a strong recommendation, indicating a mixed sentiment overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:01:14.449Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 65,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,10 +10,66 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "gifted cast with thankless roles and abysmal score; the car is the star",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-pan",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 10,
+      "performances": 63,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "abysmal score",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "thankless roles",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "gifted cast",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite praising the cast as 'gifted,' the critic condemns the score as 'abysmal' and notes the performers have 'thankless roles,' with the dismissive comment that 'the car is the star' suggesting the production fails to showcase human talent effectively. | GPT-4o-mini: The review highlights significant flaws in the music and roles while only acknowledging the cast's talent, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:03:08.806Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

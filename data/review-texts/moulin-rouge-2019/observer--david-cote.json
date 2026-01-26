@@ -9,9 +9,60 @@
   "isFullReview": false,
   "bwwExcerpt": "Production sparkles but questions of cultural relevance linger.",
   "originalScore": "Mixed",
-  "assignedScore": 68,
+  "assignedScore": 64,
   "source": "reviews-json-stub",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "stub"
+  "sourceMethod": "stub",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "Production sparkles",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "questions of cultural relevance linger",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review presents a classic mixed verdict - praising the production values while raising concerns about the show's cultural relevance, suggesting qualified interest rather than clear recommendation. | GPT-4o-mini: The review indicates a generally positive view of the production quality but raises concerns about its cultural relevance, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:40:12.728Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

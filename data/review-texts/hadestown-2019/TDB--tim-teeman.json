@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "n Vernon, The Low Anthem's Ben Knox Miller and activist folk hero Ani DiFranco joined Mitchell and Brown in the leads). But the work's musical integrity and proletariat spirit remains largely intact. Tim Teeman, Daily Beast : Hadestown has so much fun telling, as it puts it, this \"sad tale\" that even though this retelling of a well-trodden Greek myth feels slight, it also makes for a joyful performance. Ana&iuml;s Mitchell's musical, which opens on Broadway tonight at the Walter Kerr Theatre (to September 1), is delicious to look at and listen to-truly, my new earworm is \"Way Down Hadestown\"-even if its story is as wan as its central couple. Michael Sommers, New York Stage Review : A new Broadway musical that takes audiences to hell and back, Hadestown looks and sounds terrific, and yet it lacks something vital. Drawn from a classical Greek legend, the musical somehow reminds me of a handsome ancient statue that is missing its head. Elysa Gardner, New York Stage Review : For starters,",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
@@ -17,5 +17,61 @@
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 77,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "delicious to look at and listen to",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "looks and sounds terrific, and yet it lacks something vital",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "its story is as wan as its central couple",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Multiple critics praise the musical and visual elements but consistently criticize the story as weak or lacking substance, creating a mixed recommendation. | GPT-4o-mini: The review indicates a mix of positive elements, particularly in music and visuals, but highlights significant shortcomings in the story, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:15:20.391Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

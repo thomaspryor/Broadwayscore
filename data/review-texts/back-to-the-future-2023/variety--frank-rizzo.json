@@ -10,7 +10,7 @@
   "showScoreExcerpt": "...with the frequent breaking of the fourth wall and the milking of some meta moments, you wonder what exactly the show's aiming to be: a self-aware joke for fans or a thrill ride with sincerity.",
   "bwwExcerpt": "time just stands still with the musical lacking fresh, theatrical moments",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 49,
   "source": "show-score",
   "textWordCount": 879,
   "textStatus": "complete",
@@ -20,5 +20,61 @@
   "textQuality": "full",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 49,
+    "confidence": "high",
+    "range": {
+      "low": 43,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": 45,
+      "performances": 50,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "for others seeking re-imaginings more than repeats, 'Back to the Future' will seem more fitting for a theme park than Broadway",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "this musical trip is on auto-pilot with conventional musical tropes and an exposition-crammed narrative that rarely veers from the film",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "time just stands still",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is predominantly critical, calling the show more suited for a theme park than Broadway, criticizing the unoriginal approach and weak songs, while acknowledging impressive technical effects and some solid performances. | GPT-4o-mini: The review presents a mix of spectacle and disappointment, indicating a conditional recommendation that leans towards ambivalence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:03:55.799Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 50,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

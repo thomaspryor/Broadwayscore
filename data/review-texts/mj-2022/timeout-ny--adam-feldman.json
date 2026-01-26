@@ -7,9 +7,65 @@
   "publishDate": "February 1, 2022",
   "fullText": "Toward the end of MJ, If you look closely, there are signs of what might be interpreted as foreshadows of the times to come. “I can give people what they want, but when I step off stage, it, um, gets complicated,” Michael admits. “And do you think people really wanna see my life? There’s been some dark struggles&#8230;Things I can’t…” There he drifts off, to finish singing “Human Nature” and move on to “Bad.” A climactic dark-carnival staging of “Thriller” follows, which is ostensibly about Jackson’s fear of his controlling father but also involves demon versions of himself. “Listen to my music,” says Michael to his interviewer. “It answers any questions you might have.” Does it? I left the theater entertained, but not convinced I had really seen the man in the smoke and mirrors.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "Toward the end of MJ, If you look closely, there are signs of what might be interpreted as foreshadows of the times to come. “I can give people what they want, but when I step off stage, it, um, gets complicated,” Michael admits. “And do you think people really wanna see my life? There’s been some dark struggles&#8230;Things I can’t…” There he drifts off, to finish singing “Human Nature” and move on to “Bad.” A climactic dark-carnival staging of “Thriller” follows, which is ostensibly about Jackson’s fear of his controlling father but also involves demon versions of himself. “Listen to my music,” says Michael to his interviewer. “It answers any questions you might have.” Does it? I left the theater entertained, but not convinced I had really seen the man in the smoke and mirrors.",
-  "showScoreExcerpt": "\"The dancers and singers of the ensemble, who double as secondary characters, are first-rate, and Wheeldon gives them a lot to do. Most of the songs are performed as rehearsals or flashbacks, which is to say as full-on production numbers. (Tracks from Jacksonâs 1995 album HIStory are cannily placed by Nottage as character moments.) Like Summer and The Cher Show before it, MJ uses three actors to play its central character at different ages. As the 1992 incarnation, Frost carries the bulk of the role, and not only nails Jacksonâs signature sound and movesâyes, of course thereâs a moonwalkâbut also his otherworldly affect: his diffident grandiosity, his mixture of grievance and mischief, his high and breathy way of talking (at once floaty and determined, like Diana Rossâs spoken-word section of âAinât No Mountain High Enoughâ).\""
+  "showScoreExcerpt": "\"The dancers and singers of the ensemble, who double as secondary characters, are first-rate, and Wheeldon gives them a lot to do. Most of the songs are performed as rehearsals or flashbacks, which is to say as full-on production numbers. (Tracks from Jacksonâs 1995 album HIStory are cannily placed by Nottage as character moments.) Like Summer and The Cher Show before it, MJ uses three actors to play its central character at different ages. As the 1992 incarnation, Frost carries the bulk of the role, and not only nails Jacksonâs signature sound and movesâyes, of course thereâs a moonwalkâbut also his otherworldly affect: his diffident grandiosity, his mixture of grievance and mischief, his high and breathy way of talking (at once floaty and determined, like Diana Rossâs spoken-word section of âAinât No Mountain High Enoughâ).\"",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "I left the theater entertained",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "but not convinced I had really seen the man in the smoke and mirrors",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "A climactic dark-carnival staging of 'Thriller' follows",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges being entertained but expresses significant disappointment that the show doesn't reveal its subject authentically, creating a mixed recommendation that leans slightly positive due to the entertainment value. | GPT-4o-mini: The review expresses a mix of entertainment and skepticism about the depth of the portrayal, leading to a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:37:57.782Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

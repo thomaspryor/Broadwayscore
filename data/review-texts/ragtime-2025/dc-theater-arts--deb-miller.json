@@ -9,12 +9,68 @@
   "isFullReview": false,
   "bwwExcerpt": "Lincoln Center Theater’s revival of Ragtime is Broadway at its very finest, a top-notch production of an American classic with stellar performances, direction, and human themes that touch, entertain, and remain relevant, in their clear connection between then and now. Don’t miss it – and be sure to bring tissues for its most heartrending and shocking scenes.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 93,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway at its very finest",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Don't miss it",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "top-notch production of an American classic with stellar performances, direction, and human themes",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified enthusiasm with superlative language ('very finest', 'stellar') and explicit strong recommendation ('Don't miss it') indicates a clear rave review. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its excellence and emotional impact, leading to a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:46:48.582Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "he curious to make it last and pay off? Only time will tell, just as only time will determine its chances to attract a whole new generation to the joys of live theater. Stranger things have happened. Emlyn Travis, Entertainment Weekly: Immersive, heartfelt, and exhilarating, First Shadow is a must-see spectacle for the Stranger Things obsessive as much as it is for the theater aficionado who wants to see the medium pushed to new heights. Dan Rubins, Slant Magazine: Viewers of the series know that Henry will eventually become the demonic Vecna, ruler of the Upside Down and the monsters within, and how this backstory plays out since The First Shadow is ultimately an evening-long adaptation of a flashback sequence from season four. Most of the plot twists will be retrodden territory for Netflix viewers, and as such, when it comes to the story, the play’s fan service lies mostly in the recreation of iconic images from the series and in the supporting cast laying Easter eggs. Robert Hofler,",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 49,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway-20241120",
@@ -26,5 +26,61 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "dtliExcerpt": "The result? A three-hour fan wiki brought to life, complete with origin stories, stilted dialogue, lame jokes, and sequences seemingly constructed only to set up the next visual effect. Yes, there are plenty of them: levitations, transformations, and a monstrous spider that hovers over the audience like the Phantom’s chandelier.",
-  "dtliThumb": "Down"
+  "dtliThumb": "Down",
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 40.5,
+      "high": 57.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": null,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "Immersive, heartfelt, and exhilarating, First Shadow is a must-see spectacle",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "A three-hour fan wiki brought to life, complete with origin stories, stilted dialogue, lame jokes",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Yes, there are plenty of them: levitations, transformations, and a monstrous spider that hovers over the audience",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review presents strongly conflicting opinions - one critic calls it a 'must-see spectacle' while another dismisses it as stilted fan service, resulting in a mixed recommendation that could appeal to fans but may disappoint general audiences. | GPT-4o-mini: The review expresses significant criticism of the script and overall execution while acknowledging some positive aspects, leading to a mixed-negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:50:53.233Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

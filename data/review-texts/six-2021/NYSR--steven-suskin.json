@@ -10,7 +10,7 @@
   "bwwExcerpt": "\"). Anne Boleyn s bouncy, electro-pop \"Don t Lose Ur Head\" has a Lily Allen vibe. To play up her sex appeal-and youthfulness-Catherine Parr sings the breathy, Britney Spears-style \"All You Wanna Do.\" Steven Suskin, New York Stage Review : \"It has mass appeal, immediacy, enthusiasm, and an incredibly high sense of style; and it revels in what used to be called \"girl power\" but can now more properly be described as simply, or not-so-simply, power . An audience show for a wide audience, Six is a rafter-raising entertainment that ll get you throwing your proverbial bonnet in the air (but please keep that mask on, for now). Even if, yes, a third of the crowned characters portrayed did indeed-in the plot, and in actual history (and in actual herstory)-lose their heads.\" Juan A. Ramirez, Theatrely : The six women-backed by a terrific onstage band of \"Ladies in Waiting\"-initially delighted to revel in their woes, wind up revealing more about womanhood (historical and contemporary), modern star",
   "showScoreExcerpt": "\"not what you might call a traditional musical, nor what formerly would have been considered a well-crafted one. But it has mass appeal, immediacy, enthusiasm, and an incredibly high sense of style; and it revels in what used to be called “girl power” but can now more properly be described as simply, or not-so-simply, power.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211004",
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 85,
+      "performances": 90,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "★★★★★ The musical juggernaut about displaced royals delivers, with flair, exuberance, and high style",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "An audience show for a wide audience, Six is a rafter-raising entertainment that'll get you throwing your proverbial bonnet in the air",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This is not what you might call a traditional musical, nor what formerly would have been considered a well-crafted one",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Five-star review with enthusiastic language like 'juggernaut,' 'rafter-raising entertainment,' and clear praise for performances and production values, despite acknowledging it's not traditionally well-crafted. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's entertainment value, high production quality, and strong performances, with no significant reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:48:31.361Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

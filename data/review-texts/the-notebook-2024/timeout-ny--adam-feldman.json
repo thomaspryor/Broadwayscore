@@ -10,7 +10,7 @@
   "bwwExcerpt": "And yet: As much as I rolled my eyes at The Notebook, I can’t deny that they sometimes welled up. In this version, it’s the older Noah and Allie—whom Brunstetter draws with the most care, free from the fetters of plot, and around whom Michaelson writes her most touching music—who get to you. Plunkett’s truthfulness pierces through the sentimentality, and there’s something elemental in the combination of love and loss that this pair embodies. As Younger Noah says of Allie’s painting: “It’s sadness and it’s joy, right?” At its best, The Notebook finds a way to deliver both, if only in shorthand.",
   "showScoreExcerpt": "\"As much as I rolled my eyes at The Notebook, I canât deny that they sometimes welled up.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "bww-roundup",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.timeout.com/newyork/theater/the-notebook-broadway-musical-review",
@@ -19,5 +19,61 @@
   "archivePath": "data/archives/reviews/the-notebook-2024/timeout-ny--adam-feldman_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:18:33.203Z",
   "textQuality": "full",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": 73,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As much as I rolled my eyes at The Notebook, I can't deny that they sometimes welled up",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Plunkett's truthfulness pierces through the sentimentality",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "At its best, The Notebook finds a way to deliver both, if only in shorthand",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges emotional impact despite cynicism, praising specific performances and music while expressing reservations about the overall material. | GPT-4o-mini: The review expresses a mix of skepticism and emotional engagement, indicating a qualified recommendation rather than unqualified enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:56:39.626Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

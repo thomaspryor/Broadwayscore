@@ -9,11 +9,67 @@
   "isFullReview": false,
   "dtliExcerpt": "It is too early in the Broadway season to call something the worst. That caveat aside, “The Roommate” is the saddest spectacle of wasted talent on Broadway since Andre De Shields played a gorilla in “Prymate” in 2004.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 13,
   "source": "dtli",
   "dtliThumb": "Meh",
   "bwwExcerpt": "It is too early in the Broadway season to call something the worst. That caveat aside, “The Roommate” is the saddest spectacle of wasted talent on Broadway since Andre De Shields played a gorilla in “Prymate” in 2004.     Melissa",
   "textStatus": "missing",
   "textQuality": "missing",
-  "sourceMethod": "dtli"
+  "sourceMethod": "dtli",
+  "llmScore": {
+    "score": 13,
+    "confidence": "high",
+    "range": {
+      "low": 5.5,
+      "high": 20.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the saddest spectacle of wasted talent on Broadway",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It is too early in the Broadway season to call something the worst",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "too early in the Broadway season to call something the worst",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic calls it 'the saddest spectacle of wasted talent' and strongly implies it's among the worst shows, which signals an unqualified pan. | GPT-4o-mini: The review expresses strong disapproval and disappointment, indicating a clear rejection of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:58:39.283Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 15,
+    "openaiScore": 10,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

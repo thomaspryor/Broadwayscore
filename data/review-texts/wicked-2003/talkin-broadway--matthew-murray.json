@@ -9,12 +9,68 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"The new musical at the Gershwin is a thoroughly mechanical and unmagical musical. It is the ultimate whitewashed example of how a musical written to pander can even fail at that when it has no centralized guiding force.\"",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 20,
   "source": "show-score",
   "needsFullText": true,
   "textStatus": "missing",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 15,
+      "music": 25,
+      "performances": null,
+      "direction": 23
+    },
+    "keyPhrases": [
+      {
+        "quote": "thoroughly mechanical and unmagical musical",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "ultimate whitewashed example of how a musical written to pander can even fail at that",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "no centralized guiding force",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses unqualified negative language like 'thoroughly mechanical and unmagical' and 'ultimate whitewashed example' with no redeeming qualities mentioned, indicating a clear pan. | GPT-4o-mini: The review expresses strong disapproval of the musical's quality, indicating a clear rejection of the production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T06:01:46.683Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

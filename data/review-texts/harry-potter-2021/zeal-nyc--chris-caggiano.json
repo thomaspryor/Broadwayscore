@@ -9,11 +9,67 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"A fluid and brisk production...The physical production is downright resplendent...There's magic aplenty...The tricks never upstage the action, nor do they become the sole reason for the show's existence...Beyond the physical production, the play's biggest asset is its ability to make us care about these characters...The story is intricate and surprising, but it's never confusing...A far cry from your typical Broadway brand extension, and in many ways...an improvement over the quality of the films.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 85,
   "source": "show-score",
   "textStatus": "excerpt-only",
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-positive",
-  "scoreConfidence": "medium"
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "A fluid and brisk production...The physical production is downright resplendent",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The play's biggest asset is its ability to make us care about these characters",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "an improvement over the quality of the films",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Consistently positive language praising production values, storytelling, and character development with no significant reservations expressed. | GPT-4o-mini: The review expresses strong enthusiasm for the production's visual elements and character engagement, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:30:08.618Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

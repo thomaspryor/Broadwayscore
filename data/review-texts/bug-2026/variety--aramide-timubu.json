@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "“Bug” is as intimate as it is intense. The set, designed by Takeshi Kata, drops the audience right into this specific place and time. The lightning, helmed by Heather Gilbert, and the sound, spearheaded by Josh Schmidt, also keep the play tightly grounded, though the production may have worked even better in a smaller theater. Additionally, midway through Act II, there is a shocking set change that reveals just how deep into their psychosis Agnes and Peter have sunk. Moreover, amid Agnes and Peter’s continued descent toward insanity, the story remains convincing because of the characters’ obvious affection and mutual obsession. It’s pretty apparent they are causing each other immense harm. However, their actions stem from a place of love, companionship, humor and understanding, which makes the tale especially heartbreaking.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Carrie-Coon-Namir-Smallwood-and-More-Star-in-BUG-on-Broadway-20260108",
   "textStatus": "missing",
@@ -19,5 +19,61 @@
   "scoreConfidence": "medium",
   "dtliExcerpt": "“Bug” is as intimate as it is intense. The set, designed by Takeshi Kata, drops the audience right into this specific place and time. The lightning, helmed by Heather Gilbert, and the sound, spearheaded by Josh Schmidt, also keep the play tightly grounded, though the production may have worked even better in a smaller theater. Additionally, midway through Act II, there is a shocking set change that reveals just how deep into their psychosis Agnes and Peter have sunk. Moreover, amid Agnes and Peter’s continued descent toward insanity, the story remains convincing because of the characters’ obvious affection and mutual obsession. It’s pretty apparent they are causing each other immense harm. However, their actions stem from a place of love, companionship, humor and understanding, which makes the tale especially heartbreaking.",
   "dtliThumb": "Up",
-  "showScoreExcerpt": "â 'Bug is as intimate as it is intense...The performances are also outstanding.\""
+  "showScoreExcerpt": "â 'Bug is as intimate as it is intense...The performances are also outstanding.\"",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 87,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bug is as intimate as it is intense...The performances are also outstanding",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes the tale especially heartbreaking",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the production may have worked even better in a smaller theater",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances, design elements, and emotional impact with only minor venue reservation suggests clear positive recommendation. | GPT-4o-mini: The review highlights outstanding performances and a compelling story, with minor reservations about the production's setting, leading to a strong positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:10:58.226Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
