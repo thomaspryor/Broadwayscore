@@ -3,13 +3,20 @@
  * fetch-show-images-auto.js
  *
  * Automatically discovers and fetches images for ALL shows:
- * 1. Searches TodayTix for the show
- * 2. Extracts TodayTix ID and images
- * 3. Saves square (thumbnail), portrait (poster), landscape (hero)
+ * 1. Searches TodayTix for the show to get its TodayTix ID
+ * 2. Fetches the show page and finds Contentful image URLs
+ * 3. Uses Contentful's Image Transformation API to generate:
+ *    - Square 1080x1080 (thumbnail for cards)
+ *    - Portrait 720x1080 (poster for show pages)
+ *    - Landscape 1920x800 (hero banner)
+ *
+ * KEY INSIGHT: TodayTix uses Contentful CDN which can transform ANY image
+ * on the fly. We find the best source images (poster key art + production
+ * photos) and request them in whatever dimensions we need via URL params.
  *
  * No hardcoded IDs - works for any show!
  *
- * Usage: node scripts/fetch-show-images-auto.js [--show=show-id]
+ * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing]
  */
 
 const https = require('https');
@@ -96,39 +103,75 @@ async function discoverTodayTixId(showTitle) {
   }
 }
 
-// Extract all image formats from TodayTix show page
+// Contentful URL transformation parameters for different formats
+// Contentful's Image API allows requesting any size/crop on the fly
+const CONTENTFUL_TRANSFORMS = {
+  // Square thumbnail (1:1) - good for grid cards
+  square: '?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90',
+  // Portrait poster (2:3) - standard theatrical poster ratio
+  portrait: '?w=720&h=1080&fit=fill&f=face&fm=webp&q=90',
+  // Landscape hero (roughly 2.4:1) - good for hero banners
+  landscape: '?w=1920&h=800&fit=fill&f=center&fm=webp&q=90'
+};
+
+// Extract the best source images from TodayTix page
+// Then generate all formats using Contentful's transformation API
 function extractAllImageFormats(html) {
   // Extract all Contentful image URLs
-  const imageMatches = html.match(/https:\/\/images\.ctfassets\.net\/[^"'< ]+\.(jpg|jpeg|png|webp)/gi);
+  const imageMatches = html.match(/https:\/\/images\.ctfassets\.net\/[^"'<\s]+\.(jpg|jpeg|png)/gi);
 
   if (!imageMatches) return null;
 
-  const uniqueImages = [...new Set(imageMatches)];
-  const result = { square: null, portrait: null, landscape: null, all: [] };
+  // Clean URLs (remove query params) and deduplicate
+  const uniqueImages = [...new Set(imageMatches.map(url => url.split('?')[0]))];
 
-  for (const url of uniqueImages) {
-    const cleanUrl = url.split('?')[0];
-    const filename = cleanUrl.split('/').pop().toLowerCase();
-    result.all.push(cleanUrl);
+  // Find the best source images
+  let posterSource = null;  // Best for portrait + square (key art)
+  let heroSource = null;    // Best for landscape (production photo)
 
-    // Match by dimensions in filename or URL patterns
-    if (filename.match(/1080x1080|1000x1000|500x500|square/i) || cleanUrl.includes('1080/1080')) {
-      result.square = cleanUrl;
-    } else if (filename.match(/480x720|600x900|400x600|poster|portrait/i) || cleanUrl.includes('480/720')) {
-      result.portrait = cleanUrl;
-    } else if (filename.match(/1440x580|1920x1080|1920x768|hero|banner|landscape/i) || cleanUrl.includes('1920')) {
-      result.landscape = cleanUrl;
+  for (const baseUrl of uniqueImages) {
+    const filename = baseUrl.split('/').pop().toLowerCase();
+
+    // Priority 1: Look for official poster/key art (best for portrait and square)
+    if (filename.includes('poster') || filename.includes('key_art') || filename.includes('keyart') ||
+        filename.match(/480x720|600x900|portrait/)) {
+      posterSource = baseUrl;
+    }
+
+    // Priority 2: Look for production photos (best for landscape hero)
+    // These are typically wider aspect ratio photos
+    if (!heroSource && (filename.includes('production') || filename.includes('company') ||
+        filename.includes('ensemble') || filename.match(/\d\.png$/) || filename.match(/\d\.jpg$/))) {
+      heroSource = baseUrl;
     }
   }
 
-  // If we didn't find specific formats, try to infer from any image
-  if (!result.square && !result.portrait && !result.landscape && result.all.length > 0) {
-    // Use the first image as a fallback
-    const firstImage = result.all[0];
-    result.portrait = firstImage; // Assume it's usable as poster
+  // Fallback: use first non-headshot image
+  if (!posterSource && uniqueImages.length > 0) {
+    // Avoid headshots (usually small square images of cast)
+    posterSource = uniqueImages.find(url => {
+      const filename = url.split('/').pop().toLowerCase();
+      return !filename.match(/^[a-z]+\.(png|jpg)$/) && // Avoid single-name files like "brad.png"
+             filename.length > 10; // Poster files usually have longer names
+    }) || uniqueImages[0];
   }
 
-  return result;
+  if (!heroSource) {
+    heroSource = posterSource; // Use poster as fallback for hero
+  }
+
+  if (!posterSource) {
+    return null;
+  }
+
+  // Generate all formats using Contentful transforms
+  return {
+    square: posterSource + CONTENTFUL_TRANSFORMS.square,
+    portrait: posterSource + CONTENTFUL_TRANSFORMS.portrait,
+    landscape: heroSource + CONTENTFUL_TRANSFORMS.landscape,
+    // Keep raw sources for debugging
+    _sources: { poster: posterSource, hero: heroSource }
+  };
 }
 
 async function fetchShowImages(show, todayTixInfo) {
@@ -148,17 +191,25 @@ async function fetchShowImages(show, todayTixInfo) {
     const images = extractAllImageFormats(html);
 
     if (images && (images.square || images.portrait || images.landscape)) {
-      console.log(`   ✓ Found images:`);
-      if (images.square) console.log(`     - Square (thumbnail): ✓`);
-      if (images.portrait) console.log(`     - Portrait (poster): ✓`);
-      if (images.landscape) console.log(`     - Landscape (hero): ✓`);
+      console.log(`   ✓ Found source images:`);
+      if (images._sources?.poster) {
+        const posterFile = images._sources.poster.split('/').pop();
+        console.log(`     - Poster source: ${posterFile}`);
+      }
+      if (images._sources?.hero && images._sources.hero !== images._sources?.poster) {
+        const heroFile = images._sources.hero.split('/').pop();
+        console.log(`     - Hero source: ${heroFile}`);
+      }
+      console.log(`   ✓ Generated formats via Contentful transforms:`);
+      console.log(`     - Square 1080x1080 (thumbnail): ✓`);
+      console.log(`     - Portrait 720x1080 (poster): ✓`);
+      console.log(`     - Landscape 1920x800 (hero): ✓`);
 
       // Format for shows.json
-      const fallback = images.landscape || images.portrait || images.square;
       return {
-        hero: images.landscape || fallback,
-        thumbnail: images.square || fallback,
-        poster: images.portrait || fallback,
+        hero: images.landscape,
+        thumbnail: images.square,
+        poster: images.portrait,
       };
     }
 
