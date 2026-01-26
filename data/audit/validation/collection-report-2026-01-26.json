@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-01-26T02:08:20.228Z",
+  "runDate": "2026-01-26T02:27:57.793Z",
   "config": {
     "batchSize": 5,
     "maxReviews": 10,
@@ -11,16 +11,16 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 6,
+    "processed": 9,
+    "failed": 11,
     "skipped": 0,
-    "successRate": "40.0%"
+    "successRate": "45.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 4
+    "archive": 9
   },
   "statistics": {
     "tier1Attempts": 10,
@@ -30,15 +30,20 @@
     "tier3Attempts": 10,
     "tier3Success": 0,
     "tier4Attempts": 11,
-    "tier4Success": 4,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 70
+    "tier4Success": 5,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 80
   },
   "processed": [
     "buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json",
     "buena-vista-social-club-2025/variety--frank-rizzo.json",
     "buena-vista-social-club-2025/vulture--jackson-mchenry.json",
-    "bug-2026/variety--aramide-tinubu.json"
+    "bug-2026/variety--aramide-tinubu.json",
+    "book-of-mormon-2011/nytimes--ben-brantley.json",
+    "boop-2025/nytimes--jesse-green.json",
+    "bug-2026/vulture--sara-holdren.json",
+    "cabaret-2024/variety--naveen-kumar.json",
+    "cabaret-2024/vulture--sara-holdren.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -46,7 +51,12 @@
     "book-of-mormon-2011/VULT--jesse-green.json",
     "book-of-mormon-2011/nytimes--ben-brantley.json",
     "boop-2025/nytimes--jesse-green.json",
-    "bug-2026/nytimes--jason-zinoman.json"
+    "bug-2026/nytimes--jason-zinoman.json",
+    "and-juliet-2022/THR--frank-scheck.json",
+    "back-to-the-future-2023/thr--frank-scheck.json",
+    "book-of-mormon-2011/VULT--jesse-green.json",
+    "bug-2026/nytimes--jason-zinoman.json",
+    "chess-2025/nytimes--elisabeth-vincentelli.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -56,7 +66,12 @@
       "buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json",
       "buena-vista-social-club-2025/variety--frank-rizzo.json",
       "buena-vista-social-club-2025/vulture--jackson-mchenry.json",
-      "bug-2026/variety--aramide-tinubu.json"
+      "bug-2026/variety--aramide-tinubu.json",
+      "book-of-mormon-2011/nytimes--ben-brantley.json",
+      "boop-2025/nytimes--jesse-green.json",
+      "bug-2026/vulture--sara-holdren.json",
+      "cabaret-2024/variety--naveen-kumar.json",
+      "cabaret-2024/vulture--sara-holdren.json"
     ]
   }
 }
