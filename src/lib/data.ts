@@ -756,14 +756,14 @@ export function getAllBrowseSlugs(): string[] {
 // ============================================
 
 export type CommercialDesignation =
-  | 'Miracle'     // Profit > 3x investment (long-running mega-hits)
-  | 'Windfall'    // Profit > 1.5x investment (solid hits)
-  | 'Trickle'     // Broke even or modest profit over time
-  | 'Sugar Daddy' // Limited run that made money
-  | 'Fizzle'      // Lost money but not all
-  | 'Flop'        // Lost most/all investment
-  | 'Nonprofit'   // Produced by nonprofit theater (LCT, MTC, Second Stage, etc.)
-  | 'TBD';        // Too early to tell
+  | 'Miracle'      // Profit > 3x investment (long-running mega-hits)
+  | 'Windfall'     // Profit > 1.5x investment (solid hits)
+  | 'Trickle'      // Broke even or modest profit over time
+  | 'Easy Winner'  // Limited run that made money, limited downside, limited upside
+  | 'Fizzle'       // Lost money but not all
+  | 'Flop'         // Lost most/all investment
+  | 'Nonprofit'    // Produced by nonprofit theater (LCT, MTC, Second Stage, etc.)
+  | 'TBD';         // Too early to tell
 
 export interface ShowCommercial {
   designation: CommercialDesignation;
