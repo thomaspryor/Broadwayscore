@@ -262,7 +262,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
       style={{ animationDelay: `${index * 30}ms` }}
     >
       {/* Thumbnail - larger square image */}
-      <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-surface-overlay">
+      <div className="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-surface-overlay">
         {show.images?.thumbnail ? (
           <img
             src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
@@ -270,8 +270,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
             aria-hidden="true"
             loading={index < 4 ? "eager" : "lazy"}
             fetchPriority={index < 4 ? "high" : "auto"}
-            width={96}
-            height={96}
+            width={112}
+            height={112}
             decoding="async"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 will-change-transform"
           />
@@ -310,8 +310,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
         </p>
       </div>
 
-      {/* Score - matches thumbnail size for alignment */}
-      <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 flex flex-col items-center justify-start pt-1">
+      {/* Score - smaller badge */}
+      <div className="flex-shrink-0 flex flex-col items-center justify-start pt-1">
         {show.criticScore && getScoreTier(score) && (
           <span
             className="text-[9px] font-semibold mb-1 uppercase tracking-wide whitespace-nowrap"
@@ -321,7 +321,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
             {getScoreTier(score)?.label}
           </span>
         )}
-        <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} status={show.status} />
+        <ScoreBadge score={score} size="md" reviewCount={show.criticScore?.reviewCount} status={show.status} />
       </div>
     </Link>
   );
@@ -556,8 +556,11 @@ function HomePageInner() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      {/* Hero Tagline */}
+      {/* Hero - Large heading on desktop only */}
       <div className="mb-6 sm:mb-8">
+        <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
+          Broadway<span className="text-gradient">Scorecard</span>
+        </h1>
         <p className="text-gray-400 text-base sm:text-lg">
           Every show. Every review. One score.
         </p>

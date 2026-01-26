@@ -442,7 +442,8 @@
 }
 
 /* Prevent horizontal overflow on mobile */
-html, body {
+/* Note: Don't use overflow-x: hidden on html/body - it breaks position: fixed on iOS Safari */
+main {
   overflow-x: hidden;
   max-width: 100vw;
 }
