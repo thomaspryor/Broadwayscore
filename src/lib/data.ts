@@ -122,6 +122,49 @@ export function getDataStats() {
   };
 }
 
+/**
+ * Get the most recent data update timestamp for a show
+ * Combines timestamps from grosses, audience buzz, and reviews
+ * Returns ISO string of the most recent update
+ */
+export function getShowLastUpdated(showId: string): string | null {
+  const timestamps: Date[] = [];
+
+  // Check grosses data
+  try {
+    if (grosses.lastUpdated) {
+      timestamps.push(new Date(grosses.lastUpdated));
+    }
+  } catch { /* ignore */ }
+
+  // Check audience buzz data
+  try {
+    if (audienceBuzzData?._meta?.lastUpdated) {
+      timestamps.push(new Date(audienceBuzzData._meta.lastUpdated));
+    }
+  } catch { /* ignore */ }
+
+  // Check critic consensus data
+  try {
+    if (criticConsensusData?._meta?.lastGenerated) {
+      timestamps.push(new Date(criticConsensusData._meta.lastGenerated));
+    }
+  } catch { /* ignore */ }
+
+  // Check reviews data
+  try {
+    if (reviewsData?._meta?.lastUpdated) {
+      timestamps.push(new Date(reviewsData._meta.lastUpdated));
+    }
+  } catch { /* ignore */ }
+
+  if (timestamps.length === 0) return null;
+
+  // Return the most recent timestamp
+  const mostRecent = new Date(Math.max(...timestamps.map(d => d.getTime())));
+  return mostRecent.toISOString();
+}
+
 // ============================================
 // Director Queries
 // ============================================

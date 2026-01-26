@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus, getLotteryRush, getShowCommercial } from '@/lib/data';
+import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus, getLotteryRush, getShowCommercial, getShowLastUpdated } from '@/lib/data';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
@@ -457,6 +457,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const consensus = getCriticConsensus(show.id);
   const lotteryRush = getLotteryRush(show.id);
   const commercial = getShowCommercial(show.slug);
+  const lastUpdated = getShowLastUpdated(show.id);
 
   // Combine schemas, filtering out null FAQ schema
   const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
@@ -886,6 +887,18 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               <div className="sm:col-span-2 pt-2 mt-2 border-t border-white/5">
                 <dt className="text-gray-500">Synopsis</dt>
                 <dd className="text-gray-300 mt-1 leading-relaxed">{show.synopsis}</dd>
+              </div>
+            )}
+            {lastUpdated && (
+              <div className="sm:col-span-2 pt-2 mt-2 border-t border-white/5">
+                <dt className="text-gray-500">Data Last Updated</dt>
+                <dd className="text-gray-400 mt-0.5 text-xs">
+                  {new Date(lastUpdated).toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
+                </dd>
               </div>
             )}
           </dl>
