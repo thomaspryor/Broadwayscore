@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "web-search",
   "note": "Off-Broadway NYTW production review - URL blocked",
   "textStatus": "complete",
@@ -48,5 +48,61 @@
   ],
   "fetchTier": 4,
   "archiveOrgTimestamp": "20250327164124",
-  "archiveOrgUrl": "http://web.archive.org/web/20250327164124/https://www.talkinbroadway.com/page/ob/5_23_16.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250327164124/https://www.talkinbroadway.com/page/ob/5_23_16.html",
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 37.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 48,
+      "performances": 68,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's dull, even irritating, as an example of musical theatre writing",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "painfully extended running time of nearly two and a half hours",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "stunning magic that writer Anaïs Mitchell and director Rachel Chavkin have achieved here",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite praising the immersive staging and some performances, the critic finds fundamental flaws in the musical writing, pacing, and structure, calling it 'dull' and 'irritating' with a 'painfully extended' runtime. | GPT-4o-mini: The review presents a mix of praise for the production's immersive qualities and performances but ultimately criticizes the writing and direction, leading to a mixed recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:24:25.597Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

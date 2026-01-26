@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 34,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 34,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 43
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 30,
+      "performances": 40,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "Back to the Future: The Musical, the time travel adventure, joins a long line of problematic screen to stage musicalizations which do not improve on the originals in any way",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "those who want to be taken by surprise and offered something new will be vastly disappointed",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Audiences who are satisfied with nothing more than seeing the original movie put on stage may be pleased with the results",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic systematically criticizes nearly every element - comparing it unfavorably to other failed adaptations, calling the songs 'trite and repetitive,' and concluding most audiences will be 'vastly disappointed,' with only conditional praise for those wanting a literal stage replica. | GPT-4o-mini: The review is overwhelmingly critical, highlighting numerous flaws in the adaptation and expressing disappointment in the lack of originality and impact.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:23:38.750Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 30,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

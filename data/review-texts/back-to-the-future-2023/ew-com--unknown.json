@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 62,
+      "performances": 79,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, unlike the DeLorean, Back to the Future: The Musical itself never quite hits 88 miles per hour",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Roger Bart's Doc Brown stand out so much... somehow achieves the seemingly impossible — taking an iconic role originally brought to life by Christopher Lloyd and making it his own",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Grade: B",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: A B grade with mixed praise and criticism suggests a qualified recommendation - the critic appreciates standout performances (especially Bart) and technical elements but finds the adaptation too safe and musically inconsistent. | GPT-4o-mini: The review expresses mixed feelings, praising performances while critiquing the script and music, leading to a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:22:14.731Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

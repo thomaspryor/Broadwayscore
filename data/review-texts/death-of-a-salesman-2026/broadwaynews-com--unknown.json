@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 83,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "we're given reams of new subtext about the anxiety, trauma, stress and stakes at hand",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "director Miranda Cromwell's production... is a pointed investigation of Black survival",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Not a lick of Miller's script has been altered, and yet, we're given reams of new subtext",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the production's fresh perspective on a classic text, highlighting how the casting and direction create new layers of meaning without changing Miller's script, indicating a strong positive recommendation for this innovative revival. | GPT-4o-mini: The review praises the production's contemporary relevance and performances while highlighting its innovative direction, indicating a strong recommendation despite some nuanced critiques.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:24:14.018Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

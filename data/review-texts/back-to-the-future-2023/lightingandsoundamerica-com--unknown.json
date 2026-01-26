@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 53,
+      "performances": 77,
+      "direction": 76
+    },
+    "keyPhrases": [
+      {
+        "quote": "I had a good time at Back to the Future but all that pizzazz is no substitute for a first-rate book and score",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "It's the odd case of a so-so show put over by sheer determination and technique",
+        "sentiment": "neutral",
+        "strength": 5
+      },
+      {
+        "quote": "There's little question that Back to the Future is poised to zoom into the box office stratosphere, thanks to tourists looking for a wow experience",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls it 'a so-so show' and criticizes fundamental elements (book, score) while praising technical aspects and acknowledging entertainment value, landing squarely in mixed territory. | GPT-4o-mini: The review highlights strong performances and impressive production values but criticizes the book and music, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:22:33.267Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 47,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251010032128",
-  "archiveOrgUrl": "http://web.archive.org/web/20251010032128/https://www.theatermania.com/news/review-back-to-the-future-the-musical-is-stuck-in-the-past_1710869/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251010032128/https://www.theatermania.com/news/review-back-to-the-future-the-musical-is-stuck-in-the-past_1710869/",
+  "llmScore": {
+    "score": 47,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 53.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 38,
+      "performances": 58,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "Back to the Future had the potential to do so much more",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "You're unlikely to emerge humming any of the numbers",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "arrives on Broadway as a monument to American decadence, a dominant culture only interested in revisiting old triumphs",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite praising the spectacular production design and DeLorean effects, the critic finds fundamental flaws in the forgettable music, unfunny script, and overall lack of innovation, concluding it's a monument to cultural decadence. | GPT-4o-mini: The review expresses significant disappointment in the adaptation's script and music while acknowledging strong production elements, leading to a clear negative recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:23:25.452Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

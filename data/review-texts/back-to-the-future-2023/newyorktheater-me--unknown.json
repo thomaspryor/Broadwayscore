@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 60,
+      "performances": 73,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is in some ways a lost opportunity to reimagine a story that's as tied to a specific era as the sports car it showcases",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The car serves as the main vehicle for the often thrilling stage design and special effects",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Nobody can predict the future, but I very much doubt that song title is true",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review that criticizes the overly faithful adaptation and missed opportunities while praising the spectacular technical design and solid performances, ending on a cautiously optimistic note. | GPT-4o-mini: The review highlights both the impressive production elements and the missed opportunity for creative storytelling, leading to a mixed recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:22:40.697Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

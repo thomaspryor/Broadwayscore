@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240530002058",
-  "archiveOrgUrl": "http://web.archive.org/web/20240530002058/https://thefrontrowcenter.com/2023/08/back-to-the-future-the-musical/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240530002058/https://thefrontrowcenter.com/2023/08/back-to-the-future-the-musical/",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": 48,
+      "performances": 70,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a safe fun evening, as you'll know what you're going to get, with just a little more razzle-dazzles thrown in. It reminds me of going to Disney World.",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "The songs interjected in the storyline are passable, though not memorable (no one is going to be playing the cast album over and over again)",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "this team has created a car that goes 88 miles per hour, not once but twice, and then folds its wheels and flies, all on the relatively short width of a Broadway stage",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic describes it as a 'safe fun evening' with impressive technical elements but criticizes the forgettable music and notes it's more spectacle than substance, suggesting qualified interest rather than strong recommendation. | GPT-4o-mini: The review presents a mixed view, highlighting enjoyable elements like nostalgia and technical achievements while critiquing the music and overall memorability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:23:56.458Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

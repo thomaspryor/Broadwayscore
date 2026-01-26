@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 60,
+      "performances": 77,
+      "direction": 76
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you already harbor affection for the original movie, there's a high probability that the nostalgic currency will court your purchase",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Just don't expect any fresh revelations in the writing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "So jaw-dropping like the bygone chandelier of 'Phantom of the Opera' that you might forgive when 'Back to the Future: The Musical' stumbles",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges spectacular production values and strong performances while criticizing the dated writing and lack of fresh perspective, resulting in a conditional recommendation primarily for fans of the original. | GPT-4o-mini: The review highlights both strong visual elements and performances but criticizes the book and music, leading to a mixed recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:23:11.693Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 68,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

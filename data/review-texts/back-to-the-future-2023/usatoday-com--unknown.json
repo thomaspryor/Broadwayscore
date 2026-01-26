@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 65,
+      "music": 43,
+      "performances": 74,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like a broken-down DeLorean, the show sputters to a halt almost any time the characters start singing – an unenviable hurdle for any musical",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's a jaw-dropping spectacle that may win over even the most skeptical of New York theatergoers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you can't escape the feeling that they're just running down the clock",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer praises the spectacular staging and some performances but finds fatal flaws in the score, describing songs as 'soulless' and 'obligatory,' creating a mixed experience that's hard to fully recommend. | GPT-4o-mini: The review highlights strong performances and impressive technical aspects but criticizes the music and overall coherence, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:24:08.013Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

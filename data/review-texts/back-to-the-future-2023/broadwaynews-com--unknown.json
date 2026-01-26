@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,63 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 43,
+    "confidence": "low",
+    "range": {
+      "low": 10.5,
+      "high": 75.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "dazzling 'Back to the Future' musical is a feast for the eyes — less so the ears",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Awe-inspiring visual effects and hilarious performances drive this theatrical adaptation",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Awe-inspiring visual effects and hilarious performances drive this theatrical adaptation of the iconic film",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This appears to be only a headline and brief description rather than a full review, making scoring highly uncertain, but the phrase 'less so the ears' suggests significant musical shortcomings despite visual spectacle. | GPT-4o-mini: The review highlights strong visual effects and performances but suggests that the musical aspects may not be as compelling, leading to a mixed-positive recommendation. | Note: Models differed by 55 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:22:02.366Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 15,
+    "openaiScore": 70,
+    "scoreDelta": 55,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 55 points (Claude: 15, OpenAI: 70)"
+    ]
+  }
 }

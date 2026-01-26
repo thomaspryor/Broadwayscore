@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 33,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250814115750",
-  "archiveOrgUrl": "http://web.archive.org/web/20250814115750/https://observer.com/2023/08/back-to-the-future-the-musical-review-the-delorean-flies-the-songs-sink/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250814115750/https://observer.com/2023/08/back-to-the-future-the-musical-review-the-delorean-flies-the-songs-sink/",
+  "llmScore": {
+    "score": 33,
+    "confidence": "high",
+    "range": {
+      "low": 25.5,
+      "high": 40.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": 23,
+      "performances": 58,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "a gifted cast with thankless roles, a hokey book that takes no chances, and an abysmal score that drags everything down",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Does Back to the Future: The Musical? Who cares?",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "A talented ensemble works valiantly to inject their celebrity impersonations with humanity and spontaneity",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a scathing review with harsh criticism of the book ('hokey'), music ('abysmal score'), and overall concept, with only mild praise for the cast's efforts and spectacle. | GPT-4o-mini: The review is overwhelmingly critical, highlighting significant flaws in the book and music while only offering mild praise for the performances, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:22:59.772Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

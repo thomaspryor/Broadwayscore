@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250731090847",
-  "archiveOrgUrl": "http://web.archive.org/web/20250731090847/https://variety.com/2025/legit/reviews/real-women-have-curves-review-broadway-musical-1236378571/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250731090847/https://variety.com/2025/legit/reviews/real-women-have-curves-review-broadway-musical-1236378571/",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 75,
+      "performances": 84,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "appealing, tuneful and politically potent show",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Though sure to please many audiences, the show's ending also feels unearned and underwritten",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The performances by this colorful ensemble of women are all splendid",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This is a qualified recommendation that praises performances, political relevance, and production values while noting structural flaws and familiar tropes. | GPT-4o-mini: The review expresses strong praise for the performances and the musical's themes, but notes some issues with the ending and familiarity of certain elements.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:24:37.293Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250708170920",
-  "archiveOrgUrl": "http://web.archive.org/web/20250708170920/https://www.thewrap.com/back-to-the-future-broadway-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250708170920/https://www.thewrap.com/back-to-the-future-broadway-review/",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 18,
+      "performances": 40,
+      "direction": 23
+    },
+    "keyPhrases": [
+      {
+        "quote": "Silvestri and Ballard's original score is so derivative it gives jukebox musicals a good name",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The songs and jokes are dreary",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Big and purposefully tacky production numbers pop up out of nowhere only to evaporate just as quickly",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic systematically demolishes nearly every aspect of the production with harsh criticism of the score, direction, and book, offering only minimal praise for some performances and technical effects. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the music, direction, and overall execution, leading to a strong recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:24:02.275Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

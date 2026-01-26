@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 33,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240803102529",
-  "archiveOrgUrl": "http://web.archive.org/web/20240803102529/https://www.queerty.com/a-creative-flat-tire-sends-broadways-back-to-the-future-skidding-off-course-20230803"
+  "archiveOrgUrl": "http://web.archive.org/web/20240803102529/https://www.queerty.com/a-creative-flat-tire-sends-broadways-back-to-the-future-skidding-off-course-20230803",
+  "llmScore": {
+    "score": 33,
+    "confidence": "high",
+    "range": {
+      "low": 25.5,
+      "high": 40.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": 23,
+      "performances": 53,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "Skip it and see Shucked instead",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "forgoes the basic mechanics of a successful musical: a coherent book and catchy score",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the technological flourishes can't jump-start a show with a dead battery",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly tells readers to 'Skip it' and systematically dismantles the show's fundamental elements while acknowledging only isolated positives in performances and spectacle. | GPT-4o-mini: The review is predominantly negative, highlighting significant flaws in the book and music while ultimately recommending against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:23:05.734Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

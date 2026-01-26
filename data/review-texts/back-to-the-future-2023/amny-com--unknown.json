@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250916172301",
-  "archiveOrgUrl": "http://web.archive.org/web/20250916172301/https://www.amny.com/entertainment/review-time-travel-gone-wrong-in-broadways-back-to-the-future/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250916172301/https://www.amny.com/entertainment/review-time-travel-gone-wrong-in-broadways-back-to-the-future/",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": 33,
+      "performances": 33,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "a pointless $23.5 million Broadway musical adaptation",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "vapid, slavish tribute to the original film",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "wouldn't it have been a lot better to just watch the film on a big screen",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a harsh pan, calling the adaptation 'pointless' and 'vapid' while suggesting audiences would be better off watching the movie instead. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the production as a pointless adaptation that fails to add value to the original film, leading to a clear recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:21:56.292Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

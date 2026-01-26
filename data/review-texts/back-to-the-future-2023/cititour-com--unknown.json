@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 40,
+      "performances": 75,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "if you're smart, prepare for 'Future' imperfect and you'll have a good enough time",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "seems specifically designed to satisfy anyone who wants to visit a theme park attraction and watch a traditional Broadway musical at the same time",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "audience members with more sophisticated tastes – in either arena – will likely wish for something with more craft on both sides of the equation",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic offers a lukewarm recommendation with significant reservations about craft and sophistication, suggesting it works as family entertainment but disappoints more discerning theatergoers. | GPT-4o-mini: The review presents a mixed perspective, praising performances while criticizing the book and music, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:22:08.681Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

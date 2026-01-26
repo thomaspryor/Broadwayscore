@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": 53,
+      "performances": 79,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "wonderful two and a half hours of pure, fun-filled entertainment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "never manages to transcend the forgettable and unremarkable music and lyrics",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "this spectacular special effect created by Twin FX is well worth the price of a ticket",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the production values, performances, and entertainment value while acknowledging significant weaknesses in the music, ultimately concluding it's worth seeing for the spectacle and fun despite its flaws. | GPT-4o-mini: The review expresses enjoyment and positive elements, particularly regarding performances and entertainment value, but notes weaknesses in music and emotional depth, leading to a solid but not overwhelming recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:23:50.019Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

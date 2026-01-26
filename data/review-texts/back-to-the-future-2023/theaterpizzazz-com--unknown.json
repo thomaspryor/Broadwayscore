@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250328151420",
-  "archiveOrgUrl": "http://web.archive.org/web/20250328151420/https://theaterpizzazz.com/back-to-the-future-the-musical/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250328151420/https://theaterpizzazz.com/back-to-the-future-the-musical/",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": 55,
+      "performances": 73,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "I suspect Back to the Future will be around for a while. The critics may carp, but there seems to be something in this material's gas tank that millions adore.",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Its incident-filled plot is tied together by 17 largely generic new songs, too few of which make any impact.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "John Rando's often overheated, not particularly inventive, and sometimes tasteless direction",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's crowd-pleasing appeal and commercial viability while consistently criticizing its artistic merits, particularly the generic songs and uninventive direction. | GPT-4o-mini: The review expresses a mix of enthusiasm for the audience's reaction and the show's spectacle, but also highlights significant flaws in direction and music, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:23:32.099Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

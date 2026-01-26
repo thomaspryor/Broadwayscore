@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250210021448",
-  "archiveOrgUrl": "http://web.archive.org/web/20250210021448/https://www.hollywoodreporter.com/lifestyle/arts/back-to-the-future-the-musical-theater-review-a-fun-faithful-stage-adaptation-hits-broadway-1235548700/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250210021448/https://www.hollywoodreporter.com/lifestyle/arts/back-to-the-future-the-musical-theater-review-a-fun-faithful-stage-adaptation-hits-broadway-1235548700/",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 63,
+      "performances": 81,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "What is surprising is how effective and damn fun it all is",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "But when it's done with this much spirit, it's hard to complain",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the original songs, as is so often the case with these adaptations, mainly come across as superfluous",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging flaws like generic songs and lack of originality, the reviewer emphasizes how fun and effective the production is, praising the technical elements, performances, and entertainment value. | GPT-4o-mini: The review expresses clear enjoyment and fun in the production, despite some reservations about originality and the music, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:22:27.535Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

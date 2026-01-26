@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240430204152",
-  "archiveOrgUrl": "http://web.archive.org/web/20240430204152/https://nypost.com/2023/08/03/back-to-the-future-the-musical-review-watch-the-movie-instead/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240430204152/https://nypost.com/2023/08/03/back-to-the-future-the-musical-review-watch-the-movie-instead/",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 23,
+      "performances": 63,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "bloated gizmo nobody asked for that, while enjoyable in parts and with an embraceable star in Casey Likes as Marty, never justifies its perplexing existence as a stage musical",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the score, by Glen Ballard (of 'Jagged Little Pill' fame), is awful whenever it's not borrowing from Alan Silvestri's rousing theme music from the film",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "the musical left me cold and uninvolved. It made me want to go back… to the movie!",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising individual performances (particularly Casey Likes and Hugh Coles), the critic savages the core musical elements, calls the show a 'bloated gizmo nobody asked for,' and explicitly states it left them 'cold and uninvolved.' | GPT-4o-mini: The review expresses significant disappointment with the music and overall execution, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T23:22:47.076Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
