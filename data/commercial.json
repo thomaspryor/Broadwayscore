@@ -10,6 +10,7 @@
       "Sugar Daddy": "Limited run that made money",
       "Fizzle": "Lost money but not all",
       "Flop": "Lost most/all investment",
+      "Nonprofit": "Produced by nonprofit theater (LCT, MTC, Second Stage, etc.)",
       "TBD": "Too early to tell (still running or recently opened)"
     }
   },
@@ -203,14 +204,14 @@
     },
     "the-notebook": {
       "designation": "Fizzle",
-      "capitalization": null,
-      "capitalizationSource": null,
+      "capitalization": 14000000,
+      "capitalizationSource": "BWW (below $15M inflation-adjusted benchmark)",
       "weeklyRunningCost": null,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Closed without recouping. Three-actor casting concept for one character was innovative but didn't drive sales."
+      "notes": "Among the more modestly budgeted musicals of 2023-24 season. Ingrid Michaelson score. Three-actor casting concept for one character was innovative but didn't drive sustained sales. Closed Dec 2024."
     },
     "back-to-the-future": {
       "designation": "Flop",
@@ -280,25 +281,25 @@
     },
     "the-outsiders": {
       "designation": "TBD",
-      "capitalization": null,
-      "capitalizationSource": null,
+      "capitalization": 19000000,
+      "capitalizationSource": "Industry estimates (avg for 2023-24 new musicals)",
       "weeklyRunningCost": null,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Won Best Musical Tony but recoupment taking longer than anticipated. Needs $1.4M+ weekly to recoup within a year."
+      "notes": "Won Best Musical Tony 2024. Produced by Araca Group. Needs $1.4M+ weekly to recoup within a year. Post-Tony grosses hit $1.4M/week record at Bernard B. Jacobs Theatre."
     },
     "stranger-things": {
       "designation": "TBD",
-      "capitalization": null,
-      "capitalizationSource": null,
+      "capitalization": 25000000,
+      "capitalizationSource": "Industry estimates (high-budget spectacle)",
       "weeklyRunningCost": 1000000,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "High weekly running costs (~$1M). Set house record of $2.5M during Christmas week 2025. Season 5 release may boost sales."
+      "notes": "Netflix/Sonia Friedman production. Won 4 Tony Awards 2025. Set Marquis Theatre record of $2.51M during Christmas week 2025. Season 5 finale boosted ticket sales significantly."
     },
     "buena-vista-social-club": {
       "designation": "TBD",
@@ -358,7 +359,7 @@
       "notes": "Revival with new orchestrations. Selling out regularly. Strong grosses of $1.7M/week."
     },
     "ragtime": {
-      "designation": "TBD",
+      "designation": "Nonprofit",
       "capitalization": null,
       "capitalizationSource": null,
       "weeklyRunningCost": null,
@@ -366,7 +367,8 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Lincoln Center Theater revival. LCT operates on subscriber/nonprofit model. Extended through June 2026. 100% capacity."
+      "nonprofitOrg": "Lincoln Center Theater",
+      "notes": "Lincoln Center Theater revival. LCT operates on subscriber/nonprofit model - doesn't seek traditional recoupment. 32-member cast, 28-piece orchestra. Extended through June 2026. 100% capacity."
     },
     "maybe-happy-ending": {
       "designation": "TBD",
@@ -388,10 +390,10 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Danny DeVito limited engagement. Critics' Pick."
+      "notes": "World premiere at Roundabout (nonprofit), transferred to Broadway with commercial producers. Won Outer Critics Circle Award. Bess Wohl play directed by Whitney White. Critics' Pick."
     },
     "bug": {
-      "designation": "TBD",
+      "designation": "Nonprofit",
       "capitalization": null,
       "capitalizationSource": null,
       "weeklyRunningCost": null,
@@ -399,10 +401,11 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Limited run with Carrie Coon. Critics' Pick. Strong reviews."
+      "nonprofitOrg": "Manhattan Theatre Club",
+      "notes": "Broadway premiere at MTC's Samuel J. Friedman Theatre. Tracy Letts play directed by David Cromer. Transferred from Steppenwolf. Carrie Coon stars. Critics' Pick."
     },
     "marjorie-prime": {
-      "designation": "TBD",
+      "designation": "Nonprofit",
       "capitalization": null,
       "capitalizationSource": null,
       "weeklyRunningCost": null,
@@ -410,7 +413,8 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Limited run. Critics' Pick."
+      "nonprofitOrg": "Second Stage Theater",
+      "notes": "Second Stage Theater production at Helen Hayes Theatre. Jordan Harrison play. Star cast: June Squibb, Cynthia Nixon, Danny Burstein. Critics' Pick."
     },
     "oedipus": {
       "designation": "Sugar Daddy",
@@ -435,15 +439,15 @@
       "notes": "Disney production. Consistently profitable. Multiple international productions. Has grossed hundreds of millions."
     },
     "mamma-mia": {
-      "designation": "TBD",
-      "capitalization": null,
-      "capitalizationSource": null,
+      "designation": "Windfall",
+      "capitalization": 10000000,
+      "capitalizationSource": "Playbill (original 2001 production)",
       "weeklyRunningCost": null,
-      "recouped": null,
+      "recouped": true,
       "recoupedDate": null,
       "recoupedWeeks": null,
-      "recoupedSource": null,
-      "notes": "Return engagement. Brand recognition from film franchise. Original run recouped long ago."
+      "recoupedSource": "Playbill",
+      "notes": "25th Anniversary Tour return engagement. Tour recouped in just 13 weeks on the road. Original production ran 14 years/5,773 performances. $7B+ grossed across all global productions."
     },
     "queen-of-versailles": {
       "designation": "Flop",

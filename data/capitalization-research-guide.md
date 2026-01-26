@@ -1,26 +1,8 @@
 
 # Broadway Capitalization Research Guide
-Generated: 2026-01-25T23:18:24.599Z
+Generated: 2026-01-26T00:07:15.875Z
 
 ## Shows Missing Data
-
-### The Outsiders
-- Show ID: 2
-- Status: open
-- Missing: Capitalization amount
-
-**Search Queries:**
-1. "The Outsiders" Broadway capitalization budget million
-2. "The Outsiders" Broadway recouped investment
-3. "The Outsiders" SEC filing Broadway
-4. site:reddit.com/r/Broadway "The Outsiders" budget OR capitalization OR recoup
-5. site:broadwaynews.com "The Outsiders" capitalization OR recoup
-6. site:broadwayjournal.com "The Outsiders" capitalization
-
-**SEC EDGAR Search:**
-https://www.sec.gov/cgi-bin/srch-ia?text=The%20Outsiders%20Broadway&first=1&last=40
-
----
 
 ### Bug
 - Show ID: 7
@@ -55,60 +37,6 @@ https://www.sec.gov/cgi-bin/srch-ia?text=Bug%20Broadway&first=1&last=40
 
 **SEC EDGAR Search:**
 https://www.sec.gov/cgi-bin/srch-ia?text=Aladdin%20Broadway&first=1&last=40
-
----
-
-### Mamma Mia!
-- Show ID: 21
-- Status: open
-- Missing: Capitalization amount
-
-**Search Queries:**
-1. "Mamma Mia!" Broadway capitalization budget million
-2. "Mamma Mia!" Broadway recouped investment
-3. "Mamma Mia" SEC filing Broadway
-4. site:reddit.com/r/Broadway "Mamma Mia!" budget OR capitalization OR recoup
-5. site:broadwaynews.com "Mamma Mia!" capitalization OR recoup
-6. site:broadwayjournal.com "Mamma Mia!" capitalization
-
-**SEC EDGAR Search:**
-https://www.sec.gov/cgi-bin/srch-ia?text=Mamma%20Mia!%20Broadway&first=1&last=40
-
----
-
-### Stranger Things: The First Shadow
-- Show ID: 22
-- Status: open
-- Missing: Capitalization amount
-
-**Search Queries:**
-1. "Stranger Things: The First Shadow" Broadway capitalization budget million
-2. "Stranger Things: The First Shadow" Broadway recouped investment
-3. "Stranger Things The First Shadow" SEC filing Broadway
-4. site:reddit.com/r/Broadway "Stranger Things: The First Shadow" budget OR capitalization OR recoup
-5. site:broadwaynews.com "Stranger Things: The First Shadow" capitalization OR recoup
-6. site:broadwayjournal.com "Stranger Things: The First Shadow" capitalization
-
-**SEC EDGAR Search:**
-https://www.sec.gov/cgi-bin/srch-ia?text=Stranger%20Things%3A%20The%20First%20Shadow%20Broadway&first=1&last=40
-
----
-
-### The Notebook
-- Show ID: 27
-- Status: closed
-- Missing: Capitalization amount
-
-**Search Queries:**
-1. "The Notebook" Broadway capitalization budget million
-2. "The Notebook" Broadway recouped investment
-3. "The Notebook" SEC filing Broadway
-4. site:reddit.com/r/Broadway "The Notebook" budget OR capitalization OR recoup
-5. site:broadwaynews.com "The Notebook" capitalization OR recoup
-6. site:broadwayjournal.com "The Notebook" capitalization
-
-**SEC EDGAR Search:**
-https://www.sec.gov/cgi-bin/srch-ia?text=The%20Notebook%20Broadway&first=1&last=40
 
 ---
 
@@ -235,6 +163,258 @@ https://www.sec.gov/cgi-bin/srch-ia?text=Death%20of%20a%20Salesman%20Broadway&fi
 
 **SEC EDGAR Search:**
 https://www.sec.gov/cgi-bin/srch-ia?text=Beaches%2C%20A%20New%20Musical%20Broadway&first=1&last=40
+
+---
+
+### All Out: Comedy About Ambition
+- Show ID: 43
+- Status: open
+- Missing: All commercial data
+
+**Search Queries:**
+1. "All Out: Comedy About Ambition" Broadway capitalization budget million
+2. "All Out: Comedy About Ambition" Broadway recouped investment
+3. "All Out Comedy About Ambition" SEC filing Broadway
+4. site:reddit.com/r/Broadway "All Out: Comedy About Ambition" budget OR capitalization OR recoup
+5. site:broadwaynews.com "All Out: Comedy About Ambition" capitalization OR recoup
+6. site:broadwayjournal.com "All Out: Comedy About Ambition" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=All%20Out%3A%20Comedy%20About%20Ambition%20Broadway&first=1&last=40
+
+---
+
+### The Balusters
+- Show ID: 44
+- Status: previews
+- Missing: All commercial data
+
+**Search Queries:**
+1. "The Balusters" Broadway capitalization budget million
+2. "The Balusters" Broadway recouped investment
+3. "The Balusters" SEC filing Broadway
+4. site:reddit.com/r/Broadway "The Balusters" budget OR capitalization OR recoup
+5. site:broadwaynews.com "The Balusters" capitalization OR recoup
+6. site:broadwayjournal.com "The Balusters" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=The%20Balusters%20Broadway&first=1&last=40
+
+---
+
+### Becky Shaw
+- Show ID: 45
+- Status: previews
+- Missing: All commercial data
+
+**Search Queries:**
+1. "Becky Shaw" Broadway capitalization budget million
+2. "Becky Shaw" Broadway recouped investment
+3. "Becky Shaw" SEC filing Broadway
+4. site:reddit.com/r/Broadway "Becky Shaw" budget OR capitalization OR recoup
+5. site:broadwaynews.com "Becky Shaw" capitalization OR recoup
+6. site:broadwayjournal.com "Becky Shaw" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=Becky%20Shaw%20Broadway&first=1&last=40
+
+---
+
+### CATS: The Jellicle Ball
+- Show ID: 46
+- Status: previews
+- Missing: All commercial data
+
+**Search Queries:**
+1. "CATS: The Jellicle Ball" Broadway capitalization budget million
+2. "CATS: The Jellicle Ball" Broadway recouped investment
+3. "CATS The Jellicle Ball" SEC filing Broadway
+4. site:reddit.com/r/Broadway "CATS: The Jellicle Ball" budget OR capitalization OR recoup
+5. site:broadwaynews.com "CATS: The Jellicle Ball" capitalization OR recoup
+6. site:broadwayjournal.com "CATS: The Jellicle Ball" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=CATS%3A%20The%20Jellicle%20Ball%20Broadway&first=1&last=40
+
+---
+
+### Dog Day Afternoon
+- Show ID: 47
+- Status: previews
+- Missing: All commercial data
+
+**Search Queries:**
+1. "Dog Day Afternoon" Broadway capitalization budget million
+2. "Dog Day Afternoon" Broadway recouped investment
+3. "Dog Day Afternoon" SEC filing Broadway
+4. site:reddit.com/r/Broadway "Dog Day Afternoon" budget OR capitalization OR recoup
+5. site:broadwaynews.com "Dog Day Afternoon" capitalization OR recoup
+6. site:broadwayjournal.com "Dog Day Afternoon" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=Dog%20Day%20Afternoon%20Broadway&first=1&last=40
+
+---
+
+### Fallen Angels
+- Show ID: 48
+- Status: previews
+- Missing: All commercial data
+
+**Search Queries:**
+1. "Fallen Angels" Broadway capitalization budget million
+2. "Fallen Angels" Broadway recouped investment
+3. "Fallen Angels" SEC filing Broadway
+4. site:reddit.com/r/Broadway "Fallen Angels" budget OR capitalization OR recoup
+5. site:broadwaynews.com "Fallen Angels" capitalization OR recoup
+6. site:broadwayjournal.com "Fallen Angels" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=Fallen%20Angels%20Broadway&first=1&last=40
+
+---
+
+### The Fear of 13
+- Show ID: 49
+- Status: previews
+- Missing: All commercial data
+
+**Search Queries:**
+1. "The Fear of 13" Broadway capitalization budget million
+2. "The Fear of 13" Broadway recouped investment
+3. "The Fear of 13" SEC filing Broadway
+4. site:reddit.com/r/Broadway "The Fear of 13" budget OR capitalization OR recoup
+5. site:broadwaynews.com "The Fear of 13" capitalization OR recoup
+6. site:broadwayjournal.com "The Fear of 13" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=The%20Fear%20of%2013%20Broadway&first=1&last=40
+
+---
+
+### Giant
+- Show ID: 50
+- Status: previews
+- Missing: All commercial data
+
+**Search Queries:**
+1. "Giant" Broadway capitalization budget million
+2. "Giant" Broadway recouped investment
+3. "Giant" SEC filing Broadway
+4. site:reddit.com/r/Broadway "Giant" budget OR capitalization OR recoup
+5. site:broadwaynews.com "Giant" capitalization OR recoup
+6. site:broadwayjournal.com "Giant" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=Giant%20Broadway&first=1&last=40
+
+---
+
+### Joe Turner's Come and Gone
+- Show ID: 51
+- Status: previews
+- Missing: All commercial data
+
+**Search Queries:**
+1. "Joe Turner's Come and Gone" Broadway capitalization budget million
+2. "Joe Turner's Come and Gone" Broadway recouped investment
+3. "Joe Turner's Come and Gone" SEC filing Broadway
+4. site:reddit.com/r/Broadway "Joe Turner's Come and Gone" budget OR capitalization OR recoup
+5. site:broadwaynews.com "Joe Turner's Come and Gone" capitalization OR recoup
+6. site:broadwayjournal.com "Joe Turner's Come and Gone" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=Joe%20Turner's%20Come%20and%20Gone%20Broadway&first=1&last=40
+
+---
+
+### The Lost Boys
+- Show ID: 52
+- Status: previews
+- Missing: All commercial data
+
+**Search Queries:**
+1. "The Lost Boys" Broadway capitalization budget million
+2. "The Lost Boys" Broadway recouped investment
+3. "The Lost Boys" SEC filing Broadway
+4. site:reddit.com/r/Broadway "The Lost Boys" budget OR capitalization OR recoup
+5. site:broadwaynews.com "The Lost Boys" capitalization OR recoup
+6. site:broadwayjournal.com "The Lost Boys" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=The%20Lost%20Boys%20Broadway&first=1&last=40
+
+---
+
+### Proof
+- Show ID: 53
+- Status: previews
+- Missing: All commercial data
+
+**Search Queries:**
+1. "Proof" Broadway capitalization budget million
+2. "Proof" Broadway recouped investment
+3. "Proof" SEC filing Broadway
+4. site:reddit.com/r/Broadway "Proof" budget OR capitalization OR recoup
+5. site:broadwaynews.com "Proof" capitalization OR recoup
+6. site:broadwayjournal.com "Proof" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=Proof%20Broadway&first=1&last=40
+
+---
+
+### The Rocky Horror Show
+- Show ID: 54
+- Status: previews
+- Missing: All commercial data
+
+**Search Queries:**
+1. "The Rocky Horror Show" Broadway capitalization budget million
+2. "The Rocky Horror Show" Broadway recouped investment
+3. "The Rocky Horror Show" SEC filing Broadway
+4. site:reddit.com/r/Broadway "The Rocky Horror Show" budget OR capitalization OR recoup
+5. site:broadwaynews.com "The Rocky Horror Show" capitalization OR recoup
+6. site:broadwayjournal.com "The Rocky Horror Show" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=The%20Rocky%20Horror%20Show%20Broadway&first=1&last=40
+
+---
+
+### Schmigadoon!
+- Show ID: 55
+- Status: previews
+- Missing: All commercial data
+
+**Search Queries:**
+1. "Schmigadoon!" Broadway capitalization budget million
+2. "Schmigadoon!" Broadway recouped investment
+3. "Schmigadoon" SEC filing Broadway
+4. site:reddit.com/r/Broadway "Schmigadoon!" budget OR capitalization OR recoup
+5. site:broadwaynews.com "Schmigadoon!" capitalization OR recoup
+6. site:broadwayjournal.com "Schmigadoon!" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=Schmigadoon!%20Broadway&first=1&last=40
+
+---
+
+### Titanique
+- Show ID: 56
+- Status: previews
+- Missing: All commercial data
+
+**Search Queries:**
+1. "Titanique" Broadway capitalization budget million
+2. "Titanique" Broadway recouped investment
+3. "Titanique" SEC filing Broadway
+4. site:reddit.com/r/Broadway "Titanique" budget OR capitalization OR recoup
+5. site:broadwaynews.com "Titanique" capitalization OR recoup
+6. site:broadwayjournal.com "Titanique" capitalization
+
+**SEC EDGAR Search:**
+https://www.sec.gov/cgi-bin/srch-ia?text=Titanique%20Broadway&first=1&last=40
 
 ---
 
