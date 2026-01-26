@@ -673,9 +673,9 @@ function HomePageInner() {
         />
       </div>
 
-      {/* Type & Score Mode Pills Row */}
-      <div className="flex items-center gap-3 mb-4 flex-wrap">
-        {/* Type Filter Pills */}
+      {/* Type Pills & Score Mode Toggle Row */}
+      <div className="flex items-center justify-between gap-4 mb-4">
+        {/* Type Filter Pills (Left) */}
         <div className="flex items-center gap-2" role="group" aria-label="Filter by type">
           {(['all', 'musical', 'play'] as const).map((t) => (
             <button
@@ -693,20 +693,17 @@ function HomePageInner() {
           ))}
         </div>
 
-        {/* Divider */}
-        <div className="h-6 w-px bg-white/10" aria-hidden="true"></div>
-
-        {/* Score Mode Pills */}
-        <div className="flex items-center gap-2" role="group" aria-label="Score mode">
+        {/* Score Mode Toggle (Right) - Segmented Control Style */}
+        <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score mode">
           {(['critics', 'audience'] as const).map((mode) => (
             <button
               key={mode}
               onClick={() => updateParams({ scoreMode: mode })}
               aria-pressed={scoreMode === mode}
-              className={`px-4 py-2.5 sm:py-2 rounded-full text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
+              className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-md text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
                 scoreMode === mode
-                  ? 'bg-brand text-gray-900 shadow-glow-sm'
-                  : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
+                  ? 'bg-white/10 text-white shadow-sm'
+                  : 'text-gray-500 hover:text-gray-300'
               }`}
             >
               {mode === 'critics' ? 'Critics' : 'Audience'}
