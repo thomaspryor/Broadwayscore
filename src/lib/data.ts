@@ -916,49 +916,6 @@ export function getShowAudienceBuzz(showId: string): AudienceBuzzData | undefine
 // Alias for backward compatibility
 export const getAudienceBuzz = getShowAudienceBuzz;
 
-/**
- * Get color classes for audience buzz designation
- */
-export function getAudienceBuzzColor(designation: AudienceBuzzDesignation): {
-  bgClass: string;
-  textClass: string;
-  borderClass: string;
-} {
-  switch (designation) {
-    case 'Loving It':
-      return {
-        bgClass: 'bg-emerald-500/15',
-        textClass: 'text-emerald-400',
-        borderClass: 'border-emerald-500/25',
-      };
-    case 'Liking It':
-      return {
-        bgClass: 'bg-blue-500/15',
-        textClass: 'text-blue-400',
-        borderClass: 'border-blue-500/25',
-      };
-    case 'Take-it-or-Leave-it':
-      return {
-        bgClass: 'bg-amber-500/15',
-        textClass: 'text-amber-400',
-        borderClass: 'border-amber-500/25',
-      };
-    case 'Loathing It':
-      return {
-        bgClass: 'bg-red-500/15',
-        textClass: 'text-red-400',
-        borderClass: 'border-red-500/25',
-      };
-  }
-}
-
-/**
- * Get audience buzz last updated timestamp
- */
-export function getAudienceBuzzLastUpdated(): string {
-  return audienceBuzz._meta.lastUpdated;
-}
-
 // ============================================
 // Critic Consensus Queries
 // ============================================

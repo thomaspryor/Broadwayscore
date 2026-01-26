@@ -1,4 +1,4 @@
-name: Update Critic Consensus
+name: Update Critics' Take
 
 on:
   # Run weekly on Sundays at 2 AM UTC (9 PM ET Saturday)
@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate Critic Consensus
+      - name: Generate Critics' Take
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
@@ -47,8 +47,8 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/critic-consensus.json
           if git diff --staged --quiet; then
-            echo "No changes to critic consensus"
+            echo "No changes to Critics' Take"
           else
-            git commit -m "chore: Update critic consensus (automated)"
+            git commit -m "chore: Update Critics' Take summaries (automated)"
             git push origin main
           fi

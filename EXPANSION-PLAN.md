@@ -358,11 +358,11 @@ Lower priority, simpler features
 
 ---
 
-## Workstream H: Critic Consensus
+## Workstream H: Critics' Take
 
 **Status:** ✅ Completed (January 25, 2026)
 
-LLM-generated 2-sentence editorial summaries for each show, similar to Rotten Tomatoes' Critic Consensus.
+LLM-generated 2-sentence editorial summaries for each show.
 
 ### Implementation
 - **Data:** `data/critic-consensus.json` - Stores consensus text, review count, last updated date

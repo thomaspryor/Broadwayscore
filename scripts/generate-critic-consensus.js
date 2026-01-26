@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * Generate Critic Consensus for all shows using Claude API
- * Similar to Rotten Tomatoes' editorial summaries
+ * Generate Critics' Take for all shows using Claude API
+ * 2-sentence editorial summaries capturing critical reception
  */
 
 import fs from 'fs';
@@ -75,7 +75,7 @@ async function generateConsensus(showTitle, reviews) {
     return `Review ${i + 1} (${r.outlet} - ${r.critic}, score: ${r.score}/100):\n${excerpt}...`;
   }).join('\n\n');
 
-  const prompt = `You are writing a Critic Consensus for the Broadway show "${showTitle}" - a 2-sentence editorial summary similar to Rotten Tomatoes' format.
+  const prompt = `You are writing a "Critics' Take" for the Broadway show "${showTitle}" - a 2-sentence editorial summary capturing the critical reception.
 
 Based on these ${reviews.length} critic reviews, write a 2-sentence summary that captures the overall critical reception. The summary should:
 - Be exactly 2 sentences (no more, no less)
@@ -117,7 +117,7 @@ Write only the 2-sentence consensus, nothing else.`;
  * Main execution
  */
 async function main() {
-  console.log('🎭 Generating Critic Consensus for all shows...\n');
+  console.log('🎭 Generating Critics\' Take for all shows...\n');
 
   // Load existing data
   const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf-8'));
@@ -182,7 +182,7 @@ async function main() {
 
   // Update metadata and save
   consensusData._meta = {
-    description: "LLM-generated critic consensus summaries for shows (2-sentence editorial)",
+    description: "LLM-generated Critics' Take summaries for shows (2-sentence editorial)",
     lastGenerated: new Date().toISOString(),
     updatePolicy: "Regenerate weekly if 3+ new reviews added to any show",
   };

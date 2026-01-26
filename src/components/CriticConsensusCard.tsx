@@ -15,14 +15,14 @@ function QuoteIcon() {
 
 export default function CriticConsensusCard({ consensus }: CriticConsensusCardProps) {
   return (
-    <div className="card p-5 sm:p-6 mb-6" role="complementary" aria-label="Critic Consensus">
+    <div className="card p-5 sm:p-6 mb-6" role="complementary" aria-label="Critics' Take">
       <div className="flex items-start gap-3 mb-3">
         <div className="text-brand/70 flex-shrink-0 mt-0.5" aria-hidden="true">
           <QuoteIcon />
         </div>
         <div>
           <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
-            Critic Consensus
+            Critics' Take
           </h2>
           <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
             {consensus.text}
