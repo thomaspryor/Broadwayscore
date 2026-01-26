@@ -198,21 +198,37 @@ async function analyzeContent(showTitle, posts, comments) {
   // Include post titles, post bodies, and comments
   const contentItems = [];
 
-  // Add post titles and bodies (high signal)
-  for (const post of posts.slice(0, 30)) {
+  // Prioritize Review-tagged posts (most likely to be actual reviews)
+  const reviewPosts = posts.filter(p => p.link_flair_text?.toLowerCase().includes('review'));
+  const otherPosts = posts.filter(p => !p.link_flair_text?.toLowerCase().includes('review'));
+
+  // Add all review posts first (up to 20)
+  for (const post of reviewPosts.slice(0, 20)) {
     const text = post.title + (post.selftext ? '\n' + post.selftext.slice(0, 500) : '');
     contentItems.push({
       type: 'post',
       text: text.slice(0, 600),
       score: post.score,
-      isReview: post.link_flair_text?.toLowerCase().includes('review'),
+      isReview: true,
     });
   }
 
-  // Add top comments (sorted by upvotes)
+  // Then add other top posts (up to 30 total)
+  const remainingSlots = 30 - contentItems.length;
+  for (const post of otherPosts.slice(0, remainingSlots)) {
+    const text = post.title + (post.selftext ? '\n' + post.selftext.slice(0, 500) : '');
+    contentItems.push({
+      type: 'post',
+      text: text.slice(0, 600),
+      score: post.score,
+      isReview: false,
+    });
+  }
+
+  // Add top comments (sorted by upvotes) - increase to 70
   const topComments = comments
     .sort((a, b) => b.score - a.score)
-    .slice(0, 50);
+    .slice(0, 70);
 
   for (const comment of topComments) {
     contentItems.push({
