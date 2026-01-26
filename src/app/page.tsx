@@ -99,7 +99,7 @@ function ScoreBadge({ score, size = 'md', reviewCount, status }: { score?: numbe
   const sizeClass = {
     sm: 'w-11 h-11 text-lg rounded-lg',
     md: 'w-14 h-14 text-2xl rounded-xl',
-    lg: 'w-20 h-20 text-3xl rounded-xl',
+    lg: 'w-16 h-16 sm:w-20 sm:h-20 text-3xl rounded-xl',
   }[size];
 
   // Show TBD for previews shows
@@ -310,11 +310,11 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
         </p>
       </div>
 
-      {/* Score - square badge on mobile and desktop */}
-      <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1">
+      {/* Score - matches thumbnail size for alignment */}
+      <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 flex flex-col items-center justify-start pt-1">
         {show.criticScore && getScoreTier(score) && (
           <span
-            className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
+            className="text-[9px] font-semibold mb-1 uppercase tracking-wide whitespace-nowrap"
             style={{ color: getScoreTier(score)?.color }}
             title={getScoreTier(score)?.tooltip}
           >

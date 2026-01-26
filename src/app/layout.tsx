@@ -108,7 +108,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://images.ctfassets.net" />
         <link rel="dns-prefetch" href="https://images.ctfassets.net" />
       </head>
-      <body className="min-h-screen font-sans">
+      <body className="min-h-screen font-sans pt-16">
         {/* Site-wide structured data */}
         <script
           type="application/ld+json"
@@ -124,12 +124,12 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <header className="sticky top-0 z-[60] bg-surface-raised border-b border-white/10" style={{ position: 'sticky' as const }}>
+        <header className="fixed top-0 left-0 right-0 z-[60] bg-surface-raised border-b border-white/10">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <Link href="/" className="flex items-center group">
-                <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway</span>
-                <span className="text-2xl sm:text-3xl font-extrabold text-gradient tracking-tight">Scorecard</span>
+                <span className="text-3xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway</span>
+                <span className="text-3xl sm:text-3xl font-extrabold text-gradient tracking-tight">Scorecard</span>
               </Link>
               <div className="hidden sm:flex items-center gap-1">
                 <Link href="/" className="nav-link nav-link-active">
