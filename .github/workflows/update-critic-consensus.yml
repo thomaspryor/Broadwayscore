@@ -50,5 +50,6 @@ jobs:
             echo "No changes to Critics' Take"
           else
             git commit -m "chore: Update Critics' Take summaries (automated)"
+            git pull --rebase origin main
             git push origin main
           fi
