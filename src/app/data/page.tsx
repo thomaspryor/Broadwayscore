@@ -86,7 +86,7 @@ export default function DataPage() {
                     </td>
                     <td className="px-3 py-2 text-gray-300">{show.metadata.openingDate}</td>
                     <td className="px-3 py-2 text-center font-bold text-white">
-                      {show.metascore?.score ?? '—'}
+                      {show.compositeScore?.score ?? '—'}
                     </td>
                     <td className="px-3 py-2 text-center text-blue-400">
                       {show.criticScore?.score ?? '—'}

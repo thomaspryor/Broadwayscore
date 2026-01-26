@@ -8,8 +8,8 @@ import {
   AudienceScore,
   BuzzThread,
   BuzzScore,
-  Metascore,
-  MetascoreWeights,
+  CompositeScore,
+  CompositeScoreWeights,
   Confidence,
   ConfidenceLevel,
   OutletTier,
@@ -278,18 +278,18 @@ export function calculateBuzzScore(
 }
 
 // ============================================
-// OVERALL METASCORE CALCULATION
+// OVERALL COMPOSITE SCORE CALCULATION
 // ============================================
 
 /**
- * Calculate overall metascore from component scores
+ * Calculate overall composite score from component scores
  */
-export function calculateMetascore(
+export function calculateCompositeScore(
   criticScore: number | undefined,
   audienceScore: number | undefined,
   buzzScore: number | undefined,
-  weights: MetascoreWeights = DEFAULT_WEIGHTS
-): Metascore | undefined {
+  weights: CompositeScoreWeights = DEFAULT_WEIGHTS
+): CompositeScore | undefined {
   // Need at least one score to calculate
   if (criticScore === undefined && audienceScore === undefined && buzzScore === undefined) {
     return undefined;

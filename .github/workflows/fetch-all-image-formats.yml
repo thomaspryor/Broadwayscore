@@ -1,36 +1,62 @@
-name: Fetch All Image Formats
+name: Fetch Show Images
 
 on:
-  workflow_dispatch:  # Manual trigger only
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Specific show ID (leave empty for all)'
+        required: false
+        default: ''
+      only_missing:
+        description: 'Only fetch for shows missing images'
+        required: false
+        default: 'true'
+        type: boolean
   schedule:
-    - cron: '0 6 * * 1'  # Weekly on Monday at 6 AM UTC
+    - cron: '0 6 * * 1,4'  # Twice weekly on Monday and Thursday at 6 AM UTC
 
 permissions:
   contents: write
 
 jobs:
-  fetch-all-formats:
+  fetch-images:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - name: Fetch all image formats via ScrapingBee
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch show images (auto-discovery)
+        id: fetch
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-        run: node scripts/fetch-all-image-formats.js
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.show_id }}" ]; then
+            ARGS="--show=${{ inputs.show_id }}"
+          elif [ "${{ inputs.only_missing }}" == "true" ] || [ "${{ github.event_name }}" == "schedule" ]; then
+            ARGS="--missing"
+          fi
+          node scripts/fetch-show-images-auto.js $ARGS
 
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet data/shows.json; then
+          if git diff --quiet data/; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected:"
+            git diff --stat data/
           fi
 
       - name: Commit and push if changed
@@ -38,6 +64,19 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/shows.json
-          git commit -m "chore: Auto-update all image formats (square, portrait, landscape)"
+          git add data/
+
+          git commit -m "chore: Auto-fetch show images
+
+          Fetched: square (thumbnail), portrait (poster), landscape (hero)
+          Used auto-discovery to find TodayTix IDs
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
           git push
+
+      - name: Summary
+        run: |
+          echo "## Image Fetch Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Images fetched:** ${{ steps.fetch.outputs.images_fetched || 'see logs' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Failed:** ${{ steps.fetch.outputs.images_failed || 'see logs' }}" >> $GITHUB_STEP_SUMMARY

@@ -202,7 +202,7 @@ export const shows: Show[] = [
       sentimentNote: 'Predominantly positive sentiment',
       lastUpdated: '2024-12-01T00:00:00Z',
     },
-    metascore: {
+    compositeScore: {
       score: 88,
       weights: { critic: 0.50, audience: 0.35, buzz: 0.15 },
       componentScores: { critic: 91, audience: 88, buzz: 78 },
@@ -393,7 +393,7 @@ export const shows: Show[] = [
       sentimentNote: 'Predominantly positive sentiment',
       lastUpdated: '2024-12-01T00:00:00Z',
     },
-    metascore: {
+    compositeScore: {
       score: 84,
       weights: { critic: 0.50, audience: 0.35, buzz: 0.15 },
       componentScores: { critic: 82, audience: 91, buzz: 72 },
@@ -604,7 +604,7 @@ export const shows: Show[] = [
       sentimentNote: 'Predominantly positive sentiment',
       lastUpdated: '2024-12-01T00:00:00Z',
     },
-    metascore: {
+    compositeScore: {
       score: 89,
       weights: { critic: 0.50, audience: 0.35, buzz: 0.15 },
       componentScores: { critic: 94, audience: 85, buzz: 82 },
@@ -787,7 +787,7 @@ export const shows: Show[] = [
       sentimentNote: 'Mixed sentiment',
       lastUpdated: '2024-12-01T00:00:00Z',
     },
-    metascore: {
+    compositeScore: {
       score: 77,
       weights: { critic: 0.50, audience: 0.35, buzz: 0.15 },
       componentScores: { critic: 74, audience: 86, buzz: 58 },
@@ -959,7 +959,7 @@ export const shows: Show[] = [
       sentimentNote: 'Predominantly positive sentiment',
       lastUpdated: '2024-12-01T00:00:00Z',
     },
-    metascore: {
+    compositeScore: {
       score: 81,
       weights: { critic: 0.50, audience: 0.35, buzz: 0.15 },
       componentScores: { critic: 78, audience: 89, buzz: 65 },
@@ -1160,7 +1160,7 @@ export const shows: Show[] = [
       sentimentNote: 'Predominantly positive sentiment',
       lastUpdated: '2024-12-01T00:00:00Z',
     },
-    metascore: {
+    compositeScore: {
       score: 83,
       weights: { critic: 0.50, audience: 0.35, buzz: 0.15 },
       componentScores: { critic: 80, audience: 90, buzz: 74 },
@@ -1334,7 +1334,7 @@ export const shows: Show[] = [
       sentimentNote: 'Mixed sentiment',
       lastUpdated: '2024-12-01T00:00:00Z',
     },
-    metascore: {
+    compositeScore: {
       score: 73,
       weights: { critic: 0.50, audience: 0.35, buzz: 0.15 },
       componentScores: { critic: 68, audience: 87, buzz: 48 },
@@ -1498,7 +1498,7 @@ export const shows: Show[] = [
       sentimentNote: 'Mixed sentiment',
       lastUpdated: '2024-12-01T00:00:00Z',
     },
-    metascore: {
+    compositeScore: {
       score: 82,
       weights: { critic: 0.50, audience: 0.35, buzz: 0.15 },
       componentScores: { critic: 86, audience: 82, buzz: 62 },
@@ -1540,7 +1540,7 @@ export function getShowListItems(): import('@/types/show').ShowListItem[] {
     criticScore: show.criticScore?.score,
     audienceScore: show.audienceScore?.score,
     buzzScore: show.buzzScore?.score,
-    metascore: show.metascore?.score,
+    compositeScore: show.compositeScore?.score,
     confidence: show.confidence?.level,
     oneLiner: show.summary?.oneLiner,
     openingDate: show.metadata.openingDate,
