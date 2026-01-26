@@ -153,7 +153,7 @@ export default function MethodologyPage() {
               <div className="w-14 h-10 rounded-lg score-skip flex items-center justify-center font-bold text-sm flex-shrink-0">&lt;55</div>
               <div>
                 <span className="text-white font-medium">Stay Away</span>
-                <span className="text-gray-500 block sm:inline sm:ml-2">— Not recommended. Your time and money are better spent elsewhere.</span>
+                <span className="text-gray-500 block sm:inline sm:ml-2">— Not recommended—save your time and money.</span>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">

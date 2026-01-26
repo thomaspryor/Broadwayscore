@@ -78,7 +78,7 @@ const SCORE_TIERS = {
   },
   stayAway: {
     label: 'Stay Away',
-    tooltip: 'Not recommended. Your time and money are better spent elsewhere.',
+    tooltip: 'Not recommended—save your time and money.',
     range: '<55',
     color: '#ef4444',
   },

@@ -71,7 +71,7 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
     maxScore: 54,
     color: 'text-red-400',        // Red
     bgColor: 'bg-red-400/20',
-    description: 'Not recommended. Your time and money are better spent elsewhere.',
+    description: 'Not recommended—save your time and money.',
   },
   {
     id: 'pending',
