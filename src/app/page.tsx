@@ -270,19 +270,19 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
     if (audienceBuzz) {
       score = audienceBuzz.combinedScore;  // Used for sorting only, never displayed
       label = audienceBuzz.designation;
-      // Map audience designation to colors and flat Unicode symbols
+      // Map audience designation to colors and emojis
       if (audienceBuzz.designation === 'Loving') {
         tier = { label: 'Loving', color: '#22c55e', tooltip: 'Audiences love it', range: '', glow: false };
-        audienceIcon = '♥';  // Heart suit - flat and styleable
+        audienceIcon = '🔥';
       } else if (audienceBuzz.designation === 'Liking') {
         tier = { label: 'Liking', color: '#14b8a6', tooltip: 'Audiences like it', range: '', glow: false };
-        audienceIcon = '✓';  // Check mark - flat and styleable
+        audienceIcon = '👍';
       } else if (audienceBuzz.designation === 'Shrugging') {
         tier = { label: 'Shrugging', color: '#f59e0b', tooltip: 'Mixed audience reaction', range: '', glow: false };
-        audienceIcon = '~';  // Tilde - flat and styleable
+        audienceIcon = '🤷';
       } else if (audienceBuzz.designation === 'Loathing') {
         tier = { label: 'Loathing', color: '#ef4444', tooltip: 'Audiences dislike it', range: '', glow: false };
-        audienceIcon = '✗';  // X mark - flat and styleable
+        audienceIcon = '💩';
       }
     }
   } else {
@@ -345,23 +345,14 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       {/* Score Badge */}
       <div className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 sm:w-24">
         {scoreMode === 'audience' ? (
-          // Audience mode: Show designation badge with flat colored emoji (no numeric score)
+          // Audience mode: Show designation badge with emoji (no numeric score)
           tier && audienceIcon && (
             <div className="flex flex-col items-center gap-1.5 w-full">
               <div
                 className="text-5xl sm:text-6xl leading-none flex items-center justify-center"
                 aria-hidden="true"
               >
-                <span
-                  style={{
-                    display: 'inline-block',
-                    color: tier.color,
-                    fontFamily: 'system-ui, -apple-system, sans-serif',
-                    textShadow: `0 2px 8px ${tier.color}40`,
-                  }}
-                >
-                  {audienceIcon}
-                </span>
+                {audienceIcon}
               </div>
               <span
                 className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider whitespace-nowrap px-2.5 py-1 rounded-md text-center w-full"
