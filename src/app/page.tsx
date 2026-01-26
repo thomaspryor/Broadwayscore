@@ -332,7 +332,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
           {show.limitedRun && <LimitedRunBadge />}
           {!hideStatus && <StatusBadge status={show.status} />}
         </div>
-        <p className="text-sm text-gray-400 mt-1.5 truncate">
+        <p className="text-sm text-gray-400 mt-2.5 truncate">
           {show.status === 'previews' ? 'Opens' : 'Opened'} {formatOpeningDate(show.openingDate)}
           {show.closingDate && (
             <span className="text-amber-400">
