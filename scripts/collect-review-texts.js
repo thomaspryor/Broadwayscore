@@ -168,6 +168,8 @@ let browser = null;
 let context = null;
 let page = null;
 const loggedInDomains = new Set();
+let browserCrashCount = 0;
+const MAX_BROWSER_CRASHES = 5;
 
 // ============================================================================
 // TIER 1: Playwright with Stealth Plugin
@@ -175,6 +177,12 @@ const loggedInDomains = new Set();
 
 async function fetchWithPlaywright(url, review) {
   stats.tier1Attempts++;
+
+  // Ensure browser is healthy before attempting
+  const browserOk = await ensureBrowserHealthy();
+  if (!browserOk) {
+    throw new Error('Browser unavailable - too many crashes');
+  }
 
   // Check for paywall and login if needed
   const paywallCreds = getPaywallCredentials(url);
@@ -192,6 +200,12 @@ async function fetchWithPlaywright(url, review) {
       if (attempt > 0) {
         console.log(`    Retry ${attempt + 1}/${CONFIG.maxRetries}...`);
         await sleep(CONFIG.retryDelays[attempt - 1]);
+
+        // Re-check browser health before retry
+        const retryBrowserOk = await ensureBrowserHealthy();
+        if (!retryBrowserOk) {
+          throw new Error('Browser unavailable after crash');
+        }
       }
 
       await page.goto(url, {
@@ -244,6 +258,14 @@ async function fetchWithPlaywright(url, review) {
       lastError = e;
       if (e.message.includes('404')) {
         throw e; // Don't retry 404s
+      }
+      // Detect browser crash errors
+      if (e.message.includes('Target page, context or browser has been closed') ||
+          e.message.includes('Target closed') ||
+          e.message.includes('Browser has been closed') ||
+          e.message.includes('Protocol error')) {
+        console.log(`    ⚠ Browser crash detected, will restart...`);
+        // Don't count this as a regular failure - let health check handle it
       }
     }
   }
@@ -1225,10 +1247,52 @@ async function setupBrowser() {
 
 async function closeBrowser() {
   if (browser) {
-    await browser.close();
+    try {
+      await browser.close();
+    } catch (e) {
+      // Browser may already be closed
+    }
     browser = null;
     context = null;
     page = null;
+  }
+}
+
+/**
+ * Check if browser is healthy, restart if crashed
+ */
+async function ensureBrowserHealthy() {
+  try {
+    // Quick health check - try to get browser contexts
+    if (!browser || !context || !page) {
+      throw new Error('Browser not initialized');
+    }
+    // Try a simple operation to verify browser is responsive
+    await page.evaluate(() => true).catch(() => {
+      throw new Error('Page not responsive');
+    });
+    return true;
+  } catch (e) {
+    console.log(`  ⚠ Browser unhealthy: ${e.message}`);
+    browserCrashCount++;
+
+    if (browserCrashCount > MAX_BROWSER_CRASHES) {
+      console.log(`  ✗ Too many browser crashes (${browserCrashCount}), skipping Playwright tier`);
+      return false;
+    }
+
+    console.log(`  → Restarting browser (crash #${browserCrashCount})...`);
+    await closeBrowser();
+    await sleep(2000); // Brief pause before restart
+
+    try {
+      await setupBrowser();
+      console.log(`  ✓ Browser restarted successfully`);
+      return true;
+    } catch (restartError) {
+      console.log(`  ✗ Browser restart failed: ${restartError.message}`);
+      return false;
+    }
   }
 }
 
@@ -1240,6 +1304,17 @@ async function processReview(review) {
   console.log(`\n${'━'.repeat(60)}`);
   console.log(`Processing: ${review.outlet} - ${review.critic}`);
   console.log(`URL: ${review.url}`);
+
+  // Create a fresh page for each review to prevent state contamination
+  try {
+    if (context && page) {
+      await page.close().catch(() => {});
+      page = await context.newPage();
+    }
+  } catch (e) {
+    // If we can't create a new page, browser may be crashed - health check will handle it
+    console.log(`  ⚠ Could not create fresh page: ${e.message}`);
+  }
 
   try {
     const result = await fetchReviewText(review);
