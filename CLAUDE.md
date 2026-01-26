@@ -388,6 +388,32 @@ npm run test         # Run all tests
 
 All automation runs via GitHub Actions - no local commands needed.
 
+### ⚠️ CRITICAL: GitHub Secrets in Workflows
+
+**Secrets are NOT automatically available to scripts.** You MUST explicitly pass them via `env:` blocks.
+
+```yaml
+# ❌ WRONG - Secret exists but script can't see it
+- name: Run script
+  run: node scripts/my-script.js
+
+# ✅ CORRECT - Secret is passed as environment variable
+- name: Run script
+  env:
+    ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  run: node scripts/my-script.js
+```
+
+**Available secrets in this repository:**
+| Secret | Purpose | Used By |
+|--------|---------|---------|
+| `ANTHROPIC_API_KEY` | Claude API for AI features | gather-reviews, score-reviews, validate-submission, reddit-sentiment |
+| `BRIGHTDATA_TOKEN` | Web scraping (primary) | gather-reviews, discover-shows |
+| `SCRAPINGBEE_API_KEY` | Web scraping (fallback) | gather-reviews, discover-shows |
+| `FORMSPREE_TOKEN` | Feedback form integration | process-feedback |
+
+**When creating/editing workflows:** Always check if the script needs API keys and add the appropriate `env:` block.
+
 ### `.github/workflows/update-show-status.yml`
 - **Runs:** Every day at 8 AM UTC (3 AM EST) (or manually via GitHub UI)
 - **Does:**
@@ -402,7 +428,10 @@ All automation runs via GitHub Actions - no local commands needed.
 
 ### `.github/workflows/gather-reviews.yml`
 - **Runs:** When new shows discovered (or manually triggered)
-- **Does:** Gathers review data for shows
+- **Does:** Gathers review data for shows by searching aggregators and outlets
+- **Secrets required:** `ANTHROPIC_API_KEY` (for web search), `BRIGHTDATA_TOKEN`, `SCRAPINGBEE_API_KEY`
+- **Script:** `scripts/gather-reviews.js`
+- **Manual trigger:** `gh workflow run gather-reviews.yml -f shows=show-id-here`
 
 ### `.github/workflows/fetch-images.yml`
 - **Runs:** When triggered
