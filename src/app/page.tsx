@@ -644,22 +644,46 @@ function HomePageInner() {
         />
       </div>
 
-      {/* Type Filter Pills */}
-      <div className="flex items-center gap-2 mb-4" role="group" aria-label="Filter by type">
-        {(['all', 'musical', 'play'] as const).map((t) => (
-          <button
-            key={t}
-            onClick={() => updateParams({ type: t })}
-            aria-pressed={type === t}
-            className={`px-4 py-2.5 sm:py-2 rounded-full text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
-              type === t
-                ? 'bg-brand text-gray-900 shadow-glow-sm'
-                : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
-            }`}
-          >
-            {t === 'all' ? 'All' : t === 'musical' ? 'Musicals' : 'Plays'}
-          </button>
-        ))}
+      {/* Type & Score Mode Pills Row */}
+      <div className="flex items-center gap-3 mb-4 flex-wrap">
+        {/* Type Filter Pills */}
+        <div className="flex items-center gap-2" role="group" aria-label="Filter by type">
+          {(['all', 'musical', 'play'] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => updateParams({ type: t })}
+              aria-pressed={type === t}
+              className={`px-4 py-2.5 sm:py-2 rounded-full text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
+                type === t
+                  ? 'bg-brand text-gray-900 shadow-glow-sm'
+                  : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
+              }`}
+            >
+              {t === 'all' ? 'All' : t === 'musical' ? 'Musicals' : 'Plays'}
+            </button>
+          ))}
+        </div>
+
+        {/* Divider */}
+        <div className="h-6 w-px bg-white/10" aria-hidden="true"></div>
+
+        {/* Score Mode Pills */}
+        <div className="flex items-center gap-2" role="group" aria-label="Score mode">
+          {(['critics', 'audience'] as const).map((mode) => (
+            <button
+              key={mode}
+              onClick={() => updateParams({ scoreMode: mode })}
+              aria-pressed={scoreMode === mode}
+              className={`px-4 py-2.5 sm:py-2 rounded-full text-sm font-semibold transition-all min-h-[44px] sm:min-h-0 ${
+                scoreMode === mode
+                  ? 'bg-brand text-gray-900 shadow-glow-sm'
+                  : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
+              }`}
+            >
+              {mode === 'critics' ? 'Critics' : 'Audience'}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Status & Sort Filters */}
@@ -692,22 +716,6 @@ function HomePageInner() {
               }`}
             >
               {s === 'recent' ? 'NEWEST' : s === 'score_desc' ? 'HIGHEST' : s === 'audience_buzz' ? 'BUZZ' : s === 'alpha' ? 'A-Z' : 'CLOSING'}
-            </button>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-1 sm:gap-2 flex-wrap" role="group" aria-label="Score mode">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SCORES:</span>
-          {(['critics', 'audience'] as const).map((mode) => (
-            <button
-              key={mode}
-              onClick={() => updateParams({ scoreMode: mode })}
-              aria-pressed={scoreMode === mode}
-              className={`px-2.5 py-2 sm:px-2 sm:py-1 rounded transition-colors text-[11px] font-medium uppercase tracking-wider min-h-[44px] sm:min-h-0 ${
-                scoreMode === mode ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {mode === 'critics' ? 'CRITICS' : 'AUDIENCE'}
             </button>
           ))}
         </div>
