@@ -968,8 +968,15 @@ function commitChanges(processed) {
         stdio: 'pipe'
       });
 
-      // Push with explicit remote and branch
-      execSync('git push origin HEAD', { stdio: 'pipe' });
+      // Pull latest changes first, then push
+      try {
+        execSync('git pull --rebase origin main', { stdio: 'pipe' });
+      } catch (pullErr) {
+        // If rebase fails, abort and try merge
+        execSync('git rebase --abort', { stdio: 'pipe' }).catch(() => {});
+        execSync('git pull --no-rebase origin main', { stdio: 'pipe' });
+      }
+      execSync('git push origin HEAD:main', { stdio: 'pipe' });
 
       console.log(`  ✓ Committed and pushed checkpoint (${processed} reviews)`);
     } else {
