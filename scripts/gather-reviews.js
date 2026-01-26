@@ -6,10 +6,18 @@
  * This script powers the gather-reviews.yml GitHub Action.
  *
  * Process:
- * 1. Search aggregators (DTLI, BWW, Show Score) for reviews
- * 2. Search individual outlets via Google
+ * 1. Search aggregators (DTLI, Show Score) for reviews
+ *    - Show Score: Uses Playwright to scroll through carousel and extract ALL critic reviews
+ *    - URL patterns try -broadway suffix first to avoid redirects to off-broadway shows
+ * 2. Search individual outlets via Claude API web search
  * 3. Create review-text files for each found review
  * 4. Rebuild reviews.json
+ *
+ * Show Score Technical Notes:
+ * - Show Score paginates critic reviews in a carousel (only 8 visible initially)
+ * - Playwright scrolls through the carousel to load all reviews
+ * - URLs like /broadway-shows/redwood can redirect to /off-off-broadway-shows/redwood
+ * - We detect these redirects and try -broadway suffix patterns first
  *
  * Usage:
  *   node scripts/gather-reviews.js --shows=show-id-1,show-id-2
@@ -19,6 +27,9 @@
  *   ANTHROPIC_API_KEY - Required for Claude API web search
  *   BRIGHTDATA_TOKEN - Optional for scraping
  *   SCRAPINGBEE_API_KEY - Optional for scraping fallback
+ *
+ * Dependencies:
+ *   - playwright (optional but recommended for full Show Score extraction)
  */
 
 const fs = require('fs');
