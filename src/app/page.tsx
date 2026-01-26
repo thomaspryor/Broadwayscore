@@ -286,7 +286,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
             <>Opens {formatOpeningDate(show.openingDate)}</>
           ) : show.closingDate ? (
             <>
-              <span className="text-amber-400">Closes {formatOpeningDate(show.closingDate)}</span>
+              <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatOpeningDate(show.closingDate)}</span>
               <span className="text-gray-500"> • Opened {formatOpeningDate(show.openingDate)}</span>
             </>
           ) : (
