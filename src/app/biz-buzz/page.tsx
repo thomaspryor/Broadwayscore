@@ -111,8 +111,8 @@ export default function BizBuzzPage() {
     { name: 'Biz Buzz', url: `${BASE_URL}/biz-buzz` },
   ]);
 
-  // Order designations for display
-  const designationOrder: CommercialDesignation[] = ['Miracle', 'Windfall', 'Trickle', 'Easy Winner', 'Nonprofit', 'TBD', 'Fizzle', 'Flop'];
+  // Order designations for display (TBD last)
+  const designationOrder: CommercialDesignation[] = ['Miracle', 'Windfall', 'Trickle', 'Easy Winner', 'Nonprofit', 'Fizzle', 'Flop', 'TBD'];
 
   return (
     <>
@@ -137,6 +137,9 @@ export default function BizBuzzPage() {
           </p>
           <p className="text-sm text-gray-500 mt-1">
             Data from SEC filings, trade press, and industry sources · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+          </p>
+          <p className="text-xs text-gray-600 mt-2">
+            Note: This is not an exhaustive list. Commercial data is only available for shows where capitalization, recoupment, or financial outcomes have been publicly reported.
           </p>
         </div>
 
