@@ -154,8 +154,8 @@ export default function RootLayout({
               <div>
                 <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">Deals & Tickets</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link href="/browse/broadway-lottery-shows" className="hover:text-white transition-colors">Lottery Shows</Link></li>
-                  <li><Link href="/browse/broadway-rush-tickets" className="hover:text-white transition-colors">Rush Tickets</Link></li>
+                  <li><Link href="/lotteries" className="hover:text-white transition-colors">Lottery Tickets</Link></li>
+                  <li><Link href="/rush" className="hover:text-white transition-colors">Rush Tickets</Link></li>
                   <li><Link href="/browse/short-broadway-shows" className="hover:text-white transition-colors">Short Shows</Link></li>
                   <li><Link href="/browse/broadway-shows-closing-soon" className="hover:text-white transition-colors">Closing Soon</Link></li>
                 </ul>
