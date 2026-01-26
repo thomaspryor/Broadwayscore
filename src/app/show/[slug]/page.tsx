@@ -688,6 +688,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           )}
         </div>
 
+        {/* Critics' Take - editorial summary */}
+        {consensus && <CriticConsensusCard consensus={consensus} />}
 
         {/* Critic Reviews */}
         {show.criticScore && show.criticScore.reviews.length > 0 && (
