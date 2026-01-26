@@ -377,13 +377,14 @@ async function gatherReviewsForShow(showId) {
   // Show Score processing would go here (similar to DTLI)
   await sleep(DELAY_MS);
 
-  // STEP 2: Search key outlets directly
-  console.log('\n[2/3] Searching key outlets...');
+  // STEP 2: Search ALL outlets (comprehensive coverage)
+  console.log(`\n[2/3] Searching all ${outlets.length} outlets...`);
 
-  // Prioritize Tier 1 and key Tier 2 outlets
-  const priorityOutlets = outlets.filter(o => o.tier <= 2).slice(0, 15);
+  // Search ALL tiers - we're a comprehensive site, every review matters
+  // Tier 1 outlets first, then Tier 2, then Tier 3
+  const allOutlets = outlets.sort((a, b) => a.tier - b.tier);
 
-  for (const outlet of priorityOutlets) {
+  for (const outlet of allOutlets) {
     process.stdout.write(`  ${outlet.name}... `);
 
     const result = await searchForReview(show.title, year, outlet);
