@@ -217,6 +217,99 @@ async function searchShowScore(show) {
 }
 
 /**
+ * Extract reviews from Show Score HTML
+ */
+function extractShowScoreReviews(html, showId) {
+  const reviews = [];
+
+  // Extract critic reviews from review tiles
+  // Show Score uses .review-tile-v2.-critic for critic reviews
+  const reviewTileRegex = /<div[^>]*class="[^"]*review-tile-v2[^"]*-critic[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>/gi;
+
+  // Simpler approach: Look for outlet names with URLs
+  // Pattern: outlet image alt text, author name, date, excerpt, URL
+
+  // Extract from JSON-LD if present (more reliable)
+  const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
+  if (jsonLdMatch) {
+    for (const script of jsonLdMatch) {
+      try {
+        const jsonContent = script.replace(/<script[^>]*>/, '').replace(/<\/script>/, '');
+        const data = JSON.parse(jsonContent);
+        if (data.review && Array.isArray(data.review)) {
+          for (const review of data.review) {
+            if (review.author && review.url) {
+              reviews.push({
+                showId,
+                outlet: review.publisher?.name || 'Unknown',
+                outletId: slugify(review.publisher?.name || 'unknown'),
+                criticName: review.author?.name || 'Unknown',
+                url: review.url,
+                excerpt: review.reviewBody || null,
+                publishDate: review.datePublished || null,
+                source: 'show-score'
+              });
+            }
+          }
+        }
+      } catch (e) {
+        // Skip invalid JSON-LD
+      }
+    }
+  }
+
+  // Also try to extract from HTML structure
+  // Look for review URLs with outlet context
+  const outletUrlPattern = /<a[^>]*href="(https?:\/\/[^"]+)"[^>]*>.*?Read\s*(?:more|full\s*review)/gi;
+  let match;
+  while ((match = outletUrlPattern.exec(html)) !== null) {
+    const url = match[1];
+    // Try to find outlet context nearby
+    const contextStart = Math.max(0, match.index - 500);
+    const context = html.substring(contextStart, match.index + match[0].length);
+
+    // Common outlet patterns
+    const outletPatterns = [
+      { pattern: /New York Times|nytimes\.com/i, outlet: 'The New York Times', outletId: 'nytimes' },
+      { pattern: /Vulture|vulture\.com/i, outlet: 'Vulture', outletId: 'vulture' },
+      { pattern: /Variety|variety\.com/i, outlet: 'Variety', outletId: 'variety' },
+      { pattern: /Hollywood Reporter|hollywoodreporter\.com/i, outlet: 'The Hollywood Reporter', outletId: 'THR' },
+      { pattern: /Time Out|timeout\.com/i, outlet: 'Time Out New York', outletId: 'TIMEOUT' },
+      { pattern: /New York Post|nypost\.com/i, outlet: 'New York Post', outletId: 'NYP' },
+      { pattern: /TheaterMania|theatermania\.com/i, outlet: 'TheaterMania', outletId: 'TMAN' },
+      { pattern: /Deadline|deadline\.com/i, outlet: 'Deadline', outletId: 'DEADLINE' },
+      { pattern: /New York Theater|newyorktheater\.me/i, outlet: 'New York Theater', outletId: 'NYTHTR' },
+      { pattern: /Theatrely|theatrely\.com/i, outlet: 'Theatrely', outletId: 'THLY' },
+      { pattern: /Broadway World|broadwayworld\.com/i, outlet: 'BroadwayWorld', outletId: 'BWW' },
+      { pattern: /Stage and Cinema|stageandcinema\.com/i, outlet: 'Stage and Cinema', outletId: 'SAC' },
+    ];
+
+    for (const { pattern, outlet, outletId } of outletPatterns) {
+      if (pattern.test(context) || pattern.test(url)) {
+        // Check if we already have this outlet
+        if (!reviews.some(r => r.outletId === outletId)) {
+          reviews.push({
+            showId,
+            outlet,
+            outletId,
+            criticName: 'Unknown', // Would need more parsing to get critic name
+            url,
+            source: 'show-score'
+          });
+        }
+        break;
+      }
+    }
+  }
+
+  if (reviews.length > 0) {
+    console.log(`    Extracted ${reviews.length} reviews from Show Score`);
+  }
+
+  return reviews;
+}
+
+/**
  * Extract reviews from DTLI HTML
  */
 function extractDTLIReviews(html, showId) {
@@ -374,7 +467,10 @@ async function gatherReviewsForShow(showId) {
   await sleep(DELAY_MS);
 
   const showScoreResult = await searchShowScore(show);
-  // Show Score processing would go here (similar to DTLI)
+  if (showScoreResult) {
+    const showScoreReviews = extractShowScoreReviews(showScoreResult.html, showId);
+    foundReviews.push(...showScoreReviews);
+  }
   await sleep(DELAY_MS);
 
   // STEP 2: Search ALL outlets (comprehensive coverage)
