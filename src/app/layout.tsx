@@ -149,7 +149,7 @@ export default function RootLayout({
           </nav>
         </header>
         <main id="main-content" className="min-h-[calc(100vh-200px)]">{children}</main>
-        <footer className="border-t border-white/5 mt-12 sm:mt-16">
+        <footer className="border-t border-white/5 mt-6 sm:mt-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
             {/* Browse Categories */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 pb-8 border-b border-white/5">
@@ -194,17 +194,17 @@ export default function RootLayout({
             </div>
 
             {/* Bottom */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
               <div className="flex items-center">
                 <span className="text-lg font-bold text-white">Broadway</span>
                 <span className="text-lg font-bold text-gradient">Scorecard</span>
               </div>
-              <div className="flex items-center gap-6 text-sm text-gray-400">
+              <div className="flex items-center justify-center gap-4 sm:gap-6 text-sm text-gray-400">
                 <Link href="/methodology" className="hover:text-white transition-colors">
                   Methodology
                 </Link>
                 <span className="text-gray-600">|</span>
-                <span>Data from critics, audiences & Reddit</span>
+                <span className="text-center">Data from critics, audiences & Reddit</span>
               </div>
             </div>
             <p className="mt-6 pt-6 border-t border-white/5 text-center text-xs text-gray-500">
