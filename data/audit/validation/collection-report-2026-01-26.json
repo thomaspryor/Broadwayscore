@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-26T20:20:34.811Z",
+  "runDate": "2026-01-26T22:37:21.912Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 50,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "back-to-the-future-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 100,
-    "failed": 50,
+    "processed": 120,
+    "failed": 55,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "68.6%"
   },
   "tierBreakdown": {
-    "playwright": 5,
-    "scrapingbee": 5,
-    "brightdata": 4,
-    "archive": 86
+    "playwright": 12,
+    "scrapingbee": 9,
+    "brightdata": 7,
+    "archive": 92
   },
   "statistics": {
-    "tier1Attempts": 100,
-    "tier1Success": 4,
-    "tier2Attempts": 96,
-    "tier2Success": 5,
-    "tier3Attempts": 91,
-    "tier3Success": 4,
-    "tier4Attempts": 96,
-    "tier4Success": 50,
-    "totalFailed": 37,
-    "scrapingBeeCreditsUsed": 520
+    "tier1Attempts": 25,
+    "tier1Success": 7,
+    "tier2Attempts": 18,
+    "tier2Success": 4,
+    "tier3Attempts": 14,
+    "tier3Success": 3,
+    "tier4Attempts": 11,
+    "tier4Success": 6,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 140
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -134,7 +134,27 @@
     "boop-2025/nypost--johnny-oleksinki.json",
     "buena-vista-social-club-2025/nypost--johnny-oleksinski.json",
     "buena-vista-social-club-2025/thewrap--robert-hofler.json",
-    "buena-vista-social-club-2025/timeout-ny--adam-feldman.json"
+    "buena-vista-social-club-2025/timeout-ny--adam-feldman.json",
+    "back-to-the-future-2023/amny-com--unknown.json",
+    "back-to-the-future-2023/broadwaynews-com--unknown.json",
+    "back-to-the-future-2023/cititour-com--unknown.json",
+    "back-to-the-future-2023/ew-com--unknown.json",
+    "back-to-the-future-2023/exeuntnyc-com--unknown.json",
+    "back-to-the-future-2023/lightingandsoundamerica-com--unknown.json",
+    "back-to-the-future-2023/newyorktheater-me--unknown.json",
+    "back-to-the-future-2023/nypost-com--unknown.json",
+    "back-to-the-future-2023/nystagereview-com--unknown.json",
+    "back-to-the-future-2023/observer-com--unknown.json",
+    "back-to-the-future-2023/slashfilm-com--unknown.json",
+    "back-to-the-future-2023/talkinbroadway-com--unknown.json",
+    "back-to-the-future-2023/theatermania-com--unknown.json",
+    "back-to-the-future-2023/theaterpizzazz-com--unknown.json",
+    "back-to-the-future-2023/theaterscene-net--unknown.json",
+    "back-to-the-future-2023/theatrely-com--unknown.json",
+    "back-to-the-future-2023/theatrereviews-com--unknown.json",
+    "back-to-the-future-2023/thewrap-com--unknown.json",
+    "back-to-the-future-2023/timeout--adam-feldman.json",
+    "back-to-the-future-2023/usatoday-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -186,7 +206,12 @@
     "book-of-mormon-2011/washington-post--unknown.json",
     "book-of-mormon-2011/wsj--terry-teachout.json",
     "boop-2025/daily-beast--tim-teeman.json",
-    "buena-vista-social-club-2025/theatermania--zachary-stewart.json"
+    "buena-vista-social-club-2025/theatermania--zachary-stewart.json",
+    "back-to-the-future-2023/variety--aramide-tinubu.json",
+    "back-to-the-future-2023/hollywoodreporter-com--unknown.json",
+    "back-to-the-future-2023/queerty-com--unknown.json",
+    "back-to-the-future-2023/thefrontrowcenter-com--unknown.json",
+    "back-to-the-future-2023/tman--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -194,20 +219,34 @@
       "aladdin-2014/catholic-transcript--bernard-carragher.json",
       "aladdin-2014/jks-theatre-scene--jeff-kready.json",
       "aladdin-2014/reflections-in-the-light--lauren-yarger.json",
-      "aladdin-2014/stu-on-broadway--stu-brown.json"
+      "aladdin-2014/stu-on-broadway--stu-brown.json",
+      "back-to-the-future-2023/exeuntnyc-com--unknown.json",
+      "back-to-the-future-2023/lightingandsoundamerica-com--unknown.json",
+      "back-to-the-future-2023/newyorktheater-me--unknown.json",
+      "back-to-the-future-2023/nystagereview-com--unknown.json",
+      "back-to-the-future-2023/slashfilm-com--unknown.json",
+      "back-to-the-future-2023/theaterscene-net--unknown.json",
+      "back-to-the-future-2023/theatrereviews-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
       "and-juliet-2022/chicago-tribune--chris-jones.json",
       "and-juliet-2022/timeout-ny--adam-feldman.json",
       "boop-2025/broadway-news--brittani-samuel.json",
-      "buena-vista-social-club-2025/timeout-ny--adam-feldman.json"
+      "buena-vista-social-club-2025/timeout-ny--adam-feldman.json",
+      "back-to-the-future-2023/broadwaynews-com--unknown.json",
+      "back-to-the-future-2023/cititour-com--unknown.json",
+      "back-to-the-future-2023/ew-com--unknown.json",
+      "back-to-the-future-2023/theatrely-com--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
       "and-juliet-2022/CITI--brian-scott-lipton.json",
       "back-to-the-future-2023/observer--david-cote.json",
-      "book-of-mormon-2011/VILLAGEVOICE--michael-musto.json"
+      "book-of-mormon-2011/VILLAGEVOICE--michael-musto.json",
+      "back-to-the-future-2023/talkinbroadway-com--unknown.json",
+      "back-to-the-future-2023/timeout--adam-feldman.json",
+      "back-to-the-future-2023/usatoday-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -295,7 +334,13 @@
       "book-of-mormon-2011/the-washington-post--peter-marks.json",
       "boop-2025/nypost--johnny-oleksinki.json",
       "buena-vista-social-club-2025/nypost--johnny-oleksinski.json",
-      "buena-vista-social-club-2025/thewrap--robert-hofler.json"
+      "buena-vista-social-club-2025/thewrap--robert-hofler.json",
+      "back-to-the-future-2023/amny-com--unknown.json",
+      "back-to-the-future-2023/nypost-com--unknown.json",
+      "back-to-the-future-2023/observer-com--unknown.json",
+      "back-to-the-future-2023/theatermania-com--unknown.json",
+      "back-to-the-future-2023/theaterpizzazz-com--unknown.json",
+      "back-to-the-future-2023/thewrap-com--unknown.json"
     ]
   }
 }
