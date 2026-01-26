@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The lush bacchanal of the theater’s dressing seeps into every aspect of this production, from Julia Cheng’s sensual, prurient choreography to Eddie Redmayne’s eerie performance as the Emcee.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 80,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "complete",
@@ -75,5 +75,8 @@
     "needsReviewReasons": [
       "Models disagree by 50 points (Claude: 35, OpenAI: 85)"
     ]
-  }
+  },
+  "scoreSource": "manual-override",
+  "scoreOverrideReason": "LLM confused by truncated text; headline clearly indicates sentiment",
+  "scoreOverrideAt": "2026-01-26T17:35:57.825Z"
 }

@@ -9,13 +9,13 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Julie Taymor's staging is nothing short of miraculous...\"",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 85,
   "source": "show-score",
   "designation": null,
   "textQuality": "missing",
   "sourceMethod": "showscore",
   "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null,
+  "scoreSource": "manual-override",
   "llmScore": {
     "score": 68,
     "confidence": "low",
@@ -68,5 +68,7 @@
     "needsReviewReasons": [
       "Models disagree by 45 points (Claude: 45, OpenAI: 90)"
     ]
-  }
+  },
+  "scoreOverrideReason": "LLM confused by truncated text; headline clearly indicates sentiment",
+  "scoreOverrideAt": "2026-01-26T17:35:57.827Z"
 }

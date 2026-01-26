@@ -9,12 +9,12 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"A triumph of theatrical imagination that reinvents the Disney animated classic for the stage...\"",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 85,
   "source": "show-score",
   "designation": null,
   "textQuality": "missing",
   "sourceMethod": "showscore",
-  "scoreSource": "sentiment-rave",
+  "scoreSource": "manual-override",
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 65,
@@ -68,5 +68,7 @@
     "needsReviewReasons": [
       "Models disagree by 60 points (Claude: 35, OpenAI: 95)"
     ]
-  }
+  },
+  "scoreOverrideReason": "LLM confused by truncated text; headline clearly indicates sentiment",
+  "scoreOverrideAt": "2026-01-26T17:35:57.826Z"
 }

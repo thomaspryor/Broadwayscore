@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "In “Boop! The Musical,” the canonical cartoon recounts stints as a lion tamer, judge and hula dancer — professions lifted straight from her shorts. But evidently, Betty Boop missed a credit: magician. Because by the end of this new musical, she left us all boop-boop-a-bewitched.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 75,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "partial",
@@ -78,5 +78,8 @@
     "needsReviewReasons": [
       "Models disagree by 50 points (Claude: 25, OpenAI: 75)"
     ]
-  }
+  },
+  "scoreSource": "manual-override",
+  "scoreOverrideReason": "LLM confused by truncated text; headline clearly indicates sentiment",
+  "scoreOverrideAt": "2026-01-26T17:35:57.822Z"
 }
