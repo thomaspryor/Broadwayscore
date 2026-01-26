@@ -488,7 +488,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                     height={264}
                     decoding="async"
                     fetchPriority="high"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 ) : show.images?.thumbnail ? (
                   <img
@@ -498,7 +498,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                     height={264}
                     decoding="async"
                     fetchPriority="high"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 ) : show.images?.hero ? (
                   <img
@@ -508,7 +508,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                     height={264}
                     decoding="async"
                     fetchPriority="high"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
