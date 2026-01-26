@@ -14,53 +14,6 @@
   "scrapedAt": "2026-01-23T20:00:00.000Z",
   "bwwThumb": "Meh",
   "bwwUrl": "https://newyorktheater.me/2025/04/26/just-in-time-broadway-review/",
-  "llmScore": {
-    "score": 68,
-    "confidence": "high",
-    "range": {
-      "low": 65,
-      "high": 72
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": 45,
-      "music": 75,
-      "performances": 85,
-      "direction": 70
-    },
-    "keyPhrases": [
-      {
-        "quote": "Bobby Darin frankly does not strike me as having either the endurance in the culture or a uniquely compelling enough story to be the most obvious figure to build a Broadway show around",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "But it's fans of Jonathan Groff who are best served by the show – and those theatergoers who might discover Groff at the same time as Darin",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Much of what we're told in 'Just in Time' about Darin is a fairly standard show biz story",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic appreciates Groff's performance and the musical numbers but finds the subject matter and story fundamentally lacking, resulting in qualified praise that suggests limited appeal.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-01-25T03:27:01.814Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 2618,
-    "outputTokens": 399
-  },
   "textQuality": "full",
   "sourceMethod": "playwright"
 }

@@ -14,53 +14,6 @@
   "scrapedAt": "2026-01-24T03:00:00.000Z",
   "bwwThumb": "Up",
   "bwwUrl": "https://cititour.com/NYC_Broadway/Hell-s-Kitchen/1224",
-  "llmScore": {
-    "score": 83,
-    "confidence": "high",
-    "range": {
-      "low": 80,
-      "high": 86
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": 75,
-      "music": 88,
-      "performances": 90,
-      "direction": 82
-    },
-    "keyPhrases": [
-      {
-        "quote": "Expect a lot of Tony Award nominations – and perhaps even a statuette or two – for this extremely accomplished, feel-good musical!",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "vibrantly exciting new musical",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "even if it loses a little steam in the second act",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Strong positive recommendation with enthusiastic praise for performances, music arrangements, and overall achievement, despite minor second act concerns.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-01-25T03:26:29.737Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 2390,
-    "outputTokens": 336
-  },
   "textQuality": "full",
   "sourceMethod": "playwright"
 }

@@ -13,53 +13,6 @@
   "source": "playwright-scraped",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Opens-On-Broadway-Starring-Cynthia-Nixon-June-Squibb-Danny-Burstein-and-More-20251208",
   "scrapedAt": "2026-01-24T04:15:00.000Z",
-  "llmScore": {
-    "score": 82,
-    "confidence": "high",
-    "range": {
-      "low": 78,
-      "high": 85
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": 85,
-      "music": null,
-      "performances": 88,
-      "direction": 80
-    },
-    "keyPhrases": [
-      {
-        "quote": "seems sharper, more resonant, and more deeply poignant in the current Broadway revival",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Squibb is the marquee draw, proving once again that she's become a national treasure",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Marjorie Prime is very much a play for our times",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic praises the play's increased relevance, calls it 'sharper' and 'more poignant,' lauds the 'first-rate cast' as 'superlative,' and concludes it's 'very much a play for our times' - clear positive recommendation with no significant reservations.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-01-25T03:28:01.147Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 2100,
-    "outputTokens": 378
-  },
   "textQuality": "full",
   "sourceMethod": "playwright"
 }

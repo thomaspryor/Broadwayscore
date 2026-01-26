@@ -15,53 +15,6 @@
   "bwwThumb": "Up",
   "bwwUrl": "https://cititour.com/NYC_Broadway/Marjorie-Prime/1347",
   "textStatus": "complete",
-  "llmScore": {
-    "score": 78,
-    "confidence": "high",
-    "range": {
-      "low": 74,
-      "high": 82
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": 75,
-      "music": null,
-      "performances": 85,
-      "direction": 72
-    },
-    "keyPhrases": [
-      {
-        "quote": "exquisitely acted Broadway run",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a truly outstanding Cynthia Nixon",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "thought-provoking drama",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review offers consistent praise for the performances and intellectual content with only minor reservations about predictability, indicating a clear positive recommendation.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-01-25T03:27:54.806Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 2230,
-    "outputTokens": 305
-  },
   "textQuality": "full",
   "sourceMethod": "playwright"
 }

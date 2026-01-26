@@ -15,53 +15,6 @@
   "bwwThumb": "Up",
   "bwwUrl": "https://cititour.com/NYC_Broadway/The-Outsiders/1220",
   "textStatus": "complete",
-  "llmScore": {
-    "score": 78,
-    "confidence": "high",
-    "range": {
-      "low": 75,
-      "high": 82
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": 75,
-      "music": 82,
-      "performances": 85,
-      "direction": 80
-    },
-    "keyPhrases": [
-      {
-        "quote": "faithful and very satisfying musical adaptation",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "This show is worth coming into a theater!",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the score, while a tad ballad-heavy, is one of the best I've heard on Broadway this season",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Clear positive recommendation with strong praise for performances, music, and production values, ending with explicit encouragement to see the show despite minor reservations about pacing and structure.",
-    "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-01-25T03:31:29.135Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 2457,
-    "outputTokens": 340
-  },
   "textQuality": "full",
   "sourceMethod": "playwright"
 }

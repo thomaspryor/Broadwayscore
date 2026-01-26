@@ -15,53 +15,6 @@
   "bwwThumb": "Meh",
   "bwwUrl": "https://nystagereview.com/2024/03/14/the-notebook-a-musical-romance-made-for-fans-to-love/",
   "textStatus": "complete",
-  "llmScore": {
-    "score": 65,
-    "confidence": "high",
-    "range": {
-      "low": 62,
-      "high": 68
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": 45,
-      "music": 70,
-      "performances": 85,
-      "direction": 75
-    },
-    "keyPhrases": [
-      {
-        "quote": "And yet, despite some lovely songs and excellent performances, the musical is missing some keynotes.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Even with all that first class talent, The Notebook could have done more to earn the love.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "There is absolutely nothing I can say here that could alter the emotional impact of The Notebook on its devoted fans.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises the performances extensively and acknowledges the show's emotional impact, but expresses significant disappointment with the book's storytelling holes and production design, concluding the show falls short of its potential despite strong elements.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-01-25T03:31:09.825Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 2949,
-    "outputTokens": 367
-  },
   "textQuality": "full",
   "sourceMethod": "playwright"
 }

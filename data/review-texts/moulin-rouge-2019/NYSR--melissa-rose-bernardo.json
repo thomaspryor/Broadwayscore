@@ -15,53 +15,6 @@
   "bwwThumb": null,
   "bwwUrl": "http://nystagereview.com/2019/07/25/moulin-rouge-the-musical-a-dazzling-exercise-in-excess/",
   "textStatus": "complete",
-  "llmScore": {
-    "score": 78,
-    "confidence": "high",
-    "range": {
-      "low": 75,
-      "high": 82
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": 72,
-      "music": 80,
-      "performances": 75,
-      "direction": 85
-    },
-    "keyPhrases": [
-      {
-        "quote": "the real stars of this Moulin Rouge! are the artists who don't appear onstage",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it's bliss",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a stroke of genius",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic consistently praises the production elements, performances, and creative choices with enthusiastic language like 'bliss' and 'stroke of genius,' indicating a clear positive recommendation despite no explicit directive to see it.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-01-25T03:28:38.424Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 3069,
-    "outputTokens": 332
-  },
   "textQuality": "full",
   "sourceMethod": "playwright"
 }

@@ -13,53 +13,6 @@
   "source": "playwright-scraped",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211003",
   "scrapedAt": "2026-01-24T04:00:00.000Z",
-  "llmScore": {
-    "score": 87,
-    "confidence": "high",
-    "range": {
-      "low": 84,
-      "high": 90
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": 82,
-      "music": 95,
-      "performances": 90,
-      "direction": 85
-    },
-    "keyPhrases": [
-      {
-        "quote": "The songs are, without hyperbole, miracles of modern musical theatre",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "There is not a single flaw in this production's casting",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "let it be decreed that Marlow and Moss may wear their crowns proudly",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic uses superlative language throughout ('miracles', 'not a single flaw', 'fabulous') with comprehensive praise for all elements and a clear endorsement, indicating a strong positive recommendation.",
-    "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-01-25T03:30:16.834Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 2685,
-    "outputTokens": 349
-  },
   "textQuality": "full",
   "sourceMethod": "playwright"
 }

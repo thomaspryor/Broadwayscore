@@ -14,53 +14,6 @@
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T23:55:00.000Z",
   "textStatus": "complete",
-  "llmScore": {
-    "score": 94,
-    "confidence": "high",
-    "range": {
-      "low": 92,
-      "high": 96
-    },
-    "bucket": "Rave",
-    "thumb": "Up",
-    "components": {
-      "book": 85,
-      "music": 92,
-      "performances": 88,
-      "direction": 95
-    },
-    "keyPhrases": [
-      {
-        "quote": "what is perhaps the best new musical of this decade",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "this revelatory new work is sure to be talked about for generations to come",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The Outsiders is theatrical gold",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic uses superlative language throughout ('best new musical of this decade', 'theatrical gold', 'revelatory'), praises all creative elements without reservation, and explicitly positions this as a generational work.",
-    "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-01-25T03:31:34.630Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 2329,
-    "outputTokens": 336
-  },
   "textQuality": "full",
   "sourceMethod": "playwright"
 }

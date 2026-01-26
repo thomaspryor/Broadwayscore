@@ -14,53 +14,6 @@
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T23:35:00.000Z",
   "textStatus": "complete",
-  "llmScore": {
-    "score": 45,
-    "confidence": "high",
-    "range": {
-      "low": 40,
-      "high": 50
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": 35,
-      "music": 30,
-      "performances": 70,
-      "direction": 60
-    },
-    "keyPhrases": [
-      {
-        "quote": "let me submit my dissenting opinion anyway",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It has an agreeableness that will offend no one, and will surely charm many",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "I should've known from its twee little title that this would not be for me, and I was unfortunately correct",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite acknowledging the audience enjoyed it and praising the performers, the critic expresses clear dissent with fundamental problems in the material and concludes it was 'not for me,' making it hard to recommend.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-01-25T03:31:46.012Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 2158,
-    "outputTokens": 353
-  },
   "textQuality": "full",
   "sourceMethod": "playwright"
 }

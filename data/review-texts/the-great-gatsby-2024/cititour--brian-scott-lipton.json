@@ -14,53 +14,6 @@
   "scrapedAt": "2026-01-24T03:00:00.000Z",
   "bwwThumb": "Down",
   "bwwUrl": "https://cititour.com/NYC_Broadway/The-Great-Gatsby/1231",
-  "llmScore": {
-    "score": 52,
-    "confidence": "high",
-    "range": {
-      "low": 48,
-      "high": 56
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": 25,
-      "music": 35,
-      "performances": 65,
-      "direction": 75
-    },
-    "keyPhrases": [
-      {
-        "quote": "overly elaborate, painfully overwritten and ridiculously over-sung musical adaptation",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Audiences are sure to be dazzled by Paul Tate DePoo III's magnificent, jaw-dropping scenic design",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "if you treasure the novel, don't come to the theatre. If you've never read it (or don't remember it), you'll probably be fine",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic harshly criticizes the book and music but praises the production values and some performances, ultimately suggesting the show works conditionally for certain audiences.",
-    "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-01-25T03:31:03.416Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 2370,
-    "outputTokens": 366
-  },
   "textQuality": "full",
   "sourceMethod": "playwright"
 }

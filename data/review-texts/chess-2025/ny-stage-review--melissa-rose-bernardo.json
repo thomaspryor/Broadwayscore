@@ -13,53 +13,6 @@
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T19:00:00.000Z",
   "dtliThumb": "Up",
-  "llmScore": {
-    "score": 76,
-    "confidence": "high",
-    "range": {
-      "low": 73,
-      "high": 79
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": 65,
-      "music": 90,
-      "performances": 85,
-      "direction": 80
-    },
-    "keyPhrases": [
-      {
-        "quote": "a shamelessly enjoyable production that puts the spotlight on its best asset: the score",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Every song is a banger",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It's been 40 years—how long can we spend trying to fix all the fractured parts of Chess?",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite acknowledging the musical's structural flaws, the critic clearly enjoys the production and praises the score, performances, and design elements, making this a qualified positive recommendation.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-01-25T03:26:05.868Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 2366,
-    "outputTokens": 315
-  },
   "textQuality": "full",
   "sourceMethod": "playwright"
 }

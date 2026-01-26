@@ -13,53 +13,6 @@
   "source": "reviews-json-stub",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:12:12.625Z",
-  "llmScore": {
-    "score": 78,
-    "confidence": "high",
-    "range": {
-      "low": 75,
-      "high": 82
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": 65,
-      "music": null,
-      "performances": 88,
-      "direction": 75
-    },
-    "keyPhrases": [
-      {
-        "quote": "We've got a brand new Broadway star... making a must-see NYC debut",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "That's not to say the musical by the writing team of Jim Barne and Kit Buchan is lousy. 'Two Strangers' is never less than likable",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "I simply cannot imagine it working nearly as well without its extraordinary male lead",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Strong praise for Sam Tutty's star-making performance and clear 'must-see' language, with qualified but consistent positive assessment of the show overall despite acknowledging it relies heavily on its lead.",
-    "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-01-24T03:54:04.669Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 2875,
-    "outputTokens": 368
-  },
   "textStatus": "complete",
   "textQuality": "full",
   "sourceMethod": "stub",
