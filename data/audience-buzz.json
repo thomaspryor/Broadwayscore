@@ -564,15 +564,19 @@
       }
     },
     "bug-2026": {
-      "title": "bug broadway",
+      "title": "Bug",
       "designation": "Liking It",
-      "combinedScore": 80,
+      "combinedScore": 78,
       "sources": {
         "showScore": {
           "score": 80,
           "reviewCount": 74
         },
-        "mezzanine": null,
+        "mezzanine": {
+          "score": 76,
+          "reviewCount": 379,
+          "starRating": 3.8
+        },
         "reddit": null
       }
     },
@@ -657,20 +661,6 @@
           "score": 70,
           "reviewCount": 3395,
           "starRating": 3.5
-        },
-        "reddit": null
-      }
-    },
-    "bug-2025": {
-      "title": "Bug",
-      "designation": "Liking It",
-      "combinedScore": 76,
-      "sources": {
-        "showScore": null,
-        "mezzanine": {
-          "score": 76,
-          "reviewCount": 379,
-          "starRating": 3.8
         },
         "reddit": null
       }
