@@ -358,17 +358,10 @@ export default function AwardsCard({ showId, awards }: AwardsCardProps) {
   // Don't show card if pre-season with no data
   if (designation === 'pre-season' && !awards?.tony?.note) {
     return (
-      <div className="card p-5 sm:p-6 mb-8">
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Awards Scorecard</h2>
-        <div className="text-center py-4">
-          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border ${config.bgClass} ${config.borderClass}`}>
-            <span className={`text-base font-semibold ${config.textClass}`}>{config.label}</span>
-          </div>
-          <p className="text-gray-500 text-sm mt-3">
-            This show has not yet been eligible for major awards.
-          </p>
-        </div>
-      </div>
+      <section className="card p-5 sm:p-6 mb-6">
+        <h2 className="text-lg font-bold text-white mb-3">Awards Scorecard</h2>
+        <p className="text-gray-400 text-sm">This show has not yet been eligible for major awards.</p>
+      </section>
     );
   }
 
