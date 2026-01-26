@@ -344,7 +344,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       </div>
 
       {/* Score Badge */}
-      <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 w-20 sm:w-24">
+      <div className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 sm:w-24">
         {scoreMode === 'audience' ? (
           // Audience mode: Show designation badge with flat colored emoji (no numeric score)
           tier && audienceIcon && (
