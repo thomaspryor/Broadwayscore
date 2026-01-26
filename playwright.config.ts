@@ -1,4 +1,4 @@
-import { defineConfig, devices } from 'playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Playwright E2E Test Configuration
@@ -7,7 +7,7 @@ import { defineConfig, devices } from 'playwright/test';
  * or a local build during CI.
  */
 export default defineConfig({
-  testDir: './tests/e2e',
+  testDir: './tests',
 
   // Run tests in parallel
   fullyParallel: true,

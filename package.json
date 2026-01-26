@@ -7,6 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "npm run test:data && npm run test:e2e",
+    "test:data": "node scripts/validate-data.js",
+    "test:e2e": "npx playwright test",
+    "test:e2e:ui": "npx playwright test --ui",
     "agent:update": "npx ts-node --project scripts/tsconfig.json scripts/agent-update.ts",
     "agent:report": "npx ts-node --project scripts/tsconfig.json scripts/agent-update.ts",
     "reviews:fetch": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts",
@@ -38,6 +42,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.0",
     "@types/node": "^20.12.12",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",

@@ -1,0 +1,165 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run daily at 6 AM UTC (1 AM EST) to catch issues
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Which tests to run'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - data-only
+          - e2e-only
+
+jobs:
+  data-validation:
+    name: Data Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run data validation
+        run: node scripts/validate-data.js
+
+      - name: Create issue on failure
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '🚨 Daily Data Validation Failed';
+            const body = `## Data Validation Failed
+
+            The daily data validation check found issues that need attention.
+
+            **Run:** [${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+            **Time:** ${new Date().toISOString()}
+
+            Please check the workflow logs for details.
+
+            ---
+            *This issue was automatically created by the test workflow.*`;
+
+            // Check if similar issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'automated,bug'
+            });
+
+            const existingIssue = issues.data.find(i => i.title === title);
+            if (!existingIssue) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['automated', 'bug', 'data']
+              });
+            }
+
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    if: github.event.inputs.test_type != 'data-only'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Run E2E tests
+        run: npx playwright test --project=chromium
+        env:
+          TEST_BASE_URL: https://broadwayscore.vercel.app
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+      - name: Create issue on failure
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '🚨 Daily E2E Tests Failed';
+            const body = `## E2E Tests Failed
+
+            The daily E2E test suite found issues on the production site.
+
+            **Run:** [${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+            **Time:** ${new Date().toISOString()}
+            **Site:** https://broadwayscore.vercel.app
+
+            Please check the workflow logs and Playwright report for details.
+
+            ---
+            *This issue was automatically created by the test workflow.*`;
+
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'automated,bug'
+            });
+
+            const existingIssue = issues.data.find(i => i.title === title);
+            if (!existingIssue) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['automated', 'bug', 'e2e']
+              });
+            }
+
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [data-validation, e2e-tests]
+    if: always()
+    steps:
+      - name: Check results
+        run: |
+          if [ "${{ needs.data-validation.result }}" == "failure" ] || [ "${{ needs.e2e-tests.result }}" == "failure" ]; then
+            echo "❌ Some tests failed"
+            exit 1
+          else
+            echo "✅ All tests passed"
+          fi
