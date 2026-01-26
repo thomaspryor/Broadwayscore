@@ -262,6 +262,7 @@ This gives more weight to sources with larger sample sizes.
 - `src/components/BoxOfficeStats.tsx` - Box office stats display component
 - `scripts/discover-new-shows.js` - Discovers new/upcoming shows from Broadway.org (runs daily)
 - `scripts/discover-historical-shows.js` - Discovers closed shows from past seasons (manual trigger)
+- `scripts/lib/deduplication.js` - **Centralized show deduplication** (prevents duplicate show entries)
 - `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses scraper (Playwright)
 - `scripts/scrape-alltime.ts` - BroadwayWorld all-time stats scraper (Playwright)
 - `scripts/scrape-reddit-sentiment.js` - Reddit r/Broadway sentiment scraper (ScrapingBee + Claude Opus)
@@ -269,6 +270,32 @@ This gives more weight to sources with larger sample sizes.
 - `scripts/audit-scores.js` - Validates all review scores, flags wrong conversions, sentiment placeholders, duplicates
 - `scripts/fix-scores.js` - Automated fix for common scoring issues (wrong star/letter conversions)
 - `scripts/rebuild-show-reviews.js` - Rebuilds reviews.json for specific shows from review-texts data
+
+### Show Deduplication System
+
+The `scripts/lib/deduplication.js` module prevents duplicate shows from being added by automated processes. It uses 9 different checks:
+
+1. **Exact title match** (case-insensitive)
+2. **Exact slug match**
+3. **ID base match** (slug without year suffix)
+4. **Known duplicate patterns** - 50+ Broadway shows with common variations
+5. **Normalized title match** - Strips ": The Musical", "on Broadway", etc.
+6. **Slug prefix match** - Catches "hamilton" vs "hamilton-an-american-musical"
+7. **Same venue + similar title**
+8. **Title containment** - One title contains the other
+9. **Fuzzy matching** - Levenshtein distance for typos
+
+**Known Duplicates Map:** Handles short titles that can't rely on normalization alone:
+- "MJ" / "MJ: The Musical" / "MJ The Musical"
+- "SIX" / "SIX: The Musical" / "SIX on Broadway"
+- "Cats" / "Cats The Musical"
+- "Rent" / "RENT on Broadway"
+- And 50+ more Broadway shows
+
+**To add new known duplicates:** Edit `KNOWN_DUPLICATES` in `scripts/lib/deduplication.js`:
+```javascript
+'show name': ['show name', 'show name the musical', 'other variation'],
+```
 
 ## Automation (GitHub Actions)
 
