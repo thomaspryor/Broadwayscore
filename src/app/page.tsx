@@ -270,20 +270,19 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
     if (audienceBuzz) {
       score = audienceBuzz.combinedScore;  // Used for sorting only, never displayed
       label = audienceBuzz.designation;
-      // Map audience designation to colors and flat styleable icons
-      // Using text-presentation variants for flat, colorable rendering
+      // Map audience designation to colors and flat Unicode symbols
       if (audienceBuzz.designation === 'Loving') {
         tier = { label: 'Loving', color: '#22c55e', tooltip: 'Audiences love it', range: '', glow: false };
-        audienceIcon = '❤︎';  // Heart text presentation - can be styled
+        audienceIcon = '♥';  // Heart suit - flat and styleable
       } else if (audienceBuzz.designation === 'Liking') {
         tier = { label: 'Liking', color: '#14b8a6', tooltip: 'Audiences like it', range: '', glow: false };
-        audienceIcon = '👍︎';  // Thumbs up text presentation
+        audienceIcon = '✓';  // Check mark - flat and styleable
       } else if (audienceBuzz.designation === 'Shrugging') {
         tier = { label: 'Shrugging', color: '#f59e0b', tooltip: 'Mixed audience reaction', range: '', glow: false };
-        audienceIcon = '🤷︎';  // Shrug text presentation
+        audienceIcon = '~';  // Tilde - flat and styleable
       } else if (audienceBuzz.designation === 'Loathing') {
         tier = { label: 'Loathing', color: '#ef4444', tooltip: 'Audiences dislike it', range: '', glow: false };
-        audienceIcon = '💩︎';  // Poop text presentation
+        audienceIcon = '✗';  // X mark - flat and styleable
       }
     }
   } else {
