@@ -299,10 +299,10 @@ function ScoreLabel({ score }: { score: number }) {
 function getSentimentLabel(score: number): { label: string; colorClass: string } {
   const roundedScore = Math.round(score);
   if (roundedScore >= 85) return { label: 'Must-See', colorClass: 'text-score-must-see' };
-  if (roundedScore >= 75) return { label: 'Great', colorClass: 'text-score-great' };
-  if (roundedScore >= 65) return { label: 'Good', colorClass: 'text-score-good' };
-  if (roundedScore >= 55) return { label: 'Tepid', colorClass: 'text-score-tepid' };
-  return { label: 'Skip', colorClass: 'text-score-skip' };
+  if (roundedScore >= 75) return { label: 'Recommended', colorClass: 'text-score-great' };
+  if (roundedScore >= 65) return { label: 'Worth Seeing', colorClass: 'text-score-good' };
+  if (roundedScore >= 55) return { label: 'Skippable', colorClass: 'text-score-tepid' };
+  return { label: 'Stay Away', colorClass: 'text-score-skip' };
 }
 
 interface ReviewForBreakdown {
