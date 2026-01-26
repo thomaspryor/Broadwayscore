@@ -597,7 +597,7 @@ export interface AudienceBuzzSource {
 export interface AudienceBuzzData {
   title: string;
   designation: AudienceBuzzDesignation;
-  combinedScore: number;
+  combinedScore: number;  // INTERNAL USE ONLY - Never display numeric scores to users, only show designation
   sources: {
     showScore: AudienceBuzzSource | null;
     mezzanine: AudienceBuzzSource | null;

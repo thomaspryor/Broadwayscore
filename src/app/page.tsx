@@ -313,14 +313,17 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
 
       {/* Scores Section - Audience Buzz + Critic Score */}
       <div className="flex-shrink-0 flex items-center gap-2">
-        {/* Audience Buzz - smaller, to the left */}
+        {/* Audience Buzz - designation badge only, no numeric score */}
         {audienceBuzz && (
           <div className="flex flex-col items-center gap-1">
             <div
-              className={`w-12 h-12 sm:w-14 sm:h-14 rounded-lg flex items-center justify-center text-xl font-bold ${getAudienceBuzzColor(audienceBuzz.designation).bgClass} ${getAudienceBuzzColor(audienceBuzz.designation).textClass} border ${getAudienceBuzzColor(audienceBuzz.designation).borderClass}`}
-              title={`Audience Buzz: ${audienceBuzz.designation}`}
+              className={`w-12 h-12 sm:w-14 sm:h-14 rounded-lg flex items-center justify-center text-2xl ${getAudienceBuzzColor(audienceBuzz.designation).bgClass} border ${getAudienceBuzzColor(audienceBuzz.designation).borderClass}`}
+              title={`Audience: ${audienceBuzz.designation}`}
             >
-              {Math.round(audienceBuzz.combinedScore)}
+              {audienceBuzz.designation === 'Loving It' && '❤️'}
+              {audienceBuzz.designation === 'Liking It' && '👍'}
+              {audienceBuzz.designation === 'Take-it-or-Leave-it' && '😐'}
+              {audienceBuzz.designation === 'Loathing It' && '👎'}
             </div>
             <span className="text-[9px] text-gray-500 uppercase tracking-wide font-medium">Buzz</span>
           </div>
@@ -543,6 +546,7 @@ function HomePageInner() {
           return (a.criticScore?.score ?? -1) - (b.criticScore?.score ?? -1);
         case 'audience_buzz': {
           // Sort by audience buzz combined score (highest first)
+          // NOTE: Numeric scores are used ONLY for sorting, never displayed to users
           const aBuzz = getAudienceBuzz(a.id);
           const bBuzz = getAudienceBuzz(b.id);
           const aScore = aBuzz?.combinedScore ?? -1;
