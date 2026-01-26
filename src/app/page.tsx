@@ -322,7 +322,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
             >
               {audienceBuzz.designation === 'Loving It' && '❤️'}
               {audienceBuzz.designation === 'Liking It' && '👍'}
-              {audienceBuzz.designation === 'Take-it-or-Leave-it' && '😐'}
+              {audienceBuzz.designation === 'Take-it-or-Leave-it' && '🤷'}
               {audienceBuzz.designation === 'Loathing It' && '👎'}
             </div>
             <span className="text-[9px] text-gray-500 uppercase tracking-wide font-medium">Buzz</span>
