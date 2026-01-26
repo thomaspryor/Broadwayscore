@@ -9,11 +9,67 @@
   "isFullReview": true,
   "bwwExcerpt": "A three-hour play about an unnamed 1970s band recording an album, set entirely in the recording studio: That’s, essentially, the elevator pitch for Stereophonic, which just opened on Broadway after a sold-out 10-week run at Playwrights Horizons in late 2023. But that doesn’t even begin to describe the genius on display at the Golden Theatre.",
   "originalScore": "5/5",
-  "assignedScore": 88,
+  "assignedScore": 87,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T06:05:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Rock-N-Roll-Drama-STEREOPHONIC-Opens-On-Broadway-20240419",
   "textStatus": "missing",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 88,
+      "performances": 87,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's, essentially, the elevator pitch for Stereophonic, which just opened on Broadway after a sold-out 10-week run at Playwrights Horizons in late 2023. But that doesn't even begin to describe the genius on display at the Golden Theatre.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "They are, however, all originals, written by Will Butler of Arcade Fire fame, and all fantastic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Could Stereophonic have lost five minutes here or there? Maybe. Could director Daniel Aukin have tightened up the pace a bit? Perhaps.",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The reviewer uses superlative language like 'genius on display' and calls the songs 'fantastic' while only minor reservations about pacing, indicating strong overall recommendation. | GPT-4o-mini: The review expresses strong appreciation for the play's themes, performances, and music, with only minor caveats about pacing.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:53:49.121Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

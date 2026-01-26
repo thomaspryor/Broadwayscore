@@ -9,12 +9,68 @@
   "isFullReview": true,
   "bwwExcerpt": "What ultimately makes Two Strangers such a winning Broadway arrival is its belief that tenderness is still theatrical currency. Jackson’s direction keeps the show surefooted, even at its most delicate, allowing Tutty and Pitts, and the entire creative team, to craft something that sneaks up on you. As we saw with Maybe Happy Ending, audiences are hungry for productions that treat emotion as serious craft, and hopefully, with these delightfully engaging Two Strangers, the much-needed emotional connection will deliver the Tony Award goods once again.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://frontmezzjunkies.com/2025/11/20/two-strangers-carry-a-cake-across-new-york/",
   "textStatus": "complete",
   "scrapedAt": "2026-01-24T12:00:00.000Z",
   "textQuality": "full",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 81,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 89,
+      "performances": 93,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "Two Strangers such a winning Broadway arrival",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Barne and Buchan's score astonishes us all with its instant sincerity",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "In a season crowded with gaudy overindulgence, this small, sweet musical carries its multi-layered cake with surprising elegance",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises all aspects of the production with superlatives like 'astonishes,' 'knockout performances,' and 'winning Broadway arrival,' while positioning it as a standout in the current season and expressing hope for Tony recognition. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances, music, and overall production, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:55:21.507Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 86,
+    "openaiScore": 90,
+    "scoreDelta": 4,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

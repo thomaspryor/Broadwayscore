@@ -9,12 +9,68 @@
   "isFullReview": true,
   "dtliExcerpt": "Cole Escola's Broadway debut in Oh, Mary! is a triumph of absurdist comedy. The show centers on Mary Todd Lincoln in the weeks before Abraham Lincoln's assassination, reimagined as a former cabaret performer struggling with alcoholism.\n\nThe premise involves President Lincoln (portrayed as gay and conflicted) hiring an acting teacher to redirect his wife from drinking and performing cabaret into respectable theatre. The setup allows Escola to explore themes of identity and artistic legitimacy while delivering spectacular physical comedy.\n\nEscola's performance dominates the 80-minute production with feral hog energy—searching frantically for hidden alcohol, throwing furniture, and sustaining inventive slapstick. The supporting cast, including Conrad Ricamora as Lincoln and James Scully as the acting teacher, provides excellent comedic foils.\n\nDirector Sam Pinkleton orchestrates precise physicality, with a single mug generating audience laughter. The design elements—including Cha See's lighting and Holly Pierson's costumes—enhance the show's tonal flexibility between period and contemporary performance.\n\nThe show is also a piece of history. While transferring a peculiar Off-Broadway jewel to a commercial run is not unusual, Oh, Mary! does stand apart from its peers on Broadway. If one were inclined to look for a deeper meaning in Oh, Mary!, it is a rebuttal against the legitimacy, good taste, and straightness of most self-serious art. The fact that this piece of radically queer comedy has become the buzziest show of the season is a hopeful sign of work to come.\n\nOh, Mary! is at the Lyceum Theatre.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "scrapedAt": "2026-01-24T03:30:00.000Z",
   "dtliThumb": "Up",
   "textStatus": "complete",
   "textQuality": "full",
   "sourceMethod": "playwright",
-  "bwwExcerpt": "With the world finally catching up with Escola’s work, let’s hope more people travel all over the world to see Mary’s “short legs and long medleys.” Or at least enough to turn a strictly limited run into a Broadway mainstay."
+  "bwwExcerpt": "With the world finally catching up with Escola’s work, let’s hope more people travel all over the world to see Mary’s “short legs and long medleys.” Or at least enough to turn a strictly limited run into a Broadway mainstay.",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 95,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yes, the future of Broadway is here and it's Cole Escola's stupid masterpiece Oh, Mary!",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Escola miraculously sustains this level of spectacular slapstick throughout the 80-min show both in their portrayal of Mary and in their nimble writing",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "let's hope more people travel all over the world to see Mary's 'short legs and long medleys.' Or at least enough to turn a strictly limited run into a Broadway mainstay",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer calls the show a 'masterpiece,' praises it as revolutionary for Broadway's future, and expresses hope for it to become a mainstay - clear indicators of unqualified enthusiasm and strong recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show, highlighting Escola's performance and the overall production quality as exceptional.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:52:36.091Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

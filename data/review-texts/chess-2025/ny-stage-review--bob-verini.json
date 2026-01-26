@@ -9,10 +9,66 @@
   "isFullReview": true,
   "dtliExcerpt": "Which begs a question. If all you're shooting for is the tired old metaphor that life is a game and the game is life, you might as well call your show Yahtzee! or Old Maid (no reflection on how Lea Michele's character of Florence, the \"genius strategist,\" is criminally underused as a pawn of male players). Actually, Chutes'n'Ladders might suit this version best, what with the cast gamely trudging up and down David Rockwell's American Bandstand set, while the characters' fortunes rise and fall with librettist Danny Strong and director Michael Mayer pulling their strings.",
   "originalScore": "2/5",
-  "assignedScore": 45,
+  "assignedScore": 47,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T19:00:00.000Z",
   "dtliThumb": "Down",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 47,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 53.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 63,
+      "performances": 70,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "the spectacle wears out its welcome long before the end of a near-three-hour running time",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the promise of an effective staged Chess – if indeed it's a promise and not a chimera – remains stubbornly out of reach",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "They put over the beloved classics with minimal melisma and maximal emotional connection",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws in the concept, script, and execution while acknowledging strong performances, ultimately concluding this adaptation fails to solve Chess's inherent stageworthiness problems. | GPT-4o-mini: The review expresses significant disappointment with the script and overall execution while acknowledging some strong performances, leading to a mixed-negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:47:48.992Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 48,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

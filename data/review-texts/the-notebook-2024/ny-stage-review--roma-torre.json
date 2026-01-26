@@ -9,12 +9,68 @@
   "isFullReview": true,
   "bwwExcerpt": "It was only a matter of time before a stage adaptation of The Notebook came to fruition. Based on Nicholas Sparks' best selling novel, the popular 2004 film starring Rachel McAdams and Ryan Gosling is a romantic (if rather schmaltzy) stunner. There is naturally a built-in audience for this musical, clamoring to know if it's as good as the movie and how does it compare? And for those new to the tear-jerker story of Allie and Noah from opposite sides of the tracks, does it still resonate at all? The answer to that last question is most certainly yes, it does resonate.  I think you'd have to hail from another planet not to feel something for these appealing characters. By the resounding sniffles heard throughout the audience, it most certainly succeeded on that front. And yet, despite some lovely songs and excellent performances, the musical is missing some keynotes.",
   "originalScore": "3/5",
-  "assignedScore": 65,
+  "assignedScore": 64,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T19:00:00.000Z",
   "bwwThumb": "Meh",
   "bwwUrl": "https://nystagereview.com/2024/03/14/the-notebook-a-musical-romance-made-for-fans-to-love/",
   "textStatus": "complete",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 69,
+      "performances": 85,
+      "direction": 66
+    },
+    "keyPhrases": [
+      {
+        "quote": "And yet, despite some lovely songs and excellent performances, the musical is missing some keynotes.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "When the fog briefly clears and she plaintively sings 'I Know' alongside Harewood, it's something to cherish, one of those all-time unforgettable moments in the theater.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "And yet, on the big stage, this richly layered romance feels short-changed. Even with all that first class talent, The Notebook could have done more to earn the love.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances highly (especially the veteran actors) and finds emotional moments genuinely moving, but identifies significant structural and production flaws that prevent a full recommendation. | GPT-4o-mini: The review expresses a mix of praise for performances and emotional impact but notes significant shortcomings in the book and production, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:54:23.500Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

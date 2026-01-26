@@ -9,12 +9,68 @@
   "isFullReview": true,
   "dtliExcerpt": "At 96 years old, June Squibb delivers a remarkably sharp and emotionally nuanced performance in the Broadway premiere of Jordan Harrison's Marjorie Prime. Directed by Anne Kauffman and featuring Cynthia Nixon, Danny Burstein, and Christopher Lowell, this one-act drama explores what remains authentically human when technology offers comforting illusions.\n\nThe play centers on Marjorie, an elderly woman with Alzheimer's who forms an attachment to a humanoid robot modeled after her deceased husband Walter. Her daughter Tess struggles with the ethical implications of allowing her mother to retreat into false memories rather than face harsh realities. As Marjorie's cognition diminishes, the Prime's capabilities expand—a cruel irony at the heart of the story.\n\nHarrison's script addresses contemporary anxieties about artificial intelligence and human connection with remarkable prescience. Viewing this work today, amid widespread concerns about AI dependency, feels almost unbearably grim. A particularly poignant line captures Marjorie's desperation: I don't have to get better. Just keep me from getting worse.\n\nSquibb's performance stands out for its expressive range—shifting fluidly between joy and devastating heartbreak. The supporting cast excels as well, with Lowell balancing warmth and mechanical distance, and Nixon portraying a woman emotionally hardened by circumstance. Lee Jellinek's set design, Ben Stanton's lighting, and Daniel Kluger's sound work together to create an intimate, delicate production.\n\nMarjorie Prime is at the Hayes Theatre on West 44th Street in New York City.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T23:40:00.000Z",
   "bwwExcerpt": "Harrison’s drama is equally poignant, not only in its thematic conceit and narrative scope but in its beautiful turns of phrase: “I don’t have to get better. Just keep me from getting worse,” Marjorie begs of her Prime. The production is equally delicate, with Lee Jellinek’s Palm Springs-style home ...",
   "textStatus": "complete",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 98,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "June Squibb is giving one of the sharpest and most emotionally precise performances currently onstage",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Plays hardly come as astutely, or productions as perceptive as this – and rarely anyone as brilliantly as Squibb",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it is almost unbearably grim",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critic delivers sustained praise for exceptional performances, perceptive direction, and intelligent writing, with only minor concerns about the play's dark themes, culminating in superlative language about rarity and brilliance. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and production, highlighting the emotional depth and thematic relevance, leading to a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:50:38.648Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

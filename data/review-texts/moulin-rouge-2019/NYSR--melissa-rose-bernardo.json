@@ -9,12 +9,68 @@
   "isFullReview": true,
   "bwwExcerpt": "No disrespect to headliners Karen Olivo (a Tony winner as Anita in 2009's West Side Story), who plays the tuberculosis-plagued performer/courtesan Satine, and Aaron Tveit (Catch Me If You Can, Next to Normal), as the lovestruck aspiring composer Christian but the real stars of this Moulin Rouge! are the artists who don't appear onstage. Lighting designer Justin Townsend can evoke anything from a pulse-pounding nightclub to the shadowy alleys of Argentina to a hallucinogenic electric-green drunken dream. Six-time Tony winner Catherine Zuber, fresh off the elegantly appointed My Fair Lady, has crafted a stunning array of costumes: cascading cancan underskirts; bondage-style corsets; crushed-velvet tailcoats; and, for Olivo's Satine, glittering bustiers, satiny robes, and body-hugging gowns. And set designer Derek McLane has turned the inside of the Hirschfeld Theatre into a crystal-studded, heart-shaped, hopelessly romantic fantasyland.",
   "originalScore": "5/5",
-  "assignedScore": 85,
+  "assignedScore": 86,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T20:00:00.000Z",
   "bwwThumb": null,
   "bwwUrl": "http://nystagereview.com/2019/07/25/moulin-rouge-the-musical-a-dazzling-exercise-in-excess/",
   "textStatus": "complete",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 90,
+      "performances": 85,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "the real stars of this Moulin Rouge! are the artists who don't appear onstage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Derek McLane has turned the inside of the Hirschfeld Theatre into a crystal-studded, heart-shaped, hopelessly romantic fantasyland",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "adding Beyoncé's 'Single Ladies (Put a Ring On It)' into the 'Diamonds Are a Girl's Best Friend'/'Material Girl' medley is a stroke of genius",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer consistently praises the production design, costumes, lighting, and musical arrangements with enthusiastic language like 'stroke of genius' and 'bliss,' while offering thoughtful analysis of character improvements from the film, indicating strong recommendation despite no explicit directive. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the production's lavishness, strong performances, and effective music choices, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:51:04.614Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

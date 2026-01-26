@@ -9,11 +9,67 @@
   "isFullReview": true,
   "bwwExcerpt": "Sure, ignorance may indeed be bliss, the truth doesn't always set you free, and, yes, love may be blind. But ending \"Oedipus\" on an upbeat flashback is the greatest tragedy of this otherwise impressive update.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 74,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T03:00:00.000Z",
   "bwwThumb": "Up",
   "bwwUrl": "https://cititour.com/NYC_Broadway/Oedipus/1340",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 89,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "he's cleverly modernized Sophocles' legendary Greek tragedy into a thoroughly involving present-day tale",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Better yet, he's brought along two of the world's finest actors, Mark Strong and Lesley Manville, to tell it!",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "ending 'Oedipus' on an upbeat flashback is the greatest tragedy of this otherwise impressive update",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the stellar performances and modernization while noting significant structural flaws, ultimately calling it an 'impressive update' despite reservations about the ending and some logical inconsistencies. | GPT-4o-mini: The review expresses strong praise for the performances, particularly Manville's, while acknowledging some flaws in the direction and script, leading to a clear but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:51:12.749Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -15,5 +15,61 @@
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Mark-Strong-and-Lesley-Manville-Star-in-OEDIPUS-on-Broadway-20251113",
   "textStatus": "complete",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 96,
+    "confidence": "high",
+    "range": {
+      "low": 90.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": null,
+      "performances": 94,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "stands as one of the memorable nights of theater you are ever likely to experience",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Oedipus may be the best play of the decade, and also the most contemporary",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Ickes and his cast have achieved something truly remarkable, producing a classic that doesn't feel like a revival at all",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rave with superlatives like 'best play of the decade', 'truly remarkable', and 'one of the memorable nights of theater you are ever likely to experience' throughout. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the production's innovation, performances, and emotional impact, culminating in a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:51:20.435Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 96,
+    "openaiScore": 95,
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

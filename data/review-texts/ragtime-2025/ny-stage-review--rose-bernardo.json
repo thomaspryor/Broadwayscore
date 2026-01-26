@@ -15,5 +15,61 @@
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "textStatus": "missing",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 93,
+      "performances": 89,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Henry is, in a word, magnificent. His Coalhouse is a tower of strength and spirit, fueled by long-simmering anger and stubborn righteousness.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "this marvelous revival now should land at Lincoln Center Theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "If you're not moved by that stunner of an opener, check your pulse.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlatives like 'magnificent' and 'marvelous revival,' praises the performances extensively, and demonstrates deep appreciation for the material with only minor structural critiques about character dimension and pacing. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting the music, performances, and direction while emphasizing the emotional impact of the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:53:20.895Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

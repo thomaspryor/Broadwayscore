@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "Much of the credit for that goes to Jasmine Amy Rogers, making a Broadway debut that rivals Peggy Sawyer’s in 42nd Street. Playing the title character, this winsome performer is so talented, so appealing, so utterly adorable, that if you’re not thoroughly enchanted by her you need to check your pulse. She’s single-handedly responsible for that fourth star you see in the box above this review.",
   "originalScore": "4/5",
-  "assignedScore": 76,
+  "assignedScore": 71,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T05:15:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
@@ -19,5 +19,61 @@
   "textFetchMethod": "playwright",
   "archivePath": "data/archives/reviews/boop-2025/ny-stage-review--frank-scheck_2026-01-25.html",
   "textQuality": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 43,
+      "music": 58,
+      "performances": 89,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "You'll have a hell of a good time anyway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "She's single-handedly responsible for that fourth star you see in the box above this review",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Boop! suffers from myriad problems, including a clunky book, generally unmemorable score, and cheap-looking production values",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite criticizing the book, score, and production values, the 4/5 star rating and explicit statement that 'you'll have a hell of a good time anyway' indicates a qualified positive recommendation driven primarily by Rogers' standout performance. | GPT-4o-mini: The review expresses enjoyment of the performances, particularly Jasmine Amy Rogers, but also highlights significant flaws in the book and score, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:46:49.045Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

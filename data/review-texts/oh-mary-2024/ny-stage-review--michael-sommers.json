@@ -15,5 +15,61 @@
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
   "textStatus": "missing",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": 60,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "I blush to admit that Escola is an artist new to me and their charm eludes me so far",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "While the script may be flimsy, director Sam Pinkleton's production looks good at the Lyceum",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "there's no denying he snags laughs",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the production's technical merits and supporting performances but finds the lead performer's charm elusive and describes the script as flimsy, suggesting qualified reservations that outweigh the positives. | GPT-4o-mini: The review expresses significant criticism of the script and overall execution while acknowledging some humor, leading to a mixed-negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:52:29.782Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

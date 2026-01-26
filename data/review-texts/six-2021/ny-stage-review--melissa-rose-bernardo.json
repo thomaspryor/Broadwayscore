@@ -10,7 +10,7 @@
   "bwwExcerpt": "Each queen gets an absurdly catchy pop-inspired anthem to tell her own (often untold) story. There's a little Beyoncé in Catherine of Aragon's salsa-tinged \"No Way,\" which details Henry's infidelity, his quest for an annulment, and her refusal (\"You must think that I'm crazy/ You wanna replace me, baby, there's/ N-n-n-n-n-n-no way\"). Anne Boleyn's bouncy, electro-pop \"Don't Lose Ur Head\" has a Lily Allen vibe. To play up her sex appeal-and youthfulness-Catherine Parr sings the breathy, Britney Spears-style \"All You Wanna Do.\"",
   "showScoreExcerpt": "\"Six brings together a sextet of badass queens—clad in brilliant chain-trimmed corsets, studded black boots, and spiky crown-like headpieces designed by Gabriella Slade—to compete, American Idol–style, for a somewhat dubious honor: Who took the most crap from that self-serving, Church-splitting, six-times-married monarch?\"",
   "originalScore": "5/5",
-  "assignedScore": 85,
+  "assignedScore": 94,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T20:00:00.000Z",
   "bwwThumb": null,
@@ -23,5 +23,61 @@
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/six-2021/ny-stage-review--melissa-rose-bernardo_2026-01-25.html",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 93,
+      "performances": 88,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "★★★★★",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "you bloody well should",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Each queen gets an absurdly catchy pop-inspired anthem",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Five-star review with explicit strong recommendation ('you bloody well should' see it) and consistent praise for music, performances, and production elements throughout. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical, highlighting its catchy music and strong female representation, indicating it is a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:53:27.504Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,11 +9,67 @@
   "isFullReview": true,
   "bwwExcerpt": "Playwright David Adjmi’s extensive resume has included an intimate portrait of Syrian Jews in Brooklyn (Stunning), a fanciful contempo take on Marie Antoinette, and 3C, a controversial sexed-up parody of the sitcom Three’s Company. Interesting work all around, but none of it prepares us for the hyperrealistic triumph that is Stereophonic, now at the Golden Theatre for a limited run after a similarly limited run at Playwrights Horizons.",
   "originalScore": "5/5",
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T06:10:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Rock-N-Roll-Drama-STEREOPHONIC-Opens-On-Broadway-20240419",
   "textStatus": "missing",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 88,
+      "performances": 92,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "hyperrealistic triumph that is Stereophonic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "quite simply terrific",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "You won't see more assured direction this year, I feel sure of it",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses unqualified superlatives like 'triumph' and 'terrific,' praises every aspect of the production extensively, and makes sweeping positive statements about the direction being the best of the year. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising its direction, performances, and overall execution, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:53:41.987Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

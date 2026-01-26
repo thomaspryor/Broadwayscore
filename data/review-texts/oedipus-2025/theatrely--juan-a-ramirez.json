@@ -9,12 +9,68 @@
   "isFullReview": true,
   "dtliExcerpt": "Robert Icke is one of our best and most exciting theatrical talents, full stop. Any announcement of new work from the writer-director, known stateside lately for his incendiary updates of the Oresteia, Hamlet and The Doctor (from Schnitzler's Professor Bernhardi), are reason enough to immediately secure at least one round of tickets. So it's curious that he's hit a wall with Sophocles' Oedipus.\n\nThere's still the baseline level of competence for which he's come to be known—a sleek, glass-paneled modernist set by Hildegard Bechtler; laser-sharp performances, this time led by the phenomenal pairing of Mark Strong and Lesley Manville—that is leagues above most others' hopes for excellence. But without the profound insight (modern and timeless) he's excavated from those other works, there's little to generate the same theatrical electricity.\n\nIcke reimagines the story as unfolding on election night, with Oedipus as a charismatic candidate investigating his predecessor's murder. The production features Icke's usual whip-smart language and technical excellence. However, because audiences already know this story's surprises, the production needed either masterful pacing or fresh interpretive angles. Instead, each domino falls with complete earnestness, and without broader examination, resulting in minimal dramatic tension.\n\nDespite these critiques, there are far worse places to be than at a Robert Icke production—or watching Strong and Manville perform.\n\nOedipus runs through February 8, 2026 at Studio 54.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T23:40:00.000Z",
   "bwwExcerpt": "Robert Icke is one of our best and most exciting theatrical talents, full stop. Any announcement of new work from the writer-director, known stateside lately for his incendiary updates of the Oresteia, Hamlet and The Doctor (from Schnitzler’s Professor Bernhardi), are reason enough to immediately se...",
   "textStatus": "complete",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": 84,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "there are far worse places to be than at a Robert Icke production, or in the company of Strong and Manville",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "without the profound insight he's excavated from those other works, there's little to generate the same theatrical electricity",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "laser-sharp performances, this time led by the phenomenal pairing of Mark Strong and Lesley Manville – that is leagues above most others' hopes for excellence",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic admires Icke's talent and praises the stellar performances and production values, but finds the adaptation lacks the theatrical electricity and insight of the director's previous work, ultimately offering a qualified recommendation based on the creative team's reputation. | GPT-4o-mini: While the performances and direction are praised, the script lacks the depth and engagement expected, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:52:13.902Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

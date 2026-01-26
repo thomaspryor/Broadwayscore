@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "nvincing, and it’s more effective in its comic than emotional beats. But no matter. This is a show so charming, so adorable, that you can easily overlook its flaws. A little bit like falling in love. David Finkle, New York Stage Review: Then there’s the acting, singing and brief dancing. Pitts’s performance, especially svelte and stylish in Gilmour’s night-at-the-Plaza gown, is mercurial throughout, making Robin’s initial annoyance and then intelligent concern thoroughly penetrating. As to newcomer Tutty, who took home last year’s Olivier Award for Best Actor in a Musical for his take on the imported Dear Evan Hansen: His “New York” introduction makes it dazzlingly clear that a London musical leading-man hasn’t been carried in on the local theater tide since Tommy Steele in Half a Sixpence and Anthony Newley in The Roar of the Greasepaint-The Smell of the Crowd. Tutty’s appealing looks, pure voice, comic instincts, and obvious acting skills, and somehow resemblance to a living Teletubb",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 70,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20250109",
@@ -22,5 +22,61 @@
     "Show title not found in text"
   ],
   "textQuality": "partial",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Joshua Henry gives what’s destined to be a Tony-winning performance",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Lesley Manville and Mark Strong have disturbingly good chemistry",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Erica Schmidt’s world premiere dramedy skewers a self-absorbed filmmaker",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review highlights strong performances but lacks a clear overall recommendation for the show itself, leading to a mixed-positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:55:14.903Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 70,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
