@@ -217,7 +217,7 @@ data/
   shows: {
     [showId: string]: {
       title: string,
-      designation: "Loving It" | "Liking It" | "Take-it-or-Leave-it" | "Loathing It",
+      designation: "Loving" | "Liking" | "Shrugging" | "Loathing",  // ❤️ 👍 🤷 💩
       combinedScore: number,  // Weighted: SS/Mezz split by sample size (80%), Reddit fixed (20%)
       sources: {
         showScore?: { score: number, reviewCount: number },
