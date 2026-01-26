@@ -59,13 +59,13 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            # Pull latest changes first to avoid conflicts
-            git pull --rebase origin main || true
-
             git commit -m "chore: Update Reddit sentiment data
 
             Automated update from Reddit r/broadway discussions.
 
             Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            # Pull and rebase, then push (retry once if conflict)
+            git pull --rebase origin main || git pull --rebase origin main
             git push
           fi
