@@ -217,7 +217,8 @@ data/
   shows: {
     [showId: string]: {
       title: string,
-      designation: "Loving" | "Liking" | "Shrugging" | "Loathing",  // ❤️ 👍 🤷 💩
+      designation: "Loving" | "Liking" | "Shrugging" | "Loathing",
+      // Thresholds: ❤️ Loving 88+, 👍 Liking 78-87, 🤷 Shrugging 68-77, 💩 Loathing 0-67
       combinedScore: number,  // Weighted: SS/Mezz split by sample size (80%), Reddit fixed (20%)
       sources: {
         showScore?: { score: number, reviewCount: number },
