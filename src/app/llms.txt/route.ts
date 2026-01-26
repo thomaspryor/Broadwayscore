@@ -63,6 +63,10 @@ ${browseSlugs.slice(0, 12).map(slug => {
   return `- [${title}](${BASE_URL}/browse/${slug})`;
 }).join('\n')}
 
+### Data & Analytics
+- [Box Office Leaderboard](${BASE_URL}/box-office): Weekly grosses, capacity, and all-time stats for every show
+- [Commercial Scorecard](${BASE_URL}/biz-buzz): Which shows make money - recoupment data, capitalization, designations
+
 ### Other Resources
 - [Broadway Theater Map](${BASE_URL}/broadway-theaters-map): Interactive map of all Broadway theaters
 - [Directors Index](${BASE_URL}/director): Browse shows by director
