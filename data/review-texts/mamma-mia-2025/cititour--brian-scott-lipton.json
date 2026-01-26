@@ -9,12 +9,68 @@
   "isFullReview": true,
   "bwwExcerpt": "Sure, the set is even more basic than it was, the cast has completely changed (in some cases for the better), and the audience seems even younger. But the infectious music of Swedish supergroup ABBA can still make you sing and dance in your seat, bringing an almost-constant smile to your face even as you remember (or, for first timers, realize) just how inanely some of their two dozen mega-hits have been shoehorned into Catherine Johnson's relatively ridiculous book.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 82,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T03:00:00.000Z",
   "bwwThumb": "Up",
   "bwwUrl": "https://cititour.com/NYC_Broadway/MAMMA-MIA/1318",
   "textStatus": "complete",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 48,
+      "music": 91,
+      "performances": 88,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "the infectious music of Swedish supergroup ABBA can still make you sing and dance in your seat, bringing an almost-constant smile to your face",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "one could not ask for a better mother-daughter pair than Sherrill and Weaver",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the story has holes large enough to drive a Tesla Cybertruck through",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging major flaws in the book, the critic expresses clear enthusiasm for the music, performances, and overall experience, with specific praise for the leads and an underlying tone of enjoyment throughout. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and music while acknowledging weaknesses in the book, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:49:36.379Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "But when Rogers returns, with a raised eyebrow and a c*ckof her bobble-sized head, all's forgiven. Whether in trousers or a skirt, she shows enough versatility to cement her status as a major new Broadway talent. And she proves that even after nearly a century, Betty Boop still deserves a place in the spotlight.",
   "originalScore": "4/5",
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T04:00:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
@@ -19,5 +19,61 @@
   "textFetchMethod": "archive.org",
   "archivePath": "data/archives/reviews/boop-2025/culture-sauce--thom-geier_2026-01-25.html",
   "textQuality": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 63,
+      "performances": 87,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway newbie Jasmine Amy Rogers delivers a star-making turn as the title character",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The score, by David Foster and lyricist Susan Birkenhead, is a mixed bag",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "she proves that even after nearly a century, Betty Boop still deserves a place in the spotlight. ★★★★☆",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: 4/5 stars with strong praise for lead performance and production values, despite acknowledging significant flaws in book and score structure. | GPT-4o-mini: The review expresses clear praise for the performances and direction while highlighting significant issues with the book and music, leading to a positive overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:46:32.161Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

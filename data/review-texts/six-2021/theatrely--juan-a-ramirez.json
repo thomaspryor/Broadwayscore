@@ -9,10 +9,66 @@
   "isFullReview": true,
   "bwwExcerpt": "The six women-backed by a terrific onstage band of \"Ladies in Waiting\"-initially delighted to revel in their woes, wind up revealing more about womanhood (historical and contemporary), modern stardom, victimhood, pop culture, and survival than a musical with this logline has any right to. Capably co-directed by Moss and Jamie Armitage, the production does not shy away from the simplicity of its premise, sidestepping any staging issues by owning up to its concert format and allowing the women's charisma to hold court. And what charisma! There is not a single flaw in this production's casting and, while the material itself is strong enough to hold itself through changes in performers, I fear this opening ensemble is like lightning in a bottle. Each actor's work honors their monarch, as well as the respective myriad pop influences behind each queen's stage persona.",
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 94,
   "source": "playwright-scraped",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211003",
   "scrapedAt": "2026-01-24T04:00:00.000Z",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 98,
+      "performances": 95,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "The songs are, without hyperbole, miracles of modern musical theatre",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Six, the new musical they created about the legendary wives of Henry VIII, is a fabulous example of the beauty that comes from taking pop culture—and the people, most often women, behind it—seriously",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There is not a single flaw in this production's casting and, while the material itself is strong enough to hold itself through changes in performers, I fear this opening ensemble is like lightning in a bottle",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rave with superlative language throughout ('miracles of modern musical theatre', 'fabulous', 'not a single flaw'), detailed praise for all elements, and a strong endorsement of the show's artistic achievement. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical's songs, performances, and overall production, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:53:35.859Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,7 +10,7 @@
   "bwwExcerpt": "New York Post: The musical comes dangerously close to cloying sentimentality at times, but Dougal’s dry sense of humor and Tutty’s first-class delivery prevents the story from ever getting too soupy. Chris Jones, The New York Daily News: Stories with odd couples on the edge of Eros, so to speak, can be very effective (see the movie “Lost in Translation” or the musical “The Band’s Visit“) but if writers choose to have their couple get naked and hit the sheets, in this case at the Plaza Hotel, since we’re all about New York aspiration here, they struggle to know where to go. So while this show held me for Act One with its considerable charm, by Act Two, it was hitting turbulence. 90 minutes and out would have been a better plan. Robert Hofler, The Wrap: Jim Barne and Kit Buchan wrote the songs and the book for this rom-com two-hander, and they begin “Two Strangers” with real promise. The young man Dougal (Tutty) is newly arrived at JFK from London and eager to meet his American father fo",
   "showScoreExcerpt": "\"This is a twee, two-character rom-com that could easily be a Hallmark holiday musical... So while this show held me for Act One with its considerable charm, by Act Two, it was hitting turbulence.\"",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20250109",
@@ -22,5 +22,61 @@
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/two-strangers-bway-2025/NYDN--chris-jones_2026-01-25.html",
   "textQuality": "partial",
-  "sourceMethod": "bww-roundup"
+  "sourceMethod": "bww-roundup",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 70,
+      "music": 65,
+      "performances": 70,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "this show held me for Act One with its considerable charm, by Act Two, it was hitting turbulence",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "does have quite a witty book and a few sticky tunes",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "vulnerability, even if differently applied, still is essential for these kinds of stories to work",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds charm and wit in Act One but notes significant structural problems in Act Two, with qualified praise for performances but criticism of the romantic chemistry and overall execution. | GPT-4o-mini: The review expresses charm and some strong performances but ultimately indicates a decline in quality by the second act, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:54:54.741Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

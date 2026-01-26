@@ -9,11 +9,67 @@
   "isFullReview": true,
   "bwwExcerpt": "Final observation: At a point in the 1970s, Schwartz had three shows running on and off-Broadway: Godspell, Pippin, and The Magic Show. (There might even have been a fourth—The Baker’s Wife.) Right now, he’s matched the three-record with Wicked showing no signs of ever closing on Broadway, this one also on Broadway, and The Baker’s Wife currently revived off-Broadway. Congrats to him for that kind of rare happenstance. Imagine the personal pleasure as well as the weekly royalties.",
   "originalScore": "2/5",
-  "assignedScore": 45,
+  "assignedScore": 57,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T05:50:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-QUEEN-OF-VERSAILLES-Opens-on-Broadway-20251109",
   "textStatus": "missing",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 57,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 53,
+      "performances": 75,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "what's on view will likely only excite Chenoweth fans completely happy to watch their fave-rave performer",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "By the act-ending moment when Chenoweth is downstage center declaring with 'This is Not the Way' that the 2008 financial crash that bankrupted David won't stop her, only boredom has set in",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "For approximately ten minutes The Queen of Versailles is so powerful that no No-Queens-Day protest need be organized",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show bloated and boring despite strong performances from Chenoweth, suggesting it's primarily for her fans only rather than a general recommendation. | GPT-4o-mini: The review presents a mixed perspective, highlighting strong performances, particularly from Chenoweth, but also expressing significant issues with the pacing and overall impact of the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:52:59.637Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 62,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

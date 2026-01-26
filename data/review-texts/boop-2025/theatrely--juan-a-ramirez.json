@@ -12,7 +12,7 @@
   "dtliExcerpt": "Like all the best early 20th century works tragically and systematically erased from our cultural memory, she's bright, effervescent, relentlessly charming and sexy. Pretty much the same can be said about Boop! The Musical, which just opened at the Broadhurst, but especially about Jasmine Amy Rogers, the instant star imbuing each of the cartoon's iconic curls with larger-than-life charisma.",
   "bwwExcerpt": "Hurtling towards us through metaphysical universes and a sometimes bumpy production, Rogers arrives fully-formed: a star.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
   "dtliThumb": "Up",
   "textStatus": "complete",
@@ -21,5 +21,61 @@
   "textFetchMethod": "playwright",
   "archivePath": "data/archives/reviews/boop-2025/theatrely--juan-a.-ramirez_2026-01-25.html",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 72.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 64,
+      "music": 78,
+      "performances": 89,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hers is an irresistible seduction, skilled but not calculated, and it's impossible to take your eyes off of her",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Hurtling towards us through metaphysical universes and a sometimes bumpy production, Rogers arrives fully-formed: a star",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's a lot. A lot – and not all of it amounts to much more than in-the-moment entertainment",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite criticisms of the book's narrative excess and uneven production elements, the critic is clearly enthusiastic about the lead performance and Mitchell's direction, praising the show as entertaining family theater with standout star-making performance. | GPT-4o-mini: The review expresses strong praise for the lead performance and direction while acknowledging some narrative flaws, leading to a solid recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:46:59.458Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 80,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

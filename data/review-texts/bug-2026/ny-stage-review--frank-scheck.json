@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "When Bug was first seen Off-Broadway in 2004, it seemed prescient in its portrayal of mental illness and conspiracy theories. Now — after the world has gone collectively crazy with wacky notions about COVID, pedophile rings, vaccines, and 5G, among countless other things — Tracy Letts’ play practically feels quaint. Receiving its Broadway premiere in a Manhattan Theatre Club production in association with Steppenwolf Theatre Company, it nonetheless remains a grippingly unnerving thriller that feels like a waking nightmare.",
   "originalScore": "4/5",
-  "assignedScore": 76,
+  "assignedScore": 64,
   "source": "playwright-scraped",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Carrie-Coon-Namir-Smallwood-and-More-Star-in-BUG-on-Broadway-20260108",
   "scrapedAt": "2026-01-24T04:20:00.000Z",
@@ -19,5 +19,61 @@
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/bug-2026/ny-stage-review--frank-scheck_2026-01-25.html",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": null,
+      "performances": 75,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "it nonetheless remains a grippingly unnerving thriller that feels like a waking nightmare",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's hard to escape the feeling that on Broadway, Bug has lost some of its bite",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "His staging proves atypically lackluster, lacking the pacing and shock effects necessary",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: 4/5 star review with strong praise for Coon's performance and the play's unsettling power, but significant criticisms of direction, pacing, and the production losing impact compared to earlier versions. | GPT-4o-mini: The review presents a mixed perspective, praising the performances but criticizing the pacing and direction, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:47:17.774Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

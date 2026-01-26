@@ -9,12 +9,68 @@
   "isFullReview": true,
   "bwwExcerpt": "While an immediate ticket to this sure-to-be-hit may be hard to come by, don't let yourself stay an outsider. This show is worth coming into a theater!",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 84,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T03:00:00.000Z",
   "bwwThumb": "Up",
   "bwwUrl": "https://cititour.com/NYC_Broadway/The-Outsiders/1220",
   "textStatus": "complete",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": 88,
+      "performances": 84,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "faithful and very satisfying musical adaptation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the score, while a tad ballad-heavy, is one of the best I've heard on Broadway this season",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "don't let yourself stay an outsider. This show is worth coming into a theater!",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Clear positive recommendation with explicit endorsement, praise for multiple elements including 'one of the best scores this season,' and minor reservations that don't undermine overall enthusiasm. | GPT-4o-mini: The review expresses strong praise for the music and performances while acknowledging some minor issues, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:54:41.958Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

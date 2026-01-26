@@ -9,12 +9,68 @@
   "isFullReview": true,
   "bwwExcerpt": "Unsurprisingly, Harrison has more questions and conundrums to pose in this taut 80-minute play about the trials of aging and the nature of memory. But the work (a finalist for the Pulitzer Prize) is more than a mere intellectual exercise or adventure in science-fiction. (If you are a movie nut and very good at math, you'll realize the work is actually set in 2062.) It's a decidedly human drama.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 81,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T03:00:00.000Z",
   "bwwThumb": "Up",
   "bwwUrl": "https://cititour.com/NYC_Broadway/Marjorie-Prime/1347",
   "textStatus": "complete",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 77,
+      "music": null,
+      "performances": 89,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "exquisitely acted Broadway run",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "June Squibb in a perfectly-calibrated performance of humor, sadness, and feistiness",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's a decidedly human drama",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the performances as 'exquisitely acted' and 'outstanding' while finding the play 'thought-provoking' and 'decidedly human,' with only minor reservations about predictability in later scenes. | GPT-4o-mini: The review praises the performances highly, particularly noting the acting quality, while also highlighting the thought-provoking nature of the script, leading to a strong recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:50:08.135Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

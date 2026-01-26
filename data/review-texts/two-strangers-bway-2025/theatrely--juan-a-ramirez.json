@@ -9,11 +9,67 @@
   "isFullReview": true,
   "dtliExcerpt": "I felt a disorienting generational whiplash throughout the treacly rom-com Two Strangers (Carry a Cake Across New York). The latest British musical to make it through that country's off-off ranks and onto our shores, it follows two 20-somethings during a whirlwind wedding weekend in present-day New York. And yet it fundamentally misunderstands Gen Z, is shot through with elder Millennial sensibility, and had a mostly older crowd wiping tears of laughter from their eyes. They seemed to thoroughly enjoy it, so congrats to all involved, but let me submit my dissenting opinion anyway.\n\nThe story follows Dougal, a British twentysomething, and Robin, a 26-year-old New Yorker, as they navigate a wedding weekend in Manhattan, picking up a cake and encountering various tourist attractions. Sam Tutty brings charm despite playing maybe the most grating character in musical theater history, while Christiani Pitts keeps her deadpan takedowns impressively fresh. However, the characterization of Robin embodies the unfortunate subgenre of Black woman as wet blanket of wokeness, constantly correcting Dougal's cultural missteps.\n\nThe score receives criticism for platitudes about romance and outdated humor, including a number that reheats BuzzFeed-era jokes about whether classic Christmas songs are problematic. Despite praise for the production design and performances, the show lacks substance for a nearly two-and-a-half-hour runtime. Its agreeableness will charm audiences but ultimately it's not for me, and the twee little title accurately signals its sentimental, lightweight approach.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T23:35:00.000Z",
   "textStatus": "complete",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 37.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 43,
+      "music": 35,
+      "performances": 73,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "let me submit my dissenting opinion anyway",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There's nothing inherently bad about the piece",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "It has an agreeableness that will offend no one, and will surely charm many. But I should've known from its twee little title that this would not be for me",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show will charm others but offers a clear dissenting opinion with specific criticisms of the book, music, and runtime, while praising only the performances. | GPT-4o-mini: The review presents a mixed view, praising performances while criticizing the music and script, leading to a conditional recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:55:27.517Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

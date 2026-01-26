@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"We’ve got a brand new Broadway star. His name is Sam Tutty...he’s hilarious, Shirley Temple endearing and effortlessly magnetic as a puppy-dog Englishman who’s just landed in the five boroughs for the first time.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 84,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:12:12.625Z",
@@ -17,5 +17,61 @@
   "textQuality": "full",
   "sourceMethod": "stub",
   "dtliExcerpt": "What elevates the show from an assembly-line rom-com is the way Barne and Buchan balance the genre’s baked-in cliches with sharp left turns and nuanced commentary about life experience and personal connection. “Two Strangers” ain’t packing snow, but it’s not powder either. The musical comes dangerously close to cloying sentimentality at times, but Dougal’s dry sense of humor and Tutty’s first-class delivery prevents the story from ever getting too soupy.",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 91,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "We've got a brand new Broadway star... making a must-see NYC debut",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "By the end of the feel-good holiday comedy, though, it's been a great Christmas",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I simply cannot imagine it working nearly as well without its extraordinary male lead",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite noting the show's limitations, the critic is clearly enthusiastic about the production overall, calling it a 'great Christmas' experience and emphasizing the 'must-see' lead performance, indicating a strong positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the performances, particularly Sam Tutty's, while acknowledging some minor issues with the script, leading to a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:55:01.988Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,11 +9,67 @@
   "isFullReview": true,
   "bwwExcerpt": "Much of what we're told in \"Just in Time\" about Darin is a fairly standard show biz story. It's a measure of how little in his biography there is to work with that the show holds off until nearly the end to reveal a big family secret, one that's easily available in the most cursory bio of Darin online.  But there is some drama in the relationship with Dee. For all his charm as a performer, Darin doesn't seem like a very nice man. He insists she go on the road with him, and show his fans and hers how much she appreciates his act. He soon tires of her. He sends his brother-in-law turned valet Charlie (Joe Barbara) to relay the message: \"He wants a divorce.\" There is a hint that his impatience is motivated by his knowledge that he will die young, but it's buried too deeply beneath an off-putting ambition.",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 69,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T20:00:00.000Z",
   "bwwThumb": "Meh",
   "bwwUrl": "https://newyorktheater.me/2025/04/26/just-in-time-broadway-review/",
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 74,
+      "performances": 80,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bobby Darin frankly does not strike me as having either the endurance in the culture or a uniquely compelling enough story to be the most obvious figure to build a Broadway show around",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "But it's fans of Jonathan Groff who are best served by the show – and those theatergoers who might discover Groff at the same time as Darin",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "This is where Jonathan Groff comes in. While telling of Darin's life, Groff in effect stars in a nightclub act, combining his talents and charm with those of the ostensible subject of the show",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates Groff's performance and the nightclub atmosphere but finds the source material weak and the biographical story insufficiently compelling, resulting in qualified praise. | GPT-4o-mini: The review expresses a mixed sentiment, highlighting strong performances, particularly by Jonathan Groff, but also notes significant shortcomings in the book and overall narrative, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:49:06.311Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

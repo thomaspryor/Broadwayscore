@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The area where this Mamma Mia! is far from deficient is in the cast. While there's not a single Broadway marquee name among them, not a one isn't giving an outstanding performance, not a one undeserving of marquee status.  They prominently include Christine Sherrill as single mom Donna Sheridan; Amy Weaver as bride-to-be Sophie Sheridan; Jalynn Steele and Carly Sakolove as Donna BFFs Tanya and Rosie; and Rob Marnell, Jim Newman, and Victor Wallace as possible fathers Harry Bright, Bill Austin, and Sam Carmichael.",
   "originalScore": "3/5",
-  "assignedScore": 60,
+  "assignedScore": 44,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T19:00:00.000Z",
   "bwwThumb": "Meh",
@@ -18,5 +18,63 @@
   "textStatus": "complete",
   "textQuality": "full",
   "sourceMethod": "playwright",
-  "bwwExcerpt": "The area where this Mamma Mia! is far from deficient is in the cast. While there’s not a single Broadway marquee name among them, not a one isn’t giving an outstanding performance, not a one undeserving of marquee status...."
+  "bwwExcerpt": "The area where this Mamma Mia! is far from deficient is in the cast. While there’s not a single Broadway marquee name among them, not a one isn’t giving an outstanding performance, not a one undeserving of marquee status....",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 28,
+      "performances": 83,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "this new production can be described in two words: severely cheapened",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "not a one isn't giving an outstanding performance, not a one undeserving of marquee status",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The only thing left to say about this Mamma Mia! is: Mamma mia!",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising the cast as outstanding, the critic severely condemns the production as 'cheapened' with destructive sound design and arrangements that undermine the material. | GPT-4o-mini: The review expresses significant disappointment in the production's treatment of the music and overall quality, despite praising the performances, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:50:00.650Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (44 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

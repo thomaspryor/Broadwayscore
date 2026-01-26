@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Book writer Catherine Johnson deserves credit for trying to make the mother-daughter relationship resonate, although she is more often lauded for having worked in twenty-two ABBA songs into the story in sometimes clever ways, without changing almost any of the lyrics. But the lyrics don't always fit snugly with the narrative; and some of the melodies – all of which were already oldies when the musical debuted – aren't really evergreens. A reimagined \"Mamma Mia\" could have benefitted from dropping some of the songs, and making the show shorter.",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 62,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T03:00:00.000Z",
   "bwwThumb": "Meh",
@@ -17,5 +17,61 @@
   "bwwUrl": "https://newyorktheater.me/2025/08/14/mamma-mia-broadway-review/",
   "textQuality": "partial",
   "sourceMethod": "playwright",
-  "bwwExcerpt": "Book writer Catherine Johnson deserves credit for trying to make the mother-daughter relationship resonate, although she is more often lauded for having worked in twenty-two ABBA songs into the story in sometimes clever ways, without changing almost any of the lyrics. But the lyrics don’t always fit..."
+  "bwwExcerpt": "Book writer Catherine Johnson deserves credit for trying to make the mother-daughter relationship resonate, although she is more often lauded for having worked in twenty-two ABBA songs into the story in sometimes clever ways, without changing almost any of the lyrics. But the lyrics don’t always fit...",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 68,
+      "performances": 77,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "I found this 'Mamma Mia' at its most exciting at the curtain call",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "All three of the Dynamos are among the standouts on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's pointless to scrutinize a show that has an Italian title but is set in Greece; 'Mamma Mia' does not have what you could call a weight-bearing plot",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges strong performances and nostalgic appeal but criticizes the weak plot, overlong structure, and suggests the show works better as a sing-along experience than compelling theater. | GPT-4o-mini: The review expresses mixed feelings, highlighting strong performances but criticizing the lack of innovation and the plot's weaknesses, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:49:52.094Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

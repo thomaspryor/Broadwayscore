@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "If only all of Keys' songs fit so easily into Kristoffer Diaz's libretto. The biggest head-scratcher: \"Pawn It All,\" sung by an angry Jersey to Ali's dad, Davis (the velvet-voiced Brandon Victor Dixon). Perhaps the creators simply wanted to give Bean a show-stopping song—as well as something for her character to do besides pour water, chop vegetables, and serve dinner. But bursting into her ex's audition at a nightclub and throwing all of her jewelry at the booker? And why is Bean closing her eyes and belting like she's onstage at 54 Below?",
   "originalScore": "3/5",
-  "assignedScore": 68,
+  "assignedScore": 79,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T19:00:00.000Z",
   "bwwThumb": "Meh",
@@ -17,5 +17,63 @@
   "bwwUrl": "https://nystagereview.com/2024/04/20/hells-kitchen-welcome-to-alicia-keys-new-york/",
   "textQuality": "full",
   "sourceMethod": "playwright",
-  "bwwExcerpt": "If only all of Keys’ songs fit so easily into Kristoffer Diaz’s libretto. The biggest head-scratcher: “Pawn It All,” sung by an angry Jersey to Ali’s dad, Davis (the velvet-voiced Brandon Victor Dixon). Perhaps the creators simply wanted to give Bean a show-stopping song—as well as something for her..."
+  "bwwExcerpt": "If only all of Keys’ songs fit so easily into Kristoffer Diaz’s libretto. The biggest head-scratcher: “Pawn It All,” sung by an angry Jersey to Ali’s dad, Davis (the velvet-voiced Brandon Victor Dixon). Perhaps the creators simply wanted to give Bean a show-stopping song—as well as something for her...",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 84,
+      "performances": 83,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's where Hell's Kitchen truly shines",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The biggest head-scratcher: 'Pawn It All'",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "It's an exhilarating number—the dancers move in overlapping circles like, well, a kaleidoscope—and a perfectly placed moment",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Clear enthusiasm for the music, performances, and choreography with specific praise for standout moments, despite some reservations about song integration in the book. | GPT-4o-mini: The review expresses strong enthusiasm for the music and performances while noting some issues with the book, leading to a solid positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T15:48:44.325Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (79 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }
