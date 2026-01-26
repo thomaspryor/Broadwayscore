@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-hilty-jennifer-simard-58c2761b",
   "publishDate": "November 21, 2024",
-  "fullText": null,
+  "fullText": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-hilty-jennifer-simard-58c2761b\n\nMegan Hilty and Jennifer Simard Matthew Murphy and Evan ZimmermanNew York\n\n“Death Becomes Her” may be one of the funnier new musicals to splash down on Broadway, in a nearly blinding glare of sequins, in recent seasons. But perhaps none of its ample array of gags, whether low, high or occasionally borrowed, is quite as ingenious as the joke supplied by Megan Hilty, one of the show’s two bright-burning female stars.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nNew York Film Festival 2025 Review: Full of Daring and Delights",
   "isFullReview": false,
   "showScoreExcerpt": "Megan Hilty and Jennifer Simard give boisterously funny performances as preening rivals",
   "originalScore": null,
@@ -13,8 +13,8 @@
   "source": "show-score",
   "needsFullText": true,
   "fetchedAt": "2026-01-24T20:00:00.000Z",
-  "textQuality": "missing",
-  "sourceMethod": "showscore",
+  "textQuality": "partial",
+  "sourceMethod": "archive",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -72,5 +72,41 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textStatus": "partial",
+  "textWordCount": 94,
+  "archivePath": "data/archives/reviews/death-becomes-her-2024/wsj--charles-isherwood_2026-01-26.html",
+  "textFetchedAt": "2026-01-26T23:15:25.800Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "archiveOrgTimestamp": "20251121122023",
+  "archiveOrgUrl": "http://web.archive.org/web/20251121122023/https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-hilty-jennifer-simard-58c2761b",
+  "textIssues": [
+    "Word count too low: 94 (min: 300)"
+  ]
 }
