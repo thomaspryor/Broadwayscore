@@ -236,11 +236,13 @@ Add content that directly answers questions people ask AI:
 5. ✅ Add "Quick Facts" structured data boxes
 6. ✅ Add Article schema to methodology page
 
+### Phase 3.2 ✅ COMPLETE
+7. ✅ Add "Last Updated" timestamps to show pages
+
 ### Ongoing
-7. Set up AI citation monitoring
-8. Keep content fresh (you're already doing this with scrapers)
-9. Answer new common questions as they emerge
-10. Add "Last Updated" timestamps to show pages
+8. Set up AI citation monitoring
+9. Keep content fresh (you're already doing this with scrapers)
+10. Answer new common questions as they emerge
 
 ---
 
