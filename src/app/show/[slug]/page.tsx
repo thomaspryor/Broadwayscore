@@ -669,9 +669,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 >
                   <TicketIcon />
                   {link.platform}
-                  {link.priceFrom && (
-                    <span className="text-gray-500">from ${link.priceFrom}</span>
-                  )}
                 </a>
               ))}
 
