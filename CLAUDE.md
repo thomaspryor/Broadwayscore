@@ -276,6 +276,17 @@ All automation runs via GitHub Actions - no local commands needed.
 - **Issue template:** `.github/ISSUE_TEMPLATE/missing-review.yml`
 - **Validation script:** `scripts/validate-review-submission.js`
 
+### `.github/workflows/update-critic-consensus.yml`
+- **Runs:** Every Sunday at 2 AM UTC (9 PM ET Saturday) (or manually via GitHub UI)
+- **Does:**
+  - Generates 2-sentence editorial summaries for shows (Rotten Tomatoes style)
+  - Uses Claude API to analyze review texts and create consensus
+  - Only regenerates shows with 3+ new reviews since last update
+  - Updates `data/critic-consensus.json`
+- **Manual trigger:** Supports `force` flag to regenerate all shows
+- **Script:** `scripts/generate-critic-consensus.js`
+- **API:** Uses ANTHROPIC_API_KEY secret
+
 ## Deployment
 
 ### How It Works (Vercel)
@@ -306,6 +317,11 @@ All automation runs via GitHub Actions - no local commands needed.
 - Weekly automated status updates
 - New show discovery automation
 - User-submitted review system with AI validation (automated approval & scraping)
+- **Critic Consensus** - LLM-generated 2-sentence editorial summaries (Rotten Tomatoes style)
+  - Updates weekly if 3+ new reviews added
+  - Displayed on show pages between synopsis and reviews
+  - Script: `scripts/generate-critic-consensus.js`
+  - Data: `data/critic-consensus.json`
 
 ### Box Office Stats
 Show pages display box office data in two rows of stat cards:
