@@ -320,8 +320,21 @@ function extractShowScoreReviews(html, showId) {
       { pattern: /Theatrely|theatrely\.com/i, outlet: 'Theatrely', outletId: 'THLY' },
       { pattern: /Broadway World|broadwayworld\.com/i, outlet: 'BroadwayWorld', outletId: 'BWW' },
       { pattern: /Stage and Cinema|stageandcinema\.com/i, outlet: 'Stage and Cinema', outletId: 'SAC' },
+      // Additional outlets found on Show Score
+      { pattern: /New York Theatre Guide|newyorktheatreguide\.com/i, outlet: 'New York Theatre Guide', outletId: 'NYTG' },
+      { pattern: /Talkin'?\s*Broadway|talkinbroadway\.com/i, outlet: "Talkin' Broadway", outletId: 'TKBWAY' },
+      { pattern: /TheaterScene|theaterscene\.net/i, outlet: 'TheaterScene.net', outletId: 'THSCENE' },
+      { pattern: /Entertainment Weekly|ew\.com/i, outlet: 'Entertainment Weekly', outletId: 'EW' },
+      { pattern: /The Guardian|theguardian\.com/i, outlet: 'The Guardian', outletId: 'GUARD' },
+      { pattern: /Associated Press|apnews\.com/i, outlet: 'Associated Press', outletId: 'AP' },
+      { pattern: /New Yorker|newyorker\.com/i, outlet: 'The New Yorker', outletId: 'NYER' },
+      { pattern: /The Wrap|thewrap\.com/i, outlet: 'The Wrap', outletId: 'WRAP' },
+      { pattern: /The Stage|thestage\.co\.uk/i, outlet: 'The Stage', outletId: 'STAGE' },
+      { pattern: /CurtainUp|curtainup\.com/i, outlet: 'CurtainUp', outletId: 'CURTUP' },
+      { pattern: /AM New York|amnewyork\.com/i, outlet: 'AM New York', outletId: 'AMNY' },
     ];
 
+    let matched = false;
     for (const { pattern, outlet, outletId } of outletPatterns) {
       if (pattern.test(context) || pattern.test(url)) {
         // Check if we already have this outlet
@@ -343,8 +356,46 @@ function extractShowScoreReviews(html, showId) {
             source: 'show-score'
           });
         }
+        matched = true;
         break;
       }
+    }
+
+    // Fallback: extract review even if outlet not in predefined list
+    if (!matched && !reviews.some(r => r.url === url)) {
+      // Try to get outlet name from image alt text in context
+      const imgAltMatch = context.match(/img[^>]*alt="([^"]+)"/i);
+      let outlet = 'Unknown';
+      let outletId = 'unknown';
+
+      if (imgAltMatch && imgAltMatch[1]) {
+        outlet = imgAltMatch[1].trim();
+        outletId = slugify(outlet);
+      } else {
+        // Try to infer from URL domain
+        const domainMatch = url.match(/https?:\/\/(?:www\.)?([^\/]+)/);
+        if (domainMatch) {
+          const domain = domainMatch[1].replace(/\.(com|org|net|co\.uk)$/i, '');
+          outlet = domain.charAt(0).toUpperCase() + domain.slice(1);
+          outletId = slugify(domain);
+        }
+      }
+
+      // Try to extract critic name
+      let criticName = 'Unknown';
+      const criticLinkMatch = context.match(/href="\/member\/[^"]+">([^<]+)<\/a>/i);
+      if (criticLinkMatch) {
+        criticName = criticLinkMatch[1].trim();
+      }
+
+      reviews.push({
+        showId,
+        outlet,
+        outletId,
+        criticName,
+        url,
+        source: 'show-score'
+      });
     }
   }
 
