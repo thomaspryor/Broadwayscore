@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getAllShows, getShowGrosses, getGrossesWeekEnding, getGrossesLastUpdated } from '@/lib/data';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { ThisWeekTable, AllTimeTable } from '@/components/SortableBoxOfficeTable';
 
 export const metadata: Metadata = {
   title: 'Broadway Box Office - Weekly Grosses & All-Time Stats',
@@ -48,45 +49,6 @@ const faqSchema = {
     },
   ],
 };
-
-function formatCurrency(amount: number | null | undefined): string {
-  if (amount === null || amount === undefined) return '—';
-  if (amount >= 1000000000) {
-    return `$${(amount / 1000000000).toFixed(1)}B`;
-  }
-  if (amount >= 1000000) {
-    return `$${(amount / 1000000).toFixed(1)}M`;
-  }
-  if (amount >= 1000) {
-    return `$${(amount / 1000).toFixed(0)}K`;
-  }
-  return `$${amount.toLocaleString()}`;
-}
-
-function formatNumber(num: number | null | undefined): string {
-  if (num === null || num === undefined) return '—';
-  return num.toLocaleString();
-}
-
-function formatPercent(pct: number | null | undefined): string {
-  if (pct === null || pct === undefined) return '—';
-  return `${pct.toFixed(1)}%`;
-}
-
-function ChangeIndicator({ current, previous }: { current: number | null | undefined; previous: number | null | undefined }) {
-  if (current === null || current === undefined || previous === null || previous === undefined) {
-    return null;
-  }
-  const change = ((current - previous) / previous) * 100;
-  if (Math.abs(change) < 0.1) return null;
-
-  const isPositive = change > 0;
-  return (
-    <span className={`text-xs ml-1 ${isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
-      {isPositive ? '↑' : '↓'}{Math.abs(change).toFixed(1)}%
-    </span>
-  );
-}
 
 export default function BoxOfficePage() {
   const allShows = getAllShows();
@@ -147,60 +109,10 @@ export default function BoxOfficePage() {
         {/* This Week Leaderboard */}
         <section className="mb-12">
           <h2 className="text-xl font-bold text-white mb-4">This Week&apos;s Top Grossers</h2>
-          <div className="card overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-white/10 bg-surface-overlay">
-                    <th className="text-left py-3 px-4 text-gray-400 font-medium">#</th>
-                    <th className="text-left py-3 px-4 text-gray-400 font-medium">Show</th>
-                    <th className="text-right py-3 px-4 text-gray-400 font-medium">Gross</th>
-                    <th className="text-right py-3 px-4 text-gray-400 font-medium hidden sm:table-cell">Capacity</th>
-                    <th className="text-right py-3 px-4 text-gray-400 font-medium hidden md:table-cell">Avg Ticket</th>
-                    <th className="text-right py-3 px-4 text-gray-400 font-medium hidden lg:table-cell">Attendance</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {showsWithGrosses.map((item, index) => (
-                    <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                      <td className="py-3 px-4">
-                        <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                          index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
-                        }`}>
-                          {index + 1}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4">
-                        <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium">
-                          {item.show.title}
-                        </Link>
-                      </td>
-                      <td className="py-3 px-4 text-right text-white font-medium">
-                        {formatCurrency(item.grosses?.thisWeek?.gross)}
-                        <ChangeIndicator
-                          current={item.grosses?.thisWeek?.gross}
-                          previous={item.grosses?.thisWeek?.grossPrevWeek}
-                        />
-                      </td>
-                      <td className="py-3 px-4 text-right text-gray-300 hidden sm:table-cell">
-                        {formatPercent(item.grosses?.thisWeek?.capacity)}
-                        <ChangeIndicator
-                          current={item.grosses?.thisWeek?.capacity}
-                          previous={item.grosses?.thisWeek?.capacityPrevWeek}
-                        />
-                      </td>
-                      <td className="py-3 px-4 text-right text-gray-300 hidden md:table-cell">
-                        {item.grosses?.thisWeek?.atp ? `$${item.grosses.thisWeek.atp.toFixed(0)}` : '—'}
-                      </td>
-                      <td className="py-3 px-4 text-right text-gray-300 hidden lg:table-cell">
-                        {formatNumber(item.grosses?.thisWeek?.attendance)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <p className="text-gray-400 text-sm mb-4">
+            Click any column header to sort. Shows are ranked by weekly gross by default.
+          </p>
+          <ThisWeekTable data={showsWithGrosses} />
         </section>
 
         {/* All-Time Leaders */}
@@ -209,58 +121,7 @@ export default function BoxOfficePage() {
           <p className="text-gray-400 text-sm mb-4">
             Cumulative Broadway gross over entire run. The Lion King holds the all-time record at over $2 billion.
           </p>
-          <div className="card overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-white/10 bg-surface-overlay">
-                    <th className="text-left py-3 px-4 text-gray-400 font-medium">#</th>
-                    <th className="text-left py-3 px-4 text-gray-400 font-medium">Show</th>
-                    <th className="text-right py-3 px-4 text-gray-400 font-medium">Total Gross</th>
-                    <th className="text-right py-3 px-4 text-gray-400 font-medium hidden sm:table-cell">Performances</th>
-                    <th className="text-right py-3 px-4 text-gray-400 font-medium hidden md:table-cell">Attendance</th>
-                    <th className="text-center py-3 px-4 text-gray-400 font-medium hidden lg:table-cell">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {allTimeLeaders.map((item, index) => (
-                    <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                      <td className="py-3 px-4">
-                        <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                          index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
-                        }`}>
-                          {index + 1}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4">
-                        <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium">
-                          {item.show.title}
-                        </Link>
-                      </td>
-                      <td className="py-3 px-4 text-right text-white font-medium">
-                        {formatCurrency(item.grosses?.allTime?.gross)}
-                      </td>
-                      <td className="py-3 px-4 text-right text-gray-300 hidden sm:table-cell">
-                        {formatNumber(item.grosses?.allTime?.performances)}
-                      </td>
-                      <td className="py-3 px-4 text-right text-gray-300 hidden md:table-cell">
-                        {formatNumber(item.grosses?.allTime?.attendance)}
-                      </td>
-                      <td className="py-3 px-4 text-center hidden lg:table-cell">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                          item.show.status === 'open'
-                            ? 'bg-emerald-500/15 text-emerald-400'
-                            : 'bg-gray-500/15 text-gray-400'
-                        }`}>
-                          {item.show.status === 'open' ? 'Running' : 'Closed'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <AllTimeTable data={allTimeLeaders} />
         </section>
 
         {/* Data Source Note */}
