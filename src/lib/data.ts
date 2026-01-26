@@ -868,55 +868,6 @@ export function getDesignationDescription(designation: CommercialDesignation): s
 }
 
 // ============================================
-// Audience Buzz Queries
-// ============================================
-
-export type AudienceBuzzDesignation =
-  | 'Loving It'          // 90-100: Audiences are ecstatic
-  | 'Liking It'          // 75-89: Solid audience response
-  | 'Take-it-or-Leave-it' // 60-74: Mixed reception
-  | 'Loathing It';       // 0-59: Audiences don't like it
-
-export interface AudienceBuzzSource {
-  score: number | null;
-  reviewCount: number | null;
-  starRating?: number;
-}
-
-export interface AudienceBuzzData {
-  title: string;
-  designation: AudienceBuzzDesignation;
-  combinedScore: number;
-  sources: {
-    showScore: AudienceBuzzSource | null;
-    mezzanine: AudienceBuzzSource | null;
-    reddit: AudienceBuzzSource | null;
-  };
-}
-
-interface AudienceBuzzFile {
-  _meta: {
-    lastUpdated: string;
-    sources: string[];
-    designationThresholds: Record<string, string>;
-    notes: string;
-  };
-  shows: Record<string, AudienceBuzzData>;
-}
-
-const audienceBuzz = audienceBuzzData as unknown as AudienceBuzzFile;
-
-/**
- * Get audience buzz data for a specific show by ID
- */
-export function getShowAudienceBuzz(showId: string): AudienceBuzzData | undefined {
-  return audienceBuzz.shows[showId];
-}
-
-// Alias for backward compatibility
-export const getAudienceBuzz = getShowAudienceBuzz;
-
-// ============================================
 // Critic Consensus Queries
 // ============================================
 

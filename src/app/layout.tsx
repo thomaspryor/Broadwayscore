@@ -170,6 +170,9 @@ export default function RootLayout({
                 <Link href="/submit-review" className="nav-link">
                   Submit Review
                 </Link>
+                <Link href="/feedback" className="nav-link">
+                  Feedback
+                </Link>
               </div>
             </div>
           </nav>
@@ -214,6 +217,7 @@ export default function RootLayout({
                   <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
                   <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
                   <li><Link href="/submit-review" className="hover:text-white transition-colors">Submit Review</Link></li>
+                  <li><Link href="/feedback" className="hover:text-white transition-colors">Send Feedback</Link></li>
                 </ul>
               </div>
             </div>

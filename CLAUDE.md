@@ -287,6 +287,18 @@ All automation runs via GitHub Actions - no local commands needed.
 - **Script:** `scripts/generate-critic-consensus.js`
 - **API:** Uses ANTHROPIC_API_KEY secret
 
+### `.github/workflows/process-feedback.yml`
+- **Runs:** Every Monday at 9 AM UTC (4 AM EST) (or manually via GitHub UI)
+- **Does:**
+  - Fetches feedback submissions from Formspree (last 7 days)
+  - AI categorizes feedback: Bug, Feature Request, Content Error, Praise, Other
+  - Assigns priority (High/Medium/Low) and recommended actions
+  - Creates GitHub issue with weekly digest
+- **User-facing page:** `/feedback` (accessible from navigation)
+- **Script:** `scripts/process-feedback.js`
+- **Setup guide:** `FORMSPREE-SETUP.md`
+- **Requires:** FORMSPREE_TOKEN secret (see setup guide)
+
 ## Deployment
 
 ### How It Works (Vercel)
