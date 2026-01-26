@@ -266,14 +266,14 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       score = audienceBuzz.combinedScore;
       label = audienceBuzz.designation;
       // Map audience designation to colors (use similar logic to critic tiers)
-      if (audienceBuzz.designation === 'Loving It') {
-        tier = { label: 'Loving It', color: '#22c55e', tooltip: 'Audiences love it' };
-      } else if (audienceBuzz.designation === 'Liking It') {
-        tier = { label: 'Liking It', color: '#14b8a6', tooltip: 'Audiences like it' };
-      } else if (audienceBuzz.designation === 'Take-it-or-Leave-it') {
-        tier = { label: 'Mixed', color: '#f59e0b', tooltip: 'Mixed audience reaction' };
-      } else if (audienceBuzz.designation === 'Loathing It') {
-        tier = { label: 'Disliked', color: '#ef4444', tooltip: 'Audiences dislike it' };
+      if (audienceBuzz.designation === 'Loving') {
+        tier = { label: 'Loving', color: '#22c55e', tooltip: 'Audiences love it', range: '', glow: false };
+      } else if (audienceBuzz.designation === 'Liking') {
+        tier = { label: 'Liking', color: '#14b8a6', tooltip: 'Audiences like it', range: '', glow: false };
+      } else if (audienceBuzz.designation === 'Shrugging') {
+        tier = { label: 'Shrugging', color: '#f59e0b', tooltip: 'Mixed audience reaction', range: '', glow: false };
+      } else if (audienceBuzz.designation === 'Loathing') {
+        tier = { label: 'Loathing', color: '#ef4444', tooltip: 'Audiences dislike it', range: '', glow: false };
       }
     }
   } else {
