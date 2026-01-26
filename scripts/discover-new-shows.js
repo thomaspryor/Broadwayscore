@@ -414,6 +414,18 @@ async function discoverShows() {
     saveShows(data);
     console.log(`✅ Added ${newShows.length} shows to shows.json`);
 
+    // Show detection summary
+    const revivalsDetected = revivalDetection.filter(d => d.isRevival).length;
+    const playsDetected = revivalDetection.filter(d => d.detectedType === 'play' && !d.isRevival).length;
+    const needsReview = revivalDetection.filter(d => d.confidence === 'low').length;
+
+    console.log('');
+    console.log('📊 Detection Summary:');
+    if (revivalsDetected > 0) console.log(`   🔄 ${revivalsDetected} revival(s) auto-detected`);
+    if (playsDetected > 0) console.log(`   🎭 ${playsDetected} play(s) auto-detected`);
+    if (needsReview > 0) console.log(`   ⚠️  ${needsReview} show(s) need manual type verification`);
+    console.log('');
+
     // Save pending shows for review
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
       discoveredAt: new Date().toISOString(),

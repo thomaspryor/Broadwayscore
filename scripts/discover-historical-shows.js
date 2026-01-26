@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./lib/scraper');
+const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'historical-shows-pending.json');
@@ -342,14 +343,48 @@ async function discoverHistoricalShows() {
 
   console.log(`🎭 Found ${newShows.length} NEW historical show(s):`);
   console.log('-'.repeat(40));
-  for (const show of newShows) {
-    console.log(`  - ${show.title} (${show.season}, ${show.venue})`);
+
+  // Analyze shows for revival detection
+  const revivalDetection = newShows.map(show => {
+    const knownCheck = checkKnownShow(show.title);
+    const isPlay = detectPlayFromTitle(show.title);
+
+    let detectedType = 'musical'; // default
+    let isRevival = false;
+    let confidence = 'low';
+
+    if (knownCheck.isKnown) {
+      // Known classic - likely a revival
+      detectedType = knownCheck.type === 'play' ? 'revival' : 'revival';
+      isRevival = true;
+      confidence = 'high';
+    } else if (isPlay) {
+      detectedType = 'play';
+      confidence = 'medium';
+    }
+
+    return { show, detectedType, isRevival, confidence };
+  });
+
+  for (const { show, detectedType, isRevival, confidence } of revivalDetection) {
+    const typeLabel = isRevival ? '🔄 REVIVAL' : detectedType === 'play' ? '🎭 PLAY' : '🎵 MUSICAL';
+    const confidenceLabel = confidence === 'high' ? '✓' : confidence === 'medium' ? '~' : '?';
+    console.log(`  ${confidenceLabel} ${show.title} (${show.season}) → ${typeLabel}`);
   }
   console.log('');
 
   if (!dryRun) {
     // Add new shows to database
-    for (const show of newShows) {
+    for (let i = 0; i < newShows.length; i++) {
+      const show = newShows[i];
+      const detection = revivalDetection[i];
+
+      // Build tags based on detection
+      const tags = ['historical'];
+      if (detection.isRevival) {
+        tags.push('revival');
+      }
+
       data.shows.push({
         id: show.id,
         title: show.title,
@@ -358,14 +393,14 @@ async function discoverHistoricalShows() {
         openingDate: show.openingDate || new Date().toISOString().split('T')[0],
         closingDate: show.closingDate,
         status: 'closed',
-        type: 'musical', // Default, needs manual verification
+        type: detection.detectedType, // Auto-detected with revival logic
         runtime: null,
         intermissions: null,
         images: {},
         synopsis: '',
         ageRecommendation: null,
         previewsStartDate: null,
-        tags: ['historical'],
+        tags: tags,
         ticketLinks: [],
         cast: [],
         creativeTeam: [],
@@ -374,6 +409,18 @@ async function discoverHistoricalShows() {
 
     saveShows(data);
     console.log(`✅ Added ${newShows.length} historical shows to shows.json`);
+
+    // Show detection summary
+    const revivalsDetected = revivalDetection.filter(d => d.isRevival).length;
+    const playsDetected = revivalDetection.filter(d => d.detectedType === 'play' && !d.isRevival).length;
+    const needsReview = revivalDetection.filter(d => d.confidence === 'low').length;
+
+    console.log('');
+    console.log('📊 Detection Summary:');
+    if (revivalsDetected > 0) console.log(`   🔄 ${revivalsDetected} revival(s) auto-detected`);
+    if (playsDetected > 0) console.log(`   🎭 ${playsDetected} play(s) auto-detected`);
+    if (needsReview > 0) console.log(`   ⚠️  ${needsReview} show(s) need manual type verification`);
+    console.log('');
 
     // Save pending shows for review
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
