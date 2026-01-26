@@ -58,6 +58,11 @@ jobs:
           mkdir -p data/audit/validation
           mkdir -p data/collection-state
 
+      - name: Configure git for incremental commits
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
       - name: Run review collection
         id: collect
         env:
@@ -85,12 +90,9 @@ jobs:
           fi
           node scripts/collect-review-texts.js $ARGS
 
-      - name: Commit and push changes
+      - name: Final commit and push
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-
-          # Add all changes
+          # Add all changes (in case any were missed by incremental commits)
           git add data/review-texts/ data/archives/reviews/ data/audit/ data/collection-state/
 
           # Check if there are changes to commit
