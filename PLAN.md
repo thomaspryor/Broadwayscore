@@ -243,10 +243,16 @@ Add content that directly answers questions people ask AI:
 8. ✅ Box Office Leaderboard page (`/box-office`)
 9. ✅ Commercial Scorecard page (`/biz-buzz`)
 
-### Ongoing (Phase 4)
-10. Set up AI citation monitoring
-9. Keep content fresh (you're already doing this with scrapers)
-10. Answer new common questions as they emerge
+### Phase 4 ✅ AI Citation Monitoring Setup Complete
+10. ✅ AI citation monitoring documentation (`docs/AI-CITATION-MONITORING.md`)
+11. ✅ Citation check script (`scripts/check-ai-citations.js`)
+12. ✅ Identified tools: HubSpot AEO Grader (free), Otterly.ai ($189/mo), Hall (free tier)
+
+### Ongoing Maintenance
+- Keep content fresh (automated scrapers running)
+- Run HubSpot AEO Grader monthly for visibility tracking
+- Answer new common questions as they emerge
+- Monitor and optimize for AI search based on citation data
 
 ---
 
