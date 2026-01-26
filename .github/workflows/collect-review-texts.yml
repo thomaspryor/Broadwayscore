@@ -79,6 +79,8 @@ jobs:
           VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
           WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
           WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
+          WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
+          WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
           # API keys for fallback tiers
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
