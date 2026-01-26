@@ -270,19 +270,20 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
     if (audienceBuzz) {
       score = audienceBuzz.combinedScore;  // Used for sorting only, never displayed
       label = audienceBuzz.designation;
-      // Map audience designation to colors and emojis
+      // Map audience designation to colors and flat styleable icons
+      // Using text-presentation variants for flat, colorable rendering
       if (audienceBuzz.designation === 'Loving') {
         tier = { label: 'Loving', color: '#22c55e', tooltip: 'Audiences love it', range: '', glow: false };
-        audienceIcon = '❤️';
+        audienceIcon = '❤︎';  // Heart text presentation - can be styled
       } else if (audienceBuzz.designation === 'Liking') {
         tier = { label: 'Liking', color: '#14b8a6', tooltip: 'Audiences like it', range: '', glow: false };
-        audienceIcon = '👍';
+        audienceIcon = '👍︎';  // Thumbs up text presentation
       } else if (audienceBuzz.designation === 'Shrugging') {
         tier = { label: 'Shrugging', color: '#f59e0b', tooltip: 'Mixed audience reaction', range: '', glow: false };
-        audienceIcon = '🤷';
+        audienceIcon = '🤷︎';  // Shrug text presentation
       } else if (audienceBuzz.designation === 'Loathing') {
         tier = { label: 'Loathing', color: '#ef4444', tooltip: 'Audiences dislike it', range: '', glow: false };
-        audienceIcon = '💩';
+        audienceIcon = '💩︎';  // Poop text presentation
       }
     }
   } else {
@@ -345,21 +346,19 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       {/* Score Badge */}
       <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 w-20 sm:w-24">
         {scoreMode === 'audience' ? (
-          // Audience mode: Show designation badge with stylized emoji icon (no numeric score)
+          // Audience mode: Show designation badge with flat colored emoji (no numeric score)
           tier && audienceIcon && (
             <div className="flex flex-col items-center gap-1.5 w-full">
               <div
-                className="text-5xl sm:text-6xl font-normal leading-none flex items-center justify-center"
-                style={{
-                  filter: `grayscale(100%) brightness(1.2) contrast(1.5)`,
-                  opacity: 0.9,
-                }}
+                className="text-5xl sm:text-6xl leading-none flex items-center justify-center"
                 aria-hidden="true"
               >
                 <span
                   style={{
                     display: 'inline-block',
-                    filter: `drop-shadow(0 0 8px ${tier.color}40)`,
+                    color: tier.color,
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
+                    textShadow: `0 2px 8px ${tier.color}40`,
                   }}
                 >
                   {audienceIcon}
