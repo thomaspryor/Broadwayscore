@@ -269,7 +269,9 @@ All automation runs via GitHub Actions - no local commands needed.
   - Transitions previews → open when opening date arrives
   - Discovers new shows on Broadway.org
   - Auto-adds new shows with status: "previews" if opening date is in future
-  - Triggers review gathering only for shows that have opened (not previews)
+  - **Triggers for newly opened shows (previews → open):**
+    - `gather-reviews.yml` - Collects critic reviews
+    - `update-reddit-sentiment.yml` - Gets Reddit buzz data
 
 ### `.github/workflows/gather-reviews.yml`
 - **Runs:** When new shows discovered (or manually triggered)
@@ -307,20 +309,28 @@ All automation runs via GitHub Actions - no local commands needed.
   - Closes issue when successfully processed
 
 ### `.github/workflows/update-reddit-sentiment.yml`
-- **Runs:** Monthly (1st of each month at 10am UTC) or manually
+- **Runs:**
+  - Monthly (1st of each month at 10am UTC) for all shows
+  - Automatically when shows transition previews → open (triggered by update-show-status.yml)
+  - Manually via GitHub UI
 - **Does:**
   - Scrapes r/Broadway for show discussions and reviews
   - Uses Claude Opus for sentiment analysis (enthusiastic/positive/mixed/negative)
   - Updates `data/audience-buzz.json` with Reddit scores
-  - Processes both open AND closed shows
+  - Saves incrementally after each show (prevents data loss on timeout)
 - **Manual trigger options:**
   - `show`: Process specific show ID (e.g., `maybe-happy-ending-2024`)
+  - `shows`: Comma-separated show IDs for batch processing (e.g., `hamilton-2015,wicked-2003`)
   - `limit`: Limit number of shows to process (default: 50)
 - **Technical notes:**
   - Uses ScrapingBee with premium proxy to access Reddit
   - Generic titles (The Outsiders, Chicago, etc.) use Broadway-qualified searches to avoid movie/book noise
   - Prioritizes Review-tagged posts for better signal
   - Reddit score weighted at 20% in combined Audience Buzz score
+  - 2-hour timeout with `if: always()` commit step to save partial progress
+- **Script:** `scripts/scrape-reddit-sentiment.js`
+
+### `.github/workflows/process-review-submission.yml`
 - **User-facing page:** `/submit-review` (accessible from navigation)
 - **Issue template:** `.github/ISSUE_TEMPLATE/missing-review.yml`
 - **Validation script:** `scripts/validate-review-submission.js`
