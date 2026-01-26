@@ -5,16 +5,16 @@
   "criticName": "Roma Torre",
   "url": "http://www.ny1.com/nyc/all-boroughs/lifestyles/2015/08/6/ny1-theater-review---hamilton-.html",
   "publishDate": "August 7, 2015",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Celebrated actor and writer Lin-Manuel Miranda returns to Broadway with his highly anticipated musical \"Hamilton,\" which had a sold-out run off-Broadway at The Public Theater earlier this year. NY1's Roma Torre filed a review.\n\nIt was phenomenal off-Broadway. It's even better now. \"Hamilton\" is that rare musical that fires on all cylinders, even ones we never knew existed. Just as Lin-Manuel Miranda celebrated the city in his first Broadway outing, \"In the Heights,\" \"Hamilton\" turns out to be another quintessential New York story, and I dare anyone to tell Mr. Miranda that the saga of our nation's first Treasury Secretary is ancient history.\n\nThe costumes may look 18th century, but this is very much a modern work. Ingeniously, Miranda, who composed the music and lyrics, wrote the book and stars, has found a way to translate that chapter of our nation's birth into the language of today. Yes, you will hear a lot of rap music, but Miranda, a student of musical theatre, incorporates traditional conventions as well. And so, mixed in with the clever hip-hop are gorgeous melodic strains and tunes so hummable, you can't get them out of your head. And a big nod to Alex Lacamoire's brilliantly inventive orchestrations.\n\nInspired by Ron Chernow's biography, Miranda has found something of a kindred spirit in Hamilton - his hungry immigrant roots, his intellectual gifts, boundless energy and unyielding ambition. And it's all drawn out on stage in the most exhilarating and heartfelt fashion. Thomas Kail's direction matches Miranda's impassioned approach to the material, and he's joined by Andy Blankenbuehler, whose choreography is poetry in motion.\n\nIf the cast of multicultural actors doesn't resemble their characters, they're deadringers in spirit. Among them, the excellent Daveed Diggs, double cast as Thomas Jefferson and the Marquis de Lafayette. He's so good in the two roles, you may not realize the faithful Frenchman and the cocky Secretary of State are played by the same man.\n\nMiranda is very generous to his company, with 10 principal performers. He makes sure to give each one a chance to shine in the spotlight. Hamilton's devoted wife, Eliza Schuyler, is played by the radiant Phillipa Soo. As her spunky sister Angelica, Renee Elise Goldsberry brings to mind Beyonce's vocal gifts, not to mention her outright beauty.\n\nChristopher Jackson, who you may remember from \"In The Heights,\" is a very commanding and human George Washington; Jonathan Groff, in cameo appearances as the petulant King George, is a royal scene-stealer. And in the role of Hamilton's infamous rival, Aaron Burr, Leslie Odom Jr. absolutely kills.\n\nIn a sense, the collective talents of this bravura company pay homage to Broadway's founding fathers - and mothers - by pushing the envelope on an artform that at best, teaches us, enlightens us and entertains us like nothing else.\n\nTune to Spectrum New NY1 on TV, online, online, or on Local On Demand Channel 1020 for:",
+  "isFullReview": true,
   "showScoreExcerpt": "\"It was phenomenal off-Broadway. It's even better now. 'Hamilton' is that rare musical that fires on all cylinders, even ones we never knew existed...In a sense, the collective talents of this bravura company pay homage to Broadway's founding fathers - and mothers - by pushing the envelope on an artform that at best, teaches us, enlightens us and entertains us like nothing else.\"",
   "originalScore": null,
   "assignedScore": 95,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
-  "textStatus": "excerpt-only",
-  "textQuality": "missing",
-  "sourceMethod": "showscore",
+  "textStatus": "complete",
+  "textQuality": "full",
+  "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -72,5 +72,37 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 483,
+  "archivePath": "data/archives/reviews/hamilton-2015/ny1--roma-torre_2026-01-26.html",
+  "textFetchedAt": "2026-01-26T22:31:42.416Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "archiveOrgTimestamp": "20170705100709",
+  "archiveOrgUrl": "http://web.archive.org/web/20170705100709/http://www.ny1.com/nyc/all-boroughs/lifestyles/2015/08/6/ny1-theater-review---hamilton-.html"
 }
