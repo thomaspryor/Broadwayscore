@@ -310,10 +310,10 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
       </div>
 
       {/* Score - fixed height to match thumbnail for consistent alignment */}
-      <div className="flex-shrink-0 w-20 sm:w-24 h-20 sm:h-24 flex flex-col items-center justify-center">
+      <div className="flex-shrink-0 w-20 sm:w-24 h-20 sm:h-24 flex flex-col items-center justify-start pt-1">
         {show.criticScore && getScoreTier(score) && (
           <span
-            className="text-[10px] font-semibold mb-1 uppercase tracking-wide"
+            className="text-[10px] font-semibold mb-2 uppercase tracking-wide"
             style={{ color: getScoreTier(score)?.color }}
             title={getScoreTier(score)?.tooltip}
           >
