@@ -5,15 +5,15 @@
   "criticName": "Brian Scott Lipton",
   "url": "https://www.cititour.com/harry-potter-cursed-child-review/",
   "publishDate": "April 22, 2018",
-  "fullText": null,
+  "fullText": "NYC Events, Restaurants, Music, & Nightlife\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.\n\nAbout Us | Editorial Guidelines | Contact Us",
   "isFullReview": false,
   "showScoreExcerpt": "\"A breathtaking production...The illusions are unlike anything seen on Broadway before.\"",
   "originalScore": null,
   "assignedScore": 89,
   "source": "show-score",
-  "textStatus": "excerpt-only",
-  "textQuality": "missing",
-  "sourceMethod": "showscore",
+  "textStatus": "partial",
+  "textQuality": "partial",
+  "sourceMethod": "brightdata",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -71,5 +71,33 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 86,
+  "archivePath": "data/archives/reviews/harry-potter-2021/cititour--brian-scott-lipton_2026-01-26.html",
+  "textFetchedAt": "2026-01-26T22:23:16.544Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (404): Request failed with status code 404"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textIssues": [
+    "Word count too low: 86 (min: 300)",
+    "Show title not found in text"
+  ]
 }
