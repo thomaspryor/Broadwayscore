@@ -242,6 +242,95 @@ export function generateItemListSchema(items: {
   };
 }
 
+// FAQPage Schema - For show pages and other FAQ content
+// FAQ schema increases AI citations by 28% and makes pages 3.2x more likely to appear in AI Overviews
+export function generateShowFAQSchema(show: ComputedShow) {
+  const score = show.criticScore?.score ? Math.round(show.criticScore.score) : null;
+  const reviewCount = show.criticScore?.reviewCount || 0;
+
+  const faqs: { question: string; answer: string }[] = [];
+
+  // Q: What is the score?
+  if (score && reviewCount >= 5) {
+    faqs.push({
+      question: `What is the critic score for ${show.title}?`,
+      answer: `${show.title} has a critic score of ${score}/100 based on ${reviewCount} professional reviews. ${
+        score >= 85 ? 'This is considered a "Must-See" show.' :
+        score >= 75 ? 'This is a "Recommended" show.' :
+        score >= 65 ? 'This is rated "Worth Seeing".' :
+        score >= 55 ? 'This show is rated "Skippable".' :
+        'Critics generally did not recommend this show.'
+      }`,
+    });
+  }
+
+  // Q: Is it still running?
+  faqs.push({
+    question: `Is ${show.title} still running on Broadway?`,
+    answer: show.status === 'open'
+      ? `Yes, ${show.title} is currently playing at ${show.venue} on Broadway.${show.closingDate ? ` It is scheduled to close on ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.` : ''}`
+      : show.status === 'previews'
+      ? `${show.title} is currently in previews at ${show.venue}. It officially opens on ${new Date(show.openingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.`
+      : `No, ${show.title} has closed. It played at ${show.venue}${show.closingDate ? ` and closed on ${new Date(show.closingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}` : ''}.`,
+  });
+
+  // Q: Where is it playing?
+  if (show.status !== 'closed') {
+    faqs.push({
+      question: `Where is ${show.title} playing on Broadway?`,
+      answer: `${show.title} is playing at ${show.venue}${show.theaterAddress ? `, located at ${show.theaterAddress}` : ''}.`,
+    });
+  }
+
+  // Q: How long is it?
+  if (show.runtime) {
+    const runtimeMins = parseInt(show.runtime, 10);
+    if (!isNaN(runtimeMins)) {
+      const hours = Math.floor(runtimeMins / 60);
+      const mins = runtimeMins % 60;
+      const runtimeStr = hours > 0
+        ? `${hours} hour${hours > 1 ? 's' : ''}${mins > 0 ? ` and ${mins} minutes` : ''}`
+        : `${mins} minutes`;
+      faqs.push({
+        question: `How long is ${show.title}?`,
+        answer: `${show.title} has a runtime of ${runtimeStr}${show.intermissions ? `, including ${show.intermissions} intermission${show.intermissions > 1 ? 's' : ''}` : ' with no intermission'}.`,
+      });
+    }
+  }
+
+  // Q: Who's in the cast?
+  if (show.cast && show.cast.length > 0) {
+    const topCast = show.cast.slice(0, 5);
+    faqs.push({
+      question: `Who is in the cast of ${show.title}?`,
+      answer: `The cast of ${show.title} includes ${topCast.map(c => `${c.name}${c.role ? ` (${c.role})` : ''}`).join(', ')}${show.cast.length > 5 ? `, and ${show.cast.length - 5} more` : ''}.`,
+    });
+  }
+
+  // Q: Is it good for kids?
+  if (show.ageRecommendation) {
+    faqs.push({
+      question: `Is ${show.title} appropriate for children?`,
+      answer: `${show.title} is recommended for ${show.ageRecommendation}.`,
+    });
+  }
+
+  if (faqs.length === 0) return null;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  };
+}
+
 // Helper to render schema as JSON-LD script
 export function schemaToJsonLd(schema: Record<string, unknown> | Record<string, unknown>[]) {
   return JSON.stringify(schema);

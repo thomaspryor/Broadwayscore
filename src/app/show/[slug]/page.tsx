@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus, getLotteryRush, getShowCommercial } from '@/lib/data';
-import { generateShowSchema, generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
@@ -448,6 +448,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
     { name: show.type === 'musical' || show.type === 'revival' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${show.type === 'musical' || show.type === 'revival' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` },
     { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
   ]);
+  const faqSchema = generateShowFAQSchema(show);
   const score = show.criticScore?.score;
   const grosses = getShowGrosses(params.slug);
   const weekEnding = getGrossesWeekEnding();
@@ -457,11 +458,14 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const lotteryRush = getLotteryRush(show.id);
   const commercial = getShowCommercial(show.slug);
 
+  // Combine schemas, filtering out null FAQ schema
+  const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([showSchema, breadcrumbSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
 
       {/* Sticky Score Header */}
