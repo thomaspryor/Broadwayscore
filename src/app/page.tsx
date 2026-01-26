@@ -10,6 +10,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'all';
 type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'closing_soon' | 'audience_buzz';
 type TypeParam = 'all' | 'musical' | 'play';
+type ScoreModeParam = 'critics' | 'audience';
 
 // Internal filter values
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews';
@@ -18,6 +19,7 @@ type StatusFilter = 'all' | 'open' | 'closed' | 'previews';
 const DEFAULT_STATUS: StatusParam = 'now_playing';
 const DEFAULT_SORT: SortParam = 'recent';
 const DEFAULT_TYPE: TypeParam = 'all';
+const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
 
 // Map URL params to internal values
 const statusParamToFilter: Record<StatusParam, StatusFilter> = {
@@ -250,9 +252,34 @@ function ChevronRightIcon() {
   );
 }
 
-const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: number; hideStatus: boolean }) {
-  const score = show.criticScore?.score;
+const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: { show: ComputedShow; index: number; hideStatus: boolean; scoreMode: ScoreModeParam }) {
   const isRevival = show.type === 'revival';
+
+  // Get the appropriate score based on mode
+  let score: number | null | undefined;
+  let label: string | undefined;
+  let tier: typeof SCORE_TIERS.mustSee | null = null;
+
+  if (scoreMode === 'audience') {
+    const audienceBuzz = getAudienceBuzz(show.id);
+    if (audienceBuzz) {
+      score = audienceBuzz.combinedScore;
+      label = audienceBuzz.designation;
+      // Map audience designation to colors (use similar logic to critic tiers)
+      if (audienceBuzz.designation === 'Loving It') {
+        tier = { label: 'Loving It', color: '#22c55e', tooltip: 'Audiences love it' };
+      } else if (audienceBuzz.designation === 'Liking It') {
+        tier = { label: 'Liking It', color: '#14b8a6', tooltip: 'Audiences like it' };
+      } else if (audienceBuzz.designation === 'Take-it-or-Leave-it') {
+        tier = { label: 'Mixed', color: '#f59e0b', tooltip: 'Mixed audience reaction' };
+      } else if (audienceBuzz.designation === 'Loathing It') {
+        tier = { label: 'Disliked', color: '#ef4444', tooltip: 'Audiences dislike it' };
+      }
+    }
+  } else {
+    score = show.criticScore?.score;
+    tier = getScoreTier(score);
+  }
 
   return (
     <Link
@@ -308,16 +335,21 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
 
       {/* Score - responsive badge (smaller on mobile, larger on desktop) */}
       <div className="flex-shrink-0 flex flex-col items-center justify-start pt-1">
-        {show.criticScore && getScoreTier(score) && (
+        {tier && (
           <span
             className="text-[9px] font-semibold mb-1 uppercase tracking-wide whitespace-nowrap"
-            style={{ color: getScoreTier(score)?.color }}
-            title={getScoreTier(score)?.tooltip}
+            style={{ color: tier.color }}
+            title={tier.tooltip}
           >
-            {getScoreTier(score)?.label}
+            {tier.label}
           </span>
         )}
-        <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} status={show.status} />
+        <ScoreBadge
+          score={scoreMode === 'audience' ? (score !== undefined && score !== null ? Math.round(score) : null) : score}
+          size="lg"
+          reviewCount={scoreMode === 'critics' ? show.criticScore?.reviewCount : undefined}
+          status={show.status}
+        />
       </div>
     </Link>
   );
@@ -410,12 +442,14 @@ function HomePageInner() {
   const statusParam = (searchParams.get('status') as StatusParam) || DEFAULT_STATUS;
   const sortParam = (searchParams.get('sort') as SortParam) || DEFAULT_SORT;
   const typeParam = (searchParams.get('type') as TypeParam) || DEFAULT_TYPE;
+  const scoreModeParam = (searchParams.get('scoreMode') as ScoreModeParam) || DEFAULT_SCORE_MODE;
   const searchQuery = searchParams.get('q') || '';
 
   // Validate params (use default if invalid)
   const status: StatusParam = ['now_playing', 'closed', 'upcoming', 'all'].includes(statusParam) ? statusParam : DEFAULT_STATUS;
   const sort: SortParam = ['recent', 'score_desc', 'score_asc', 'alpha', 'closing_soon', 'audience_buzz'].includes(sortParam) ? sortParam : DEFAULT_SORT;
   const type: TypeParam = ['all', 'musical', 'play'].includes(typeParam) ? typeParam : DEFAULT_TYPE;
+  const scoreMode: ScoreModeParam = ['critics', 'audience'].includes(scoreModeParam) ? scoreModeParam : DEFAULT_SCORE_MODE;
 
   // Internal status filter value
   const statusFilter = statusParamToFilter[status];
@@ -433,6 +467,7 @@ function HomePageInner() {
           (key === 'status' && value === DEFAULT_STATUS) ||
           (key === 'sort' && value === DEFAULT_SORT) ||
           (key === 'type' && value === DEFAULT_TYPE) ||
+          (key === 'scoreMode' && value === DEFAULT_SCORE_MODE) ||
           (key === 'q' && value === '');
 
         if (isDefault) {
@@ -448,7 +483,7 @@ function HomePageInner() {
   }, [searchParams, pathname, router]);
 
   // Check if any non-default filters are active
-  const hasActiveFilters = status !== DEFAULT_STATUS || sort !== DEFAULT_SORT || type !== DEFAULT_TYPE || searchQuery !== '';
+  const hasActiveFilters = status !== DEFAULT_STATUS || sort !== DEFAULT_SORT || type !== DEFAULT_TYPE || scoreMode !== DEFAULT_SCORE_MODE || searchQuery !== '';
 
   // Clear all filters
   const clearAllFilters = useCallback(() => {
@@ -488,8 +523,17 @@ function HomePageInner() {
   const upcomingShows = useMemo(() => getUpcomingShows(), []);
 
   const filteredAndSortedShows = useMemo(() => {
-    // Only include shows with reviews
-    let result = shows.filter(show => show.criticScore && show.criticScore.reviewCount > 0);
+    // Filter based on score mode
+    let result = shows.filter(show => {
+      if (scoreMode === 'audience') {
+        // Only show shows with audience buzz data
+        const buzz = getAudienceBuzz(show.id);
+        return buzz !== null;
+      } else {
+        // Only show shows with critic reviews
+        return show.criticScore && show.criticScore.reviewCount > 0;
+      }
+    });
 
     // Status filter
     if (statusFilter !== 'all') {
@@ -516,10 +560,22 @@ function HomePageInner() {
     // Sort
     result.sort((a, b) => {
       switch (sort) {
-        case 'score_desc':
+        case 'score_desc': {
+          if (scoreMode === 'audience') {
+            const aBuzz = getAudienceBuzz(a.id);
+            const bBuzz = getAudienceBuzz(b.id);
+            return (bBuzz?.combinedScore ?? -1) - (aBuzz?.combinedScore ?? -1);
+          }
           return (b.criticScore?.score ?? -1) - (a.criticScore?.score ?? -1);
-        case 'score_asc':
+        }
+        case 'score_asc': {
+          if (scoreMode === 'audience') {
+            const aBuzz = getAudienceBuzz(a.id);
+            const bBuzz = getAudienceBuzz(b.id);
+            return (aBuzz?.combinedScore ?? -1) - (bBuzz?.combinedScore ?? -1);
+          }
           return (a.criticScore?.score ?? -1) - (b.criticScore?.score ?? -1);
+        }
         case 'audience_buzz': {
           // Sort by audience buzz combined score (highest first)
           // NOTE: Numeric scores are used ONLY for sorting, never displayed to users
@@ -545,7 +601,7 @@ function HomePageInner() {
     });
 
     return result;
-  }, [shows, statusFilter, type, searchQuery, sort]);
+  }, [shows, statusFilter, type, searchQuery, sort, scoreMode]);
 
   // Hide status chip when it would be redundant
   const shouldHideStatus = statusFilter !== 'all';
@@ -630,6 +686,22 @@ function HomePageInner() {
             </button>
           ))}
         </div>
+
+        <div className="flex items-center gap-1 sm:gap-2 flex-wrap" role="group" aria-label="Score mode">
+          <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SCORES:</span>
+          {(['critics', 'audience'] as const).map((mode) => (
+            <button
+              key={mode}
+              onClick={() => updateParams({ scoreMode: mode })}
+              aria-pressed={scoreMode === mode}
+              className={`px-2.5 py-2 sm:px-2 sm:py-1 rounded transition-colors text-[11px] font-medium uppercase tracking-wider min-h-[44px] sm:min-h-0 ${
+                scoreMode === mode ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
+              }`}
+            >
+              {mode === 'critics' ? 'CRITICS' : 'AUDIENCE'}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Active Filter Chips */}
@@ -653,6 +725,12 @@ function HomePageInner() {
               onRemove={() => updateParams({ type: null })}
             />
           )}
+          {scoreMode !== DEFAULT_SCORE_MODE && (
+            <FilterChip
+              label={`Scores: ${scoreMode === 'critics' ? 'Critics' : 'Audience'}`}
+              onRemove={() => updateParams({ scoreMode: null })}
+            />
+          )}
           {searchQuery && (
             <FilterChip
               label={`Search: "${searchQuery}"`}
@@ -672,7 +750,7 @@ function HomePageInner() {
       <h2 className="sr-only">Broadway Shows</h2>
       <div className="space-y-3" role="list" aria-label="Broadway shows">
         {filteredAndSortedShows.map((show, index) => (
-          <ShowCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} />
+          <ShowCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
         ))}
       </div>
 
