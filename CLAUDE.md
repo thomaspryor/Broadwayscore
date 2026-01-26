@@ -432,11 +432,15 @@ All automation runs via GitHub Actions - no local commands needed.
 - **Secrets required:** `ANTHROPIC_API_KEY` (for web search), `BRIGHTDATA_TOKEN`, `SCRAPINGBEE_API_KEY`
 - **Script:** `scripts/gather-reviews.js`
 - **Manual trigger:** `gh workflow run gather-reviews.yml -f shows=show-id-here`
+- **Parallel runs supported:** Yes - multiple workflows can run simultaneously
 - **Technical notes:**
   - Installs Playwright Chromium for Show Score carousel scraping
   - Show Score extraction uses Playwright to scroll through ALL critic reviews (not just first 8)
   - Detects and rejects Show Score redirects to off-broadway/off-off-broadway shows
   - Tries `-broadway` URL suffix patterns first to find correct Broadway shows
+  - **Parallel-safe:** Only commits `review-texts/` and `archives/` (NOT `reviews.json`)
+  - Uses retry loop (5 attempts) with random backoff for git push conflicts
+  - After batch runs complete, rebuild `reviews.json` with: `node scripts/rebuild-all-reviews.js`
 
 ### `.github/workflows/fetch-images.yml`
 - **Runs:** When triggered
