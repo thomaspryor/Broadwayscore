@@ -763,7 +763,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </section>
         )}
 
-        {/* Commercial Performance / Biz Buzz */}
+        {/* Commercial Scorecard */}
         {commercial ? (
           <BizBuzzCard commercial={commercial} showTitle={show.title} />
         ) : show.status === 'previews' && (

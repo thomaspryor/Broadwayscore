@@ -7,13 +7,13 @@ import { ComputedShow } from '@/lib/engine';
 import { AudienceBuzzTable } from '@/components/SortableAudienceBuzzTable';
 
 export const metadata: Metadata = {
-  title: 'Broadway Audience Buzz - What Real Theatergoers Think',
+  title: 'Audience Scorecard - What Real Theatergoers Think',
   description: 'Audience scores for Broadway shows from Show Score, Mezzanine, and Reddit. See which shows audiences love, like, or loathe based on real reviews.',
   alternates: {
     canonical: `${BASE_URL}/audience-buzz`,
   },
   openGraph: {
-    title: 'Broadway Audience Buzz - Real Audience Ratings',
+    title: 'Audience Scorecard - Real Broadway Audience Ratings',
     description: 'What do audiences really think? Combined scores from Show Score, Mezzanine, and Reddit for every Broadway show.',
     url: `${BASE_URL}/audience-buzz`,
     type: 'article',
@@ -27,15 +27,15 @@ const faqSchema = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: 'What is Broadway Audience Buzz?',
+      name: 'What is Broadway Audience Scorecard?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Audience Buzz is our aggregated audience score combining ratings from Show Score, Mezzanine, and Reddit r/Broadway discussions. It represents what real theatergoers think, separate from professional critic reviews.',
+        text: 'Audience Scorecard is our aggregated audience score combining ratings from Show Score, Mezzanine, and Reddit r/Broadway discussions. It represents what real theatergoers think, separate from professional critic reviews.',
       },
     },
     {
       '@type': 'Question',
-      name: 'How is the Audience Buzz score calculated?',
+      name: 'How is the Audience Scorecard score calculated?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'We combine three sources: Show Score and Mezzanine split 80% of the weight proportionally by sample size (more reviews = more weight), while Reddit sentiment analysis contributes a fixed 20%. This balances broad audience feedback with passionate community discussion.',
@@ -43,7 +43,7 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: 'What do the Audience Buzz designations mean?',
+      name: 'What do the Audience Scorecard designations mean?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'Shows are categorized as: Loving (88-100) - audiences adore it, Liking (78-87) - solid positive reception, Shrugging (68-77) - mixed or lukewarm response, Loathing (0-67) - audiences dislike it.',
@@ -96,7 +96,7 @@ export default function AudienceBuzzPage() {
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
-    { name: 'Audience Buzz', url: `${BASE_URL}/audience-buzz` },
+    { name: 'Audience Scorecard', url: `${BASE_URL}/audience-buzz` },
   ]);
 
   const designationOrder = ['Loving', 'Liking', 'Shrugging', 'Loathing'];
@@ -118,7 +118,7 @@ export default function AudienceBuzzPage() {
         </Link>
 
         <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white">Broadway Audience Buzz</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white">Broadway Audience Scorecard</h1>
           <p className="text-gray-400 mt-2">
             What real theatergoers think. Combined audience scores from Show Score, Mezzanine, and Reddit.
           </p>
@@ -167,7 +167,7 @@ export default function AudienceBuzzPage() {
 
         {/* How It Works */}
         <div className="card p-5 mb-8 bg-gradient-to-r from-red-500/5 to-emerald-500/5 border-white/10">
-          <h2 className="font-bold text-white mb-2">How Audience Buzz Works</h2>
+          <h2 className="font-bold text-white mb-2">How Audience Scorecard Works</h2>
           <div className="grid sm:grid-cols-3 gap-4 text-sm text-gray-400">
             <div>
               <h3 className="font-semibold text-white mb-1">Show Score (40%)</h3>
@@ -231,7 +231,7 @@ export default function AudienceBuzzPage() {
           <h2 className="text-lg font-bold text-white mb-3">Related</h2>
           <div className="flex flex-wrap gap-3">
             <Link href="/box-office" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Box Office Data →
+              Box Office Scorecard →
             </Link>
             <Link href="/biz-buzz" className="text-brand hover:text-brand-hover transition-colors text-sm">
               Commercial Scorecard →
