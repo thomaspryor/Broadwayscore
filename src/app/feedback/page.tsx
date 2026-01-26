@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Feedback | Broadway Scorecard',
+  title: 'Feedback',
   description: 'Share your feedback, report bugs, or suggest new features for Broadway Scorecard.',
 };
 
