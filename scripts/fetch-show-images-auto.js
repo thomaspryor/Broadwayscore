@@ -103,7 +103,7 @@ async function discoverTodayTixId(showTitle) {
   }
 }
 
-// Contentful URL transformation parameters for different formats
+// Contentful URL transformation parameters - ONLY used as fallback
 // Contentful's Image API allows requesting any size/crop on the fly
 const CONTENTFUL_TRANSFORMS = {
   // Square thumbnail (1:1) - good for grid cards
@@ -114,8 +114,8 @@ const CONTENTFUL_TRANSFORMS = {
   landscape: '?w=1920&h=800&fit=fill&f=center&fm=webp&q=90'
 };
 
-// Extract the best source images from TodayTix page
-// Then generate all formats using Contentful's transformation API
+// Extract images from TodayTix page
+// Priority: Find actual square AND portrait images first, only crop as last resort
 function extractAllImageFormats(html) {
   // Extract all Contentful image URLs
   const imageMatches = html.match(/https:\/\/images\.ctfassets\.net\/[^"'<\s]+\.(jpg|jpeg|png)/gi);
@@ -125,52 +125,88 @@ function extractAllImageFormats(html) {
   // Clean URLs (remove query params) and deduplicate
   const uniqueImages = [...new Set(imageMatches.map(url => url.split('?')[0]))];
 
-  // Find the best source images
-  let posterSource = null;  // Best for portrait + square (key art)
-  let heroSource = null;    // Best for landscape (production photo)
+  // Find specific format images
+  let squareImage = null;    // Actual square image (best)
+  let portraitImage = null;  // Actual portrait/poster image (best)
+  let heroImage = null;      // Wide production photo for hero
+  let fallbackImage = null;  // Any usable image as last resort
 
   for (const baseUrl of uniqueImages) {
     const filename = baseUrl.split('/').pop().toLowerCase();
 
-    // Priority 1: Look for official poster/key art (best for portrait and square)
-    if (filename.includes('poster') || filename.includes('key_art') || filename.includes('keyart') ||
-        filename.match(/480x720|600x900|portrait/)) {
-      posterSource = baseUrl;
+    // Look for actual SQUARE images (TodayTix uses these for card grids)
+    // Common patterns: 1080x1080, 1000x1000, 500x500, or "square" in name
+    if (!squareImage && (
+        filename.match(/1080x1080|1000x1000|500x500/) ||
+        filename.includes('square') ||
+        filename.includes('_sq') ||
+        filename.includes('-sq')
+    )) {
+      squareImage = baseUrl;
     }
 
-    // Priority 2: Look for production photos (best for landscape hero)
+    // Look for actual PORTRAIT/POSTER images
+    // Common patterns: 480x720, 600x900, "poster", "key_art"
+    if (!portraitImage && (
+        filename.includes('poster') ||
+        filename.includes('key_art') ||
+        filename.includes('keyart') ||
+        filename.match(/480x720|600x900|400x600/)
+    )) {
+      portraitImage = baseUrl;
+    }
+
+    // Look for LANDSCAPE/HERO images (production photos)
     // These are typically wider aspect ratio photos
-    if (!heroSource && (filename.includes('production') || filename.includes('company') ||
-        filename.includes('ensemble') || filename.match(/\d\.png$/) || filename.match(/\d\.jpg$/))) {
-      heroSource = baseUrl;
+    if (!heroImage && (
+        filename.includes('hero') ||
+        filename.includes('banner') ||
+        filename.includes('production') ||
+        filename.includes('company') ||
+        filename.includes('ensemble') ||
+        filename.match(/1920x|1440x|landscape/)
+    )) {
+      heroImage = baseUrl;
+    }
+
+    // Track a fallback (any decent-sized image that's not a headshot)
+    if (!fallbackImage && filename.length > 10 && !filename.match(/^[a-z]+\.(png|jpg)$/)) {
+      fallbackImage = baseUrl;
     }
   }
 
-  // Fallback: use first non-headshot image
-  if (!posterSource && uniqueImages.length > 0) {
-    // Avoid headshots (usually small square images of cast)
-    posterSource = uniqueImages.find(url => {
-      const filename = url.split('/').pop().toLowerCase();
-      return !filename.match(/^[a-z]+\.(png|jpg)$/) && // Avoid single-name files like "brad.png"
-             filename.length > 10; // Poster files usually have longer names
-    }) || uniqueImages[0];
+  // Use fallbacks where needed
+  if (!fallbackImage) fallbackImage = uniqueImages[0];
+  if (!portraitImage) portraitImage = fallbackImage;
+  if (!heroImage) heroImage = portraitImage;
+
+  // For square: prefer actual square image, otherwise crop portrait as last resort
+  let squareUrl, squareMethod;
+  if (squareImage) {
+    squareUrl = squareImage + '?fm=webp&q=90';
+    squareMethod = 'native';
+  } else {
+    // Fallback: crop the portrait to square (not ideal but works)
+    squareUrl = portraitImage + CONTENTFUL_TRANSFORMS.square;
+    squareMethod = 'cropped';
   }
 
-  if (!heroSource) {
-    heroSource = posterSource; // Use poster as fallback for hero
-  }
+  // For portrait: use the portrait image with quality params
+  const portraitUrl = portraitImage + '?fm=webp&q=90';
 
-  if (!posterSource) {
-    return null;
-  }
+  // For landscape: use hero image, crop if needed for exact dimensions
+  const landscapeUrl = heroImage + CONTENTFUL_TRANSFORMS.landscape;
 
-  // Generate all formats using Contentful transforms
   return {
-    square: posterSource + CONTENTFUL_TRANSFORMS.square,
-    portrait: posterSource + CONTENTFUL_TRANSFORMS.portrait,
-    landscape: heroSource + CONTENTFUL_TRANSFORMS.landscape,
-    // Keep raw sources for debugging
-    _sources: { poster: posterSource, hero: heroSource }
+    square: squareUrl,
+    portrait: portraitUrl,
+    landscape: landscapeUrl,
+    // Keep metadata for debugging
+    _sources: {
+      square: squareImage ? 'native' : 'cropped from portrait',
+      portrait: portraitImage,
+      hero: heroImage
+    }
   };
 }
 
@@ -191,19 +227,26 @@ async function fetchShowImages(show, todayTixInfo) {
     const images = extractAllImageFormats(html);
 
     if (images && (images.square || images.portrait || images.landscape)) {
-      console.log(`   ✓ Found source images:`);
-      if (images._sources?.poster) {
-        const posterFile = images._sources.poster.split('/').pop();
-        console.log(`     - Poster source: ${posterFile}`);
+      console.log(`   ✓ Found images:`);
+
+      // Report square image source
+      if (images._sources?.square === 'native') {
+        console.log(`     - Square (thumbnail): ✓ native square image found`);
+      } else {
+        console.log(`     - Square (thumbnail): ⚠ cropped from portrait (fallback)`);
       }
-      if (images._sources?.hero && images._sources.hero !== images._sources?.poster) {
+
+      // Report portrait
+      if (images._sources?.portrait) {
+        const posterFile = images._sources.portrait.split('/').pop();
+        console.log(`     - Portrait (poster): ✓ ${posterFile}`);
+      }
+
+      // Report hero
+      if (images._sources?.hero) {
         const heroFile = images._sources.hero.split('/').pop();
-        console.log(`     - Hero source: ${heroFile}`);
+        console.log(`     - Landscape (hero): ✓ ${heroFile}`);
       }
-      console.log(`   ✓ Generated formats via Contentful transforms:`);
-      console.log(`     - Square 1080x1080 (thumbnail): ✓`);
-      console.log(`     - Portrait 720x1080 (poster): ✓`);
-      console.log(`     - Landscape 1920x800 (hero): ✓`);
 
       // Format for shows.json
       return {
