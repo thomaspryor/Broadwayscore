@@ -34,14 +34,17 @@ jobs:
         run: |
           echo "Gathering review data for shows: ${{ inputs.shows }}"
 
-      # TODO: Implement actual review gathering logic
-      # This is a placeholder that will be filled in when the data agent is complete
       - name: Gather reviews
         id: gather
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: |
           SHOWS="${{ inputs.shows }}"
 
           echo "Processing shows: $SHOWS"
+          echo "ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:+SET}"
 
           # Check if gather-reviews script exists
           if [ -f scripts/gather-reviews.js ]; then
