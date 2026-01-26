@@ -107,6 +107,12 @@ jobs:
           - See collection report for tier breakdown
 
           Co-Authored-By: GitHub Action <action@github.com>"
+
+            # Pull latest changes before pushing
+            git pull --rebase origin main || {
+              git rebase --abort || true
+              git pull --no-rebase -X ours origin main
+            }
             git push
           fi
 
