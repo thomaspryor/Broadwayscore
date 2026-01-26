@@ -71,11 +71,12 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          # Pull latest changes to avoid conflicts
-          git pull --rebase origin main
-          # Add all review data files
+          # Add and commit local changes first
           git add data/reviews.json data/review-texts/
           git commit -m "feat: Add review data for ${{ inputs.shows }}"
+          # Pull remote changes and rebase our commit on top
+          git pull --rebase origin main
+          # Push with updated history
           git push
 
       - name: Update issue (if exists)
