@@ -315,11 +315,19 @@ function extractShowScoreReviews(html, showId) {
       if (pattern.test(context) || pattern.test(url)) {
         // Check if we already have this outlet
         if (!reviews.some(r => r.outletId === outletId)) {
+          // Try to extract critic name from context
+          // Show Score has links like: <a href="/member/jonathan-mandell">Jonathan Mandell</a>
+          let criticName = 'Unknown';
+          const criticLinkMatch = context.match(/href="\/member\/[^"]+">([^<]+)<\/a>/i);
+          if (criticLinkMatch) {
+            criticName = criticLinkMatch[1].trim();
+          }
+
           reviews.push({
             showId,
             outlet,
             outletId,
-            criticName: 'Unknown', // Would need more parsing to get critic name
+            criticName,
             url,
             source: 'show-score'
           });
@@ -408,6 +416,22 @@ function createReviewFile(showId, reviewData) {
   if (fs.existsSync(filepath)) {
     console.log(`    Skipping ${filename} (already exists)`);
     return false;
+  }
+
+  // Check for existing review with same URL (prevents duplicates with different critic names)
+  if (reviewData.url && fs.existsSync(showDir)) {
+    const existingFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+    for (const existingFile of existingFiles) {
+      try {
+        const existingReview = JSON.parse(fs.readFileSync(path.join(showDir, existingFile), 'utf8'));
+        if (existingReview.url === reviewData.url) {
+          console.log(`    Skipping ${filename} (URL already exists in ${existingFile})`);
+          return false;
+        }
+      } catch (e) {
+        // Skip files that can't be parsed
+      }
+    }
   }
 
   const review = {
