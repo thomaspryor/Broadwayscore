@@ -88,30 +88,33 @@ async function searchShowPosts(showTitle) {
   // Clean title for search
   const cleanTitle = showTitle.replace(/[()]/g, '').trim();
 
-  // For generic titles that could be confused with movies/books, add "Broadway" or "musical"
-  const genericTitles = ['The Outsiders', 'Chicago', 'Cabaret', 'The Wiz', 'Oliver!', 'Annie'];
+  // For generic titles that could be confused with movies/books, ONLY search with "Broadway" qualifier
+  const genericTitles = ['The Outsiders', 'Chicago', 'Cabaret', 'The Wiz', 'Oliver!', 'Annie', 'Gypsy', 'Grease'];
   const needsQualifier = genericTitles.some(t => cleanTitle.toLowerCase().includes(t.toLowerCase()));
 
   // Multiple search strategies to capture different types of buzz
-  const searches = [
-    // Direct title search (captures most mentions)
-    { query: cleanTitle, sort: 'relevance' },
-    // Top posts (captures highest engagement)
-    { query: cleanTitle, sort: 'top' },
-    // Review-tagged posts
-    { query: `flair:Review ${cleanTitle}`, sort: 'relevance' },
-    // Recommendation contexts
-    { query: `${cleanTitle} recommend`, sort: 'relevance' },
-    { query: `${cleanTitle} "must see"`, sort: 'relevance' },
-    { query: `${cleanTitle} favorite`, sort: 'relevance' },
-  ];
+  let searches;
 
-  // For generic titles, add Broadway-specific searches
   if (needsQualifier) {
-    searches.unshift(
+    // For generic titles, ONLY use Broadway-qualified searches to avoid movie/book noise
+    searches = [
       { query: `"${cleanTitle}" Broadway`, sort: 'relevance' },
-      { query: `"${cleanTitle}" musical`, sort: 'top' }
-    );
+      { query: `"${cleanTitle}" Broadway`, sort: 'top' },
+      { query: `"${cleanTitle}" musical Broadway`, sort: 'relevance' },
+      { query: `flair:Review "${cleanTitle}"`, sort: 'relevance' },
+      { query: `"${cleanTitle}" Broadway recommend`, sort: 'relevance' },
+      { query: `"${cleanTitle}" Broadway favorite`, sort: 'relevance' },
+    ];
+  } else {
+    // For unique titles, use standard searches
+    searches = [
+      { query: cleanTitle, sort: 'relevance' },
+      { query: cleanTitle, sort: 'top' },
+      { query: `flair:Review ${cleanTitle}`, sort: 'relevance' },
+      { query: `${cleanTitle} recommend`, sort: 'relevance' },
+      { query: `${cleanTitle} "must see"`, sort: 'relevance' },
+      { query: `${cleanTitle} favorite`, sort: 'relevance' },
+    ];
   }
 
   const allPosts = [];
@@ -315,9 +318,25 @@ Be generous with "positive" - enjoyed it overall, would recommend.`
       });
 
       const text = response.content[0].text.trim();
-      const match = text.match(/\[[\s\S]*\]/);
+      // Extract JSON array - be more flexible with regex to handle extra text around it
+      const match = text.match(/\[\s*\{[\s\S]*?\}\s*\]/);
       if (match) {
-        const parsed = JSON.parse(match[0]);
+        let parsed;
+        try {
+          parsed = JSON.parse(match[0]);
+        } catch (parseErr) {
+          // Try to clean up the JSON and parse again
+          const cleaned = match[0]
+            .replace(/,\s*]/g, ']')  // Remove trailing commas
+            .replace(/}\s*{/g, '},{'); // Fix missing commas between objects
+          try {
+            parsed = JSON.parse(cleaned);
+          } catch (e) {
+            console.error('  JSON parse failed even after cleanup, skipping batch');
+            continue;
+          }
+        }
+        if (!Array.isArray(parsed)) continue;
         for (let j = 0; j < parsed.length && j < batch.length; j++) {
           const analysis = parsed[j];
           const item = batch[j];
