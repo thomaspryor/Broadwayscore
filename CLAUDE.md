@@ -218,7 +218,7 @@ data/
     [showId: string]: {
       title: string,
       designation: "Loving It" | "Liking It" | "Take-it-or-Leave-it" | "Loathing It",
-      combinedScore: number,  // Weighted: ShowScore 40%, Mezzanine 40%, Reddit 20%
+      combinedScore: number,  // Weighted: SS/Mezz split by sample size (80%), Reddit fixed (20%)
       sources: {
         showScore?: { score: number, reviewCount: number },
         mezzanine?: { score: number, reviewCount: number, starRating: number },
@@ -236,10 +236,21 @@ data/
 }
 ```
 
+**Audience Buzz Weighting (Dynamic):**
+- **Reddit**: Fixed 20% when available (captures buzz/enthusiasm)
+- **Show Score & Mezzanine**: Split remaining 80% (or 100% if no Reddit) proportionally by sample size
+
+Example: Show Score has 3,000 reviews, Mezzanine has 1,000, Reddit available:
+- Show Score: (3000/4000) × 80% = 60%
+- Mezzanine: (1000/4000) × 80% = 20%
+- Reddit: 20%
+
+This gives more weight to sources with larger sample sizes.
+
 **Audience Buzz Sources:**
-- **Show Score** (40%): Aggregates audience reviews with 0-100 scores
-- **Mezzanine** (40%): Aggregates audience reviews with star ratings (converted to %)
-- **Reddit** (20%): Sentiment analysis from r/Broadway discussions (monthly update)
+- **Show Score**: Aggregates audience reviews with 0-100 scores (weekly automated)
+- **Mezzanine**: Aggregates audience reviews with star ratings (manual - iOS app only)
+- **Reddit**: Sentiment analysis from r/Broadway discussions (monthly automated)
 
 ## Key Files
 - `src/lib/engine.ts` - Scoring engine + TypeScript interfaces
