@@ -379,11 +379,8 @@ async function fetchWithScrapingBee(url, useStealth = false) {
 
     throw new Error(`Insufficient text: ${text?.length || 0} chars`);
   } catch (error) {
-    // If premium failed and we haven't tried stealth yet, retry with stealth
-    if (!useStealth && CLI.stealthProxy && error.message.includes('CAPTCHA')) {
-      console.log(`    → Retrying with stealth_proxy...`);
-      return await fetchWithScrapingBee(url, true);
-    }
+    // Don't retry if we're already on stealth - let it fail through
+    // (This prevents double-retrying when stealth also fails)
 
     // Enhanced error reporting for ScrapingBee
     if (error.response) {
