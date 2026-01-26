@@ -61,13 +61,13 @@ function getDesignationStyle(designation: CommercialDesignation): {
         icon: '💧',
         description: 'Broke even',
       };
-    case 'Sugar Daddy':
+    case 'Easy Winner':
       return {
         bgClass: 'bg-pink-500/15',
         textClass: 'text-pink-400',
         borderClass: 'border-pink-500/25',
         icon: '🎁',
-        description: 'Limited run success',
+        description: 'Limited run that made money, limited downside, limited upside',
       };
     case 'Fizzle':
       return {
