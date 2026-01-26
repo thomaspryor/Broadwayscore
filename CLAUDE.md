@@ -79,7 +79,7 @@ Share this URL with the user so they can review on their phone before approving.
 
 | Platform | Status | URL |
 |----------|--------|-----|
-| **Vercel** | ✅ PRIMARY | https://broadwayscore.vercel.app |
+| **Vercel** | ✅ PRIMARY | https://broadwayscorecard.com |
 | GitHub Pages | ⚠️ Secondary/Legacy | https://thomaspryor.github.io/Broadwayscore/ |
 
 **Production branch:** `main`
