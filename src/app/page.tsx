@@ -66,24 +66,28 @@ const SCORE_TIERS = {
     tooltip: 'Strong choice—most people will have a great time.',
     range: '75-84',
     color: '#22c55e',
+    glow: false,
   },
   worthSeeing: {
     label: 'Worth Seeing',
     tooltip: 'Good, with caveats. Best if the premise/cast/genre is your thing.',
     range: '65-74',
     color: '#14b8a6',
+    glow: false,
   },
   skippable: {
     label: 'Skippable',
     tooltip: 'Optional. Fine to miss unless you\'re a completist or super fan.',
     range: '55-64',
     color: '#f59e0b',
+    glow: false,
   },
   stayAway: {
     label: 'Stay Away',
     tooltip: 'Not recommended—save your time and money.',
     range: '<55',
     color: '#ef4444',
+    glow: false,
   },
 };
 
