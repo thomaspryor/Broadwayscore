@@ -279,7 +279,7 @@ All automation runs via GitHub Actions - no local commands needed.
 ### `.github/workflows/update-critic-consensus.yml`
 - **Runs:** Every Sunday at 2 AM UTC (9 PM ET Saturday) (or manually via GitHub UI)
 - **Does:**
-  - Generates 2-sentence "Critics' Take" editorial summaries for shows
+  - Generates concise "Critics' Take" editorial summaries for shows (1-2 short sentences, max 280 chars)
   - Uses Claude API to analyze review texts and create summaries
   - Only regenerates shows with 3+ new reviews since last update
   - Updates `data/critic-consensus.json`
@@ -333,7 +333,7 @@ All automation runs via GitHub Actions - no local commands needed.
   - Formspree-powered form at `/feedback`
   - Weekly digest with automated categorization (Bug, Feature, Content Error, Praise, Other)
   - Priority assignment and recommended actions via Claude API
-- **Critics' Take** - LLM-generated 2-sentence editorial summaries
+- **Critics' Take** - LLM-generated concise editorial summaries (1-2 short sentences, max 280 chars)
   - Updates weekly if 3+ new reviews added
   - Displayed on show pages between synopsis and reviews
   - Script: `scripts/generate-critic-consensus.js`
