@@ -601,8 +601,8 @@ function HomePageInner() {
         const buzz = getAudienceBuzz(show.id);
         return buzz !== null;
       } else {
-        // Only show shows with critic reviews
-        return show.criticScore && show.criticScore.reviewCount > 0;
+        // Only show shows with at least 5 critic reviews (hides TBD shows)
+        return show.criticScore && show.criticScore.reviewCount >= 5;
       }
     });
 
