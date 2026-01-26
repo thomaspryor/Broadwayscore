@@ -102,6 +102,7 @@ const CONFIG = {
     'nymag.com': { emailVar: 'VULTURE_EMAIL', passVar: 'VULTURE_PASSWORD' },
     'newyorker.com': { emailVar: 'VULTURE_EMAIL', passVar: 'VULTURE_PASSWORD' },
     'washingtonpost.com': { emailVar: 'WAPO_EMAIL', passVar: 'WAPO_PASSWORD' },
+    'wsj.com': { emailVar: 'WSJ_EMAIL', passVar: 'WSJ_PASSWORD' },
   },
 
   // Sites known to block aggressively (skip Playwright, start with ScrapingBee)
@@ -109,7 +110,8 @@ const CONFIG = {
     'variety.com', 'hollywoodreporter.com', 'deadline.com', 'thewrap.com',
     'theatermania.com', 'observer.com', 'chicagotribune.com',
     'dailybeast.com', 'thedailybeast.com', 'amny.com', 'newsday.com',
-    'nypost.com', 'nydailynews.com', 'wsj.com', 'indiewire.com',
+    'nypost.com', 'nydailynews.com', 'indiewire.com',
+    // Note: wsj.com removed - now using login
   ],
 
   // Sites that need residential proxies (Bright Data preferred)
@@ -333,6 +335,24 @@ async function loginToSite(domain, email, password) {
       await page.waitForTimeout(2000);
 
       console.log('    ✓ Washington Post login attempted');
+      return true;
+    }
+
+    if (domain === 'wsj.com') {
+      await page.goto('https://accounts.wsj.com/login', { timeout: CONFIG.loginTimeout });
+      await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+
+      // WSJ login form
+      await page.fill('input[name="username"]', email).catch(() => {});
+      await page.click('button[type="submit"]').catch(() => {}); // Continue button
+      await page.waitForTimeout(2000);
+
+      await page.fill('input[name="password"]', password).catch(() => {});
+      await page.click('button[type="submit"]').catch(() => {}); // Sign in button
+      await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+      await page.waitForTimeout(2000);
+
+      console.log('    ✓ WSJ login attempted');
       return true;
     }
 

@@ -722,12 +722,15 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json` h
 
 For scraping paywalled review sites, the user has subscriptions:
 
-| Site | Email/Username | Password Location |
-|------|---------------|-------------------|
-| **New York Times** | ewcampbell1@gmail.com | GitHub Secrets |
-| **Vulture/NY Mag** | thomas.pryor@gmail.com | GitHub Secrets |
+| Site | Email/Username | GitHub Secret Names |
+|------|---------------|---------------------|
+| **New York Times** | ewcampbell1@gmail.com | NYT_EMAIL, NYTIMES_PASSWORD |
+| **Vulture/NY Mag** | thomas.pryor@gmail.com | VULTURE_EMAIL, VULTURE_PASSWORD |
+| **The New Yorker** | (same as Vulture - Condé Nast) | VULTURE_EMAIL, VULTURE_PASSWORD |
+| **Wall Street Journal** | (user has subscription) | WSJ_EMAIL, WSJ_PASSWORD |
+| **Washington Post** | (user has subscription) | WAPO_EMAIL, WASHPOST_PASSWORD |
 
-**Usage:** When scraping NYT or Vulture reviews via Playwright, log in first using these credentials.
+**Usage:** The `collect-review-texts.js` script automatically logs in to these sites when scraping. Credentials are passed via GitHub Secrets environment variables.
 
 ## Scraping Priority & Approach
 
@@ -741,11 +744,14 @@ For scraping paywalled review sites, the user has subscriptions:
 ### Paywalled Outlets (use subscription login)
 - **New York Times** - Use NYT subscription
 - **Vulture/NY Magazine** - Use Vulture subscription
+- **The New Yorker** - Shares Condé Nast login with Vulture
+- **Wall Street Journal** - Use WSJ subscription
+- **Washington Post** - Use WaPo subscription
 
 ### Blocked/Unavailable
 - **Broadway News** - Many URLs return 404 (pages removed)
 - **Entertainment Weekly** - Paywalled, no subscription
-- **The Wrap** - Often blocked
+- **NY Post** - Hard paywall, no subscription
 
 ## Future Features
 - Audience scores integration
