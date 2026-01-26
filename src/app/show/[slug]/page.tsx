@@ -642,10 +642,24 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </p>
           )}
 
-          {/* Ticket Links */}
-          {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && (
+          {/* Links row: Official Site, Tickets, Trailer */}
+          {(show.officialUrl || show.trailerUrl || (show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed')) && (
             <div className="flex flex-wrap gap-2 mt-4">
-              {show.ticketLinks.map((link, i) => (
+              {/* Official Website */}
+              {show.officialUrl && (
+                <a
+                  href={show.officialUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
+                >
+                  <GlobeIcon />
+                  Official Site
+                </a>
+              )}
+
+              {/* Ticket Links */}
+              {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && show.ticketLinks.map((link, i) => (
                 <a
                   key={i}
                   href={link.url}
@@ -655,42 +669,27 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 >
                   <TicketIcon />
                   {link.platform}
+                  {link.priceFrom && (
+                    <span className="text-gray-500">from ${link.priceFrom}</span>
+                  )}
                 </a>
               ))}
+
+              {/* Trailer */}
+              {show.trailerUrl && (
+                <a
+                  href={show.trailerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
+                >
+                  <PlayIcon />
+                  Trailer
+                </a>
+              )}
             </div>
           )}
         </div>
-
-        {/* Action Links - Official Site & Trailer (tickets are in header) */}
-        {(show.officialUrl || show.trailerUrl) && (
-          <div className="flex flex-wrap gap-3 mb-8">
-            {/* Official Website */}
-            {show.officialUrl && (
-              <a
-                href={show.officialUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
-              >
-                <GlobeIcon />
-                Official Site
-              </a>
-            )}
-
-            {/* Trailer */}
-            {show.trailerUrl && (
-              <a
-                href={show.trailerUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10"
-              >
-                <PlayIcon />
-                Trailer
-              </a>
-            )}
-          </div>
-        )}
 
 
         {/* Critic Reviews */}
