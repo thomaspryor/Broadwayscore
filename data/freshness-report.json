@@ -1,0 +1,540 @@
+{
+  "generatedAt": "2026-01-26T00:06:18.972Z",
+  "summary": {
+    "totalShows": 57,
+    "openShows": 32,
+    "closedShows": 9
+  },
+  "grosses": {
+    "lastUpdated": "2026-01-24T01:03:19.727Z",
+    "weekEnding": "1/18/2026",
+    "showCount": 38,
+    "status": "ok",
+    "daysStale": 1
+  },
+  "statusChanges": {
+    "autoClosed": []
+  },
+  "closingSoon": [
+    {
+      "id": "liberation-2025",
+      "title": "Liberation",
+      "closingDate": "2026-02-01",
+      "daysLeft": 6
+    },
+    {
+      "id": "oedipus-2025",
+      "title": "Oedipus",
+      "closingDate": "2026-02-08",
+      "daysLeft": 13
+    },
+    {
+      "id": "hells-kitchen-2024",
+      "title": "Hell's Kitchen",
+      "closingDate": "2026-02-22",
+      "daysLeft": 27
+    },
+    {
+      "id": "bug-2026",
+      "title": "Bug",
+      "closingDate": "2026-02-22",
+      "daysLeft": 27
+    },
+    {
+      "id": "all-out-comedy-about-ambition-2026",
+      "title": "All Out: Comedy About Ambition",
+      "closingDate": "2026-03-08",
+      "daysLeft": 41
+    }
+  ],
+  "dataQuality": {
+    "complete": [
+      "two-strangers-bway-2025",
+      "maybe-happy-ending-2024",
+      "oh-mary-2024",
+      "the-great-gatsby-2024",
+      "bug-2026",
+      "marjorie-prime-2025"
+    ],
+    "hasIssues": [
+      {
+        "id": "the-outsiders-2024",
+        "title": "The Outsiders",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "hells-kitchen-2024",
+        "title": "Hell's Kitchen",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          }
+        ]
+      },
+      {
+        "id": "operation-mincemeat-2025",
+        "title": "Operation Mincemeat",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "wicked-2003",
+        "title": "Wicked",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "hamilton-2015",
+        "title": "Hamilton",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "the-lion-king-1997",
+        "title": "The Lion King",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "chicago-1996",
+        "title": "Chicago",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "moulin-rouge-2019",
+        "title": "Moulin Rouge! The Musical",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "aladdin-2014",
+        "title": "Aladdin",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "hadestown-2019",
+        "title": "Hadestown",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "mj-2022",
+        "title": "MJ The Musical",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "six-2021",
+        "title": "SIX",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "book-of-mormon-2011",
+        "title": "The Book of Mormon",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "and-juliet-2022",
+        "title": "& Juliet",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "oedipus-2025",
+        "title": "Oedipus",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          }
+        ]
+      },
+      {
+        "id": "harry-potter-2021",
+        "title": "Harry Potter and the Cursed Child",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "mamma-mia-2025",
+        "title": "Mamma Mia!",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "stranger-things-2024",
+        "title": "Stranger Things: The First Shadow",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "liberation-2025",
+        "title": "Liberation",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          }
+        ]
+      },
+      {
+        "id": "queen-versailles-2025",
+        "title": "The Queen of Versailles",
+        "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "death-becomes-her-2024",
+        "title": "Death Becomes Her",
+        "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "buena-vista-social-club-2025",
+        "title": "Buena Vista Social Club",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "ragtime-2025",
+        "title": "Ragtime",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "chess-2025",
+        "title": "Chess",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "just-in-time-2025",
+        "title": "Just in Time",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "all-out-comedy-about-ambition-2026",
+        "title": "All Out: Comedy About Ambition",
+        "issues": [
+          {
+            "type": "missing_poster",
+            "severity": "high"
+          },
+          {
+            "type": "missing_hero",
+            "severity": "medium"
+          },
+          {
+            "type": "missing_thumbnail",
+            "severity": "low"
+          },
+          {
+            "type": "missing_synopsis",
+            "severity": "high"
+          },
+          {
+            "type": "missing_tickets",
+            "severity": "high"
+          },
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
+            "type": "missing_runtime",
+            "severity": "low"
+          },
+          {
+            "type": "missing_age_rec",
+            "severity": "low"
+          }
+        ]
+      }
+    ],
+    "byIssueType": {
+      "missing_cast": [
+        "The Outsiders",
+        "Hell's Kitchen",
+        "Operation Mincemeat",
+        "Wicked",
+        "Hamilton",
+        "The Lion King",
+        "Chicago",
+        "Moulin Rouge! The Musical",
+        "Aladdin",
+        "Hadestown",
+        "MJ The Musical",
+        "SIX",
+        "The Book of Mormon",
+        "& Juliet",
+        "Oedipus",
+        "Harry Potter and the Cursed Child",
+        "Mamma Mia!",
+        "Stranger Things: The First Shadow",
+        "Liberation",
+        "Buena Vista Social Club",
+        "Ragtime",
+        "Chess",
+        "Just in Time",
+        "All Out: Comedy About Ambition"
+      ],
+      "no_closing_date": [
+        "The Outsiders",
+        "Operation Mincemeat",
+        "Wicked",
+        "Hamilton",
+        "The Lion King",
+        "Chicago",
+        "Moulin Rouge! The Musical",
+        "Aladdin",
+        "Hadestown",
+        "MJ The Musical",
+        "SIX",
+        "The Book of Mormon",
+        "& Juliet",
+        "Harry Potter and the Cursed Child",
+        "Mamma Mia!",
+        "Stranger Things: The First Shadow",
+        "The Queen of Versailles",
+        "Death Becomes Her",
+        "Buena Vista Social Club",
+        "Ragtime",
+        "Chess",
+        "Just in Time"
+      ],
+      "missing_creative": [
+        "Oedipus",
+        "Liberation",
+        "The Queen of Versailles",
+        "Death Becomes Her",
+        "Buena Vista Social Club",
+        "Just in Time",
+        "All Out: Comedy About Ambition"
+      ],
+      "missing_poster": [
+        "All Out: Comedy About Ambition"
+      ],
+      "missing_hero": [
+        "All Out: Comedy About Ambition"
+      ],
+      "missing_thumbnail": [
+        "All Out: Comedy About Ambition"
+      ],
+      "missing_synopsis": [
+        "All Out: Comedy About Ambition"
+      ],
+      "missing_tickets": [
+        "All Out: Comedy About Ambition"
+      ],
+      "missing_runtime": [
+        "All Out: Comedy About Ambition"
+      ],
+      "missing_age_rec": [
+        "All Out: Comedy About Ambition"
+      ]
+    }
+  }
+}
