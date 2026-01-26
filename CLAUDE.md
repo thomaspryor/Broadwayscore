@@ -331,6 +331,48 @@ The `scripts/lib/deduplication.js` module prevents duplicate shows from being ad
 'show name': ['show name', 'show name the musical', 'other variation'],
 ```
 
+## Automated Testing
+
+The site has comprehensive automated testing that runs via GitHub Actions.
+
+### Test Commands
+```bash
+npm run test:data    # Data validation only
+npm run test:e2e     # E2E browser tests only
+npm run test         # Run all tests
+```
+
+### `.github/workflows/test.yml`
+- **Runs:**
+  - On every push to `main`
+  - Daily at 6 AM UTC (1 AM EST)
+  - Manually via GitHub UI
+- **Tests:**
+  - **Data Validation**: Duplicates, required fields, date formats, status consistency
+  - **E2E Tests**: Homepage loads, show pages work, navigation, filters, mobile responsiveness
+- **On Failure**: Automatically creates GitHub issue with details
+
+### What Gets Tested
+
+**Data Validation** (`scripts/validate-data.js`):
+- No duplicate shows (IDs, slugs, or titles via deduplication module)
+- All required fields present (id, title, slug, status, venue for open shows)
+- Valid status values (open, closed, previews)
+- Date format validation (YYYY-MM-DD)
+- Logical consistency (closed shows shouldn't have future closing dates)
+- URL-safe slugs
+- Valid image URLs
+- Minimum show counts (safety check)
+
+**E2E Tests** (`tests/e2e/`):
+- Homepage loads without errors
+- Show cards display correctly
+- All show detail pages load (no 404s)
+- Navigation works (home → show → back)
+- Filters are functional
+- Mobile responsive layout
+- No console errors
+
 ## Automation (GitHub Actions)
 
 All automation runs via GitHub Actions - no local commands needed.
