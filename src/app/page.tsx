@@ -29,29 +29,6 @@ const statusParamToFilter: Record<StatusParam, StatusFilter> = {
   all: 'all',
 };
 
-// Labels for display in filter chips
-const statusLabels: Record<StatusParam, string> = {
-  now_playing: 'Now Playing',
-  closed: 'Closed',
-  upcoming: 'Upcoming',
-  all: 'All',
-};
-
-const sortLabels: Record<SortParam, string> = {
-  recent: 'Recently Opened',
-  score_desc: 'Highest Rated',
-  score_asc: 'Lowest Rated',
-  alpha: 'A-Z',
-  closing_soon: 'Closing Soon',
-  audience_buzz: 'Audience Buzz',
-};
-
-const typeLabels: Record<TypeParam, string> = {
-  all: 'All',
-  musical: 'Musicals',
-  play: 'Plays',
-};
-
 // Score tier labels and tooltips
 const SCORE_TIERS = {
   mustSee: {
@@ -206,33 +183,6 @@ function ProductionPill({ isRevival }: { isRevival: boolean }) {
   );
 }
 
-// Limited Run badge - eye-catching for shows ending soon
-function LimitedRunBadge() {
-  return (
-    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-rose-500/15 text-rose-400 border border-rose-500/30">
-      LIMITED RUN
-    </span>
-  );
-}
-
-// Filter chip with remove button
-function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }) {
-  return (
-    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-brand/20 text-brand">
-      {label}
-      <button
-        onClick={onRemove}
-        className="ml-0.5 hover:bg-brand/30 rounded-full p-0.5 transition-colors"
-        aria-label={`Remove ${label} filter`}
-      >
-        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-    </span>
-  );
-}
-
 // Use UTC-based formatting to avoid timezone-related hydration mismatch
 function formatOpeningDate(dateStr: string): string {
   const date = new Date(dateStr);
@@ -329,15 +279,18 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
         <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
           <FormatPill type={show.type} />
           <ProductionPill isRevival={isRevival} />
-          {show.limitedRun && <LimitedRunBadge />}
           {!hideStatus && <StatusBadge status={show.status} />}
         </div>
         <p className="text-sm text-gray-400 mt-2.5 truncate">
-          {show.status === 'previews' ? 'Opens' : 'Opened'} {formatOpeningDate(show.openingDate)}
-          {show.closingDate && (
-            <span className="text-amber-400">
-              {' '}• Closing {formatOpeningDate(show.closingDate)}
-            </span>
+          {show.status === 'previews' ? (
+            <>Opens {formatOpeningDate(show.openingDate)}</>
+          ) : show.closingDate ? (
+            <>
+              <span className="text-amber-400">Closes {formatOpeningDate(show.closingDate)}</span>
+              <span className="text-gray-500"> • Opened {formatOpeningDate(show.openingDate)}</span>
+            </>
+          ) : (
+            <>Opened {formatOpeningDate(show.openingDate)}</>
           )}
         </p>
       </div>
@@ -518,9 +471,6 @@ function HomePageInner() {
     router.push(paramString ? `${pathname}?${paramString}` : pathname, { scroll: false });
   }, [searchParams, pathname, router]);
 
-  // Check if any non-default filters are active
-  const hasActiveFilters = status !== DEFAULT_STATUS || sort !== DEFAULT_SORT || type !== DEFAULT_TYPE || scoreMode !== DEFAULT_SCORE_MODE || searchQuery !== '';
-
   // Clear all filters
   const clearAllFilters = useCallback(() => {
     router.push(pathname, { scroll: false });
@@ -622,7 +572,28 @@ function HomePageInner() {
   }, [shows]);
 
   const filteredAndSortedShows = useMemo(() => {
-    // Filter based on score mode
+    // When searching, include ALL shows (ignore status/type filters)
+    // This ensures users can find any show in the database
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      let result = shows.filter(show =>
+        show.title.toLowerCase().includes(query) ||
+        show.venue.toLowerCase().includes(query)
+      );
+      // Sort search results by relevance (title match first, then by score)
+      result.sort((a, b) => {
+        const aTitle = a.title.toLowerCase();
+        const bTitle = b.title.toLowerCase();
+        const aStartsWith = aTitle.startsWith(query);
+        const bStartsWith = bTitle.startsWith(query);
+        if (aStartsWith && !bStartsWith) return -1;
+        if (!aStartsWith && bStartsWith) return 1;
+        return (b.criticScore?.score ?? 0) - (a.criticScore?.score ?? 0);
+      });
+      return result;
+    }
+
+    // Non-search filtering: apply score mode, status, and type filters
     let result = shows.filter(show => {
       if (scoreMode === 'audience') {
         // Only show shows with audience buzz data
@@ -645,15 +616,6 @@ function HomePageInner() {
         const isMusical = show.type === 'musical' || show.type === 'revival';
         return type === 'musical' ? isMusical : !isMusical;
       });
-    }
-
-    // Search filter
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      result = result.filter(show =>
-        show.title.toLowerCase().includes(query) ||
-        show.venue.toLowerCase().includes(query)
-      );
     }
 
     // Filter for closing soon - only show shows with closing dates
@@ -820,48 +782,6 @@ function HomePageInner() {
         </div>
       </div>
 
-      {/* Active Filter Chips */}
-      {hasActiveFilters && (
-        <div className="flex flex-wrap items-center gap-2 mb-6">
-          {status !== DEFAULT_STATUS && (
-            <FilterChip
-              label={`Status: ${statusLabels[status]}`}
-              onRemove={() => updateParams({ status: null })}
-            />
-          )}
-          {sort !== DEFAULT_SORT && (
-            <FilterChip
-              label={`Sort: ${sortLabels[sort]}`}
-              onRemove={() => updateParams({ sort: null })}
-            />
-          )}
-          {type !== DEFAULT_TYPE && (
-            <FilterChip
-              label={`Type: ${typeLabels[type]}`}
-              onRemove={() => updateParams({ type: null })}
-            />
-          )}
-          {scoreMode !== DEFAULT_SCORE_MODE && (
-            <FilterChip
-              label={`Scores: ${scoreMode === 'critics' ? 'Critics' : 'Audience'}`}
-              onRemove={() => updateParams({ scoreMode: null })}
-            />
-          )}
-          {searchQuery && (
-            <FilterChip
-              label={`Search: "${searchQuery}"`}
-              onRemove={() => updateParams({ q: null })}
-            />
-          )}
-          <button
-            onClick={clearAllFilters}
-            className="text-xs text-gray-400 hover:text-white transition-colors ml-auto"
-          >
-            Clear all
-          </button>
-        </div>
-      )}
-
       {/* Show List */}
       <h2 className="sr-only">Broadway Shows</h2>
       <div className="space-y-3" role="list" aria-label="Broadway shows">
@@ -895,7 +815,7 @@ function HomePageInner() {
         </div>
       )}
 
-      <div className="mt-8 flex items-center justify-between text-sm text-gray-400">
+      <div className="mt-8 flex items-baseline justify-between text-sm text-gray-400">
         <span>{filteredAndSortedShows.length} shows</span>
         <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
           How scores work →
@@ -931,15 +851,15 @@ function HomePageInner() {
         <FeaturedRow
           title="Best Recent Musicals"
           shows={bestNewMusicals}
-          viewAllHref="/browse/best-broadway-musicals"
+          viewAllHref="/browse/best-recent-musicals"
         />
         <FeaturedRow
           title="Best Recent Plays"
           shows={bestNewPlays}
-          viewAllHref="/browse/best-broadway-plays"
+          viewAllHref="/browse/best-recent-plays"
         />
         <FeaturedRow
-          title="New & Upcoming"
+          title="Upcoming"
           shows={upcomingShows}
           viewAllHref="/browse/upcoming-broadway-shows"
         />

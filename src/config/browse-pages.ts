@@ -11,7 +11,7 @@ export interface BrowsePageConfig {
   metaDescription: string; // 150-160 chars
   intro: string; // 100-200 words intro paragraph
   filter: (show: ComputedShow) => boolean;
-  sort?: 'score' | 'opening-date' | 'closing-date' | 'title';
+  sort?: 'score' | 'opening-date' | 'opening-date-asc' | 'closing-date' | 'title' | 'performances';
   limit?: number;
   relatedPages: string[]; // Slugs of related browse pages
 }
@@ -330,7 +330,45 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       return show.type === 'musical' || show.type === 'revival';
     },
     sort: 'score',
-    relatedPages: ['jukebox-musicals-on-broadway', 'best-broadway-revivals', 'tony-winners-on-broadway'],
+    relatedPages: ['best-recent-musicals', 'jukebox-musicals-on-broadway', 'best-broadway-revivals'],
+  },
+
+  'best-recent-musicals': {
+    slug: 'best-recent-musicals',
+    title: 'Best Recent Broadway Musicals',
+    h1: 'Best Recent Broadway Musicals',
+    metaTitle: 'Best Recent Broadway Musicals (2026)',
+    metaDescription: 'The highest-rated musicals that opened on Broadway in the past year. Fresh productions setting the new standard for musical theater.',
+    intro: 'These are the best new musicals that have opened on Broadway in the past 12 months. Fresh off their opening nights, these productions represent the cutting edge of musical theater. From world premieres to acclaimed transfers, these recent arrivals are making their mark on the Great White Way. See what\'s exciting audiences and critics right now.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      if (show.type !== 'musical' && show.type !== 'revival') return false;
+      const twelveMonthsAgo = new Date();
+      twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+      const openDate = new Date(show.openingDate);
+      return openDate >= twelveMonthsAgo;
+    },
+    sort: 'score',
+    relatedPages: ['best-broadway-musicals', 'new-broadway-shows-2025', 'tony-winners-on-broadway'],
+  },
+
+  'best-recent-plays': {
+    slug: 'best-recent-plays',
+    title: 'Best Recent Broadway Plays',
+    h1: 'Best Recent Broadway Plays',
+    metaTitle: 'Best Recent Broadway Plays (2026)',
+    metaDescription: 'The highest-rated plays that opened on Broadway in the past year. Fresh productions pushing the boundaries of dramatic theater.',
+    intro: 'These are the best new plays that have opened on Broadway in the past 12 months. From powerful dramas to sharp comedies, these recent productions showcase the best of contemporary playwriting and performance. See what\'s captivating audiences and earning critical acclaim right now.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      if (show.type !== 'play') return false;
+      const twelveMonthsAgo = new Date();
+      twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+      const openDate = new Date(show.openingDate);
+      return openDate >= twelveMonthsAgo;
+    },
+    sort: 'score',
+    relatedPages: ['best-broadway-plays', 'best-broadway-dramas', 'best-broadway-comedies'],
   },
 
   'best-broadway-plays': {
@@ -348,6 +386,18 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     relatedPages: ['best-broadway-dramas', 'best-broadway-comedies', 'tony-winners-on-broadway'],
   },
 
+  'longest-running-broadway-shows': {
+    slug: 'longest-running-broadway-shows',
+    title: 'Longest Running Broadway Shows',
+    h1: 'Longest Running Broadway Shows',
+    metaTitle: 'Longest Running Broadway Shows (2026)',
+    metaDescription: 'The longest running shows currently on Broadway by total performances. See the legendary productions that have stood the test of time.',
+    intro: 'These shows have earned their place in Broadway history through thousands of performances and years of entertaining audiences. From beloved classics to modern phenomena, these productions represent the staying power of great theater. Their longevity is a testament to timeless storytelling, memorable music, and the countless talented performers who have graced their stages night after night.',
+    filter: (show) => show.status === 'open',
+    sort: 'performances',
+    relatedPages: ['tony-winners-on-broadway', 'broadway-shows-for-tourists', 'best-broadway-musicals'],
+  },
+
   'upcoming-broadway-shows': {
     slug: 'upcoming-broadway-shows',
     title: 'Upcoming Broadway Shows',
@@ -356,7 +406,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaDescription: 'New Broadway shows coming soon. See what\'s opening next on the Great White Way, from world premieres to highly anticipated transfers.',
     intro: 'Get excited for Broadway\'s next wave of productions! These shows are currently in previews or have announced opening dates in the coming months. From world premieres to transfers from Off-Broadway and London, these productions represent the future of Broadway. Many are already selling tickets, so if you\'re planning ahead, here\'s your guide to what\'s coming to the Great White Way.',
     filter: (show) => show.status === 'previews',
-    sort: 'opening-date',
+    sort: 'opening-date-asc',
     relatedPages: ['new-broadway-shows-2025', 'broadway-shows-closing-soon', 'broadway-lottery-shows'],
   },
 };
