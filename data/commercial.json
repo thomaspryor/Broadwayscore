@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Biz Buzz - Commercial performance data for Broadway shows",
-    "lastUpdated": "2026-01-26",
+    "lastUpdated": "2026-01-25",
     "sources": "SEC filings, trade press (Broadway Journal, Broadway News, Deadline, Variety), Reddit r/Broadway",
     "designations": {
       "Miracle": "Profit > 3x investment (long-running mega-hits)",
@@ -382,15 +382,16 @@
       "notes": "Critics' Pick. Darren Criss + Helen J Shen. Small cast reduces running costs. Struggled financially early but has been selling out consistently."
     },
     "liberation": {
-      "designation": "TBD",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "recouped": null,
+      "designation": "Fizzle",
+      "capitalization": 6500000,
+      "capitalizationSource": "Industry estimates ($5-8M range, comparable plays like Grey House at $8M)",
+      "weeklyRunningCost": 450000,
+      "weeklyRunningCostSource": "Industry estimates (mid six-figures for straight play)",
+      "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "World premiere at Roundabout (nonprofit), transferred to Broadway with commercial producers. Won Outer Critics Circle Award. Bess Wohl play directed by Whitney White. Critics' Pick."
+      "notes": "Closed Feb 1, 2026 without recouping after ~3 month run. Strong reviews but struggled at box office (~$0.5-0.6M weekly). Transferred from Off-Broadway at Roundabout. Eligible for NY State 25% theater tax credit (up to $3M) which will soften investor losses. Critics' Pick."
     },
     "bug": {
       "designation": "Nonprofit",
@@ -428,15 +429,16 @@
       "notes": "Mark Strong + Lesley Manville. Recouped during West End run. Limited engagement on Broadway sold out every performance. Critics' Pick."
     },
     "aladdin": {
-      "designation": "Windfall",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
+      "designation": "Miracle",
+      "capitalization": 14000000,
+      "capitalizationSource": "LA Times / industry estimates ($12-15M reported, some insiders estimated ~$20M)",
+      "weeklyRunningCost": 750000,
+      "weeklyRunningCostSource": "Industry estimates ($700K-$900K range)",
       "recouped": true,
-      "recoupedDate": null,
-      "recoupedWeeks": null,
-      "recoupedSource": null,
-      "notes": "Disney production. Consistently profitable. Multiple international productions. Has grossed hundreds of millions."
+      "recoupedDate": "2014-12",
+      "recoupedWeeks": 38,
+      "recoupedSource": "Industry analysis (Broadway grosses vs. cumulative costs)",
+      "notes": "Recouped within ~9 months. Disney never officially announced recoupment (not their practice). By May 2023 had grossed $561M+ and 3,100+ performances. Received $3M NY theater tax credit. Disney's unique New Amsterdam lease (2% gross royalty vs standard rent) affects cost structure."
     },
     "mamma-mia": {
       "designation": "Windfall",
@@ -459,6 +461,18 @@
       "recoupedWeeks": null,
       "recoupedSource": null,
       "notes": "Closed early Dec 2025 after weak ticket sales. Stephen Schwartz score. Kristin Chenoweth star vehicle couldn't save production."
+    },
+    "all-out": {
+      "designation": "TBD",
+      "capitalization": 5000000,
+      "capitalizationSource": "SEC filing (All In was $4.8M, All Out comparable)",
+      "weeklyRunningCost": 550000,
+      "weeklyRunningCostSource": "Industry estimates ($500-600K, lean cost structure)",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedWeeks": null,
+      "recoupedSource": null,
+      "notes": "Sequel to All In: Comedy About Love which recouped its $4.8M in just 10 weeks. Same format: rotating celebrity comedians with live band, David Korins design. Hit $2M+ weekly gross (record for a play). Limited engagement through March 8, 2026. Stars include Sarah Silverman, Ray Romano, Jason Mantzoukas. Low capitalization + lean 4-performer format makes recoupment highly likely."
     }
   }
 }
