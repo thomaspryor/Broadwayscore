@@ -142,6 +142,11 @@ jobs:
 
           Co-Authored-By: Claude <noreply@anthropic.com>"
 
-          # Pull and rebase before pushing to handle concurrent changes
-          git pull --rebase origin ${{ github.ref_name }} || true
+          # Pull and merge before pushing to handle concurrent changes
+          # Use -X ours to keep our scored files if there are conflicts
+          git pull --no-rebase -X ours origin ${{ github.ref_name }} || {
+            echo "Pull failed, trying force push with lease..."
+            git push --force-with-lease origin HEAD:${{ github.ref_name }}
+            exit 0
+          }
           git push
