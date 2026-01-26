@@ -15,6 +15,7 @@ const path = require('path');
 const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
+const { slugify, checkForDuplicate } = require('./lib/deduplication');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'historical-shows-pending.json');
@@ -44,119 +45,6 @@ function loadShows() {
 
 function saveShows(data) {
   fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
-}
-
-function slugify(title) {
-  return title
-    .toLowerCase()
-    .replace(/[!?'\":\-–—,\.]/g, '')
-    .replace(/[&]/g, 'and')
-    .replace(/\s+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .replace(/-+/g, '-');
-}
-
-/**
- * Normalize a title for comparison - strips subtitles, articles, punctuation
- * to catch variations like "All Out: Comedy About Ambition" vs "All Out"
- */
-function normalizeTitle(title) {
-  return title
-    .toLowerCase()
-    // Remove common subtitles/suffixes
-    .replace(/:\s*.+$/, '')           // Remove everything after colon
-    .replace(/\s*-\s*.+$/, '')        // Remove everything after dash
-    .replace(/\s*\(.+\)$/, '')        // Remove parenthetical at end
-    .replace(/\s+on\s+broadway$/i, '') // Remove "on Broadway"
-    .replace(/\s+the\s+musical$/i, '') // Remove "The Musical"
-    .replace(/\s+a\s+new\s+musical$/i, '') // Remove "A New Musical"
-    // Remove articles at start
-    .replace(/^(the|a|an)\s+/i, '')
-    // Clean up
-    .replace(/[!?'":\-–—,\.]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-/**
- * Check if a show might be a duplicate of an existing show
- * Returns { isDuplicate: boolean, reason: string, existingShow: object|null }
- */
-function checkForDuplicate(newShow, existingShows) {
-  const newSlug = slugify(newShow.title);
-  const newTitleLower = newShow.title.toLowerCase().trim();
-  const newTitleNormalized = normalizeTitle(newShow.title);
-  const newVenue = newShow.venue?.toLowerCase().trim();
-
-  for (const existing of existingShows) {
-    const existingTitleLower = existing.title.toLowerCase().trim();
-    const existingTitleNormalized = normalizeTitle(existing.title);
-    const existingVenue = existing.venue?.toLowerCase().trim();
-
-    // Check 1: Exact title match
-    if (newTitleLower === existingTitleLower) {
-      return {
-        isDuplicate: true,
-        reason: `Exact title match: "${existing.title}"`,
-        existingShow: existing
-      };
-    }
-
-    // Check 2: Exact slug match
-    if (newSlug === existing.slug) {
-      return {
-        isDuplicate: true,
-        reason: `Exact slug match: ${existing.slug}`,
-        existingShow: existing
-      };
-    }
-
-    // Check 3: Normalized title match (catches "Show: Subtitle" vs "Show")
-    if (newTitleNormalized === existingTitleNormalized && newTitleNormalized.length > 3) {
-      return {
-        isDuplicate: true,
-        reason: `Normalized title match: "${newTitleNormalized}" matches "${existing.title}"`,
-        existingShow: existing
-      };
-    }
-
-    // Check 4: Slug is contained within existing slug or vice versa
-    if (newSlug.length > 5 && existing.slug.length > 5) {
-      if (existing.slug.startsWith(newSlug) || newSlug.startsWith(existing.slug)) {
-        return {
-          isDuplicate: true,
-          reason: `Slug prefix match: "${newSlug}" vs "${existing.slug}"`,
-          existingShow: existing
-        };
-      }
-    }
-
-    // Check 5: Same venue + normalized title starts the same (first 10 chars)
-    if (newVenue && existingVenue && newVenue === existingVenue) {
-      if (newTitleNormalized.substring(0, 10) === existingTitleNormalized.substring(0, 10) &&
-          newTitleNormalized.length > 5) {
-        return {
-          isDuplicate: true,
-          reason: `Same venue "${newVenue}" + similar title start`,
-          existingShow: existing
-        };
-      }
-    }
-
-    // Check 6: One title contains the other (for shorter titles > 5 chars)
-    if (existingTitleNormalized.length > 5 && newTitleNormalized.length > 5) {
-      if (newTitleNormalized.includes(existingTitleNormalized) ||
-          existingTitleNormalized.includes(newTitleNormalized)) {
-        return {
-          isDuplicate: true,
-          reason: `Title containment: "${newTitleNormalized}" vs "${existingTitleNormalized}"`,
-          existingShow: existing
-        };
-      }
-    }
-  }
-
-  return { isDuplicate: false, reason: null, existingShow: null };
 }
 
 async function fetchShowsFromSeason(season) {
