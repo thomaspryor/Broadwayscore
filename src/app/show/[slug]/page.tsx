@@ -708,7 +708,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         </div>
 
         {/* Critic Reviews */}
-        {show.criticScore && show.criticScore.reviews.length > 0 && (
+        {show.criticScore && show.criticScore.reviews.length > 0 ? (
           <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
@@ -717,27 +717,61 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
             <ReviewsList reviews={show.criticScore.reviews} initialCount={5} />
           </div>
+        ) : show.status === 'previews' && (
+          <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
+            <h2 className="text-lg font-bold text-white mb-3">Critic Reviews</h2>
+            <p className="text-gray-400 text-sm">
+              Reviews coming after opening night: <span className="text-white font-medium">{formatDate(show.openingDate)}</span>
+            </p>
+          </div>
         )}
 
         {/* Audience Buzz Section - below Critic Reviews */}
-        {audienceBuzz && (
+        {audienceBuzz ? (
           <AudienceBuzzCard
             buzz={audienceBuzz}
             showScoreUrl={audienceBuzz.sources.showScore ? `https://www.show-score.com/broadway-shows/${show.slug}` : undefined}
           />
+        ) : show.status === 'previews' && (
+          <section className="card p-5 sm:p-6 mb-6">
+            <h2 className="text-lg font-bold text-white mb-3">Audience Buzz</h2>
+            <p className="text-gray-400 text-sm">Audience data will be added once the show opens and reviews come in.</p>
+          </section>
         )}
 
         {/* Awards - above Box Office */}
         <AwardsCard showId={show.id} awards={awards} />
 
         {/* Box Office Stats */}
-        {grosses && <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />}
+        {grosses ? (
+          <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
+        ) : show.status === 'previews' && (
+          <section className="card p-5 sm:p-6 mb-6">
+            <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
+            <p className="text-gray-400 text-sm">Box office data starts one week after previews begin.</p>
+          </section>
+        )}
 
         {/* Commercial Performance / Biz Buzz */}
-        {commercial && <BizBuzzCard commercial={commercial} showTitle={show.title} />}
+        {commercial ? (
+          <BizBuzzCard commercial={commercial} showTitle={show.title} />
+        ) : show.status === 'previews' && (
+          <section className="card p-5 sm:p-6 mb-6">
+            <h2 className="text-lg font-bold text-white mb-3">Commercial Performance</h2>
+            <p className="text-gray-400 text-sm">Financial data not available yet.</p>
+          </section>
+        )}
 
-        {/* Lottery/Rush Tickets - below Commercial Performance */}
-        {lotteryRush && <LotteryRushCard data={lotteryRush} showStatus={show.status} />}
+        {/* Lottery/Rush Tickets - below Commercial Performance, only show after previews start */}
+        {lotteryRush && (() => {
+          // Don't show until previews have started
+          if (show.previewsStartDate) {
+            const previewsStart = new Date(show.previewsStartDate);
+            const today = new Date();
+            if (today < previewsStart) return null;
+          }
+          return <LotteryRushCard data={lotteryRush} showStatus={show.status} />;
+        })()}
 
         {/* Cast & Creative */}
         {(show.cast || show.creativeTeam) && (
