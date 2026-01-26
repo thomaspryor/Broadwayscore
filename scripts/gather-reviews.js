@@ -24,6 +24,13 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+let chromium, playwright;
+try {
+  playwright = require('playwright');
+  chromium = playwright.chromium;
+} catch (e) {
+  // Playwright not available - will fall back to HTTP scraping
+}
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -202,6 +209,7 @@ async function searchDTLI(show) {
 /**
  * Try to find show on Show Score using URL pattern matching
  * Show Score uses various URL patterns - we try multiple variations
+ * Uses Playwright to scroll through the carousel and get ALL critic reviews
  */
 async function searchShowScore(show) {
   console.log('  Searching Show Score...');
@@ -236,22 +244,221 @@ async function searchShowScore(show) {
     ] : []),
   ];
 
-  for (const slug of [...new Set(variations)]) {
-    const url = `https://www.show-score.com/broadway-shows/${slug}`;
-    const result = await searchAggregator('ShowScore', url);
-
-    // Check that we got actual show content, not the homepage
-    if (result.found && result.html &&
-        result.html.includes('score') &&
-        !result.html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>')) {
-      console.log(`    ✓ Found at: ${url}`);
-      return { url, html: result.html };
+  // Try Playwright first if available (to get ALL reviews via carousel scrolling)
+  if (chromium) {
+    for (const slug of [...new Set(variations)]) {
+      const url = `https://www.show-score.com/broadway-shows/${slug}`;
+      const result = await scrapeShowScoreWithPlaywright(url);
+      if (result) {
+        console.log(`    ✓ Found at: ${url}`);
+        return { url, html: result.html, reviews: result.reviews };
+      }
+      await sleep(300);
     }
-    await sleep(300);
+  } else {
+    // Fall back to HTTP scraping if Playwright not available
+    for (const slug of [...new Set(variations)]) {
+      const url = `https://www.show-score.com/broadway-shows/${slug}`;
+      const result = await searchAggregator('ShowScore', url);
+
+      // Check that we got actual show content, not the homepage
+      if (result.found && result.html &&
+          result.html.includes('score') &&
+          !result.html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>')) {
+        console.log(`    ✓ Found at: ${url}`);
+        return { url, html: result.html };
+      }
+      await sleep(300);
+    }
   }
 
   console.log('    ✗ Not found on Show Score');
   return null;
+}
+
+/**
+ * Scrape Show Score page using Playwright with carousel navigation
+ * This allows us to get ALL critic reviews, not just the first 8
+ */
+async function scrapeShowScoreWithPlaywright(url) {
+  let browser = null;
+  try {
+    browser = await chromium.launch({ headless: true });
+    const context = await browser.newContext({
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    });
+    const page = await context.newPage();
+
+    await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+
+    // Check if we're on the right page (not homepage)
+    const title = await page.title();
+    if (title === 'Show Score | NYC Theatre Reviews and Tickets' || !title.includes('Show Score')) {
+      await browser.close();
+      return null;
+    }
+
+    // Wait for critic reviews section to load
+    await page.waitForSelector('h2:has-text("Critic Reviews")', { timeout: 5000 }).catch(() => null);
+
+    // Extract all critic reviews by scrolling through the carousel
+    const reviews = await page.evaluate(() => {
+      const reviews = [];
+
+      // Find the critic reviews section
+      let criticSection = null;
+      document.querySelectorAll('h2').forEach(h2 => {
+        if (h2.textContent.includes('Critic Reviews')) {
+          criticSection = h2.nextElementSibling;
+        }
+      });
+
+      if (!criticSection) return reviews;
+
+      // Extract reviews from the visible carousel
+      // Show Score renders reviews in cards with outlet logo, critic name, excerpt, and URL
+      const reviewCards = criticSection.querySelectorAll('[class*="review"]');
+
+      // Also try finding by structure - look for Read more links
+      const readMoreLinks = criticSection.querySelectorAll('a[href*="http"]:not([href*="show-score.com"])');
+
+      readMoreLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href || href.includes('youtube.com') || href.includes('youtu.be') ||
+            href.includes('spotify.com') || href.includes('facebook.com') ||
+            href.includes('twitter.com') || href.includes('instagram.com')) {
+          return;
+        }
+
+        // Find the parent card to extract outlet and critic info
+        const card = link.closest('div[class]');
+        if (!card) return;
+
+        // Look for outlet image alt text
+        const outletImg = card.querySelector('img[alt]');
+        const outlet = outletImg?.getAttribute('alt') || '';
+
+        // Look for critic name link
+        const criticLink = card.querySelector('a[href*="/member/"]');
+        const critic = criticLink?.textContent?.trim() || '';
+
+        // Look for date
+        const dateEl = card.querySelector('div');
+        let date = '';
+        card.querySelectorAll('div').forEach(div => {
+          const text = div.textContent;
+          if (text && text.match(/\w+\s+\d+,?\s*\d{4}/) && text.length < 30) {
+            date = text.trim();
+          }
+        });
+
+        // Look for excerpt
+        const paragraph = card.querySelector('p');
+        const excerpt = paragraph?.textContent?.replace(/Read more.*$/, '').trim() || '';
+
+        if (href && !reviews.some(r => r.url === href)) {
+          reviews.push({
+            url: href,
+            outlet: outlet,
+            critic: critic,
+            date: date,
+            excerpt: excerpt
+          });
+        }
+      });
+
+      return reviews;
+    });
+
+    // Now try to scroll the carousel to get more reviews
+    // Click the right arrow multiple times to load all reviews
+    let previousCount = reviews.length;
+    let scrollAttempts = 0;
+    const maxScrollAttempts = 10;
+
+    while (scrollAttempts < maxScrollAttempts) {
+      // Try to find and click the right arrow
+      const rightArrow = await page.$('div[class*="critic"] button[class*="right"], div[class*="critic"] [class*="angle-right"], h2:has-text("Critic Reviews") + div button:last-child');
+
+      if (!rightArrow) {
+        // Try generic carousel navigation
+        const arrows = await page.$$('button svg, [class*="arrow"], [class*="next"]');
+        for (const arrow of arrows) {
+          const box = await arrow.boundingBox();
+          if (box && box.y > 500) { // Only click arrows below the fold (critic section area)
+            await arrow.click().catch(() => {});
+            await sleep(500);
+            break;
+          }
+        }
+      } else {
+        await rightArrow.click().catch(() => {});
+        await sleep(500);
+      }
+
+      // Extract reviews again after scrolling
+      const newReviews = await page.evaluate(() => {
+        const reviews = [];
+        let criticSection = null;
+        document.querySelectorAll('h2').forEach(h2 => {
+          if (h2.textContent.includes('Critic Reviews')) {
+            criticSection = h2.nextElementSibling;
+          }
+        });
+
+        if (!criticSection) return reviews;
+
+        const readMoreLinks = criticSection.querySelectorAll('a[href*="http"]:not([href*="show-score.com"])');
+        readMoreLinks.forEach(link => {
+          const href = link.getAttribute('href');
+          if (!href || href.includes('youtube.com') || href.includes('youtu.be') ||
+              href.includes('spotify.com') || href.includes('facebook.com') ||
+              href.includes('twitter.com') || href.includes('instagram.com')) {
+            return;
+          }
+
+          const card = link.closest('div[class]');
+          if (!card) return;
+
+          const outletImg = card.querySelector('img[alt]');
+          const outlet = outletImg?.getAttribute('alt') || '';
+          const criticLink = card.querySelector('a[href*="/member/"]');
+          const critic = criticLink?.textContent?.trim() || '';
+
+          if (href && !reviews.some(r => r.url === href)) {
+            reviews.push({ url: href, outlet, critic });
+          }
+        });
+
+        return reviews;
+      });
+
+      // Merge new reviews
+      for (const review of newReviews) {
+        if (!reviews.some(r => r.url === review.url)) {
+          reviews.push(review);
+        }
+      }
+
+      // Stop if no new reviews found after scrolling
+      if (reviews.length === previousCount) {
+        scrollAttempts++;
+      } else {
+        scrollAttempts = 0; // Reset if we found new reviews
+        previousCount = reviews.length;
+      }
+    }
+
+    // Get the full HTML for fallback extraction
+    const html = await page.content();
+
+    await browser.close();
+    return { html, reviews };
+  } catch (error) {
+    console.log(`    Playwright error: ${error.message}`);
+    if (browser) await browser.close();
+    return null;
+  }
 }
 
 /**
@@ -593,8 +800,28 @@ async function gatherReviewsForShow(showId) {
 
   const showScoreResult = await searchShowScore(show);
   if (showScoreResult) {
-    const showScoreReviews = extractShowScoreReviews(showScoreResult.html, showId);
-    foundReviews.push(...showScoreReviews);
+    // Use pre-extracted reviews from Playwright if available (more complete)
+    if (showScoreResult.reviews && showScoreResult.reviews.length > 0) {
+      console.log(`    Playwright extracted ${showScoreResult.reviews.length} reviews directly`);
+      for (const review of showScoreResult.reviews) {
+        // Map Playwright review to our format
+        const outletId = review.outlet ? slugify(review.outlet) : slugify(new URL(review.url).hostname.replace('www.', ''));
+        foundReviews.push({
+          showId,
+          outlet: review.outlet || 'Unknown',
+          outletId,
+          criticName: review.critic || 'Unknown',
+          url: review.url,
+          publishDate: review.date || null,
+          excerpt: review.excerpt || null,
+          source: 'show-score-playwright'
+        });
+      }
+    } else {
+      // Fall back to HTML extraction
+      const showScoreReviews = extractShowScoreReviews(showScoreResult.html, showId);
+      foundReviews.push(...showScoreReviews);
+    }
   }
   await sleep(DELAY_MS);
 

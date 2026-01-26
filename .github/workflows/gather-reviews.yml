@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Playwright
+        run: npx playwright install chromium
+
       - name: Display shows to process
         run: |
           echo "Gathering review data for shows: ${{ inputs.shows }}"
