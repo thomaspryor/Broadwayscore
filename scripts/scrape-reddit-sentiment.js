@@ -231,22 +231,24 @@ async function analyzeContent(showTitle, posts, comments) {
 
 For each item, answer these questions:
 
-1. **about_this_show**: Is this post/comment SPECIFICALLY about "${showTitle}"?
-   - Answer "yes" ONLY if the content is expressing an opinion about THIS SPECIFIC SHOW: "${showTitle}"
-   - Answer "no" if the content is primarily about a DIFFERENT Broadway show (like Wicked, Hamilton, Sunset Blvd, etc.)
-   - Answer "no" if it's a multi-show review that only briefly mentions "${showTitle}" without much detail
-   - Answer "no" if it's about meta topics (subreddit drama, industry news, ticket logistics, cast announcements, tour news, etc.)
+1. **is_personal_opinion**: Is this a PERSONAL OPINION or REVIEW of "${showTitle}"?
+   - Answer "yes" if the person is sharing THEIR OWN THOUGHTS about the show (e.g., "I loved it", "The music was amazing", "Go see it!", "I was disappointed")
+   - Answer "no" if it's NEWS or META content (medical emergencies, injuries, cast changes, tour announcements, ticket sales, box office reports)
+   - Answer "no" if it's COMMENTARY ABOUT REVIEWS (e.g., "the show has received positive reviews") rather than their own review
+   - Answer "no" if it's about a DIFFERENT SHOW (Wicked, Hamilton, Sunset Blvd, etc.)
+   - Answer "no" if it's a multi-show review where "${showTitle}" is only briefly mentioned
 
-2. **sentiment** (ONLY if about_this_show is "yes"):
-   - "enthusiastic" = LOVES "${showTitle}" - must-see, favorite, life-changing, crying, can't stop thinking about it
-   - "positive" = Enjoyed "${showTitle}", would recommend, had a good experience
-   - "mixed" = Some good, some bad about "${showTitle}" specifically
-   - "negative" = Did NOT enjoy "${showTitle}", disappointed by the production
-   - "neutral" = Mentions seeing "${showTitle}" but no clear opinion expressed
+2. **sentiment** (ONLY if is_personal_opinion is "yes"):
+   - "enthusiastic" = LOVES it - words like "amazing", "incredible", "must-see", "obsessed", "life-changing", "sobbing", "favorite"
+   - "positive" = Enjoyed it, liked it, good time, would recommend
+   - "mixed" = Some parts good, some bad
+   - "negative" = Did NOT enjoy, disappointed, wouldn't recommend
+   - "neutral" = Saw it but no clear opinion
 
-3. **is_recommendation**: Is this person recommending "${showTitle}" specifically to others? (yes/no)
+3. **is_recommendation**: Are they telling others to see "${showTitle}"? (yes/no)
 
-CRITICAL: We searched for "${showTitle}" but Reddit search often returns posts about OTHER shows too. ONLY answer "yes" to about_this_show if the content is SPECIFICALLY ABOUT "${showTitle}" - not Wicked, not Hamilton, not Sunset Blvd, not any other show.
+WE WANT: People sharing their personal experience/opinion of "${showTitle}"
+WE DON'T WANT: News, cast updates, injury reports, meta-commentary about reviews, posts about other shows
 
 Content to analyze:
 `;
@@ -280,9 +282,9 @@ Content to analyze:
             content: ANALYSIS_PROMPT + batchText + `
 
 Respond with a JSON array, one object per item:
-[{"id": 1, "about_this_show": "yes|no", "sentiment": "enthusiastic|positive|mixed|negative|neutral", "is_recommendation": "yes|no"}, ...]
+[{"id": 1, "is_personal_opinion": "yes|no", "sentiment": "enthusiastic|positive|mixed|negative|neutral", "is_recommendation": "yes|no"}, ...]
 
-If about_this_show is "no", sentiment can be "neutral" (we'll skip it anyway).
+If is_personal_opinion is "no", sentiment can be "neutral" (we'll skip it anyway).
 Be generous with "enthusiastic" - raving, must-see, can't stop talking about it.
 Be generous with "positive" - enjoyed it overall, would recommend.`
           }
@@ -300,7 +302,7 @@ Be generous with "positive" - enjoyed it overall, would recommend.`
           results.totalItems++;
 
           // Only count items that are actually about show quality
-          if (analysis.about_this_show === 'yes') {
+          if (analysis.is_personal_opinion === 'yes') {
             results.relevantItems++;
             results.sentimentCounts[analysis.sentiment]++;
             results.totalUpvotes += item.score;

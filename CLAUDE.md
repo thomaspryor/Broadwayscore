@@ -264,6 +264,18 @@ All automation runs via GitHub Actions - no local commands needed.
 - **Strategy:** Start with most recent closed shows, gradually work back ~20 years
 - **Note:** Review gathering happens automatically after discovery (same process as new shows)
 
+### `.github/workflows/process-review-submission.yml`
+- **Runs:** When a GitHub issue is created/edited with the `review-submission` label
+- **Does:**
+  - Validates review submission using AI (Claude API)
+  - Checks: Valid URL, Broadway show, legitimate outlet, not duplicate
+  - If approved: Automatically scrapes review and adds to database
+  - Posts validation result as issue comment
+  - Closes issue when successfully processed
+- **User-facing page:** `/submit-review` (accessible from navigation)
+- **Issue template:** `.github/ISSUE_TEMPLATE/missing-review.yml`
+- **Validation script:** `scripts/validate-review-submission.js`
+
 ## Deployment
 
 ### How It Works (Vercel)
@@ -293,6 +305,7 @@ All automation runs via GitHub Actions - no local commands needed.
 - Automated image fetching via GitHub Action
 - Weekly automated status updates
 - New show discovery automation
+- User-submitted review system with AI validation (automated approval & scraping)
 
 ### Box Office Stats
 Show pages display box office data in two rows of stat cards:
