@@ -100,7 +100,7 @@ jobs:
       - name: Run E2E tests
         run: npx playwright test --project=chromium
         env:
-          TEST_BASE_URL: https://broadwayscore.vercel.app
+          TEST_BASE_URL: https://broadwayscorecard.com
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
@@ -124,7 +124,7 @@ jobs:
 
             **Run:** [${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
             **Time:** ${new Date().toISOString()}
-            **Site:** https://broadwayscore.vercel.app
+            **Site:** https://broadwayscorecard.com
 
             Please check the workflow logs and Playwright report for details.
 
