@@ -5,16 +5,16 @@
   "criticName": "Sandra McFarland",
   "url": "http://www.thisbroadsway.com/aladdin.html",
   "publishDate": "March 26, 2014",
-  "fullText": null,
+  "fullText": "I just came from Aladdin…so if you happen to come across a magic lamp and a genie popsout, perhaps one wish should be to see Aladdin on Broadway at the New AmsterdamTheatre. ​The stage is alive from beginning to end. It’s a spectacle of lights and sound. Things are spinning around, popping up and exploding on the stage. Adam Jacobs, as Aladdin is adorable, compact and buff. A singing and dancing wonder. Jasmine played by Courtney Reed is  beautiful, curvaceous, and in perfect pitch. They are the perfect pair that will make your heart melt. Let me not forget James Monroe Iglehart, the Genie himself. You really need to see this tobelieve it…Iglehart was a most lovable Genie, and the audience ate him up. ​It’s not often you see a standing ovation partially through the 1st act, but this stuff is so good. The audience was so energized, that the whole theatre was shaking. I was in a hanging box, and made a little wish myself that the thing wasn’t going to let loose in all the excitement.\n\nSo there you have it. ThisBroadsway reporting to you from the magic carpet. Don’twalk….RUN -thisbroadSway 2/26/14\n\nWCopyright ThisbroadSway. All rights reserved.",
   "isFullReview": false,
   "showScoreExcerpt": "\"The stage is alive from beginning to end. It's a spectacle of lights and sound...Iglehart was a most lovable Genie, and the audience ate him up. It's not often you see a standing ovation partial.\"",
   "originalScore": null,
   "assignedScore": 84,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
-  "textStatus": "missing",
-  "textQuality": "missing",
-  "sourceMethod": "showscore",
+  "textStatus": "partial",
+  "textQuality": "partial",
+  "sourceMethod": "archive",
   "scoreSource": "enhanced-sentiment-lean-positive",
   "scoreConfidence": "low",
   "llmScore": {
@@ -72,5 +72,40 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 199,
+  "archivePath": "data/archives/reviews/aladdin-2014/thisbroadsway--sandra-mcfarland_2026-01-26.html",
+  "textFetchedAt": "2026-01-26T19:55:15.975Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (404): Request failed with status code 404"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "archiveOrgTimestamp": "20210623183115",
+  "archiveOrgUrl": "http://web.archive.org/web/20210623183115/http://www.thisbroadsway.com/aladdin.html",
+  "textIssues": [
+    "Word count too low: 199 (min: 300)"
+  ]
 }
