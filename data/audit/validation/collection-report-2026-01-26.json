@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-26T16:07:10.199Z",
+  "runDate": "2026-01-26T18:54:18.279Z",
   "config": {
-    "batchSize": 10,
-    "maxReviews": 50,
+    "batchSize": 3,
+    "maxReviews": 3,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
-    "scrapingBeeEnabled": true,
-    "brightDataEnabled": true,
+    "scrapingBeeEnabled": false,
+    "brightDataEnabled": false,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 37,
+    "processed": 40,
     "failed": 13,
     "skipped": 0,
-    "successRate": "74.0%"
+    "successRate": "75.5%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 36
+    "archive": 39
   },
   "statistics": {
-    "tier1Attempts": 50,
-    "tier1Success": 1,
-    "tier2Attempts": 49,
+    "tier1Attempts": 3,
+    "tier1Success": 0,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 49,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 50,
-    "tier4Success": 36,
-    "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 400
+    "tier4Attempts": 3,
+    "tier4Success": 3,
+    "totalFailed": 0,
+    "scrapingBeeCreditsUsed": 0
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -71,7 +71,10 @@
     "moulin-rouge-2019/nytimes--ben-brantley.json",
     "oh-mary-2024/hollywood-reporter--david-rooney.json",
     "oh-mary-2024/nytimes--jesse-green.json",
-    "oh-mary-2024/variety--christian-lewis.json"
+    "oh-mary-2024/variety--christian-lewis.json",
+    "operation-mincemeat-2025/nytimes--jesse-green.json",
+    "operation-mincemeat-2025/variety--frank-rizzo.json",
+    "operation-mincemeat-2025/vulture--sara-holdren.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -130,7 +133,10 @@
       "moulin-rouge-2019/nytimes--ben-brantley.json",
       "oh-mary-2024/hollywood-reporter--david-rooney.json",
       "oh-mary-2024/nytimes--jesse-green.json",
-      "oh-mary-2024/variety--christian-lewis.json"
+      "oh-mary-2024/variety--christian-lewis.json",
+      "operation-mincemeat-2025/nytimes--jesse-green.json",
+      "operation-mincemeat-2025/variety--frank-rizzo.json",
+      "operation-mincemeat-2025/vulture--sara-holdren.json"
     ]
   }
 }
