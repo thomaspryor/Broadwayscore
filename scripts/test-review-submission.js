@@ -23,7 +23,8 @@ const showsPath = path.join(__dirname, '../data/shows.json');
 const reviewsPath = path.join(__dirname, '../data/reviews.json');
 const reviewTextsPath = path.join(__dirname, '../data/review-texts');
 
-const shows = JSON.parse(fs.readFileSync(showsPath, 'utf-8'));
+const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf-8'));
+const shows = showsData.shows || showsData; // Handle both formats
 const reviewsData = JSON.parse(fs.readFileSync(reviewsPath, 'utf-8'));
 const reviews = reviewsData.reviews || reviewsData; // Handle both formats
 
