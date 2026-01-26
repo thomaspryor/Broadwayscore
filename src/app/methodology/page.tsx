@@ -86,6 +86,14 @@ const faqSchema = {
         text: 'Audience Buzz aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit into four designations: Loving (88+), Liking (78-87), Shrugging (68-77), and Loathing (0-67). Sources are weighted dynamically based on sample size, with Reddit capturing buzz at 20% and Show Score/Mezzanine splitting the remaining 80% proportionally.',
       },
     },
+    {
+      '@type': 'Question',
+      name: 'Where does the box office data come from?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Box office data is sourced from BroadwayWorld, which aggregates official figures from The Broadway League. We automatically update weekly grosses, capacity percentages, and all-time statistics every Tuesday and Wednesday after the reporting period ends. This includes current week performance with comparisons and lifetime cumulative stats for all shows.',
+      },
+    },
   ],
 };
 
@@ -395,6 +403,73 @@ export default function MethodologyPage() {
               </li>
             </ul>
           </div>
+        </section>
+
+        {/* Box Office Data */}
+        <section className="card p-5 sm:p-6">
+          <h2 className="text-xl font-bold text-white mb-4">Box Office Data</h2>
+          <p className="text-gray-300 mb-4">
+            Broadway Scorecard tracks weekly box office performance and all-time statistics for every production, providing transparency into commercial success alongside critical and audience reception.
+          </p>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">Data Source</h3>
+          <p className="text-gray-300 text-sm mb-3">
+            All box office data is sourced from <strong className="text-white">BroadwayWorld</strong>, which aggregates official figures reported by The Broadway League. Data is automatically scraped and updated twice weekly (Tuesdays and Wednesdays at 10 AM ET) after the weekly reporting period ends on Sunday.
+          </p>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">This Week Stats</h3>
+          <p className="text-gray-300 text-sm mb-3">
+            For currently running shows, we display current week performance with week-over-week and year-over-year comparisons:
+          </p>
+          <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
+            <ul className="text-gray-300 space-y-2 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-brand">•</span>
+                <span><strong className="text-white">Gross:</strong> Total box office revenue for the week, with WoW and YoY % change</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-brand">•</span>
+                <span><strong className="text-white">Capacity:</strong> Percentage of available seats filled, with WoW % change</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-brand">•</span>
+                <span><strong className="text-white">Avg Ticket Price:</strong> Average price paid per ticket for the week</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-brand">•</span>
+                <span><strong className="text-white">Attendance:</strong> Total number of seats filled during the week</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-brand">•</span>
+                <span><strong className="text-white">Performances:</strong> Number of shows performed during the week</span>
+              </li>
+            </ul>
+          </div>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">All-Time Stats</h3>
+          <p className="text-gray-300 text-sm mb-3">
+            For all shows (including closed productions), we track cumulative lifetime statistics:
+          </p>
+          <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
+            <ul className="text-gray-300 space-y-2 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-brand">•</span>
+                <span><strong className="text-white">Total Gross:</strong> Cumulative box office revenue across the entire run</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-brand">•</span>
+                <span><strong className="text-white">Total Performances:</strong> Total number of shows performed to date</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-brand">•</span>
+                <span><strong className="text-white">Total Attendance:</strong> Cumulative audience members across all performances</span>
+              </li>
+            </ul>
+          </div>
+
+          <p className="text-gray-300 text-sm mt-4">
+            Box office data provides important context for understanding a show&apos;s commercial viability and audience appeal, complementing critical reviews and audience sentiment.
+          </p>
         </section>
 
         {/* Confidence */}
