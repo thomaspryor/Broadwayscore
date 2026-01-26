@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-01-26T02:27:57.793Z",
+  "runDate": "2026-01-26T02:34:01.701Z",
   "config": {
-    "batchSize": 5,
-    "maxReviews": 10,
+    "batchSize": 3,
+    "maxReviews": 3,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 9,
-    "failed": 11,
+    "failed": 14,
     "skipped": 0,
-    "successRate": "45.0%"
+    "successRate": "39.1%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -23,16 +23,16 @@
     "archive": 9
   },
   "statistics": {
-    "tier1Attempts": 10,
+    "tier1Attempts": 3,
     "tier1Success": 0,
-    "tier2Attempts": 10,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 10,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier4Attempts": 11,
-    "tier4Success": 5,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 80
+    "tier4Attempts": 4,
+    "tier4Success": 0,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 10
   },
   "processed": [
     "buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json",
@@ -56,7 +56,10 @@
     "back-to-the-future-2023/thr--frank-scheck.json",
     "book-of-mormon-2011/VULT--jesse-green.json",
     "bug-2026/nytimes--jason-zinoman.json",
-    "chess-2025/nytimes--elisabeth-vincentelli.json"
+    "chess-2025/nytimes--elisabeth-vincentelli.json",
+    "and-juliet-2022/THR--frank-scheck.json",
+    "back-to-the-future-2023/thr--frank-scheck.json",
+    "book-of-mormon-2011/VULT--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [],
