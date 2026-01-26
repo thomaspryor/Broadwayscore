@@ -228,6 +228,72 @@ async function processShow(show) {
 }
 
 /**
+ * Calculate combined Audience Buzz score with dynamic weighting
+ *
+ * Weighting strategy:
+ * - Reddit: fixed 20% (when available)
+ * - Show Score & Mezzanine: split remaining weight (80% or 100%) by sample size
+ *
+ * This gives more weight to sources with larger sample sizes.
+ */
+function calculateCombinedScore(sources) {
+  const hasShowScore = sources.showScore?.score != null;
+  const hasMezzanine = sources.mezzanine?.score != null;
+  const hasReddit = sources.reddit?.score != null;
+
+  // If no sources, return null
+  if (!hasShowScore && !hasMezzanine && !hasReddit) {
+    return { score: null, weights: null };
+  }
+
+  // Reddit gets fixed 20% if available
+  const redditWeight = hasReddit ? 0.20 : 0;
+  const remainingWeight = 1 - redditWeight;
+
+  // Calculate Show Score and Mezzanine weights based on sample size
+  let showScoreWeight = 0;
+  let mezzanineWeight = 0;
+
+  if (hasShowScore && hasMezzanine) {
+    // Split remaining weight by sample size
+    const ssCount = sources.showScore.reviewCount || 1;
+    const mezzCount = sources.mezzanine.reviewCount || 1;
+    const totalCount = ssCount + mezzCount;
+
+    showScoreWeight = (ssCount / totalCount) * remainingWeight;
+    mezzanineWeight = (mezzCount / totalCount) * remainingWeight;
+  } else if (hasShowScore) {
+    showScoreWeight = remainingWeight;
+  } else if (hasMezzanine) {
+    mezzanineWeight = remainingWeight;
+  }
+
+  // Calculate weighted average
+  let weightedSum = 0;
+
+  if (hasShowScore) {
+    weightedSum += sources.showScore.score * showScoreWeight;
+  }
+  if (hasMezzanine) {
+    weightedSum += sources.mezzanine.score * mezzanineWeight;
+  }
+  if (hasReddit) {
+    weightedSum += sources.reddit.score * redditWeight;
+  }
+
+  const combined = Math.round(weightedSum);
+
+  return {
+    score: combined,
+    weights: {
+      showScore: Math.round(showScoreWeight * 100),
+      mezzanine: Math.round(mezzanineWeight * 100),
+      reddit: Math.round(redditWeight * 100),
+    }
+  };
+}
+
+/**
  * Update audience-buzz.json with Show Score data
  */
 function updateAudienceBuzz(showId, showTitle, showScoreData) {
@@ -251,38 +317,22 @@ function updateAudienceBuzz(showId, showTitle, showScoreData) {
     reviewCount: showScoreData.reviewCount,
   };
 
-  // Recalculate combined score
+  // Recalculate combined score with dynamic weighting
   const sources = audienceBuzz.shows[showId].sources;
-  const scores = [];
-  const weights = [];
+  const { score, weights } = calculateCombinedScore(sources);
 
-  if (sources.showScore?.score) {
-    scores.push(sources.showScore.score);
-    weights.push(0.4);
-  }
-  if (sources.mezzanine?.score) {
-    scores.push(sources.mezzanine.score);
-    weights.push(0.4);
-  }
-  if (sources.reddit?.score) {
-    scores.push(sources.reddit.score);
-    weights.push(0.2);
-  }
+  if (score !== null) {
+    audienceBuzz.shows[showId].combinedScore = score;
 
-  if (scores.length > 0) {
-    const totalWeight = weights.reduce((a, b) => a + b, 0);
-    const normalizedWeights = weights.map(w => w / totalWeight);
-
-    const combined = Math.round(
-      scores.reduce((sum, score, i) => sum + score * normalizedWeights[i], 0)
-    );
-
-    audienceBuzz.shows[showId].combinedScore = combined;
-
-    if (combined >= 90) audienceBuzz.shows[showId].designation = 'Loving It';
-    else if (combined >= 75) audienceBuzz.shows[showId].designation = 'Liking It';
-    else if (combined >= 60) audienceBuzz.shows[showId].designation = 'Take-it-or-Leave-it';
+    if (score >= 90) audienceBuzz.shows[showId].designation = 'Loving It';
+    else if (score >= 75) audienceBuzz.shows[showId].designation = 'Liking It';
+    else if (score >= 60) audienceBuzz.shows[showId].designation = 'Take-it-or-Leave-it';
     else audienceBuzz.shows[showId].designation = 'Loathing It';
+
+    // Log the weights used
+    if (verbose) {
+      console.log(`  Weights: SS ${weights.showScore}%, Mezz ${weights.mezzanine}%, Reddit ${weights.reddit}%`);
+    }
   }
 }
 
@@ -341,6 +391,8 @@ async function main() {
 
         // Save incrementally after each successful show
         audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
+        audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
+        audienceBuzz._meta.notes = 'Dynamic weighting: Reddit fixed 20%, Show Score & Mezzanine split remaining 80% by sample size';
         fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
         console.log(`  ✓ Saved to audience-buzz.json (${successful}/${shows.length} complete)`);
       }
