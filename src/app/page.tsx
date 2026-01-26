@@ -306,7 +306,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
         </p>
       </div>
 
-      {/* Score - smaller badge */}
+      {/* Score - responsive badge (smaller on mobile, larger on desktop) */}
       <div className="flex-shrink-0 flex flex-col items-center justify-start pt-1">
         {show.criticScore && getScoreTier(score) && (
           <span
@@ -317,7 +317,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
             {getScoreTier(score)?.label}
           </span>
         )}
-        <ScoreBadge score={score} size="md" reviewCount={show.criticScore?.reviewCount} status={show.status} />
+        <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} status={show.status} />
       </div>
     </Link>
   );
