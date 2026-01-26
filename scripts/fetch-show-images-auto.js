@@ -161,10 +161,11 @@ function extractAllImageFormats(html) {
     if (!heroImage && (
         filename.includes('hero') ||
         filename.includes('banner') ||
+        filename.includes('header') ||
         filename.includes('production') ||
         filename.includes('company') ||
         filename.includes('ensemble') ||
-        filename.match(/1920x|1440x|landscape/)
+        filename.match(/1920x|1600x|1440x|landscape/)
     )) {
       heroImage = baseUrl;
     }
