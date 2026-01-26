@@ -542,8 +542,7 @@ function HomePageInner() {
         const openDate = new Date(show.openingDate);
         return isMusical && show.status === 'open' && openDate >= twelveMonthsAgo && show.criticScore?.score;
       })
-      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
-      .slice(0, 10);
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows, twelveMonthsAgo]);
 
   const bestNewPlays = useMemo(() => {
@@ -552,8 +551,7 @@ function HomePageInner() {
         const openDate = new Date(show.openingDate);
         return show.type === 'play' && show.status === 'open' && openDate >= twelveMonthsAgo && show.criticScore?.score;
       })
-      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
-      .slice(0, 10);
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows, twelveMonthsAgo]);
 
   const upcomingShows = useMemo(() => getUpcomingShows(), []);
@@ -868,17 +866,17 @@ function HomePageInner() {
         <FeaturedRow
           title="Best Recent Musicals"
           shows={bestNewMusicals}
-          viewAllHref="/?type=musical&sort=score_desc"
+          viewAllHref="/browse/best-broadway-musicals"
         />
         <FeaturedRow
           title="Best Recent Plays"
           shows={bestNewPlays}
-          viewAllHref="/?type=play&sort=score_desc"
+          viewAllHref="/browse/best-broadway-plays"
         />
         <FeaturedRow
           title="New & Upcoming"
           shows={upcomingShows}
-          viewAllHref="/?status=now_playing&sort=recent"
+          viewAllHref="/browse/upcoming-broadway-shows"
         />
       </div>
 

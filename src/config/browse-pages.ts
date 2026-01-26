@@ -332,6 +332,33 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     sort: 'score',
     relatedPages: ['jukebox-musicals-on-broadway', 'best-broadway-revivals', 'tony-winners-on-broadway'],
   },
+
+  'best-broadway-plays': {
+    slug: 'best-broadway-plays',
+    title: 'Best Broadway Plays',
+    h1: 'Best Broadway Plays',
+    metaTitle: 'Best Broadway Plays (2026)',
+    metaDescription: 'The highest-rated plays currently on Broadway. Powerful dramas, sharp comedies, and thought-provoking theater at its finest.',
+    intro: 'Broadway plays offer some of the most powerful and intimate theatrical experiences available. Without the spectacle of big musical numbers, plays rely on exceptional writing, direction, and performances to captivate audiences. These are the highest-rated plays currently on Broadway, ranging from gripping dramas to sharp comedies. If you\'re looking for theater that challenges, moves, and stays with you, these productions deliver.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      return show.type === 'play';
+    },
+    sort: 'score',
+    relatedPages: ['best-broadway-dramas', 'best-broadway-comedies', 'tony-winners-on-broadway'],
+  },
+
+  'upcoming-broadway-shows': {
+    slug: 'upcoming-broadway-shows',
+    title: 'Upcoming Broadway Shows',
+    h1: 'Upcoming Broadway Shows',
+    metaTitle: 'Upcoming Broadway Shows (2026)',
+    metaDescription: 'New Broadway shows coming soon. See what\'s opening next on the Great White Way, from world premieres to highly anticipated transfers.',
+    intro: 'Get excited for Broadway\'s next wave of productions! These shows are currently in previews or have announced opening dates in the coming months. From world premieres to transfers from Off-Broadway and London, these productions represent the future of Broadway. Many are already selling tickets, so if you\'re planning ahead, here\'s your guide to what\'s coming to the Great White Way.',
+    filter: (show) => show.status === 'previews',
+    sort: 'opening-date',
+    relatedPages: ['new-broadway-shows-2025', 'broadway-shows-closing-soon', 'broadway-lottery-shows'],
+  },
 };
 
 // Get all browse page slugs for static generation

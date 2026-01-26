@@ -544,8 +544,12 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {/* Meta line */}
               <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-gray-400 text-xs sm:text-sm mb-4">
                 <span className="text-gray-300">{show.venue}</span>
-                <span className="text-gray-600">•</span>
-                <span>{show.runtime}</span>
+                {show.runtime && (
+                  <>
+                    <span className="text-gray-600">•</span>
+                    <span>{show.runtime}</span>
+                  </>
+                )}
                 <span className="text-gray-600">•</span>
                 <span>Opened {formatDate(show.openingDate)}</span>
               </div>
