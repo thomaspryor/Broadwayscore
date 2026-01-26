@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway show metadata - source of truth for all shows",
-    "lastUpdated": "2026-01-25",
+    "lastUpdated": "2026-01-26",
     "source": "Manual + Playbill/IBDB cross-reference"
   },
   "shows": [
@@ -1962,7 +1962,11 @@
       "type": "musical",
       "runtime": null,
       "intermissions": null,
-      "images": {},
+      "images": {
+        "hero": "https://images.ctfassets.net/6pezt69ih962/4UBWrjFXrbLXeMrrmJDp5L/0269236225a37a798ab6f095d059bf88/Header__1_.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+        "thumbnail": "https://images.ctfassets.net/6pezt69ih962/3QKikGjmKldqCztxBYZLy5/b510e9928a376eec0c9ca97e1457b6b7/Poster_480_x_720__1_.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+        "poster": "https://images.ctfassets.net/6pezt69ih962/3QKikGjmKldqCztxBYZLy5/b510e9928a376eec0c9ca97e1457b6b7/Poster_480_x_720__1_.png?fm=webp&q=90"
+      },
       "synopsis": "",
       "ageRecommendation": null,
       "previewsStartDate": null,
