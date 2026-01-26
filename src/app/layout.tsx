@@ -194,20 +194,18 @@ export default function RootLayout({
             </div>
 
             {/* Bottom */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div className="flex flex-col items-center gap-3 text-center">
               <div className="flex items-center">
                 <span className="text-lg font-bold text-white">Broadway</span>
                 <span className="text-lg font-bold text-gradient">Scorecard</span>
               </div>
-              <div className="flex items-center justify-center gap-4 sm:gap-6 text-sm text-gray-400">
-                <Link href="/methodology" className="hover:text-white transition-colors">
-                  Methodology
-                </Link>
+              <div className="flex items-center gap-2 text-sm text-gray-400">
+                <Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link>
                 <span className="text-gray-600">|</span>
-                <span className="text-center">Data from critics, audiences & Reddit</span>
+                <span>Data from critics, audiences & Reddit</span>
               </div>
             </div>
-            <p className="mt-6 pt-6 border-t border-white/5 text-center text-xs text-gray-500">
+            <p className="mt-4 pt-4 border-t border-white/5 text-center text-xs text-gray-500">
               All ratings and reviews belong to their respective sources.
             </p>
           </div>
