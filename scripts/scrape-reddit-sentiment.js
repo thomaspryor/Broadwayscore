@@ -280,9 +280,9 @@ Content to analyze:
             content: ANALYSIS_PROMPT + batchText + `
 
 Respond with a JSON array, one object per item:
-[{"id": 1, "about_show_quality": "yes|no", "sentiment": "enthusiastic|positive|mixed|negative|neutral", "is_recommendation": "yes|no"}, ...]
+[{"id": 1, "about_this_show": "yes|no", "sentiment": "enthusiastic|positive|mixed|negative|neutral", "is_recommendation": "yes|no"}, ...]
 
-If about_show_quality is "no", sentiment can be "neutral" (we'll skip it anyway).
+If about_this_show is "no", sentiment can be "neutral" (we'll skip it anyway).
 Be generous with "enthusiastic" - raving, must-see, can't stop talking about it.
 Be generous with "positive" - enjoyed it overall, would recommend.`
           }
@@ -300,7 +300,7 @@ Be generous with "positive" - enjoyed it overall, would recommend.`
           results.totalItems++;
 
           // Only count items that are actually about show quality
-          if (analysis.about_show_quality === 'yes') {
+          if (analysis.about_this_show === 'yes') {
             results.relevantItems++;
             results.sentimentCounts[analysis.sentiment]++;
             results.totalUpvotes += item.score;
