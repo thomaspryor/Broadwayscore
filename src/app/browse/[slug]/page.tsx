@@ -16,21 +16,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
   const canonicalUrl = `${BASE_URL}/browse/${params.slug}`;
 
-  // Get shows for this browse list to extract poster URLs
+  // Get top show poster for OG image, or use default
   const browseList = getBrowseList(params.slug);
-  const topPosters = browseList?.shows
-    .slice(0, 4)
-    .map(show => show.images?.poster)
-    .filter((url): url is string => !!url) || [];
-
-  // Build OG image URL
-  const ogParams = new URLSearchParams({
-    type: 'browse',
-    title: config.h1,
-    subtitle: config.metaDescription.slice(0, 100),
-    ...(topPosters.length > 0 && { posters: topPosters.join(',') }),
-  });
-  const ogImageUrl = `${BASE_URL}/api/og?${ogParams.toString()}`;
+  const topPoster = browseList?.shows[0]?.images?.hero || browseList?.shows[0]?.images?.poster;
+  const ogImageUrl = topPoster || `${BASE_URL}/og/home.png`;
 
   return {
     title: config.metaTitle,
