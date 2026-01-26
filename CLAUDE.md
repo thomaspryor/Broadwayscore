@@ -432,6 +432,11 @@ All automation runs via GitHub Actions - no local commands needed.
 - **Secrets required:** `ANTHROPIC_API_KEY` (for web search), `BRIGHTDATA_TOKEN`, `SCRAPINGBEE_API_KEY`
 - **Script:** `scripts/gather-reviews.js`
 - **Manual trigger:** `gh workflow run gather-reviews.yml -f shows=show-id-here`
+- **Technical notes:**
+  - Installs Playwright Chromium for Show Score carousel scraping
+  - Show Score extraction uses Playwright to scroll through ALL critic reviews (not just first 8)
+  - Detects and rejects Show Score redirects to off-broadway/off-off-broadway shows
+  - Tries `-broadway` URL suffix patterns first to find correct Broadway shows
 
 ### `.github/workflows/fetch-images.yml`
 - **Runs:** When triggered
@@ -637,47 +642,36 @@ Use Playwright MCP for BroadwayWorld and complex sites
 
 ### Show Score Integration
 
-Show Score is a third aggregator source alongside DTLI and BWW Review Roundups. It provides:
+Show Score is an aggregator that provides:
 - **Audience scores** (0-100%) from user ratings
 - **Critic review lists** with outlet, author, date, excerpt, and review URL
 
-**Files:**
-- `data/show-score-urls.json` - Maps 37 show IDs to Show Score URLs
-- `data/show-score.json` - Extracted data (audience scores + critic reviews)
-- `data/aggregator-archive/show-score/*.html` - Archived HTML pages
-- `scripts/extract-show-score-reviews.js` - Extraction script using JSDOM
+**Two separate integrations:**
 
-**Current Status (January 2026):**
-- 22 shows fully extracted with data
-- 15 shows need archive pages fetched
-- 3 shows need pages re-fetched (wrong content: moulin-rouge-2019, mj-2022, and-juliet-2022)
+1. **Critic Reviews** (via `gather-reviews.js`):
+   - Automatically extracts ALL critic reviews using Playwright with carousel scrolling
+   - Handles Show Score's paginated carousel (reviews load as you scroll)
+   - Creates individual review files in `data/review-texts/{show-id}/`
+   - URL pattern matching tries `-broadway` suffix first to avoid redirects to wrong shows
+   - Detects and rejects redirects to off-broadway/off-off-broadway shows
 
-**To fetch missing pages:**
-1. Use Playwright MCP to navigate to Show Score URL
-2. Capture page HTML with `browser_evaluate` → `document.documentElement.outerHTML`
-3. Save to `data/aggregator-archive/show-score/{show-id}.html` with metadata header
-4. Run `node scripts/extract-show-score-reviews.js` to update show-score.json
+2. **Audience Scores** (via `scrape-show-score-audience.js`):
+   - Weekly automated via `update-show-score.yml` workflow
+   - Updates `data/audience-buzz.json` with audience scores
+   - Uses ScrapingBee with JS rendering
 
-**Data extracted per show:**
-```json
-{
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/...",
-  "audienceScore": 90,
-  "audienceReviewCount": 334,
-  "criticReviewCount": 17,
-  "criticReviews": [
-    {
-      "outlet": "The New York Times",
-      "author": "Laura Collins-Hughes",
-      "date": "November 20th, 2025",
-      "excerpt": "Critic's Pick: \"The effervescent new musical...\"",
-      "url": "https://www.nytimes.com/..."
-    }
-  ]
-}
-```
+**Show Score URL Patterns:**
+Show Score uses various URL patterns for Broadway shows:
+- `{slug}-broadway` (most common, tried first)
+- `{slug}-the-musical-broadway` (for musicals)
+- `{slug}` (can redirect to wrong shows - off-broadway variants)
 
-**Note:** Show Score paginates critic reviews - only first 8 are in the initial HTML. The `criticReviewCount` reflects the total from the heading (e.g., "Critic Reviews (17)").
+**Important:** Always use `-broadway` suffix patterns first. URLs like `/broadway-shows/redwood` can redirect to `/off-off-broadway-shows/redwood` (a completely different show).
+
+**Legacy files (for reference):**
+- `data/show-score-urls.json` - Manual URL mappings (less needed now with auto-discovery)
+- `data/show-score.json` - Legacy extracted data
+- `scripts/extract-show-score-reviews.js` - Legacy JSDOM extraction (superseded by Playwright)
 
 ### SEO
 - JSON-LD structured data with ticket offers, cast, ratings
