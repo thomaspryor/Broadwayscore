@@ -11,6 +11,10 @@ on:
         description: 'Specific show ID to process (optional)'
         required: false
         type: string
+      shows:
+        description: 'Comma-separated show IDs/slugs (for batch processing)'
+        required: false
+        type: string
       limit:
         description: 'Limit number of shows to process'
         required: false
