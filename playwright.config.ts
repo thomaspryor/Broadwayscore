@@ -28,8 +28,8 @@ export default defineConfig({
 
   // Shared settings for all projects
   use: {
-    // Base URL for tests - use production site
-    baseURL: process.env.TEST_BASE_URL || 'https://broadwayscore.vercel.app',
+    // Base URL for tests - use production site (custom domain)
+    baseURL: process.env.TEST_BASE_URL || 'https://broadwayscorecard.com',
 
     // Capture screenshot on failure
     screenshot: 'only-on-failure',
