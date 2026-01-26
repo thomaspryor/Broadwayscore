@@ -968,15 +968,17 @@ function commitChanges(processed) {
         stdio: 'pipe'
       });
 
-      // Push
-      execSync('git push', { stdio: 'pipe' });
+      // Push with explicit remote and branch
+      execSync('git push origin HEAD', { stdio: 'pipe' });
 
       console.log(`  ✓ Committed and pushed checkpoint (${processed} reviews)`);
     } else {
       console.log('  (No changes to commit)');
     }
   } catch (e) {
-    console.log(`  ⚠ Git commit failed: ${e.message}`);
+    console.error(`  ✗ Git commit/push FAILED: ${e.message}`);
+    console.error(`    This means work may be lost if the job times out!`);
+    console.error(`    Check workflow permissions: needs 'contents: write'`);
     // Don't throw - we don't want to stop the collection
   }
 }
