@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+// const { HttpsProxyAgent } = require('https-proxy-agent'); // Not used - Bright Data needs zone setup
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -35,6 +36,7 @@ const CLI = {
   aggressive: args.includes('--aggressive'),
   forceTier: args.find(a => a.startsWith('--tier='))?.split('=')[1],
   testUrl: args.find(a => a.startsWith('--test-url='))?.split('=')[1],
+  stealthProxy: args.includes('--stealth-proxy'), // Use ScrapingBee stealth proxy (25 credits/req)
 };
 
 // Dependencies (loaded dynamically)
@@ -77,6 +79,7 @@ const CONFIG = {
   priority: process.env.PRIORITY || 'all',
   showFilter: process.env.SHOW_FILTER || '',
   retryFailed: process.env.RETRY_FAILED === 'true',
+  commitEvery: parseInt(process.env.COMMIT_EVERY || '10'), // Git commit after every N reviews
 
   // API Keys
   scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '',
@@ -165,6 +168,8 @@ let browser = null;
 let context = null;
 let page = null;
 const loggedInDomains = new Set();
+let browserCrashCount = 0;
+const MAX_BROWSER_CRASHES = 5;
 
 // ============================================================================
 // TIER 1: Playwright with Stealth Plugin
@@ -172,6 +177,12 @@ const loggedInDomains = new Set();
 
 async function fetchWithPlaywright(url, review) {
   stats.tier1Attempts++;
+
+  // Ensure browser is healthy before attempting
+  const browserOk = await ensureBrowserHealthy();
+  if (!browserOk) {
+    throw new Error('Browser unavailable - too many crashes');
+  }
 
   // Check for paywall and login if needed
   const paywallCreds = getPaywallCredentials(url);
@@ -189,6 +200,12 @@ async function fetchWithPlaywright(url, review) {
       if (attempt > 0) {
         console.log(`    Retry ${attempt + 1}/${CONFIG.maxRetries}...`);
         await sleep(CONFIG.retryDelays[attempt - 1]);
+
+        // Re-check browser health before retry
+        const retryBrowserOk = await ensureBrowserHealthy();
+        if (!retryBrowserOk) {
+          throw new Error('Browser unavailable after crash');
+        }
       }
 
       await page.goto(url, {
@@ -241,6 +258,14 @@ async function fetchWithPlaywright(url, review) {
       lastError = e;
       if (e.message.includes('404')) {
         throw e; // Don't retry 404s
+      }
+      // Detect browser crash errors
+      if (e.message.includes('Target page, context or browser has been closed') ||
+          e.message.includes('Target closed') ||
+          e.message.includes('Browser has been closed') ||
+          e.message.includes('Protocol error')) {
+        console.log(`    ⚠ Browser crash detected, will restart...`);
+        // Don't count this as a regular failure - let health check handle it
       }
     }
   }
@@ -322,34 +347,49 @@ async function loginToSite(domain, email, password) {
 // TIER 2: ScrapingBee API
 // ============================================================================
 
-async function fetchWithScrapingBee(url) {
+async function fetchWithScrapingBee(url, useStealth = false) {
   if (!CONFIG.scrapingBeeKey || !axios) {
     throw new Error('ScrapingBee not configured');
   }
 
   stats.tier2Attempts++;
 
+  const proxyType = useStealth ? 'stealth_proxy' : 'premium_proxy';
+  const credits = useStealth ? 75 : 10;
+  console.log(`    ScrapingBee (${proxyType}, ${credits} credits)...`);
+
   try {
+    const params = {
+      api_key: CONFIG.scrapingBeeKey,
+      url: url,
+      render_js: true,
+      wait: 5000,
+      block_ads: true,
+      block_resources: false,
+    };
+
+    if (useStealth) {
+      params.stealth_proxy = true;
+    } else {
+      params.premium_proxy = true;
+    }
+
     const response = await axios.get('https://app.scrapingbee.com/api/v1/', {
-      params: {
-        api_key: CONFIG.scrapingBeeKey,
-        url: url,
-        render_js: true,
-        premium_proxy: true,
-        wait: 5000,
-        block_ads: true,
-        block_resources: false,
-      },
+      params,
       timeout: CONFIG.apiTimeout,
     });
 
-    // Each premium request costs ~10 credits
-    stats.scrapingBeeCreditsUsed += 10;
+    stats.scrapingBeeCreditsUsed += credits;
 
     const html = response.data;
 
     if (isBlocked(html)) {
-      throw new Error('CAPTCHA detected in ScrapingBee response');
+      // If premium failed with CAPTCHA and we haven't tried stealth yet, retry with stealth
+      if (!useStealth && CLI.stealthProxy) {
+        console.log(`    → CAPTCHA with premium, retrying with stealth_proxy...`);
+        return await fetchWithScrapingBee(url, true);
+      }
+      throw new Error(`CAPTCHA detected (${proxyType})`);
     }
 
     const text = extractTextFromHtml(html);
@@ -361,6 +401,9 @@ async function fetchWithScrapingBee(url) {
 
     throw new Error(`Insufficient text: ${text?.length || 0} chars`);
   } catch (error) {
+    // Don't retry if we're already on stealth - let it fail through
+    // (This prevents double-retrying when stealth also fails)
+
     // Enhanced error reporting for ScrapingBee
     if (error.response) {
       const status = error.response.status;
@@ -389,47 +432,47 @@ async function fetchWithBrightData(url) {
 
   stats.tier3Attempts++;
 
-  const customerId = CONFIG.brightDataCustomerId || 'hl_YOUR_ID';
-  const zoneName = process.env.BRIGHTDATA_ZONE || 'web_unlocker';
+  // Use Bright Data Web Unlocker Direct API
+  // See: https://docs.brightdata.com/scraping-automation/web-unlocker/web-unlocker-api
+  const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
+  const keyPreview = CONFIG.brightDataKey.substring(0, 8) + '...';
+  console.log(`    Bright Data API (zone=${zoneName}, key=${keyPreview})`);
 
-  const proxy = {
-    host: 'brd.superproxy.io',
-    port: 33335,
-    auth: {
-      username: `brd-customer-${customerId}-zone-${zoneName}`,
-      password: CONFIG.brightDataKey,
-    },
-  };
+  try {
+    const response = await axios.post('https://api.brightdata.com/request', {
+      zone: zoneName,
+      url: url,
+      format: 'raw',
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${CONFIG.brightDataKey}`,
+      },
+      timeout: 90000, // 90s for Bright Data
+    });
 
-  const httpsAgent = new https.Agent({
-    rejectUnauthorized: false,
-  });
+    const html = response.data;
 
-  const response = await axios.get(url, {
-    proxy: proxy,
-    httpsAgent: httpsAgent,
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-      'Accept-Language': 'en-US,en;q=0.9',
-    },
-    timeout: 90000, // 90s for Bright Data
-  });
+    if (isBlocked(html)) {
+      throw new Error('Access blocked in Bright Data response');
+    }
 
-  const html = response.data;
+    const text = extractTextFromHtml(html);
 
-  if (isBlocked(html)) {
-    throw new Error('Access blocked in Bright Data response');
+    if (text && text.length > 500) {
+      stats.tier3Success++;
+      return { html, text };
+    }
+
+    throw new Error(`Insufficient text: ${text?.length || 0} chars`);
+  } catch (error) {
+    if (error.response) {
+      const status = error.response.status;
+      const message = error.response.data?.message || error.response.data || error.message;
+      throw new Error(`Bright Data error (${status}): ${message}`);
+    }
+    throw error;
   }
-
-  const text = extractTextFromHtml(html);
-
-  if (text && text.length > 500) {
-    stats.tier3Success++;
-    return { html, text };
-  }
-
-  throw new Error(`Insufficient text: ${text?.length || 0} chars`);
 }
 
 // ============================================================================
@@ -556,11 +599,11 @@ async function fetchReviewText(review) {
     attempts.push({ tier: 1, method: 'playwright', success: false, error: 'Skipped - known blocked site' });
   }
 
-  // TIER 2: ScrapingBee
+  // TIER 2: ScrapingBee (with stealth retry if --stealth-proxy flag)
   if (CONFIG.scrapingBeeKey) {
     console.log('  [Tier 2] ScrapingBee API...');
     try {
-      const result = await fetchWithScrapingBee(url);
+      const result = await fetchWithScrapingBee(url, false);
       html = result.html;
       text = result.text;
       method = 'scrapingbee';
@@ -953,6 +996,67 @@ function saveState() {
   );
 }
 
+/**
+ * Commit changes to git (for incremental saving during long runs)
+ * This prevents losing work if the job times out
+ */
+function commitChanges(processed) {
+  const { execSync } = require('child_process');
+
+  try {
+    // Check if we're in a git repo and in CI
+    if (!process.env.GITHUB_ACTIONS) {
+      console.log('  (Skipping git commit - not in GitHub Actions)');
+      return;
+    }
+
+    // Stage changes
+    execSync('git add data/review-texts/ data/archives/reviews/ data/collection-state/', {
+      stdio: 'pipe'
+    });
+
+    // Check if there are staged changes
+    const status = execSync('git diff --staged --quiet || echo "changes"', {
+      encoding: 'utf8',
+      stdio: 'pipe'
+    }).trim();
+
+    if (status === 'changes') {
+      // Configure git (in case not already done)
+      try {
+        execSync('git config user.email "action@github.com"', { stdio: 'pipe' });
+        execSync('git config user.name "GitHub Action"', { stdio: 'pipe' });
+      } catch (e) {
+        // Already configured
+      }
+
+      // Commit
+      execSync(`git commit -m "chore: Checkpoint - collected ${processed} review texts"`, {
+        stdio: 'pipe'
+      });
+
+      // Pull latest changes first, then push
+      try {
+        execSync('git pull --rebase origin main', { stdio: 'pipe' });
+      } catch (pullErr) {
+        // If rebase fails, abort and try merge
+        execSync('git rebase --abort', { stdio: 'pipe' }).catch(() => {});
+        execSync('git pull --no-rebase origin main', { stdio: 'pipe' });
+      }
+      execSync('git push origin HEAD:main', { stdio: 'pipe' });
+
+      console.log(`  ✓ Committed and pushed checkpoint (${processed} reviews)`);
+    } else {
+      console.log('  (No changes to commit)');
+    }
+  } catch (e) {
+    console.error(`  ✗ Git commit/push FAILED: ${e.message}`);
+    console.error(`    This means work may be lost if the job times out!`);
+    console.error(`    Check workflow permissions: needs 'contents: write'`);
+    // Don't throw - we don't want to stop the collection
+  }
+}
+
 // ============================================================================
 // FIND REVIEWS TO PROCESS
 // ============================================================================
@@ -1143,10 +1247,52 @@ async function setupBrowser() {
 
 async function closeBrowser() {
   if (browser) {
-    await browser.close();
+    try {
+      await browser.close();
+    } catch (e) {
+      // Browser may already be closed
+    }
     browser = null;
     context = null;
     page = null;
+  }
+}
+
+/**
+ * Check if browser is healthy, restart if crashed
+ */
+async function ensureBrowserHealthy() {
+  try {
+    // Quick health check - try to get browser contexts
+    if (!browser || !context || !page) {
+      throw new Error('Browser not initialized');
+    }
+    // Try a simple operation to verify browser is responsive
+    await page.evaluate(() => true).catch(() => {
+      throw new Error('Page not responsive');
+    });
+    return true;
+  } catch (e) {
+    console.log(`  ⚠ Browser unhealthy: ${e.message}`);
+    browserCrashCount++;
+
+    if (browserCrashCount > MAX_BROWSER_CRASHES) {
+      console.log(`  ✗ Too many browser crashes (${browserCrashCount}), skipping Playwright tier`);
+      return false;
+    }
+
+    console.log(`  → Restarting browser (crash #${browserCrashCount})...`);
+    await closeBrowser();
+    await sleep(2000); // Brief pause before restart
+
+    try {
+      await setupBrowser();
+      console.log(`  ✓ Browser restarted successfully`);
+      return true;
+    } catch (restartError) {
+      console.log(`  ✗ Browser restart failed: ${restartError.message}`);
+      return false;
+    }
   }
 }
 
@@ -1158,6 +1304,17 @@ async function processReview(review) {
   console.log(`\n${'━'.repeat(60)}`);
   console.log(`Processing: ${review.outlet} - ${review.critic}`);
   console.log(`URL: ${review.url}`);
+
+  // Create a fresh page for each review to prevent state contamination
+  try {
+    if (context && page) {
+      await page.close().catch(() => {});
+      page = await context.newPage();
+    }
+  } catch (e) {
+    // If we can't create a new page, browser may be crashed - health check will handle it
+    console.log(`  ⚠ Could not create fresh page: ${e.message}`);
+  }
 
   try {
     const result = await fetchReviewText(review);
@@ -1393,9 +1550,10 @@ async function main() {
       state.lastProcessed = review.reviewId;
       batchCount++;
 
-      // Save state after each batch
+      // Save state and commit after each batch
       if (batchCount >= CONFIG.batchSize) {
         saveState();
+        commitChanges(state.processed.length);
         console.log(`\n─── Batch complete, state saved (${state.processed.length} processed) ───`);
         batchCount = 0;
       }
@@ -1406,8 +1564,9 @@ async function main() {
       }
     }
 
-    // Final state save
+    // Final state save and commit
     saveState();
+    commitChanges(state.processed.length);
 
   } finally {
     await closeBrowser();

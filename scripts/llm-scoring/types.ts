@@ -16,7 +16,7 @@ export interface ReviewTextFile {
   criticName: string;
   url: string | null;
   publishDate: string;
-  fullText: string;
+  fullText: string | null;
   originalScore: number | null;
   assignedScore: number | null;
   source?: string;
@@ -27,6 +27,14 @@ export interface ReviewTextFile {
   dtliThumb?: string;
   /** Original rating string (e.g., "4/5", "B+") */
   originalRating?: string;
+  /** BWW excerpt (if available) */
+  bwwExcerpt?: string;
+  /** DTLI excerpt (if available) */
+  dtliExcerpt?: string;
+  /** Show Score excerpt (if available) */
+  showScoreExcerpt?: string;
+  /** Score status marker */
+  scoreStatus?: string;
 }
 
 /**

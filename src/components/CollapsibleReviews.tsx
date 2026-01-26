@@ -10,7 +10,7 @@ interface Review {
   url: string;
   publishDate: string;
   tier: 1 | 2 | 3;
-  reviewMetaScore: number;
+  reviewScore: number;
   designation?: string;
   pullQuote?: string;
 }

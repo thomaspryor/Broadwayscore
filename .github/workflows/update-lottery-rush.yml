@@ -1,0 +1,71 @@
+name: Update Lottery/Rush Data
+
+on:
+  schedule:
+    # Run every Monday at 10 AM UTC (5 AM EST)
+    - cron: '0 10 * * 1'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-lottery-rush:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Scrape lottery/rush data
+        run: node scripts/scrape-lottery-rush.js
+        env:
+          NODE_ENV: production
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if [[ -n $(git status --porcelain data/lottery-rush.json data/shows.json) ]]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in lottery/rush data"
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/lottery-rush.json data/shows.json
+          git commit -m "chore: Update lottery/rush data from Playbill
+
+          Automated weekly update of Broadway lottery and rush ticket policies.
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+          git push origin main
+
+      - name: Summary
+        run: |
+          echo "## Lottery/Rush Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]]; then
+            echo "✅ Updated lottery/rush data and synced tags" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ No changes detected - data is already up to date" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Source: https://playbill.com/article/broadway-rush-lottery-and-standing-room-only-policies-com-116003" >> $GITHUB_STEP_SUMMARY

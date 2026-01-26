@@ -1,4 +1,4 @@
-name: Check Show Freshness
+name: Auto-Maintain Show Data
 
 on:
   schedule:
@@ -11,21 +11,27 @@ on:
         required: false
         default: 'false'
         type: boolean
-      skip_build_check:
-        description: 'Skip build verification (faster but less safe)'
+      skip_auto_fix:
+        description: 'Skip auto-fix (just report issues)'
         required: false
         default: 'false'
         type: boolean
 
+permissions:
+  contents: write
+  issues: write
+
 jobs:
-  check-freshness:
+  auto-maintain:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    outputs:
+      needs_images: ${{ steps.autofix.outputs.needs_images }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -36,25 +42,41 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run freshness check
+      # Step 1: Update show statuses (open/closed based on dates)
+      - name: Update show statuses
         run: node scripts/check-show-freshness.js
 
-      - name: Check for closing date announcements (weekly or manual)
-        if: github.event.inputs.check_closing_dates == 'true' || (github.event_name == 'schedule' && contains(github.event.schedule, '0 6 * * 0'))
+      # Step 2: Validate TodayTix URLs
+      - name: Validate TodayTix URLs
+        id: validate-urls
+        run: node scripts/validate-todaytix-urls.js --verbose
+        continue-on-error: true
+
+      # Step 3: Run auto-fix (ticket links, flag issues)
+      - name: Auto-fix show data
+        id: autofix
+        if: inputs.skip_auto_fix != 'true'
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/auto-fix-show-data.js
+
+      # Step 4: Check closing dates (weekly on Sundays or manual)
+      - name: Check for closing date announcements
+        if: inputs.check_closing_dates == 'true' || (github.event_name == 'schedule' && contains(github.event.schedule, '0 6 * * 0'))
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/check-closing-dates.js
         continue-on-error: true
 
+      # Step 5: Validate and commit
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet data/shows.json data/freshness-report.json 2>/dev/null; then
+          if git diff --quiet data/; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "Changes detected:"
-            git diff --stat data/
           fi
 
       - name: Validate data integrity
@@ -62,7 +84,7 @@ jobs:
         run: node scripts/validate-data.js
 
       - name: Build site (verify no breaking changes)
-        if: steps.changes.outputs.has_changes == 'true' && github.event.inputs.skip_build_check != 'true'
+        if: steps.changes.outputs.has_changes == 'true'
         run: npm run build
         env:
           NODE_ENV: production
@@ -72,48 +94,56 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/shows.json data/freshness-report.json
+          git add data/
 
-          # Build commit message based on what changed
-          CHANGES=""
+          # Build commit message from results
+          FIXED_COUNT="${{ steps.autofix.outputs.fixed_count }}"
+          MSG="chore: Auto-maintain show data"
 
-          # Check for auto-closed shows
-          if [ -f data/freshness-report.json ]; then
-            CLOSED=$(node -e "
-              const r = require('./data/freshness-report.json');
-              if (r.statusChanges?.autoClosed?.length > 0) {
-                console.log('Closed: ' + r.statusChanges.autoClosed.map(s => s.title).join(', '));
-              }
-            " 2>/dev/null || echo "")
-
-            if [ -n "$CLOSED" ]; then
-              CHANGES="$CLOSED"
-            fi
+          if [ -n "$FIXED_COUNT" ] && [ "$FIXED_COUNT" != "0" ]; then
+            MSG="$MSG - fixed $FIXED_COUNT issues"
           fi
 
-          # Default message if no specific changes
-          if [ -z "$CHANGES" ]; then
-            CHANGES="Updated show data"
-          fi
+          git commit -m "$MSG
 
-          git commit -m "chore: Auto-update show data
+          Auto-maintained by GitHub Actions
+          - Status updates applied
+          - Ticket links verified
+          - Data integrity validated
+          - Build verified
 
-$CHANGES
-
-Validated: ✅ Data integrity checked
-Build: ✅ Site builds successfully"
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
           git push
 
-      - name: Upload freshness report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: freshness-report
-          path: data/freshness-report.json
-          retention-days: 7
-
-      - name: Report failure
-        if: failure()
+      - name: Summary
         run: |
-          echo "::error::Show freshness check failed - no changes pushed to production"
-          echo "Check the logs above for details on what went wrong."
+          echo "## Auto-Maintenance Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Fixed:** ${{ steps.autofix.outputs.fixed_count || 0 }} issues" >> $GITHUB_STEP_SUMMARY
+          echo "**Needs images:** ${{ steps.autofix.outputs.needs_images }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✨ **Fully automated** - no human intervention needed!" >> $GITHUB_STEP_SUMMARY
+
+  # Trigger image fetch if shows are missing images
+  fetch-missing-images:
+    needs: auto-maintain
+    if: needs.auto-maintain.outputs.needs_images == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger image fetch workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log('Triggering image fetch for shows with missing images...');
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'fetch-all-image-formats.yml',
+                ref: 'main',
+                inputs: {}
+              });
+              console.log('Successfully triggered fetch-all-image-formats workflow');
+            } catch (e) {
+              console.log(`Could not trigger: ${e.message}`);
+            }

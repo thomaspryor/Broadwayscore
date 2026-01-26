@@ -25,7 +25,9 @@
     "llm:evaluate": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/evaluate.ts",
     "llm:status": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/status.ts",
     "reviews:collect": "node scripts/collect-review-texts.js",
-    "reviews:coverage": "node scripts/analyze-review-coverage.js"
+    "reviews:coverage": "node scripts/analyze-review-coverage.js",
+    "consensus": "node scripts/generate-critic-consensus.js",
+    "consensus:force": "node scripts/generate-critic-consensus.js --force"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",

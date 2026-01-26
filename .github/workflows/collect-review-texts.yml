@@ -27,11 +27,17 @@ on:
         description: 'Retry previously failed reviews (true/false)'
         required: false
         default: 'false'
+      stealth_proxy:
+        description: 'Use ScrapingBee stealth proxy - costs 75 credits/request but better CAPTCHA bypass'
+        required: false
+        default: 'false'
 
 jobs:
   collect-reviews:
     runs-on: ubuntu-latest
     timeout-minutes: 180  # 3 hour max
+    permissions:
+      contents: write  # Required for incremental commits
 
     steps:
       - name: Checkout repository
@@ -58,6 +64,11 @@ jobs:
           mkdir -p data/audit/validation
           mkdir -p data/collection-state
 
+      - name: Configure git for incremental commits
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
       - name: Run review collection
         id: collect
         env:
@@ -71,8 +82,7 @@ jobs:
           # API keys for fallback tiers
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
-          BRIGHTDATA_CUSTOMER_ID: ${{ secrets.BRIGHTDATA_CUSTOMER_ID }}
-          BRIGHTDATA_ZONE: web_unlocker
+          BRIGHTDATA_ZONE: mcp_unlocker
           # Collection settings
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.max_reviews }}
@@ -84,14 +94,14 @@ jobs:
           if [ "${{ inputs.aggressive }}" = "true" ]; then
             ARGS="$ARGS --aggressive"
           fi
+          if [ "${{ inputs.stealth_proxy }}" = "true" ]; then
+            ARGS="$ARGS --stealth-proxy"
+          fi
           node scripts/collect-review-texts.js $ARGS
 
-      - name: Commit and push changes
+      - name: Final commit and push
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-
-          # Add all changes
+          # Add all changes (in case any were missed by incremental commits)
           git add data/review-texts/ data/archives/reviews/ data/audit/ data/collection-state/
 
           # Check if there are changes to commit
@@ -104,6 +114,12 @@ jobs:
           - See collection report for tier breakdown
 
           Co-Authored-By: GitHub Action <action@github.com>"
+
+            # Pull latest changes before pushing
+            git pull --rebase origin main || {
+              git rebase --abort || true
+              git pull --no-rebase -X ours origin main
+            }
             git push
           fi
 

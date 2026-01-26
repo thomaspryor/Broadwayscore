@@ -16,6 +16,11 @@ import reviewsData from '../../data/reviews.json';
 import audienceData from '../../data/audience.json';
 import buzzData from '../../data/buzz.json';
 import grossesData from '../../data/grosses.json';
+import awardsData from '../../data/awards.json';
+import commercialData from '../../data/commercial.json';
+import audienceBuzzData from '../../data/audience-buzz.json';
+import criticConsensusData from '../../data/critic-consensus.json';
+import lotteryRushData from '../../data/lottery-rush.json';
 
 // Type the imported data
 const shows: RawShow[] = showsData.shows as RawShow[];
@@ -77,12 +82,12 @@ export function getAllShowSlugs(): string[] {
 }
 
 /**
- * Get shows sorted by metascore
+ * Get shows sorted by composite score
  */
-export function getShowsSortedByMetascore(ascending = false): ComputedShow[] {
+export function getShowsSortedByCompositeScore(ascending = false): ComputedShow[] {
   return [...getAllShows()].sort((a, b) => {
-    const scoreA = a.metascore ?? -1;
-    const scoreB = b.metascore ?? -1;
+    const scoreA = a.compositeScore ?? -1;
+    const scoreB = b.compositeScore ?? -1;
     return ascending ? scoreA - scoreB : scoreB - scoreA;
   });
 }
@@ -343,23 +348,14 @@ export function getAllBestOfCategories(): BestOfCategory[] {
 }
 
 /**
- * Get upcoming shows (in previews or recently opened)
+ * Get upcoming shows (in previews) - sorted by soonest opening date first
  */
 export function getUpcomingShows(): ComputedShow[] {
   const allShows = getAllShows();
-  const threeMonthsAgo = new Date();
-  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
 
   return allShows
-    .filter(show => {
-      // Shows in previews
-      if (show.status === 'previews') return true;
-      // Shows that opened within last 3 months
-      const openDate = new Date(show.openingDate);
-      return show.status === 'open' && openDate >= threeMonthsAgo;
-    })
-    .sort((a, b) => new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime())
-    .slice(0, 8);
+    .filter(show => show.status === 'previews')
+    .sort((a, b) => new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime());
 }
 
 // ============================================
@@ -415,6 +411,275 @@ export function getGrossesWeekEnding(): string {
  */
 export function getGrossesLastUpdated(): string {
   return grosses.lastUpdated;
+}
+
+// ============================================
+// Awards Queries
+// ============================================
+
+export interface TonyAwards {
+  season: string;
+  ceremony: string;
+  nominations?: number;
+  wins?: string[];
+  nominatedFor?: string[];
+  eligible?: boolean;
+  note?: string;
+}
+
+export interface DramaDeskAwards {
+  season: string;
+  wins: string[];
+  nominations: string[] | number;
+}
+
+export interface OuterCriticsCircleAwards {
+  season: string;
+  wins: string[];
+  nominations: number;
+}
+
+export interface DramaLeagueAwards {
+  season: string;
+  wins: string[];
+}
+
+export interface PulitzerPrize {
+  year: number;
+  category: string;
+}
+
+export interface ShowAwards {
+  tony?: TonyAwards;
+  dramadesk?: DramaDeskAwards;
+  outerCriticsCircle?: OuterCriticsCircleAwards;
+  dramaLeague?: DramaLeagueAwards;
+  pulitzer?: PulitzerPrize;
+  note?: string;
+}
+
+// Awards designation tiers
+export type AwardsDesignation =
+  | 'sweeper'           // Won Best Musical/Play + 6+ Tony wins (swept the season)
+  | 'lavished'          // 3-5 Tony wins (Award Darling)
+  | 'recognized'        // 1-2 Tony wins OR 4+ nominations (Award Winner)
+  | 'nominated'         // Has nominations but no wins
+  | 'shut-out'          // Eligible but no nominations
+  | 'pre-season';       // Not yet eligible for awards
+
+interface AwardsFile {
+  _meta: {
+    description: string;
+    lastUpdated: string;
+    sources: string[];
+  };
+  shows: Record<string, ShowAwards>;
+}
+
+const awards = awardsData as unknown as AwardsFile;
+
+/**
+ * Get awards data for a specific show by ID
+ */
+export function getShowAwards(showId: string): ShowAwards | undefined {
+  return awards.shows[showId];
+}
+
+/**
+ * Calculate total Tony wins for a show
+ */
+export function getTonyWinCount(showId: string): number {
+  const showAwards = awards.shows[showId];
+  return showAwards?.tony?.wins?.length || 0;
+}
+
+/**
+ * Calculate total Tony nominations for a show
+ */
+export function getTonyNominationCount(showId: string): number {
+  const showAwards = awards.shows[showId];
+  return showAwards?.tony?.nominations || 0;
+}
+
+/**
+ * Calculate awards designation for a show
+ */
+export function getAwardsDesignation(showId: string): AwardsDesignation {
+  const showAwards = awards.shows[showId];
+
+  if (!showAwards) return 'pre-season';
+
+  // Check if Tony eligible
+  const tony = showAwards.tony;
+  if (!tony || tony.eligible === false) return 'pre-season';
+
+  const tonyWins = tony.wins || [];
+  const tonyWinCount = tonyWins.length;
+  const totalNominations = tony.nominations || 0;
+
+  // Check if won Best Musical/Play (the big prize)
+  const wonBestMusicalOrPlay = tonyWins.some(win =>
+    ['Best Musical', 'Best Play', 'Best Revival of a Musical', 'Best Revival of a Play'].includes(win)
+  );
+
+  // Sweeper: Won Best Musical/Play + 6+ total Tony wins (dominated the season)
+  if (wonBestMusicalOrPlay && tonyWinCount >= 6) return 'sweeper';
+
+  // Lavished (Award Darling): 3-5 Tony wins
+  if (tonyWinCount >= 3) return 'lavished';
+
+  // Recognized (Award Winner): 1-2 Tony wins OR 4+ nominations
+  if (tonyWinCount >= 1 || totalNominations >= 4) return 'recognized';
+
+  // Nominated: Has nominations but no wins
+  if (totalNominations > 0) return 'nominated';
+
+  // Shut-out: Eligible but no nominations
+  return 'shut-out';
+}
+
+/**
+ * Get shows with the most Tony wins
+ */
+export function getShowsByTonyWins(limit = 10): Array<{ showId: string; wins: number; nominations: number }> {
+  const results: Array<{ showId: string; wins: number; nominations: number }> = [];
+
+  for (const [showId, showAwards] of Object.entries(awards.shows)) {
+    const wins = showAwards.tony?.wins?.length || 0;
+    const nominations = showAwards.tony?.nominations || 0;
+    if (wins > 0 || nominations > 0) {
+      results.push({ showId, wins, nominations });
+    }
+  }
+
+  return results
+    .sort((a, b) => b.wins - a.wins || b.nominations - a.nominations)
+    .slice(0, limit);
+}
+
+/**
+ * Check if show won Best Musical or Best Play Tony
+ */
+export function isTopTonyWinner(showId: string): boolean {
+  const showAwards = awards.shows[showId];
+  const wins = showAwards?.tony?.wins || [];
+  return wins.includes('Best Musical') || wins.includes('Best Play') || wins.includes('Best Revival of a Musical') || wins.includes('Best Revival of a Play');
+}
+
+/**
+ * Get awards data last updated timestamp
+ */
+export function getAwardsLastUpdated(): string {
+  return awards._meta.lastUpdated;
+}
+
+// ============================================
+// Audience Buzz Data
+// ============================================
+
+export type AudienceBuzzDesignation = 'Loving' | 'Liking' | 'Shrugging' | 'Loathing';
+
+export interface AudienceBuzzSource {
+  score: number;
+  reviewCount: number;
+  starRating?: number;  // Only for Mezzanine (X.X out of 5)
+}
+
+export interface AudienceBuzzData {
+  title: string;
+  designation: AudienceBuzzDesignation;
+  combinedScore: number;  // INTERNAL USE ONLY - Never display numeric scores to users, only show designation
+  sources: {
+    showScore: AudienceBuzzSource | null;
+    mezzanine: AudienceBuzzSource | null;
+    reddit: AudienceBuzzSource | null;
+  };
+}
+
+interface AudienceBuzzFile {
+  _meta: {
+    lastUpdated: string;
+    sources: string[];
+    designationThresholds: Record<string, string>;
+    notes: string;
+  };
+  shows: Record<string, AudienceBuzzData>;
+}
+
+const audienceBuzz = audienceBuzzData as unknown as AudienceBuzzFile;
+
+/**
+ * Get audience buzz data for a specific show by ID
+ */
+export function getAudienceBuzz(showId: string): AudienceBuzzData | undefined {
+  return audienceBuzz.shows[showId];
+}
+
+/**
+ * Get audience buzz by slug (looks up show ID first)
+ */
+export function getAudienceBuzzBySlug(slug: string): AudienceBuzzData | undefined {
+  const show = getShowBySlug(slug);
+  if (!show) return undefined;
+  return audienceBuzz.shows[show.id];
+}
+
+/**
+ * Get all shows sorted by audience buzz score
+ */
+export function getShowsByAudienceBuzz(limit = 10): Array<{ showId: string; data: AudienceBuzzData }> {
+  const results: Array<{ showId: string; data: AudienceBuzzData }> = [];
+
+  for (const [showId, data] of Object.entries(audienceBuzz.shows)) {
+    results.push({ showId, data });
+  }
+
+  return results
+    .sort((a, b) => b.data.combinedScore - a.data.combinedScore)
+    .slice(0, limit);
+}
+
+/**
+ * Get audience buzz designation color class
+ */
+export function getAudienceBuzzColor(designation: AudienceBuzzDesignation): {
+  bgClass: string;
+  textClass: string;
+  borderClass: string;
+} {
+  switch (designation) {
+    case 'Loving':
+      return {
+        bgClass: 'bg-gradient-to-r from-rose-500/20 to-pink-500/20',
+        textClass: 'text-rose-400',
+        borderClass: 'border-rose-500/30',
+      };
+    case 'Liking':
+      return {
+        bgClass: 'bg-emerald-500/15',
+        textClass: 'text-emerald-400',
+        borderClass: 'border-emerald-500/25',
+      };
+    case 'Shrugging':
+      return {
+        bgClass: 'bg-amber-500/15',
+        textClass: 'text-amber-400',
+        borderClass: 'border-amber-500/25',
+      };
+    case 'Loathing':
+      return {
+        bgClass: 'bg-gray-500/15',
+        textClass: 'text-gray-400',
+        borderClass: 'border-gray-500/25',
+      };
+  }
+}
+
+/**
+ * Get audience buzz data last updated timestamp
+ */
+export function getAudienceBuzzLastUpdated(): string {
+  return audienceBuzz._meta.lastUpdated;
 }
 
 // ============================================
@@ -475,6 +740,249 @@ export function getBrowseList(slug: string): BrowseList | undefined {
  */
 export function getAllBrowseSlugs(): string[] {
   return getBrowseSlugsFromConfig();
+}
+
+// ============================================
+// Commercial / Biz Buzz Queries
+// ============================================
+
+export type CommercialDesignation =
+  | 'Miracle'      // Profit > 3x investment (long-running mega-hits)
+  | 'Windfall'     // Profit > 1.5x investment (solid hits)
+  | 'Trickle'      // Broke even or modest profit over time
+  | 'Easy Winner'  // Limited run that made money, limited downside, limited upside
+  | 'Fizzle'       // Lost money but not all
+  | 'Flop'         // Lost most/all investment
+  | 'Nonprofit'    // Produced by nonprofit theater (LCT, MTC, Second Stage, etc.)
+  | 'TBD';         // Too early to tell
+
+export interface ShowCommercial {
+  designation: CommercialDesignation;
+  capitalization: number | null;
+  capitalizationSource: string | null;
+  capitalActual?: number;
+  capitalActualSource?: string;
+  weeklyRunningCost: number | null;
+  recouped: boolean | null;
+  recoupedDate: string | null;
+  recoupedWeeks: number | null;
+  recoupedSource?: string | null;
+  nonprofitOrg?: string;  // For Nonprofit designation: LCT, MTC, Second Stage, etc.
+  notes?: string;
+}
+
+interface CommercialFile {
+  _meta: {
+    description: string;
+    lastUpdated: string;
+    sources: string;
+    designations: Record<string, string>;
+  };
+  shows: Record<string, ShowCommercial>;
+}
+
+const commercial = commercialData as unknown as CommercialFile;
+
+/**
+ * Get commercial data for a specific show by slug
+ */
+export function getShowCommercial(slug: string): ShowCommercial | undefined {
+  return commercial.shows[slug];
+}
+
+/**
+ * Get commercial designation for a show by slug
+ */
+export function getCommercialDesignation(slug: string): CommercialDesignation | undefined {
+  return commercial.shows[slug]?.designation;
+}
+
+/**
+ * Check if a show has recouped its investment (by slug)
+ */
+export function hasRecouped(slug: string): boolean | null {
+  return commercial.shows[slug]?.recouped ?? null;
+}
+
+/**
+ * Get capitalization for a show by slug
+ */
+export function getCapitalization(slug: string): number | null {
+  return commercial.shows[slug]?.capitalization ?? null;
+}
+
+/**
+ * Get show slugs by commercial designation
+ */
+export function getShowsByDesignation(designation: CommercialDesignation): string[] {
+  const results: string[] = [];
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    if (data.designation === designation) {
+      results.push(slug);
+    }
+  }
+  return results;
+}
+
+/**
+ * Get all shows that have recouped (returns slugs)
+ */
+export function getRecoupedShows(): Array<{ slug: string; capitalization: number | null; recoupedDate: string | null }> {
+  const results: Array<{ slug: string; capitalization: number | null; recoupedDate: string | null }> = [];
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    if (data.recouped === true) {
+      results.push({
+        slug,
+        capitalization: data.capitalization,
+        recoupedDate: data.recoupedDate,
+      });
+    }
+  }
+  return results.sort((a, b) => {
+    if (!a.recoupedDate) return 1;
+    if (!b.recoupedDate) return -1;
+    return new Date(b.recoupedDate).getTime() - new Date(a.recoupedDate).getTime();
+  });
+}
+
+/**
+ * Get commercial data last updated timestamp
+ */
+export function getCommercialLastUpdated(): string {
+  return commercial._meta.lastUpdated;
+}
+
+/**
+ * Get commercial designation description
+ */
+export function getDesignationDescription(designation: CommercialDesignation): string {
+  return commercial._meta.designations[designation] || '';
+}
+
+// ============================================
+// Critic Consensus Queries
+// ============================================
+
+export interface CriticConsensus {
+  text: string;
+  lastUpdated: string;
+  reviewCount: number;
+}
+
+interface CriticConsensusFile {
+  _meta: {
+    description: string;
+    lastGenerated: string | null;
+    updatePolicy: string;
+  };
+  shows: Record<string, CriticConsensus>;
+}
+
+const criticConsensus = criticConsensusData as unknown as CriticConsensusFile;
+
+/**
+ * Get critic consensus for a specific show by ID
+ */
+export function getCriticConsensus(showId: string): CriticConsensus | undefined {
+  return criticConsensus.shows[showId];
+}
+
+/**
+ * Get critic consensus last generated timestamp
+ */
+export function getCriticConsensusLastUpdated(): string | null {
+  return criticConsensus._meta.lastGenerated;
+}
+
+// ============================================
+// Lottery & Rush Data
+// ============================================
+
+export interface LotteryInfo {
+  type: string;
+  platform: string;
+  url: string;
+  price: number;
+  time: string;
+  instructions: string;
+}
+
+export interface RushInfo {
+  type: string;
+  platform?: string;
+  url?: string;
+  price: number;
+  time: string;
+  location?: string;
+  instructions: string;
+}
+
+export interface StandingRoomInfo {
+  price: number;
+  time: string;
+  instructions: string;
+}
+
+export interface SpecialLotteryInfo {
+  name: string;
+  platform: string;
+  url: string;
+  price: number;
+  instructions: string;
+}
+
+export interface ShowLotteryRush {
+  lottery: LotteryInfo | null;
+  rush: RushInfo | null;
+  digitalRush?: RushInfo | null;
+  studentRush?: RushInfo | null;
+  standingRoom: StandingRoomInfo | null;
+  specialLottery?: SpecialLotteryInfo | null;
+}
+
+interface LotteryRushFile {
+  lastUpdated: string;
+  source: string;
+  shows: Record<string, ShowLotteryRush>;
+}
+
+const lotteryRush = lotteryRushData as unknown as LotteryRushFile;
+
+/**
+ * Get lottery/rush data for a specific show by ID
+ */
+export function getLotteryRush(showId: string): ShowLotteryRush | undefined {
+  return lotteryRush.shows[showId];
+}
+
+/**
+ * Get lottery/rush data by slug (looks up show ID first)
+ */
+export function getLotteryRushBySlug(slug: string): ShowLotteryRush | undefined {
+  const show = getShowBySlug(slug);
+  if (!show) return undefined;
+  return lotteryRush.shows[show.id];
+}
+
+/**
+ * Check if a show has any lottery/rush options
+ */
+export function hasLotteryOrRush(showId: string): { hasLottery: boolean; hasRush: boolean; hasSRO: boolean } {
+  const data = lotteryRush.shows[showId];
+  if (!data) return { hasLottery: false, hasRush: false, hasSRO: false };
+
+  return {
+    hasLottery: !!data.lottery || !!data.specialLottery,
+    hasRush: !!data.rush || !!data.digitalRush || !!data.studentRush,
+    hasSRO: !!data.standingRoom,
+  };
+}
+
+/**
+ * Get lottery/rush data last updated timestamp
+ */
+export function getLotteryRushLastUpdated(): string {
+  return lotteryRush.lastUpdated;
 }
 
 // Export types

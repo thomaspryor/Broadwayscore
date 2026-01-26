@@ -118,18 +118,18 @@ export interface Confidence {
 }
 
 // ============================================
-// OVERALL METASCORE
+// OVERALL COMPOSITE SCORE
 // ============================================
 
-export interface MetascoreWeights {
+export interface CompositeScoreWeights {
   critic: number; // Default 0.50
   audience: number; // Default 0.35
   buzz: number; // Default 0.15
 }
 
-export interface Metascore {
+export interface CompositeScore {
   score: number; // 0-100 final score
-  weights: MetascoreWeights;
+  weights: CompositeScoreWeights;
   componentScores: {
     critic: number;
     audience: number;
@@ -152,7 +152,7 @@ export interface Show {
   buzzScore?: BuzzScore;
 
   // Computed overall
-  metascore?: Metascore;
+  compositeScore?: CompositeScore;
 
   // Qualitative
   summary?: QualitativeSummary;
@@ -178,7 +178,7 @@ export interface ShowListItem {
   criticScore?: number;
   audienceScore?: number;
   buzzScore?: number;
-  metascore?: number;
+  compositeScore?: number;
   confidence?: ConfidenceLevel;
   oneLiner?: string;
   openingDate: string;
@@ -210,7 +210,7 @@ export const OUTLET_TIERS: Record<string, OutletTier> = {
   // Default tier for unlisted outlets
 };
 
-export const DEFAULT_WEIGHTS: MetascoreWeights = {
+export const DEFAULT_WEIGHTS: CompositeScoreWeights = {
   critic: 0.50,
   audience: 0.35,
   buzz: 0.15,

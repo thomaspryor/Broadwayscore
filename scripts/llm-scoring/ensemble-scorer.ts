@@ -190,7 +190,35 @@ export class EnsembleReviewScorer {
     ensembleResult?: EnsembleResult;
     error?: string;
   }> {
-    if (!reviewFile.fullText || reviewFile.fullText.length < 50) {
+    // Get text to score: prefer fullText, fall back to excerpts
+    let textToScore = reviewFile.fullText;
+
+    // Check if fullText is valid (not an error page)
+    if (textToScore) {
+      const lower = textToScore.toLowerCase();
+      if (lower.includes('page not found') ||
+          lower.includes('404') ||
+          lower.includes('access denied')) {
+        textToScore = null;
+      }
+    }
+
+    // Fall back to excerpts if no valid fullText
+    if (!textToScore || textToScore.length < 50) {
+      const excerpts: string[] = [];
+      if (reviewFile.bwwExcerpt) excerpts.push(reviewFile.bwwExcerpt);
+      if (reviewFile.dtliExcerpt && reviewFile.dtliExcerpt !== reviewFile.bwwExcerpt) {
+        excerpts.push(reviewFile.dtliExcerpt);
+      }
+      if (reviewFile.showScoreExcerpt &&
+          reviewFile.showScoreExcerpt !== reviewFile.bwwExcerpt &&
+          reviewFile.showScoreExcerpt !== reviewFile.dtliExcerpt) {
+        excerpts.push(reviewFile.showScoreExcerpt);
+      }
+      textToScore = excerpts.join('\n\n');
+    }
+
+    if (!textToScore || textToScore.length < 50) {
       return {
         success: false,
         error: 'Review text too short or missing'
@@ -216,7 +244,7 @@ export class EnsembleReviewScorer {
       thumbsData.bww = bwwMap[reviewFile.bwwThumb] || undefined;
     }
 
-    const ensembleResult = await this.scoreReview(reviewFile.fullText, thumbsData);
+    const ensembleResult = await this.scoreReview(textToScore, thumbsData);
 
     // Build the LLM score result for storage
     const llmScore: LLMScoringResult = {

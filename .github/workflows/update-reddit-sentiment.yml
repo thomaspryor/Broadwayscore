@@ -1,0 +1,85 @@
+name: Update Reddit Sentiment
+
+on:
+  # Run monthly (Reddit sentiment doesn't change fast)
+  schedule:
+    - cron: '0 10 1 * *'  # 1st of each month at 10am UTC
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Specific show ID to process (optional)'
+        required: false
+        type: string
+      shows:
+        description: 'Comma-separated show IDs/slugs (for batch processing)'
+        required: false
+        type: string
+      limit:
+        description: 'Limit number of shows to process'
+        required: false
+        type: number
+        default: 50
+
+jobs:
+  scrape-reddit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120  # 2 hour timeout - script saves incrementally
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run Reddit sentiment scraper
+        id: scrape
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.show }}" ]; then
+            ARGS="$ARGS --show=${{ github.event.inputs.show }}"
+          fi
+          if [ -n "${{ github.event.inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ github.event.inputs.shows }}"
+          fi
+          if [ -n "${{ github.event.inputs.limit }}" ]; then
+            ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
+          fi
+          node scripts/scrape-reddit-sentiment.js $ARGS
+
+      # Always try to commit, even if script had errors (continue-on-error above)
+      - name: Commit and push changes
+        if: always()  # Run even if previous step failed/timed out
+        run: |
+          git add data/audience-buzz.json
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: Update Reddit sentiment data
+
+            Automated update from Reddit r/broadway discussions.
+
+            Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            # Pull and rebase, then push (retry once if conflict)
+            git pull --rebase origin main || git pull --rebase origin main
+            git push
+            echo "✓ Changes committed and pushed"
+          fi

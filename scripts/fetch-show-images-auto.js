@@ -1,0 +1,391 @@
+#!/usr/bin/env node
+/**
+ * fetch-show-images-auto.js
+ *
+ * Automatically discovers and fetches images for ALL shows:
+ * 1. Searches TodayTix for the show to get its TodayTix ID
+ * 2. Fetches the show page and finds Contentful image URLs
+ * 3. Uses Contentful's Image Transformation API to generate:
+ *    - Square 1080x1080 (thumbnail for cards)
+ *    - Portrait 720x1080 (poster for show pages)
+ *    - Landscape 1920x800 (hero banner)
+ *
+ * KEY INSIGHT: TodayTix uses Contentful CDN which can transform ANY image
+ * on the fly. We find the best source images (poster key art + production
+ * photos) and request them in whatever dimensions we need via URL params.
+ *
+ * No hardcoded IDs - works for any show!
+ *
+ * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing]
+ */
+
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+
+const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
+const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
+
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+function fetchViaScrapingBee(url) {
+  return new Promise((resolve, reject) => {
+    if (!SCRAPINGBEE_API_KEY) {
+      reject(new Error('SCRAPINGBEE_API_KEY not set'));
+      return;
+    }
+
+    const scrapingBeeUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=3000`;
+
+    https.get(scrapingBeeUrl, (response) => {
+      if (response.statusCode !== 200) {
+        reject(new Error(`HTTP ${response.statusCode}`));
+        return;
+      }
+
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => resolve(data));
+      response.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
+// Load or create TodayTix ID cache
+function loadTodayTixIds() {
+  try {
+    return JSON.parse(fs.readFileSync(TODAYTIX_IDS_PATH, 'utf8'));
+  } catch {
+    return { shows: {}, lastUpdated: null };
+  }
+}
+
+function saveTodayTixIds(data) {
+  data.lastUpdated = new Date().toISOString();
+  fs.writeFileSync(TODAYTIX_IDS_PATH, JSON.stringify(data, null, 2) + '\n');
+}
+
+// Search TodayTix for a show and extract its ID
+async function discoverTodayTixId(showTitle) {
+  console.log(`   Searching TodayTix for "${showTitle}"...`);
+
+  const searchUrl = `https://www.todaytix.com/nyc/shows?q=${encodeURIComponent(showTitle)}`;
+
+  try {
+    const html = await fetchViaScrapingBee(searchUrl);
+
+    // Look for show links in format: /nyc/shows/{id}-{slug}
+    const showLinkMatch = html.match(/\/nyc\/shows\/(\d+)-([a-z0-9-]+)/i);
+
+    if (showLinkMatch) {
+      const id = parseInt(showLinkMatch[1]);
+      const slug = showLinkMatch[2];
+      console.log(`   ✓ Found TodayTix ID: ${id} (${slug})`);
+      return { id, slug };
+    }
+
+    // Try alternative pattern - JSON in page
+    const jsonMatch = html.match(/"showId":\s*(\d+)/);
+    if (jsonMatch) {
+      const id = parseInt(jsonMatch[1]);
+      console.log(`   ✓ Found TodayTix ID from JSON: ${id}`);
+      return { id, slug: null };
+    }
+
+    console.log(`   ✗ Could not find TodayTix ID`);
+    return null;
+  } catch (err) {
+    console.log(`   ✗ Search error: ${err.message}`);
+    return null;
+  }
+}
+
+// Contentful URL transformation parameters - ONLY used as fallback
+// Contentful's Image API allows requesting any size/crop on the fly
+const CONTENTFUL_TRANSFORMS = {
+  // Square thumbnail (1:1) - good for grid cards
+  square: '?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90',
+  // Portrait poster (2:3) - standard theatrical poster ratio
+  portrait: '?w=720&h=1080&fit=fill&f=face&fm=webp&q=90',
+  // Landscape hero (roughly 2.4:1) - good for hero banners
+  landscape: '?w=1920&h=800&fit=fill&f=center&fm=webp&q=90'
+};
+
+// Extract images from TodayTix page
+// Priority: Find actual square AND portrait images first, only crop as last resort
+function extractAllImageFormats(html) {
+  // Extract all Contentful image URLs
+  const imageMatches = html.match(/https:\/\/images\.ctfassets\.net\/[^"'<\s]+\.(jpg|jpeg|png)/gi);
+
+  if (!imageMatches) return null;
+
+  // Clean URLs (remove query params) and deduplicate
+  const uniqueImages = [...new Set(imageMatches.map(url => url.split('?')[0]))];
+
+  // Find specific format images
+  let squareImage = null;    // Actual square image (best)
+  let portraitImage = null;  // Actual portrait/poster image (best)
+  let heroImage = null;      // Wide production photo for hero
+  let fallbackImage = null;  // Any usable image as last resort
+
+  for (const baseUrl of uniqueImages) {
+    const filename = baseUrl.split('/').pop().toLowerCase();
+
+    // Look for actual SQUARE images (TodayTix uses these for card grids)
+    // Common patterns: 1080x1080, 1000x1000, 500x500, or "square" in name
+    if (!squareImage && (
+        filename.match(/1080x1080|1000x1000|500x500/) ||
+        filename.includes('square') ||
+        filename.includes('_sq') ||
+        filename.includes('-sq')
+    )) {
+      squareImage = baseUrl;
+    }
+
+    // Look for actual PORTRAIT/POSTER images
+    // Common patterns: 480x720, 600x900, "poster", "key_art"
+    if (!portraitImage && (
+        filename.includes('poster') ||
+        filename.includes('key_art') ||
+        filename.includes('keyart') ||
+        filename.match(/480x720|600x900|400x600/)
+    )) {
+      portraitImage = baseUrl;
+    }
+
+    // Look for LANDSCAPE/HERO images (production photos)
+    // These are typically wider aspect ratio photos
+    if (!heroImage && (
+        filename.includes('hero') ||
+        filename.includes('banner') ||
+        filename.includes('header') ||
+        filename.includes('production') ||
+        filename.includes('company') ||
+        filename.includes('ensemble') ||
+        filename.match(/1920x|1600x|1440x|landscape/)
+    )) {
+      heroImage = baseUrl;
+    }
+
+    // Track a fallback (any decent-sized image that's not a headshot)
+    if (!fallbackImage && filename.length > 10 && !filename.match(/^[a-z]+\.(png|jpg)$/)) {
+      fallbackImage = baseUrl;
+    }
+  }
+
+  // Use fallbacks where needed
+  if (!fallbackImage) fallbackImage = uniqueImages[0];
+  if (!portraitImage) portraitImage = fallbackImage;
+  if (!heroImage) heroImage = portraitImage;
+
+  // For square: prefer actual square image, otherwise crop portrait as last resort
+  let squareUrl, squareMethod;
+  if (squareImage) {
+    squareUrl = squareImage + '?fm=webp&q=90';
+    squareMethod = 'native';
+  } else {
+    // Fallback: crop the portrait to square (not ideal but works)
+    squareUrl = portraitImage + CONTENTFUL_TRANSFORMS.square;
+    squareMethod = 'cropped';
+  }
+
+  // For portrait: use the portrait image with quality params
+  const portraitUrl = portraitImage + '?fm=webp&q=90';
+
+  // For landscape: use hero image, crop if needed for exact dimensions
+  const landscapeUrl = heroImage + CONTENTFUL_TRANSFORMS.landscape;
+
+  return {
+    square: squareUrl,
+    portrait: portraitUrl,
+    landscape: landscapeUrl,
+    // Keep metadata for debugging
+    _sources: {
+      square: squareImage ? 'native' : 'cropped from portrait',
+      portrait: portraitImage,
+      hero: heroImage
+    }
+  };
+}
+
+// Fallback: try Playbill
+async function fetchFromPlaybill(show) {
+  const showSlug = show.slug || show.id.replace(/-\d{4}$/, '');
+  const playbillUrl = `https://playbill.com/production/${showSlug}`;
+  console.log(`   Fallback - Playbill: ${playbillUrl}`);
+
+  try {
+    const html = await fetchViaScrapingBee(playbillUrl);
+
+    // Playbill uses different image patterns
+    const imgMatch = html.match(/https:\/\/bsp-static\.playbill\.com\/[^"'\s]+\.(jpg|jpeg|png|webp)/i) ||
+                     html.match(/<meta[^>]*property=["']og:image["'][^>]*content=["']([^"']+)["']/i);
+
+    if (imgMatch) {
+      const imageUrl = imgMatch[1] || imgMatch[0];
+      console.log(`   ✓ Found via Playbill: ${imageUrl.substring(0, 60)}...`);
+
+      // Return same format - use single image for all formats
+      return {
+        hero: imageUrl,
+        thumbnail: imageUrl,
+        poster: imageUrl,
+      };
+    }
+  } catch (err) {
+    console.log(`   ⚠ Playbill failed: ${err.message}`);
+  }
+
+  return null;
+}
+
+async function fetchShowImages(show, todayTixInfo) {
+  console.log(`\n📽️  ${show.title}`);
+
+  // Try TodayTix first if we have an ID
+  if (todayTixInfo && todayTixInfo.id) {
+    const slug = todayTixInfo.slug || show.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const url = `https://www.todaytix.com/nyc/shows/${todayTixInfo.id}-${slug}`;
+    console.log(`   Fetching: ${url}`);
+
+    try {
+      const html = await fetchViaScrapingBee(url);
+      const images = extractAllImageFormats(html);
+
+      if (images && (images.square || images.portrait || images.landscape)) {
+        console.log(`   ✓ Found images:`);
+
+        // Report square image source
+        if (images._sources?.square === 'native') {
+          console.log(`     - Square (thumbnail): ✓ native square image found`);
+        } else {
+          console.log(`     - Square (thumbnail): ⚠ cropped from portrait (fallback)`);
+        }
+
+        // Report portrait
+        if (images._sources?.portrait) {
+          const posterFile = images._sources.portrait.split('/').pop();
+          console.log(`     - Portrait (poster): ✓ ${posterFile}`);
+        }
+
+        // Report hero
+        if (images._sources?.hero) {
+          const heroFile = images._sources.hero.split('/').pop();
+          console.log(`     - Landscape (hero): ✓ ${heroFile}`);
+        }
+
+        // Format for shows.json
+        return {
+          hero: images.landscape,
+          thumbnail: images.square,
+          poster: images.portrait,
+        };
+      }
+
+      console.log(`   ✗ No images found in TodayTix page`);
+    } catch (err) {
+      console.log(`   ✗ TodayTix error: ${err.message}`);
+    }
+  } else {
+    console.log(`   ✗ No TodayTix ID available`);
+  }
+
+  // If TodayTix failed, try Playbill fallback
+  return await fetchFromPlaybill(show);
+}
+
+async function main() {
+  const args = process.argv.slice(2);
+  const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+  const onlyMissing = args.includes('--missing');
+
+  if (!SCRAPINGBEE_API_KEY) {
+    console.error('ERROR: Set SCRAPINGBEE_API_KEY environment variable');
+    process.exit(1);
+  }
+
+  console.log('='.repeat(60));
+  console.log('AUTO-FETCH SHOW IMAGES');
+  console.log('='.repeat(60));
+
+  const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
+  const todayTixIds = loadTodayTixIds();
+
+  // Filter shows
+  let shows = showsData.shows.filter(s => s.status === 'open' || s.status === 'previews');
+
+  if (showFilter) {
+    shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
+    console.log(`Filtering to show: ${showFilter}`);
+  }
+
+  if (onlyMissing) {
+    shows = shows.filter(s => !s.images?.poster || !s.images?.thumbnail);
+    console.log(`Processing only shows with missing images: ${shows.length}`);
+  }
+
+  console.log(`\nProcessing ${shows.length} shows...\n`);
+
+  const results = { success: [], failed: [], skipped: [] };
+
+  for (const show of shows) {
+    // Check if we have TodayTix ID cached
+    let todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
+
+    // If not cached, try to discover it
+    if (!todayTixInfo) {
+      todayTixInfo = await discoverTodayTixId(show.title);
+      if (todayTixInfo) {
+        todayTixIds.shows[show.id] = todayTixInfo;
+        saveTodayTixIds(todayTixIds);
+      }
+      await sleep(2000); // Rate limit
+    }
+
+    // Fetch images
+    const images = await fetchShowImages(show, todayTixInfo);
+
+    if (images) {
+      show.images = images;
+      results.success.push(show.title);
+    } else {
+      results.failed.push(show.title);
+    }
+
+    await sleep(2000); // Rate limit between shows
+  }
+
+  // Save updated shows
+  if (results.success.length > 0) {
+    showsData._meta = showsData._meta || {};
+    showsData._meta.lastUpdated = new Date().toISOString().split('T')[0];
+    fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
+  }
+
+  // Summary
+  console.log('\n' + '='.repeat(60));
+  console.log('SUMMARY');
+  console.log('='.repeat(60));
+  console.log(`✓ Success: ${results.success.length}`);
+  console.log(`✗ Failed: ${results.failed.length}`);
+
+  if (results.failed.length > 0) {
+    console.log(`\nFailed shows:`);
+    results.failed.forEach(s => console.log(`  - ${s}`));
+  }
+
+  // GitHub Actions output
+  const outputFile = process.env.GITHUB_OUTPUT;
+  if (outputFile) {
+    fs.appendFileSync(outputFile, `images_fetched=${results.success.length}\n`);
+    fs.appendFileSync(outputFile, `images_failed=${results.failed.length}\n`);
+  }
+}
+
+main().catch(err => {
+  console.error('Fatal error:', err);
+  process.exit(1);
+});
