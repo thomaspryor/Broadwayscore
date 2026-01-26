@@ -401,15 +401,24 @@ async function fetchWithBrightData(url) {
 
   stats.tier3Attempts++;
 
-  const customerId = CONFIG.brightDataCustomerId;
+  let customerId = CONFIG.brightDataCustomerId;
   if (!customerId) {
     throw new Error('BRIGHTDATA_CUSTOMER_ID not configured');
+  }
+  // Customer ID should start with hl_ (if not, it might be in a different format)
+  if (!customerId.startsWith('hl_')) {
+    console.log(`    Warning: Customer ID doesn't start with 'hl_': ${customerId}`);
   }
   const zoneName = process.env.BRIGHTDATA_ZONE || 'web_unlocker';
 
   // Build proxy URL for https-proxy-agent
+  // Note: username contains only safe chars (letters, numbers, hyphens), no encoding needed
   const username = `brd-customer-${customerId}-zone-${zoneName}`;
-  const proxyUrl = `http://${encodeURIComponent(username)}:${encodeURIComponent(CONFIG.brightDataKey)}@brd.superproxy.io:33335`;
+  // Only encode password as it might contain special chars
+  const proxyUrl = `http://${username}:${encodeURIComponent(CONFIG.brightDataKey)}@brd.superproxy.io:33335`;
+
+  const keyPreview = CONFIG.brightDataKey ? `${CONFIG.brightDataKey.substring(0, 8)}...` : 'NOT SET';
+  console.log(`    Bright Data: user=${username}, key=${keyPreview}`);
 
   // Use https-proxy-agent for proper HTTPS tunneling through proxy
   const agent = new HttpsProxyAgent(proxyUrl);
