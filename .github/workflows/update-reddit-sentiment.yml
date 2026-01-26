@@ -24,6 +24,7 @@ on:
 jobs:
   scrape-reddit:
     runs-on: ubuntu-latest
+    timeout-minutes: 120  # 2 hour timeout - script saves incrementally
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -39,7 +40,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Run Reddit sentiment scraper
+        id: scrape
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -56,11 +63,10 @@ jobs:
           fi
           node scripts/scrape-reddit-sentiment.js $ARGS
 
+      # Always try to commit, even if script had errors (continue-on-error above)
       - name: Commit and push changes
+        if: always()  # Run even if previous step failed/timed out
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
           git add data/audience-buzz.json
 
           if git diff --staged --quiet; then
@@ -75,4 +81,5 @@ jobs:
             # Pull and rebase, then push (retry once if conflict)
             git pull --rebase origin main || git pull --rebase origin main
             git push
+            echo "✓ Changes committed and pushed"
           fi
