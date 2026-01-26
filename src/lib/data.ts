@@ -651,6 +651,7 @@ export type CommercialDesignation =
   | 'Sugar Daddy' // Limited run that made money
   | 'Fizzle'      // Lost money but not all
   | 'Flop'        // Lost most/all investment
+  | 'Nonprofit'   // Produced by nonprofit theater (LCT, MTC, Second Stage, etc.)
   | 'TBD';        // Too early to tell
 
 export interface ShowCommercial {
@@ -664,6 +665,7 @@ export interface ShowCommercial {
   recoupedDate: string | null;
   recoupedWeeks: number | null;
   recoupedSource?: string | null;
+  nonprofitOrg?: string;  // For Nonprofit designation: LCT, MTC, Second Stage, etc.
   notes?: string;
 }
 

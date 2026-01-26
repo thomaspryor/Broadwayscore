@@ -85,6 +85,14 @@ function getDesignationStyle(designation: CommercialDesignation): {
         icon: '💸',
         description: 'Lost most investment',
       };
+    case 'Nonprofit':
+      return {
+        bgClass: 'bg-purple-500/15',
+        textClass: 'text-purple-400',
+        borderClass: 'border-purple-500/25',
+        icon: '🎭',
+        description: 'Nonprofit theater production',
+      };
     case 'TBD':
     default:
       return {
