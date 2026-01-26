@@ -74,6 +74,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...browsePages,
     // Best-of lists - high priority discovery pages
     ...bestOfPages,
+    // Rankings hub page
+    {
+      url: `${BASE_URL}/rankings`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
     // Broadway theaters map
     {
       url: `${BASE_URL}/broadway-theaters-map`,
