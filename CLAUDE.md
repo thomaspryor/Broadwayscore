@@ -304,6 +304,9 @@ This gives more weight to sources with larger sample sizes.
 - `scripts/audit-scores.js` - Validates all review scores, flags wrong conversions, sentiment placeholders, duplicates
 - `scripts/fix-scores.js` - Automated fix for common scoring issues (wrong star/letter conversions)
 - `scripts/rebuild-show-reviews.js` - Rebuilds reviews.json for specific shows from review-texts data
+- `scripts/validate-data.js` - **Run before pushing** - validates shows.json for duplicates, missing fields, etc.
+- `tests/e2e/` - Playwright E2E tests for homepage and show pages
+- `playwright.config.ts` - Playwright test configuration
 
 ### Show Deduplication System
 
@@ -335,10 +338,18 @@ The `scripts/lib/deduplication.js` module prevents duplicate shows from being ad
 
 The site has comprehensive automated testing that runs via GitHub Actions.
 
+### IMPORTANT: Run Tests Before Pushing
+**Always run `node scripts/validate-data.js` before pushing changes to shows.json.** This catches:
+- Duplicate shows (like SIX vs "SIX: The Musical")
+- Missing required fields
+- Invalid data formats
+
+If validation fails, **do not push** - fix the issues first.
+
 ### Test Commands
 ```bash
-npm run test:data    # Data validation only
-npm run test:e2e     # E2E browser tests only
+npm run test:data    # Data validation only (fast, run frequently)
+npm run test:e2e     # E2E browser tests (slower, tests live site)
 npm run test         # Run all tests
 ```
 
