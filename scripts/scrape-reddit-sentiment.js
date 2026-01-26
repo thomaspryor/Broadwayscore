@@ -227,31 +227,24 @@ async function analyzeContent(showTitle, posts, comments) {
   }
 
   // Batch analyze with Claude
-  const ANALYSIS_PROMPT = `You are analyzing Reddit r/Broadway discussions about "${showTitle}" to measure AUDIENCE LOVE for the show.
+  const ANALYSIS_PROMPT = `You are analyzing Reddit r/Broadway discussions to measure how much people LOVE the Broadway show "${showTitle}".
 
-IMPORTANT: We want to know if people LIKE THE SHOW ITSELF, not their feelings about logistics (closing dates, ticket prices, seat locations, etc.).
+For each item, answer these questions:
 
-For each item, classify:
-1. **relevance**: Is this actually about the Broadway musical "${showTitle}"? Say "no" if it's about a movie, book, or different production with a similar name. (yes/no)
-2. **sentiment**: What does this person/post convey about THE SHOW?
-   - "enthusiastic" = LOVES it, must-see, favorite, life-changing, crying, obsessed, celebrating wins/success
-   - "positive" = Enjoyed it, would recommend, good show, excited to see it, celebrating the show
-   - "mixed" = Some positives and negatives about the show itself
-   - "negative" = Did NOT enjoy the show - disappointed by the production, criticizing quality
-   - "neutral" = ONLY use this if truly no sentiment is expressed (rare - almost all posts have implicit sentiment)
+1. **about_show_quality**: Is this post/comment expressing an opinion about THE SHOW'S QUALITY or the person's EXPERIENCE WATCHING "${showTitle}"?
+   - Answer "yes" if: reviewing the show, recommending it, discussing performances/music/story quality, sharing their experience seeing it
+   - Answer "no" if: discussing META topics (subreddit drama, industry news, ticket logistics, cast announcements, tour news, AMAs, medical emergencies, racism discussions, etc.) - even if the show is mentioned, these aren't opinions about show quality
 
-   CLASSIFICATION GUIDELINES:
-   - Celebrating Tony wins/nominations = "enthusiastic" (shows love for the show)
-   - Discussing the show's success, box office, positive WOM = "positive"
-   - Sad the show is closing or sold out = "enthusiastic" (they love it!)
-   - "I wish I could see it" / "I need to see this" = "enthusiastic"
-   - Sharing/discussing the show at all in a Broadway forum = usually at least "positive" (they care about it)
-   - Recommending to others = at least "positive"
-   - Pure logistics (showtimes, theater location) with no sentiment = "neutral"
+2. **sentiment** (ONLY if about_show_quality is "yes"):
+   - "enthusiastic" = LOVES it - must-see, favorite, life-changing, crying, can't stop thinking about it
+   - "positive" = Enjoyed it, would recommend, had a good experience
+   - "mixed" = Some good, some bad about the actual show
+   - "negative" = Did NOT enjoy the show, disappointed by the production quality
+   - "neutral" = Mentions seeing it but no clear opinion expressed
 
-   BE GENEROUS: If there's ANY indication of positive engagement with the show, lean toward "positive" not "neutral".
+3. **is_recommendation**: Is this person recommending "${showTitle}" to others? (yes/no)
 
-3. **is_recommendation**: Is this person recommending the show to others? (yes/no)
+IMPORTANT: We ONLY want opinions about THE SHOW ITSELF. If someone is upset about racism on the subreddit, or excited about a tour announcement, or discussing a medical emergency - that's NOT about show quality, so about_show_quality = "no".
 
 Content to analyze:
 `;
@@ -285,10 +278,11 @@ Content to analyze:
             content: ANALYSIS_PROMPT + batchText + `
 
 Respond with a JSON array, one object per item:
-[{"id": 1, "relevance": "yes|no", "sentiment": "enthusiastic|positive|mixed|negative|neutral", "is_recommendation": "yes|no"}, ...]
+[{"id": 1, "about_show_quality": "yes|no", "sentiment": "enthusiastic|positive|mixed|negative|neutral", "is_recommendation": "yes|no"}, ...]
 
-Be generous with "enthusiastic" - if someone is clearly excited, raving, or says it's a must-see, that's enthusiastic.
-Be generous with "positive" - if someone enjoyed it overall despite minor quibbles, that's positive, not mixed.`
+If about_show_quality is "no", sentiment can be "neutral" (we'll skip it anyway).
+Be generous with "enthusiastic" - raving, must-see, can't stop talking about it.
+Be generous with "positive" - enjoyed it overall, would recommend.`
           }
         ]
       });
@@ -303,7 +297,8 @@ Be generous with "positive" - if someone enjoyed it overall despite minor quibbl
 
           results.totalItems++;
 
-          if (analysis.relevance === 'yes') {
+          // Only count items that are actually about show quality
+          if (analysis.about_show_quality === 'yes') {
             results.relevantItems++;
             results.sentimentCounts[analysis.sentiment]++;
             results.totalUpvotes += item.score;
