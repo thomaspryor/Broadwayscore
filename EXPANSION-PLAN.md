@@ -358,6 +358,33 @@ Lower priority, simpler features
 
 ---
 
+## Workstream H: Critic Consensus
+
+**Status:** ✅ Completed (January 25, 2026)
+
+LLM-generated 2-sentence editorial summaries for each show, similar to Rotten Tomatoes' Critic Consensus.
+
+### Implementation
+- **Data:** `data/critic-consensus.json` - Stores consensus text, review count, last updated date
+- **Script:** `scripts/generate-critic-consensus.js` - Uses Claude API to generate summaries from review texts
+- **Component:** `src/components/CriticConsensusCard.tsx` - Displays consensus with quote icon
+- **Location:** Show page, between synopsis and critic reviews section
+- **Automation:** `.github/workflows/update-critic-consensus.yml` - Runs weekly on Sundays
+
+### Features
+- Only regenerates if 3+ new reviews added (prevents unnecessary API calls)
+- Uses `--force` flag to regenerate all shows
+- Based on all available review texts (full text + excerpts)
+- Temperature 0.7 for varied phrasing
+- Validates 2-sentence format
+
+### Update Policy
+- Runs weekly on Sundays at 2 AM UTC (9 PM ET Saturday)
+- Smart detection: only regenerates shows with 3+ new reviews since last update
+- Manual trigger available via GitHub Actions UI with force flag
+
+---
+
 ## Decisions Made (January 25, 2026)
 
 1. **Awards:** Tony, Drama Desk, Outer Critics Circle, Drama League, NY Drama Critics' Circle, Pulitzer Prize for Drama

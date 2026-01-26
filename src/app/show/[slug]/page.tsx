@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz } from '@/lib/data';
+import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus } from '@/lib/data';
 import { generateShowSchema, generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
@@ -9,6 +9,7 @@ import ReviewsList from '@/components/ReviewsList';
 import BoxOfficeStats from '@/components/BoxOfficeStats';
 import AwardsCard from '@/components/AwardsCard';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
+import CriticConsensusCard from '@/components/CriticConsensusCard';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -459,6 +460,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const weekEnding = getGrossesWeekEnding();
   const awards = getShowAwards(show.id);
   const audienceBuzz = getAudienceBuzz(show.id);
+  const consensus = getCriticConsensus(show.id);
 
   return (
     <>
@@ -613,6 +615,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
+        {/* Critic Consensus - Rotten Tomatoes style summary */}
+        {consensus && <CriticConsensusCard consensus={consensus} />}
 
         {/* Critic Reviews */}
         {show.criticScore && show.criticScore.reviews.length > 0 && (

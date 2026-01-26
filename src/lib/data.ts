@@ -19,6 +19,7 @@ import grossesData from '../../data/grosses.json';
 import awardsData from '../../data/awards.json';
 import commercialData from '../../data/commercial.json';
 import audienceBuzzData from '../../data/audience-buzz.json';
+import criticConsensusData from '../../data/critic-consensus.json';
 
 // Type the imported data
 const shows: RawShow[] = showsData.shows as RawShow[];
@@ -956,6 +957,41 @@ export function getAudienceBuzzColor(designation: AudienceBuzzDesignation): {
  */
 export function getAudienceBuzzLastUpdated(): string {
   return audienceBuzz._meta.lastUpdated;
+}
+
+// ============================================
+// Critic Consensus Queries
+// ============================================
+
+export interface CriticConsensus {
+  text: string;
+  lastUpdated: string;
+  reviewCount: number;
+}
+
+interface CriticConsensusFile {
+  _meta: {
+    description: string;
+    lastGenerated: string | null;
+    updatePolicy: string;
+  };
+  shows: Record<string, CriticConsensus>;
+}
+
+const criticConsensus = criticConsensusData as unknown as CriticConsensusFile;
+
+/**
+ * Get critic consensus for a specific show by ID
+ */
+export function getCriticConsensus(showId: string): CriticConsensus | undefined {
+  return criticConsensus.shows[showId];
+}
+
+/**
+ * Get critic consensus last generated timestamp
+ */
+export function getCriticConsensusLastUpdated(): string | null {
+  return criticConsensus._meta.lastGenerated;
 }
 
 // Export types
