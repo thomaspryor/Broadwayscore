@@ -42,6 +42,109 @@ function slugify(title) {
     .replace(/-+/g, '-');
 }
 
+/**
+ * Normalize a title for comparison - strips subtitles, articles, punctuation
+ * to catch variations like "All Out: Comedy About Ambition" vs "All Out"
+ */
+function normalizeTitle(title) {
+  return title
+    .toLowerCase()
+    // Remove common subtitles/suffixes
+    .replace(/:\s*.+$/, '')           // Remove everything after colon
+    .replace(/\s*-\s*.+$/, '')        // Remove everything after dash
+    .replace(/\s*\(.+\)$/, '')        // Remove parenthetical at end
+    .replace(/\s+on\s+broadway$/i, '') // Remove "on Broadway"
+    .replace(/\s+the\s+musical$/i, '') // Remove "The Musical"
+    .replace(/\s+a\s+new\s+musical$/i, '') // Remove "A New Musical"
+    // Remove articles at start
+    .replace(/^(the|a|an)\s+/i, '')
+    // Clean up
+    .replace(/[!?'":\-–—,\.]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Check if a show might be a duplicate of an existing show
+ * Returns { isDuplicate: boolean, reason: string, existingShow: object|null }
+ */
+function checkForDuplicate(newShow, existingShows) {
+  const newSlug = slugify(newShow.title);
+  const newTitleLower = newShow.title.toLowerCase().trim();
+  const newTitleNormalized = normalizeTitle(newShow.title);
+  const newVenue = newShow.venue?.toLowerCase().trim();
+
+  for (const existing of existingShows) {
+    const existingTitleLower = existing.title.toLowerCase().trim();
+    const existingTitleNormalized = normalizeTitle(existing.title);
+    const existingVenue = existing.venue?.toLowerCase().trim();
+
+    // Check 1: Exact title match
+    if (newTitleLower === existingTitleLower) {
+      return {
+        isDuplicate: true,
+        reason: `Exact title match: "${existing.title}"`,
+        existingShow: existing
+      };
+    }
+
+    // Check 2: Exact slug match
+    if (newSlug === existing.slug) {
+      return {
+        isDuplicate: true,
+        reason: `Exact slug match: ${existing.slug}`,
+        existingShow: existing
+      };
+    }
+
+    // Check 3: Normalized title match (catches "Show: Subtitle" vs "Show")
+    if (newTitleNormalized === existingTitleNormalized && newTitleNormalized.length > 3) {
+      return {
+        isDuplicate: true,
+        reason: `Normalized title match: "${newTitleNormalized}" matches "${existing.title}"`,
+        existingShow: existing
+      };
+    }
+
+    // Check 4: Slug is contained within existing slug or vice versa
+    if (newSlug.length > 5 && existing.slug.length > 5) {
+      if (existing.slug.startsWith(newSlug) || newSlug.startsWith(existing.slug)) {
+        return {
+          isDuplicate: true,
+          reason: `Slug prefix match: "${newSlug}" vs "${existing.slug}"`,
+          existingShow: existing
+        };
+      }
+    }
+
+    // Check 5: Same venue + normalized title starts the same (first 10 chars)
+    if (newVenue && existingVenue && newVenue === existingVenue) {
+      if (newTitleNormalized.substring(0, 10) === existingTitleNormalized.substring(0, 10) &&
+          newTitleNormalized.length > 5) {
+        return {
+          isDuplicate: true,
+          reason: `Same venue "${newVenue}" + similar title start`,
+          existingShow: existing
+        };
+      }
+    }
+
+    // Check 6: One title contains the other (for shorter titles > 5 chars)
+    if (existingTitleNormalized.length > 5 && newTitleNormalized.length > 5) {
+      if (newTitleNormalized.includes(existingTitleNormalized) ||
+          existingTitleNormalized.includes(newTitleNormalized)) {
+        return {
+          isDuplicate: true,
+          reason: `Title containment: "${newTitleNormalized}" vs "${existingTitleNormalized}"`,
+          existingShow: existing
+        };
+      }
+    }
+  }
+
+  return { isDuplicate: false, reason: null, existingShow: null };
+}
+
 async function fetchShowsFromBroadwayOrg() {
   console.log(`Fetching Broadway.org shows page...`);
 
@@ -142,8 +245,6 @@ async function discoverShows() {
   console.log('');
 
   const data = loadShows();
-  const existingSlugs = new Set(data.shows.map(s => s.slug));
-  const existingTitles = new Set(data.shows.map(s => s.title.toLowerCase()));
 
   console.log(`Existing shows in database: ${data.shows.length}`);
   console.log('');
@@ -160,45 +261,60 @@ async function discoverShows() {
     return { newShows: [], count: 0 };
   }
 
-  // Find new shows not in our database
+  // Find new shows not in our database using improved duplicate detection
   const newShows = [];
+  const skippedDuplicates = [];
+
   for (const show of discoveredShows) {
-    const slug = slugify(show.title);
-    const titleLower = show.title.toLowerCase();
+    // Use the new comprehensive duplicate check
+    const duplicateCheck = checkForDuplicate(show, data.shows);
 
-    if (!existingSlugs.has(slug) && !existingTitles.has(titleLower)) {
-      // Check if it's a variation of an existing show
-      const isVariation = Array.from(existingTitles).some(t =>
-        titleLower.includes(t) || t.includes(titleLower)
-      );
+    if (duplicateCheck.isDuplicate) {
+      skippedDuplicates.push({
+        title: show.title,
+        reason: duplicateCheck.reason,
+        existingId: duplicateCheck.existingShow?.id
+      });
+      continue;
+    }
 
-      if (!isVariation) {
-        // Convert date strings to ISO format
-        let openingDate = null;
-        if (show.openingDate) {
-          const parsed = new Date(show.openingDate);
-          if (!isNaN(parsed.getTime())) {
-            openingDate = parsed.toISOString().split('T')[0];
-          }
-        }
-
-        let closingDate = null;
-        if (show.closingDate) {
-          const parsed = new Date(show.closingDate);
-          if (!isNaN(parsed.getTime())) {
-            closingDate = parsed.toISOString().split('T')[0];
-          }
-        }
-
-        newShows.push({
-          ...show,
-          slug: slug,
-          id: `${slug}-${new Date().getFullYear()}`,
-          openingDate,
-          closingDate,
-        });
+    // Convert date strings to ISO format
+    let openingDate = null;
+    if (show.openingDate) {
+      const parsed = new Date(show.openingDate);
+      if (!isNaN(parsed.getTime())) {
+        openingDate = parsed.toISOString().split('T')[0];
       }
     }
+
+    let closingDate = null;
+    if (show.closingDate) {
+      const parsed = new Date(show.closingDate);
+      if (!isNaN(parsed.getTime())) {
+        closingDate = parsed.toISOString().split('T')[0];
+      }
+    }
+
+    // Use opening year for ID if available, otherwise current year
+    const idYear = openingDate ? openingDate.split('-')[0] : new Date().getFullYear();
+    const slug = slugify(show.title);
+
+    newShows.push({
+      ...show,
+      slug: slug,
+      id: `${slug}-${idYear}`,
+      openingDate,
+      closingDate,
+    });
+  }
+
+  // Log skipped duplicates for debugging
+  if (skippedDuplicates.length > 0) {
+    console.log(`⏭️  Skipped ${skippedDuplicates.length} duplicate(s):`);
+    for (const skip of skippedDuplicates) {
+      console.log(`   - "${skip.title}" (${skip.reason}) → existing: ${skip.existingId}`);
+    }
+    console.log('');
   }
 
   if (newShows.length === 0) {
