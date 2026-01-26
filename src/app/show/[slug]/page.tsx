@@ -9,7 +9,6 @@ import ReviewsList from '@/components/ReviewsList';
 import BoxOfficeStats from '@/components/BoxOfficeStats';
 import AwardsCard from '@/components/AwardsCard';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
-import CriticConsensusCard from '@/components/CriticConsensusCard';
 import LotteryRushCard from '@/components/LotteryRushCard';
 
 export function generateStaticParams() {
@@ -637,12 +636,17 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </div>
           </div>
 
-          {/* Synopsis below the poster/score row */}
-          {show.synopsis && (
+          {/* Critics' Take - inline below the poster/score row */}
+          {consensus ? (
+            <div className="mt-4 pt-4 border-t border-white/5">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Critics&apos; Take</p>
+              <p className="text-gray-300 text-sm leading-relaxed">{consensus.text}</p>
+            </div>
+          ) : show.synopsis ? (
             <p className="text-gray-400 text-sm leading-relaxed mt-4 pt-4 border-t border-white/5">
               {show.synopsis}
             </p>
-          )}
+          ) : null}
 
           {/* Links row: Official Site, Tickets, Trailer, Lottery/Rush */}
           {(show.officialUrl || show.trailerUrl || (show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed') || (lotteryRush && show.status !== 'closed')) && (
@@ -700,9 +704,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </div>
           )}
         </div>
-
-        {/* Critics' Take - editorial summary */}
-        {consensus && <CriticConsensusCard consensus={consensus} />}
 
         {/* Critic Reviews */}
         {show.criticScore && show.criticScore.reviews.length > 0 && (
@@ -819,6 +820,12 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 )}
               </dd>
             </div>
+            {show.synopsis && (
+              <div className="sm:col-span-2 pt-2 mt-2 border-t border-white/5">
+                <dt className="text-gray-500">Synopsis</dt>
+                <dd className="text-gray-300 mt-1 leading-relaxed">{show.synopsis}</dd>
+              </div>
+            )}
           </dl>
         </div>
 
