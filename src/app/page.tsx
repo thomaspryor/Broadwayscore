@@ -891,9 +891,9 @@ function HomePageInner() {
       </div>
 
       {/* Total Review Count */}
-      <div className="mt-4 pt-2 border-t border-white/5 text-center">
-        <p className="text-gray-400 text-xs">
-          Aggregating <span className="text-white font-semibold">{getDataStats().totalReviews.toLocaleString()}</span> reviews
+      <div className="mt-2 text-center">
+        <p className="text-gray-500 text-xs">
+          Aggregating <span className="text-gray-400 font-medium">{getDataStats().totalReviews.toLocaleString()}</span> reviews
         </p>
       </div>
     </div>
