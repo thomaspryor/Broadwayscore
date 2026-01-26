@@ -220,17 +220,13 @@ async function searchShowScore(show) {
   // For musicals, Show Score often appends "-the-musical-broadway"
   const isMusical = show.type === 'musical';
 
+  // Try more specific patterns first (with -broadway suffix) to avoid
+  // redirects to off-broadway shows with similar names
   const variations = [
-    show.slug,
-    titleSlug,
-    titleNoColonSlug,
-    // Show Score often appends "-broadway" to Broadway show slugs
+    // Most specific: -broadway suffix patterns first
     `${titleSlug}-broadway`,
     `${titleNoColonSlug}-broadway`,
     `${show.slug}-broadway`,
-    // Some shows include the year
-    `${titleSlug}-${year}`,
-    `${titleNoColonSlug}-${year}`,
     // For musicals, Show Score often uses "-the-musical-broadway"
     ...(isMusical ? [
       `${titleSlug}-the-musical-broadway`,
@@ -242,6 +238,13 @@ async function searchShowScore(show) {
       `${titleSlug}-play-broadway`,
       `${titleNoColonSlug}-play-broadway`,
     ] : []),
+    // Then try without suffix (less specific, may redirect to wrong shows)
+    show.slug,
+    titleSlug,
+    titleNoColonSlug,
+    // Some shows include the year
+    `${titleSlug}-${year}`,
+    `${titleNoColonSlug}-${year}`,
   ];
 
   // Try Playwright first if available (to get ALL reviews via carousel scrolling)
@@ -261,10 +264,12 @@ async function searchShowScore(show) {
       const url = `https://www.show-score.com/broadway-shows/${slug}`;
       const result = await searchAggregator('ShowScore', url);
 
-      // Check that we got actual show content, not the homepage
+      // Check that we got actual show content, not the homepage or off-broadway shows
       if (result.found && result.html &&
           result.html.includes('score') &&
-          !result.html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>')) {
+          !result.html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>') &&
+          !result.html.includes('/off-broadway-shows/') &&
+          !result.html.includes('/off-off-broadway-shows/')) {
         console.log(`    ✓ Found at: ${url}`);
         return { url, html: result.html };
       }
@@ -290,6 +295,14 @@ async function scrapeShowScoreWithPlaywright(url) {
     const page = await context.newPage();
 
     await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+
+    // Check if we got redirected to a different type of show (off-broadway, off-off-broadway)
+    const finalUrl = page.url();
+    if (finalUrl.includes('/off-broadway-shows/') || finalUrl.includes('/off-off-broadway-shows/')) {
+      // We got redirected to a non-Broadway show - this is the wrong show
+      await browser.close();
+      return null;
+    }
 
     // Check if we're on the right page (not homepage)
     const title = await page.title();
