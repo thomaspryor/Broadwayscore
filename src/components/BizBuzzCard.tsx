@@ -149,7 +149,7 @@ export default function BizBuzzCard({ commercial, showTitle }: BizBuzzCardProps)
   return (
     <div className="card p-5 sm:p-6 mb-8">
       <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">
-        Commercial Performance
+        Commercial Scorecard
       </h2>
 
       {/* Main Content */}

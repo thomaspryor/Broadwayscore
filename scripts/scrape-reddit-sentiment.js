@@ -630,21 +630,19 @@ async function main() {
       if (redditData && !dryRun) {
         updateAudienceBuzz(show.id, redditData);
         successful++;
+
+        // Save incrementally after each successful show to prevent data loss on timeout
+        audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
+        audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
+        audienceBuzz._meta.notes = 'Combined score: Show Score 40%, Mezzanine 40%, Reddit 20% (when all available)';
+        fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
+        console.log(`  ✓ Saved to audience-buzz.json (${successful}/${shows.length} complete)`);
       }
     } catch (e) {
       console.error(`Error processing ${show.title}:`, e.message);
     }
 
     await sleep(3000);
-  }
-
-  if (!dryRun && successful > 0) {
-    audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
-    audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
-    audienceBuzz._meta.notes = 'Combined score: Show Score 40%, Mezzanine 40%, Reddit 20% (when all available)';
-
-    fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
-    console.log(`\nSaved updates to audience-buzz.json`);
   }
 
   console.log(`\nDone! Processed ${processed} shows, ${successful} with Reddit data.`);
