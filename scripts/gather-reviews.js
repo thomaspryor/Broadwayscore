@@ -200,10 +200,62 @@ async function searchDTLI(show) {
 }
 
 /**
- * Try to find show on Show Score
+ * Try to find show on Show Score using web search first, then URL guessing
  */
 async function searchShowScore(show) {
-  // Show Score uses various URL patterns - try many variations
+  console.log('  Searching Show Score...');
+
+  // METHOD 1: Web search (most reliable)
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (apiKey) {
+    try {
+      const searchQuery = `site:show-score.com "broadway" "${show.title}"`;
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 256,
+          messages: [{
+            role: 'user',
+            content: `Search the web for: ${searchQuery}
+
+Find the Show Score page for the Broadway show "${show.title}".
+Return ONLY the URL in this exact format: {"url": "https://www.show-score.com/broadway-shows/..."}
+If you cannot find it, return: {"url": null}`
+          }]
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const content = data.content[0].text;
+        const jsonMatch = content.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          const result = JSON.parse(jsonMatch[0]);
+          if (result.url && result.url.includes('show-score.com/broadway-shows/')) {
+            console.log(`    Found via search: ${result.url}`);
+            // Fetch the actual page
+            const pageResult = await searchAggregator('ShowScore', result.url);
+            if (pageResult.found && pageResult.html &&
+                !pageResult.html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>')) {
+              console.log(`    ✓ Confirmed at: ${result.url}`);
+              return { url: result.url, html: pageResult.html };
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.log(`    Web search failed: ${e.message}`);
+    }
+  }
+
+  // METHOD 2: URL guessing (fallback)
+  console.log('    Trying URL patterns...');
   const year = new Date(show.openingDate).getFullYear();
   const titleSlug = slugify(show.title);
   const titleNoColonSlug = slugify(show.title.replace(/:/g, ''));
@@ -221,22 +273,18 @@ async function searchShowScore(show) {
     `${titleNoColonSlug}-${year}`,
   ];
 
-  console.log('  Searching Show Score...');
-
   for (const slug of [...new Set(variations)]) {
     const url = `https://www.show-score.com/broadway-shows/${slug}`;
     const result = await searchAggregator('ShowScore', url);
 
     // Check that we got actual show content, not the homepage
-    // The homepage has title "NYC Theatre Reviews and Tickets"
-    // Show pages have the show name in the title
     if (result.found && result.html &&
         result.html.includes('score') &&
         !result.html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>')) {
       console.log(`    ✓ Found at: ${url}`);
       return { url, html: result.html };
     }
-    await sleep(500);
+    await sleep(300);
   }
 
   console.log('    ✗ Not found on Show Score');
