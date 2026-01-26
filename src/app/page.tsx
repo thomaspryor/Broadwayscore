@@ -3,12 +3,12 @@
 import { useMemo, memo, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { getAllShows, ComputedShow, getDataStats, getUpcomingShows } from '@/lib/data';
+import { getAllShows, ComputedShow, getDataStats, getUpcomingShows, getAudienceBuzz, getAudienceBuzzColor, AudienceBuzzDesignation } from '@/lib/data';
 import { getOptimizedImageUrl } from '@/lib/images';
 
 // URL parameter values
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'all';
-type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'closing_soon';
+type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'closing_soon' | 'audience_buzz';
 type TypeParam = 'all' | 'musical' | 'play';
 
 // Internal filter values
@@ -41,6 +41,7 @@ const sortLabels: Record<SortParam, string> = {
   score_asc: 'Lowest Rated',
   alpha: 'A-Z',
   closing_soon: 'Closing Soon',
+  audience_buzz: 'Audience Buzz',
 };
 
 const typeLabels: Record<TypeParam, string> = {
@@ -252,6 +253,7 @@ function ChevronRightIcon() {
 const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: ComputedShow; index: number; hideStatus: boolean }) {
   const score = show.criticScore?.score;
   const isRevival = show.type === 'revival';
+  const audienceBuzz = getAudienceBuzz(show.id);
 
   return (
     <Link
@@ -309,18 +311,34 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
         </p>
       </div>
 
-      {/* Score - fixed height to match thumbnail for consistent alignment */}
-      <div className="flex-shrink-0 w-20 sm:w-24 h-20 sm:h-24 flex flex-col items-center justify-start pt-1">
-        {show.criticScore && getScoreTier(score) && (
-          <span
-            className="text-[10px] font-semibold mb-2 uppercase tracking-wide"
-            style={{ color: getScoreTier(score)?.color }}
-            title={getScoreTier(score)?.tooltip}
-          >
-            {getScoreTier(score)?.label}
-          </span>
+      {/* Scores Section - Audience Buzz + Critic Score */}
+      <div className="flex-shrink-0 flex items-center gap-2">
+        {/* Audience Buzz - smaller, to the left */}
+        {audienceBuzz && (
+          <div className="flex flex-col items-center gap-1">
+            <div
+              className={`w-12 h-12 sm:w-14 sm:h-14 rounded-lg flex items-center justify-center text-xl font-bold ${getAudienceBuzzColor(audienceBuzz.designation).bgClass} ${getAudienceBuzzColor(audienceBuzz.designation).textClass} border ${getAudienceBuzzColor(audienceBuzz.designation).borderClass}`}
+              title={`Audience Buzz: ${audienceBuzz.designation}`}
+            >
+              {Math.round(audienceBuzz.combinedScore)}
+            </div>
+            <span className="text-[9px] text-gray-500 uppercase tracking-wide font-medium">Buzz</span>
+          </div>
         )}
-        <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} status={show.status} />
+
+        {/* Critic Score - main score on the right */}
+        <div className="w-20 sm:w-24 h-20 sm:h-24 flex flex-col items-center justify-start pt-1">
+          {show.criticScore && getScoreTier(score) && (
+            <span
+              className="text-[10px] font-semibold mb-2 uppercase tracking-wide"
+              style={{ color: getScoreTier(score)?.color }}
+              title={getScoreTier(score)?.tooltip}
+            >
+              {getScoreTier(score)?.label}
+            </span>
+          )}
+          <ScoreBadge score={score} size="lg" reviewCount={show.criticScore?.reviewCount} status={show.status} />
+        </div>
       </div>
     </Link>
   );
@@ -417,7 +435,7 @@ function HomePageInner() {
 
   // Validate params (use default if invalid)
   const status: StatusParam = ['now_playing', 'closed', 'upcoming', 'all'].includes(statusParam) ? statusParam : DEFAULT_STATUS;
-  const sort: SortParam = ['recent', 'score_desc', 'score_asc', 'alpha', 'closing_soon'].includes(sortParam) ? sortParam : DEFAULT_SORT;
+  const sort: SortParam = ['recent', 'score_desc', 'score_asc', 'alpha', 'closing_soon', 'audience_buzz'].includes(sortParam) ? sortParam : DEFAULT_SORT;
   const type: TypeParam = ['all', 'musical', 'play'].includes(typeParam) ? typeParam : DEFAULT_TYPE;
 
   // Internal status filter value
@@ -523,6 +541,14 @@ function HomePageInner() {
           return (b.criticScore?.score ?? -1) - (a.criticScore?.score ?? -1);
         case 'score_asc':
           return (a.criticScore?.score ?? -1) - (b.criticScore?.score ?? -1);
+        case 'audience_buzz': {
+          // Sort by audience buzz combined score (highest first)
+          const aBuzz = getAudienceBuzz(a.id);
+          const bBuzz = getAudienceBuzz(b.id);
+          const aScore = aBuzz?.combinedScore ?? -1;
+          const bScore = bBuzz?.combinedScore ?? -1;
+          return bScore - aScore;
+        }
         case 'alpha':
           return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
         case 'closing_soon': {
@@ -611,7 +637,7 @@ function HomePageInner() {
 
         <div className="flex items-center gap-1 sm:gap-2 flex-wrap" role="group" aria-label="Sort shows">
           <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
-          {(['recent', 'score_desc', 'alpha', 'closing_soon'] as const).map((s) => (
+          {(['recent', 'score_desc', 'audience_buzz', 'alpha', 'closing_soon'] as const).map((s) => (
             <button
               key={s}
               onClick={() => updateParams({ sort: s })}
@@ -620,7 +646,7 @@ function HomePageInner() {
                 sort === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
               }`}
             >
-              {s === 'recent' ? 'NEWEST' : s === 'score_desc' ? 'HIGHEST' : s === 'alpha' ? 'A-Z' : 'CLOSING'}
+              {s === 'recent' ? 'NEWEST' : s === 'score_desc' ? 'HIGHEST' : s === 'audience_buzz' ? 'BUZZ' : s === 'alpha' ? 'A-Z' : 'CLOSING'}
             </button>
           ))}
         </div>
