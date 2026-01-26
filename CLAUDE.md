@@ -272,6 +272,7 @@ All automation runs via GitHub Actions - no local commands needed.
   - **Triggers for newly opened shows (previews → open):**
     - `gather-reviews.yml` - Collects critic reviews
     - `update-reddit-sentiment.yml` - Gets Reddit buzz data
+    - `update-show-score.yml` - Gets Show Score audience data
 
 ### `.github/workflows/gather-reviews.yml`
 - **Runs:** When new shows discovered (or manually triggered)
@@ -307,6 +308,26 @@ All automation runs via GitHub Actions - no local commands needed.
   - If approved: Automatically scrapes review and adds to database
   - Posts validation result as issue comment
   - Closes issue when successfully processed
+
+### `.github/workflows/update-show-score.yml`
+- **Runs:**
+  - Weekly (Sundays at 12pm UTC) for all shows
+  - Automatically when shows transition previews → open (triggered by update-show-status.yml)
+  - Manually via GitHub UI
+- **Does:**
+  - Scrapes show-score.com for audience scores and review counts
+  - Updates `data/audience-buzz.json` with Show Score data
+  - Saves incrementally after each show (prevents data loss on timeout)
+- **Manual trigger options:**
+  - `show`: Process specific show ID
+  - `shows`: Comma-separated show IDs for batch processing
+  - `limit`: Limit number of shows to process (default: 50)
+- **Technical notes:**
+  - Uses ScrapingBee with JS rendering to fetch pages
+  - Extracts audience score from JSON-LD structured data
+  - Show Score weighted at 40% in combined Audience Buzz score
+  - 1-hour timeout with `if: always()` commit step
+- **Script:** `scripts/scrape-show-score-audience.js`
 
 ### `.github/workflows/update-reddit-sentiment.yml`
 - **Runs:**
