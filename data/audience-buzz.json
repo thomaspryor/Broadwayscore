@@ -12,7 +12,7 @@
       "Take-it-or-Leave-it": "60-74",
       "Loathing It": "0-59"
     },
-    "notes": "Combined score: Show Score 40%, Mezzanine 40%, Reddit 20% (when all available)"
+    "notes": "Dynamic weighting: Reddit fixed 20%, Show Score & Mezzanine split remaining 80% by sample size"
   },
   "shows": {
     "hamilton-2015": {
@@ -47,7 +47,7 @@
     "maybe-happy-ending-2024": {
       "title": "Maybe Happy Ending",
       "designation": "Loving It",
-      "combinedScore": 95,
+      "combinedScore": 94,
       "sources": {
         "showScore": {
           "score": 95,
@@ -105,7 +105,7 @@
     "wicked-2003": {
       "title": "Wicked",
       "designation": "Liking It",
-      "combinedScore": 86,
+      "combinedScore": 87,
       "sources": {
         "showScore": {
           "score": 94,
@@ -134,7 +134,7 @@
     "hadestown-2019": {
       "title": "Hadestown",
       "designation": "Loving It",
-      "combinedScore": 91,
+      "combinedScore": 93,
       "sources": {
         "showScore": {
           "score": 89,
@@ -217,7 +217,7 @@
     "the-outsiders-2024": {
       "title": "The Outsiders",
       "designation": "Liking It",
-      "combinedScore": 87,
+      "combinedScore": 86,
       "sources": {
         "showScore": {
           "score": 92,
@@ -299,8 +299,8 @@
     },
     "buena-vista-social-club-2025": {
       "title": "Buena Vista Social Club",
-      "designation": "Liking It",
-      "combinedScore": 89,
+      "designation": "Loving It",
+      "combinedScore": 91,
       "sources": {
         "showScore": {
           "score": 96,
@@ -317,7 +317,7 @@
     "the-notebook-2024": {
       "title": "the notebook broadway",
       "designation": "Liking It",
-      "combinedScore": 80,
+      "combinedScore": 83,
       "sources": {
         "showScore": {
           "score": 88,
@@ -359,7 +359,7 @@
     "two-strangers-bway-2025": {
       "title": "Two Strangers (Carry a Cake Across New York)",
       "designation": "Liking It",
-      "combinedScore": 86,
+      "combinedScore": 84,
       "sources": {
         "showScore": {
           "score": 90,
@@ -388,7 +388,7 @@
     "operation-mincemeat-2025": {
       "title": "Operation Mincemeat",
       "designation": "Liking It",
-      "combinedScore": 87,
+      "combinedScore": 88,
       "sources": {
         "showScore": {
           "score": 86,
@@ -416,8 +416,8 @@
     },
     "oh-mary-2024": {
       "title": "Oh, Mary!",
-      "designation": "Liking It",
-      "combinedScore": 88,
+      "designation": "Loving It",
+      "combinedScore": 90,
       "sources": {
         "showScore": {
           "score": 84,
@@ -446,7 +446,7 @@
     "oedipus-2025": {
       "title": "Oedipus",
       "designation": "Liking It",
-      "combinedScore": 88,
+      "combinedScore": 87,
       "sources": {
         "showScore": {
           "score": 90,
@@ -475,7 +475,7 @@
     "water-for-elephants-2024": {
       "title": "water for elephants broadway",
       "designation": "Liking It",
-      "combinedScore": 84,
+      "combinedScore": 85,
       "sources": {
         "showScore": {
           "score": 87,
@@ -500,7 +500,7 @@
     "liberation-2025": {
       "title": "Liberation",
       "designation": "Liking It",
-      "combinedScore": 87,
+      "combinedScore": 85,
       "sources": {
         "showScore": {
           "score": 90,
@@ -529,7 +529,7 @@
     "the-lion-king-1997": {
       "title": "The Lion King",
       "designation": "Liking It",
-      "combinedScore": 80,
+      "combinedScore": 84,
       "sources": {
         "showScore": {
           "score": 92,
@@ -588,7 +588,7 @@
     "hells-kitchen-2024": {
       "title": "Hell's Kitchen",
       "designation": "Liking It",
-      "combinedScore": 79,
+      "combinedScore": 80,
       "sources": {
         "showScore": {
           "score": 93,
@@ -617,7 +617,7 @@
     "mj-2022": {
       "title": "MJ: The Musical",
       "designation": "Liking It",
-      "combinedScore": 85,
+      "combinedScore": 87,
       "sources": {
         "showScore": {
           "score": 92,
@@ -634,7 +634,7 @@
     "six-2021": {
       "title": "Six",
       "designation": "Liking It",
-      "combinedScore": 82,
+      "combinedScore": 81,
       "sources": {
         "showScore": {
           "score": 88,
@@ -663,7 +663,7 @@
     "book-of-mormon-2011": {
       "title": "The Book of Mormon",
       "designation": "Liking It",
-      "combinedScore": 78,
+      "combinedScore": 80,
       "sources": {
         "showScore": {
           "score": 90,
@@ -692,7 +692,7 @@
     "harry-potter-2021": {
       "title": "Harry Potter and the Cursed Child",
       "designation": "Liking It",
-      "combinedScore": 77,
+      "combinedScore": 79,
       "sources": {
         "showScore": {
           "score": 90,
@@ -721,7 +721,7 @@
     "suffs-2024": {
       "title": "suffs",
       "designation": "Liking It",
-      "combinedScore": 88,
+      "combinedScore": 87,
       "sources": {
         "showScore": {
           "score": 85,
@@ -746,7 +746,7 @@
     "moulin-rouge-2019": {
       "title": "Moulin Rouge! The Musical",
       "designation": "Liking It",
-      "combinedScore": 82,
+      "combinedScore": 80,
       "sources": {
         "showScore": {
           "score": 88,
@@ -775,7 +775,7 @@
     "the-roommate-2024": {
       "title": "the roommate broadway",
       "designation": "Liking It",
-      "combinedScore": 77,
+      "combinedScore": 79,
       "sources": {
         "showScore": {
           "score": 83,
@@ -813,7 +813,7 @@
     "mamma-mia-2025": {
       "title": "Mamma Mia!",
       "designation": "Liking It",
-      "combinedScore": 79,
+      "combinedScore": 80,
       "sources": {
         "showScore": {
           "score": 88,
@@ -842,7 +842,7 @@
     "bug-2026": {
       "title": "Bug",
       "designation": "Liking It",
-      "combinedScore": 78,
+      "combinedScore": 77,
       "sources": {
         "showScore": {
           "score": 80,
@@ -859,7 +859,7 @@
     "aladdin-2014": {
       "title": "Aladdin",
       "designation": "Liking It",
-      "combinedScore": 81,
+      "combinedScore": 84,
       "sources": {
         "showScore": {
           "score": 87,
@@ -888,7 +888,7 @@
     "the-great-gatsby-2024": {
       "title": "The Great Gatsby",
       "designation": "Liking It",
-      "combinedScore": 79,
+      "combinedScore": 77,
       "sources": {
         "showScore": {
           "score": 82,
@@ -905,7 +905,7 @@
     "marjorie-prime-2025": {
       "title": "Marjorie Prime",
       "designation": "Liking It",
-      "combinedScore": 78,
+      "combinedScore": 75,
       "sources": {
         "showScore": {
           "score": 81,
@@ -951,7 +951,7 @@
     "chicago-1996": {
       "title": "Chicago",
       "designation": "Liking It",
-      "combinedScore": 77,
+      "combinedScore": 80,
       "sources": {
         "showScore": {
           "score": 84,
@@ -968,7 +968,7 @@
     "stereophonic-2024": {
       "title": "stereophonic",
       "designation": "Take-it-or-Leave-it",
-      "combinedScore": 66,
+      "combinedScore": 69,
       "sources": {
         "showScore": {
           "score": 72,
@@ -1007,7 +1007,7 @@
     "queen-versailles-2025": {
       "title": "the queen of versailles broadway",
       "designation": "Loathing It",
-      "combinedScore": 57,
+      "combinedScore": 59,
       "sources": {
         "showScore": {
           "score": 62,
