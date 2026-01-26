@@ -206,8 +206,8 @@ Add content that directly answers questions people ask AI:
 | Offer | Implemented | Show pages |
 | BreadcrumbList | Implemented | Available |
 | ItemList | Implemented | Browse pages |
-| FAQPage | **Missing** | Methodology, shows |
-| Article | **Missing** | Methodology |
+| FAQPage | ✅ Implemented | Methodology, shows |
+| Article | ✅ Implemented | Methodology |
 
 ### Technical SEO Checklist
 
@@ -217,28 +217,30 @@ Add content that directly answers questions people ask AI:
 - [x] Mobile responsive
 - [x] Open Graph tags
 - [x] Twitter cards
-- [ ] Fix sitemap URL in robots.txt
-- [ ] Add FAQ schema
-- [ ] Add Article schema
-- [ ] Create llms.txt
+- [x] Fix sitemap URL in robots.txt
+- [x] Add FAQ schema
+- [x] Add Article schema
+- [x] Create llms.txt
 
 ---
 
 ## Priority Order
 
-### Immediate (This Week)
-1. Fix robots.txt (add AI crawlers, fix sitemap URL)
-2. Create llms.txt file
+### Immediate (This Week) ✅ COMPLETE
+1. ✅ Fix robots.txt (add AI crawlers, fix sitemap URL)
+2. ✅ Create llms.txt file
 
-### Short-term (This Month)
-3. Add FAQ schema to methodology page
-4. Add FAQ schema to show pages (dynamic)
-5. Add "Quick Facts" structured data boxes
+### Short-term (This Month) ✅ COMPLETE
+3. ✅ Add FAQ schema to methodology page (already existed)
+4. ✅ Add FAQ schema to show pages (dynamic)
+5. ✅ Add "Quick Facts" structured data boxes
+6. ✅ Add Article schema to methodology page
 
 ### Ongoing
-6. Set up AI citation monitoring
-7. Keep content fresh (you're already doing this with scrapers)
-8. Answer new common questions as they emerge
+7. Set up AI citation monitoring
+8. Keep content fresh (you're already doing this with scrapers)
+9. Answer new common questions as they emerge
+10. Add "Last Updated" timestamps to show pages
 
 ---
 
