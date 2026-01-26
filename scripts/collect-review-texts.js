@@ -1040,8 +1040,17 @@ function commitChanges(processed) {
         execSync('git pull --rebase origin main', { stdio: 'pipe' });
       } catch (pullErr) {
         // If rebase fails, abort and try merge
-        execSync('git rebase --abort', { stdio: 'pipe' }).catch(() => {});
-        execSync('git pull --no-rebase origin main', { stdio: 'pipe' });
+        try {
+          execSync('git rebase --abort', { stdio: 'pipe' });
+        } catch (abortErr) {
+          // Rebase abort failed, probably no rebase in progress
+        }
+        try {
+          execSync('git pull --no-rebase origin main', { stdio: 'pipe' });
+        } catch (mergeErr) {
+          // Merge also failed - continue anyway, push might still work
+          console.log('    Warning: pull failed, attempting push anyway');
+        }
       }
       execSync('git push origin HEAD:main', { stdio: 'pipe' });
 
