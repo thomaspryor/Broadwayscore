@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-26T23:33:31.394Z",
+  "runDate": "2026-01-26T23:34:46.884Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "death-of-a-salesman-2026",
+    "showFilter": "moulin-rouge-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 172,
-    "failed": 74,
+    "processed": 162,
+    "failed": 85,
     "skipped": 0,
-    "successRate": "69.9%"
+    "successRate": "65.6%"
   },
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 12,
     "scrapingbee": 13,
-    "brightdata": 13,
-    "archive": 127
+    "brightdata": 14,
+    "archive": 123
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 7,
-    "tier2Attempts": 9,
+    "tier1Attempts": 17,
+    "tier1Success": 0,
+    "tier2Attempts": 17,
     "tier2Success": 0,
-    "tier3Attempts": 9,
-    "tier3Success": 0,
-    "tier4Attempts": 9,
-    "tier4Success": 7,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 70
+    "tier3Attempts": 17,
+    "tier3Success": 1,
+    "tier4Attempts": 19,
+    "tier4Success": 3,
+    "totalFailed": 13,
+    "scrapingBeeCreditsUsed": 60
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -193,20 +193,10 @@
     "death-becomes-her-2024/wsj--charles-isherwood.json",
     "death-of-a-salesman-2026/broadwaynews-com--unknown.json",
     "death-of-a-salesman-2026/deadline-com--unknown.json",
-    "death-of-a-salesman-2026/exeuntnyc-com--unknown.json",
-    "death-of-a-salesman-2026/lightingandsoundamerica-com--unknown.json",
-    "death-of-a-salesman-2026/newyorktheater-me--unknown.json",
-    "death-of-a-salesman-2026/newyorktheatreguide-com--unknown.json",
-    "death-of-a-salesman-2026/nydailynews-com--unknown.json",
-    "death-of-a-salesman-2026/nypost-com--unknown.json",
-    "death-of-a-salesman-2026/nystagereview-com--unknown.json",
-    "death-of-a-salesman-2026/talkinbroadway-com--unknown.json",
-    "death-of-a-salesman-2026/theaterlife-com--unknown.json",
-    "death-of-a-salesman-2026/theatermania-com--unknown.json",
-    "death-of-a-salesman-2026/theaterscene-net--unknown.json",
-    "death-of-a-salesman-2026/thefrontrowcenter-com--unknown.json",
-    "death-of-a-salesman-2026/thewrap-com--unknown.json",
-    "death-of-a-salesman-2026/washingtonpost-com--unknown.json"
+    "moulin-rouge-2019/NY1--roma-torre.json",
+    "moulin-rouge-2019/NYDN--chris-jones.json",
+    "moulin-rouge-2019/deadline--greg-evans.json",
+    "moulin-rouge-2019/telegraph--diane-snyder.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -281,8 +271,19 @@
     "death-becomes-her-2024/guardian--benjamin-lee.json",
     "death-becomes-her-2024/nypost--johnny-oleksinski.json",
     "death-of-a-salesman-2026/ew-com--unknown.json",
-    "death-of-a-salesman-2026/stagebuddy-com--unknown.json",
-    "death-of-a-salesman-2026/wsj-com--unknown.json"
+    "moulin-rouge-2019/NJCOM--christopher-kelly.json",
+    "moulin-rouge-2019/NYDN--joe-dziemianowicz.json",
+    "moulin-rouge-2019/NYP--johnny-oleksinski.json",
+    "moulin-rouge-2019/NYSR--jesse-oxfeld.json",
+    "moulin-rouge-2019/TDB--tim-teeman.json",
+    "moulin-rouge-2019/USATODAY--patrick-ryan.json",
+    "moulin-rouge-2019/WASHPOST--peter-marks.json",
+    "moulin-rouge-2019/WRAP--robert-hofler.json",
+    "moulin-rouge-2019/amny--matt-windman.json",
+    "moulin-rouge-2019/ew--leah-greenblatt.json",
+    "moulin-rouge-2019/guardian--alexis-soloski.json",
+    "moulin-rouge-2019/observer--david-cote.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -297,14 +298,7 @@
       "back-to-the-future-2023/nystagereview-com--unknown.json",
       "back-to-the-future-2023/theaterscene-net--unknown.json",
       "back-to-the-future-2023/theatrereviews-com--unknown.json",
-      "death-of-a-salesman-2026/broadwaynews-com--unknown.json",
-      "death-of-a-salesman-2026/exeuntnyc-com--unknown.json",
-      "death-of-a-salesman-2026/lightingandsoundamerica-com--unknown.json",
-      "death-of-a-salesman-2026/newyorktheater-me--unknown.json",
-      "death-of-a-salesman-2026/newyorktheatreguide-com--unknown.json",
-      "death-of-a-salesman-2026/nystagereview-com--unknown.json",
-      "death-of-a-salesman-2026/theaterlife-com--unknown.json",
-      "death-of-a-salesman-2026/theaterscene-net--unknown.json"
+      "death-of-a-salesman-2026/broadwaynews-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -334,7 +328,8 @@
       "bug-2026/daily-beast--tim-teeman.json",
       "cabaret-2024/daily-beast--tim-teeman.json",
       "chess-2025/daily-beast--tim-teeman.json",
-      "chess-2025/timeout-ny--adam-feldman.json"
+      "chess-2025/timeout-ny--adam-feldman.json",
+      "moulin-rouge-2019/telegraph--diane-snyder.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -457,13 +452,9 @@
       "death-becomes-her-2024/thewrap--robert-hofler.json",
       "death-becomes-her-2024/wsj--charles-isherwood.json",
       "death-of-a-salesman-2026/deadline-com--unknown.json",
-      "death-of-a-salesman-2026/nydailynews-com--unknown.json",
-      "death-of-a-salesman-2026/nypost-com--unknown.json",
-      "death-of-a-salesman-2026/talkinbroadway-com--unknown.json",
-      "death-of-a-salesman-2026/theatermania-com--unknown.json",
-      "death-of-a-salesman-2026/thefrontrowcenter-com--unknown.json",
-      "death-of-a-salesman-2026/thewrap-com--unknown.json",
-      "death-of-a-salesman-2026/washingtonpost-com--unknown.json"
+      "moulin-rouge-2019/NY1--roma-torre.json",
+      "moulin-rouge-2019/NYDN--chris-jones.json",
+      "moulin-rouge-2019/deadline--greg-evans.json"
     ]
   }
 }
