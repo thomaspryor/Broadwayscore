@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus } from '@/lib/data';
+import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus, getLotteryRush } from '@/lib/data';
 import { generateShowSchema, generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
@@ -10,6 +10,7 @@ import BoxOfficeStats from '@/components/BoxOfficeStats';
 import AwardsCard from '@/components/AwardsCard';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import CriticConsensusCard from '@/components/CriticConsensusCard';
+import LotteryRushCard from '@/components/LotteryRushCard';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -461,6 +462,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const awards = getShowAwards(show.id);
   const audienceBuzz = getAudienceBuzz(show.id);
   const consensus = getCriticConsensus(show.id);
+  const lotteryRush = getLotteryRush(show.id);
 
   return (
     <>
@@ -687,6 +689,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </div>
           )}
         </div>
+
+        {/* Lottery/Rush Tickets */}
+        {lotteryRush && <LotteryRushCard data={lotteryRush} showStatus={show.status} />}
 
         {/* Critics' Take - editorial summary */}
         {consensus && <CriticConsensusCard consensus={consensus} />}

@@ -20,6 +20,7 @@ import awardsData from '../../data/awards.json';
 import commercialData from '../../data/commercial.json';
 import audienceBuzzData from '../../data/audience-buzz.json';
 import criticConsensusData from '../../data/critic-consensus.json';
+import lotteryRushData from '../../data/lottery-rush.json';
 
 // Type the imported data
 const shows: RawShow[] = showsData.shows as RawShow[];
@@ -900,6 +901,97 @@ export function getCriticConsensus(showId: string): CriticConsensus | undefined 
  */
 export function getCriticConsensusLastUpdated(): string | null {
   return criticConsensus._meta.lastGenerated;
+}
+
+// ============================================
+// Lottery & Rush Data
+// ============================================
+
+export interface LotteryInfo {
+  type: string;
+  platform: string;
+  url: string;
+  price: number;
+  time: string;
+  instructions: string;
+}
+
+export interface RushInfo {
+  type: string;
+  platform?: string;
+  url?: string;
+  price: number;
+  time: string;
+  location?: string;
+  instructions: string;
+}
+
+export interface StandingRoomInfo {
+  price: number;
+  time: string;
+  instructions: string;
+}
+
+export interface SpecialLotteryInfo {
+  name: string;
+  platform: string;
+  url: string;
+  price: number;
+  instructions: string;
+}
+
+export interface ShowLotteryRush {
+  lottery: LotteryInfo | null;
+  rush: RushInfo | null;
+  digitalRush?: RushInfo | null;
+  studentRush?: RushInfo | null;
+  standingRoom: StandingRoomInfo | null;
+  specialLottery?: SpecialLotteryInfo | null;
+}
+
+interface LotteryRushFile {
+  lastUpdated: string;
+  source: string;
+  shows: Record<string, ShowLotteryRush>;
+}
+
+const lotteryRush = lotteryRushData as unknown as LotteryRushFile;
+
+/**
+ * Get lottery/rush data for a specific show by ID
+ */
+export function getLotteryRush(showId: string): ShowLotteryRush | undefined {
+  return lotteryRush.shows[showId];
+}
+
+/**
+ * Get lottery/rush data by slug (looks up show ID first)
+ */
+export function getLotteryRushBySlug(slug: string): ShowLotteryRush | undefined {
+  const show = getShowBySlug(slug);
+  if (!show) return undefined;
+  return lotteryRush.shows[show.id];
+}
+
+/**
+ * Check if a show has any lottery/rush options
+ */
+export function hasLotteryOrRush(showId: string): { hasLottery: boolean; hasRush: boolean; hasSRO: boolean } {
+  const data = lotteryRush.shows[showId];
+  if (!data) return { hasLottery: false, hasRush: false, hasSRO: false };
+
+  return {
+    hasLottery: !!data.lottery || !!data.specialLottery,
+    hasRush: !!data.rush || !!data.digitalRush || !!data.studentRush,
+    hasSRO: !!data.standingRoom,
+  };
+}
+
+/**
+ * Get lottery/rush data last updated timestamp
+ */
+export function getLotteryRushLastUpdated(): string {
+  return lotteryRush.lastUpdated;
 }
 
 // Export types
