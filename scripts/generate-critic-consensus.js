@@ -2,7 +2,7 @@
 
 /**
  * Generate Critics' Take for all shows using Claude API
- * 2-sentence editorial summaries capturing critical reception
+ * Concise 1-2 sentence summaries (max 280 chars) capturing critical reception
  */
 
 import fs from 'fs';
@@ -75,24 +75,26 @@ async function generateConsensus(showTitle, reviews) {
     return `Review ${i + 1} (${r.outlet} - ${r.critic}, score: ${r.score}/100):\n${excerpt}...`;
   }).join('\n\n');
 
-  const prompt = `You are writing a "Critics' Take" for the Broadway show "${showTitle}" - a 2-sentence editorial summary capturing the critical reception.
+  const prompt = `You are writing a "Critics' Take" for the Broadway show "${showTitle}" - a very concise editorial summary capturing the critical reception.
 
-Based on these ${reviews.length} critic reviews, write a 2-sentence summary that captures the overall critical reception. The summary should:
-- Be exactly 2 sentences (no more, no less)
+Based on these ${reviews.length} critic reviews, write a brief summary (1-2 SHORT sentences, maximum 280 characters total) that captures the overall critical reception. The summary should:
+- Be VERY concise and punchy (like a tweet)
+- Maximum 280 characters total - keep it brief!
 - Capture the general sentiment (positive, mixed, or negative)
-- Mention specific praised/criticized elements (performances, direction, writing, etc.)
+- Mention 1-2 specific praised/criticized elements if space allows
 - Be objective and factual, not promotional
 - Use present tense
 - Not mention specific critic names or outlets
+- Get straight to the point - no unnecessary words
 
 Reviews:
 ${reviewSummaries}
 
-Write only the 2-sentence consensus, nothing else.`;
+Write only the concise consensus (max 280 chars), nothing else.`;
 
   const message = await anthropic.messages.create({
     model: 'claude-sonnet-4-5-20250929',
-    max_tokens: 200,
+    max_tokens: 150,
     temperature: 0.7,
     messages: [
       {
@@ -104,10 +106,13 @@ Write only the 2-sentence consensus, nothing else.`;
 
   const consensus = message.content[0].text.trim();
 
-  // Validate it's roughly 2 sentences (allow some flexibility)
+  // Validate length and sentence count
   const sentenceCount = (consensus.match(/[.!?]+/g) || []).length;
-  if (sentenceCount < 2 || sentenceCount > 3) {
-    console.warn(`  ⚠️  Generated ${sentenceCount} sentences instead of 2, but proceeding...`);
+  if (consensus.length > 300) {
+    console.warn(`  ⚠️  Generated ${consensus.length} chars (target: 280 max), but proceeding...`);
+  }
+  if (sentenceCount > 2) {
+    console.warn(`  ⚠️  Generated ${sentenceCount} sentences (target: 1-2), but proceeding...`);
   }
 
   return consensus;
@@ -182,7 +187,7 @@ async function main() {
 
   // Update metadata and save
   consensusData._meta = {
-    description: "LLM-generated Critics' Take summaries for shows (2-sentence editorial)",
+    description: "LLM-generated Critics' Take summaries for shows (concise 1-2 sentence summary, max 280 chars)",
     lastGenerated: new Date().toISOString(),
     updatePolicy: "Regenerate weekly if 3+ new reviews added to any show",
   };

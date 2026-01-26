@@ -275,8 +275,11 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 will-change-transform"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl" aria-hidden="true">
-            🎭
+          <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 px-2" aria-hidden="true">
+            <div className="text-2xl mb-0.5">🎭</div>
+            {show.status === 'previews' && (
+              <div className="text-[9px] text-gray-500 text-center font-medium leading-tight">Images<br/>soon</div>
+            )}
           </div>
         )}
       </div>
@@ -346,8 +349,11 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-2xl" aria-hidden="true">
-            🎭
+          <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 px-2" aria-hidden="true">
+            <div className="text-2xl mb-1">🎭</div>
+            {show.status === 'previews' && (
+              <div className="text-[10px] text-gray-500 text-center font-medium">Images<br/>coming soon</div>
+            )}
           </div>
         )}
         {/* Score overlay */}
