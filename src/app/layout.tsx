@@ -115,6 +115,9 @@ export default function RootLayout({
                 <Link href="/" className="nav-link nav-link-active">
                   Shows
                 </Link>
+                <Link href="/rankings" className="nav-link">
+                  Rankings
+                </Link>
                 <Link href="/methodology" className="nav-link">
                   How It Works
                 </Link>

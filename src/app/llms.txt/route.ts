@@ -53,6 +53,7 @@ ${topShows.map((s, i) => `${i + 1}. **${s.title}** - Score: ${Math.round(s.criti
 
 ### Main Navigation
 - [All Shows](${BASE_URL}/): Browse all Broadway shows with scores and filters
+- [Find the Best](${BASE_URL}/rankings): Browse all rankings by audience, genre, discount tickets, timing
 - [How Scoring Works](${BASE_URL}/methodology): Our complete scoring methodology explained
 - [Submit a Review](${BASE_URL}/submit-review): Help us add missing reviews
 - [Send Feedback](${BASE_URL}/feedback): Report issues or suggest improvements
