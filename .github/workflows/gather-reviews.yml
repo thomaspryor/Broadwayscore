@@ -59,14 +59,22 @@ jobs:
       - name: Check for changes
         id: git-check
         run: |
-          git diff --exit-code data/reviews.json || echo "changes=true" >> $GITHUB_OUTPUT
+          # Check for changes in reviews.json or review-texts directory
+          git diff --exit-code data/reviews.json data/review-texts/ 2>/dev/null || echo "changes=true" >> $GITHUB_OUTPUT
+          # Also check for untracked files in review-texts
+          if [ -n "$(git ls-files --others --exclude-standard data/review-texts/)" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
 
       - name: Commit review data
         if: steps.git-check.outputs.changes == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/reviews.json
+          # Pull latest changes to avoid conflicts
+          git pull --rebase origin main
+          # Add all review data files
+          git add data/reviews.json data/review-texts/
           git commit -m "feat: Add review data for ${{ inputs.shows }}"
           git push
 
