@@ -214,7 +214,8 @@
         {
           "platform": "TodayTix",
           "url": "https://www.todaytix.com/nyc/shows/hells-kitchen",
-          "priceFrom": 79
+          "priceFrom": 79,
+          "needsUpdate": true
         },
         {
           "platform": "Telecharge",
@@ -315,7 +316,8 @@
         {
           "platform": "TodayTix",
           "url": "https://www.todaytix.com/nyc/shows/oh-mary",
-          "priceFrom": 49
+          "priceFrom": 49,
+          "needsUpdate": true
         },
         {
           "platform": "Telecharge",
@@ -434,7 +436,8 @@
         {
           "platform": "TodayTix",
           "url": "https://www.todaytix.com/nyc/shows/bug-broadway",
-          "priceFrom": 59
+          "priceFrom": 59,
+          "needsUpdate": true
         },
         {
           "platform": "Telecharge",
@@ -606,7 +609,8 @@
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/16-the-lion-king"
+          "url": "https://www.todaytix.com/nyc/shows/16-the-lion-king",
+          "needsUpdate": true
         },
         {
           "platform": "Ticketmaster",
@@ -720,7 +724,8 @@
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/14660-moulin-rouge-the-musical"
+          "url": "https://www.todaytix.com/nyc/shows/14660-moulin-rouge-the-musical",
+          "needsUpdate": true
         },
         {
           "platform": "Ticketmaster",
@@ -772,7 +777,8 @@
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/29-aladdin"
+          "url": "https://www.todaytix.com/nyc/shows/29-aladdin",
+          "needsUpdate": true
         },
         {
           "platform": "Ticketmaster",
@@ -827,7 +833,8 @@
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/18203-hadestown"
+          "url": "https://www.todaytix.com/nyc/shows/18203-hadestown",
+          "needsUpdate": true
         },
         {
           "platform": "Telecharge",
@@ -929,7 +936,8 @@
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/22697-six"
+          "url": "https://www.todaytix.com/nyc/shows/22697-six",
+          "needsUpdate": true
         },
         {
           "platform": "Ticketmaster",
@@ -976,7 +984,8 @@
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/9-the-book-of-mormon"
+          "url": "https://www.todaytix.com/nyc/shows/9-the-book-of-mormon",
+          "needsUpdate": true
         },
         {
           "platform": "Telecharge",
@@ -1156,7 +1165,8 @@
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/47011-mamma-mia"
+          "url": "https://www.todaytix.com/nyc/shows/47011-mamma-mia",
+          "needsUpdate": true
         },
         {
           "platform": "Telecharge",
@@ -1382,7 +1392,8 @@
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/47037-marjorie-prime"
+          "url": "https://www.todaytix.com/nyc/shows/47037-marjorie-prime",
+          "needsUpdate": true
         },
         {
           "platform": "Telecharge",
@@ -1527,7 +1538,8 @@
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/44919-the-queen-of-versailles"
+          "url": "https://www.todaytix.com/nyc/shows/44919-the-queen-of-versailles",
+          "needsUpdate": true
         },
         {
           "platform": "Telecharge",
@@ -1659,7 +1671,8 @@
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/47019-ragtime"
+          "url": "https://www.todaytix.com/nyc/shows/47019-ragtime",
+          "needsUpdate": true
         },
         {
           "platform": "Telecharge",
@@ -1710,7 +1723,8 @@
       "ticketLinks": [
         {
           "platform": "TodayTix",
-          "url": "https://www.todaytix.com/nyc/shows/45970-chess"
+          "url": "https://www.todaytix.com/nyc/shows/45970-chess",
+          "needsUpdate": true
         },
         {
           "platform": "Telecharge",
@@ -1873,7 +1887,14 @@
         "upcoming",
         "play"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=Every%20Brilliant%20Thing",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": [],
       "officialUrl": null,
@@ -1900,7 +1921,14 @@
         "play",
         "revival"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=Death%20of%20a%20Salesman",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": [],
       "officialUrl": null,
@@ -1927,7 +1955,14 @@
         "musical",
         "new"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=Beaches%2C%20A%20New%20Musical",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": [],
       "officialUrl": null,
@@ -1952,7 +1987,14 @@
       "tags": [
         "new"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=All%20Out%3A%20Comedy%20About%20Ambition",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     },
@@ -1974,7 +2016,14 @@
       "tags": [
         "upcoming"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=The%20Balusters",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     },
@@ -1996,7 +2045,14 @@
       "tags": [
         "upcoming"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=Becky%20Shaw",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     },
@@ -2018,7 +2074,14 @@
       "tags": [
         "upcoming"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=CATS%3A%20The%20Jellicle%20Ball",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     },
@@ -2040,7 +2103,14 @@
       "tags": [
         "upcoming"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=Dog%20Day%20Afternoon",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     },
@@ -2062,7 +2132,14 @@
       "tags": [
         "upcoming"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=Fallen%20Angels",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     },
@@ -2084,7 +2161,14 @@
       "tags": [
         "upcoming"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=The%20Fear%20of%2013",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     },
@@ -2106,7 +2190,14 @@
       "tags": [
         "upcoming"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=Giant",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     },
@@ -2128,7 +2219,14 @@
       "tags": [
         "upcoming"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=Joe%20Turner's%20Come%20and%20Gone",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     },
@@ -2150,7 +2248,14 @@
       "tags": [
         "upcoming"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=The%20Lost%20Boys",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     },
@@ -2172,7 +2277,14 @@
       "tags": [
         "upcoming"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=Proof",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     },
@@ -2194,7 +2306,14 @@
       "tags": [
         "upcoming"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=The%20Rocky%20Horror%20Show",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     },
@@ -2216,7 +2335,14 @@
       "tags": [
         "upcoming"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=Schmigadoon!",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     },
@@ -2238,7 +2364,14 @@
       "tags": [
         "upcoming"
       ],
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows?q=Titanique",
+          "priceFrom": null,
+          "needsUpdate": true
+        }
+      ],
       "cast": [],
       "creativeTeam": []
     }
