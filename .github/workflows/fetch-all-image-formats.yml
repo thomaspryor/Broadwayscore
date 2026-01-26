@@ -13,7 +13,7 @@ on:
         default: 'true'
         type: boolean
   schedule:
-    - cron: '0 6 * * 1'  # Weekly on Monday at 6 AM UTC
+    - cron: '0 6 * * 1,4'  # Twice weekly on Monday and Thursday at 6 AM UTC
 
 permissions:
   contents: write
