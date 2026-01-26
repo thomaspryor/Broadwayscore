@@ -209,6 +209,9 @@ async function searchShowScore(show) {
   const titleSlug = slugify(show.title);
   const titleNoColonSlug = slugify(show.title.replace(/:/g, ''));
 
+  // For musicals, Show Score often appends "-the-musical-broadway"
+  const isMusical = show.type === 'musical';
+
   const variations = [
     show.slug,
     titleSlug,
@@ -220,6 +223,17 @@ async function searchShowScore(show) {
     // Some shows include the year
     `${titleSlug}-${year}`,
     `${titleNoColonSlug}-${year}`,
+    // For musicals, Show Score often uses "-the-musical-broadway"
+    ...(isMusical ? [
+      `${titleSlug}-the-musical-broadway`,
+      `${titleNoColonSlug}-the-musical-broadway`,
+      `${show.slug}-the-musical-broadway`,
+    ] : []),
+    // For plays, might use "-play-broadway"
+    ...(!isMusical ? [
+      `${titleSlug}-play-broadway`,
+      `${titleNoColonSlug}-play-broadway`,
+    ] : []),
   ];
 
   for (const slug of [...new Set(variations)]) {
