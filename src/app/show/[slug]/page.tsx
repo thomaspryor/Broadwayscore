@@ -479,111 +479,177 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           All Shows
         </Link>
 
-        {/* Header with Poster Card */}
-        <div className="flex gap-5 sm:gap-6 mb-5">
-          {/* Poster Card - fetchpriority high for LCP optimization */}
-          <div className="flex-shrink-0 w-28 sm:w-36 lg:w-44">
-            <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
-              {show.images?.poster ? (
-                <img
-                  src={getOptimizedImageUrl(show.images.poster, 'poster')}
-                  alt={show.title}
-                  width={176}
-                  height={264}
-                  decoding="async"
-                  fetchPriority="high"
-                  className="w-full h-full object-cover"
-                />
-              ) : show.images?.thumbnail ? (
-                <img
-                  src={getOptimizedImageUrl(show.images.thumbnail, 'poster')}
-                  alt={show.title}
-                  width={176}
-                  height={264}
-                  decoding="async"
-                  fetchPriority="high"
-                  className="w-full h-full object-cover"
-                />
-              ) : show.images?.hero ? (
-                <img
-                  src={getOptimizedImageUrl(show.images.hero, 'poster')}
-                  alt={show.title}
-                  width={176}
-                  height={264}
-                  decoding="async"
-                  fetchPriority="high"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                  <span className="text-4xl text-gray-600">🎭</span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Title & Meta */}
-          <div className="flex-1 min-w-0 pt-1 sm:pt-2">
-            <div className="flex flex-wrap items-center gap-1.5 mb-2">
-              <FormatPill type={show.type} />
-              <ProductionPill isRevival={show.type === 'revival'} />
-              {show.limitedRun && <LimitedRunBadge />}
-              <StatusBadge status={show.status} />
-            </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              {show.title}
-            </h1>
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-gray-400 text-sm">
-              <span className="text-gray-300">{show.venue}</span>
-              <span className="text-gray-600">•</span>
-              <span>{show.runtime}</span>
-              <span className="text-gray-600">•</span>
-              <span>Opened {formatDate(show.openingDate)}</span>
-            </div>
-            {/* Synopsis inline with header for better space usage */}
-            {show.synopsis && (
-              <p className="text-gray-400 text-sm sm:text-base leading-relaxed mt-3 line-clamp-3 sm:line-clamp-none">
-                {show.synopsis}
-              </p>
-            )}
-
-            {/* Ticket Links - inline with header */}
-            {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && (
-              <div className="flex flex-wrap gap-2 mt-3">
-                {show.ticketLinks.map((link, i) => (
-                  <a
-                    key={i}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
-                  >
-                    <TicketIcon />
-                    {link.platform}
-                  </a>
-                ))}
+        {/* Metacritic-style Header: Poster + Title/Score integrated */}
+        <div className="card p-4 sm:p-6 mb-6">
+          <div className="flex gap-4 sm:gap-6">
+            {/* Poster Card */}
+            <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40">
+              <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
+                {show.images?.poster ? (
+                  <img
+                    src={getOptimizedImageUrl(show.images.poster, 'poster')}
+                    alt={show.title}
+                    width={176}
+                    height={264}
+                    decoding="async"
+                    fetchPriority="high"
+                    className="w-full h-full object-cover"
+                  />
+                ) : show.images?.thumbnail ? (
+                  <img
+                    src={getOptimizedImageUrl(show.images.thumbnail, 'poster')}
+                    alt={show.title}
+                    width={176}
+                    height={264}
+                    decoding="async"
+                    fetchPriority="high"
+                    className="w-full h-full object-cover"
+                  />
+                ) : show.images?.hero ? (
+                  <img
+                    src={getOptimizedImageUrl(show.images.hero, 'poster')}
+                    alt={show.title}
+                    width={176}
+                    height={264}
+                    decoding="async"
+                    fetchPriority="high"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                    <span className="text-4xl text-gray-600">🎭</span>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
+
+            {/* Right side: Title, Meta, Score Box */}
+            <div className="flex-1 min-w-0">
+              {/* Pills */}
+              <div className="flex flex-wrap items-center gap-1.5 mb-2">
+                <FormatPill type={show.type} />
+                <ProductionPill isRevival={show.type === 'revival'} />
+                {show.limitedRun && <LimitedRunBadge />}
+                <StatusBadge status={show.status} />
+              </div>
+
+              {/* Title */}
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight mb-2">
+                {show.title}
+              </h1>
+
+              {/* Meta line */}
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-gray-400 text-xs sm:text-sm mb-4">
+                <span className="text-gray-300">{show.venue}</span>
+                <span className="text-gray-600">•</span>
+                <span>{show.runtime}</span>
+                <span className="text-gray-600">•</span>
+                <span>Opened {formatDate(show.openingDate)}</span>
+              </div>
+
+              {/* Score Box + Sentiment - Metacritic style */}
+              {(() => {
+                const reviewCount = show.criticScore?.reviewCount || 0;
+                const showTBD = show.status === 'previews' || reviewCount < 5;
+                const roundedScore = score ? Math.round(score) : null;
+                const sentiment = score ? getSentimentLabel(score) : null;
+                const reviews = show.criticScore?.reviews || [];
+                const positive = reviews.filter((r: ReviewForBreakdown) => r.reviewScore >= 65).length;
+                const mixed = reviews.filter((r: ReviewForBreakdown) => r.reviewScore >= 55 && r.reviewScore < 65).length;
+                const negative = reviews.filter((r: ReviewForBreakdown) => r.reviewScore < 55).length;
+                const total = reviews.length;
+                const positivePct = total > 0 ? Math.round((positive / total) * 100) : 0;
+                const mixedPct = total > 0 ? Math.round((mixed / total) * 100) : 0;
+                const negativePct = total > 0 ? Math.round((negative / total) * 100) : 0;
+
+                let scoreColorClass = 'bg-surface-overlay text-gray-400 border border-white/10';
+                if (!showTBD && roundedScore !== null) {
+                  if (roundedScore >= 85) scoreColorClass = 'score-must-see';
+                  else if (roundedScore >= 75) scoreColorClass = 'score-great';
+                  else if (roundedScore >= 65) scoreColorClass = 'score-good';
+                  else if (roundedScore >= 55) scoreColorClass = 'score-tepid';
+                  else scoreColorClass = 'score-skip';
+                }
+
+                return (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 sm:gap-4">
+                      <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}>
+                        <span className="text-2xl sm:text-4xl font-extrabold">
+                          {showTBD ? 'TBD' : roundedScore}
+                        </span>
+                      </div>
+                      <div>
+                        {showTBD ? (
+                          <div className="text-base sm:text-lg font-bold text-gray-400">Awaiting Reviews</div>
+                        ) : sentiment && (
+                          <div className={`text-base sm:text-lg font-bold ${sentiment.colorClass}`}>{sentiment.label}</div>
+                        )}
+                        <a href="#critic-reviews" className="text-xs sm:text-sm text-gray-500 hover:text-brand transition-colors">
+                          Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
+                        </a>
+                      </div>
+                    </div>
+                    {total > 0 && (
+                      <div className="space-y-1.5">
+                        <div className="h-2.5 rounded-full overflow-hidden flex bg-surface-overlay">
+                          {positivePct > 0 && <div className="bg-score-great h-full" style={{ width: `${positivePct}%` }} />}
+                          {mixedPct > 0 && <div className="bg-score-tepid h-full" style={{ width: `${mixedPct}%` }} />}
+                          {negativePct > 0 && <div className="bg-score-skip h-full" style={{ width: `${negativePct}%` }} />}
+                        </div>
+                        <div className="flex items-center gap-3 text-[10px] sm:text-xs">
+                          {positive > 0 && (
+                            <div className="flex items-center gap-1">
+                              <div className="w-2.5 h-2.5 rounded-sm bg-score-great" />
+                              <span className="text-gray-400">{positive} Positive</span>
+                            </div>
+                          )}
+                          {mixed > 0 && (
+                            <div className="flex items-center gap-1">
+                              <div className="w-2.5 h-2.5 rounded-sm bg-score-tepid" />
+                              <span className="text-gray-400">{mixed} Mixed</span>
+                            </div>
+                          )}
+                          {negative > 0 && (
+                            <div className="flex items-center gap-1">
+                              <div className="w-2.5 h-2.5 rounded-sm bg-score-skip" />
+                              <span className="text-gray-400">{negative} Negative</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+            </div>
           </div>
+
+          {/* Synopsis below poster/score row */}
+          {show.synopsis && (
+            <p className="text-gray-400 text-sm leading-relaxed mt-4 pt-4 border-t border-white/5">
+              {show.synopsis}
+            </p>
+          )}
+
+          {/* Ticket Links */}
+          {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {show.ticketLinks.map((link, i) => (
+                <a
+                  key={i}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
+                >
+                  <TicketIcon />
+                  {link.platform}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
-
-        {/* Critic Score Section */}
-        {score && show.criticScore && (
-          <CriticScoreSection
-            score={score}
-            reviewCount={show.criticScore.reviewCount}
-            reviews={show.criticScore.reviews}
-            status={show.status}
-          />
-        )}
-
-        {/* Audience Buzz Section */}
-        {audienceBuzz && (
-          <AudienceBuzzCard
-            buzz={audienceBuzz}
-            showScoreUrl={audienceBuzz.sources.showScore ? `https://www.show-score.com/broadway-shows/${show.slug}` : undefined}
-          />
-        )}
 
         {/* Action Links - Official Site & Trailer (tickets are in header) */}
         {(show.officialUrl || show.trailerUrl) && (
@@ -627,6 +693,14 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
             <ReviewsList reviews={show.criticScore.reviews} initialCount={5} />
           </div>
+        )}
+
+        {/* Audience Buzz - below Critic Reviews */}
+        {audienceBuzz && (
+          <AudienceBuzzCard
+            buzz={audienceBuzz}
+            showScoreUrl={audienceBuzz.sources.showScore ? `https://www.show-score.com/broadway-shows/${show.slug}` : undefined}
+          />
         )}
 
         {/* Box Office Stats */}

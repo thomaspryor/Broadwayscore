@@ -231,20 +231,22 @@ async function analyzeContent(showTitle, posts, comments) {
 
 For each item, answer these questions:
 
-1. **about_show_quality**: Is this post/comment expressing an opinion about THE SHOW'S QUALITY or the person's EXPERIENCE WATCHING "${showTitle}"?
-   - Answer "yes" if: reviewing the show, recommending it, discussing performances/music/story quality, sharing their experience seeing it
-   - Answer "no" if: discussing META topics (subreddit drama, industry news, ticket logistics, cast announcements, tour news, AMAs, medical emergencies, racism discussions, etc.) - even if the show is mentioned, these aren't opinions about show quality
+1. **about_this_show**: Is this post/comment SPECIFICALLY about "${showTitle}"?
+   - Answer "yes" ONLY if the content is expressing an opinion about THIS SPECIFIC SHOW: "${showTitle}"
+   - Answer "no" if the content is primarily about a DIFFERENT Broadway show (like Wicked, Hamilton, Sunset Blvd, etc.)
+   - Answer "no" if it's a multi-show review that only briefly mentions "${showTitle}" without much detail
+   - Answer "no" if it's about meta topics (subreddit drama, industry news, ticket logistics, cast announcements, tour news, etc.)
 
-2. **sentiment** (ONLY if about_show_quality is "yes"):
-   - "enthusiastic" = LOVES it - must-see, favorite, life-changing, crying, can't stop thinking about it
-   - "positive" = Enjoyed it, would recommend, had a good experience
-   - "mixed" = Some good, some bad about the actual show
-   - "negative" = Did NOT enjoy the show, disappointed by the production quality
-   - "neutral" = Mentions seeing it but no clear opinion expressed
+2. **sentiment** (ONLY if about_this_show is "yes"):
+   - "enthusiastic" = LOVES "${showTitle}" - must-see, favorite, life-changing, crying, can't stop thinking about it
+   - "positive" = Enjoyed "${showTitle}", would recommend, had a good experience
+   - "mixed" = Some good, some bad about "${showTitle}" specifically
+   - "negative" = Did NOT enjoy "${showTitle}", disappointed by the production
+   - "neutral" = Mentions seeing "${showTitle}" but no clear opinion expressed
 
-3. **is_recommendation**: Is this person recommending "${showTitle}" to others? (yes/no)
+3. **is_recommendation**: Is this person recommending "${showTitle}" specifically to others? (yes/no)
 
-IMPORTANT: We ONLY want opinions about THE SHOW ITSELF. If someone is upset about racism on the subreddit, or excited about a tour announcement, or discussing a medical emergency - that's NOT about show quality, so about_show_quality = "no".
+CRITICAL: We searched for "${showTitle}" but Reddit search often returns posts about OTHER shows too. ONLY answer "yes" to about_this_show if the content is SPECIFICALLY ABOUT "${showTitle}" - not Wicked, not Hamilton, not Sunset Blvd, not any other show.
 
 Content to analyze:
 `;
