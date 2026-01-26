@@ -124,7 +124,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <header className="sticky top-0 z-50 bg-surface-raised/95 backdrop-blur-sm border-b border-white/10">
+        <header className="sticky top-0 z-[60] bg-surface-raised border-b border-white/10 will-change-transform">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <Link href="/" className="flex items-center group">
