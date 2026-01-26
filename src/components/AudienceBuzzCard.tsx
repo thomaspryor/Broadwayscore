@@ -83,16 +83,16 @@ function ExternalLinkIcon({ className }: { className?: string }) {
   );
 }
 
-function getDesignationIcon(designation: AudienceBuzzDesignation, className: string) {
+function getDesignationEmoji(designation: AudienceBuzzDesignation): string {
   switch (designation) {
-    case 'Loving It':
-      return <HeartIcon className={className} />;
-    case 'Liking It':
-      return <ThumbsUpIcon className={className} />;
-    case 'Take-it-or-Leave-it':
-      return <MehIcon className={className} />;
-    case 'Loathing It':
-      return <ThumbsDownIcon className={className} />;
+    case 'Loving':
+      return '❤️';
+    case 'Liking':
+      return '👍';
+    case 'Shrugging':
+      return '🤷';
+    case 'Loathing':
+      return '💩';
   }
 }
 
@@ -162,7 +162,7 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl }: AudienceBuzzCar
       {/* Main Designation Badge */}
       <div className={`rounded-xl p-4 border mb-4 ${colors.bgClass} ${colors.borderClass}`}>
         <div className="flex items-center gap-3">
-          {getDesignationIcon(buzz.designation, `${colors.textClass} w-6 h-6`)}
+          <span className="text-2xl">{getDesignationEmoji(buzz.designation)}</span>
           <div>
             <div className={`text-lg font-bold ${colors.textClass}`}>{buzz.designation}</div>
             <div className="text-sm text-gray-400">
