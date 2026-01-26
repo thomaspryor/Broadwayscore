@@ -62,10 +62,10 @@ jobs:
       - name: Check for changes
         id: git-check
         run: |
-          # Check for changes in reviews.json or review-texts directory
-          git diff --exit-code data/reviews.json data/review-texts/ 2>/dev/null || echo "changes=true" >> $GITHUB_OUTPUT
-          # Also check for untracked files in review-texts
-          if [ -n "$(git ls-files --others --exclude-standard data/review-texts/)" ]; then
+          # Check for changes in review-texts or archives directory (NOT reviews.json to avoid conflicts)
+          git diff --exit-code data/review-texts/ data/archives/ data/collection-state/ 2>/dev/null || echo "changes=true" >> $GITHUB_OUTPUT
+          # Also check for untracked files
+          if [ -n "$(git ls-files --others --exclude-standard data/review-texts/ data/archives/)" ]; then
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
@@ -74,13 +74,57 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          # Add and commit local changes first
-          git add data/reviews.json data/review-texts/
+
+          # Only add review-texts and archives (NOT reviews.json to avoid merge conflicts)
+          # reviews.json can be rebuilt later from review-texts
+          git add data/review-texts/ data/archives/ data/collection-state/
+
+          # Check if there's anything to commit after adding
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
           git commit -m "feat: Add review data for ${{ inputs.shows }}"
-          # Pull remote changes and rebase our commit on top
-          git pull --rebase origin main
-          # Push with updated history
-          git push
+
+          # Discard local changes to reviews.json (it will be rebuilt later)
+          # This prevents conflicts during rebase since we're not committing it anyway
+          git checkout -- data/reviews.json 2>/dev/null || true
+
+          # Retry loop for push with rebase (handles parallel workflow conflicts)
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+
+            # Pull and rebase
+            if git pull --rebase origin main; then
+              # Try to push
+              if git push origin main; then
+                echo "Successfully pushed changes"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+              # Reset to our commit and discard any conflicting files
+              git checkout -- data/reviews.json 2>/dev/null || true
+            fi
+
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))  # Random 10-30 second wait to avoid collision
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              # Re-fetch and try again
+              git fetch origin main
+            fi
+          done
+
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
 
       - name: Update issue (if exists)
         if: always()
