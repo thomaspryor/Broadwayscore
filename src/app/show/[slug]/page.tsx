@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus, getLotteryRush } from '@/lib/data';
+import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus, getLotteryRush, getShowCommercial } from '@/lib/data';
 import { generateShowSchema, generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
@@ -10,6 +10,7 @@ import BoxOfficeStats from '@/components/BoxOfficeStats';
 import AwardsCard from '@/components/AwardsCard';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import LotteryRushCard from '@/components/LotteryRushCard';
+import BizBuzzCard from '@/components/BizBuzzCard';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -462,6 +463,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const audienceBuzz = getAudienceBuzz(show.id);
   const consensus = getCriticConsensus(show.id);
   const lotteryRush = getLotteryRush(show.id);
+  const commercial = getShowCommercial(show.slug);
 
   return (
     <>
@@ -733,6 +735,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Box Office Stats */}
         {grosses && <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />}
+
+        {/* Commercial Performance / Biz Buzz */}
+        {commercial && <BizBuzzCard commercial={commercial} showTitle={show.title} />}
 
         {/* Cast & Creative */}
         {(show.cast || show.creativeTeam) && (
