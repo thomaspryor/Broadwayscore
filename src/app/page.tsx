@@ -7,13 +7,13 @@ import { getAllShows, ComputedShow, getDataStats, getUpcomingShows, getAudienceB
 import { getOptimizedImageUrl } from '@/lib/images';
 
 // URL parameter values
-type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'all';
-type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'closing_soon' | 'audience_buzz';
+type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'closing_soon' | 'all';
+type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'audience_buzz';
 type TypeParam = 'all' | 'musical' | 'play';
 type ScoreModeParam = 'critics' | 'audience';
 
 // Internal filter values
-type StatusFilter = 'all' | 'open' | 'closed' | 'previews';
+type StatusFilter = 'all' | 'open' | 'closed' | 'previews' | 'closing_soon';
 
 // Defaults
 const DEFAULT_STATUS: StatusParam = 'now_playing';
@@ -26,6 +26,7 @@ const statusParamToFilter: Record<StatusParam, StatusFilter> = {
   now_playing: 'open',
   closed: 'closed',
   upcoming: 'previews',
+  closing_soon: 'closing_soon',
   all: 'all',
 };
 
@@ -606,7 +607,16 @@ function HomePageInner() {
     });
 
     // Status filter
-    if (statusFilter !== 'all') {
+    if (statusFilter === 'closing_soon') {
+      // Filter for shows closing within 90 days
+      const now = new Date();
+      const ninetyDaysFromNow = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000);
+      result = result.filter(show => {
+        if (show.status !== 'open' || !show.closingDate) return false;
+        const closing = new Date(show.closingDate);
+        return closing > now && closing <= ninetyDaysFromNow;
+      });
+    } else if (statusFilter !== 'all') {
       result = result.filter(show => show.status === statusFilter);
     }
 
@@ -618,53 +628,50 @@ function HomePageInner() {
       });
     }
 
-    // Filter for closing soon - only show shows with closing dates
-    if (sort === 'closing_soon') {
-      result = result.filter(show => show.closingDate !== null && show.closingDate !== undefined);
+    // Sort - when filtering by closing_soon, default to sorting by closing date
+    if (statusFilter === 'closing_soon') {
+      result.sort((a, b) => {
+        const aClose = a.closingDate ? new Date(a.closingDate).getTime() : Infinity;
+        const bClose = b.closingDate ? new Date(b.closingDate).getTime() : Infinity;
+        return aClose - bClose;
+      });
+    } else {
+      result.sort((a, b) => {
+        switch (sort) {
+          case 'score_desc': {
+            if (scoreMode === 'audience') {
+              const aBuzz = getAudienceBuzz(a.id);
+              const bBuzz = getAudienceBuzz(b.id);
+              return (bBuzz?.combinedScore ?? -1) - (aBuzz?.combinedScore ?? -1);
+            }
+            return (b.criticScore?.score ?? -1) - (a.criticScore?.score ?? -1);
+          }
+          case 'score_asc': {
+            if (scoreMode === 'audience') {
+              const aBuzz = getAudienceBuzz(a.id);
+              const bBuzz = getAudienceBuzz(b.id);
+              return (aBuzz?.combinedScore ?? -1) - (bBuzz?.combinedScore ?? -1);
+            }
+            return (a.criticScore?.score ?? -1) - (b.criticScore?.score ?? -1);
+          }
+          case 'audience_buzz': {
+            // Sort by audience buzz combined score (highest first)
+            // NOTE: Numeric scores are used ONLY for sorting, never displayed to users
+            const aBuzz = getAudienceBuzz(a.id);
+            const bBuzz = getAudienceBuzz(b.id);
+            const aScore = aBuzz?.combinedScore ?? -1;
+            const bScore = bBuzz?.combinedScore ?? -1;
+            return bScore - aScore;
+          }
+          case 'alpha':
+            return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
+          case 'recent':
+          default:
+            // Most recent opening date first
+            return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
+        }
+      });
     }
-
-    // Sort
-    result.sort((a, b) => {
-      switch (sort) {
-        case 'score_desc': {
-          if (scoreMode === 'audience') {
-            const aBuzz = getAudienceBuzz(a.id);
-            const bBuzz = getAudienceBuzz(b.id);
-            return (bBuzz?.combinedScore ?? -1) - (aBuzz?.combinedScore ?? -1);
-          }
-          return (b.criticScore?.score ?? -1) - (a.criticScore?.score ?? -1);
-        }
-        case 'score_asc': {
-          if (scoreMode === 'audience') {
-            const aBuzz = getAudienceBuzz(a.id);
-            const bBuzz = getAudienceBuzz(b.id);
-            return (aBuzz?.combinedScore ?? -1) - (bBuzz?.combinedScore ?? -1);
-          }
-          return (a.criticScore?.score ?? -1) - (b.criticScore?.score ?? -1);
-        }
-        case 'audience_buzz': {
-          // Sort by audience buzz combined score (highest first)
-          // NOTE: Numeric scores are used ONLY for sorting, never displayed to users
-          const aBuzz = getAudienceBuzz(a.id);
-          const bBuzz = getAudienceBuzz(b.id);
-          const aScore = aBuzz?.combinedScore ?? -1;
-          const bScore = bBuzz?.combinedScore ?? -1;
-          return bScore - aScore;
-        }
-        case 'alpha':
-          return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
-        case 'closing_soon': {
-          // Shows with closing dates first, sorted by closest date
-          const aClose = a.closingDate ? new Date(a.closingDate).getTime() : Infinity;
-          const bClose = b.closingDate ? new Date(b.closingDate).getTime() : Infinity;
-          return aClose - bClose;
-        }
-        case 'recent':
-        default:
-          // Most recent opening date first
-          return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
-      }
-    });
 
     return result;
   }, [shows, statusFilter, type, searchQuery, sort, scoreMode]);
@@ -751,7 +758,7 @@ function HomePageInner() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm">
         <div className="flex items-center gap-1 sm:gap-2 flex-wrap" role="group" aria-label="Filter by status">
           <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">STATUS:</span>
-          {(['now_playing', 'all', 'closed'] as const).map((s) => (
+          {(['now_playing', 'closing_soon', 'all', 'closed'] as const).map((s) => (
             <button
               key={s}
               onClick={() => updateParams({ status: s })}
@@ -760,14 +767,14 @@ function HomePageInner() {
                 status === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
               }`}
             >
-              {s === 'all' ? 'ALL' : s === 'now_playing' ? 'PLAYING' : 'CLOSED'}
+              {s === 'all' ? 'ALL' : s === 'now_playing' ? 'PLAYING' : s === 'closing_soon' ? 'CLOSING' : 'CLOSED'}
             </button>
           ))}
         </div>
 
         <div className="flex items-center gap-1 sm:gap-2 flex-wrap" role="group" aria-label="Sort shows">
           <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
-          {(['recent', 'score_desc', 'audience_buzz', 'alpha', 'closing_soon'] as const).map((s) => (
+          {(['recent', 'score_desc', 'audience_buzz', 'alpha'] as const).map((s) => (
             <button
               key={s}
               onClick={() => updateParams({ sort: s })}
@@ -776,7 +783,7 @@ function HomePageInner() {
                 sort === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
               }`}
             >
-              {s === 'recent' ? 'NEWEST' : s === 'score_desc' ? 'HIGHEST' : s === 'audience_buzz' ? 'BUZZ' : s === 'alpha' ? 'A-Z' : 'CLOSING'}
+              {s === 'recent' ? 'NEWEST' : s === 'score_desc' ? 'HIGHEST' : s === 'audience_buzz' ? 'BUZZ' : 'A-Z'}
             </button>
           ))}
         </div>
