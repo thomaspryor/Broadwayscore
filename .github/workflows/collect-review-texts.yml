@@ -27,6 +27,10 @@ on:
         description: 'Retry previously failed reviews (true/false)'
         required: false
         default: 'false'
+      stealth_proxy:
+        description: 'Use ScrapingBee stealth proxy - costs 75 credits/request but better CAPTCHA bypass'
+        required: false
+        default: 'false'
 
 jobs:
   collect-reviews:
@@ -90,6 +94,9 @@ jobs:
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then
             ARGS="$ARGS --aggressive"
+          fi
+          if [ "${{ inputs.stealth_proxy }}" = "true" ]; then
+            ARGS="$ARGS --stealth-proxy"
           fi
           node scripts/collect-review-texts.js $ARGS
 

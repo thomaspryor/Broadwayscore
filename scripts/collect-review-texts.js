@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { HttpsProxyAgent } = require('https-proxy-agent');
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -35,6 +36,7 @@ const CLI = {
   aggressive: args.includes('--aggressive'),
   forceTier: args.find(a => a.startsWith('--tier='))?.split('=')[1],
   testUrl: args.find(a => a.startsWith('--test-url='))?.split('=')[1],
+  stealthProxy: args.includes('--stealth-proxy'), // Use ScrapingBee stealth proxy (25 credits/req)
 };
 
 // Dependencies (loaded dynamically)
@@ -331,21 +333,30 @@ async function fetchWithScrapingBee(url) {
   stats.tier2Attempts++;
 
   try {
+    // stealth_proxy is more powerful but costs 75 credits vs 10 for premium
+    const useStealth = CLI.stealthProxy;
+    const params = {
+      api_key: CONFIG.scrapingBeeKey,
+      url: url,
+      render_js: true,
+      wait: 5000,
+      block_ads: true,
+      block_resources: false,
+    };
+
+    if (useStealth) {
+      params.stealth_proxy = true;
+    } else {
+      params.premium_proxy = true;
+    }
+
     const response = await axios.get('https://app.scrapingbee.com/api/v1/', {
-      params: {
-        api_key: CONFIG.scrapingBeeKey,
-        url: url,
-        render_js: true,
-        premium_proxy: true,
-        wait: 5000,
-        block_ads: true,
-        block_resources: false,
-      },
+      params,
       timeout: CONFIG.apiTimeout,
     });
 
-    // Each premium request costs ~10 credits
-    stats.scrapingBeeCreditsUsed += 10;
+    // stealth costs 75 credits, premium costs 10
+    stats.scrapingBeeCreditsUsed += useStealth ? 75 : 10;
 
     const html = response.data;
 
@@ -390,25 +401,23 @@ async function fetchWithBrightData(url) {
 
   stats.tier3Attempts++;
 
-  const customerId = CONFIG.brightDataCustomerId || 'hl_YOUR_ID';
+  const customerId = CONFIG.brightDataCustomerId;
+  if (!customerId) {
+    throw new Error('BRIGHTDATA_CUSTOMER_ID not configured');
+  }
   const zoneName = process.env.BRIGHTDATA_ZONE || 'web_unlocker';
 
-  const proxy = {
-    host: 'brd.superproxy.io',
-    port: 33335,
-    auth: {
-      username: `brd-customer-${customerId}-zone-${zoneName}`,
-      password: CONFIG.brightDataKey,
-    },
-  };
+  // Build proxy URL for https-proxy-agent
+  const username = `brd-customer-${customerId}-zone-${zoneName}`;
+  const proxyUrl = `http://${encodeURIComponent(username)}:${encodeURIComponent(CONFIG.brightDataKey)}@brd.superproxy.io:33335`;
 
-  const httpsAgent = new https.Agent({
-    rejectUnauthorized: false,
-  });
+  // Use https-proxy-agent for proper HTTPS tunneling through proxy
+  const agent = new HttpsProxyAgent(proxyUrl);
 
   const response = await axios.get(url, {
-    proxy: proxy,
-    httpsAgent: httpsAgent,
+    httpsAgent: agent,
+    httpAgent: agent,
+    proxy: false, // Disable axios built-in proxy, use agent instead
     headers: {
       'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
