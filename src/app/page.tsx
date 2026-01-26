@@ -96,9 +96,9 @@ function getScoreTier(score: number | null | undefined) {
 
 function ScoreBadge({ score, size = 'md', reviewCount, status }: { score?: number | null; size?: 'sm' | 'md' | 'lg'; reviewCount?: number; status?: string }) {
   const sizeClass = {
-    sm: 'w-11 h-11 text-lg rounded-lg',
-    md: 'w-14 h-14 text-2xl rounded-xl',
-    lg: 'w-16 h-16 text-3xl rounded-xl',
+    sm: 'w-11 h-11 text-lg rounded-lg aspect-square',
+    md: 'w-14 h-14 text-2xl rounded-xl aspect-square',
+    lg: 'w-16 h-16 text-3xl rounded-xl aspect-square',
   }[size];
 
   // Show TBD for previews shows
@@ -548,7 +548,7 @@ function HomePageInner() {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       {/* Hero Header */}
       <div className="mb-8 sm:mb-10">
-        <h1 className="text-5xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight">
+        <h1 className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight">
           Broadway<span className="text-gradient">Scorecard</span>
         </h1>
         <p className="text-gray-400 text-lg sm:text-xl">
@@ -761,7 +761,7 @@ export default function HomePage() {
     <Suspense fallback={
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-8 sm:mb-10">
-          <h1 className="text-5xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight">
+          <h1 className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight">
             Broadway<span className="text-gradient">Scorecard</span>
           </h1>
           <p className="text-gray-400 text-lg sm:text-xl">
