@@ -404,13 +404,53 @@ async function fetchWithScrapingBee(url, useStealth = false) {
 // ============================================================================
 
 async function fetchWithBrightData(url) {
-  // Bright Data Web Unlocker requires specific zone configuration
-  // The MCP token (3686bf13-...) uses their SSE endpoint, not the proxy auth
-  // To fix: Set up Web Unlocker zone in Bright Data dashboard and configure:
-  //   BRIGHTDATA_CUSTOMER_ID = hl_xxxxx (from dashboard)
-  //   BRIGHTDATA_API_KEY = zone password (not the MCP token)
-  //   BRIGHTDATA_ZONE = web_unlocker (or your zone name)
-  throw new Error('Bright Data not configured (requires Web Unlocker zone setup)');
+  if (!CONFIG.brightDataKey || !axios) {
+    throw new Error('Bright Data not configured');
+  }
+
+  stats.tier3Attempts++;
+
+  // Use Bright Data Web Unlocker Direct API
+  // See: https://docs.brightdata.com/scraping-automation/web-unlocker/web-unlocker-api
+  const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
+  const keyPreview = CONFIG.brightDataKey.substring(0, 8) + '...';
+  console.log(`    Bright Data API (zone=${zoneName}, key=${keyPreview})`);
+
+  try {
+    const response = await axios.post('https://api.brightdata.com/request', {
+      zone: zoneName,
+      url: url,
+      format: 'raw',
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${CONFIG.brightDataKey}`,
+      },
+      timeout: 90000, // 90s for Bright Data
+    });
+
+    const html = response.data;
+
+    if (isBlocked(html)) {
+      throw new Error('Access blocked in Bright Data response');
+    }
+
+    const text = extractTextFromHtml(html);
+
+    if (text && text.length > 500) {
+      stats.tier3Success++;
+      return { html, text };
+    }
+
+    throw new Error(`Insufficient text: ${text?.length || 0} chars`);
+  } catch (error) {
+    if (error.response) {
+      const status = error.response.status;
+      const message = error.response.data?.message || error.response.data || error.message;
+      throw new Error(`Bright Data error (${status}): ${message}`);
+    }
+    throw error;
+  }
 }
 
 // ============================================================================
