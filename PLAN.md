@@ -239,8 +239,12 @@ Add content that directly answers questions people ask AI:
 ### Phase 3.2 ✅ COMPLETE
 7. ✅ Add "Last Updated" timestamps to show pages
 
-### Ongoing
-8. Set up AI citation monitoring
+### Phase 3.3 ✅ COMPLETE
+8. ✅ Box Office Leaderboard page (`/box-office`)
+9. ✅ Commercial Scorecard page (`/biz-buzz`)
+
+### Ongoing (Phase 4)
+10. Set up AI citation monitoring
 9. Keep content fresh (you're already doing this with scrapers)
 10. Answer new common questions as they emerge
 
