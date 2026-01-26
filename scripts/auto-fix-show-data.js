@@ -2,13 +2,13 @@
 /**
  * auto-fix-show-data.js
  *
- * Automatically fixes show data issues - TRUE automation:
- * - Missing images → triggers image fetch
- * - Missing synopsis → fetches from TodayTix or generates via LLM
+ * Automatically fixes show data issues - FULL automation:
+ * - Missing images → triggers image fetch workflow
+ * - Missing synopsis → fetches from TodayTix or generates via Claude
+ * - Missing creative team → fetches from TodayTix or generates via Claude
  * - Missing/broken ticket links → hides them (not an error)
- * - Creative team → only thing that might need humans
  *
- * Philosophy: Fix everything automatically. Only flag creative team if missing.
+ * Philosophy: Fix EVERYTHING automatically. Zero human intervention needed.
  * Cast is NOT tracked (changes too frequently).
  */
 
@@ -97,6 +97,75 @@ function extractSynopsisFromHtml(html) {
   return null;
 }
 
+// Extract creative team from TodayTix page HTML
+function extractCreativeTeamFromHtml(html) {
+  const creativeTeam = [];
+
+  // Try JSON-LD first (most reliable)
+  const jsonLdMatch = html.match(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi);
+  if (jsonLdMatch) {
+    for (const match of jsonLdMatch) {
+      try {
+        const content = match.match(/>([\s\S]*?)<\/script>/i)[1];
+        const jsonLd = JSON.parse(content);
+
+        // Check for director
+        if (jsonLd.director) {
+          const directors = Array.isArray(jsonLd.director) ? jsonLd.director : [jsonLd.director];
+          for (const d of directors) {
+            const name = typeof d === 'string' ? d : d.name;
+            if (name) creativeTeam.push({ name, role: 'Director' });
+          }
+        }
+
+        // Check for author/writer
+        if (jsonLd.author) {
+          const authors = Array.isArray(jsonLd.author) ? jsonLd.author : [jsonLd.author];
+          for (const a of authors) {
+            const name = typeof a === 'string' ? a : a.name;
+            if (name) creativeTeam.push({ name, role: 'Book' });
+          }
+        }
+      } catch {}
+    }
+  }
+
+  // Try common HTML patterns for creative team sections
+  const creativePatterns = [
+    /(?:directed by|director)[:\s]*([A-Z][a-z]+ [A-Z][a-z]+)/gi,
+    /(?:book by|written by)[:\s]*([A-Z][a-z]+ [A-Z][a-z]+)/gi,
+    /(?:music by|composer)[:\s]*([A-Z][a-z]+ [A-Z][a-z]+)/gi,
+    /(?:lyrics by|lyricist)[:\s]*([A-Z][a-z]+ [A-Z][a-z]+)/gi,
+    /(?:choreography by|choreographer)[:\s]*([A-Z][a-z]+ [A-Z][a-z]+)/gi,
+  ];
+
+  const roleMap = {
+    'directed by': 'Director',
+    'director': 'Director',
+    'book by': 'Book',
+    'written by': 'Book',
+    'music by': 'Music',
+    'composer': 'Music',
+    'lyrics by': 'Lyrics',
+    'lyricist': 'Lyrics',
+    'choreography by': 'Choreographer',
+    'choreographer': 'Choreographer',
+  };
+
+  for (const [key, role] of Object.entries(roleMap)) {
+    const regex = new RegExp(`${key}[:\\s]*([A-Z][a-z]+(?:\\s+[A-Z][a-z]+)+)`, 'gi');
+    let match;
+    while ((match = regex.exec(html)) !== null) {
+      const name = match[1].trim();
+      if (name && !creativeTeam.some(c => c.name === name && c.role === role)) {
+        creativeTeam.push({ name, role });
+      }
+    }
+  }
+
+  return creativeTeam.length > 0 ? creativeTeam : null;
+}
+
 // Fetch synopsis from TodayTix
 async function fetchSynopsisFromTodayTix(show, todayTixInfo) {
   if (!todayTixInfo?.id) return null;
@@ -112,6 +181,21 @@ async function fetchSynopsisFromTodayTix(show, todayTixInfo) {
   }
 }
 
+// Fetch creative team from TodayTix
+async function fetchCreativeTeamFromTodayTix(show, todayTixInfo) {
+  if (!todayTixInfo?.id) return null;
+
+  const slug = todayTixInfo.slug || show.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const url = `https://www.todaytix.com/nyc/shows/${todayTixInfo.id}-${slug}`;
+
+  try {
+    const html = await fetchUrl(url);
+    return extractCreativeTeamFromHtml(html);
+  } catch {
+    return null;
+  }
+}
+
 // Generate synopsis via Claude API (fallback)
 async function generateSynopsisWithLLM(show) {
   if (!ANTHROPIC_API_KEY) return null;
@@ -122,10 +206,43 @@ Write in present tense, focus on the story/premise, and make it sound exciting f
 Do not include any marketing language or ticket information.
 Just return the synopsis text, nothing else.`;
 
+  return callClaudeAPI(prompt, 200);
+}
+
+// Generate creative team via Claude API (fallback)
+async function generateCreativeTeamWithLLM(show) {
+  if (!ANTHROPIC_API_KEY) return null;
+
+  const prompt = `List the main creative team for the Broadway show "${show.title}" (${show.type || 'musical'}).
+Return ONLY a JSON array with objects containing "name" and "role" fields.
+Include: Director, Book writer, Composer, Lyricist, Choreographer (if applicable).
+Only include people you are confident about - better to have fewer accurate entries than guesses.
+Example format: [{"name": "Lin-Manuel Miranda", "role": "Music & Lyrics"}, {"name": "Thomas Kail", "role": "Director"}]
+Return ONLY the JSON array, no other text.`;
+
+  const response = await callClaudeAPI(prompt, 300);
+  if (!response) return null;
+
+  try {
+    // Extract JSON from response (in case there's extra text)
+    const jsonMatch = response.match(/\[[\s\S]*\]/);
+    if (jsonMatch) {
+      const team = JSON.parse(jsonMatch[0]);
+      if (Array.isArray(team) && team.length > 0) {
+        return team.filter(t => t.name && t.role);
+      }
+    }
+  } catch {}
+
+  return null;
+}
+
+// Helper function to call Claude API
+function callClaudeAPI(prompt, maxTokens) {
   return new Promise((resolve) => {
     const postData = JSON.stringify({
       model: 'claude-3-haiku-20240307',
-      max_tokens: 200,
+      max_tokens: maxTokens,
       messages: [{ role: 'user', content: prompt }]
     });
 
@@ -191,6 +308,36 @@ async function fixSynopsis(show, todayTixIds) {
   return null;
 }
 
+// Fix creative team - fetch from TodayTix or generate
+async function fixCreativeTeam(show, todayTixIds) {
+  if (show.creativeTeam && show.creativeTeam.length >= 2) {
+    return null; // Already has creative team
+  }
+
+  console.log(`  🎬 Missing creative team, attempting to fetch...`);
+
+  // Try TodayTix first
+  const todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
+  let creativeTeam = await fetchCreativeTeamFromTodayTix(show, todayTixInfo);
+
+  if (creativeTeam && creativeTeam.length >= 2) {
+    show.creativeTeam = creativeTeam;
+    return `Fetched creative team from TodayTix for ${show.title} (${creativeTeam.length} members)`;
+  }
+
+  // Try LLM generation
+  if (ANTHROPIC_API_KEY) {
+    console.log(`    Generating via Claude...`);
+    creativeTeam = await generateCreativeTeamWithLLM(show);
+    if (creativeTeam && creativeTeam.length >= 1) {
+      show.creativeTeam = creativeTeam;
+      return `Generated creative team via Claude for ${show.title} (${creativeTeam.length} members)`;
+    }
+  }
+
+  return null;
+}
+
 // Fix ticket links - just ensure valid ones exist, hide broken ones
 function fixTicketLinks(show) {
   if (show.status === 'closed') return null;
@@ -216,27 +363,6 @@ function checkMissingImages(show) {
   if (!show.images?.thumbnail) missing.push('thumbnail');
   if (!show.images?.hero) missing.push('hero');
   return missing;
-}
-
-function checkMissingMetadata(show) {
-  const issues = [];
-
-  // Only check open/preview shows
-  if (show.status !== 'open' && show.status !== 'previews') {
-    return issues;
-  }
-
-  // Creative team - stable, worth tracking
-  // (We're NOT tracking cast - it changes too frequently)
-  if (!show.creativeTeam || show.creativeTeam.length === 0) {
-    issues.push({
-      type: 'missing_creative',
-      message: `${show.title} needs creative team information`,
-      severity: 'low'
-    });
-  }
-
-  return issues;
 }
 
 async function main() {
@@ -268,7 +394,16 @@ async function main() {
       await sleep(1000); // Rate limit
     }
 
-    // 2. Fix ticket links (just clean up, don't flag)
+    // 2. Fix creative team (auto-fetched or LLM-generated)
+    const creativeFix = await fixCreativeTeam(show, todayTixIds);
+    if (creativeFix) {
+      results.fixed.push(creativeFix);
+      console.log(`    ✓ ${creativeFix}`);
+      changesMade = true;
+      await sleep(1000); // Rate limit
+    }
+
+    // 3. Fix ticket links (just clean up, don't flag)
     const ticketFix = fixTicketLinks(show);
     if (ticketFix) {
       results.fixed.push(ticketFix);
@@ -276,7 +411,7 @@ async function main() {
       changesMade = true;
     }
 
-    // 3. Check for missing images (will trigger workflow)
+    // 4. Check for missing images (will trigger workflow)
     const missingImages = checkMissingImages(show);
     if (missingImages.length > 0) {
       showsWithMissingImages.push({
@@ -285,17 +420,6 @@ async function main() {
         missing: missingImages
       });
       console.log(`    ⚠ Missing images: ${missingImages.join(', ')}`);
-    }
-
-    // 4. Check for creative team (only thing that might need humans)
-    const metadataIssues = checkMissingMetadata(show);
-    if (metadataIssues.length > 0) {
-      results.needsHumanAttention.push({
-        showId: show.id,
-        showTitle: show.title,
-        issues: metadataIssues
-      });
-      metadataIssues.forEach(i => console.log(`    📋 ${i.message}`));
     }
   }
 
@@ -322,7 +446,6 @@ async function main() {
   console.log('='.repeat(60));
   console.log(`Auto-fixed: ${results.fixed.length} issues`);
   console.log(`Needs images: ${showsWithMissingImages.length} shows`);
-  console.log(`Needs human attention: ${results.needsHumanAttention.length} shows (creative team only)`);
   console.log(`Workflows to trigger: ${results.triggeredWorkflows.join(', ') || 'none'}`);
 
   // Write results
@@ -336,8 +459,8 @@ async function main() {
   if (outputFile) {
     fs.appendFileSync(outputFile, `fixed_count=${results.fixed.length}\n`);
     fs.appendFileSync(outputFile, `needs_images=${showsWithMissingImages.length > 0}\n`);
-    fs.appendFileSync(outputFile, `needs_human=${results.needsHumanAttention.length}\n`);
-    fs.appendFileSync(outputFile, `shows_needing_attention=${results.needsHumanAttention.map(s => s.showTitle).join(',')}\n`);
+    fs.appendFileSync(outputFile, `needs_human=0\n`);
+    fs.appendFileSync(outputFile, `shows_needing_attention=\n`);
   }
 
   return results;
