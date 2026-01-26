@@ -27,6 +27,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -329,36 +330,53 @@ async function fetchWithScrapingBee(url) {
 
   stats.tier2Attempts++;
 
-  const response = await axios.get('https://app.scrapingbee.com/api/v1/', {
-    params: {
-      api_key: CONFIG.scrapingBeeKey,
-      url: url,
-      render_js: true,
-      premium_proxy: true,
-      wait: 5000,
-      block_ads: true,
-      block_resources: false,
-    },
-    timeout: CONFIG.apiTimeout,
-  });
+  try {
+    const response = await axios.get('https://app.scrapingbee.com/api/v1/', {
+      params: {
+        api_key: CONFIG.scrapingBeeKey,
+        url: url,
+        render_js: true,
+        premium_proxy: true,
+        wait: 5000,
+        block_ads: true,
+        block_resources: false,
+      },
+      timeout: CONFIG.apiTimeout,
+    });
 
-  // Each premium request costs ~10 credits
-  stats.scrapingBeeCreditsUsed += 10;
+    // Each premium request costs ~10 credits
+    stats.scrapingBeeCreditsUsed += 10;
 
-  const html = response.data;
+    const html = response.data;
 
-  if (isBlocked(html)) {
-    throw new Error('CAPTCHA detected in ScrapingBee response');
+    if (isBlocked(html)) {
+      throw new Error('CAPTCHA detected in ScrapingBee response');
+    }
+
+    const text = extractTextFromHtml(html);
+
+    if (text && text.length > 500) {
+      stats.tier2Success++;
+      return { html, text };
+    }
+
+    throw new Error(`Insufficient text: ${text?.length || 0} chars`);
+  } catch (error) {
+    // Enhanced error reporting for ScrapingBee
+    if (error.response) {
+      const status = error.response.status;
+      const message = error.response.data?.message || error.message;
+
+      if (status === 401) {
+        throw new Error(`ScrapingBee auth failed: ${message}`);
+      } else if (status === 403) {
+        throw new Error(`ScrapingBee blocked: ${message}`);
+      } else {
+        throw new Error(`ScrapingBee error (${status}): ${message}`);
+      }
+    }
+    throw error;
   }
-
-  const text = extractTextFromHtml(html);
-
-  if (text && text.length > 500) {
-    stats.tier2Success++;
-    return { html, text };
-  }
-
-  throw new Error(`Insufficient text: ${text?.length || 0} chars`);
 }
 
 // ============================================================================
@@ -373,17 +391,24 @@ async function fetchWithBrightData(url) {
   stats.tier3Attempts++;
 
   const customerId = CONFIG.brightDataCustomerId || 'hl_YOUR_ID';
+  const zoneName = process.env.BRIGHTDATA_ZONE || 'web_unlocker';
+
   const proxy = {
     host: 'brd.superproxy.io',
     port: 33335,
     auth: {
-      username: `brd-customer-${customerId}-zone-unblocker`,
+      username: `brd-customer-${customerId}-zone-${zoneName}`,
       password: CONFIG.brightDataKey,
     },
   };
 
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized: false,
+  });
+
   const response = await axios.get(url, {
     proxy: proxy,
+    httpsAgent: httpsAgent,
     headers: {
       'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',

@@ -79,6 +79,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
           BRIGHTDATA_CUSTOMER_ID: ${{ secrets.BRIGHTDATA_CUSTOMER_ID }}
+          BRIGHTDATA_ZONE: web_unlocker
           # Collection settings
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.max_reviews }}
