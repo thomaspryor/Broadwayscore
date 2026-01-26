@@ -345,15 +345,25 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       {/* Score Badge */}
       <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 w-20 sm:w-24">
         {scoreMode === 'audience' ? (
-          // Audience mode: Show designation badge with icon (no numeric score)
+          // Audience mode: Show designation badge with stylized emoji icon (no numeric score)
           tier && audienceIcon && (
             <div className="flex flex-col items-center gap-1.5 w-full">
               <div
                 className="text-5xl sm:text-6xl font-normal leading-none flex items-center justify-center"
-                style={{ color: tier.color }}
+                style={{
+                  filter: `grayscale(100%) brightness(1.2) contrast(1.5)`,
+                  opacity: 0.9,
+                }}
                 aria-hidden="true"
               >
-                {audienceIcon}
+                <span
+                  style={{
+                    display: 'inline-block',
+                    filter: `drop-shadow(0 0 8px ${tier.color}40)`,
+                  }}
+                >
+                  {audienceIcon}
+                </span>
               </div>
               <span
                 className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider whitespace-nowrap px-2.5 py-1 rounded-md text-center w-full"
