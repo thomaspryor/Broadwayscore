@@ -5,15 +5,15 @@
   "criticName": "Clive Barnes",
   "url": "http://nypost.com/2003/10/31/broom-shtick-wicked-witches-most-entrancing/",
   "publishDate": "2003-10-30",
-  "fullText": null,
+  "fullText": "WICKED [ ½ (two and one-half stars)\n\nAt the Gershwin Theater, 222 W. 51st St.; (212) 586-6510.\n\nEVERY story has a back story, except perhaps for Genesis. (And there are some physicists who even question that.)\n\n&#8220;Wicked,&#8221; the new musical that opened last night at the Gershwin Theater, is the back story to &#8220;The Wizard of Oz.&#8221;\n\nThis is the story that goes under the rainbow. Not too far under, of course.\n\nHere, it seems that Glinda, the Good Witch (Kristin Chenoweth), and Elphaba, the Wicked Witch of the West (Idina Menzel), had a lot more in common than you might have imagined.\n\nWhat is spectacular about the show is the spectacle. That old Emerald City has never had it so good, with flying monkeys and giant Munchkins with extendable necks. Kids will love it, even if they don&#8217;t quite understand it.\n\nBut this yellow brick road is also paved with Steven Schwartz&#8217;s oppressive music and banal, if sometimes pretentiously amusing, lyrics and the complex, if foolish, book by Winnie Holzman, based on a nuttily original novel by Gregory Maguire.\n\nSchwartz, the composer of &#8220;Godspell&#8221; and &#8220;Pippin,&#8221; has produced the kind of bland, generic Broadway music where you tend to hear the orchestration (Alex Lacamoire, Stephen Oremus and James Lynn Abbott) before you notice the tune. If you notice it.\n\nThe strength of &#8220;Wicked&#8221; &#8211; apart from the musical&#8217;s cozy insistence on the political correctness of Munchkin and Animal Rights, even apart from the show&#8217;s fantastic bells and whistles &#8211; is the acting.\n\nIn this version, Glinda and Elphaba are school friends at a Harry Potteresque academy supervised by the formidable Madame Morrible &#8211; a deliciously overstated performance by Carole Shelley.\n\nThey are even in love with the same young obnoxious rich boy (an excellent but wasted Norbert Leo Butz) and are together when they discover the secret of the Wizard, performed with unfailingly pixie-like modesty by the gently admirable Joel Grey.\n\nBut the evening depends to a large extent on those two witches &#8211; and it is delightfully debatable which witch is witchiest.\n\nChenoweth has a wonderful entry, suspended on a glittering ring contraption and announcing, &#8220;It&#8217;s good to see me, isn&#8217;t it?&#8221;\n\nHer portrayal seems based on kind post-pubescent, pre-menopausal version of Billie Burke&#8217;s breathy one-note Glinda in the movie. But the indomitably chirpy Chenoweth, tossing her curls seductively, is very much her own witch &#8211; and quite entrancing.\n\nJust as entrancing is Menzel as Elphaba, drably dressed but with her face and hands made up a gorgeous shade of green.\n\nShe also sings beautifully, as do Chenoweth and Butz, and has a poignancy almost unexpected in such emerald circumstances.\n\nThe show&#8217;s designers &#8211; Eugene Lee (settings), Susan Hilferty (costumes), Kenneth Posner (lighting), Tony Meola (sound) and the special effects people, Chic Silber and Paul Rubin/ZFX Flying Illusions &#8211; have created a musical that for total success only needs everyone and everything else to keep well out of the way.\n\nDirector Joe Mantello seems unobtrusive enough and Wayne Cilento&#8217;s musical staging is energetic but not unnecessarily noticeable.\n\nThis is basically a kid&#8217;s show with aspirations &#8211; but, as the circus folk say, children of all ages should warm at least somewhat to the technological fun and games.",
   "showScoreExcerpt": "\"What is spectacular about the show is the spectacle. That old Emerald City has never had it so good, with flying monkeys and giant Munchkins with extendable necks. Kids will love it, even if they don’t quite understand it. But this yellow brick road is also paved with oppressive music and banal, if sometimes pretentiously amusing, lyrics and a complex, if foolish, book.\"",
   "originalScore": null,
   "assignedScore": 50,
   "source": "reviews-json-stub",
   "needsFullText": true,
-  "textStatus": "missing",
-  "textQuality": "missing",
-  "sourceMethod": "stub",
+  "textStatus": "complete",
+  "textQuality": "full",
+  "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -71,5 +71,38 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "isFullReview": true,
+  "textWordCount": 539,
+  "archivePath": "data/archives/reviews/wicked-2003/nyp--clive-barnes_2026-01-26.html",
+  "textFetchedAt": "2026-01-26T23:23:24.148Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "archiveOrgTimestamp": "20251122192606",
+  "archiveOrgUrl": "http://web.archive.org/web/20251122192606/https://nypost.com/2003/10/31/broom-shtick-wicked-witches-most-entrancing/"
 }

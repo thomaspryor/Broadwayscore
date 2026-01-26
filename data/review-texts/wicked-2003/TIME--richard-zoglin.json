@@ -5,16 +5,16 @@
   "criticName": "Richard Zoglin",
   "url": "https://time.com/archive/6670065/theater-which-witch-was-wicked/",
   "publishDate": "November 17, 2003",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "No one mourns the wicked,&#8221; goes one big number in the new Broadway musical Wicked. But in this shrewd and enjoyable retelling of the Wizard of Oz story from the witches&#8217; point of view, they get something better: understanding. Turns out that Elphaba, better known to us as the Wicked Witch of the West, was born green, and that caused her to be shunned by the popular kids at school. The most popular of them all is Glinda, a perky prom queen used to getting her own way. The two become unlikely friends. But things go awry when Elphaba finds herself on the wrong side of the not-so-wonderful Wizard. He tricks her into using her spells to enslave the animals of the realm. She&#8217;s turned into a pariah&#8211;even Glinda abandons her&#8211;and, as if that weren&#8217;t enough, some farm girl&#8217;s house has fallen smack on her sister.\n\nToto, we&#8217;re not in Kansas anymore&#8211;or at your usual Broadway musical. Wicked flouts nearly every rule of hitmaking in the post&#8211;Andrew Lloyd Webber age. The sets, despite an irrelevant smoke-breathing dragon looming at the top of the curtain, are big but blah. Stephen Schwartz&#8217;s songs are unmemorable. Splashy, dance-filled production numbers keep threatening to break out but remain elusively somewhere over the rainbow.\n\nNo, Wicked works because it has something Broadway musicals, so addicted to facetiousness and camp, have largely given up on: a story that adults can take seriously. Adapted by Winnie Holzman from the 1995 novel by Gregory Maguire (whose latest novel, Mirror, Mirror, is a reworking of Snow White), the musical reimagines a children&#8217;s tale in grownup psychopolitical terms a lot more successfully than, say, Stephen Sondheim and James Lapine did for Into the Woods. Elphaba is a misunderstood social reformer who threatens the rulers of Oz; her &#8220;wickedness&#8221; is their creation, not hers. As the Wizard (Joel Grey) puts it, &#8220;The best way to bring folks together is to give them a really good enemy.&#8221; Imagine: a family musical that might make the Bush Administration squirm.\n\nWhich isn&#8217;t to say Wicked, under Joe Mantello&#8217;s assured direction, lacks fun. The show gets laughs by playing off famous bits from the movie. (&#8220;What&#8217;s in the punch?&#8221; &#8220;Lemons and melons and pears.&#8221; &#8220;Oh my!&#8221;) It also provides a showcase for two fabulous Broadway stars. Kristin Chenoweth, the Kewpie doll who won a Tony for You&#8217;re a Good Man, Charlie Brown, is a perfect delight as Glinda. In the tougher role of Elphaba, Idina Menzel is possibly even better, a mix of vulnerability and feminist passion, with a rock voice to raise the roof. With an awful lot of plot to establish, the show drags in spots. But if every musical had a brain, a heart and the courage of Wicked, Broadway really would be a magical place.",
+  "isFullReview": true,
   "showScoreExcerpt": "\"'No one mourns the wicked,' goes one big number in the new Broadway musical Wicked. But in this shrewd and enjoyable retelling of the Wizard of Oz story from the witches' point of view, they get something better: understanding.\"",
   "originalScore": null,
   "assignedScore": 79,
   "source": "show-score",
   "needsFullText": true,
-  "textStatus": "missing",
-  "textQuality": "missing",
-  "sourceMethod": "showscore",
+  "textStatus": "complete",
+  "textQuality": "full",
+  "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "dtliExcerpt": "SHE'S flying! She's actually flying!",
@@ -74,5 +74,37 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 464,
+  "archivePath": "data/archives/reviews/wicked-2003/time--richard-zoglin_2026-01-26.html",
+  "textFetchedAt": "2026-01-26T23:24:04.704Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "archiveOrgTimestamp": "20250326222451",
+  "archiveOrgUrl": "http://web.archive.org/web/20250326222451/https://time.com/archive/6670065/theater-which-witch-was-wicked/"
 }
