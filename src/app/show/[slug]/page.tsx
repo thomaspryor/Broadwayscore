@@ -29,16 +29,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
   const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
 
-  // Build OG image URL with show data
-  const ogParams = new URLSearchParams({
-    type: 'show',
-    title: show.title,
-    theater: show.venue || '',
-    reviews: String(reviewCount),
-    ...(roundedScore && { score: String(roundedScore) }),
-    ...(show.images?.poster && { poster: show.images.poster }),
-  });
-  const ogImageUrl = `${BASE_URL}/api/og?${ogParams.toString()}`;
+  // Use show's hero/poster image for OG, or fallback to homepage OG
+  const ogImageUrl = show.images?.hero || show.images?.poster || `${BASE_URL}/og/home.png`;
 
   return {
     title: `${show.title} - Critic Score & Reviews`,

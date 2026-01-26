@@ -2,13 +2,8 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
 
-// Build OG image URL for methodology page
-const ogParams = new URLSearchParams({
-  type: 'browse',
-  title: 'How Broadway Scorecard Works',
-  subtitle: 'Our transparent scoring methodology for aggregating critic reviews',
-});
-const ogImageUrl = `${BASE_URL}/api/og?${ogParams.toString()}`;
+// Static OG image (API routes don't work with static export)
+const ogImageUrl = `${BASE_URL}/og/home.png`;
 
 export const metadata: Metadata = {
   title: 'How It Works - Scoring Methodology',
