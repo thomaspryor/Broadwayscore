@@ -92,6 +92,13 @@ export interface RawReview {
   quote?: string;                  // Direct quote from the review
   summary?: string;                // Third-person summary of the review
   pullQuote?: string;              // Legacy field - use quote/summary instead
+  // LLM-generated score
+  llmScore?: {
+    score: number;
+    confidence?: string;
+    bucket?: string;
+    thumb?: string;
+  };
 }
 
 export interface RawAudience {
@@ -279,13 +286,16 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
     const tierWeight = TIER_WEIGHTS[tier];
 
     // Determine the review score
-    // Priority: assignedScore > originalRating > bucket > thumb
+    // Priority: assignedScore > llmScore > originalRating > bucket > thumb
     let assignedScore: number;
     let bucketScore: number | undefined;
     let thumbScore: number | undefined;
 
     if (review.assignedScore !== undefined) {
       assignedScore = review.assignedScore;
+    } else if (review.llmScore?.score !== undefined) {
+      // Use LLM-generated score if available
+      assignedScore = review.llmScore.score;
     } else if (review.originalRating) {
       const parsed = parseOriginalRating(review.originalRating);
       assignedScore = parsed ?? 50;
