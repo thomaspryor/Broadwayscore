@@ -556,6 +556,71 @@ function HomePageInner() {
 
   const upcomingShows = useMemo(() => getUpcomingShows(), []);
 
+  // Tony Winners - shows tagged as tony-winner
+  const tonyWinners = useMemo(() => {
+    return shows
+      .filter(show => {
+        if (show.status !== 'open') return false;
+        const tags = show.tags?.map(t => t.toLowerCase()) || [];
+        return tags.includes('tony-winner');
+      })
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+  }, [shows]);
+
+  // Date Night - romantic or drama shows (not family-oriented)
+  const dateNightShows = useMemo(() => {
+    return shows
+      .filter(show => {
+        if (show.status !== 'open') return false;
+        const tags = show.tags?.map(t => t.toLowerCase()) || [];
+        const ageRec = show.ageRecommendation?.toLowerCase() || '';
+        return (tags.includes('romantic') || tags.includes('drama')) &&
+               !ageRec.includes('ages 6') &&
+               !ageRec.includes('ages 8');
+      })
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+  }, [shows]);
+
+  // Shows for Kids - family-friendly shows
+  const kidsShows = useMemo(() => {
+    return shows
+      .filter(show => {
+        if (show.status !== 'open') return false;
+        const tags = show.tags?.map(t => t.toLowerCase()) || [];
+        const ageRec = show.ageRecommendation?.toLowerCase() || '';
+        return tags.includes('family') ||
+               tags.includes('accessible') ||
+               ageRec.includes('ages 6') ||
+               ageRec.includes('ages 8') ||
+               ageRec.includes('all ages');
+      })
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+  }, [shows]);
+
+  // Closing Soon - shows with closing dates within 60 days
+  const closingSoonShows = useMemo(() => {
+    const now = new Date();
+    return shows
+      .filter(show => {
+        if (show.status !== 'open' || !show.closingDate) return false;
+        const closing = new Date(show.closingDate);
+        const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+        return diffDays > 0 && diffDays <= 60;
+      })
+      .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime());
+  }, [shows]);
+
+  // Jukebox Musicals
+  const jukeboxMusicals = useMemo(() => {
+    return shows
+      .filter(show => {
+        if (show.status !== 'open') return false;
+        const tags = show.tags?.map(t => t.toLowerCase()) || [];
+        return tags.includes('jukebox');
+      })
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+  }, [shows]);
+
   const filteredAndSortedShows = useMemo(() => {
     // Filter based on score mode
     let result = shows.filter(show => {
@@ -877,6 +942,31 @@ function HomePageInner() {
           title="New & Upcoming"
           shows={upcomingShows}
           viewAllHref="/browse/upcoming-broadway-shows"
+        />
+        <FeaturedRow
+          title="Tony Winners"
+          shows={tonyWinners}
+          viewAllHref="/browse/tony-winners-on-broadway"
+        />
+        <FeaturedRow
+          title="Perfect for Date Night"
+          shows={dateNightShows}
+          viewAllHref="/browse/broadway-shows-for-date-night"
+        />
+        <FeaturedRow
+          title="Great for Kids"
+          shows={kidsShows}
+          viewAllHref="/browse/broadway-shows-for-kids"
+        />
+        <FeaturedRow
+          title="Closing Soon"
+          shows={closingSoonShows}
+          viewAllHref="/browse/broadway-shows-closing-soon"
+        />
+        <FeaturedRow
+          title="Jukebox Musicals"
+          shows={jukeboxMusicals}
+          viewAllHref="/browse/jukebox-musicals-on-broadway"
         />
       </div>
 

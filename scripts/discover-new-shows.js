@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./lib/scraper');
+const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -324,14 +325,42 @@ async function discoverShows() {
 
   console.log(`🎭 Found ${newShows.length} NEW show(s):`);
   console.log('-'.repeat(40));
-  for (const show of newShows) {
-    console.log(`  - ${show.title} (${show.venue})`);
+
+  // Analyze shows for revival detection
+  const revivalDetection = newShows.map(show => {
+    const knownCheck = checkKnownShow(show.title);
+    const isPlay = detectPlayFromTitle(show.title);
+
+    let detectedType = 'musical'; // default
+    let isRevival = false;
+    let confidence = 'low';
+
+    if (knownCheck.isKnown) {
+      // Known classic - likely a revival
+      detectedType = knownCheck.type === 'play' ? 'revival' : 'revival';
+      isRevival = true;
+      confidence = 'high';
+    } else if (isPlay) {
+      detectedType = 'play';
+      confidence = 'medium';
+    }
+
+    return { show, detectedType, isRevival, confidence };
+  });
+
+  for (const { show, detectedType, isRevival, confidence } of revivalDetection) {
+    const typeLabel = isRevival ? '🔄 REVIVAL' : detectedType === 'play' ? '🎭 PLAY' : '🎵 MUSICAL';
+    const confidenceLabel = confidence === 'high' ? '✓' : confidence === 'medium' ? '~' : '?';
+    console.log(`  ${confidenceLabel} ${show.title} → ${typeLabel} (${show.venue})`);
   }
   console.log('');
 
   if (!dryRun) {
     // Add new shows to database
-    for (const show of newShows) {
+    for (let i = 0; i < newShows.length; i++) {
+      const show = newShows[i];
+      const detection = revivalDetection[i];
+
       // Determine status based on opening date
       let openingDate;
       let status;
@@ -352,6 +381,14 @@ async function discoverShows() {
         status = 'open';
       }
 
+      // Build tags based on detection
+      const tags = status === 'previews' ? ['upcoming'] : [];
+      if (detection.isRevival) {
+        tags.push('revival');
+      } else if (detection.confidence === 'low') {
+        tags.push('new'); // Flag for manual verification
+      }
+
       data.shows.push({
         id: show.id,
         title: show.title,
@@ -360,14 +397,14 @@ async function discoverShows() {
         openingDate: openingDate,
         closingDate: show.closingDate || null,
         status: status,
-        type: 'musical', // Default, needs manual verification
+        type: detection.detectedType, // Auto-detected with revival logic
         runtime: null,
         intermissions: null,
         images: {},
         synopsis: '',
         ageRecommendation: null,
         previewsStartDate: show.previewsStartDate || null,
-        tags: status === 'previews' ? ['upcoming'] : ['new'],
+        tags: tags,
         ticketLinks: [],
         cast: [],
         creativeTeam: [],
