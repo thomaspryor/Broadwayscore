@@ -231,3 +231,24 @@ jobs:
             } catch (e) {
               console.log('Reddit sentiment workflow trigger failed:', e.message);
             }
+
+      - name: Trigger Show Score workflow
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger Show Score scraping for newly opened shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-show-score.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.opened_shows }}'
+                }
+              });
+              console.log('Triggered Show Score workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');
+            } catch (e) {
+              console.log('Show Score workflow trigger failed:', e.message);
+            }
