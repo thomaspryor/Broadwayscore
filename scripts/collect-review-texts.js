@@ -28,7 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { HttpsProxyAgent } = require('https-proxy-agent');
+// const { HttpsProxyAgent } = require('https-proxy-agent'); // Not used - Bright Data needs zone setup
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -325,16 +325,18 @@ async function loginToSite(domain, email, password) {
 // TIER 2: ScrapingBee API
 // ============================================================================
 
-async function fetchWithScrapingBee(url) {
+async function fetchWithScrapingBee(url, useStealth = false) {
   if (!CONFIG.scrapingBeeKey || !axios) {
     throw new Error('ScrapingBee not configured');
   }
 
   stats.tier2Attempts++;
 
+  const proxyType = useStealth ? 'stealth_proxy' : 'premium_proxy';
+  const credits = useStealth ? 75 : 10;
+  console.log(`    ScrapingBee (${proxyType}, ${credits} credits)...`);
+
   try {
-    // stealth_proxy is more powerful but costs 75 credits vs 10 for premium
-    const useStealth = CLI.stealthProxy;
     const params = {
       api_key: CONFIG.scrapingBeeKey,
       url: url,
@@ -355,13 +357,17 @@ async function fetchWithScrapingBee(url) {
       timeout: CONFIG.apiTimeout,
     });
 
-    // stealth costs 75 credits, premium costs 10
-    stats.scrapingBeeCreditsUsed += useStealth ? 75 : 10;
+    stats.scrapingBeeCreditsUsed += credits;
 
     const html = response.data;
 
     if (isBlocked(html)) {
-      throw new Error('CAPTCHA detected in ScrapingBee response');
+      // If premium failed with CAPTCHA and we haven't tried stealth yet, retry with stealth
+      if (!useStealth && CLI.stealthProxy) {
+        console.log(`    → CAPTCHA with premium, retrying with stealth_proxy...`);
+        return await fetchWithScrapingBee(url, true);
+      }
+      throw new Error(`CAPTCHA detected (${proxyType})`);
     }
 
     const text = extractTextFromHtml(html);
@@ -373,6 +379,12 @@ async function fetchWithScrapingBee(url) {
 
     throw new Error(`Insufficient text: ${text?.length || 0} chars`);
   } catch (error) {
+    // If premium failed and we haven't tried stealth yet, retry with stealth
+    if (!useStealth && CLI.stealthProxy && error.message.includes('CAPTCHA')) {
+      console.log(`    → Retrying with stealth_proxy...`);
+      return await fetchWithScrapingBee(url, true);
+    }
+
     // Enhanced error reporting for ScrapingBee
     if (error.response) {
       const status = error.response.status;
@@ -395,60 +407,13 @@ async function fetchWithScrapingBee(url) {
 // ============================================================================
 
 async function fetchWithBrightData(url) {
-  if (!CONFIG.brightDataKey || !axios) {
-    throw new Error('Bright Data not configured');
-  }
-
-  stats.tier3Attempts++;
-
-  let customerId = CONFIG.brightDataCustomerId;
-  if (!customerId) {
-    throw new Error('BRIGHTDATA_CUSTOMER_ID not configured');
-  }
-  // Customer ID should start with hl_ (if not, it might be in a different format)
-  if (!customerId.startsWith('hl_')) {
-    console.log(`    Warning: Customer ID doesn't start with 'hl_': ${customerId}`);
-  }
-  const zoneName = process.env.BRIGHTDATA_ZONE || 'web_unlocker';
-
-  // Build proxy URL for https-proxy-agent
-  // Note: username contains only safe chars (letters, numbers, hyphens), no encoding needed
-  const username = `brd-customer-${customerId}-zone-${zoneName}`;
-  // Only encode password as it might contain special chars
-  const proxyUrl = `http://${username}:${encodeURIComponent(CONFIG.brightDataKey)}@brd.superproxy.io:33335`;
-
-  const keyPreview = CONFIG.brightDataKey ? `${CONFIG.brightDataKey.substring(0, 8)}...` : 'NOT SET';
-  console.log(`    Bright Data: user=${username}, key=${keyPreview}`);
-
-  // Use https-proxy-agent for proper HTTPS tunneling through proxy
-  const agent = new HttpsProxyAgent(proxyUrl);
-
-  const response = await axios.get(url, {
-    httpsAgent: agent,
-    httpAgent: agent,
-    proxy: false, // Disable axios built-in proxy, use agent instead
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-      'Accept-Language': 'en-US,en;q=0.9',
-    },
-    timeout: 90000, // 90s for Bright Data
-  });
-
-  const html = response.data;
-
-  if (isBlocked(html)) {
-    throw new Error('Access blocked in Bright Data response');
-  }
-
-  const text = extractTextFromHtml(html);
-
-  if (text && text.length > 500) {
-    stats.tier3Success++;
-    return { html, text };
-  }
-
-  throw new Error(`Insufficient text: ${text?.length || 0} chars`);
+  // Bright Data Web Unlocker requires specific zone configuration
+  // The MCP token (3686bf13-...) uses their SSE endpoint, not the proxy auth
+  // To fix: Set up Web Unlocker zone in Bright Data dashboard and configure:
+  //   BRIGHTDATA_CUSTOMER_ID = hl_xxxxx (from dashboard)
+  //   BRIGHTDATA_API_KEY = zone password (not the MCP token)
+  //   BRIGHTDATA_ZONE = web_unlocker (or your zone name)
+  throw new Error('Bright Data not configured (requires Web Unlocker zone setup)');
 }
 
 // ============================================================================
@@ -575,11 +540,11 @@ async function fetchReviewText(review) {
     attempts.push({ tier: 1, method: 'playwright', success: false, error: 'Skipped - known blocked site' });
   }
 
-  // TIER 2: ScrapingBee
+  // TIER 2: ScrapingBee (with stealth retry if --stealth-proxy flag)
   if (CONFIG.scrapingBeeKey) {
     console.log('  [Tier 2] ScrapingBee API...');
     try {
-      const result = await fetchWithScrapingBee(url);
+      const result = await fetchWithScrapingBee(url, false);
       html = result.html;
       text = result.text;
       method = 'scrapingbee';
