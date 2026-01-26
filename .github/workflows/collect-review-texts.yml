@@ -32,6 +32,8 @@ jobs:
   collect-reviews:
     runs-on: ubuntu-latest
     timeout-minutes: 180  # 3 hour max
+    permissions:
+      contents: write  # Required for incremental commits
 
     steps:
       - name: Checkout repository
