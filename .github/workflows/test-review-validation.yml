@@ -1,0 +1,47 @@
+name: Test Review Validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      review_url:
+        description: 'Review URL to validate'
+        required: true
+        type: string
+      show_name:
+        description: 'Show name (optional)'
+        required: false
+        type: string
+      outlet_name:
+        description: 'Outlet name (optional)'
+        required: false
+        type: string
+      critic_name:
+        description: 'Critic name (optional)'
+        required: false
+        type: string
+
+jobs:
+  test-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run test validation
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          node scripts/test-review-submission.js \
+            "${{ inputs.review_url }}" \
+            "${{ inputs.show_name }}" \
+            "${{ inputs.outlet_name }}" \
+            "${{ inputs.critic_name }}"
