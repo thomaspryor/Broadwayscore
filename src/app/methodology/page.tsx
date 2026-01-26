@@ -36,6 +36,39 @@ export const metadata: Metadata = {
   },
 };
 
+// Article Schema - helps AI systems understand this as authoritative content
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'How Broadway Scorecard Calculates Show Scores',
+  description: 'Learn how Broadway Scorecard aggregates professional critic reviews and audience sentiment into composite scores for Broadway shows.',
+  author: {
+    '@type': 'Organization',
+    name: 'Broadway Scorecard',
+    url: BASE_URL,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Broadway Scorecard',
+    url: BASE_URL,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${BASE_URL}/logo.png`,
+    },
+  },
+  datePublished: '2024-01-01',
+  dateModified: '2026-01-26',
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `${BASE_URL}/methodology`,
+  },
+  about: [
+    { '@type': 'Thing', name: 'Broadway theater' },
+    { '@type': 'Thing', name: 'Theater criticism' },
+    { '@type': 'Thing', name: 'Review aggregation' },
+  ],
+};
+
 // FAQ Schema for rich snippets in search results
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -97,7 +130,7 @@ export default function MethodologyPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, faqSchema]) }}
       />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
       <div className="mb-8">
