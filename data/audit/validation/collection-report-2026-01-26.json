@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-26T23:36:59.481Z",
+  "runDate": "2026-01-26T23:39:48.287Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "harry-potter-2021",
+    "showFilter": "our-town-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 162,
-    "failed": 89,
+    "processed": 169,
+    "failed": 80,
     "skipped": 0,
-    "successRate": "64.5%"
+    "successRate": "67.9%"
   },
   "tierBreakdown": {
-    "playwright": 13,
+    "playwright": 17,
     "scrapingbee": 14,
-    "brightdata": 14,
-    "archive": 121
+    "brightdata": 15,
+    "archive": 123
   },
   "statistics": {
-    "tier1Attempts": 21,
-    "tier1Success": 1,
-    "tier2Attempts": 20,
+    "tier1Attempts": 19,
+    "tier1Success": 5,
+    "tier2Attempts": 14,
     "tier2Success": 1,
-    "tier3Attempts": 19,
-    "tier3Success": 1,
-    "tier4Attempts": 24,
-    "tier4Success": 1,
-    "totalFailed": 17,
-    "scrapingBeeCreditsUsed": 80
+    "tier3Attempts": 13,
+    "tier3Success": 2,
+    "tier4Attempts": 13,
+    "tier4Success": 3,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 60
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -193,10 +193,17 @@
     "death-becomes-her-2024/wsj--charles-isherwood.json",
     "death-of-a-salesman-2026/broadwaynews-com--unknown.json",
     "death-of-a-salesman-2026/deadline-com--unknown.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/financial-times--charles-isherwood.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/slate--dan-kois.json"
+    "our-town-2024/culturesauce-com--unknown.json",
+    "our-town-2024/lightingandsoundamerica-com--unknown.json",
+    "our-town-2024/newyorktheater-me--unknown.json",
+    "our-town-2024/pagesonstages-com--unknown.json",
+    "our-town-2024/talkinbroadway-com--unknown.json",
+    "our-town-2024/theaterlife-com--unknown.json",
+    "our-town-2024/theatermania-com--unknown.json",
+    "our-town-2024/theaterscene-net--unknown.json",
+    "our-town-2024/theatrereviews-com--unknown.json",
+    "our-town-2024/thefrontrowcenter-com--unknown.json",
+    "our-town-2024/wsj--charles-isherwood.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -271,23 +278,14 @@
     "death-becomes-her-2024/guardian--benjamin-lee.json",
     "death-becomes-her-2024/nypost--johnny-oleksinski.json",
     "death-of-a-salesman-2026/ew-com--unknown.json",
-    "harry-potter-2021/NYP--johnny-oleksinski.json",
-    "harry-potter-2021/broadway-blog--matthew-wexler.json",
-    "harry-potter-2021/broadway-news--elizabeth-bradley.json",
-    "harry-potter-2021/curtainup--elyse-sommer.json",
-    "harry-potter-2021/deadline--greg-evans.json",
-    "harry-potter-2021/exeunt--kev-berry.json",
-    "harry-potter-2021/front-mezz-junkies--steven-ross.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/medium--christian-lewis.json",
-    "harry-potter-2021/ny1--roma-torre.json",
-    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
-    "harry-potter-2021/troy-record--bob-goepfert.json",
-    "harry-potter-2021/wnyc--jennifer-vanasco.json",
-    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
-    "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "our-town-2024/chtrib--chris-jones.json",
+    "our-town-2024/guardian--adrian-horton.json",
+    "our-town-2024/interestedbystander-com--unknown.json",
+    "our-town-2024/nyp--johnny-oleksinski.json",
+    "our-town-2024/nypost--johnny-oleksinski.json",
+    "our-town-2024/tman--jesse-green.json",
+    "our-town-2024/usatoday--charles-isherwood.json",
+    "our-town-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -303,7 +301,11 @@
       "back-to-the-future-2023/theaterscene-net--unknown.json",
       "back-to-the-future-2023/theatrereviews-com--unknown.json",
       "death-of-a-salesman-2026/broadwaynews-com--unknown.json",
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+      "our-town-2024/culturesauce-com--unknown.json",
+      "our-town-2024/lightingandsoundamerica-com--unknown.json",
+      "our-town-2024/pagesonstages-com--unknown.json",
+      "our-town-2024/theaterlife-com--unknown.json",
+      "our-town-2024/theatrereviews-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -319,7 +321,7 @@
       "cabaret-2024/timeout--adam-feldman.json",
       "chess-2025/ew--shania-russell.json",
       "death-becomes-her-2024/ew--dalton-ross.json",
-      "harry-potter-2021/financial-times--charles-isherwood.json"
+      "our-town-2024/theaterscene-net--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -335,7 +337,8 @@
       "cabaret-2024/daily-beast--tim-teeman.json",
       "chess-2025/daily-beast--tim-teeman.json",
       "chess-2025/timeout-ny--adam-feldman.json",
-      "harry-potter-2021/cititour--brian-scott-lipton.json"
+      "our-town-2024/newyorktheater-me--unknown.json",
+      "our-town-2024/talkinbroadway-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -458,7 +461,9 @@
       "death-becomes-her-2024/thewrap--robert-hofler.json",
       "death-becomes-her-2024/wsj--charles-isherwood.json",
       "death-of-a-salesman-2026/deadline-com--unknown.json",
-      "harry-potter-2021/slate--dan-kois.json"
+      "our-town-2024/theatermania-com--unknown.json",
+      "our-town-2024/thefrontrowcenter-com--unknown.json",
+      "our-town-2024/wsj--charles-isherwood.json"
     ]
   }
 }
