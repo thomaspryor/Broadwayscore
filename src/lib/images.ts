@@ -17,10 +17,11 @@ const SIZE_PRESETS: Record<ImageSize, { width: number; quality: number }> = {
 
 /**
  * Optimize a Contentful image URL
+ * Uses fit=pad with dark background to preserve full image without bad cropping
  */
 function optimizeContentfulUrl(url: string, width: number, quality: number): string {
   const baseUrl = url.split('?')[0]; // Remove any existing params
-  return `${baseUrl}?w=${width}&fm=webp&q=${quality}&fit=fill`;
+  return `${baseUrl}?w=${width}&fm=webp&q=${quality}&fit=pad&bg=rgb:121212`;
 }
 
 /**
@@ -68,7 +69,7 @@ export function getContentfulSrcSet(url: string | undefined, sizes: number[]): s
 
   const baseUrl = url.split('?')[0];
   return sizes
-    .map(w => `${baseUrl}?w=${w}&fm=webp&q=80&fit=fill ${w}w`)
+    .map(w => `${baseUrl}?w=${w}&fm=webp&q=80&fit=pad&bg=rgb:121212 ${w}w`)
     .join(', ');
 }
 
