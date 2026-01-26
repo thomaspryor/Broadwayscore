@@ -76,6 +76,7 @@ const CONFIG = {
   priority: process.env.PRIORITY || 'all',
   showFilter: process.env.SHOW_FILTER || '',
   retryFailed: process.env.RETRY_FAILED === 'true',
+  commitEvery: parseInt(process.env.COMMIT_EVERY || '10'), // Git commit after every N reviews
 
   // API Keys
   scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '',
@@ -928,6 +929,58 @@ function saveState() {
   );
 }
 
+/**
+ * Commit changes to git (for incremental saving during long runs)
+ * This prevents losing work if the job times out
+ */
+function commitChanges(processed) {
+  const { execSync } = require('child_process');
+
+  try {
+    // Check if we're in a git repo and in CI
+    if (!process.env.GITHUB_ACTIONS) {
+      console.log('  (Skipping git commit - not in GitHub Actions)');
+      return;
+    }
+
+    // Stage changes
+    execSync('git add data/review-texts/ data/archives/reviews/ data/collection-state/', {
+      stdio: 'pipe'
+    });
+
+    // Check if there are staged changes
+    const status = execSync('git diff --staged --quiet || echo "changes"', {
+      encoding: 'utf8',
+      stdio: 'pipe'
+    }).trim();
+
+    if (status === 'changes') {
+      // Configure git (in case not already done)
+      try {
+        execSync('git config user.email "action@github.com"', { stdio: 'pipe' });
+        execSync('git config user.name "GitHub Action"', { stdio: 'pipe' });
+      } catch (e) {
+        // Already configured
+      }
+
+      // Commit
+      execSync(`git commit -m "chore: Checkpoint - collected ${processed} review texts"`, {
+        stdio: 'pipe'
+      });
+
+      // Push
+      execSync('git push', { stdio: 'pipe' });
+
+      console.log(`  ✓ Committed and pushed checkpoint (${processed} reviews)`);
+    } else {
+      console.log('  (No changes to commit)');
+    }
+  } catch (e) {
+    console.log(`  ⚠ Git commit failed: ${e.message}`);
+    // Don't throw - we don't want to stop the collection
+  }
+}
+
 // ============================================================================
 // FIND REVIEWS TO PROCESS
 // ============================================================================
@@ -1368,9 +1421,10 @@ async function main() {
       state.lastProcessed = review.reviewId;
       batchCount++;
 
-      // Save state after each batch
+      // Save state and commit after each batch
       if (batchCount >= CONFIG.batchSize) {
         saveState();
+        commitChanges(state.processed.length);
         console.log(`\n─── Batch complete, state saved (${state.processed.length} processed) ───`);
         batchCount = 0;
       }
@@ -1381,8 +1435,9 @@ async function main() {
       }
     }
 
-    // Final state save
+    // Final state save and commit
     saveState();
+    commitChanges(state.processed.length);
 
   } finally {
     await closeBrowser();
