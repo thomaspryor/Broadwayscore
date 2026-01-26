@@ -16,30 +16,65 @@ The user is **non-technical and often on their phone**. They cannot run terminal
 - Create/update GitHub Actions for automation
 - If something truly requires local execution, create a GitHub Action to do it
 
-### 2. Git Branches - CRITICAL
-**ALWAYS work on the `main` branch.** Do NOT create new branches.
+### 2. ALWAYS ASK: Quick Fix or Preview? (MANDATORY)
 
-```
-✅ CORRECT: Make changes directly on main, push to main
-❌ WRONG: Create a new branch like claude/feature-xyz
-```
+**Before making ANY code/design changes, Claude MUST ask:**
 
-**Why:** The user works with multiple Claude sessions. Creating separate branches causes divergence and confusion. Everything should stay on `main`.
+> "Is this a **quick fix** (ship directly to production) or do you want to **preview it first** (staging branch)?"
 
-**At the START of every session:**
+**User responses:**
+- "Quick fix" / "Ship it" / "Just do it" → Work on `main`, push directly to production
+- "Preview" / "Staging" / "Let me see it first" → Work on `staging` branch, provide preview URL
+
+**The ONLY exceptions where you don't need to ask:**
+- Pure data updates (adding shows, updating metadata)
+- Documentation changes (CLAUDE.md, README)
+- Bug fixes that are clearly broken and need immediate fixing
+
+---
+
+### 3. Git Workflow - Two Paths
+
+#### Path A: Quick Fix (Direct to Production)
+For small, low-risk changes. Work on `main` branch.
+
 ```
 git checkout main
 git pull origin main
+# Make changes
+git add -A && git commit -m "description" && git push origin main
+# Vercel auto-deploys → Live in ~1 minute
 ```
 
-**At the END of every session (if you made changes):**
+#### Path B: Preview First (Staging Branch)
+For UI changes, new features, or anything risky. Work on `staging` branch.
+
 ```
-git add -A
-git commit -m "description"
+git checkout main
+git pull origin main
+git checkout -b staging  # Create fresh staging branch
+# Make changes
+git add -A && git commit -m "description" && git push origin staging
+# Vercel creates preview URL automatically
+```
+
+**After user approves the preview:**
+```
+git checkout main
+git merge staging
 git push origin main
+git branch -d staging  # Delete local staging
+git push origin --delete staging  # Delete remote staging
 ```
 
-### 3. Vercel Deployment
+**If user wants changes:** Continue working on `staging`, push again, new preview URL generated.
+
+**Preview URLs:** Vercel automatically creates unique URLs like:
+`https://broadwayscore-git-staging-[username].vercel.app`
+
+Share this URL with the user so they can review on their phone before approving.
+
+### 4. Vercel Deployment
 **Production site: Vercel** (auto-deploys when `main` is pushed)
 
 | Platform | Status | URL |
@@ -57,22 +92,21 @@ git push origin main
 ```
 
 **NEVER:**
-- ❌ Create new branches (use main)
-- ❌ Ask user to "create a PR" or "merge via GitHub"
-- ❌ Push to a feature branch and expect Vercel to deploy it
+- ❌ Ask user to "create a PR" or "merge via GitHub" - Claude handles all git operations
+- ❌ Create random feature branches - only use `main` or `staging`
 
 **ALWAYS:**
-- ✅ Work directly on `main`
-- ✅ Push to `main` when done
-- ✅ If you see you're on a different branch, switch to main first
+- ✅ Ask "Quick fix or Preview?" before making changes (see Rule #2)
+- ✅ Use `main` for quick fixes, `staging` for preview-first changes
+- ✅ Delete `staging` branch after merging to main
 
-### 3. Automate Everything
+### 5. Automate Everything
 - ❌ Don't ask user to manually fetch data
 - ❌ Don't suggest "you could manually update..."
 - ✅ Write scripts that run via GitHub Actions
 - ✅ Create automation for any recurring task
 
-### 4. NEVER Guess or Fake Data
+### 6. NEVER Guess or Fake Data
 - ❌ **NEVER** give approximate ranges like "~7-9 reviews" - there's always a specific number
 - ❌ **NEVER** claim to have verified something you couldn't actually access
 - ❌ **NEVER** make up numbers when a source is blocked/unavailable
