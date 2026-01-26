@@ -232,7 +232,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
                     </p>
                   ) : show.closingDate && (
                     <p className="text-rose-400 text-xs mt-0.5 sm:mt-1">
-                      Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      {show.status === 'closed' ? 'Closed' : 'Closes'} {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     </p>
                   )}
                 </div>
