@@ -46,7 +46,13 @@ jobs:
       - name: Update show statuses
         run: node scripts/check-show-freshness.js
 
-      # Step 2: Run auto-fix (ticket links, flag issues)
+      # Step 2: Validate TodayTix URLs
+      - name: Validate TodayTix URLs
+        id: validate-urls
+        run: node scripts/validate-todaytix-urls.js --verbose
+        continue-on-error: true
+
+      # Step 3: Run auto-fix (ticket links, flag issues)
       - name: Auto-fix show data
         id: autofix
         if: inputs.skip_auto_fix != 'true'
@@ -55,7 +61,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/auto-fix-show-data.js
 
-      # Step 3: Check closing dates (weekly on Sundays or manual)
+      # Step 4: Check closing dates (weekly on Sundays or manual)
       - name: Check for closing date announcements
         if: inputs.check_closing_dates == 'true' || (github.event_name == 'schedule' && contains(github.event.schedule, '0 6 * * 0'))
         env:
@@ -63,7 +69,7 @@ jobs:
         run: node scripts/check-closing-dates.js
         continue-on-error: true
 
-      # Step 4: Validate and commit
+      # Step 5: Validate and commit
       - name: Check for changes
         id: changes
         run: |
