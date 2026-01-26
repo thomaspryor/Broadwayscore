@@ -5,16 +5,16 @@
   "criticName": "Naveen Kumar",
   "url": "http://www.towleroad.com/2015/08/hamilton-review/",
   "publishDate": "August 7, 2015",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "His mug may be on the verge of getting bumped from the $10 bill, but Alexander Hamilton is rolling in dough on Broadway at the Richard Rodgers Theatre, where his namesake musical — Hamilton, perhaps you've heard of it? — roared open last night to the tune of over $30 million in advance ticket sales (fitting, for a show about the Founding Father who basically invented cash). The landmark new musical, which premiered earlier this year at the Public Theatre, presents a soulful, electrifying retelling of America's birth — one that recognizes that the country's own rags-to-riches rise was built on oppression. Its ingenious use of hip-hop, a medium and a culture in many ways born from that oppression, to reclaim American history is nothing short of revolutionary.\n\nThe show is a vehicle for the preternatural talents of Lin Manuel Miranda, who penned its book, music, and lyrics, in addition to starring in the title role. If his 2008 musical In the Heights (which brought him Tonys for Best Score and Best Musical) was something like a soapy paperback, Hamilton is a leather-bound tome aiming for place in the canon. Tracing Hamilton's upward climb from Caribbean immigrant to Founding Father, Miranda recasts an old story about white upstarts and intellectuals with awesomely skilled MCs of every shade — generating sly meaning and knowing humor where the edges of the two factions meet.\n\nIf history, as the musical insists, is in the telling, Hamilton's recoloring of the players is compelling on its own — but it's the mesmerizing power of Miranda's lyrics that causes us to hear a familiar story in a new way. Densely packed with head-spinning rhymes, critical commentary and, not least of all, plot, Miranda's lyrics manage to be both brilliantly poetic and purposeful. Though it would take multiple listens to soak in (or even hear) every line, the score keeps the story clear and moving along at a steady clip, even while its hooks nestle themselves inside your bopping head.\n\nWhile the story also holds no surprises (like who wins the Revolutionary War by intermission), you may be less familiar with the finer points of Hamilton's life, which encompass pretty much everything folks look for from popular entertainment (or politics, if there's a difference), including a social-climbing orphan, a love triangle, war, adultery, public scandal, tragedy and, oh, the Federalist Papers. The musical's ability to combine the sensational with the theoretical (by, say, turning debates over taxation into rap battles, or pamphlet writing into visual drama) is one of its greatest strengths.\n\nUnder the fluid direction of Thomas Kail, and embodying Andy Blankenbuehler's expressive, often hauntingly beautiful choreography, the cast is uniformly strong. Doubling as Frenchman Marquis de Lafayette and Francophile Thomas Jefferson, Daveed Diggs is perhaps the show's breakout star, lending a natural ebullience to his physical performance and vocal gymnastics. In a handful of highly relished cameos, Jonathan Groff wins great affection as a haughty and incredulous King George.\n\nAnd yet: History (with a capital H), as we know, has a woman problem — unfortunately, this history is no different. Of the principal female characters, one (Hamilton's vanilla wife, Phillipa Soo) is a faultless angel, deified to extremes, another (his red-pouted mistress, Jasmine Cephas Jones) is a seductive whore charged with ensnaring an otherwise standup guy, and the third (his feisty true love, Renée Elise Goldsberry) is, well, somewhere in between with a head on her shoulders at least. But, the boys' club begun all those years ago is giving way, on the $10 and maybe even in the White House. Only time, and maybe somewhere down the line a gifted (hopefully female!) artist will tell.\n\nRecent theatre features…\n‘The Absolute Brightness of Leonard Pelkey,' By Trevor Project Co-founder James Lecesne Opens Off Broadway: REVIEW\nLooking for Love in a Straight-Girl World, ‘Significant Other' Opens Off Broadway: REVIEW\n‘Fun Home' and ‘Curious Incident' Mark Big Wins for Women and Brits: 2015 Tony Awards Roundup\nJim Parsons Opens in ‘An Act of God' on Broadway: REVIEW\nAlison Bechdel's Graphic Novel Comes to Broadway in New Musical ‘Fun Home': REVIEW\n\nFollow Naveen Kumar on Twitter: @Mr_NaveenKumar (photos: joan marcus)",
+  "isFullReview": true,
   "showScoreExcerpt": "\"The landmark new musical presents a soulful, electrifying retelling of America's birth. Its ingenious use of hip-hop, a medium and a culture in many ways born from that oppression, to reclaim American history is nothing short of revolutionary...The musical's ability to combine the sensational with the theoretical is one of its greatest strengths.\"",
   "originalScore": null,
   "assignedScore": 94,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
-  "textStatus": "excerpt-only",
-  "textQuality": "missing",
-  "sourceMethod": "showscore",
+  "textStatus": "complete",
+  "textQuality": "full",
+  "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -72,5 +72,29 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 692,
+  "archivePath": "data/archives/reviews/hamilton-2015/towleroad--naveen-kumar_2026-01-26.html",
+  "textFetchedAt": "2026-01-26T22:38:53.459Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3
 }

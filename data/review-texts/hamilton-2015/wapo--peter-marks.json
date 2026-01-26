@@ -5,16 +5,16 @@
   "criticName": "Peter Marks",
   "url": "http://www.washingtonpost.com/entertainment/theater_dance/hamilton-making-ecstatic-history/2015/08/06/6bc85fb4-3b72-11e5-8e98-115a3cf7d7ae_story.html",
   "publishDate": "August 6, 2015",
-  "fullText": null,
+  "fullText": "Democracy Dies in DarknessBy  Peter MarksNEW YORK — Thomas Jefferson was honored with a majestic memorial, George Washington by the name of our capital city. But lovers of show tunes know that among the Founding Fathers, Alexander Hamilton has received the highest accolade of all: his own musical.\n\nAnd not just any musical. A great musical. “Hamilton,” which had its official opening Thursday night at Broadway’s Richard Rodgers Theatre, is a captivating mirror of the man whose life it surveys: blazingly original, restlessly innovative, magnetic from start to finish.",
   "isFullReview": false,
   "showScoreExcerpt": "\"'Hamilton' is a captivating mirror of the man whose life it surveys: blazingly original, restlessly innovative, magnetic from start to finish...The intense pride you feel on an evening such as this, when America's story is retold with such style, verve and imagination, is not of a sort that's come by easily on Broadway. There's a magnitude of joy summoned here that suggests that King George is absolutely right. You most certainly will want to be back.\"",
   "originalScore": null,
   "assignedScore": 95,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
-  "textStatus": "excerpt-only",
-  "textQuality": "missing",
-  "sourceMethod": "showscore",
+  "textStatus": "partial",
+  "textQuality": "partial",
+  "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -72,5 +72,32 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 89,
+  "archivePath": "data/archives/reviews/hamilton-2015/wapo--peter-marks_2026-01-26.html",
+  "textFetchedAt": "2026-01-26T22:40:01.153Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textIssues": [
+    "Word count too low: 89 (min: 300)"
+  ]
 }

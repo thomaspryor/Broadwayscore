@@ -5,16 +5,16 @@
   "criticName": "Molly Marinik",
   "url": "http://www.theasy.com/Reviews/2015/H/hamiltonbroadway.php",
   "publishDate": "December 18, 2015",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "You are using an outdated browser. Please upgrade your browser or activate Google Chrome Frame to improve your experience.\n\nTo purchase tickets visit ticketmaster.com.\n\nBook, Music, and Lyrics by Lin-Manuel Miranda; Directed by Thomas KailChoreography by Andy Blankenbuhler\n\nBroadway, New Musical Open-Ended Run Richard Rodgers Theater, 226 West 46th Street\n\nChristopher Jackson in Hamilton. Photo by Joan Marcus.\n\nBOTTOM LINE: There's good reason why Hamilton is the most popular show on Broadway.\n\nI suspect that Hamilton is already embedded in the zeitgeist, after a phenomenally successful off Broadway run at The Public last spring (read the Theasy review here) and a quick transfer to Broadway last summer where it has remained steadily sold out. Critics are unanimously fanboy/girl-ing themselves over the show, the likes of which I don't think I've ever seen (except maybe for The Book of Mormon). This tardy review is not likely to convince you to see this production—whose cast recording was just named Billboard's #2 album of the year—but I can tell you why I suspect the show has grabbed the hearts of nearly everyone lucky enough to get within reach.\n\nHamilton is based on Ron Chernow's 2004 award-winning biography \"Alexander Hamilton\" and gives a comprehensive look at the Founding Father's life from a young man striving to break into politics to his untimely death. It's loaded with historical necessity and even for those who aren't particularly interested in U.S. history, it's hard not to feel patriotic when shown the passion of the men who sought to create a brand new, free nation.\n\nWhat Lin-Manuel Miranda and company do with this material, however, is what makes Hamilton so remarkable. Rather than taking the subject matter and threading an agenda through it, they very wisely let the material speak for itself with full respect for the historical legitimacy. And then, with no comment whatsoever, they let the choices that the production has made provide another layer of context. I'm speaking here about race and identity. The cast of Hamilton is actually diverse, and I don't mean mostly white with two African-Americans in the ensemble. Here, race has no bearing on which historical figures are being represented, and the cast isn't even costumed to obscure their own identities as individual performers. You see the actors as unique people, playing historical figures, and you never question the authenticity of these representations. And why should you? The United States has always been comprised of different ethnicities. That was the point. The lyric, \"immigrants, we get the job done\" is as true today as it would have been in Hamilton's time.\n\nThe contrast to this is King George (played with understated brilliance by Jonathan Groff), representing the other side of the war, and, to my memory, the only character to be costumed in a wig. With the embellishment of George—more the clown than the actual villain of this story—it's even more obvious how stripped down and human Hamilton's other characters are.\n\nWith Thomas Kail's clever direction and Andy Blankenbuhler's athletic choreography, Hamilton's large cast embodies a bloody war, heated political rivalries, and the outright joy of breaking from England and starting a new nation. And of course, the inevitable looms: Hamilton's death in a duel with Aaron Burr (an impassioned Leslie Odom Jr.). Burr is the necessary villain of the story (we know how it ends), but he is given his own rightful place as one of the political players of the day. With plenty of opportunity to share his side of the longstanding rivalry, he emerges as a somewhat sympathetic victim of his own choices.\n\nIf musicals are notoriously about flash and artifice, Hamilton is the opposite. It's so real it's almost shocking. Miranda's score is a triumph by itself with a wide range of influences and some of the best lyric writing seen yet this century. It also makes the case for hip-hop as a reputable genre for storytelling (in case you didn't already believe that to be true). I hesitate to call the show a hip-hop musical because there are many songs that veer more on the traditional side of musical theatre, but the modernity of the production is refreshing and prescient—we might actually be entering a new era of musical theatre (let's hope Hamilton provides boundless inspiration for future projects).\n\nMiranda is hugely successful in showing audiences how important Hamilton's story is, and reminding us what \"life, liberty, and the pursuit of happiness\" actually means. At a time of so much cynicism about the state of the nation, it's interesting to consider the sacrifices, passion, and good intentions that started it all. And beyond all that, this highly entertaining show is a nod to the force of creative storytelling and the power of an ensemble to bring that vision to light.\n\n(Hamilton plays at the Richard Rodgers Theater, 226 West 46th Street, in an open run. Run time is 2 hours 45 minutes with an intermission. Performances are Tuesdays at 7; Wednesdays at 2 and 8; Thursdays and Fridays at 8; Saturdays at 2 and 8; and Sundays at 3. For full schedule and tickets visit ticketmaster.com. For more show information visit hamiltonbroadway.com.)",
+  "isFullReview": true,
   "showScoreExcerpt": "\"With Kail's clever direction and Blankenbuhler's athletic choreography, 'Hamilton's' large cast embodies a bloody war, heated political rivalries, and the outright joy of starting a new nation...Miranda's score is a triumph by itself with a wide range of influences and some of the best lyric writing seen yet this century...The modernity of the production is refreshing and prescient - we might actually be entering a new era of musical theatre.\"",
   "originalScore": null,
   "assignedScore": 94,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
-  "textStatus": "excerpt-only",
-  "textQuality": "missing",
-  "sourceMethod": "showscore",
+  "textStatus": "complete",
+  "textQuality": "full",
+  "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -72,5 +72,37 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 856,
+  "archivePath": "data/archives/reviews/hamilton-2015/theatre-is-easy--molly-marinik_2026-01-26.html",
+  "textFetchedAt": "2026-01-26T22:36:24.323Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.goto: net::ERR_NAME_NOT_RESOLVED at http://www.theasy.com/Reviews/2015/H/hamiltonbroadway.php\nCall log:\n  - navigating to \"http://www.theasy.com/Reviews/2015/H/hamiltonbroadway.php\", waiting until \"domcontentloaded\"\n"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "archiveOrgTimestamp": "20241009105923",
+  "archiveOrgUrl": "http://web.archive.org/web/20241009105923/http://www.theasy.com/Reviews/2015/H/hamiltonbroadway.php"
 }
