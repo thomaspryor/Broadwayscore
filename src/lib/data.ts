@@ -581,6 +581,115 @@ export function getAwardsLastUpdated(): string {
 }
 
 // ============================================
+// Audience Buzz Data
+// ============================================
+
+export type AudienceBuzzDesignation = 'Loving It' | 'Liking It' | 'Take-it-or-Leave-it' | 'Loathing It';
+
+export interface AudienceBuzzSource {
+  score: number;
+  reviewCount: number;
+  starRating?: number;  // Only for Mezzanine (X.X out of 5)
+}
+
+export interface AudienceBuzzData {
+  title: string;
+  designation: AudienceBuzzDesignation;
+  combinedScore: number;
+  sources: {
+    showScore: AudienceBuzzSource | null;
+    mezzanine: AudienceBuzzSource | null;
+    reddit: AudienceBuzzSource | null;
+  };
+}
+
+interface AudienceBuzzFile {
+  _meta: {
+    lastUpdated: string;
+    sources: string[];
+    designationThresholds: Record<string, string>;
+    notes: string;
+  };
+  shows: Record<string, AudienceBuzzData>;
+}
+
+const audienceBuzz = audienceBuzzData as unknown as AudienceBuzzFile;
+
+/**
+ * Get audience buzz data for a specific show by ID
+ */
+export function getAudienceBuzz(showId: string): AudienceBuzzData | undefined {
+  return audienceBuzz.shows[showId];
+}
+
+/**
+ * Get audience buzz by slug (looks up show ID first)
+ */
+export function getAudienceBuzzBySlug(slug: string): AudienceBuzzData | undefined {
+  const show = getShowBySlug(slug);
+  if (!show) return undefined;
+  return audienceBuzz.shows[show.id];
+}
+
+/**
+ * Get all shows sorted by audience buzz score
+ */
+export function getShowsByAudienceBuzz(limit = 10): Array<{ showId: string; data: AudienceBuzzData }> {
+  const results: Array<{ showId: string; data: AudienceBuzzData }> = [];
+
+  for (const [showId, data] of Object.entries(audienceBuzz.shows)) {
+    results.push({ showId, data });
+  }
+
+  return results
+    .sort((a, b) => b.data.combinedScore - a.data.combinedScore)
+    .slice(0, limit);
+}
+
+/**
+ * Get audience buzz designation color class
+ */
+export function getAudienceBuzzColor(designation: AudienceBuzzDesignation): {
+  bgClass: string;
+  textClass: string;
+  borderClass: string;
+} {
+  switch (designation) {
+    case 'Loving It':
+      return {
+        bgClass: 'bg-gradient-to-r from-rose-500/20 to-pink-500/20',
+        textClass: 'text-rose-400',
+        borderClass: 'border-rose-500/30',
+      };
+    case 'Liking It':
+      return {
+        bgClass: 'bg-emerald-500/15',
+        textClass: 'text-emerald-400',
+        borderClass: 'border-emerald-500/25',
+      };
+    case 'Take-it-or-Leave-it':
+      return {
+        bgClass: 'bg-amber-500/15',
+        textClass: 'text-amber-400',
+        borderClass: 'border-amber-500/25',
+      };
+    case 'Loathing It':
+      return {
+        bgClass: 'bg-gray-500/15',
+        textClass: 'text-gray-400',
+        borderClass: 'border-gray-500/25',
+      };
+  }
+}
+
+/**
+ * Get audience buzz data last updated timestamp
+ */
+export function getAudienceBuzzLastUpdated(): string {
+  return audienceBuzz._meta.lastUpdated;
+}
+
+// ============================================
 // Browse Page Queries
 // ============================================
 
