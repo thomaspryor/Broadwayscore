@@ -348,23 +348,14 @@ export function getAllBestOfCategories(): BestOfCategory[] {
 }
 
 /**
- * Get upcoming shows (in previews or recently opened)
+ * Get upcoming shows (in previews) - sorted by soonest opening date first
  */
 export function getUpcomingShows(): ComputedShow[] {
   const allShows = getAllShows();
-  const threeMonthsAgo = new Date();
-  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
 
   return allShows
-    .filter(show => {
-      // Shows in previews
-      if (show.status === 'previews') return true;
-      // Shows that opened within last 3 months
-      const openDate = new Date(show.openingDate);
-      return show.status === 'open' && openDate >= threeMonthsAgo;
-    })
-    .sort((a, b) => new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime())
-    .slice(0, 8);
+    .filter(show => show.status === 'previews')
+    .sort((a, b) => new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime());
 }
 
 // ============================================
