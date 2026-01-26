@@ -586,7 +586,7 @@ export function getAwardsLastUpdated(): string {
 // Audience Buzz Data
 // ============================================
 
-export type AudienceBuzzDesignation = 'Loving It' | 'Liking It' | 'Take-it-or-Leave-it' | 'Loathing It';
+export type AudienceBuzzDesignation = 'Loving' | 'Liking' | 'Shrugging' | 'Loathing';
 
 export interface AudienceBuzzSource {
   score: number;
@@ -657,25 +657,25 @@ export function getAudienceBuzzColor(designation: AudienceBuzzDesignation): {
   borderClass: string;
 } {
   switch (designation) {
-    case 'Loving It':
+    case 'Loving':
       return {
         bgClass: 'bg-gradient-to-r from-rose-500/20 to-pink-500/20',
         textClass: 'text-rose-400',
         borderClass: 'border-rose-500/30',
       };
-    case 'Liking It':
+    case 'Liking':
       return {
         bgClass: 'bg-emerald-500/15',
         textClass: 'text-emerald-400',
         borderClass: 'border-emerald-500/25',
       };
-    case 'Take-it-or-Leave-it':
+    case 'Shrugging':
       return {
         bgClass: 'bg-amber-500/15',
         textClass: 'text-amber-400',
         borderClass: 'border-amber-500/25',
       };
-    case 'Loathing It':
+    case 'Loathing':
       return {
         bgClass: 'bg-gray-500/15',
         textClass: 'text-gray-400',

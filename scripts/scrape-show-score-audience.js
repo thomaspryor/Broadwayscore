@@ -324,10 +324,10 @@ function updateAudienceBuzz(showId, showTitle, showScoreData) {
   if (score !== null) {
     audienceBuzz.shows[showId].combinedScore = score;
 
-    if (score >= 90) audienceBuzz.shows[showId].designation = 'Loving It';
-    else if (score >= 75) audienceBuzz.shows[showId].designation = 'Liking It';
-    else if (score >= 60) audienceBuzz.shows[showId].designation = 'Take-it-or-Leave-it';
-    else audienceBuzz.shows[showId].designation = 'Loathing It';
+    if (score >= 88) audienceBuzz.shows[showId].designation = 'Loving';
+    else if (score >= 78) audienceBuzz.shows[showId].designation = 'Liking';
+    else if (score >= 68) audienceBuzz.shows[showId].designation = 'Shrugging';
+    else audienceBuzz.shows[showId].designation = 'Loathing';
 
     // Log the weights used
     if (verbose) {

@@ -64,10 +64,10 @@ for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
   if (score !== null) {
     show.combinedScore = score;
 
-    if (score >= 90) show.designation = 'Loving It';
-    else if (score >= 75) show.designation = 'Liking It';
-    else if (score >= 60) show.designation = 'Take-it-or-Leave-it';
-    else show.designation = 'Loathing It';
+    if (score >= 88) show.designation = 'Loving';
+    else if (score >= 78) show.designation = 'Liking';
+    else if (score >= 68) show.designation = 'Shrugging';
+    else show.designation = 'Loathing';
 
     if (oldScore !== score) {
       console.log(`${show.title}: ${oldScore} → ${score} (SS ${weights.showScore}%, Mezz ${weights.mezzanine}%, Reddit ${weights.reddit}%)`);
@@ -77,6 +77,12 @@ for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
 }
 
 audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
+audienceBuzz._meta.designationThresholds = {
+  'Loving': '88-100',
+  'Liking': '78-87',
+  'Shrugging': '68-77',
+  'Loathing': '0-67'
+};
 audienceBuzz._meta.notes = 'Dynamic weighting: Reddit fixed 20%, Show Score & Mezzanine split remaining 80% by sample size';
 
 fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
