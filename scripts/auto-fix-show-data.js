@@ -2,12 +2,14 @@
 /**
  * auto-fix-show-data.js
  *
- * Automatically fixes show data issues where possible:
+ * Automatically fixes show data issues - TRUE automation:
  * - Missing images → triggers image fetch
- * - Missing/broken ticket links → fetches from TodayTix
- * - Missing metadata → creates GitHub issue (only if truly needed)
+ * - Missing synopsis → fetches from TodayTix or generates via LLM
+ * - Missing/broken ticket links → hides them (not an error)
+ * - Creative team → only thing that might need humans
  *
- * Philosophy: Fix everything that can be automated, only flag what needs humans.
+ * Philosophy: Fix everything automatically. Only flag creative team if missing.
+ * Cast is NOT tracked (changes too frequently).
  */
 
 const fs = require('fs');
@@ -15,6 +17,9 @@ const path = require('path');
 const https = require('https');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
+const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
+const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
 // Results tracking
 const results = {
@@ -33,127 +38,196 @@ function saveShows(data) {
   fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
 }
 
-// Check if a URL is valid (returns HTTP 200)
-async function checkUrl(url, timeout = 5000) {
-  return new Promise((resolve) => {
-    try {
-      const urlObj = new URL(url);
-      const protocol = urlObj.protocol === 'https:' ? https : require('http');
+function loadTodayTixIds() {
+  try {
+    return JSON.parse(fs.readFileSync(TODAYTIX_IDS_PATH, 'utf8'));
+  } catch {
+    return { shows: {} };
+  }
+}
 
-      const req = protocol.get(url, { timeout }, (res) => {
-        resolve(res.statusCode >= 200 && res.statusCode < 400);
-      });
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
 
-      req.on('error', () => resolve(false));
-      req.on('timeout', () => {
-        req.destroy();
-        resolve(false);
-      });
-    } catch {
-      resolve(false);
+// Fetch via ScrapingBee
+function fetchUrl(url) {
+  return new Promise((resolve, reject) => {
+    if (!SCRAPINGBEE_API_KEY) {
+      reject(new Error('No SCRAPINGBEE_API_KEY'));
+      return;
     }
+
+    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=2000`;
+
+    https.get(apiUrl, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+      res.on('error', reject);
+    }).on('error', reject);
   });
 }
 
-// Generate TodayTix URL from show title
-function generateTodayTixUrl(show) {
-  // TodayTix URL pattern: https://www.todaytix.com/nyc/shows/{id}-{slug}
-  // We can't know the ID, but we can try a search URL
-  const slug = show.title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-
-  return `https://www.todaytix.com/nyc/shows?q=${encodeURIComponent(show.title)}`;
-}
-
-// Generate Telecharge URL from show title
-function generateTelechargeUrl(show) {
-  const slug = show.title
-    .replace(/[^a-zA-Z0-9\s]/g, '')
-    .replace(/\s+/g, '-');
-
-  return `https://www.telecharge.com/Broadway/${slug}`;
-}
-
-async function fixTicketLinks(show) {
-  const fixes = [];
-
-  // Skip closed shows
-  if (show.status === 'closed') {
-    return fixes;
+// Extract synopsis from TodayTix page HTML
+function extractSynopsisFromHtml(html) {
+  // Try to find synopsis in meta description
+  const metaMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i);
+  if (metaMatch && metaMatch[1].length > 50) {
+    return metaMatch[1].trim();
   }
 
-  // Check if ticket links are missing or empty
-  if (!show.ticketLinks || show.ticketLinks.length === 0) {
-    // Add placeholder ticket links that can be searched
-    show.ticketLinks = [
-      {
-        platform: 'TodayTix',
-        url: generateTodayTixUrl(show),
-        priceFrom: null,
-        needsUpdate: true
+  // Try to find in JSON-LD
+  const jsonLdMatch = html.match(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/i);
+  if (jsonLdMatch) {
+    try {
+      const jsonLd = JSON.parse(jsonLdMatch[1]);
+      if (jsonLd.description && jsonLd.description.length > 50) {
+        return jsonLd.description.trim();
       }
-    ];
-    fixes.push(`Added TodayTix search link for ${show.title}`);
-  } else {
-    // Verify existing links work (sample check, don't hammer servers)
-    for (const link of show.ticketLinks) {
-      if (link.needsUpdate) {
-        continue; // Already flagged
-      }
+    } catch {}
+  }
 
-      // Only check TodayTix links (they're most reliable)
-      if (link.platform === 'TodayTix' && link.url) {
-        const isValid = await checkUrl(link.url);
-        if (!isValid) {
-          link.needsUpdate = true;
-          fixes.push(`Flagged broken TodayTix link for ${show.title}`);
-        }
+  // Try to find in page content (common patterns)
+  const aboutMatch = html.match(/about[^>]*>[\s\S]*?<p[^>]*>([^<]{100,500})/i);
+  if (aboutMatch) {
+    return aboutMatch[1].trim();
+  }
+
+  return null;
+}
+
+// Fetch synopsis from TodayTix
+async function fetchSynopsisFromTodayTix(show, todayTixInfo) {
+  if (!todayTixInfo?.id) return null;
+
+  const slug = todayTixInfo.slug || show.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const url = `https://www.todaytix.com/nyc/shows/${todayTixInfo.id}-${slug}`;
+
+  try {
+    const html = await fetchUrl(url);
+    return extractSynopsisFromHtml(html);
+  } catch {
+    return null;
+  }
+}
+
+// Generate synopsis via Claude API (fallback)
+async function generateSynopsisWithLLM(show) {
+  if (!ANTHROPIC_API_KEY) return null;
+
+  const prompt = `Write a brief, engaging synopsis (2-3 sentences, ~100 words) for the Broadway show "${show.title}".
+It's a ${show.type || 'musical'} playing at ${show.venue || 'a Broadway theater'}.
+Write in present tense, focus on the story/premise, and make it sound exciting for potential theatergoers.
+Do not include any marketing language or ticket information.
+Just return the synopsis text, nothing else.`;
+
+  return new Promise((resolve) => {
+    const postData = JSON.stringify({
+      model: 'claude-3-haiku-20240307',
+      max_tokens: 200,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    const options = {
+      hostname: 'api.anthropic.com',
+      port: 443,
+      path: '/v1/messages',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01'
       }
+    };
+
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          const response = JSON.parse(data);
+          const text = response.content?.[0]?.text;
+          resolve(text || null);
+        } catch {
+          resolve(null);
+        }
+      });
+    });
+
+    req.on('error', () => resolve(null));
+    req.write(postData);
+    req.end();
+  });
+}
+
+// Fix synopsis - fetch from TodayTix or generate
+async function fixSynopsis(show, todayTixIds) {
+  if (show.synopsis && show.synopsis.length >= 50) {
+    return null; // Already has synopsis
+  }
+
+  console.log(`  📝 Missing synopsis, attempting to fetch...`);
+
+  // Try TodayTix first
+  const todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
+  let synopsis = await fetchSynopsisFromTodayTix(show, todayTixInfo);
+
+  if (synopsis) {
+    show.synopsis = synopsis;
+    return `Fetched synopsis from TodayTix for ${show.title}`;
+  }
+
+  // Try LLM generation
+  if (ANTHROPIC_API_KEY) {
+    console.log(`    Generating via Claude...`);
+    synopsis = await generateSynopsisWithLLM(show);
+    if (synopsis) {
+      show.synopsis = synopsis;
+      return `Generated synopsis via Claude for ${show.title}`;
     }
   }
 
-  return fixes;
+  return null;
+}
+
+// Fix ticket links - just ensure valid ones exist, hide broken ones
+function fixTicketLinks(show) {
+  if (show.status === 'closed') return null;
+
+  // Remove any links marked as broken
+  if (show.ticketLinks) {
+    const validLinks = show.ticketLinks.filter(link => !link.broken && link.url);
+    if (validLinks.length !== show.ticketLinks.length) {
+      show.ticketLinks = validLinks;
+      return `Removed ${show.ticketLinks.length - validLinks.length} broken ticket links for ${show.title}`;
+    }
+  }
+
+  // If no ticket links at all for an open show, that's OK - we just won't show any
+  // Don't flag it as an error - the show page will gracefully hide the ticket section
+
+  return null;
 }
 
 function checkMissingImages(show) {
   const missing = [];
-
   if (!show.images?.poster) missing.push('poster');
-  if (!show.images?.hero) missing.push('hero');
   if (!show.images?.thumbnail) missing.push('thumbnail');
-
+  if (!show.images?.hero) missing.push('hero');
   return missing;
 }
 
 function checkMissingMetadata(show) {
   const issues = [];
 
-  // Only check open shows
+  // Only check open/preview shows
   if (show.status !== 'open' && show.status !== 'previews') {
     return issues;
   }
 
-  // Synopsis - can't be auto-generated
-  if (!show.synopsis || show.synopsis.length < 50) {
-    issues.push({
-      type: 'missing_synopsis',
-      message: `${show.title} needs a synopsis`,
-      severity: 'medium'
-    });
-  }
-
-  // Cast - can't be auto-fetched reliably
-  if (!show.cast || show.cast.length === 0) {
-    issues.push({
-      type: 'missing_cast',
-      message: `${show.title} needs cast information`,
-      severity: 'low'
-    });
-  }
-
-  // Creative team
+  // Creative team - stable, worth tracking
+  // (We're NOT tracking cast - it changes too frequently)
   if (!show.creativeTeam || show.creativeTeam.length === 0) {
     issues.push({
       type: 'missing_creative',
@@ -169,28 +243,40 @@ async function main() {
   console.log('='.repeat(60));
   console.log('AUTO-FIX SHOW DATA');
   console.log('='.repeat(60));
-  console.log(`Started: ${new Date().toISOString()}\n`);
+  console.log(`Started: ${new Date().toISOString()}`);
+  console.log(`Synopsis fetching: ${SCRAPINGBEE_API_KEY ? '✓ enabled' : '✗ disabled (no SCRAPINGBEE_API_KEY)'}`);
+  console.log(`Synopsis generation: ${ANTHROPIC_API_KEY ? '✓ enabled' : '✗ disabled (no ANTHROPIC_API_KEY)'}\n`);
 
   const data = loadShows();
+  const todayTixIds = loadTodayTixIds();
   const openShows = data.shows.filter(s => s.status === 'open' || s.status === 'previews');
 
   console.log(`Checking ${openShows.length} open/preview shows...\n`);
 
   let showsWithMissingImages = [];
-  let totalTicketFixes = 0;
+  let changesMade = false;
 
   for (const show of openShows) {
     console.log(`Checking: ${show.title}`);
 
-    // 1. Check and fix ticket links
-    const ticketFixes = await fixTicketLinks(show);
-    if (ticketFixes.length > 0) {
-      totalTicketFixes += ticketFixes.length;
-      results.fixed.push(...ticketFixes);
-      ticketFixes.forEach(f => console.log(`  ✓ ${f}`));
+    // 1. Fix synopsis
+    const synopsisFix = await fixSynopsis(show, todayTixIds);
+    if (synopsisFix) {
+      results.fixed.push(synopsisFix);
+      console.log(`    ✓ ${synopsisFix}`);
+      changesMade = true;
+      await sleep(1000); // Rate limit
     }
 
-    // 2. Check for missing images (will trigger workflow)
+    // 2. Fix ticket links (just clean up, don't flag)
+    const ticketFix = fixTicketLinks(show);
+    if (ticketFix) {
+      results.fixed.push(ticketFix);
+      console.log(`    ✓ ${ticketFix}`);
+      changesMade = true;
+    }
+
+    // 3. Check for missing images (will trigger workflow)
     const missingImages = checkMissingImages(show);
     if (missingImages.length > 0) {
       showsWithMissingImages.push({
@@ -198,10 +284,10 @@ async function main() {
         title: show.title,
         missing: missingImages
       });
-      console.log(`  ⚠ Missing images: ${missingImages.join(', ')}`);
+      console.log(`    ⚠ Missing images: ${missingImages.join(', ')}`);
     }
 
-    // 3. Check for metadata that needs human attention
+    // 4. Check for creative team (only thing that might need humans)
     const metadataIssues = checkMissingMetadata(show);
     if (metadataIssues.length > 0) {
       results.needsHumanAttention.push({
@@ -209,22 +295,21 @@ async function main() {
         showTitle: show.title,
         issues: metadataIssues
       });
-      metadataIssues.forEach(i => console.log(`  📋 ${i.message}`));
+      metadataIssues.forEach(i => console.log(`    📋 ${i.message}`));
     }
   }
 
   // Save updated shows data
-  if (totalTicketFixes > 0) {
+  if (changesMade) {
     saveShows(data);
-    console.log(`\n✅ Saved ${totalTicketFixes} ticket link fixes`);
+    console.log(`\n✅ Saved changes to shows.json`);
   }
 
-  // Output for GitHub Actions
+  // Flag shows needing images
   if (showsWithMissingImages.length > 0) {
-    results.triggeredWorkflows.push('fetch-all-image-formats');
+    results.triggeredWorkflows.push('fetch-show-images-auto');
     console.log(`\n🖼️  ${showsWithMissingImages.length} shows need images - will trigger fetch workflow`);
 
-    // Write shows needing images for the workflow to pick up
     fs.writeFileSync(
       path.join(__dirname, '..', 'data', 'shows-needing-images.json'),
       JSON.stringify(showsWithMissingImages, null, 2)
@@ -236,10 +321,11 @@ async function main() {
   console.log('SUMMARY');
   console.log('='.repeat(60));
   console.log(`Auto-fixed: ${results.fixed.length} issues`);
-  console.log(`Needs human attention: ${results.needsHumanAttention.length} shows`);
+  console.log(`Needs images: ${showsWithMissingImages.length} shows`);
+  console.log(`Needs human attention: ${results.needsHumanAttention.length} shows (creative team only)`);
   console.log(`Workflows to trigger: ${results.triggeredWorkflows.join(', ') || 'none'}`);
 
-  // Write results for workflow
+  // Write results
   fs.writeFileSync(
     path.join(__dirname, '..', 'data', 'auto-fix-results.json'),
     JSON.stringify(results, null, 2)
