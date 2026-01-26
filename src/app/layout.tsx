@@ -202,7 +202,7 @@ export default function RootLayout({
               <div className="flex items-center gap-2 text-sm text-gray-400">
                 <Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link>
                 <span className="text-gray-600">|</span>
-                <span>Data from critics, audiences & Reddit</span>
+                <span>Every show. Every review. One score.</span>
               </div>
             </div>
             <p className="mt-4 pt-4 border-t border-white/5 text-center text-xs text-gray-500">
