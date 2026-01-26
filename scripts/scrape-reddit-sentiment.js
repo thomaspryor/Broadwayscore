@@ -1,23 +1,22 @@
 #!/usr/bin/env node
 
 /**
- * Scrape Reddit r/broadway for show discussions and analyze sentiment
+ * Reddit Buzz Scraper for Broadway Scorecard
  *
- * Uses ScrapingBee to fetch Reddit JSON endpoints (bypasses datacenter IP blocks)
+ * Measures actual Reddit "buzz" - not just post-viewing reviews, but:
+ * - How often people recommend the show
+ * - How enthusiastically people discuss it
+ * - Volume of positive mentions
+ * - Engagement (upvotes) on show discussions
  *
- * This script:
- * 1. Searches r/broadway for discussions about each show
- * 2. Filters to find genuine audience reviews (people who saw the show)
- * 3. Uses Claude to analyze sentiment of each comment
- * 4. Aggregates to a show-level score
- * 5. Updates data/audience-buzz.json with Reddit data
+ * Uses ScrapingBee to fetch Reddit JSON endpoints.
  *
  * Environment variables:
  *   SCRAPINGBEE_API_KEY - ScrapingBee API key for fetching Reddit
  *   ANTHROPIC_API_KEY - Claude API key for sentiment analysis
  *
  * Usage:
- *   node scripts/scrape-reddit-sentiment.js [--show=hamilton-2015] [--dry-run] [--limit=5]
+ *   node scripts/scrape-reddit-sentiment.js [--show=hamilton-2015] [--dry-run] [--limit=5] [--verbose]
  */
 
 const fs = require('fs');
@@ -28,13 +27,13 @@ const https = require('https');
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const dryRun = args.includes('--dry-run');
+const verbose = args.includes('--verbose');
 const limitArg = args.find(a => a.startsWith('--limit='));
 const showLimit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 
 // Config
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 const SUBREDDIT = 'broadway';
-const COMMENTS_PER_SHOW = 50;
 
 // Load shows data
 const showsPath = path.join(__dirname, '../data/shows.json');
@@ -53,7 +52,6 @@ function fetchViaScrapingBee(url) {
       return;
     }
 
-    // ScrapingBee with premium proxy for Reddit (residential IPs)
     const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false&premium_proxy=true`;
 
     https.get(apiUrl, (res) => {
@@ -62,10 +60,8 @@ function fetchViaScrapingBee(url) {
       res.on('end', () => {
         if (res.statusCode === 200) {
           try {
-            // Try to parse as JSON
             resolve(JSON.parse(data));
           } catch (e) {
-            // If it's not JSON, check if it's an error page
             if (data.includes('<html') || data.includes('<!DOCTYPE')) {
               reject(new Error('Got HTML instead of JSON - Reddit may be blocking'));
             } else {
@@ -80,124 +76,103 @@ function fetchViaScrapingBee(url) {
   });
 }
 
-/**
- * Sleep helper
- */
 function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
 /**
- * Search Reddit for show discussions
+ * Search for all posts mentioning the show
+ * Uses multiple search strategies to capture different types of buzz
  */
-async function searchShowDiscussions(showTitle) {
-  // Clean show title for search
+async function searchShowPosts(showTitle) {
+  // Clean title for search
   const cleanTitle = showTitle.replace(/[()]/g, '').trim();
 
-  // Build search queries
-  const queries = [
-    `${cleanTitle} saw`,
-    `${cleanTitle} review`,
+  // Multiple search strategies to capture different types of buzz
+  const searches = [
+    // Direct title search (captures most mentions)
+    { query: cleanTitle, sort: 'relevance' },
+    // Top posts (captures highest engagement)
+    { query: cleanTitle, sort: 'top' },
+    // Review-tagged posts
+    { query: `flair:Review ${cleanTitle}`, sort: 'relevance' },
+    // Recommendation contexts
+    { query: `${cleanTitle} recommend`, sort: 'relevance' },
+    { query: `${cleanTitle} "must see"`, sort: 'relevance' },
+    { query: `${cleanTitle} favorite`, sort: 'relevance' },
   ];
 
   const allPosts = [];
+  const seenIds = new Set();
 
-  for (const query of queries) {
-    const encoded = encodeURIComponent(query);
-    const url = `https://old.reddit.com/r/${SUBREDDIT}/search.json?q=${encoded}&restrict_sr=on&sort=relevance&t=all&limit=25`;
+  for (const search of searches) {
+    const encoded = encodeURIComponent(search.query);
+    const url = `https://old.reddit.com/r/${SUBREDDIT}/search.json?q=${encoded}&restrict_sr=on&sort=${search.sort}&t=all&limit=50`;
 
     try {
       const response = await fetchViaScrapingBee(url);
       if (response.data?.children) {
-        allPosts.push(...response.data.children.map(c => c.data));
+        for (const child of response.data.children) {
+          const post = child.data;
+          if (!seenIds.has(post.id)) {
+            seenIds.add(post.id);
+            allPosts.push({
+              id: post.id,
+              title: post.title,
+              selftext: post.selftext || '',
+              score: post.score || 0,
+              num_comments: post.num_comments || 0,
+              created_utc: post.created_utc,
+              link_flair_text: post.link_flair_text || null,
+              permalink: post.permalink,
+              subreddit: post.subreddit,
+            });
+          }
+        }
       }
     } catch (e) {
-      console.error(`  Search failed for "${query}":`, e.message);
+      if (verbose) console.error(`  Search failed for "${search.query}":`, e.message);
     }
 
-    // Rate limiting
     await sleep(2000);
   }
 
-  // Deduplicate by post ID
-  const seen = new Set();
-  return allPosts.filter(p => {
-    if (seen.has(p.id)) return false;
-    seen.add(p.id);
-    return true;
-  });
+  // Sort by score (engagement) descending
+  allPosts.sort((a, b) => b.score - a.score);
+
+  return allPosts;
 }
 
 /**
  * Get comments from a post
  */
 async function getPostComments(postId, subreddit = SUBREDDIT) {
-  const url = `https://old.reddit.com/r/${subreddit}/comments/${postId}.json?limit=100&depth=2`;
+  const url = `https://old.reddit.com/r/${subreddit}/comments/${postId}.json?limit=200&depth=3`;
 
   try {
     const response = await fetchViaScrapingBee(url);
-    // Response is array: [post, comments]
     if (Array.isArray(response) && response[1]?.data?.children) {
       return response[1].data.children
         .filter(c => c.kind === 't1')
-        .map(c => c.data)
-        .filter(c => c.body && c.body.length >= 50);
+        .map(c => ({
+          body: c.data.body,
+          score: c.data.score || 0,
+          id: c.data.id,
+        }))
+        .filter(c => c.body && c.body.length >= 30 && c.body !== '[deleted]' && c.body !== '[removed]');
     }
   } catch (e) {
-    console.error(`  Failed to get comments for ${postId}:`, e.message);
+    if (verbose) console.error(`  Failed to get comments for ${postId}:`, e.message);
   }
 
   return [];
 }
 
 /**
- * Filter comments to those likely from people who saw the show
+ * Analyze a batch of content (posts and comments) for show sentiment
+ * Uses Claude to classify sentiment and enthusiasm level
  */
-function filterAudienceComments(comments, showTitle) {
-  const audienceIndicators = [
-    /i (saw|watched|went to|attended|caught|just saw)/i,
-    /we (saw|watched|went to|attended)/i,
-    /when i (saw|watched) it/i,
-    /i've seen (it|this|the show)/i,
-    /saw it (last|this|yesterday|today|on)/i,
-    /my (favorite|least favorite) part/i,
-    /the (cast|actors|leads|ensemble) (was|were)/i,
-    /the (music|songs|score|choreography|dancing|staging|set|costumes)/i,
-    /standing ovation/i,
-    /\d+ out of (5|10)/i,
-    /\d\/10/i,
-    /★+/,
-  ];
-
-  const exclusionPatterns = [
-    /\b(cast recording|soundtrack|album|spotify|apple music)\b/i,
-    /\b(movie|film|streaming|netflix|disney\+)\b/i,
-    /\b(tour|touring|national tour)\b/i,
-    /\b(anyone know|does anyone|when does|how much|where can)\b/i,
-  ];
-
-  return comments.filter(comment => {
-    const text = comment.body;
-
-    if (exclusionPatterns.some(p => p.test(text))) {
-      return false;
-    }
-
-    if (audienceIndicators.some(p => p.test(text))) {
-      return true;
-    }
-
-    const opinionWords = /\b(loved|hated|amazing|incredible|terrible|boring|mediocre|overrated|underrated|favorite|worst|best|fantastic|awful|disappointed|blown away|meh)\b/i;
-    const mentionsShow = text.toLowerCase().includes(showTitle.toLowerCase().replace(/[^\w\s]/g, ''));
-
-    return mentionsShow && opinionWords.test(text);
-  });
-}
-
-/**
- * Analyze sentiment of comments using Claude
- */
-async function analyzeSentiment(comments) {
+async function analyzeContent(showTitle, posts, comments) {
   const Anthropic = require('@anthropic-ai/sdk').default;
   const apiKey = process.env.ANTHROPIC_API_KEY;
 
@@ -207,37 +182,87 @@ async function analyzeSentiment(comments) {
 
   const client = new Anthropic({ apiKey });
 
-  const SENTIMENT_PROMPT = `You are analyzing Reddit comments about Broadway shows to determine audience sentiment.
+  // Prepare content for analysis
+  // Include post titles, post bodies, and comments
+  const contentItems = [];
 
-For each comment, classify the sentiment as:
-- "positive" (enjoyed the show, recommends it)
-- "negative" (didn't enjoy, criticizes the show)
-- "mixed" (some positive and negative points)
-- "neutral" (factual statement, no clear opinion)
+  // Add post titles and bodies (high signal)
+  for (const post of posts.slice(0, 30)) {
+    const text = post.title + (post.selftext ? '\n' + post.selftext.slice(0, 500) : '');
+    contentItems.push({
+      type: 'post',
+      text: text.slice(0, 600),
+      score: post.score,
+      isReview: post.link_flair_text?.toLowerCase().includes('review'),
+    });
+  }
 
-Also assign a confidence score: "high", "medium", or "low".
+  // Add top comments (sorted by upvotes)
+  const topComments = comments
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 50);
 
-Comments to analyze:
+  for (const comment of topComments) {
+    contentItems.push({
+      type: 'comment',
+      text: comment.body.slice(0, 400),
+      score: comment.score,
+    });
+  }
+
+  if (contentItems.length === 0) {
+    return null;
+  }
+
+  // Batch analyze with Claude
+  const ANALYSIS_PROMPT = `You are analyzing Reddit r/Broadway discussions about "${showTitle}" to measure audience buzz and sentiment.
+
+For each item, classify:
+1. **relevance**: Is this actually about the Broadway show "${showTitle}"? (yes/no)
+2. **sentiment**: What is the sentiment toward the show?
+   - "enthusiastic" = Raving, must-see, absolute favorite, can't stop thinking about it
+   - "positive" = Enjoyed it, would recommend, good experience
+   - "mixed" = Some positives and negatives, lukewarm
+   - "negative" = Did not enjoy, would not recommend, disappointed
+   - "neutral" = Just mentioning the show, no clear opinion
+3. **is_recommendation**: Is this person recommending the show to others? (yes/no)
+
+Content to analyze:
 `;
 
-  const batchSize = 10;
-  const results = [];
+  const results = {
+    totalItems: 0,
+    relevantItems: 0,
+    sentimentCounts: { enthusiastic: 0, positive: 0, mixed: 0, negative: 0, neutral: 0 },
+    recommendations: 0,
+    totalUpvotes: 0,
+    reviewPosts: 0,
+    sampleComments: [],
+  };
 
-  for (let i = 0; i < comments.length; i += batchSize) {
-    const batch = comments.slice(i, i + batchSize);
-    const commentTexts = batch.map((c, idx) => `[${idx + 1}] ${c.body.slice(0, 500)}`).join('\n\n');
+  // Process in batches
+  const batchSize = 15;
+  for (let i = 0; i < contentItems.length; i += batchSize) {
+    const batch = contentItems.slice(i, i + batchSize);
+    const batchText = batch.map((item, idx) => {
+      const prefix = item.type === 'post' ? (item.isReview ? '[REVIEW POST]' : '[POST]') : '[COMMENT]';
+      return `[${idx + 1}] ${prefix} (${item.score} upvotes)\n${item.text}`;
+    }).join('\n\n---\n\n');
 
     try {
       const response = await client.messages.create({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 500,
+        max_tokens: 1000,
         messages: [
           {
             role: 'user',
-            content: SENTIMENT_PROMPT + commentTexts + `
+            content: ANALYSIS_PROMPT + batchText + `
 
-Respond with a JSON array, one object per comment:
-[{"id": 1, "sentiment": "positive|negative|mixed|neutral", "confidence": "high|medium|low"}, ...]`
+Respond with a JSON array, one object per item:
+[{"id": 1, "relevance": "yes|no", "sentiment": "enthusiastic|positive|mixed|negative|neutral", "is_recommendation": "yes|no"}, ...]
+
+Be generous with "enthusiastic" - if someone is clearly excited, raving, or says it's a must-see, that's enthusiastic.
+Be generous with "positive" - if someone enjoyed it overall despite minor quibbles, that's positive, not mixed.`
           }
         ]
       });
@@ -246,11 +271,36 @@ Respond with a JSON array, one object per comment:
       const match = text.match(/\[[\s\S]*\]/);
       if (match) {
         const parsed = JSON.parse(match[0]);
-        results.push(...parsed.map((r, idx) => ({
-          ...r,
-          comment: batch[idx],
-          upvotes: batch[idx].score || 0,
-        })));
+        for (let j = 0; j < parsed.length && j < batch.length; j++) {
+          const analysis = parsed[j];
+          const item = batch[j];
+
+          results.totalItems++;
+
+          if (analysis.relevance === 'yes') {
+            results.relevantItems++;
+            results.sentimentCounts[analysis.sentiment]++;
+            results.totalUpvotes += item.score;
+
+            if (analysis.is_recommendation === 'yes') {
+              results.recommendations++;
+            }
+
+            if (item.type === 'post' && item.isReview) {
+              results.reviewPosts++;
+            }
+
+            // Save sample comments for debugging
+            if (results.sampleComments.length < 5 &&
+                (analysis.sentiment === 'enthusiastic' || analysis.sentiment === 'positive')) {
+              results.sampleComments.push({
+                text: item.text.slice(0, 200),
+                sentiment: analysis.sentiment,
+                score: item.score,
+              });
+            }
+          }
+        }
       }
     } catch (e) {
       console.error('  Claude analysis failed:', e.message);
@@ -263,53 +313,72 @@ Respond with a JSON array, one object per comment:
 }
 
 /**
- * Calculate aggregate score from sentiment results
+ * Calculate buzz score from analysis results
+ *
+ * Scoring methodology:
+ * - Base score from sentiment distribution (enthusiastic=95, positive=80, mixed=55, negative=25)
+ * - Bonus for high recommendation rate
+ * - Bonus for high engagement (upvotes)
+ * - Weighted by volume of discussion
  */
-function calculateScore(sentimentResults) {
-  if (sentimentResults.length === 0) return null;
-
-  const weights = {
-    high: 1.0,
-    medium: 0.7,
-    low: 0.4,
-  };
-
-  const sentimentScores = {
-    positive: 85,
-    mixed: 60,
-    neutral: 50,
-    negative: 25,
-  };
-
-  let totalWeight = 0;
-  let weightedSum = 0;
-  let positiveCount = 0;
-  let negativeCount = 0;
-  let mixedCount = 0;
-
-  for (const result of sentimentResults) {
-    const weight = weights[result.confidence] * (1 + Math.log10(Math.max(1, result.upvotes)));
-    const score = sentimentScores[result.sentiment];
-
-    totalWeight += weight;
-    weightedSum += score * weight;
-
-    if (result.sentiment === 'positive') positiveCount++;
-    else if (result.sentiment === 'negative') negativeCount++;
-    else if (result.sentiment === 'mixed') mixedCount++;
+function calculateBuzzScore(analysis) {
+  if (!analysis || analysis.relevantItems === 0) {
+    return null;
   }
 
-  const score = Math.round(weightedSum / totalWeight);
-  const total = sentimentResults.length;
+  const { sentimentCounts, relevantItems, recommendations, totalUpvotes } = analysis;
+
+  // Sentiment scores (more generous than before)
+  const sentimentScores = {
+    enthusiastic: 95,
+    positive: 80,
+    mixed: 55,
+    negative: 25,
+    neutral: 50,
+  };
+
+  // Calculate weighted sentiment score
+  let weightedSum = 0;
+  let totalWeight = 0;
+
+  for (const [sentiment, count] of Object.entries(sentimentCounts)) {
+    if (count > 0) {
+      weightedSum += sentimentScores[sentiment] * count;
+      totalWeight += count;
+    }
+  }
+
+  let baseScore = totalWeight > 0 ? weightedSum / totalWeight : 50;
+
+  // Recommendation bonus (up to +5 points)
+  const recommendationRate = recommendations / relevantItems;
+  const recommendationBonus = Math.min(5, recommendationRate * 10);
+
+  // Enthusiasm bonus (up to +5 points for high enthusiasm rate)
+  const enthusiasmRate = sentimentCounts.enthusiastic / relevantItems;
+  const enthusiasmBonus = Math.min(5, enthusiasmRate * 15);
+
+  // Calculate final score (capped at 99)
+  const finalScore = Math.min(99, Math.round(baseScore + recommendationBonus + enthusiasmBonus));
+
+  // Calculate sentiment percentages
+  const total = relevantItems;
+  const positiveRate = (sentimentCounts.enthusiastic + sentimentCounts.positive) / total;
+  const mixedRate = sentimentCounts.mixed / total;
+  const negativeRate = sentimentCounts.negative / total;
 
   return {
-    score,
-    sampleSize: total,
+    score: finalScore,
+    sampleSize: relevantItems,
+    recommendations,
+    totalUpvotes,
     sentiment: {
-      positive: positiveCount / total,
-      mixed: mixedCount / total,
-      negative: negativeCount / total,
+      enthusiastic: sentimentCounts.enthusiastic / total,
+      positive: sentimentCounts.positive / total,
+      mixed: mixedRate,
+      negative: negativeRate,
     },
+    positiveRate, // enthusiastic + positive combined
   };
 }
 
@@ -319,54 +388,79 @@ function calculateScore(sentimentResults) {
 async function processShow(show) {
   console.log(`\nProcessing: ${show.title}`);
 
-  const posts = await searchShowDiscussions(show.title);
+  // Search for posts about this show
+  const posts = await searchShowPosts(show.title);
   console.log(`  Found ${posts.length} posts`);
 
   if (posts.length === 0) {
     return null;
   }
 
+  // Count review-tagged posts
+  const reviewPosts = posts.filter(p => p.link_flair_text?.toLowerCase().includes('review'));
+  console.log(`  ${reviewPosts.length} tagged as 'Review'`);
+
+  // Get comments from top posts (by engagement)
   let allComments = [];
-  for (const post of posts.slice(0, 5)) { // Reduced to 5 posts to save API calls
+  const postsToScrape = posts.slice(0, 10); // Top 10 posts by score
+
+  for (const post of postsToScrape) {
     const comments = await getPostComments(post.id, post.subreddit || SUBREDDIT);
     allComments.push(...comments);
 
-    if (allComments.length >= COMMENTS_PER_SHOW * 2) break;
-
+    if (allComments.length >= 150) break;
     await sleep(2000);
   }
 
-  console.log(`  Collected ${allComments.length} comments`);
+  console.log(`  Collected ${allComments.length} comments from top ${postsToScrape.length} posts`);
 
-  const audienceComments = filterAudienceComments(allComments, show.title);
-  console.log(`  Filtered to ${audienceComments.length} audience comments`);
+  // Analyze content with Claude
+  console.log(`  Analyzing sentiment...`);
+  const analysis = await analyzeContent(show.title, posts, allComments);
 
-  if (audienceComments.length < 5) {
-    console.log(`  Not enough comments, skipping`);
+  if (!analysis || analysis.relevantItems < 5) {
+    console.log(`  Not enough relevant content (${analysis?.relevantItems || 0} items), skipping`);
     return null;
   }
 
-  const topComments = audienceComments
-    .sort((a, b) => (b.score || 0) - (a.score || 0))
-    .slice(0, COMMENTS_PER_SHOW);
+  console.log(`  Analyzed ${analysis.relevantItems} relevant items out of ${analysis.totalItems} total`);
 
-  console.log(`  Analyzing sentiment of ${topComments.length} comments...`);
-  const sentimentResults = await analyzeSentiment(topComments);
-  console.log(`  Got ${sentimentResults.length} sentiment results`);
-
-  const scoreData = calculateScore(sentimentResults);
+  // Calculate buzz score
+  const scoreData = calculateBuzzScore(analysis);
   if (!scoreData) {
     return null;
   }
 
-  console.log(`  Reddit score: ${scoreData.score} (${scoreData.sampleSize} reviews)`);
-  console.log(`  Sentiment: ${Math.round(scoreData.sentiment.positive * 100)}% pos, ${Math.round(scoreData.sentiment.mixed * 100)}% mixed, ${Math.round(scoreData.sentiment.negative * 100)}% neg`);
+  // Log results
+  const enthusiasticPct = Math.round(scoreData.sentiment.enthusiastic * 100);
+  const positivePct = Math.round(scoreData.sentiment.positive * 100);
+  const mixedPct = Math.round(scoreData.sentiment.mixed * 100);
+  const negativePct = Math.round(scoreData.sentiment.negative * 100);
+
+  console.log(`  Reddit Buzz Score: ${scoreData.score}`);
+  console.log(`  Sentiment: ${enthusiasticPct}% enthusiastic, ${positivePct}% positive, ${mixedPct}% mixed, ${negativePct}% negative`);
+  console.log(`  Recommendations: ${scoreData.recommendations} (${Math.round(scoreData.recommendations / scoreData.sampleSize * 100)}%)`);
+  console.log(`  Total upvotes on analyzed content: ${scoreData.totalUpvotes}`);
+
+  if (verbose && analysis.sampleComments.length > 0) {
+    console.log(`  Sample positive comments:`);
+    for (const sample of analysis.sampleComments.slice(0, 3)) {
+      console.log(`    [${sample.sentiment}, ${sample.score} upvotes] "${sample.text.slice(0, 100)}..."`);
+    }
+  }
 
   return {
     score: scoreData.score,
     reviewCount: scoreData.sampleSize,
     lastUpdated: new Date().toISOString().split('T')[0],
-    sentiment: scoreData.sentiment,
+    sentiment: {
+      enthusiastic: scoreData.sentiment.enthusiastic,
+      positive: scoreData.sentiment.positive,
+      mixed: scoreData.sentiment.mixed,
+      negative: scoreData.sentiment.negative,
+    },
+    recommendations: scoreData.recommendations,
+    positiveRate: scoreData.positiveRate,
   };
 }
 
@@ -381,6 +475,7 @@ function updateAudienceBuzz(showId, redditData) {
 
   audienceBuzz.shows[showId].sources.reddit = redditData;
 
+  // Recalculate combined score
   const sources = audienceBuzz.shows[showId].sources;
   const scores = [];
   const weights = [];
@@ -419,8 +514,8 @@ function updateAudienceBuzz(showId, redditData) {
  * Main function
  */
 async function main() {
-  console.log('Reddit Sentiment Scraper for Broadway Scorecard');
-  console.log('Using ScrapingBee with premium proxy for Reddit access\n');
+  console.log('Reddit Buzz Scraper for Broadway Scorecard');
+  console.log('Measuring audience buzz from r/Broadway discussions\n');
 
   if (!SCRAPINGBEE_KEY) {
     console.error('Error: SCRAPINGBEE_API_KEY environment variable must be set');
