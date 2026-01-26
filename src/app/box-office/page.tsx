@@ -5,13 +5,13 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { ThisWeekTable, AllTimeTable } from '@/components/SortableBoxOfficeTable';
 
 export const metadata: Metadata = {
-  title: 'Broadway Box Office - Weekly Grosses & All-Time Stats',
+  title: 'Box Office Scorecard - Broadway Weekly Grosses & Stats',
   description: 'Complete Broadway box office data: weekly grosses, capacity percentages, average ticket prices, and all-time statistics for every show currently playing.',
   alternates: {
     canonical: `${BASE_URL}/box-office`,
   },
   openGraph: {
-    title: 'Broadway Box Office Leaderboard',
+    title: 'Box Office Scorecard - Broadway Weekly Grosses',
     description: 'Weekly grosses, capacity, and all-time box office stats for every Broadway show.',
     url: `${BASE_URL}/box-office`,
     type: 'article',

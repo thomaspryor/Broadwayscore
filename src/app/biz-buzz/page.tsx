@@ -5,13 +5,13 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { RecoupTable, CapitalizationTable } from '@/components/SortableBizBuzzTables';
 
 export const metadata: Metadata = {
-  title: 'Broadway Commercial Scorecard - Which Shows Make Money?',
+  title: 'Commercial Scorecard - Which Broadway Shows Make Money?',
   description: 'The business side of Broadway: see which shows have recouped their investment, weeks to profitability, capitalization costs, and commercial designations from Miracle to Flop.',
   alternates: {
     canonical: `${BASE_URL}/biz-buzz`,
   },
   openGraph: {
-    title: 'Broadway Commercial Scorecard (Biz Buzz)',
+    title: 'Commercial Scorecard - Broadway Show Profitability',
     description: 'Which Broadway shows are profitable? Recoupment data, capitalization costs, and commercial performance ratings.',
     url: `${BASE_URL}/biz-buzz`,
     type: 'article',
@@ -109,7 +109,7 @@ export default function BizBuzzPage() {
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
-    { name: 'Biz Buzz', url: `${BASE_URL}/biz-buzz` },
+    { name: 'Commercial Scorecard', url: `${BASE_URL}/biz-buzz` },
   ]);
 
   // Order designations for display (TBD last)
