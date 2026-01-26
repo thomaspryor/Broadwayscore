@@ -26,6 +26,7 @@ const https = require('https');
 // Parse command line args
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+const showsArg = args.find(a => a.startsWith('--shows='))?.split('=')[1]; // Comma-separated show IDs/slugs
 const dryRun = args.includes('--dry-run');
 const verbose = args.includes('--verbose');
 const limitArg = args.find(a => a.startsWith('--limit='));
@@ -592,12 +593,24 @@ async function main() {
 
   let shows = showsData.shows.filter(s => s.status === 'open' || s.status === 'closed');
 
+  // Handle single show filter
   if (showFilter) {
     shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
     if (shows.length === 0) {
       console.error(`Show not found: ${showFilter}`);
       process.exit(1);
     }
+  }
+
+  // Handle multiple shows (comma-separated)
+  if (showsArg) {
+    const showIds = showsArg.split(',').map(s => s.trim()).filter(Boolean);
+    shows = showsData.shows.filter(s => showIds.includes(s.id) || showIds.includes(s.slug));
+    if (shows.length === 0) {
+      console.error(`No shows found matching: ${showsArg}`);
+      process.exit(1);
+    }
+    console.log(`Processing specific shows: ${shows.map(s => s.title).join(', ')}`);
   }
 
   if (showLimit) {

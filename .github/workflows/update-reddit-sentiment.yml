@@ -48,6 +48,9 @@ jobs:
           if [ -n "${{ github.event.inputs.show }}" ]; then
             ARGS="$ARGS --show=${{ github.event.inputs.show }}"
           fi
+          if [ -n "${{ github.event.inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ github.event.inputs.shows }}"
+          fi
           if [ -n "${{ github.event.inputs.limit }}" ]; then
             ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
           fi
