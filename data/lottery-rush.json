@@ -45,6 +45,13 @@
         "time": "Weekday: entries until 9:30 AM day before. Weekend: entries until 9:30 AM Friday. Purchase by 3 PM day prior.",
         "instructions": "Tickets must be purchased by 3 PM day prior. Tickets are non-transferable. May be partial view and pairs may be split."
       },
+      "specialLottery": {
+        "name": "15th Anniversary Lottery",
+        "platform": "Book of Mormon",
+        "url": "https://bookofmormonbroadway.com/15-lottery",
+        "price": 15,
+        "instructions": "Special 15th anniversary $15 lottery tickets."
+      },
       "rush": {
         "type": "digital",
         "platform": "TodayTix",
@@ -185,7 +192,11 @@
         "instructions": "Enter for the entire upcoming week at once. Front row orchestra seats. Winners have 2 hours to claim. Pick up at box office with photo ID matching name drawn."
       },
       "rush": null,
-      "standingRoom": null
+      "standingRoom": {
+        "price": 40,
+        "time": "Box office opening day of",
+        "instructions": "Available only if sold out. Standing at back of orchestra."
+      }
     },
     "harry-potter-2021": {
       "lottery": {
@@ -334,7 +345,11 @@
         "instructions": "Winners have 60 minutes to pay online with credit card."
       },
       "rush": null,
-      "standingRoom": null
+      "standingRoom": {
+        "price": 35,
+        "time": "Box office opening day of",
+        "instructions": "Available only if sold out. See mjthemusical.com/faq for details."
+      }
     },
     "moulin-rouge-2019": {
       "lottery": {
@@ -383,7 +398,7 @@
         "type": "digital",
         "platform": "Telecharge",
         "url": "https://rush.telecharge.com",
-        "price": 49,
+        "price": 59,
         "time": "Opens 12 AM day before, closes 3 PM day before. Winners drawn at 10 AM and 3 PM.",
         "instructions": "Winners have 5 hours to claim and purchase online. Tickets will be emailed."
       },
@@ -393,6 +408,13 @@
         "time": "10 AM Mon-Sat, 12 PM Sunday",
         "location": "John Golden Theatre box office",
         "instructions": "Available day of performance. Limit 2 tickets."
+      },
+      "digitalRush": {
+        "platform": "Telecharge",
+        "url": "https://rush.telecharge.com",
+        "price": 59,
+        "time": "11 AM day of",
+        "instructions": "Subject to availability. Limit 2 tickets."
       },
       "standingRoom": null
     },
@@ -482,9 +504,40 @@
       },
       "standingRoom": null
     },
+    "stranger-things-2025": {
+      "lottery": {
+        "type": "digital",
+        "platform": "Broadway Direct",
+        "url": "https://lottery.broadwaydirect.com/show/st-nyc/",
+        "price": 45,
+        "time": "Opens 9 AM day before, closes 3 PM day before",
+        "instructions": "Winners have 60 minutes to pay online with credit card."
+      },
+      "rush": {
+        "type": "general",
+        "price": 40,
+        "time": "10 AM Mon-Sat, 12 PM Sunday",
+        "location": "Marquis Theatre box office",
+        "instructions": "Available day of performance. Limit 2 tickets."
+      },
+      "standingRoom": null
+    },
     "two-strangers-bway-2025": {
-      "lottery": null,
-      "rush": null,
+      "lottery": {
+        "type": "digital",
+        "platform": "Telecharge",
+        "url": "https://my.socialtoaster.com/st/lottery_select/?key=BROADWAY",
+        "price": 48,
+        "time": "Opens day before, closes 3 PM day before",
+        "instructions": "Winners have 5 hours to claim and purchase online. Tickets will be emailed."
+      },
+      "rush": {
+        "type": "general",
+        "price": 42,
+        "time": "10 AM Mon-Sat, 12 PM Sunday",
+        "location": "Longacre Theatre box office",
+        "instructions": "Available day of performance. Limit 2 tickets."
+      },
       "standingRoom": null
     },
     "all-out-2025": {
