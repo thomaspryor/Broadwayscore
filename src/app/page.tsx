@@ -263,21 +263,26 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
   let score: number | null | undefined;
   let label: string | undefined;
   let tier: typeof SCORE_TIERS.mustSee | null = null;
+  let audienceEmoji: string | null = null;
 
   if (scoreMode === 'audience') {
     const audienceBuzz = getAudienceBuzz(show.id);
     if (audienceBuzz) {
-      score = audienceBuzz.combinedScore;
+      score = audienceBuzz.combinedScore;  // Used for sorting only, never displayed
       label = audienceBuzz.designation;
-      // Map audience designation to colors (use similar logic to critic tiers)
+      // Map audience designation to colors and emojis
       if (audienceBuzz.designation === 'Loving') {
         tier = { label: 'Loving', color: '#22c55e', tooltip: 'Audiences love it', range: '', glow: false };
+        audienceEmoji = '❤️';
       } else if (audienceBuzz.designation === 'Liking') {
         tier = { label: 'Liking', color: '#14b8a6', tooltip: 'Audiences like it', range: '', glow: false };
+        audienceEmoji = '👍';
       } else if (audienceBuzz.designation === 'Shrugging') {
         tier = { label: 'Shrugging', color: '#f59e0b', tooltip: 'Mixed audience reaction', range: '', glow: false };
+        audienceEmoji = '🤷';
       } else if (audienceBuzz.designation === 'Loathing') {
         tier = { label: 'Loathing', color: '#ef4444', tooltip: 'Audiences dislike it', range: '', glow: false };
+        audienceEmoji = '💩';
       }
     }
   } else {
@@ -337,23 +342,47 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
         </p>
       </div>
 
-      {/* Score - responsive badge (smaller on mobile, larger on desktop) */}
+      {/* Score Badge */}
       <div className="flex-shrink-0 flex flex-col items-center justify-start pt-1">
-        {tier && (
-          <span
-            className="text-[9px] font-semibold mb-1 uppercase tracking-wide whitespace-nowrap"
-            style={{ color: tier.color }}
-            title={tier.tooltip}
-          >
-            {tier.label}
-          </span>
+        {scoreMode === 'audience' ? (
+          // Audience mode: Show designation badge with emoji (no numeric score)
+          tier && audienceEmoji && (
+            <div className="flex flex-col items-center gap-1">
+              <div className="text-4xl sm:text-5xl" aria-hidden="true">
+                {audienceEmoji}
+              </div>
+              <span
+                className="text-[10px] sm:text-xs font-bold uppercase tracking-wide whitespace-nowrap px-2 py-0.5 rounded"
+                style={{
+                  color: tier.color,
+                  backgroundColor: `${tier.color}20`,
+                }}
+                title={tier.tooltip}
+              >
+                {tier.label}
+              </span>
+            </div>
+          )
+        ) : (
+          // Critics mode: Show tier label + numeric score badge
+          <>
+            {tier && (
+              <span
+                className="text-[9px] font-semibold mb-1 uppercase tracking-wide whitespace-nowrap"
+                style={{ color: tier.color }}
+                title={tier.tooltip}
+              >
+                {tier.label}
+              </span>
+            )}
+            <ScoreBadge
+              score={score}
+              size="lg"
+              reviewCount={show.criticScore?.reviewCount}
+              status={show.status}
+            />
+          </>
         )}
-        <ScoreBadge
-          score={scoreMode === 'audience' ? (score !== undefined && score !== null ? Math.round(score) : null) : score}
-          size="lg"
-          reviewCount={scoreMode === 'critics' ? show.criticScore?.reviewCount : undefined}
-          status={show.status}
-        />
       </div>
     </Link>
   );
