@@ -815,10 +815,23 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
-        {/* Show Details */}
+        {/* Quick Facts - Structured data for users and AI systems */}
         <div className="card p-4 sm:p-5 mb-8">
-          <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Details</h2>
+          <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Quick Facts</h2>
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
+            {/* Key metrics first for AI extractability */}
+            {score && show.criticScore && show.criticScore.reviewCount >= 5 && (
+              <div>
+                <dt className="text-gray-500">Critic Score</dt>
+                <dd className="text-white mt-0.5 font-semibold">{Math.round(score)}/100 <span className="font-normal text-gray-400">({show.criticScore.reviewCount} reviews)</span></dd>
+              </div>
+            )}
+            <div>
+              <dt className="text-gray-500">Status</dt>
+              <dd className="text-white mt-0.5">
+                {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : 'Closed'}
+              </dd>
+            </div>
             <div>
               <dt className="text-gray-500">{show.status === 'previews' ? 'Opens' : 'Opened'}</dt>
               <dd className="text-white mt-0.5">{formatDate(show.openingDate)}</dd>
