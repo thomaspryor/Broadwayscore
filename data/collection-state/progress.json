@@ -5,17 +5,29 @@
     "book-of-mormon-2011/hollywood-reporter--unknown.json",
     "book-of-mormon-2011/variety--unknown.json",
     "bug-2026/variety--aramide-timubu.json",
-    "chess-2025/hollywood-reporter--richard-lawson.json"
+    "chess-2025/hollywood-reporter--richard-lawson.json",
+    "death-becomes-her-2024/nytimes--jesse-green.json",
+    "death-becomes-her-2024/variety--frank-rizzo.json",
+    "hadestown-2019/nytimes--ben-brantley.json",
+    "hadestown-2019/nytimes--jesse-green.json",
+    "hamilton-2015/act-three--doug-marino.json",
+    "hamilton-2015/three-tomatoes--valerie-samaldone.json",
+    "harry-potter-2021/nytimes--alexis-soloski.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
     "back-to-the-future-2023/thr--frank-scheck.json",
     "book-of-mormon-2011/VULT--jesse-green.json",
-    "bug-2026/nytimes--jason-zinoman.json"
+    "bug-2026/nytimes--jason-zinoman.json",
+    "chess-2025/nytimes--elisabeth-vincentelli.json",
+    "hadestown-2019/variety--marilyn-stasio.json",
+    "hamilton-2015/THR--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "hamilton-2015/act-three--doug-marino.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
@@ -24,9 +36,15 @@
       "book-of-mormon-2011/hollywood-reporter--unknown.json",
       "book-of-mormon-2011/variety--unknown.json",
       "bug-2026/variety--aramide-timubu.json",
-      "chess-2025/hollywood-reporter--richard-lawson.json"
+      "chess-2025/hollywood-reporter--richard-lawson.json",
+      "death-becomes-her-2024/nytimes--jesse-green.json",
+      "death-becomes-her-2024/variety--frank-rizzo.json",
+      "hadestown-2019/nytimes--ben-brantley.json",
+      "hadestown-2019/nytimes--jesse-green.json",
+      "hamilton-2015/three-tomatoes--valerie-samaldone.json",
+      "harry-potter-2021/nytimes--alexis-soloski.json"
     ]
   },
   "startTime": "2026-01-26T15:19:58.337Z",
-  "lastProcessed": "chess-2025/hollywood-reporter--richard-lawson.json"
+  "lastProcessed": "harry-potter-2021/nytimes--alexis-soloski.json"
 }
