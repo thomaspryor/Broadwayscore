@@ -1,9 +1,10 @@
 {
   "_meta": {
-    "lastUpdated": "2026-01-25",
+    "lastUpdated": "2026-01-26",
     "sources": [
       "Show Score",
-      "Mezzanine"
+      "Mezzanine",
+      "Reddit"
     ],
     "designationThresholds": {
       "Loving It": "90-100",
@@ -11,7 +12,7 @@
       "Take-it-or-Leave-it": "60-74",
       "Loathing It": "0-59"
     },
-    "notes": "Combined score is weighted: Show Score 50%, Mezzanine 50% (when both available)"
+    "notes": "Combined score: Show Score 40%, Mezzanine 40%, Reddit 20% (when all available)"
   },
   "shows": {
     "hamilton-2015": {
@@ -33,8 +34,8 @@
     },
     "maybe-happy-ending-2024": {
       "title": "Maybe Happy Ending",
-      "designation": "Loving It",
-      "combinedScore": 94,
+      "designation": "Liking It",
+      "combinedScore": 89,
       "sources": {
         "showScore": {
           "score": 95,
@@ -45,7 +46,16 @@
           "reviewCount": 4750,
           "starRating": 4.6
         },
-        "reddit": null
+        "reddit": {
+          "score": 72,
+          "reviewCount": 21,
+          "lastUpdated": "2026-01-26",
+          "sentiment": {
+            "positive": 0.47619047619047616,
+            "mixed": 0.42857142857142855,
+            "negative": 0.047619047619047616
+          }
+        }
       }
     },
     "ragtime-2025": {
@@ -131,8 +141,8 @@
     },
     "the-outsiders-2024": {
       "title": "The Outsiders",
-      "designation": "Loving It",
-      "combinedScore": 90,
+      "designation": "Liking It",
+      "combinedScore": 87,
       "sources": {
         "showScore": {
           "score": 92,
@@ -143,7 +153,16 @@
           "reviewCount": 5548,
           "starRating": 4.4
         },
-        "reddit": null
+        "reddit": {
+          "score": 77,
+          "reviewCount": 24,
+          "lastUpdated": "2026-01-26",
+          "sentiment": {
+            "positive": 0.7916666666666666,
+            "mixed": 0.08333333333333333,
+            "negative": 0.041666666666666664
+          }
+        }
       }
     },
     "stranger-things-2024": {
@@ -226,7 +245,7 @@
     "two-strangers-bway-2025": {
       "title": "Two Strangers (Carry a Cake Across New York)",
       "designation": "Liking It",
-      "combinedScore": 87,
+      "combinedScore": 85,
       "sources": {
         "showScore": {
           "score": 90,
@@ -237,7 +256,16 @@
           "reviewCount": 1250,
           "starRating": 4.2
         },
-        "reddit": null
+        "reddit": {
+          "score": 76,
+          "reviewCount": 17,
+          "lastUpdated": "2026-01-26",
+          "sentiment": {
+            "positive": 0.7058823529411765,
+            "mixed": 0.17647058823529413,
+            "negative": 0
+          }
+        }
       }
     },
     "operation-mincemeat-2025": {
