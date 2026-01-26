@@ -67,6 +67,10 @@ ${browseSlugs.slice(0, 12).map(slug => {
 - [Box Office Leaderboard](${BASE_URL}/box-office): Weekly grosses, capacity, and all-time stats for every show
 - [Commercial Scorecard](${BASE_URL}/biz-buzz): Which shows make money - recoupment data, capitalization, designations
 
+### Discount Tickets
+- [Broadway Lotteries](${BASE_URL}/lotteries): Digital lotteries for discounted tickets ($10-60)
+- [Rush Tickets](${BASE_URL}/rush): Same-day rush tickets at box office or digital apps ($30-50)
+
 ### Other Resources
 - [Broadway Theater Map](${BASE_URL}/broadway-theaters-map): Interactive map of all Broadway theaters
 - [Directors Index](${BASE_URL}/director): Browse shows by director
