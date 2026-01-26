@@ -557,6 +557,11 @@ function HomePageInner() {
       );
     }
 
+    // Filter for closing soon - only show shows with closing dates
+    if (sort === 'closing_soon') {
+      result = result.filter(show => show.closingDate !== null && show.closingDate !== undefined);
+    }
+
     // Sort
     result.sort((a, b) => {
       switch (sort) {
@@ -813,12 +818,12 @@ function HomePageInner() {
       {/* Featured Rows */}
       <div className="mt-12 pt-8 border-t border-white/5">
         <FeaturedRow
-          title="Best New Musicals of the Season"
+          title="Best Recent Musicals"
           shows={bestNewMusicals}
           viewAllHref="/?type=musical&sort=score_desc"
         />
         <FeaturedRow
-          title="Best New Plays of the Season"
+          title="Best Recent Plays"
           shows={bestNewPlays}
           viewAllHref="/?type=play&sort=score_desc"
         />
