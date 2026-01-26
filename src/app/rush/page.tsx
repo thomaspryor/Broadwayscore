@@ -4,6 +4,7 @@ import { getAllShows, getLotteryRush, getLotteryRushLastUpdated, ShowLotteryRush
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
+import { RushTable } from '@/components/SortableLotteryRushTables';
 
 export const metadata: Metadata = {
   title: 'Broadway Rush Tickets - Same-Day Discount Tickets',
@@ -298,7 +299,14 @@ export default function RushPage() {
           </div>
         </div>
 
-        {/* Show List */}
+        {/* Sortable Table */}
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-white mb-3">All Rush Tickets</h2>
+          <RushTable data={showsWithRush.map(item => ({ show: item.show, rushData: item.rushData! }))} />
+        </div>
+
+        {/* Detailed Show Cards */}
+        <h2 className="text-lg font-bold text-white mb-3">Detailed View</h2>
         <div className="space-y-3">
           {showsWithRush.map((item, index) => (
             <RushShowCard

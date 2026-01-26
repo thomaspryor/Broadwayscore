@@ -154,9 +154,10 @@ export default function RootLayout({
               <div>
                 <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">Deals & Tickets</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
+                  <li><Link href="/best-value" className="hover:text-white transition-colors">Best Value Tickets</Link></li>
                   <li><Link href="/lotteries" className="hover:text-white transition-colors">Lottery Tickets</Link></li>
                   <li><Link href="/rush" className="hover:text-white transition-colors">Rush Tickets</Link></li>
-                  <li><Link href="/browse/short-broadway-shows" className="hover:text-white transition-colors">Short Shows</Link></li>
+                  <li><Link href="/standing-room" className="hover:text-white transition-colors">Standing Room</Link></li>
                   <li><Link href="/browse/broadway-shows-closing-soon" className="hover:text-white transition-colors">Closing Soon</Link></li>
                 </ul>
               </div>
@@ -167,6 +168,7 @@ export default function RootLayout({
                   <li><Link href="/browse/jukebox-musicals-on-broadway" className="hover:text-white transition-colors">Jukebox Musicals</Link></li>
                   <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office</Link></li>
                   <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>
+                  <li><Link href="/audience-buzz" className="hover:text-white transition-colors">Audience Buzz</Link></li>
                   <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
                   <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
                 </ul>

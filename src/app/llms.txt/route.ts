@@ -66,10 +66,13 @@ ${browseSlugs.slice(0, 12).map(slug => {
 ### Data & Analytics
 - [Box Office Leaderboard](${BASE_URL}/box-office): Weekly grosses, capacity, and all-time stats for every show
 - [Commercial Scorecard](${BASE_URL}/biz-buzz): Which shows make money - recoupment data, capitalization, designations
+- [Audience Buzz](${BASE_URL}/audience-buzz): What audiences think - Show Score, Mezzanine, and Reddit ratings
 
 ### Discount Tickets
+- [Best Value Tickets](${BASE_URL}/best-value): All discount options (lottery, rush, SRO) sorted by cheapest price
 - [Broadway Lotteries](${BASE_URL}/lotteries): Digital lotteries for discounted tickets ($10-60)
 - [Rush Tickets](${BASE_URL}/rush): Same-day rush tickets at box office or digital apps ($30-50)
+- [Standing Room Only](${BASE_URL}/standing-room): Standing room tickets for sold-out shows ($35-50)
 
 ### Other Resources
 - [Broadway Theater Map](${BASE_URL}/broadway-theaters-map): Interactive map of all Broadway theaters
