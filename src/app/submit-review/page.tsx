@@ -28,7 +28,7 @@ export default function SubmitReviewPage() {
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
               <span className="text-2xl">✓</span>
-              What We're Looking For
+              What We&apos;re Looking For
             </h2>
             <ul className="space-y-3 text-gray-700">
               <li className="flex items-start gap-3">
@@ -67,7 +67,7 @@ export default function SubmitReviewPage() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="bg-purple-100 text-purple-700 font-bold rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5">4</span>
-                <span>You'll see updates on the submission status (optional: subscribe to notifications)</span>
+                <span>You&apos;ll see updates on the submission status (optional: subscribe to notifications)</span>
               </li>
             </ol>
           </section>
@@ -112,7 +112,7 @@ export default function SubmitReviewPage() {
                 What if the review is paywalled?
               </h3>
               <p className="text-gray-700">
-                That's fine! We have subscriptions to major outlets (NYT, Vulture) and use specialized scraping tools for others.
+                That&apos;s fine! We have subscriptions to major outlets (NYT, Vulture) and use specialized scraping tools for others.
               </p>
             </div>
 
@@ -121,7 +121,7 @@ export default function SubmitReviewPage() {
                 How long does validation take?
               </h3>
               <p className="text-gray-700">
-                Usually within minutes. Our AI system checks if the review is valid and hasn't already been added. You'll see the result as a comment on your submission.
+                Usually within minutes. Our AI system checks if the review is valid and hasn&apos;t already been added. You&apos;ll see the result as a comment on your submission.
               </p>
             </div>
 
@@ -130,7 +130,7 @@ export default function SubmitReviewPage() {
                 What if my submission is rejected?
               </h3>
               <p className="text-gray-700">
-                You'll receive an explanation. Common reasons include: review is already in our database, show is not a Broadway production, or the source is not a recognized outlet.
+                You&apos;ll receive an explanation. Common reasons include: review is already in our database, show is not a Broadway production, or the source is not a recognized outlet.
               </p>
             </div>
 
