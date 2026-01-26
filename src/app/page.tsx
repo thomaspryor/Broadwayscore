@@ -97,9 +97,9 @@ function getScoreTier(score: number | null | undefined) {
 
 function ScoreBadge({ score, size = 'md', reviewCount, status }: { score?: number | null; size?: 'sm' | 'md' | 'lg'; reviewCount?: number; status?: string }) {
   const sizeClass = {
-    sm: 'w-11 h-11 text-lg rounded-lg aspect-square',
-    md: 'w-14 h-14 text-2xl rounded-xl aspect-square',
-    lg: 'w-16 h-16 text-3xl rounded-xl aspect-square',
+    sm: 'w-11 h-11 text-lg rounded-lg',
+    md: 'w-14 h-14 text-2xl rounded-xl',
+    lg: 'w-20 h-20 text-3xl rounded-xl',
   }[size];
 
   // Show TBD for previews shows
@@ -310,11 +310,11 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus }: { show: Com
         </p>
       </div>
 
-      {/* Score - fixed height to match thumbnail for consistent alignment */}
-      <div className="flex-shrink-0 w-20 sm:w-24 h-20 sm:h-24 flex flex-col items-center justify-start pt-1">
+      {/* Score - square badge on mobile and desktop */}
+      <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1">
         {show.criticScore && getScoreTier(score) && (
           <span
-            className="text-[10px] font-semibold mb-2 uppercase tracking-wide"
+            className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
             style={{ color: getScoreTier(score)?.color }}
             title={getScoreTier(score)?.tooltip}
           >
@@ -556,12 +556,9 @@ function HomePageInner() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      {/* Hero Header */}
-      <div className="mb-8 sm:mb-10">
-        <h1 className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight">
-          Broadway<span className="text-gradient">Scorecard</span>
-        </h1>
-        <p className="text-gray-400 text-lg sm:text-xl">
+      {/* Hero Tagline */}
+      <div className="mb-6 sm:mb-8">
+        <p className="text-gray-400 text-base sm:text-lg">
           Every show. Every review. One score.
         </p>
       </div>
