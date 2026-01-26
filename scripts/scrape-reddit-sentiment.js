@@ -233,16 +233,23 @@ IMPORTANT: We want to know if people LIKE THE SHOW ITSELF, not their feelings ab
 
 For each item, classify:
 1. **relevance**: Is this actually about the Broadway musical "${showTitle}"? Say "no" if it's about a movie, book, or different production with a similar name. (yes/no)
-2. **sentiment**: What does this person think about THE QUALITY OF THE SHOW?
-   - "enthusiastic" = LOVES it - raving, must-see, absolute favorite, life-changing, crying, obsessed
-   - "positive" = Enjoyed it - would recommend, had a great time, good show
+2. **sentiment**: What does this person/post convey about THE SHOW?
+   - "enthusiastic" = LOVES it, must-see, favorite, life-changing, crying, obsessed, celebrating wins/success
+   - "positive" = Enjoyed it, would recommend, good show, excited to see it, celebrating the show
    - "mixed" = Some positives and negatives about the show itself
-   - "negative" = Did NOT enjoy the show - disappointed by the production, wouldn't recommend
-   - "neutral" = Just mentioning the show without expressing opinion on its quality
+   - "negative" = Did NOT enjoy the show - disappointed by the production, criticizing quality
+   - "neutral" = ONLY use this if truly no sentiment is expressed (rare - almost all posts have implicit sentiment)
 
-   IMPORTANT: If someone is SAD the show is CLOSING or SOLD OUT, that usually means they LOVE it - classify as "enthusiastic" or "positive", NOT negative!
-   If someone says "I wish I could see it" or "I need to see this" - that's "enthusiastic" (shows desire/hype).
-   If someone recommends it to others, that's at least "positive".
+   CLASSIFICATION GUIDELINES:
+   - Celebrating Tony wins/nominations = "enthusiastic" (shows love for the show)
+   - Discussing the show's success, box office, positive WOM = "positive"
+   - Sad the show is closing or sold out = "enthusiastic" (they love it!)
+   - "I wish I could see it" / "I need to see this" = "enthusiastic"
+   - Sharing/discussing the show at all in a Broadway forum = usually at least "positive" (they care about it)
+   - Recommending to others = at least "positive"
+   - Pure logistics (showtimes, theater location) with no sentiment = "neutral"
+
+   BE GENEROUS: If there's ANY indication of positive engagement with the show, lean toward "positive" not "neutral".
 
 3. **is_recommendation**: Is this person recommending the show to others? (yes/no)
 
