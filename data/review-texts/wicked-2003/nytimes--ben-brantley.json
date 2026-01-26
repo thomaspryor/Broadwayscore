@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "SHE'S flying! She's actually flying!",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "Down",
   "designation": null,
@@ -47,5 +47,61 @@
   ],
   "fetchTier": 4,
   "archiveOrgTimestamp": "20251106135510",
-  "archiveOrgUrl": "http://web.archive.org/web/20251106135510/https://www.nytimes.com/2003/10/31/movies/theater-review-there-s-trouble-in-emerald-city.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251106135510/https://www.nytimes.com/2003/10/31/movies/theater-review-there-s-trouble-in-emerald-city.html",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 57.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 55,
+      "performances": 88,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "I was so blissed out whenever Glinda was onstage that I never felt I was wasting time at 'Wicked.'",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "'Wicked' does not, alas, speak hopefully for the future of the Broadway musical.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "As a parable of fascism and freedom, 'Wicked' so overplays its hand that it seriously dilutes its power to disturb.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is deeply conflicted, with extraordinary praise for Chenoweth's performance balanced against harsh criticism of the show's heavy-handed political messaging and generic music, ultimately creating a mixed recommendation that depends heavily on one's appreciation for star power over material quality. | GPT-4o-mini: The review expresses strong praise for Kristin Chenoweth's performance while acknowledging shortcomings in the book and music, leading to a clear but qualified recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:23:13.645Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 75,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

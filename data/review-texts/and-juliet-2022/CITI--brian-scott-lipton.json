@@ -7,7 +7,7 @@
   "publishDate": "2022-11-17",
   "fullText": "NYC Events, Restaurants, Music, & Nightlife\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.\n\nAbout Us | Editorial Guidelines | Contact Us",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 0,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "textStatus": "partial",
@@ -43,5 +43,45 @@
   "textIssues": [
     "Word count too low: 86 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 0,
+    "confidence": "medium",
+    "range": {
+      "low": 0,
+      "high": 5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "GPT-4o-mini: The review does not contain any content related to a theatrical performance, indicating a complete lack of recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:19:10.172Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 0,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

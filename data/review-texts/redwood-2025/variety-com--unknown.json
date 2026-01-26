@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "\"...you could call “Redwood” a musical chamber piece with monumentality\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you could call \"Redwood\" a musical chamber piece with monumentality",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "you could call “Redwood” a musical chamber piece with monumentality",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Extremely limited excerpt provides only a descriptive phrase that's neither clearly positive nor negative, making any recommendation assessment highly speculative. | GPT-4o-mini: The review provides a vague description without clear positive or negative sentiment, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:22:12.406Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 50,
+    "openaiScore": 60,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

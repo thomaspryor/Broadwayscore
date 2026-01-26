@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival, directed by Kenny Leon, finds new depths in Wilder's meditation on mortality by casting it with a diverse ensemble that includes Jim Parsons as the Stage Manager and Zoey Deutch as Emily Webb.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 78,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "finds new depths in Wilder's meditation on mortality",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "diverse ensemble",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "casting it with a diverse ensemble",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The language suggests appreciation for the director's fresh interpretation and casting choices, indicating a positive but measured recommendation despite the extremely brief excerpt. | GPT-4o-mini: The review highlights the effective direction and diverse casting, indicating a strong recommendation despite lacking explicit enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:20:59.267Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

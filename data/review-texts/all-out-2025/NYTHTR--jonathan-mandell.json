@@ -11,11 +11,67 @@
   "bwwExcerpt": null,
   "showScoreExcerpt": "If you know what to expect, the show is sufficiently entertaining [but it is] not ambitious theater, nor is it even really about ambition. Although some of Simon Rich's individual stories are inherently theatrical, the selection overall feels random.",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 61,
   "bucket": "Tepid",
   "thumb": "Flat",
   "source": "playwright-scraped",
   "dtliThumb": null,
   "needsScoring": false,
-  "scoringNotes": "Mixed review - 'sufficiently entertaining' at lottery prices but 'not ambitious theater', 'selection feels random', 'grab-bag'. Faint praise with significant reservations."
+  "scoringNotes": "Mixed review - 'sufficiently entertaining' at lottery prices but 'not ambitious theater', 'selection feels random', 'grab-bag'. Faint praise with significant reservations.",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 71,
+      "performances": null,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you know what to expect, the show is sufficiently entertaining to feel worth the (80 minute) time and ($45) expense",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "All Out: Comedy About Ambition is not ambitious theater, nor is it even really about ambition",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the selection overall feels random... it's certainly a grab-bag",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show 'sufficiently entertaining' at lottery prices but criticizes its lack of ambition, random selection of material, and misleading marketing, resulting in a qualified, price-dependent recommendation. | GPT-4o-mini: The review presents a mixed view, acknowledging some entertainment value while criticizing the show's ambition and marketing, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:18:58.558Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is an efficient crowd-pleaser that hits its marks without transcending them. It's a solid, if unsurprising, adaptation that will satisfy fans of the film trilogy.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 63,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "efficient crowd-pleaser that hits its marks without transcending them",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "solid, if unsurprising, adaptation",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "will satisfy fans of the film trilogy",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review uses notably lukewarm language like 'efficient' and 'solid, if unsurprising' that suggests competent but uninspiring theater, placing it in mixed territory with a slight positive lean. | GPT-4o-mini: The review indicates a generally favorable but unremarkable experience, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:19:16.183Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

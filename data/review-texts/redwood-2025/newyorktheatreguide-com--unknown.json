@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "\"Redwood...like the redwood tree, as we learn, its roots remain shallow.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 28,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 28,
+    "confidence": "medium",
+    "range": {
+      "low": 15.5,
+      "high": 40.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "like the redwood tree, as we learn, its roots remain shallow",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "its roots remain shallow",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The metaphor comparing the show to a redwood with 'shallow roots' strongly suggests fundamental weakness in the material, indicating a negative assessment. | GPT-4o-mini: The review provides minimal information and suggests a negative view with the metaphor of shallow roots, indicating a lack of depth in the production. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:21:08.741Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 20,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

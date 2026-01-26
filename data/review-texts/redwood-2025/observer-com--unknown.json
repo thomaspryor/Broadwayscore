@@ -9,8 +9,54 @@
   "isFullReview": false,
   "dtliExcerpt": "\"You want to leave shivering with the majesty of nature\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "high",
+    "range": {
+      "low": 45,
+      "high": 55
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You want to leave shivering with the majesty of nature",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This appears to be only a fragment or headline from a longer review, making it impossible to determine the critic's actual recommendation. | GPT-4o-mini: The review provides a single evocative phrase but lacks detail, making it difficult to ascertain a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:22:02.995Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 50,
+    "openaiScore": 50,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

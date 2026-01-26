@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "\"They wrap the show in visually alluring wallpaper. \"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 25.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "They wrap the show in visually alluring wallpaper",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "visually alluring wallpaper",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The metaphor of 'wrapping in wallpaper' suggests superficial visual appeal masking deeper problems, indicating a negative assessment despite acknowledging visual attractiveness. | GPT-4o-mini: The review provides minimal information and lacks any positive or negative sentiment beyond a vague description, leading to a low recommendation score. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:22:26.809Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 30,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

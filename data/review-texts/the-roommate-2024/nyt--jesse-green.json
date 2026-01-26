@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "What starts as a fairly standard story of opposites attracting becomes something much more surprising and complex, thanks to performances by Mia Farrow and Patti LuPone that are both generous and ruthless.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "becomes something much more surprising and complex",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "performances by Mia Farrow and Patti LuPone that are both generous and ruthless",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "What starts as a fairly standard story",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic praises the show for transcending its conventional premise through exceptional performances by two major stars, suggesting clear recommendation despite acknowledging initial ordinariness. | GPT-4o-mini: The review highlights strong performances and a surprising depth to the story, indicating a clear recommendation despite some uncertainty about other elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:22:42.871Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

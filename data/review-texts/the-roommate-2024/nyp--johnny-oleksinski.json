@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "LuPone and Farrow are both excellent in this solid, if not particularly surprising, two-hander about female friendship and identity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": null,
+      "performances": 85,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "LuPone and Farrow are both excellent",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "solid, if not particularly surprising",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "two-hander about female friendship and identity",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances ('excellent') balanced by qualified assessment of the material ('solid, if not particularly surprising') suggests a worthwhile but unremarkable production. | GPT-4o-mini: The review highlights excellent performances but indicates a lack of surprise or depth in the material, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:22:38.248Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "\"The mournful irony Miller built into 'Death of a Salesman' is especially potent now, when our world so often feels as if it’s hanging by a thread. \"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 65.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The mournful irony Miller built into 'Death of a Salesman' is especially potent now",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "when our world so often feels as if it's hanging by a thread",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This brief excerpt only discusses the play's contemporary relevance without any evaluation of the production itself, making it impossible to determine the critic's recommendation. | GPT-4o-mini: The review hints at a thoughtful engagement with the material but lacks a clear recommendation or detailed critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:20:05.453Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 60,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

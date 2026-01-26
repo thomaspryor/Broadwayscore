@@ -9,8 +9,56 @@
   "isFullReview": false,
   "dtliExcerpt": "\"the tree...onstage is among the most beautiful and wondrous theatrical creations\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 63,
+    "confidence": "low",
+    "range": {
+      "low": 35.5,
+      "high": 90.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "the tree...onstage is among the most beautiful and wondrous theatrical creations",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Fragment praises production design highly but provides no context about overall show quality, story, or performances. | GPT-4o-mini: The review highlights a specific positive element of the production, suggesting a strong recommendation, but lacks broader context for a higher confidence score. | Note: Models differed by 45 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:21:57.941Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 85,
+    "scoreDelta": 45,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 45 points (Claude: 40, OpenAI: 85)"
+    ]
+  }
 }
