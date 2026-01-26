@@ -362,7 +362,7 @@ Lower priority, simpler features
 
 **Status:** ✅ Completed (January 25, 2026)
 
-LLM-generated 2-sentence editorial summaries for each show.
+LLM-generated concise editorial summaries for each show (1-2 short sentences, max 280 characters).
 
 ### Implementation
 - **Data:** `data/critic-consensus.json` - Stores consensus text, review count, last updated date
@@ -376,7 +376,7 @@ LLM-generated 2-sentence editorial summaries for each show.
 - Uses `--force` flag to regenerate all shows
 - Based on all available review texts (full text + excerpts)
 - Temperature 0.7 for varied phrasing
-- Validates 2-sentence format
+- Validates concise format (max 280 chars, 1-2 sentences)
 
 ### Update Policy
 - Runs weekly on Sundays at 2 AM UTC (9 PM ET Saturday)
