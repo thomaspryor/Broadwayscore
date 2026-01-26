@@ -263,26 +263,26 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
   let score: number | null | undefined;
   let label: string | undefined;
   let tier: typeof SCORE_TIERS.mustSee | null = null;
-  let audienceEmoji: string | null = null;
+  let audienceIcon: string | null = null;
 
   if (scoreMode === 'audience') {
     const audienceBuzz = getAudienceBuzz(show.id);
     if (audienceBuzz) {
       score = audienceBuzz.combinedScore;  // Used for sorting only, never displayed
       label = audienceBuzz.designation;
-      // Map audience designation to colors and emojis
+      // Map audience designation to colors and icon symbols
       if (audienceBuzz.designation === 'Loving') {
         tier = { label: 'Loving', color: '#22c55e', tooltip: 'Audiences love it', range: '', glow: false };
-        audienceEmoji = '❤️';
+        audienceIcon = '★';
       } else if (audienceBuzz.designation === 'Liking') {
         tier = { label: 'Liking', color: '#14b8a6', tooltip: 'Audiences like it', range: '', glow: false };
-        audienceEmoji = '👍';
+        audienceIcon = '●';
       } else if (audienceBuzz.designation === 'Shrugging') {
         tier = { label: 'Shrugging', color: '#f59e0b', tooltip: 'Mixed audience reaction', range: '', glow: false };
-        audienceEmoji = '🤷';
+        audienceIcon = '▬';
       } else if (audienceBuzz.designation === 'Loathing') {
         tier = { label: 'Loathing', color: '#ef4444', tooltip: 'Audiences dislike it', range: '', glow: false };
-        audienceEmoji = '💩';
+        audienceIcon = '▼';
       }
     }
   } else {
@@ -343,16 +343,20 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       </div>
 
       {/* Score Badge */}
-      <div className="flex-shrink-0 flex flex-col items-center justify-start pt-1">
+      <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 w-20 sm:w-24">
         {scoreMode === 'audience' ? (
-          // Audience mode: Show designation badge with emoji (no numeric score)
-          tier && audienceEmoji && (
-            <div className="flex flex-col items-center gap-1">
-              <div className="text-4xl sm:text-5xl" aria-hidden="true">
-                {audienceEmoji}
+          // Audience mode: Show designation badge with icon (no numeric score)
+          tier && audienceIcon && (
+            <div className="flex flex-col items-center gap-1.5 w-full">
+              <div
+                className="text-5xl sm:text-6xl font-normal leading-none flex items-center justify-center"
+                style={{ color: tier.color }}
+                aria-hidden="true"
+              >
+                {audienceIcon}
               </div>
               <span
-                className="text-[10px] sm:text-xs font-bold uppercase tracking-wide whitespace-nowrap px-2 py-0.5 rounded"
+                className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider whitespace-nowrap px-2.5 py-1 rounded-md text-center w-full"
                 style={{
                   color: tier.color,
                   backgroundColor: `${tier.color}20`,
@@ -368,7 +372,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
           <>
             {tier && (
               <span
-                className="text-[9px] font-semibold mb-1 uppercase tracking-wide whitespace-nowrap"
+                className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
                 style={{ color: tier.color }}
                 title={tier.tooltip}
               >
@@ -698,7 +702,14 @@ function HomePageInner() {
           {(['critics', 'audience'] as const).map((mode) => (
             <button
               key={mode}
-              onClick={() => updateParams({ scoreMode: mode })}
+              onClick={() => {
+                // When switching to audience mode, auto-set sort to highest
+                if (mode === 'audience') {
+                  updateParams({ scoreMode: mode, sort: 'score_desc' });
+                } else {
+                  updateParams({ scoreMode: mode });
+                }
+              }}
               aria-pressed={scoreMode === mode}
               className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-md text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
                 scoreMode === mode
