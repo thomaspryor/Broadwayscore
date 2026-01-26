@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus, getLotteryRush } from '@/lib/data';
+import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus, getLotteryRush, getShowCommercial } from '@/lib/data';
 import { generateShowSchema, generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
@@ -9,8 +9,8 @@ import ReviewsList from '@/components/ReviewsList';
 import BoxOfficeStats from '@/components/BoxOfficeStats';
 import AwardsCard from '@/components/AwardsCard';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
-import CriticConsensusCard from '@/components/CriticConsensusCard';
 import LotteryRushCard from '@/components/LotteryRushCard';
+import BizBuzzCard from '@/components/BizBuzzCard';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -463,6 +463,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const audienceBuzz = getAudienceBuzz(show.id);
   const consensus = getCriticConsensus(show.id);
   const lotteryRush = getLotteryRush(show.id);
+  const commercial = getShowCommercial(show.slug);
 
   return (
     <>
@@ -637,12 +638,17 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </div>
           </div>
 
-          {/* Synopsis below the poster/score row */}
-          {show.synopsis && (
+          {/* Critics' Take - inline below the poster/score row */}
+          {consensus ? (
+            <div className="mt-4 pt-4 border-t border-white/5">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Critics&apos; Take</p>
+              <p className="text-gray-300 text-sm leading-relaxed">{consensus.text}</p>
+            </div>
+          ) : show.synopsis ? (
             <p className="text-gray-400 text-sm leading-relaxed mt-4 pt-4 border-t border-white/5">
               {show.synopsis}
             </p>
-          )}
+          ) : null}
 
           {/* Links row: Official Site, Tickets, Trailer, Lottery/Rush */}
           {(show.officialUrl || show.trailerUrl || (show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed') || (lotteryRush && show.status !== 'closed')) && (
@@ -701,9 +707,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           )}
         </div>
 
-        {/* Critics' Take - editorial summary */}
-        {consensus && <CriticConsensusCard consensus={consensus} />}
-
         {/* Critic Reviews */}
         {show.criticScore && show.criticScore.reviews.length > 0 && (
           <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
@@ -732,6 +735,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Box Office Stats */}
         {grosses && <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />}
+
+        {/* Commercial Performance / Biz Buzz */}
+        {commercial && <BizBuzzCard commercial={commercial} showTitle={show.title} />}
 
         {/* Cast & Creative */}
         {(show.cast || show.creativeTeam) && (
@@ -819,6 +825,12 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 )}
               </dd>
             </div>
+            {show.synopsis && (
+              <div className="sm:col-span-2 pt-2 mt-2 border-t border-white/5">
+                <dt className="text-gray-500">Synopsis</dt>
+                <dd className="text-gray-300 mt-1 leading-relaxed">{show.synopsis}</dd>
+              </div>
+            )}
           </dl>
         </div>
 

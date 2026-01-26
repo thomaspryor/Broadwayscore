@@ -211,58 +211,90 @@ function extractAllImageFormats(html) {
   };
 }
 
+// Fallback: try Playbill
+async function fetchFromPlaybill(show) {
+  const showSlug = show.slug || show.id.replace(/-\d{4}$/, '');
+  const playbillUrl = `https://playbill.com/production/${showSlug}`;
+  console.log(`   Fallback - Playbill: ${playbillUrl}`);
+
+  try {
+    const html = await fetchViaScrapingBee(playbillUrl);
+
+    // Playbill uses different image patterns
+    const imgMatch = html.match(/https:\/\/bsp-static\.playbill\.com\/[^"'\s]+\.(jpg|jpeg|png|webp)/i) ||
+                     html.match(/<meta[^>]*property=["']og:image["'][^>]*content=["']([^"']+)["']/i);
+
+    if (imgMatch) {
+      const imageUrl = imgMatch[1] || imgMatch[0];
+      console.log(`   ✓ Found via Playbill: ${imageUrl.substring(0, 60)}...`);
+
+      // Return same format - use single image for all formats
+      return {
+        hero: imageUrl,
+        thumbnail: imageUrl,
+        poster: imageUrl,
+      };
+    }
+  } catch (err) {
+    console.log(`   ⚠ Playbill failed: ${err.message}`);
+  }
+
+  return null;
+}
+
 async function fetchShowImages(show, todayTixInfo) {
   console.log(`\n📽️  ${show.title}`);
 
-  if (!todayTixInfo || !todayTixInfo.id) {
-    console.log(`   ✗ No TodayTix ID available`);
-    return null;
-  }
+  // Try TodayTix first if we have an ID
+  if (todayTixInfo && todayTixInfo.id) {
+    const slug = todayTixInfo.slug || show.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const url = `https://www.todaytix.com/nyc/shows/${todayTixInfo.id}-${slug}`;
+    console.log(`   Fetching: ${url}`);
 
-  const slug = todayTixInfo.slug || show.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  const url = `https://www.todaytix.com/nyc/shows/${todayTixInfo.id}-${slug}`;
-  console.log(`   Fetching: ${url}`);
+    try {
+      const html = await fetchViaScrapingBee(url);
+      const images = extractAllImageFormats(html);
 
-  try {
-    const html = await fetchViaScrapingBee(url);
-    const images = extractAllImageFormats(html);
+      if (images && (images.square || images.portrait || images.landscape)) {
+        console.log(`   ✓ Found images:`);
 
-    if (images && (images.square || images.portrait || images.landscape)) {
-      console.log(`   ✓ Found images:`);
+        // Report square image source
+        if (images._sources?.square === 'native') {
+          console.log(`     - Square (thumbnail): ✓ native square image found`);
+        } else {
+          console.log(`     - Square (thumbnail): ⚠ cropped from portrait (fallback)`);
+        }
 
-      // Report square image source
-      if (images._sources?.square === 'native') {
-        console.log(`     - Square (thumbnail): ✓ native square image found`);
-      } else {
-        console.log(`     - Square (thumbnail): ⚠ cropped from portrait (fallback)`);
+        // Report portrait
+        if (images._sources?.portrait) {
+          const posterFile = images._sources.portrait.split('/').pop();
+          console.log(`     - Portrait (poster): ✓ ${posterFile}`);
+        }
+
+        // Report hero
+        if (images._sources?.hero) {
+          const heroFile = images._sources.hero.split('/').pop();
+          console.log(`     - Landscape (hero): ✓ ${heroFile}`);
+        }
+
+        // Format for shows.json
+        return {
+          hero: images.landscape,
+          thumbnail: images.square,
+          poster: images.portrait,
+        };
       }
 
-      // Report portrait
-      if (images._sources?.portrait) {
-        const posterFile = images._sources.portrait.split('/').pop();
-        console.log(`     - Portrait (poster): ✓ ${posterFile}`);
-      }
-
-      // Report hero
-      if (images._sources?.hero) {
-        const heroFile = images._sources.hero.split('/').pop();
-        console.log(`     - Landscape (hero): ✓ ${heroFile}`);
-      }
-
-      // Format for shows.json
-      return {
-        hero: images.landscape,
-        thumbnail: images.square,
-        poster: images.portrait,
-      };
+      console.log(`   ✗ No images found in TodayTix page`);
+    } catch (err) {
+      console.log(`   ✗ TodayTix error: ${err.message}`);
     }
-
-    console.log(`   ✗ No images found in page`);
-    return null;
-  } catch (err) {
-    console.log(`   ✗ Error: ${err.message}`);
-    return null;
+  } else {
+    console.log(`   ✗ No TodayTix ID available`);
   }
+
+  // If TodayTix failed, try Playbill fallback
+  return await fetchFromPlaybill(show);
 }
 
 async function main() {
