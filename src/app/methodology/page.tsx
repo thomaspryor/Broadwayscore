@@ -12,13 +12,13 @@ const ogImageUrl = `${BASE_URL}/api/og?${ogParams.toString()}`;
 
 export const metadata: Metadata = {
   title: 'How It Works - Scoring Methodology',
-  description: 'Learn how Broadway Scorecard calculates critic scores from aggregated reviews. Our transparent methodology uses weighted averages based on outlet tier.',
+  description: 'Learn how Broadway Scorecard calculates critic scores and Audience Buzz from aggregated reviews. Our transparent methodology uses weighted averages based on outlet tier and audience sentiment.',
   alternates: {
     canonical: `${BASE_URL}/methodology`,
   },
   openGraph: {
     title: 'How Broadway Scorecard Works',
-    description: 'Our transparent scoring methodology for aggregating Broadway critic reviews.',
+    description: 'Our transparent scoring methodology for aggregating Broadway critic reviews and audience sentiment.',
     url: `${BASE_URL}/methodology`,
     type: 'article',
     images: [{
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'How Broadway Scorecard Works',
-    description: 'Our transparent scoring methodology for aggregating Broadway critic reviews.',
+    description: 'Our transparent scoring methodology for aggregating Broadway critic reviews and audience sentiment.',
     images: [{
       url: ogImageUrl,
       width: 1200,
@@ -76,6 +76,14 @@ const faqSchema = {
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'Scores of 85+ indicate "Must-See" (drop-everything great), 75-84 is "Recommended" (strong choice), 65-74 is "Worth Seeing" (good with caveats), 55-64 is "Skippable" (optional), and below 55 is "Stay Away" (not recommended). Shows with fewer than 5 reviews display "TBD" until more reviews are collected.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is Audience Buzz?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Audience Buzz aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit into four designations: Loving (88+), Liking (78-87), Shrugging (68-77), and Loathing (0-67). Sources are weighted dynamically based on sample size, with Reddit capturing buzz at 20% and Show Score/Mezzanine splitting the remaining 80% proportionally.',
       },
     },
   ],
@@ -289,6 +297,106 @@ export default function MethodologyPage() {
           </div>
         </section>
 
+        {/* Audience Buzz */}
+        <section className="card p-5 sm:p-6">
+          <h2 className="text-xl font-bold text-white mb-4">Audience Buzz</h2>
+          <p className="text-gray-300 mb-4">
+            Audience Buzz captures what theatergoers are actually saying about shows, combining audience ratings from multiple platforms into a single sentiment designation.
+          </p>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">Designations</h3>
+          <p className="text-gray-300 text-sm mb-4">
+            Shows are assigned one of four designations based on aggregated audience scores:
+          </p>
+          <div className="space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <div className="flex items-center gap-2 w-40 flex-shrink-0">
+                <span className="text-2xl">❤️</span>
+                <span className="text-white font-medium">Loving</span>
+              </div>
+              <div className="text-gray-500 text-sm">88+ score — Audiences rave about it</div>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <div className="flex items-center gap-2 w-40 flex-shrink-0">
+                <span className="text-2xl">👍</span>
+                <span className="text-white font-medium">Liking</span>
+              </div>
+              <div className="text-gray-500 text-sm">78-87 score — Strong positive reception</div>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <div className="flex items-center gap-2 w-40 flex-shrink-0">
+                <span className="text-2xl">🤷</span>
+                <span className="text-white font-medium">Shrugging</span>
+              </div>
+              <div className="text-gray-500 text-sm">68-77 score — Mixed audience response</div>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <div className="flex items-center gap-2 w-40 flex-shrink-0">
+                <span className="text-2xl">💩</span>
+                <span className="text-white font-medium">Loathing</span>
+              </div>
+              <div className="text-gray-500 text-sm">0-67 score — Audiences disappointed</div>
+            </div>
+          </div>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">Sources</h3>
+          <p className="text-gray-300 text-sm mb-3">
+            We aggregate audience sentiment from three platforms:
+          </p>
+          <div className="space-y-3">
+            <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-yellow-400">★</span>
+                <span className="text-white font-medium">Show Score</span>
+              </div>
+              <p className="text-gray-300 text-sm">
+                Broadway-focused review aggregator with audience ratings (0-100%)
+              </p>
+            </div>
+
+            <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-purple-400">🎭</span>
+                <span className="text-white font-medium">Mezzanine</span>
+              </div>
+              <p className="text-gray-300 text-sm">
+                Theater enthusiast app with star ratings and reviews
+              </p>
+            </div>
+
+            <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-orange-400">💬</span>
+                <span className="text-white font-medium">Reddit (r/Broadway)</span>
+              </div>
+              <p className="text-gray-300 text-sm">
+                Sentiment analysis of discussions and reviews from the Broadway subreddit
+              </p>
+            </div>
+          </div>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">Weighting Methodology</h3>
+          <p className="text-gray-300 text-sm mb-3">
+            Sources are weighted dynamically based on sample size to ensure reliability:
+          </p>
+          <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
+            <ul className="text-gray-300 space-y-2 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-brand">•</span>
+                <span><strong className="text-white">Reddit:</strong> Fixed 20% weight when available (captures buzz and enthusiasm)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-brand">•</span>
+                <span><strong className="text-white">Show Score & Mezzanine:</strong> Split the remaining 80% proportionally by review count</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-brand">•</span>
+                <span>Sources with more reviews receive proportionally more weight, ensuring larger sample sizes have greater influence</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
         {/* Confidence */}
         <section className="card p-5 sm:p-6">
           <h2 className="text-xl font-bold text-white mb-4">Confidence Rating</h2>
@@ -345,7 +453,7 @@ export default function MethodologyPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-brand">•</span>
-              <span><strong className="text-white">Coming soon:</strong> Audience scores and social buzz tracking to provide a complete picture</span>
+              <span><strong className="text-white">Audience Buzz tracking:</strong> Aggregated audience sentiment from Show Score, Mezzanine, and Reddit discussions</span>
             </li>
           </ul>
         </section>
