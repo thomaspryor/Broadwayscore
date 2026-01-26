@@ -229,26 +229,33 @@ async function analyzeContent(showTitle, posts, comments) {
   // Batch analyze with Claude
   const ANALYSIS_PROMPT = `You are analyzing Reddit r/Broadway discussions to measure how much people LOVE the Broadway show "${showTitle}".
 
-For each item, answer these questions:
+For each item, determine if it contains a personal opinion SPECIFICALLY about "${showTitle}".
 
-1. **is_personal_opinion**: Is this a PERSONAL OPINION or REVIEW of "${showTitle}"?
-   - Answer "yes" if the person is sharing THEIR OWN THOUGHTS about the show (e.g., "I loved it", "The music was amazing", "Go see it!", "I was disappointed")
-   - Answer "no" if it's NEWS or META content (medical emergencies, injuries, cast changes, tour announcements, ticket sales, box office reports)
-   - Answer "no" if it's COMMENTARY ABOUT REVIEWS (e.g., "the show has received positive reviews") rather than their own review
-   - Answer "no" if it's about a DIFFERENT SHOW (Wicked, Hamilton, Sunset Blvd, etc.)
-   - Answer "no" if it's a multi-show review where "${showTitle}" is only briefly mentioned
+1. **is_about_target_show**: Does this content express an opinion specifically about "${showTitle}"?
 
-2. **sentiment** (ONLY if is_personal_opinion is "yes"):
-   - "enthusiastic" = LOVES it - words like "amazing", "incredible", "must-see", "obsessed", "life-changing", "sobbing", "favorite"
-   - "positive" = Enjoyed it, liked it, good time, would recommend
-   - "mixed" = Some parts good, some bad
-   - "negative" = Did NOT enjoy, disappointed, wouldn't recommend
-   - "neutral" = Saw it but no clear opinion
+   Answer "yes" if they are expressing any opinion about "${showTitle}" specifically:
+   - "I saw ${showTitle} and loved it" = yes
+   - "You should see ${showTitle}" = yes
+   - "${showTitle} is my favorite" = yes
+   - "${showTitle} was disappointing" = yes
+   - "The music in ${showTitle} is incredible" = yes
+
+   Answer "no" if:
+   - It's primarily about a DIFFERENT show (even if "${showTitle}" is mentioned)
+   - It's news/logistics (medical emergencies, injuries, tickets, cast changes)
+   - It's meta-commentary about reviews, not their own opinion
+   - "${showTitle}" is only briefly mentioned in a multi-show list
+
+2. **sentiment** (ONLY if is_about_target_show is "yes"):
+   - "enthusiastic" = LOVES it: amazing, incredible, must-see, obsessed, sobbing, favorite, life-changing, can't stop thinking about it
+   - "positive" = Enjoyed it, liked it, good experience, would recommend
+   - "mixed" = Some good, some bad
+   - "negative" = Didn't enjoy, disappointed, wouldn't recommend
+   - "neutral" = Mentioned seeing it but no clear opinion
 
 3. **is_recommendation**: Are they telling others to see "${showTitle}"? (yes/no)
 
-WE WANT: People sharing their personal experience/opinion of "${showTitle}"
-WE DON'T WANT: News, cast updates, injury reports, meta-commentary about reviews, posts about other shows
+IMPORTANT: Be generous! If someone expresses ANY personal opinion about "${showTitle}" specifically (positive OR negative), answer "yes" to is_about_target_show. We want all opinions - good and bad - as long as they're about THIS show.
 
 Content to analyze:
 `;
@@ -282,9 +289,9 @@ Content to analyze:
             content: ANALYSIS_PROMPT + batchText + `
 
 Respond with a JSON array, one object per item:
-[{"id": 1, "is_personal_opinion": "yes|no", "sentiment": "enthusiastic|positive|mixed|negative|neutral", "is_recommendation": "yes|no"}, ...]
+[{"id": 1, "is_about_target_show": "yes|no", "sentiment": "enthusiastic|positive|mixed|negative|neutral", "is_recommendation": "yes|no"}, ...]
 
-If is_personal_opinion is "no", sentiment can be "neutral" (we'll skip it anyway).
+If is_about_target_show is "no", sentiment can be "neutral" (we'll skip it anyway).
 Be generous with "enthusiastic" - raving, must-see, can't stop talking about it.
 Be generous with "positive" - enjoyed it overall, would recommend.`
           }
@@ -302,7 +309,7 @@ Be generous with "positive" - enjoyed it overall, would recommend.`
           results.totalItems++;
 
           // Only count items that are actually about show quality
-          if (analysis.is_personal_opinion === 'yes') {
+          if (analysis.is_about_target_show === 'yes') {
             results.relevantItems++;
             results.sentimentCounts[analysis.sentiment]++;
             results.totalUpvotes += item.score;
