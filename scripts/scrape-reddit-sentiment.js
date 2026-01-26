@@ -316,9 +316,8 @@ Be generous with "positive" - if someone enjoyed it overall despite minor quibbl
               results.reviewPosts++;
             }
 
-            // Save sample comments for debugging
-            if (results.sampleComments.length < 5 &&
-                (analysis.sentiment === 'enthusiastic' || analysis.sentiment === 'positive')) {
+            // Save sample comments for debugging - include ALL sentiments
+            if (results.sampleComments.length < 10) {
               results.sampleComments.push({
                 text: item.text.slice(0, 200),
                 sentiment: analysis.sentiment,
@@ -468,10 +467,12 @@ async function processShow(show) {
   console.log(`  Recommendations: ${scoreData.recommendations} (${Math.round(scoreData.recommendations / scoreData.sampleSize * 100)}%)`);
   console.log(`  Total upvotes on analyzed content: ${scoreData.totalUpvotes}`);
 
-  if (verbose && analysis.sampleComments.length > 0) {
-    console.log(`  Sample positive comments:`);
-    for (const sample of analysis.sampleComments.slice(0, 3)) {
-      console.log(`    [${sample.sentiment}, ${sample.score} upvotes] "${sample.text.slice(0, 100)}..."`);
+  // Always show sample content so we can debug sentiment classification
+  if (analysis.sampleComments.length > 0) {
+    console.log(`  Sample content analyzed:`);
+    for (const sample of analysis.sampleComments.slice(0, 6)) {
+      const truncated = sample.text.replace(/\n/g, ' ').slice(0, 80);
+      console.log(`    [${sample.sentiment}] "${truncated}..."`);
     }
   }
 
