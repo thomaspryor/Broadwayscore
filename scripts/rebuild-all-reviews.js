@@ -33,13 +33,78 @@ const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 
 /**
+ * Decode ALL HTML entities properly
+ */
+function decodeHtmlEntities(text) {
+  if (!text) return text;
+  return text
+    // Numeric entities
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, code) => String.fromCharCode(parseInt(code, 16)))
+    // Named entities - common ones
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&rsquo;|&lsquo;/g, "'")
+    .replace(/&rdquo;|&ldquo;/g, '"')
+    .replace(/&mdash;/g, '—')
+    .replace(/&ndash;/g, '–')
+    .replace(/&hellip;/g, '...')
+    .replace(/&auml;/g, 'ä')
+    .replace(/&ouml;/g, 'ö')
+    .replace(/&uuml;/g, 'ü')
+    .replace(/&apos;/g, "'")
+    .replace(/&copy;/g, '©')
+    .replace(/&reg;/g, '®')
+    .replace(/&trade;/g, '™')
+    .replace(/&euro;/g, '€')
+    .replace(/&pound;/g, '£');
+}
+
+/**
+ * Detect if text looks like website navigation/junk rather than review content
+ */
+function isJunkExcerpt(text) {
+  if (!text) return true;
+
+  // Patterns that indicate website chrome/navigation
+  const junkPatterns = [
+    /^Home\s+(Legit|News|Reviews)/i,                    // "Home Legit Reviews..."
+    /^\d{1,2}:\d{2}\s*(AM|PM)\s*(PT|ET|CT)/i,          // "5:30pm PT"
+    /Plus Icon.*Latest/i,                               // "Plus Icon Aramide Tinubu Latest"
+    /See All\s+[A-Z]/i,                                 // "See All Matthew Murphy"
+    /\d+ (day|week|month|hour)s? ago/i,                // "1 day ago"
+    /Related Stories/i,                                 // "Related Stories"
+    /By [A-Z][a-z]+ [A-Z][a-z]+ Plus Icon/i,           // "By Author Name Plus Icon"
+    /TV Review.*TV Review/i,                            // Multiple "TV Review" = sidebar
+    /Photo:/i,                                          // Photo credits
+    /Matthew Murphy\s+[A-Z]/,                           // Photo credit pattern
+    /\bdefineSlot\b|\bsetTargeting\b|\bgoogletag\b/i,  // Ad code
+    /blogherads/i,                                      // Ad code
+  ];
+
+  for (const pattern of junkPatterns) {
+    if (pattern.test(text)) return true;
+  }
+
+  // If first 50 chars contain multiple timestamps/dates, likely junk
+  const first50 = text.substring(0, 50);
+  const datePatterns = first50.match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d+/gi) || [];
+  if (datePatterns.length >= 2) return true;
+
+  return false;
+}
+
+/**
  * Clean excerpt text from aggregator sources
  * Fixes: JavaScript/ad code, HTML entities, multi-critic concatenation
  */
-function cleanExcerpt(text) {
+function cleanExcerpt(text, aggressive = false) {
   if (!text) return null;
 
-  let cleaned = text;
+  let cleaned = decodeHtmlEntities(text);
 
   // Remove JavaScript/ad code patterns
   cleaned = cleaned.replace(/blogherads\.[^;]+;?/gi, '');
@@ -51,63 +116,157 @@ function cleanExcerpt(text) {
   cleaned = cleaned.replace(/\.setSubAdUnitPath\([^)]+\)[^;]*;?/gi, '');
   cleaned = cleaned.replace(/googletag\.[^;]+;?/gi, '');
   cleaned = cleaned.replace(/\[\s*["']mid-article\d*["'][^\]]*\]/gi, '');
-  cleaned = cleaned.replace(/Related Stories\s+Casting[^"]+/gi, '');
+  cleaned = cleaned.replace(/Related Stories\s+[A-Z][^"]*$/gi, '');
 
-  // Decode common HTML entities
-  cleaned = cleaned.replace(/&#8217;/g, "'");
-  cleaned = cleaned.replace(/&#8216;/g, "'");
-  cleaned = cleaned.replace(/&#8220;/g, '"');
-  cleaned = cleaned.replace(/&#8221;/g, '"');
-  cleaned = cleaned.replace(/&#039;/g, "'");
-  cleaned = cleaned.replace(/&quot;/g, '"');
-  cleaned = cleaned.replace(/&amp;/g, '&');
-  cleaned = cleaned.replace(/&nbsp;/g, ' ');
-  cleaned = cleaned.replace(/&#x27;/g, "'");
-  cleaned = cleaned.replace(/&rsquo;/g, "'");
-  cleaned = cleaned.replace(/&lsquo;/g, "'");
-  cleaned = cleaned.replace(/&rdquo;/g, '"');
-  cleaned = cleaned.replace(/&ldquo;/g, '"');
-  cleaned = cleaned.replace(/&mdash;/g, '—');
-  cleaned = cleaned.replace(/&ndash;/g, '–');
+  // Remove photo credits mixed into text
+  cleaned = cleaned.replace(/\b[A-Z][a-z]+ [A-Z][a-z]+\s+(?=Thirty|The|In|When|After|Before|It|This|That|A|An)/g, '');
 
   // Stop at next critic attribution (BWW roundups concatenate multiple critics)
-  // Pattern: "Name, Outlet:" or "FirstName LastName, Outlet:"
   const nextCriticMatch = cleaned.match(/\.\s+[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)?,\s+[A-Z][^:]+:/);
   if (nextCriticMatch && nextCriticMatch.index > 50) {
     cleaned = cleaned.substring(0, nextCriticMatch.index + 1);
   }
 
-  // Clean up whitespace
+  // Normalize whitespace
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
 
-  // Skip if it starts mid-sentence (lowercase letter or fragment)
-  if (/^[a-z]/.test(cleaned) || cleaned.length < 20) {
+  // Skip if starts mid-sentence (unless it's a quote)
+  if (/^[a-z]/.test(cleaned) && !cleaned.startsWith('"') && cleaned.length < 100) {
     // Try to find the first complete sentence
     const sentenceStart = cleaned.search(/[.!?]\s+[A-Z]/);
     if (sentenceStart > 0 && sentenceStart < cleaned.length - 50) {
       cleaned = cleaned.substring(sentenceStart + 2);
-    } else if (/^[a-z]/.test(cleaned)) {
-      // Still starts lowercase - this excerpt is unusable
+    } else {
       return null;
     }
   }
 
-  // Truncate to reasonable length (300 chars) at sentence boundary
-  if (cleaned.length > 300) {
-    const truncateAt = cleaned.lastIndexOf('.', 300);
-    if (truncateAt > 100) {
-      cleaned = cleaned.substring(0, truncateAt + 1);
-    } else {
-      cleaned = cleaned.substring(0, 297) + '...';
-    }
-  }
-
-  // Final validation - reject if still looks polluted
-  if (/defineSlot|setTargeting|blogherads|googletag/i.test(cleaned)) {
+  // Skip junk excerpts
+  if (isJunkExcerpt(cleaned)) {
     return null;
   }
 
-  return cleaned.length > 20 ? cleaned : null;
+  // Truncate to 350 chars at sentence boundary
+  if (cleaned.length > 350) {
+    const truncateAt = cleaned.lastIndexOf('.', 350);
+    cleaned = truncateAt > 100 ? cleaned.substring(0, truncateAt + 1) : cleaned.substring(0, 347) + '...';
+  }
+
+  // Final junk check
+  if (/defineSlot|setTargeting|blogherads|Plus Icon/i.test(cleaned)) {
+    return null;
+  }
+
+  return cleaned.length > 30 ? cleaned : null;
+}
+
+/**
+ * Extract a good opening excerpt from full review text
+ */
+function extractExcerptFromFullText(fullText, showTitle) {
+  if (!fullText || fullText.length < 200) return null;
+
+  let text = decodeHtmlEntities(fullText);
+
+  // Split into paragraphs/sentences
+  const sentences = text.split(/(?<=[.!?])\s+/);
+
+  // Find the first substantive sentence (skip bylines, photo credits)
+  let excerpt = '';
+  for (const sentence of sentences) {
+    // Skip short fragments, bylines, photo credits
+    if (sentence.length < 30) continue;
+    if (/^By\s+[A-Z]/i.test(sentence)) continue;
+    if (/^Photo:/i.test(sentence)) continue;
+    if (/^\d{1,2}:\d{2}/i.test(sentence)) continue;
+
+    excerpt += (excerpt ? ' ' : '') + sentence;
+
+    // Stop after 2-3 good sentences or ~300 chars
+    if (excerpt.length >= 250 || (excerpt.match(/[.!?]/g) || []).length >= 2) {
+      break;
+    }
+  }
+
+  if (excerpt.length < 50) return null;
+
+  // Truncate if needed
+  if (excerpt.length > 350) {
+    const truncAt = excerpt.lastIndexOf('.', 350);
+    excerpt = truncAt > 100 ? excerpt.substring(0, truncAt + 1) : excerpt.substring(0, 347) + '...';
+  }
+
+  return excerpt;
+}
+
+/**
+ * Select the best available excerpt using smart priority
+ * Priority: LLM keyPhrases > showScoreExcerpt > fullText extract > bwwExcerpt > dtliExcerpt
+ */
+function selectBestExcerpt(data) {
+  // 1. Try LLM-extracted key phrases first (already curated quotes!)
+  if (data.llmScore?.keyPhrases?.length > 0) {
+    // Find a positive or descriptive quote
+    for (const phrase of data.llmScore.keyPhrases) {
+      if (phrase.quote && phrase.quote.length > 30 && phrase.sentiment !== 'negative') {
+        const cleaned = cleanExcerpt(phrase.quote);
+        if (cleaned && !isJunkExcerpt(cleaned)) {
+          return cleaned;
+        }
+      }
+    }
+    // Fall back to any quote
+    for (const phrase of data.llmScore.keyPhrases) {
+      if (phrase.quote && phrase.quote.length > 30) {
+        const cleaned = cleanExcerpt(phrase.quote);
+        if (cleaned && !isJunkExcerpt(cleaned)) {
+          return cleaned;
+        }
+      }
+    }
+  }
+
+  // 2. Try showScoreExcerpt (usually human-curated, cleaner)
+  if (data.showScoreExcerpt) {
+    const cleaned = cleanExcerpt(data.showScoreExcerpt);
+    if (cleaned && cleaned.length > 40) {
+      return cleaned;
+    }
+  }
+
+  // 3. Try extracting from fullText
+  if (data.fullText && data.fullText.length > 300) {
+    const extracted = extractExcerptFromFullText(data.fullText, data.showId);
+    if (extracted && extracted.length > 50) {
+      return extracted;
+    }
+  }
+
+  // 4. Try bwwExcerpt (usually cleaner than DTLI)
+  if (data.bwwExcerpt) {
+    const cleaned = cleanExcerpt(data.bwwExcerpt);
+    if (cleaned && cleaned.length > 40) {
+      return cleaned;
+    }
+  }
+
+  // 5. Last resort: dtliExcerpt with aggressive cleaning
+  if (data.dtliExcerpt) {
+    const cleaned = cleanExcerpt(data.dtliExcerpt, true);
+    if (cleaned && cleaned.length > 40) {
+      return cleaned;
+    }
+  }
+
+  // 6. Try existing pullQuote if nothing else works
+  if (data.pullQuote) {
+    const cleaned = cleanExcerpt(data.pullQuote);
+    if (cleaned && cleaned.length > 40) {
+      return cleaned;
+    }
+  }
+
+  return null;
 }
 
 // Stats tracking
@@ -336,7 +495,7 @@ showDirs.forEach(showId => {
         url: data.url || null,
         publishDate: data.publishDate || null,
         originalRating: data.originalScore || null,
-        pullQuote: cleanExcerpt(data.dtliExcerpt) || cleanExcerpt(data.bwwExcerpt) || cleanExcerpt(data.showScoreExcerpt) || cleanExcerpt(data.pullQuote) || null,
+        pullQuote: selectBestExcerpt(data),
         dtliThumb: data.dtliThumb || null,
         bwwThumb: data.bwwThumb || null
       };
