@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“It’s true that there’s a sugar-high quality to ‘Spamalot’: By the end, your teeth are buzzing from the sheer multitude of sparkles and crescendos. But there’s also an embrace of its form’s inherent absurdity that feels almost existential, and thereby true to Python.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240520112615",
-  "archiveOrgUrl": "http://web.archive.org/web/20240520112615/https://www.vulture.com/2023/11/theater-review-spamalot-broadway-revival.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20240520112615/https://www.vulture.com/2023/11/theater-review-spamalot-broadway-revival.html",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 75,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "By the time Sir Galahad and the Lady of the Lake sailed in together on a gondola — I was, giddily, onboard",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there's an embrace of its form's inherent absurdity that feels almost existential, and thereby true to Python",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's true that there's a sugar-high quality to Spamalot: By the end, your teeth are buzzing from the sheer multitude of sparkles and crescendos",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoys the production despite minor reservations, praising performances, meta-theatrical elements, and the show's joyful energy while acknowledging its overwhelming 'sugar-high' quality as a minor drawback.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:16.598Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

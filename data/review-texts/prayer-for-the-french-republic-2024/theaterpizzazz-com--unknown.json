@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250328125207",
-  "archiveOrgUrl": "http://web.archive.org/web/20250328125207/https://theaterpizzazz.com/prayer-for-the-french-republic-2/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250328125207/https://theaterpizzazz.com/prayer-for-the-french-republic-2/",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 78,
+      "direction": 52
+    },
+    "keyPhrases": [
+      {
+        "quote": "While the show is well-paced, sometimes funny, and often quite involving, cutting 20 minutes could have heightened the impact of what remained",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Anti-Semitism was relevant before October 7, 2023, and is obviously more so now, but more nuance and less speechifying would make any discussion of the topic more powerful",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "All of the 1940s scenes are similarly compelling and emotionally resonant",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the 1940s scenes and performances but heavily criticizes the political heavy-handedness and three-hour length, creating a qualified mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:49.170Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

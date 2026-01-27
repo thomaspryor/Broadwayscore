@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "“Just check with everyone in your group: Some will be tickled pink by ‘The Cottage’ and thrill to the très outré comic stylings...Others will be ready to head to the basement bar at intermission to nurse their headache and remain there...All that said, given the givens, I still had several good laughs.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Some will be tickled pink by 'The Cottage' and thrill to the très outré comic stylings",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Others will be ready to head to the basement bar at intermission to nurse their headache",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I still had several good laughs",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly acknowledges the show will divide audiences and positions themselves cautiously in the middle, finding some enjoyment but no strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:18.506Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

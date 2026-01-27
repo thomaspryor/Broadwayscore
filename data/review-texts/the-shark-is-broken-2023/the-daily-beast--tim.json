@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But what they don’t know is that Jaws will go on to become the cultural totem we know it as today—and it is in the humorous and profound gap of past and present, known and unknown, and ignorance and wisdom that The Shark Is Broken wittily excels not just as a clever time capsule, but as an examination of male bonding and competitiveness, ego, frailty, fame, and film-making. Which is to say: you don’t miss the shark for one second.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-shark-is-broken/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ian Shaw has co-written a clever, generous play with three terrific performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You don't miss the shark for one second",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The Shark Is Broken wittily excels not just as a clever time capsule, but as an examination of male bonding and competitiveness, ego, frailty, fame, and film-making",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the writing, performances, and direction throughout the lengthy review, culminating in the definitive statement that 'You don't miss the shark for one second,' indicating strong recommendation despite no explicit 'must-see' language.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:31.795Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

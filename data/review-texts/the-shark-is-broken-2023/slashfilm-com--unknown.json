@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 62,
+      "music": null,
+      "performances": 79,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "A 'Jaws' fan will appreciate it. It might be disappointing that 'The Shark is Broken' is a good, not great, play.",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "With quality work, Shaw, Donnell, and Brightman insinuate that these men's dispositions",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Masterson's direction has trouble patching up the show's episodic structure, so the play's penultimate cool-down scene feels unearned",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls it 'good, not great' and notes structural problems while praising performances, landing in qualified recommendation territory. | GPT-4o-mini: The review expresses appreciation for the performances and some thematic depth, but notes significant structural issues and a lack of overall greatness, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:44.082Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

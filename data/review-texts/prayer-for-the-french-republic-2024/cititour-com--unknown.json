@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 11,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "1/9"
+  "extractedRating": "1/9",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 77,
+      "music": null,
+      "performances": 89,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "In this extraordinary play",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "we should be profoundly grateful that a work of such ambition, scope and importance has made it to the stage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "neither the play, which can feel overwritten at times, nor the production is perfect",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review calls the play 'extraordinary' with 'superb ensemble cast' and 'razor-sharp direction,' expressing gratitude for such an important work despite acknowledging minor flaws in writing and design. | GPT-4o-mini: The review expresses strong appreciation for the performances and the play's ambition, with only minor criticisms regarding pacing and design.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:56.203Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

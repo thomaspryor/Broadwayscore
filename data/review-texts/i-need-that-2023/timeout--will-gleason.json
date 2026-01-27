@@ -10,8 +10,64 @@
   "bwwExcerpt": "The most interesting moments of this good-natured but threadbare comedy, which Rebeck wrote during the pandemic lockdown, touch on the relationship between physical objects and memory. To Sam, each knickknack is a time machine to a meaningful moment; his inability to let go of the past is a major factor in whether or not, in the end, he can bring himself to take out the garbage. DeVito is a star for a reason: His vulnerable, hilarious performance is a certifiable gem. If only this treasure weren",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "good-natured but threadbare comedy",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "DeVito is a star for a reason: His vulnerable, hilarious performance is a certifiable gem",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "If only this treasure weren",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for DeVito's performance countered by criticism of the 'threadbare' script and an incomplete final sentence suggesting disappointment, indicating a mixed review that leans slightly positive due to the lead performance. | GPT-4o-mini: The review highlights a strong performance by DeVito but indicates that the overall script is lacking, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:08.451Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

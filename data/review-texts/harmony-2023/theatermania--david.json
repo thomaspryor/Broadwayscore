@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This is a show that my grandparents would have raved about during the post-services Kiddush luncheon: undeniably moving and extremely powerful, the pros of Harmony generally outweigh the cons. It’s not as profound as everyone involved clearly thinks it is, but it’ll give you the good cathartic cry you’ve been waiting for.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250624163214",
-  "archiveOrgUrl": "http://web.archive.org/web/20250624163214/https://www.theatermania.com/news/review-music-and-passion-and-bourgeoning-fascism-in-barry-manilows-harmony_1720947/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250624163214/https://www.theatermania.com/news/review-music-and-passion-and-bourgeoning-fascism-in-barry-manilows-harmony_1720947/",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 70,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "the pros of Harmony generally outweigh the cons",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "undeniably moving and extremely powerful",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's not as profound as everyone involved clearly thinks it is, but it'll give you the good cathartic cry you've been waiting for",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant flaws in the material and tone but ultimately finds it moving and recommends it as emotionally satisfying, with the pros outweighing the cons.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:27.190Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

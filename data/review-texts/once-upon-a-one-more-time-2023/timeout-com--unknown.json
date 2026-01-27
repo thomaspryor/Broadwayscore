@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Simard is delicious; the rest of the show, if you turn off your brain, is merely yummy in a candy-coated way. That’s not nothing: ‘Once Upon a One More Time’ is a well-assembled and entertaining diversion...Musicals are capable of more ambitious roles than merely carrying Spears.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -41,5 +41,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "time-out-stars",
   "scoreConfidence": "medium",
-  "originalRating": "5/5 stars"
+  "originalRating": "5/5 stars",
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 70,
+      "performances": 78,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a One More Time is a well-assembled and entertaining diversion",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "if you turn off your brain, is merely yummy in a candy-coated way",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "For a fan of more substantial musicals, with original scores, it's a masochistic pleasure",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The 3/5 star rating combined with qualified praise ('well-assembled and entertaining diversion') but clear reservations about substance and originality indicates a mixed-positive recommendation with significant caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:36.325Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

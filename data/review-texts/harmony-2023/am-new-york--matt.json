@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Even so, there is much to admire and appreciate about “Harmony,” including the fascinating real-life story upon which it is based (which previously inspired a film, a documentary, and even the 1999 Broadway drama “Band in Berlin”), its sense of sincerity and romanticism, Warren Carlyle’s posh art deco-style production (which has improved in quality since Off-Broadway), and the performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -53,5 +53,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251003034629",
-  "archiveOrgUrl": "http://web.archive.org/web/20251003034629/https://www.amny.com/entertainment/review-manilow-harmony/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251003034629/https://www.amny.com/entertainment/review-manilow-harmony/",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 68,
+      "music": 38,
+      "performances": 77,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, 'Harmony' contains a weak score, with surprisingly generic and bland music by Manilow",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there is much to admire and appreciate about 'Harmony,' including the fascinating real-life story",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "It does not help that 'Harmony' is so similar in setting, manner, and politics to the comparatively superior 'Cabaret'",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review presents a balanced assessment with significant praise for performances and production values but substantial criticism of the score and comparisons to superior shows, resulting in a mixed recommendation. | GPT-4o-mini: The review presents a mixed view, highlighting significant weaknesses in the music while praising the performances and the story, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:07.970Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

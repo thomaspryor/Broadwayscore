@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“It’s a plus-size play about big social issues that impresses in large structural ways as well as small moments...so this ‘Prayer’ will likely always be relevant. That’s a dramatic triumph – and a scorching reality.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": null,
+      "performances": 88,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "five-star review",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "He digs deeper than ever in Prayer for the French Republic and strikes pure gold",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "That's a dramatic triumph",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is explicitly labeled a five-star review with superlative language like 'strikes pure gold' and 'dramatic triumph,' indicating unqualified enthusiasm and strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:52.285Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

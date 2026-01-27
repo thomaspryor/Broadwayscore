@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 32,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 32,
+    "confidence": "medium",
+    "range": {
+      "low": 20.5,
+      "high": 43.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": null,
+      "performances": 53,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "Theresa Rebeck's latest theatrical venture is one of her limpest — a frustratingly monotone, predictable and seasonless dose of comfort theater",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It's not that the production is terrible by any means. It remains humorous and heartwarming at the right times, but with all the thrill of TV dinner meatloaf: low effort, over quickly and indistinguishable on the inside",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the ever-watchable, ever-hammy Danny DeVito is the singular lifeblood of this play",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review calls the play a 'dud' and 'one of her limpest,' criticizing repetitive structure and lack of dramatic stakes, with only DeVito's performance providing redeeming value. | GPT-4o-mini: The review is overwhelmingly negative, highlighting significant flaws in the script and overall production, leading to a clear recommendation against seeing the show. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:36.154Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 25,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
