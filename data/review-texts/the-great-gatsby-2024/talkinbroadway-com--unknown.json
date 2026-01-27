@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -42,5 +42,61 @@
     "ends_with_ellipsis"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": null,
+      "performances": 68,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "something feels hopelessly lost in adaptation. The result often feels a bit like a soap opera",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The musical adaptation boasts an extremely diverse and talented cast while glossing over the intricate layers of intrigue, complexity, and ambiguity",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "It's a mesmerizing yet disconcerting, distorted dance as the party roars on",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the production values and cast while expressing significant reservations about the adaptation's loss of literary depth and complexity, resulting in a qualified mixed assessment. | GPT-4o-mini: The review highlights both strong production elements and significant shortcomings in the adaptation, leading to a mixed recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:35:49.601Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
