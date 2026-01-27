@@ -69,42 +69,30 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "textWordCount": 150,
   "archivePath": "data/archives/reviews/hadestown-2019/wsj-com--unknown_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:26:50.591Z",
+  "textFetchedAt": "2026-01-27T14:52:08.799Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (500): Request failed with status code 500"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
   "fetchTier": 4,
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20231031160750",
   "archiveOrgUrl": "http://web.archive.org/web/20231031160750/https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-11555547401",
   "textIssues": [
     "Word count too low: 150 (min: 300)"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_read_more_prompt",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
   ]
 }
