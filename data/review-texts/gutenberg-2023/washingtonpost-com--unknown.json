@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Brown and King have packed the show with numbers that manage to be both entertaining and as clunky as a ’67 station wagon. And composed a piece that might be a bit more fitting in a cabaret than in a Broadway theater. That is, of course, until you secure the services of the cutest couple on Broadway.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20231013034249",
-  "archiveOrgUrl": "http://web.archive.org/web/20231013034249/https://www.washingtonpost.com/entertainment/theater/2023/10/12/gutenberg-broadway-gad-rannells-timbers/"
+  "archiveOrgUrl": "http://web.archive.org/web/20231013034249/https://www.washingtonpost.com/entertainment/theater/2023/10/12/gutenberg-broadway-gad-rannells-timbers/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 68,
+      "performances": 89,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "the casting is everything — and in this case, ideal",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "offers a kind of chiropractic adjustment to the psyche in troubled times",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "might be a bit more fitting in a cabaret than a Broadway theater",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly recommends the show based on the exceptional chemistry and performances of Rannells and Gad, while acknowledging the material's limitations but finding it charming and entertaining overall. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and the overall charm of the show, indicating a clear recommendation despite some minor reservations about the material.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:17.120Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

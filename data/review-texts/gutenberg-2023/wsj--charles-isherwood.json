@@ -10,8 +10,64 @@
   "bwwExcerpt": "With Mr. Gad and Mr. Rannells pinballing around the stage under the direction of Alex Timbers (“Here Lies Love,” “Moulin Rouge!”), working up visible sweat as they dash between characters, “Gutenberg!” proffers much comic ingenuity. The silly accents are a delight. Cockney in 15th-century Germany? Why not? Still, even at a fairly pacey two hours the fun eventually turns to wheel-spinning, since the central gag—the ludicrous mismatch between content and form—is established from the start and then",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 77,
+      "direction": 71
+    },
+    "keyPhrases": [
+      {
+        "quote": "proffers much comic ingenuity. The silly accents are a delight.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the fun eventually turns to wheel-spinning",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the central gag—the ludicrous mismatch between content and form—is established from the start and then",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges strong performances and comic elements but criticizes the show's structural problems and repetitive nature, suggesting a qualified mixed response. | GPT-4o-mini: The review highlights strong performances and comic elements but ultimately points out issues with pacing and repetition, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:23.610Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

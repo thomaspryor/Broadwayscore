@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"a trip down memory lane on stage and off\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-notebook-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 66,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250813132735",
-  "archiveOrgUrl": "http://web.archive.org/web/20250813132735/https://www.newyorktheatreguide.com/reviews/the-notebook-broadway-review-ingrid-michaelson"
+  "archiveOrgUrl": "http://web.archive.org/web/20250813132735/https://www.newyorktheatreguide.com/reviews/the-notebook-broadway-review-ingrid-michaelson",
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 55,
+      "performances": 82,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "This compelling conceit gets weakened by a flat book and lyrics",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Joy Woods: That's someone we'll be remembering",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "like a Hallmark card, its sweeping romance sparkly enough to mostly distract from its imperfections",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review that praises Joy Woods's standout performance and production values while criticizing the flat book and forgettable music, ultimately describing it as pleasant but imperfect entertainment. | GPT-4o-mini: The review presents a mixed view, praising the performances while criticizing the book and music, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:53.281Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
