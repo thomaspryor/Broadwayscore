@@ -5,7 +5,7 @@
   "criticName": "David Cote",
   "url": "https://observer.com/2024/07/oh-mary-broadway-review/",
   "publishDate": "2024-07-11",
-  "fullText": null,
+  "fullText": "We noticed you're using an ad blocker.\n\t\t\tWe get it: you like to have control of your own internet experience. But advertising revenue helps support our journalism. To read our full stories, please turn off your ad blocker.We'd really appreciate it.\n\nBelow are steps you can take in order to whitelist Observer.com on your browser:\n\nClick the AdBlock button on your browser and select Don't run on pages on this domain.\n\nClick the AdBlock Plus button on your browser and select Enabled on this site.\n\nClick the AdBlock Plus button on your browser and select Disable on Observer.com.",
   "isFullReview": false,
   "bwwExcerpt": "s have to rush to get their gags out, which makes them all the funnier because it both raises the stakes and keys into one of the key ingredients of great farce: the mutual experience of the chaotic. David Cote, Observer: Escola’s splendidly nasty queer romp has hiked up its petticoats and staggered uptown from a sold-out run at the Lucille Lortel Theatre, goosing a sleepy Broadway summer. I’m happy to report that although director Sam Pinkleton leveled up the production values (particularly in the musical finale), Oh, Mary! remains the same vicious, dirty-minded, bad-taste farce that delighted camp aficionados last winter. In a theater scene squeezed between the Scylla of nonprofit precarity and Charybdis of commercial desperation, Escola and their team offer audacity, flair, and a homing instinct for the audience funny bone. Bob Verini, New York Stage Review: The script, and the direction of Sam Pinkleton (erstwhile choreographer of Natasha, Pierre & the Great Comet of 1812), start t",
   "originalScore": null,
@@ -13,9 +13,9 @@
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
-  "textStatus": "missing",
-  "textQuality": "missing",
-  "sourceMethod": "bww-roundup",
+  "textStatus": "partial",
+  "textQuality": "partial",
+  "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -73,5 +73,33 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 98,
+  "archivePath": "data/archives/reviews/oh-mary-2024/observer--david-cote_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T01:48:05.023Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (404): Request failed with status code 404"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textIssues": [
+    "Word count too low: 98 (min: 300)",
+    "Show title not found in text"
+  ]
 }
