@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Messy and maddening, new musical Lempicka has all the pedigree for something groundbreaking but never finds its own distinctive form.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/lempicka/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 65,
+      "performances": 55,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Messy and maddening, new musical Lempicka has all the pedigree for something groundbreaking but never finds its own distinctive form",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The most fatal issue, though, is the show's central focus on Tamara's dueling loves: stiff husband Tadeusz and free-wheeling Rafaela. This dilemma takes up most of the narrative real estate, but proves deathly dull",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "A devastating 11 o'clock number points to the more probing show Lempicka could have been",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: While the reviewer finds some merit in the score and certain performances, they identify fundamental structural problems including a 'deathly dull' central conflict, weak book, and tonal confusion that prevent recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:39.807Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

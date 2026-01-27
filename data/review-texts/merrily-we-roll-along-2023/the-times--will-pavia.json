@@ -10,8 +10,64 @@
   "bwwExcerpt": "Halfway through the first act of this Broadway revival of Merrily We Roll Along, Daniel Radcliffe sits on the set of a television talk show and launches into a frenetic performance of the song Franklin Shepard, Inc. He sings, he shouts, he swivels and writhes in his chair, he imitates a telephone and the buzz of an intercom and the patter of Hollywood agents. He talks like a machinegun, he makes you laugh, he belts out a jazzy chorus, he fills the stage and he never leaves his chair. It’s the gr",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He sings, he shouts, he swivels and writhes in his chair, he imitates a telephone and the buzz of an intercom and the patter of Hollywood agents",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "he makes you laugh, he belts out a jazzy chorus, he fills the stage",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's the gr",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic describes Radcliffe's performance with vivid, enthusiastic language culminating in what appears to be praise ('It's the gr[eat]'), suggesting strong positive sentiment despite the incomplete excerpt. | GPT-4o-mini: The review highlights a standout performance by Daniel Radcliffe, suggesting strong enthusiasm for the show despite not providing a full assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:14.026Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

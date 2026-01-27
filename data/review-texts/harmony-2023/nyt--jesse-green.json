@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Though it takes nearly three hours to tell, and wiedles its metaphors with the subtlety of a sledgehammer, 'Harmony' succeeds as both a monument to the sextet and a meditation on the price of art in impossible times.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "takes nearly three hours to tell, and wiedles its metaphors with the subtlety of a sledgehammer",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "succeeds as both a monument to the sextet and a meditation on the price of art in impossible times",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "wields its metaphors with the subtlety of a sledgehammer",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticisms about length and heavy-handedness, the critic concludes the show 'succeeds' in its artistic goals, indicating a qualified positive recommendation. | GPT-4o-mini: The review acknowledges both the ambitious nature of the production and its shortcomings, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:05.119Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

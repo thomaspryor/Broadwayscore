@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 83,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "This forceful and vigorous production led by television stars Jeremy Strong and Michael Imperioli is robustly staged",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The cast made up of seven speaking roles is excellent and fully up to the job of putting over this now classic play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "While Sam Gold's production of An Enemy of the People is not bigger than the sum of its parts, it does offer a timely and engrossing play for our moment in history",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the timely relevance and strong performances but notes the production doesn't transcend its parts, indicating qualified approval rather than enthusiastic endorsement. | GPT-4o-mini: The review expresses strong praise for the production and performances while acknowledging some limitations, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:31.723Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

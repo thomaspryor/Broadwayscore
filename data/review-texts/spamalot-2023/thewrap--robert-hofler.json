@@ -7,7 +7,58 @@
   "publishDate": "November 16, 2023",
   "fullText": "The mustiness now is downright allergy-inducing. One visual reference to “Man of La Mancha” delivered not a laugh at the preview I attended, but then, it has been a while since TCM aired the movie version.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 28,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 28,
+    "confidence": "medium",
+    "range": {
+      "low": 23,
+      "high": 33
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The mustiness now is downright allergy-inducing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "delivered not a laugh at the preview I attended",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses harsh language about the show feeling dated and notes that references fell flat with the audience, suggesting a negative experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:10.637Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 28,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

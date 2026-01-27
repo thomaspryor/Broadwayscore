@@ -10,8 +10,64 @@
   "bwwExcerpt": "Generically staged by Sammi Cannold, How to Dance in Ohio was clearly made with love and will touch some hearts—on the spectrum or not—but feels synthetic and patchy when not outright tacky. Even the triumphant final fête, in which our heroes get to strut their stuff, is overshadowed by a head-scratching design choice (sets by Robert Brill). Drew, tasked with organizing the “Second Chance Dance” in a day (!) unveils and hangs a jumbo disco ball which he somehow had time to decorate. The giant or",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels synthetic and patchy when not outright tacky",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "made with love and will touch some hearts",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Generically staged",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging good intentions, the critic finds the production fundamentally flawed with 'synthetic and patchy' execution and 'generic' staging, indicating more problems than strengths. | GPT-4o-mini: The review expresses significant criticism of the production's design and overall execution, indicating a lack of strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:37.404Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 45,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

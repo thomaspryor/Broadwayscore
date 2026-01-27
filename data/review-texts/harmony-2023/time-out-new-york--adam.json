@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "As enjoyable and affecting as Harmony is—and as timely, with antisemitism on the rise worldwide—it doesn’t make the case that, among all that we must never forget, the Comedian Harmonists merit quite this degree of remembrance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 70,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "As enjoyable and affecting as Harmony is—and as timely, with antisemitism on the rise worldwide—it doesn't make the case that, among all that we must never forget, the Comedian Harmonists merit quite this degree of remembrance",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The six actor-singers who play the Comedian Harmonists...blend together beautifully without disappearing into anonymity; each of them gets a number in which to shine as a soloist",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "But the show is hamstrung by that fidelity; it can't make the most of the drama inherent to its subject the way a fictionalized version might",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Feldman acknowledges the show as 'enjoyable and affecting' with strong performances and attractive music, but questions its fundamental dramatic structure and necessity, creating a qualified mixed response that leans slightly positive due to execution quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:18.482Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's creators have crafted something that feels more like a theme park attraction than a Broadway musical, with book problems that no amount of Britney's infectious pop can solve.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 65,
+      "performances": null,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels more like a theme park attraction than a Broadway musical",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "book problems that no amount of Britney's infectious pop can solve",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers harsh structural criticisms comparing the show unfavorably to a theme park attraction and citing unsolvable book problems, despite acknowledging the music's appeal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:02.562Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "How do you not get “Baby One More Time” right? That is the first mystery—and the first warning that all may not be well—with Once Upon a One More Time, the musical filled with Britney Spears’ music that opened on Broadway Thursday evening (Marquis Theatre, booking to Nov 19). Truly, if you’re doing this magnificent banger, don’t kick off your big Broadway jukebox musical with it feeling as messy as this musical does.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 58,
+      "performances": 70,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a Time One More Time is not a disaster. The company is great, dancing and singing up the necessary storm number after number. This is a pleasant, rather than magically bravura, night out",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "This review is first a plea for a moratorium on the recustomizing of fairytales, if the recustomizing you're doing is the most basic and glib of feminist refits",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "shows like Once Upon a One More Time are depressing reminders of how narrow some horizons are becoming",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges competent performances and production values but finds the show fundamentally flawed with 'basic and glib' writing, conservative execution despite radical themes, and calls it 'depressing' - qualifying it as pleasant but not recommendable. | GPT-4o-mini: The review expresses mixed feelings, highlighting some enjoyable performances but criticizing the script and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:08.503Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

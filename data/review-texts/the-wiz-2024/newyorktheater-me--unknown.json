@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "sourceMethod": "brightdata",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 70,
+      "performances": 65,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "goes too far. There is no Toto! There are no \"Munchkins\"... there is something more essential that's missing from this reworked Wiz",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "their belting started to feel like an American Idol competition, and some of the dance numbers seemed so frenzied that at times they gave off an aura of desperation",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "An advantage of bringing young children to see this revival may be that they are much less likely to complain than their parents",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges talent and praises the original score, but fundamentally objects to the production's choices and execution, finding it desperate and over-the-top, with a sarcastic final line that clearly discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:45.264Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "What was the guiding light for Schreck and Neugebauer in tackling Vanya? Based on what’s now on stage at the Beaumont, it’s difficult to say. This revival is competent, rarely boring and often funny, but there is no sense of a larger vision. This staging just kind of sits there, without any clear reason to exist.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/uncle-vanya-bway/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 63,
+      "music": null,
+      "performances": 70,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival is competent, rarely boring and often funny, but there is no sense of a larger vision. This staging just kind of sits there, without any clear reason to exist.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "making for a Vanya that engages but never really involves",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "In fleeting moments, Lincoln Theater Center's new Broadway revival of Uncle Vanya finds some glimmers of magic",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production competent with good performances but criticizes the lack of vision and coherent staging, resulting in a show that 'engages but never really involves.' | GPT-4o-mini: The review highlights some engaging performances and moments of humor but ultimately criticizes the production for lacking a cohesive vision.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:13.003Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

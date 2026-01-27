@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "They are nigh perfect to play the opposing Stockmann brothers in Ibsen’s An Enemy of the People, now being given a zippy revival adapted by playwright Amy Herzog and directed by her husband, Sam Gold.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250915182329",
-  "archiveOrgUrl": "http://web.archive.org/web/20250915182329/https://www.theatermania.com/news/review-a-battle-of-the-hbo-stars-in-rousing-enemy-of-the-people-on-broadway_1734531/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250915182329/https://www.theatermania.com/news/review-a-battle-of-the-hbo-stars-in-rousing-enemy-of-the-people-on-broadway_1734531/",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "The two of them are just great — thrilling, in fact.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Herzog's new script is approachable and welcoming for first timers, a fast-clipped retelling that excises the florid turns of phrase that tire contemporary ears",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I greatly appreciated how this production trusts that we're smart enough to draw our own conclusions",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the lead performances as 'thrilling,' commends Herzog's adaptation and Gold's direction, and appreciates the production's intelligence while expressing no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:03.959Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

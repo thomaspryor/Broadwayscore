@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "designation": "Must_See",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "must-see"
+  "extractedPhrase": "must-see",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 92,
+      "performances": 95,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is a must-see that is superbly performed",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This is a haunting, striking production. Don't miss it",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "With sensational, spot-on authenticity, O'Hara's Kirsten and d'Arcy James's Joe soar into the delights",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Critic uses explicit must-see language twice ('must-see' and 'Don't miss it'), praises all elements extensively with superlatives like 'superbly,' 'sensational,' and 'striking,' indicating unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong recommendations, highlighting superb performances and impactful storytelling.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:35.731Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

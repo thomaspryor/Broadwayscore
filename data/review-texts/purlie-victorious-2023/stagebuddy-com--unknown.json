@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251112010247",
-  "archiveOrgUrl": "http://web.archive.org/web/20251112010247/https://stagebuddy.com/theater/theater-review/purlie-victorious-non-confederate-romp-cotton-patch"
+  "archiveOrgUrl": "http://web.archive.org/web/20251112010247/https://stagebuddy.com/theater/theater-review/purlie-victorious-non-confederate-romp-cotton-patch",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 78,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Deftly directed by Kenny Leon, the play reminds us that despite advances, some things have not changed",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the play feels very current. The audience hears no new message but the same humorous dialogue Davis wrote 60 years ago seems appropriate today",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I found her screechy at times, making her difficult to understand",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer praises the direction, script's relevance, and most performances while noting the production feels current and important, with only minor reservations about one performance. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some mixed feelings about the humor and clarity of one character, leading to a positive overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:18.668Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

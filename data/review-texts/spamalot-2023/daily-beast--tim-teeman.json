@@ -7,7 +7,63 @@
   "publishDate": "November 16, 2023",
   "fullText": "Spamalot, first seen on Broadway in 2005, is back—and the good news is the really good silly bits of this parody of Arthurian legend are just as good-silly as they always were. But the bits that felt dated have only become more dated; one a song about Jews running Broadway at this moment sounds not just dated but also weird in this politically vexed moment (especially with a huge, glittering Star of David), the other is a rousing hymn to gay pride for Sir Lancelot (Taran Killam), which is discordantly beamed in from another era.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 40,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the really good silly bits of this parody of Arthurian legend are just as good-silly as they always were",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the bits that felt dated have only become more dated",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "sounds not just dated but also weird in this politically vexed moment",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges some elements work well but emphasizes that problematic dated material has become even more problematic, creating a balanced but ultimately lukewarm assessment. | GPT-4o-mini: The review acknowledges some enduring humor but highlights significant concerns about dated material, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:53.013Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

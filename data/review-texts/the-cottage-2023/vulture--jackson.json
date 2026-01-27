@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Cottage tries to emphasize the fizz, but nobody remembered to shake the soda can beforehand. It’s full of explanations, light on mess",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/the-cottage/",
@@ -34,5 +34,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240828212653",
-  "archiveOrgUrl": "http://web.archive.org/web/20240828212653/https://www.vulture.com/2023/07/theater-review-cottage-broadway-farce.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20240828212653/https://www.vulture.com/2023/07/theater-review-cottage-broadway-farce.html",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 72,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not un-fun to guess at how everyone is related, but you'll never be wrong in your first assumptions",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "gently diverting but never challenging",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Like a lot of The Cottage, it all fits together pleasantly and too neatly",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production 'gently diverting' with strong performances but criticizes the predictable, overly neat script that lacks the tension and mess needed for effective farce.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:56.930Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

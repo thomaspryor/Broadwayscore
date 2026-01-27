@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 52,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250726095208/https://nystagereview.com/2023/07/24/the-cottage-a-new-sex-farce-that-already-feels-dated/",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "4/5"
+  "extractedStars": "4/5",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": 77,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the humor is so devoid of reality that the laughs become increasingly strained",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's hard to see exactly who The Cottage is for",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "To be fair, The Cottage is funny, often very funny",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite praising the performances and direction, the critic fundamentally questions the show's reason for existing and finds the material dated and strained, making it difficult to recommend. | GPT-4o-mini: The review expresses mixed feelings, acknowledging some humor and strong performances while criticizing the script and overall impact, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:35.660Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

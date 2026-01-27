@@ -10,8 +10,64 @@
   "bwwExcerpt": "Theresa Rebeck’s play about a hoarder is the slightest of comedies. Its plot is paltry. Its insights are pat. It promises more laughs than it delivers.  It even promises more junk than it delivers: Before the curtain rises, there’s a tantalizing pile-up of old papers and boxes resting on the lip of the stage. But “I Need That” does deliver Danny DeVito, and for some, that will be enough.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 65,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Its plot is paltry. Its insights are pat. It promises more laughs than it delivers.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "does deliver Danny DeVito, and for some, that will be enough",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "the slightest of comedies",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review systematically criticizes the play's script, plot, and humor while offering only DeVito's presence as a qualified positive, suggesting most audiences should skip it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:47.590Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
