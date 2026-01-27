@@ -5,6 +5,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { getAllShows, ComputedShow, getDataStats, getUpcomingShows, getAudienceBuzz } from '@/lib/data';
 import { getOptimizedImageUrl } from '@/lib/images';
+import ScoreTooltip from '@/components/ScoreTooltip';
 
 // URL parameter values
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'closing_soon' | 'all';
@@ -79,7 +80,19 @@ function getScoreTier(score: number | null | undefined) {
   return SCORE_TIERS.stayAway;
 }
 
-function ScoreBadge({ score, size = 'md', reviewCount, status }: { score?: number | null; size?: 'sm' | 'md' | 'lg'; reviewCount?: number; status?: string }) {
+interface ScoreBadgeProps {
+  score?: number | null;
+  size?: 'sm' | 'md' | 'lg';
+  reviewCount?: number;
+  status?: string;
+  // Tooltip props (optional)
+  tier1Count?: number;
+  tier2Count?: number;
+  tier3Count?: number;
+  showTooltip?: boolean;
+}
+
+function ScoreBadge({ score, size = 'md', reviewCount, status, tier1Count, tier2Count, tier3Count, showTooltip = false }: ScoreBadgeProps) {
   const sizeClass = {
     sm: 'w-11 h-11 text-lg rounded-lg',
     md: 'w-14 h-14 text-2xl rounded-xl',
@@ -114,24 +127,49 @@ function ScoreBadge({ score, size = 'md', reviewCount, status }: { score?: numbe
 
   const roundedScore = Math.round(score);
   let colorClass: string;
+  let label: string;
 
   if (roundedScore >= 85) {
     colorClass = 'score-must-see';
+    label = 'Must-See';
   } else if (roundedScore >= 75) {
     colorClass = 'score-great';
+    label = 'Recommended';
   } else if (roundedScore >= 65) {
     colorClass = 'score-good';
+    label = 'Worth Seeing';
   } else if (roundedScore >= 55) {
     colorClass = 'score-tepid';
+    label = 'Mixed';
   } else {
     colorClass = 'score-skip';
+    label = 'Skip';
   }
 
-  return (
+  const badge = (
     <div className={`score-badge ${sizeClass} ${colorClass} font-bold`}>
       {roundedScore}
     </div>
   );
+
+  // Wrap with tooltip if enabled and we have the necessary data
+  if (showTooltip && reviewCount !== undefined && tier1Count !== undefined) {
+    return (
+      <ScoreTooltip
+        score={roundedScore}
+        label={label}
+        tier1Count={tier1Count}
+        tier2Count={tier2Count || 0}
+        tier3Count={tier3Count || 0}
+        totalReviews={reviewCount}
+        size="sm"
+      >
+        {badge}
+      </ScoreTooltip>
+    );
+  }
+
+  return badge;
 }
 
 // Status pill - subtle background with accent color
@@ -337,6 +375,10 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               size="lg"
               reviewCount={show.criticScore?.reviewCount}
               status={show.status}
+              tier1Count={show.criticScore?.tier1Count}
+              tier2Count={show.criticScore?.tier2Count}
+              tier3Count={show.criticScore?.tier3Count}
+              showTooltip={true}
             />
           </>
         )}
