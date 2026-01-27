@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T05:14:18.071Z",
+  "runDate": "2026-01-27T05:15:08.467Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-roommate-2024",
+    "showFilter": "oh-mary-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 203,
-    "failed": 115,
+    "processed": 206,
+    "failed": 123,
     "skipped": 0,
-    "successRate": "63.8%"
+    "successRate": "62.6%"
   },
   "tierBreakdown": {
     "playwright": 22,
     "scrapingbee": 17,
-    "brightdata": 21,
-    "archive": 143
+    "brightdata": 22,
+    "archive": 145
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 17,
     "tier1Success": 0,
-    "tier2Attempts": 6,
+    "tier2Attempts": 17,
     "tier2Success": 0,
-    "tier3Attempts": 6,
-    "tier3Success": 1,
-    "tier4Attempts": 7,
-    "tier4Success": 0,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 10
+    "tier3Attempts": 17,
+    "tier3Success": 2,
+    "tier4Attempts": 20,
+    "tier4Success": 2,
+    "totalFailed": 13,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -237,7 +237,10 @@
     "cabaret-2024/talkinbroadway-com--unknown.json",
     "cabaret-2024/theaterscene-net--unknown.json",
     "cabaret-2024/wsj-com--unknown.json",
-    "the-roommate-2024/observer--jesse-green.json"
+    "oh-mary-2024/vulture--sara-holdren.json",
+    "oh-mary-2024/observer--david-cote.json",
+    "oh-mary-2024/timeout--adam-feldman.json",
+    "oh-mary-2024/wsj-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -350,11 +353,19 @@
     "hadestown-2019/washpost--peter-marks.json",
     "cabaret-2024/interestedbystander-com--unknown.json",
     "cabaret-2024/tman--jesse-green.json",
-    "the-roommate-2024/nyt--jesse-green.json",
-    "the-roommate-2024/thr--angie-han.json",
-    "the-roommate-2024/vult--sara-holdren.json",
-    "the-roommate-2024/nyp--johnny-oleksinski.json",
-    "the-roommate-2024/wsj-com--unknown.json"
+    "oh-mary-2024/NYTG--austin-fimmano.json",
+    "oh-mary-2024/nyt--jesse-green.json",
+    "oh-mary-2024/thr--angie-han.json",
+    "oh-mary-2024/variety--aramide-tinubu.json",
+    "oh-mary-2024/vult--sara-holdren.json",
+    "oh-mary-2024/NYDN--chris-jones.json",
+    "oh-mary-2024/ew--christian-holub.json",
+    "oh-mary-2024/guardian--adrian-horton.json",
+    "oh-mary-2024/interested-bystander--cary-wong.json",
+    "oh-mary-2024/nyp--johnny-oleksinski.json",
+    "oh-mary-2024/tman--jesse-green.json",
+    "oh-mary-2024/usa-today--patrick-ryan.json",
+    "oh-mary-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -421,7 +432,8 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "the-roommate-2024/observer--jesse-green.json"
+      "oh-mary-2024/observer--david-cote.json",
+      "oh-mary-2024/timeout--adam-feldman.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -566,7 +578,9 @@
       "hadestown-2019/washingtonpost-com--unknown.json",
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
-      "cabaret-2024/wsj-com--unknown.json"
+      "cabaret-2024/wsj-com--unknown.json",
+      "oh-mary-2024/vulture--sara-holdren.json",
+      "oh-mary-2024/wsj-com--unknown.json"
     ]
   }
 }
