@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "As they bound along, the five performers have ingrained their work so well they could amusingly pass for figures on a Swiss clock. Their ensemble presentation is like nothing—or very few things—seen on a local stage before. It’s a major reason, though hardly the only of abundant reasons, to make Operation Mincemeat gleeful obligatory viewing.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/operation-mincemeat/",
@@ -38,5 +38,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "4/5"
+  "extractedStars": "4/5",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 97
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 88,
+      "performances": 93,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "★★★★☆ one of the zestiest UK musical imports ever",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "unremittingly tough, ultimately adorable, and joyfully welcome",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "make Operation Mincemeat gleeful obligatory viewing",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Four-star review with consistent praise throughout, calling it 'obligatory viewing' and 'one of the zestiest imports ever' with detailed appreciation for all production elements. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the production's creativity, humor, and strong performances, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:20.882Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 86,
+    "openaiScore": 92,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

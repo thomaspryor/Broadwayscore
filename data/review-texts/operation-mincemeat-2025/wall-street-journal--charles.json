@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Audiences are always receptive to flights into jubilant escapism—perhaps particularly now—and this plucky musical provides it in generous doses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/operation-mincemeat/",
@@ -38,5 +38,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251111234531/https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-on-broadway-92d630a9",
   "textIssues": [
     "Word count too low: 182 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 63.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 72,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "sometimes exhaustingly antic comedy that drives this odd duck of a musical",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Performed by Mr. Malone with a touching sincerity untainted by sentimentality",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "indicates a subtle emotional core beneath the sometimes exhaustingly antic comedy",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges strong individual performances and musical moments but criticizes the show's exhausting comedy style, suggesting appreciation for elements within a flawed whole. | GPT-4o-mini: The review expresses clear appreciation for the performances and emotional depth, suggesting a positive recommendation despite some reservations about the overall comedic tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:46.081Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 75,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

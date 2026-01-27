@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Robert Hastie’s direction and Jenny Arnold’s frenetic choreography ensure a well-oiled engine of comedic and dramatic moving parts amid the music.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 83,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/operation-mincemeat/",
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 75,
+      "performances": 89,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Operation Mincemeat is blessed with a firecracker five-person cast. Even if its sense of British humor is not your cup of tea, it's hard not to be in awe at its comedic and dramatic audacity.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a cup of British comedy, sometimes with drawn-out humor to a fault — not for every American",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "ensures a well-oiled engine of comedic and dramatic moving parts",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite noting that the British humor may not appeal to all Americans and some drawn-out moments, the reviewer consistently praises the performances, direction, audacity, and overall execution, concluding with clear admiration for the production's achievements. | GPT-4o-mini: The review expresses strong admiration for the performances and direction, with only minor reservations about the humor's appeal, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:34.455Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
