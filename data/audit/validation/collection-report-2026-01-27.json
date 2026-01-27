@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:49:27.787Z",
+  "runDate": "2026-01-27T04:51:04.884Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "oedipus-2025",
+    "showFilter": "operation-mincemeat-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 205,
-    "failed": 112,
+    "processed": 206,
+    "failed": 111,
     "skipped": 0,
-    "successRate": "64.7%"
+    "successRate": "65.0%"
   },
   "tierBreakdown": {
-    "playwright": 21,
-    "scrapingbee": 16,
-    "brightdata": 21,
-    "archive": 147
+    "playwright": 20,
+    "scrapingbee": 18,
+    "brightdata": 22,
+    "archive": 146
   },
   "statistics": {
     "tier1Attempts": 16,
-    "tier1Success": 4,
-    "tier2Attempts": 12,
-    "tier2Success": 0,
-    "tier3Attempts": 12,
-    "tier3Success": 1,
-    "tier4Attempts": 12,
-    "tier4Success": 7,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 90
+    "tier1Success": 3,
+    "tier2Attempts": 13,
+    "tier2Success": 2,
+    "tier3Attempts": 11,
+    "tier3Success": 2,
+    "tier4Attempts": 10,
+    "tier4Success": 6,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 70
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,18 +228,19 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "oedipus-2025/culturesauce-com--unknown.json",
-    "oedipus-2025/lavocedinewyork-com--unknown.json",
-    "oedipus-2025/lightingandsoundamerica-com--unknown.json",
-    "oedipus-2025/ny-daily-news--chris-jones.json",
-    "oedipus-2025/nypost--johnny-oleksinki.json",
-    "oedipus-2025/nypost--johnny-oleksinski.json",
-    "oedipus-2025/pagesonstages-com--unknown.json",
-    "oedipus-2025/talkinbroadway-com--unknown.json",
-    "oedipus-2025/theaterscene-com--unknown.json",
-    "oedipus-2025/theaterscene-net--unknown.json",
-    "oedipus-2025/thewrap--robert-hofler.json",
-    "oedipus-2025/wsj--charles-isherwood.json"
+    "operation-mincemeat-2025/broadway-news--brittani-samuel.json",
+    "operation-mincemeat-2025/daily-beast--tim-teeman.json",
+    "operation-mincemeat-2025/ew-com--unknown.json",
+    "operation-mincemeat-2025/nypost--johnny-oleksinki.json",
+    "operation-mincemeat-2025/observer--david-cote.json",
+    "operation-mincemeat-2025/observer-com--unknown.json",
+    "operation-mincemeat-2025/pagesonstages-com--unknown.json",
+    "operation-mincemeat-2025/talkinbroadway-com--unknown.json",
+    "operation-mincemeat-2025/theatermania--david-gordon.json",
+    "operation-mincemeat-2025/theaterscene-net--unknown.json",
+    "operation-mincemeat-2025/theatrereviews-com--unknown.json",
+    "operation-mincemeat-2025/thewrap--robert-hofler.json",
+    "operation-mincemeat-2025/wsj-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -350,10 +351,9 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "oedipus-2025/GUARDIAN--alexis-petridis.json",
-    "oedipus-2025/interestedbystander-com--unknown.json",
-    "oedipus-2025/theatermania--pete-hempstead.json",
-    "oedipus-2025/washington-post--naveen-kumar.json"
+    "operation-mincemeat-2025/ew--shania-russell.json",
+    "operation-mincemeat-2025/nypost--johnny-oleksinski.json",
+    "operation-mincemeat-2025/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -374,10 +374,9 @@
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
       "hadestown-2019/showshowdown-blogspot-com--unknown.json",
-      "oedipus-2025/culturesauce-com--unknown.json",
-      "oedipus-2025/lightingandsoundamerica-com--unknown.json",
-      "oedipus-2025/pagesonstages-com--unknown.json",
-      "oedipus-2025/theaterscene-net--unknown.json"
+      "operation-mincemeat-2025/pagesonstages-com--unknown.json",
+      "operation-mincemeat-2025/theaterscene-net--unknown.json",
+      "operation-mincemeat-2025/theatrereviews-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -395,7 +394,9 @@
       "death-becomes-her-2024/ew--dalton-ross.json",
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
-      "hadestown-2019/timeout--adam-feldman.json"
+      "hadestown-2019/timeout--adam-feldman.json",
+      "operation-mincemeat-2025/broadway-news--brittani-samuel.json",
+      "operation-mincemeat-2025/ew-com--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -418,7 +419,8 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "oedipus-2025/talkinbroadway-com--unknown.json"
+      "operation-mincemeat-2025/daily-beast--tim-teeman.json",
+      "operation-mincemeat-2025/observer--david-cote.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -561,13 +563,12 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "oedipus-2025/lavocedinewyork-com--unknown.json",
-      "oedipus-2025/ny-daily-news--chris-jones.json",
-      "oedipus-2025/nypost--johnny-oleksinki.json",
-      "oedipus-2025/nypost--johnny-oleksinski.json",
-      "oedipus-2025/theaterscene-com--unknown.json",
-      "oedipus-2025/thewrap--robert-hofler.json",
-      "oedipus-2025/wsj--charles-isherwood.json"
+      "operation-mincemeat-2025/nypost--johnny-oleksinki.json",
+      "operation-mincemeat-2025/observer-com--unknown.json",
+      "operation-mincemeat-2025/talkinbroadway-com--unknown.json",
+      "operation-mincemeat-2025/theatermania--david-gordon.json",
+      "operation-mincemeat-2025/thewrap--robert-hofler.json",
+      "operation-mincemeat-2025/wsj-com--unknown.json"
     ]
   }
 }
