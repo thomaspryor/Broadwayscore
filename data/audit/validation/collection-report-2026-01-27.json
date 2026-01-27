@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:36:16.290Z",
+  "runDate": "2026-01-27T04:36:25.089Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "wicked-2003",
+    "showFilter": "the-roommate-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 198,
-    "failed": 114,
+    "processed": 212,
+    "failed": 110,
     "skipped": 0,
-    "successRate": "63.5%"
+    "successRate": "65.8%"
   },
   "tierBreakdown": {
-    "playwright": 18,
-    "scrapingbee": 16,
-    "brightdata": 21,
-    "archive": 143
+    "playwright": 27,
+    "scrapingbee": 17,
+    "brightdata": 22,
+    "archive": 146
   },
   "statistics": {
-    "tier1Attempts": 11,
-    "tier1Success": 1,
-    "tier2Attempts": 10,
-    "tier2Success": 0,
+    "tier1Attempts": 21,
+    "tier1Success": 10,
+    "tier2Attempts": 11,
+    "tier2Success": 1,
     "tier3Attempts": 10,
-    "tier3Success": 1,
-    "tier4Attempts": 12,
-    "tier4Success": 3,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 40
+    "tier3Success": 2,
+    "tier4Attempts": 8,
+    "tier4Success": 6,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 80
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,11 +228,25 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "wicked-2003/nyt--ben-brantley.json",
-    "wicked-2003/frontmezzjunkies-com--unknown.json",
-    "wicked-2003/nymag-com--unknown.json",
-    "wicked-2003/theater-about-com--unknown.json",
-    "wicked-2003/usatoday30-usatoday-com--unknown.json"
+    "the-roommate-2024/chicago-tribune--chris-jones.json",
+    "the-roommate-2024/culturesauce-com--unknown.json",
+    "the-roommate-2024/deadline--greg-evans.json",
+    "the-roommate-2024/exeuntnyc-com--unknown.json",
+    "the-roommate-2024/lightingandsoundamerica-com--unknown.json",
+    "the-roommate-2024/newyorktheater-me--unknown.json",
+    "the-roommate-2024/newyorktheatreguide-com--unknown.json",
+    "the-roommate-2024/observer--jesse-green.json",
+    "the-roommate-2024/observer-com--unknown.json",
+    "the-roommate-2024/pagesonstages-com--unknown.json",
+    "the-roommate-2024/talkinbroadway-com--unknown.json",
+    "the-roommate-2024/theatermania--zachary-stewart.json",
+    "the-roommate-2024/theaterpizzazz-com--unknown.json",
+    "the-roommate-2024/theaterscene-net--unknown.json",
+    "the-roommate-2024/theaterscene-org--unknown.json",
+    "the-roommate-2024/theatrereviews-com--unknown.json",
+    "the-roommate-2024/thewrap--robert-hofler.json",
+    "the-roommate-2024/timeout-ny--adam-feldman.json",
+    "the-roommate-2024/twi-ny-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -343,12 +357,8 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "wicked-2003/apnewsarchive-com--unknown.json",
-    "wicked-2003/broadwayreviewed-com--unknown.json",
-    "wicked-2003/content-time-com--unknown.json",
-    "wicked-2003/ew-com--unknown.json",
-    "wicked-2003/guardian--michael-billington.json",
-    "wicked-2003/washpost--peter-marks.json"
+    "the-roommate-2024/nyp--johnny-oleksinski.json",
+    "the-roommate-2024/wsj-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -369,7 +379,16 @@
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
       "hadestown-2019/showshowdown-blogspot-com--unknown.json",
-      "wicked-2003/usatoday30-usatoday-com--unknown.json"
+      "the-roommate-2024/culturesauce-com--unknown.json",
+      "the-roommate-2024/exeuntnyc-com--unknown.json",
+      "the-roommate-2024/lightingandsoundamerica-com--unknown.json",
+      "the-roommate-2024/newyorktheater-me--unknown.json",
+      "the-roommate-2024/newyorktheatreguide-com--unknown.json",
+      "the-roommate-2024/pagesonstages-com--unknown.json",
+      "the-roommate-2024/theaterscene-net--unknown.json",
+      "the-roommate-2024/theatrereviews-com--unknown.json",
+      "the-roommate-2024/timeout-ny--adam-feldman.json",
+      "the-roommate-2024/twi-ny-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -387,7 +406,8 @@
       "death-becomes-her-2024/ew--dalton-ross.json",
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
-      "hadestown-2019/timeout--adam-feldman.json"
+      "hadestown-2019/timeout--adam-feldman.json",
+      "the-roommate-2024/chicago-tribune--chris-jones.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -410,7 +430,8 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "wicked-2003/frontmezzjunkies-com--unknown.json"
+      "the-roommate-2024/observer--jesse-green.json",
+      "the-roommate-2024/talkinbroadway-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -553,9 +574,12 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "wicked-2003/nyt--ben-brantley.json",
-      "wicked-2003/nymag-com--unknown.json",
-      "wicked-2003/theater-about-com--unknown.json"
+      "the-roommate-2024/deadline--greg-evans.json",
+      "the-roommate-2024/observer-com--unknown.json",
+      "the-roommate-2024/theatermania--zachary-stewart.json",
+      "the-roommate-2024/theaterpizzazz-com--unknown.json",
+      "the-roommate-2024/theaterscene-org--unknown.json",
+      "the-roommate-2024/thewrap--robert-hofler.json"
     ]
   }
 }
