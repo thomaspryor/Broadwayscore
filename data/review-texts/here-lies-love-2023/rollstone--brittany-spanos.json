@@ -9,8 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical transforms the Broadway Theatre into a nightclub, with audience members dancing alongside the performers in an immersive experience that brings Imelda Marcos's story to life through David Byrne's pulsing disco score.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "low",
+    "range": {
+      "low": 60,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 78,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "transforms the Broadway Theatre into a nightclub",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "immersive experience that brings Imelda Marcos's story to life",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "pulsing disco score",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This appears to be a neutral description of the show's immersive format and musical style rather than an evaluative review, making scoring highly uncertain. | GPT-4o-mini: The review highlights an immersive and engaging experience with strong music and production elements, indicating a solid recommendation. | Note: Models differed by 20 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:03.599Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 85,
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 20 points (Claude: 65, OpenAI: 85)"
+    ]
+  }
 }

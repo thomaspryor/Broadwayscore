@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Branden Jacobs-Jenkins’ play Appropriate, premiering on Broadway in a spellbinding Second Stage Theatre production after an off-Broadway run nearly a decade ago, is an astonishing work of American fact and fiction.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/appropriate/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": null,
+      "performances": 92,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "Appropriate is a masterwork the likes of which crop up a handful of times per generation",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "an astonishing work of American fact and fiction",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "uniformly realized by this cast with a dropped-in vitality impossible to shake off",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses the highest possible superlatives ('masterwork', 'astonishing') and declares it appears only 'a handful of times per generation', indicating unqualified enthusiasm and a must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:05.115Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 94,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

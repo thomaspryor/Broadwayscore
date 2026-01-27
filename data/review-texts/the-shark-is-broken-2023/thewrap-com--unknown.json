@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250908152242",
-  "archiveOrgUrl": "http://web.archive.org/web/20250908152242/https://www.thewrap.com/the-shark-is-broken-jaws-broadway-golden-theatre-bruce-shaw/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250908152242/https://www.thewrap.com/the-shark-is-broken-jaws-broadway-golden-theatre-bruce-shaw/",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": 25,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "delivering one of the most grating performances ever put on stage",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Guy Masterson's blunt direction does nothing to mitigate these over-the-top acting exercises",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's odd when you go to the theater to see a show like \"Shark\" or \"Future\" and the only thing of interest on stage isn't even a movie, but a video",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic systematically demolishes the play's script logic, performances (calling the lead 'grating'), and direction while offering only minor praise for video projections. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the script, performances, and direction, leading to a clear recommendation to avoid the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:40.452Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

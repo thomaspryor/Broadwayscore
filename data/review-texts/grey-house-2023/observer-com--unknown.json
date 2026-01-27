@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 28,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241207175756",
-  "archiveOrgUrl": "http://web.archive.org/web/20241207175756/https://observer.com/2023/06/review-broadways-grey-house-raids-the-grave-for-horror-cliches/"
+  "archiveOrgUrl": "http://web.archive.org/web/20241207175756/https://observer.com/2023/06/review-broadways-grey-house-raids-the-grave-for-horror-cliches/",
+  "llmScore": {
+    "score": 28,
+    "confidence": "medium",
+    "range": {
+      "low": 23,
+      "high": 33
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 15,
+      "music": null,
+      "performances": 65,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Here, there's only the mounting dread that you're trapped in a pretentious trauma-drama using horror tropes to diminishing effect.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "audiences who pay for his pretentious pulp? Not so much.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the real star is the design team; their work is mysterious and spooky, and altogether ooky",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a harsh pan of the script and concept while praising design elements, but the overwhelming negativity toward the core material ('pretentious pulp', 'tedious', 'incoherent') makes this a clear negative review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:33.312Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 28,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

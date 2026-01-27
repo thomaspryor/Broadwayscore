@@ -7,7 +7,58 @@
   "publishDate": "November 17, 2023",
   "fullText": "In this new staging, director-choreographer Josh Rhodes squeezes every drop of talent out of his all-star cast of comedy heavy hitters.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "squeezes every drop of talent out of his all-star cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "comedy heavy hitters",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for direction maximizing cast talent suggests positive recommendation, but excerpt is too brief to determine full critical assessment. | GPT-4o-mini: The review highlights the director's ability to maximize the cast's talent, indicating a strong recommendation for performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:24.135Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

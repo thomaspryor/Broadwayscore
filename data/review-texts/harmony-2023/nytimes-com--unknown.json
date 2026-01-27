@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Like a lot of current theater that hitches a ride on the Holocaust for dramatic propulsion, ‘Harmony’ makes guilt and anguish its through line, unintentionally suggesting that survival and the solace of music are somehow undeserved. Luckily, after a rough ride of an evening, the finale — offers exquisite evidence to the contrary.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251003034648",
-  "archiveOrgUrl": "http://web.archive.org/web/20251003034648/https://www.nytimes.com/2023/11/13/theater/harmony-review-barry-manilow.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251003034648/https://www.nytimes.com/2023/11/13/theater/harmony-review-barry-manilow.html",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 68,
+      "performances": 55,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "wields a truncheon instead of the needle it needs",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Manilow's vocal arrangements, written with John O'Neill, the show's music director, are marvelous",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes a beeline for the bleakest parts of the tale and then bleakens them further",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Green acknowledges some strong musical elements but finds the show fundamentally flawed in its relentless bleakness, weak characterization, and heavy-handed approach to its Holocaust story. | GPT-4o-mini: The review is predominantly negative, highlighting significant flaws in the script and overall execution, with only a few redeeming qualities in the music and performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:16.776Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
