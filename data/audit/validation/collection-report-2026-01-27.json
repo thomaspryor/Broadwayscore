@@ -1,66 +1,89 @@
 {
-  "runDate": "2026-01-27T20:36:40.862Z",
+  "runDate": "2026-01-27T20:36:45.509Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "chicago-1996",
+    "showFilter": "suffs-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
+    "processed": 15,
     "failed": 9,
     "skipped": 0,
-    "successRate": "30.8%"
+    "successRate": "62.5%"
   },
   "tierBreakdown": {
-    "playwright": 0,
-    "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 2
+    "playwright": 2,
+    "scrapingbee": 5,
+    "brightdata": 0,
+    "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 0,
-    "tier2Attempts": 13,
-    "tier2Success": 0,
+    "tier1Attempts": 20,
+    "tier1Success": 2,
+    "tier2Attempts": 18,
+    "tier2Success": 5,
     "tier3Attempts": 13,
-    "tier3Success": 2,
-    "tier4Attempts": 14,
-    "tier4Success": 2,
+    "tier3Success": 0,
+    "tier4Attempts": 23,
+    "tier4Success": 8,
     "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 50
+    "scrapingBeeCreditsUsed": 90
   },
   "processed": [
-    "chicago-1996/talkin-broadway--matthew-murray.json",
-    "chicago-1996/talkinbroadway-com--unknown.json",
-    "chicago-1996/theatermania--andy-propst.json",
-    "chicago-1996/theatermania--zachary-stewart.json"
+    "suffs-2024/new-york-magazine-vulture--helen-shaw.json",
+    "suffs-2024/nyt-theater--jonathan-mandell.json",
+    "suffs-2024/nytg--diep-tran.json",
+    "suffs-2024/vulture--helen.json",
+    "suffs-2024/did-they-like-it--juan-michael.json",
+    "suffs-2024/entertainment-weekly--andrea.json",
+    "suffs-2024/front-row-center--sarah-downs.json",
+    "suffs-2024/new-york-times--maya.json",
+    "suffs-2024/the-wrap--robert.json",
+    "suffs-2024/theatermania--hayley.json",
+    "suffs-2024/theaterscene-net--joseph-pisano.json",
+    "suffs-2024/theatrely--juan-a.json",
+    "suffs-2024/time-out-new-york--raven-snook.json",
+    "suffs-2024/time-out-new-york--raven.json",
+    "suffs-2024/wsj-com--unknown.json"
   ],
   "failed": [
-    "chicago-1996/nytimes-com--unknown.json",
-    "chicago-1996/EW--ginia-bellafante.json",
-    "chicago-1996/NEWSDAY--linda-winer.json",
-    "chicago-1996/NYDN--howard-kissel.json",
-    "chicago-1996/TIME--richard-zoglin.json",
-    "chicago-1996/associated-press--michael-kuchwara.json",
-    "chicago-1996/curtainup--elyse-sommer.json",
-    "chicago-1996/curtainup-com--unknown.json",
-    "chicago-1996/oocities-org--unknown.json"
+    "suffs-2024/nyt--jesse-green.json",
+    "suffs-2024/thr--angie-han.json",
+    "suffs-2024/variety--aramide-tinubu.json",
+    "suffs-2024/variety--marylin.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/talkin-broadway--james-wilson.json",
+    "suffs-2024/talkinbway--matthew-murray.json",
+    "suffs-2024/washpost--peter-marks.json",
+    "suffs-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "scrapingbee": [],
-    "brightdata": [
-      "chicago-1996/talkin-broadway--matthew-murray.json",
-      "chicago-1996/talkinbroadway-com--unknown.json"
+    "playwright": [
+      "suffs-2024/theaterscene-net--joseph-pisano.json",
+      "suffs-2024/time-out-new-york--raven-snook.json"
     ],
+    "scrapingbee": [
+      "suffs-2024/nyt-theater--jonathan-mandell.json",
+      "suffs-2024/did-they-like-it--juan-michael.json",
+      "suffs-2024/entertainment-weekly--andrea.json",
+      "suffs-2024/theatrely--juan-a.json",
+      "suffs-2024/time-out-new-york--raven.json"
+    ],
+    "brightdata": [],
     "archive": [
-      "chicago-1996/theatermania--andy-propst.json",
-      "chicago-1996/theatermania--zachary-stewart.json"
+      "suffs-2024/new-york-magazine-vulture--helen-shaw.json",
+      "suffs-2024/nytg--diep-tran.json",
+      "suffs-2024/vulture--helen.json",
+      "suffs-2024/front-row-center--sarah-downs.json",
+      "suffs-2024/new-york-times--maya.json",
+      "suffs-2024/the-wrap--robert.json",
+      "suffs-2024/theatermania--hayley.json",
+      "suffs-2024/wsj-com--unknown.json"
     ]
   }
 }
