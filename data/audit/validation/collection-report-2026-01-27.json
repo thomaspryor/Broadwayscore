@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T06:15:23.029Z",
+  "runDate": "2026-01-27T06:16:38.825Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-lion-king-1997",
+    "showFilter": "hadestown-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 205,
-    "failed": 133,
+    "processed": 212,
+    "failed": 117,
     "skipped": 0,
-    "successRate": "60.7%"
+    "successRate": "64.4%"
   },
   "tierBreakdown": {
-    "playwright": 22,
-    "scrapingbee": 18,
+    "playwright": 28,
+    "scrapingbee": 17,
     "brightdata": 21,
-    "archive": 144
+    "archive": 146
   },
   "statistics": {
-    "tier1Attempts": 14,
+    "tier1Attempts": 3,
     "tier1Success": 0,
-    "tier2Attempts": 14,
-    "tier2Success": 1,
-    "tier3Attempts": 13,
+    "tier2Attempts": 3,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier4Attempts": 17,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 40
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 10
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -237,9 +237,16 @@
     "cabaret-2024/talkinbroadway-com--unknown.json",
     "cabaret-2024/theaterscene-net--unknown.json",
     "cabaret-2024/wsj-com--unknown.json",
-    "maybe-happy-ending-2024/observer--jesse-green.json",
-    "maybe-happy-ending-2024/washington-post--naveen-kumar.json",
-    "the-lion-king-1997/familyvacationcritic-com--unknown.json"
+    "queen-versailles-2025/daily-beast--tim-teeman.json",
+    "queen-versailles-2025/ew--dalton-ross.json",
+    "queen-versailles-2025/lightingandsoundamerica-com--unknown.json",
+    "queen-versailles-2025/newyorktheatreguide-com--unknown.json",
+    "queen-versailles-2025/nydailynews-com--unknown.json",
+    "queen-versailles-2025/nypost--johnny-oleksinski.json",
+    "queen-versailles-2025/pagesonstages-com--unknown.json",
+    "queen-versailles-2025/theatermania--zachary-stewart.json",
+    "queen-versailles-2025/theaterscene-net--unknown.json",
+    "queen-versailles-2025/timeout-ny--adam-feldman.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -352,29 +359,13 @@
     "hadestown-2019/washpost--peter-marks.json",
     "cabaret-2024/interestedbystander-com--unknown.json",
     "cabaret-2024/tman--jesse-green.json",
-    "maybe-happy-ending-2024/nyt--jesse-green.json",
-    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
-    "maybe-happy-ending-2024/ew--shania-russell.json",
-    "maybe-happy-ending-2024/interestedbystander-com--unknown.json",
-    "maybe-happy-ending-2024/ny-daily-news--chris-jones.json",
-    "maybe-happy-ending-2024/nyp--johnny-oleksinski.json",
-    "maybe-happy-ending-2024/talkinbway--matthew-murray.json",
-    "maybe-happy-ending-2024/tman--david-gordon.json",
-    "maybe-happy-ending-2024/washpost--peter-marks.json",
-    "maybe-happy-ending-2024/wsj--terry-teachout.json",
-    "the-lion-king-1997/nyt--ben-brantley.json",
-    "the-lion-king-1997/nytimes-com--unknown.json",
-    "the-lion-king-1997/thr--frank-scheck.json",
-    "the-lion-king-1997/variety--matt-wolf.json",
-    "the-lion-king-1997/AP--michael-kuchwara.json",
-    "the-lion-king-1997/NEWSDAY--linda-winer.json",
-    "the-lion-king-1997/NYP--clive-barnes.json",
-    "the-lion-king-1997/TIME--richard-zoglin.json",
-    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
-    "the-lion-king-1997/jasonraize-net--unknown.json",
-    "the-lion-king-1997/njcom--michael-sommers.json",
-    "the-lion-king-1997/streetdirectory-com--unknown.json",
-    "the-lion-king-1997/talkinbway--matthew-murray.json"
+    "queen-versailles-2025/1-minute-critic--matthew-wexler.json",
+    "queen-versailles-2025/interestedbystander-com--unknown.json",
+    "queen-versailles-2025/talkinbroadway-com--unknown.json",
+    "queen-versailles-2025/washington-post--naveen-kumar.json",
+    "hadestown-2019/wnyc--jennifer-vanasco.json",
+    "hadestown-2019/wsj--charles-isherwood.json",
+    "hadestown-2019/wsj-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -399,7 +390,13 @@
       "cabaret-2024/lightingandsoundamerica-com--unknown.json",
       "cabaret-2024/newyorktheatreguide-com--unknown.json",
       "cabaret-2024/pagesonstages-wordpress-com--unknown.json",
-      "cabaret-2024/theaterscene-net--unknown.json"
+      "cabaret-2024/theaterscene-net--unknown.json",
+      "queen-versailles-2025/ew--dalton-ross.json",
+      "queen-versailles-2025/lightingandsoundamerica-com--unknown.json",
+      "queen-versailles-2025/newyorktheatreguide-com--unknown.json",
+      "queen-versailles-2025/pagesonstages-com--unknown.json",
+      "queen-versailles-2025/theaterscene-net--unknown.json",
+      "queen-versailles-2025/timeout-ny--adam-feldman.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -418,8 +415,7 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "cabaret-2024/newyorktheater-me--unknown.json",
-      "the-lion-king-1997/familyvacationcritic-com--unknown.json"
+      "cabaret-2024/newyorktheater-me--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -442,7 +438,7 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "maybe-happy-ending-2024/observer--jesse-green.json"
+      "queen-versailles-2025/daily-beast--tim-teeman.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -588,7 +584,9 @@
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
       "cabaret-2024/wsj-com--unknown.json",
-      "maybe-happy-ending-2024/washington-post--naveen-kumar.json"
+      "queen-versailles-2025/nydailynews-com--unknown.json",
+      "queen-versailles-2025/nypost--johnny-oleksinski.json",
+      "queen-versailles-2025/theatermania--zachary-stewart.json"
     ]
   }
 }
