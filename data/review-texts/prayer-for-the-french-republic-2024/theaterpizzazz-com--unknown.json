@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250328125207",
-  "archiveOrgUrl": "http://web.archive.org/web/20250328125207/https://theaterpizzazz.com/prayer-for-the-french-republic-2/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250328125207/https://theaterpizzazz.com/prayer-for-the-french-republic-2/",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 78,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "Joshua Harmon clearly understands the delicate magic of theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this same Joshua Harmon can't help seeing the theater as a blunt force instrument for scoring political points",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "While the show is well-paced, sometimes funny, and often quite involving, cutting 20 minutes could have heightened the impact",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances and historical scenes but heavily criticizes the political speechifying and three-hour runtime, resulting in a qualified mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:57.814Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

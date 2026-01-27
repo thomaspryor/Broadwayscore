@@ -10,8 +10,64 @@
   "bwwExcerpt": "The saving grace of The Heart of Rock and Roll—aside from Lewis and company’s appealing songs (though my personal favorite, “Heart and Soul,” is conspicuously missing!)–is the talent of its cast, which is chock-full of pros. Tamika Lawrence, as Bobby’s confidante, and the grievously underused Zoe Jensen, as Cassandra’s college bestie, provide big laughs; so does Mendoza as the sauna-obsessed, meatball-loving Swede. For some members of Generation X, what this show offers will be more than enough.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 70,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The saving grace of The Heart of Rock and Roll—aside from Lewis and company's appealing songs",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the talent of its cast, which is chock-full of pros",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "For some members of Generation X, what this show offers will be more than enough",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review highlights strong performances and appealing music as 'saving graces,' but the conditional recommendation only for Gen X audiences and the implication that the show needs saving suggests mixed feelings overall. | GPT-4o-mini: While the performances are praised and there are some laughs, the review indicates significant shortcomings in the material, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:54.030Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

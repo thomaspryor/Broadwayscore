@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 17,
+  "assignedScore": 48,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "5/30"
+  "extractedRating": "5/30",
+  "llmScore": {
+    "score": 48,
+    "confidence": "medium",
+    "range": {
+      "low": 43,
+      "high": 53
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 82,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "dark yet dull play",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "uniformly superb performances from everyone on stage; the cast gets a gold star for their commitment",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Holloway's plot ultimately turns out to be a little too complicated for its own good",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises performances highly but finds the play itself dull, slow-paced, and overly complicated, with only conditional recommendation for the acting alone.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:14.419Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

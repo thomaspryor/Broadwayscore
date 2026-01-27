@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -37,5 +37,61 @@
     "ends_with_ellipsis"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 75,
+      "performances": 82,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is entertaining, informative, and delivers an important piece of history about a successful musical group that would otherwise be forgotten",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "slightly falters with a long and labored second act",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "These six actors are the heart of this production and define the theatrical term 'triple threat'",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show entertaining and historically important with strong performances, but notes structural issues including a labored second act and pacing problems.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:29.445Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

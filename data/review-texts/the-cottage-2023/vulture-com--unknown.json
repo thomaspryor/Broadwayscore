@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“There’s a fizz that bubbles up near the end of a door-slamming farce when the characters, one by one, have to explain to one another what’s actually going on...’The Cottage' tries to emphasize the fizz, but nobody remembered to shake the soda can beforehand. It’s full of explanations, light on mess.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240828212653",
-  "archiveOrgUrl": "http://web.archive.org/web/20240828212653/https://www.vulture.com/2023/07/theater-review-cottage-broadway-farce.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20240828212653/https://www.vulture.com/2023/07/theater-review-cottage-broadway-farce.html",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 68,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not un-fun to guess at how everyone is related, but you'll never be wrong in your first assumptions. It's an enjoyable unraveling instead",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Nothing here will surprise, let alone maim, anyone",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Like a lot of The Cottage, it all fits together pleasantly and too neatly",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production pleasant but fundamentally flawed, praising performances while criticizing the predictable script and lack of genuine tension or surprise. | GPT-4o-mini: The review expresses mixed feelings about the script and direction while praising some performances, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:18:02.232Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

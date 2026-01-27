@@ -10,8 +10,64 @@
   "bwwExcerpt": "You don’t need to be a Black woman with braids to enjoy this play: heck, it might teach you something about the intricacies of a craft you only have observed from afar. But this play is also trying to reach a Black audience, long ignored by Broadway. It took producers a while, but there are signs in this still-young season that many have finally figured out that many of the audience members they want to reach are not looking for dramas about pain, aimed mostly at white audiences, but instead wan",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You don't need to be a Black woman with braids to enjoy this play: heck, it might teach you something",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "this play is also trying to reach a Black audience, long ignored by Broadway",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "it might teach you something about the intricacies of a craft you only have observed from afar",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The incomplete excerpt suggests mild educational value and cultural significance but cuts off mid-sentence, making it impossible to determine the critic's final verdict or specific theatrical assessment. | GPT-4o-mini: The review suggests a positive engagement with the play's themes and its attempt to reach a broader audience, but lacks strong enthusiasm or specific praise for performances or production elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:52.529Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

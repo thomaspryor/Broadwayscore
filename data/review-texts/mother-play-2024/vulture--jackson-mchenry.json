@@ -10,8 +10,64 @@
   "bwwExcerpt": "As Phyllis, Lange has to carry the play, which she manages to do in fits and starts. What she can do is cast a spell. In a wonderful, wordless sequence when Phyllis has been abandoned by both Carl and Martha, she putters around an empty apartment, devoid of purpose but retaining the posture of a woman raised to be watched, finding humor and subtle tragedy in the way she slathers hot sauce on a microwaved dinner.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 41,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Her title, like many theatrical matriarchs, is awfully hard to live up to",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "which is also what Mother Play struggles to do",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Mother Play struggles to do",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the play 'struggles' to live up to expectations, suggesting significant disappointment and problems with execution. | GPT-4o-mini: The review indicates a struggle to meet expectations, suggesting a negative overall impression of the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:00.066Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

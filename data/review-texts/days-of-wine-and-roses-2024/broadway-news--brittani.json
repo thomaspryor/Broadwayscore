@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Though the material hinges on a turbulent relationship and a harmful disease, fans of Broadway A-listers will delight in watching O’Hara and James throw themselves into the heavy material for nearly two hours.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/days-of-wine-and-roses/",
@@ -33,5 +33,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 43,
+      "performances": 60,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "this musical — a passion-lacking passion project from collaborators Adam Guettel and Craig Lucas — doesn't go down easy",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "while you may exit Studio 54 shaken by the work, you won't be stirred",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it grows increasingly difficult to empathize with the couple's explosive unraveling when we were only brief witnesses to their purported union",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is predominantly critical of the musical's core elements - shallow exploration of themes, rushed character development, and structural problems - with only qualified praise for performances, making it difficult to recommend despite some positive notes. | GPT-4o-mini: The review expresses significant disappointment in the script and overall execution, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:14.516Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

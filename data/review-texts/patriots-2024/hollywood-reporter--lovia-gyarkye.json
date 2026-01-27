@@ -7,7 +7,58 @@
   "publishDate": "April 23, 2024",
   "fullText": "The ties among these three men anchor Patriots, which otherwise can sometimes feel too unwieldy in its ambitions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 70,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "The ties among these three men anchor Patriots",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "can sometimes feel too unwieldy in its ambitions",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt balances praise for the central relationships with criticism of the show's structural execution, suggesting a mixed experience without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:18.777Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

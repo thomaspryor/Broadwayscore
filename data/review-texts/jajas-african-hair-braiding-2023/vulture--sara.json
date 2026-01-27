@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "At Jocelyn Bioh’s Jaja’s African Hair Braiding, which follows a day in the life of braiders and customers at the eponymous (fictional) shop in Harlem, waves of glee roll through the audience on the regular.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/jajas-african-hair-braiding/",
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250112082623",
-  "archiveOrgUrl": "http://web.archive.org/web/20250112082623/https://www.vulture.com/2023/10/theater-review-jajas-african-hair-braiding.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250112082623/https://www.vulture.com/2023/10/theater-review-jajas-african-hair-braiding.html",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "People are cackling, downright screaming with delight — the man in the couple next to me kept covering his face as he cracked up",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it's bright, generous, and forceful, and those currents carry the day",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Jaja's can sometimes veer a little formulaic or presentational",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic describes an enthusiastic audience response and praises the performances, direction, and cultural authenticity, with only minor reservations about formulaic elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:54.515Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

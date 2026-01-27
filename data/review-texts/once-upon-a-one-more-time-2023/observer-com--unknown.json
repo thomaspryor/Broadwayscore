@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250804100501",
-  "archiveOrgUrl": "http://web.archive.org/web/20250804100501/https://observer.com/2023/06/review-once-upon-a-one-more-time-wont-leave-britney-alone/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250804100501/https://observer.com/2023/06/review-once-upon-a-one-more-time-wont-leave-britney-alone/",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 60,
+      "performances": 71,
+      "direction": 62
+    },
+    "keyPhrases": [
+      {
+        "quote": "Book writer Jon Hartmere's premise is contrived bordering on cringe",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the empowerment narrative is emotionally uninvolving, the sisterhood between Cinderella and Snow White superficial",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Comic divas and spectacular dances help pass the time, but the real show-stealer is Guarini's blissfully vain Prince Charming",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws in the book and emotional core while praising individual performances and choreography, but ultimately sees it as a cynical marketing gimmick rather than meaningful theater. | GPT-4o-mini: The review presents a mixed perspective, highlighting strong performances and choreography but criticizing the book and emotional engagement, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:47.274Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

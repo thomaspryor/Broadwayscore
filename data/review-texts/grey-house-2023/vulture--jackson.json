@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But if you’ve seen a lot of this onscreen, capital-H horror of this kind is less often done on Broadway, and in that context, the scares are fresher. The production makes a good case for more full-on spookiness onstage, even if it’s a less convincing one for this play in particular.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/grey-house/",
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230926190148/https://www.vulture.com/2023/06/theater-review-grey-house-with-laurie-metcalf.html?utm_source=tw&utm_medium=s1&utm_campaign=vulture",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": 73,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "If it doesn't fully succeed on its own terms, it's at least a solid reminder that terror is as worthy of drama as any other kind of spectacle",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "The production makes a good case for more full-on spookiness onstage, even if it's a less convincing one for this play in particular",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "like a lot of those movies, it soon becomes too proud of its own metaphors",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the horror genre experiment and praises performances/direction, but finds the script overly familiar and heavy-handed with its metaphors, resulting in qualified interest rather than clear recommendation. | GPT-4o-mini: The review presents a mixed perspective, highlighting both the fresh scares and the play's shortcomings in clarity and depth, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:51.571Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

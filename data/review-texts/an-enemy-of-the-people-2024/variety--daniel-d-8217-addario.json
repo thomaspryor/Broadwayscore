@@ -7,7 +7,63 @@
   "publishDate": "March 18, 2024",
   "fullText": "This production has much to recommend it, and Strong in particular should return to the stage as often as he can. But it’s hard not to feel as though this “Enemy of the People,” in which as rootable as possible a hero is ground down by the forces of evil, ended up presenting an opportunity for the audience to put themselves on trial, and then, with a sigh of relief, exonerate themselves.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 66,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 79,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production has much to recommend it, and Strong in particular should return to the stage as often as he can",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "But it's hard not to feel as though this 'Enemy of the People'...ended up presenting an opportunity for the audience to put themselves on trial, and then, with a sigh of relief, exonerate themselves",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "this production has much to recommend it",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Opens with clear praise for the production and Strong's performance, but follows with significant conceptual criticism about the show's ultimate impact and effectiveness. | GPT-4o-mini: The review expresses positive sentiments about the performances, particularly highlighting Strong, but also conveys a sense of ambivalence about the overall impact of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:04.231Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

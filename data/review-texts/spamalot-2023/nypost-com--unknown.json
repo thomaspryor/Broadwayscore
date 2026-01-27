@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240813025327",
-  "archiveOrgUrl": "http://web.archive.org/web/20240813025327/https://nypost.com/2023/11/16/entertainment/monty-pythons-spamalot-broadway-review-an-ok-copy-of-the-original/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240813025327/https://nypost.com/2023/11/16/entertainment/monty-pythons-spamalot-broadway-review-an-ok-copy-of-the-original/",
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 50,
+      "performances": 69,
+      "direction": 46
+    },
+    "keyPhrases": [
+      {
+        "quote": "Never hilarious, the revival stalls out at pleasant. Spamalot, laugh a little.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Looking on the bright side of life, audiences can always use a laugh, especially these days, and director Josh Rhodes' fun-enough staging has a decent number of giggles",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "It's yet another missed opportunity for the revival to be something at least a little different.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the revival merely 'pleasant' rather than hilarious, praising individual performances but criticizing the lack of freshness and missed opportunities for improvement. | GPT-4o-mini: The review expresses a mix of mild enjoyment and disappointment, indicating that while some performances shine, the overall production lacks freshness and excitement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:09.222Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

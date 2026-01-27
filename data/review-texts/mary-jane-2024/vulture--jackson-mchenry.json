@@ -7,7 +7,63 @@
   "publishDate": "April 23, 2024",
   "fullText": "That tonal balance is delicate, and it could tilt in any number of directions: too grim and it might be impossible to watch (I would understand someone not wanting to engage with the premise), too woo-woo and it might become sentimental. It asks a lot, specifically, of the actress playing Mary Jane. Rachel McAdams turns out to be more than up for the task.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rachel McAdams turns out to be more than up for the task",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It asks a lot, specifically, of the actress playing Mary Jane",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "too grim and it might be impossible to watch",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt praises McAdams' performance strongly but acknowledges the show's tonal challenges and difficulty of the material, suggesting qualified approval.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:41.071Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

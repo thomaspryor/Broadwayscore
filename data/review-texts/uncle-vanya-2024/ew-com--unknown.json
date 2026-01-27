@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"This update on Vanya doesn’t alter the story in any revolutionary terms\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -36,5 +36,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 82,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "they won't be disappointed",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Neugebauer and Schreck have crafted an especially accessible adaptation, for better or worse",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "B–",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The B- grade and phrase 'they won't be disappointed' indicates a qualified positive recommendation despite criticisms about flattened characters and lost nuances. | GPT-4o-mini: The review expresses strong praise for the performances, particularly Carell and Harper, while noting some limitations in the adaptation and character depth, leading to a clear but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:49.111Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "As the Comedian Harmonists, a ragtag group of male singers in Weimar Germany, gradually find their footing, so does the show: The songs grow more polished, the choreography by director Warren Carlyle more precise, the performances more distinguishable. For a show that debuted over 25 years ago, however, how have subsequent productions, including last year’s Off-Broadway run with the National Yiddish Theatre Folksbiene, not addressed such structural issues?",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 59,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": 63,
+      "performances": 73,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "The first 20 minutes of Barry Manilow's musical Harmony are, quite frankly, uncomfortable",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "As the Comedian Harmonists, a ragtag group of male singers in Weimar Germany, gradually find their footing, so does the show",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Harmony has its high points... but doesn't make up for Harmony's dissonance",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges the show improves after a rough start and has strong individual performances, but criticizes fundamental structural issues and an offensive approach to Holocaust themes that haven't been fixed despite 25 years of development. | GPT-4o-mini: The review presents a mix of positive elements, particularly in performances and some staging, but highlights significant issues with the book and overall coherence, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:44.559Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

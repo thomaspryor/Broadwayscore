@@ -9,9 +9,60 @@
   "isFullReview": false,
   "dtliExcerpt": "But while the Broadway production boasts creative stage design, it fails to provide useful insight into the politics of post-Soviet Russia.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/patriots/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "boasts creative stage design",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "fails to provide useful insight into the politics of post-Soviet Russia",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed signals with praise for design but significant criticism of the show's failure to deliver on its thematic promise, suggesting limited recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:35.580Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

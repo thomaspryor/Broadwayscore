@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251003034629",
-  "archiveOrgUrl": "http://web.archive.org/web/20251003034629/https://www.amny.com/entertainment/review-manilow-harmony/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251003034629/https://www.amny.com/entertainment/review-manilow-harmony/",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 47.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 68,
+      "music": 38,
+      "performances": 78,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, 'Harmony' contains a weak score, with surprisingly generic and bland music by Manilow",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there is much to admire and appreciate about 'Harmony,' including the fascinating real-life story",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "'Harmony' often feels like a combination of 'Cabaret,' 'Jersey Boys,' and Rodgers & Hammerstein love duets",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is deeply conflicted, harshly criticizing the 'weak score' and 'generic music' while praising the story, performances, and production values, resulting in a true mixed verdict with no clear recommendation. | GPT-4o-mini: The review presents a mixed view, highlighting significant weaknesses in the music while praising the performances and production, leading to a conditional recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:43.382Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 65,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

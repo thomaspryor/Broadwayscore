@@ -7,7 +7,63 @@
   "publishDate": "June 22, 2023",
   "fullText": "How do you not get “Baby One More Time” right? That is the first mystery—and the first warning that all may not be well—with Once Upon a One More Time, the musical filled with Britney Spears’ music that opened on Broadway Thursday evening (Marquis Theatre, booking to Nov 19). Truly, if you’re doing this magnificent banger, don’t kick off your big Broadway jukebox musical with it feeling as messy as this musical does.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 25,
+      "performances": null,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "the first warning that all may not be well",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "feeling as messy as this musical does",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "How do you not get 'Baby One More Time' right?",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic opens with fundamental concerns about the production's ability to execute even Britney Spears' most iconic song, describing the musical as 'messy' and warning that 'all may not be well.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:05.682Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

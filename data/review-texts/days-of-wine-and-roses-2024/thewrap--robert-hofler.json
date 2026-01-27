@@ -7,7 +7,63 @@
   "publishDate": "January 28, 2024",
   "fullText": "The only major criticism to level at “Days of Wine and Roses” is that it took Guettel so long to write his third musical, which can easily take its place as one of the few great musicals of this century.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 85.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 98,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the few great musicals of this century",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The only major criticism to level at",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "can easily take its place",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic declares this one of the great musicals of the century, with the only criticism being that it took too long to create - actually another compliment about the composer's importance. | GPT-4o-mini: The review expresses strong enthusiasm for the musical, indicating it as a potential great work of the century with only a minor criticism.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:18:10.026Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

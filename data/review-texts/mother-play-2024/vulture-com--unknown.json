@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Her script assembles the contradictions...but it doesn’t provide a route through them.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241226130526",
-  "archiveOrgUrl": "http://web.archive.org/web/20241226130526/https://www.vulture.com/article/theater-review-paula-vogel-mother-play.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241226130526/https://www.vulture.com/article/theater-review-paula-vogel-mother-play.html",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 55,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "Good material not yet fully refined and processed",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "That performance needs another turn of the screw to get past that, and the script doesn't give her enough torque",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "What she can do is cast a spell. In a wonderful, wordless sequence... finding humor and subtle tragedy",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds some compelling elements (Lange's spell-casting presence, theatrical design touches) but consistently criticizes the script as underdeveloped and the performances as constrained by literary references, resulting in a qualified mixed review that doesn't recommend for or against.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:28.843Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

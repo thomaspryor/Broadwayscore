@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "When plays demonstrate as much merit as “Appropriate,” it’s difficult to identify which star in director Lila Neugebauer’s galaxy shines brightest. Is it Branden Jacobs-Jenkins’ masterful script, laced with insightful irony and biting prose? Is it scenic design collective dots’ lifelike erection of the aging home, littered with racist relics? Or is it the hypnotizing synergy of this ensemble, all of whom balance the horrible actions and the redeeming hearts of these human beings with ease? Yes to all.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/appropriate/",
@@ -36,5 +36,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": null,
+      "performances": 94,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "When plays demonstrate as much merit as \"Appropriate,\" it's difficult to identify which star in director Lila Neugebauer's galaxy shines brightest",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The play runs 165 minutes and you'll hold your breath for every one",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Branden Jacobs-Jenkins' masterful script, laced with insightful irony and biting prose",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language throughout ('masterful script', 'hypnotizing synergy', 'you'll hold your breath for every one') with no meaningful reservations, praising every aspect of the production as exceptional. | GPT-4o-mini: The review expresses unqualified enthusiasm for the script, performances, and direction, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:00.565Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

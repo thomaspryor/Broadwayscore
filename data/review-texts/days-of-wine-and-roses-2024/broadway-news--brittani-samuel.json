@@ -7,7 +7,58 @@
   "publishDate": "January 29, 2024",
   "fullText": "Though the material hinges on a turbulent relationship and a harmful disease, fans of Broadway A-listers will delight in watching O’Hara and James throw themselves into the heavy material for nearly two hours.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "fans of Broadway A-listers will delight",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "throw themselves into the heavy material",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review focuses positively on star performances and suggests fans will 'delight,' indicating a qualified recommendation primarily based on the actors' committed work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:09.014Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -41,5 +41,61 @@
   "designation": "Must_See",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "10/10"
+  "extractedRating": "10/10",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 95,
+      "performances": 95,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "So don't let another day go by without grabbing tickets to this must-see production!",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Deliver a triumphant production of Stephen Sondheim and George Furth's short-lived 1981 Broadway musical",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "this production works so splendidly because Groff's two main co-stars are equally brilliant",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified enthusiasm with superlatives like 'triumphant,' 'must-see,' and explicit call to action to buy tickets immediately.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:08.558Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

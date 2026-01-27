@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 40,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -38,5 +38,56 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "falls short of both feminism and comedy",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "hackneyed evening",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review's headline and subheading clearly indicate disappointment, describing the evening as 'hackneyed' and stating the show 'falls short' of its goals in both feminism and comedy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:27.806Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

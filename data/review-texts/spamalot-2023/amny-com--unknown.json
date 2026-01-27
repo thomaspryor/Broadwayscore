@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251017023130",
-  "archiveOrgUrl": "http://web.archive.org/web/20251017023130/https://www.amny.com/news/review-spamalot-broadway-revival-2023/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251017023130/https://www.amny.com/news/review-spamalot-broadway-revival-2023/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "I had a wonderful time at the revival and left feeling rejuvenated, with its burlesque spirit serving as medicine",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "While the revival may not necessarily be better than the original Broadway production, it is just as good – which is a rare achievement",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "\"Spamalot\" is the musical we need right now",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite initial reservations, the critic had a wonderful time and explicitly states this is the musical we need right now, with strong praise for performances and overall impact.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:04.386Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

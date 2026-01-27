@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20241014075841/https://observer.com/2024/01/review-prayer-for-the-french-republic-is-one-of-broadways-best-new-plays/",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": null,
+      "performances": 88,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "Second only to Appropriate as Broadway's best new play (so far this season)",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Prayer's three hours pass fleetly due to a strong cast under David Cromer's keen, incisive direction",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the writing is undeniably witty and supple, and the arguments about identity, homeland, and antisemitism painfully relevant",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls this the second-best new Broadway play of the season, praises the direction as 'keen and incisive,' and says the three hours 'pass fleetly,' indicating a strong positive recommendation despite acknowledging some structural flaws. | GPT-4o-mini: The review expresses strong praise for the writing, performances, and direction, with only minor caveats, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:21.144Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Chalk it up to theatrical arts of the first order – acting, direction, book and Guettel’s mesmerizing operatic bebop – that we’re soon hand-in-shaky hand with characters who haven’t a clue how to break the cycle of whiskey-ice-repeat. We’re transported back in time by Kirstin’s lovely sleeveless, A-line cocktail dress (Dede Ayite designed the costumes, showing, among other things, how you really do Barbie), a delightful look that quickly enough gives way to ratty old Baby Jane Hudson bathrobes. And watch Joe morph from Man In a Gray Flannel Suit to rumpled slob in yesterday’s slept-ins, all inhabiting a midcentury modern world, perfectly designed by Lizzie Clachan, that seems by turns airy and claustrophobic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/days-of-wine-and-roses/",
@@ -51,5 +51,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240306155337",
-  "archiveOrgUrl": "http://web.archive.org/web/20240306155337/https://deadline.com/2024/01/days-of-wine-and-roses-broadway-review-once-upon-a-matress-1235806789/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240306155337/https://deadline.com/2024/01/days-of-wine-and-roses-broadway-review-once-upon-a-matress-1235806789/",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 90,
+      "performances": 88,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chalk it up to theatrical arts of the first order – acting, direction, book and Guettel's mesmerizing operatic bebop",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Days of Wine and Roses is sumptuous from start to finish, a resplendent melding of music and acting and storytelling",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "dares us to confront lessons we only thought we learned ages ago",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language like 'theatrical arts of the first order,' 'sumptuous from start to finish,' and 'resplendent melding,' indicating strong artistic achievement with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:44.561Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

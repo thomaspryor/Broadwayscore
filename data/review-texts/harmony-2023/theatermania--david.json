@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This is a show that my grandparents would have raved about during the post-services Kiddush luncheon: undeniably moving and extremely powerful, the pros of Harmony generally outweigh the cons. It’s not as profound as everyone involved clearly thinks it is, but it’ll give you the good cathartic cry you’ve been waiting for.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250624163214",
-  "archiveOrgUrl": "http://web.archive.org/web/20250624163214/https://www.theatermania.com/news/review-music-and-passion-and-bourgeoning-fascism-in-barry-manilows-harmony_1720947/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250624163214/https://www.theatermania.com/news/review-music-and-passion-and-bourgeoning-fascism-in-barry-manilows-harmony_1720947/",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": 73,
+      "performances": 83,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "undeniably moving and extremely powerful, the pros of Harmony generally outweigh the cons",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Chief among the problems is how the writers bog the show down in the kind of bombastic schmaltz",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it'll give you the good cathartic cry you've been waiting for",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant flaws in the writing and tone but ultimately concludes that the pros outweigh the cons, praising the performances and emotional impact while recommending it as moving and powerful despite its shortcomings. | GPT-4o-mini: The review acknowledges both strengths and weaknesses, leading to a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:26.109Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

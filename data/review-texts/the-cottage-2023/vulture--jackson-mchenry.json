@@ -7,7 +7,63 @@
   "publishDate": "July 24, 2023",
   "fullText": "The Cottage tries to emphasize the fizz, but nobody remembered to shake the soda can beforehand. It’s full of explanations, light on mess",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "tries to emphasize the fizz, but nobody remembered to shake the soda can beforehand",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "full of explanations, light on mess",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "tries to emphasize the fizz",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses vivid metaphors to convey that the production lacks energy and excitement despite its intentions, suggesting structural problems with too much exposition and not enough dramatic tension. | GPT-4o-mini: The review expresses significant disappointment in the production's execution, indicating a lack of engagement and enjoyment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:45.848Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
