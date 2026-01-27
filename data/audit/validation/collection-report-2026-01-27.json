@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T15:08:18.311Z",
+  "runDate": "2026-01-27T15:08:49.248Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "our-town-2024",
+    "showFilter": "illinoise-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 221,
-    "failed": 143,
+    "processed": 233,
+    "failed": 146,
     "skipped": 0,
-    "successRate": "60.7%"
+    "successRate": "61.5%"
   },
   "tierBreakdown": {
-    "playwright": 30,
-    "scrapingbee": 17,
-    "brightdata": 23,
-    "archive": 151
+    "playwright": 31,
+    "scrapingbee": 19,
+    "brightdata": 25,
+    "archive": 158
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 0,
-    "tier2Attempts": 7,
-    "tier2Success": 0,
-    "tier3Attempts": 7,
-    "tier3Success": 0,
-    "tier4Attempts": 11,
-    "tier4Success": 1,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 20
+    "tier1Attempts": 21,
+    "tier1Success": 1,
+    "tier2Attempts": 20,
+    "tier2Success": 2,
+    "tier3Attempts": 18,
+    "tier3Success": 2,
+    "tier4Attempts": 22,
+    "tier4Success": 8,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 110
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -255,7 +255,19 @@
     "merrily-we-roll-along-2023/amny-com--unknown.json",
     "merrily-we-roll-along-2023/broadway-news--naveen.json",
     "merrily-we-roll-along-2023/broadwaynews-com--unknown.json",
-    "our-town-2024/wsj--charles-isherwood.json"
+    "illinoise-2024/hollywood-reporter--david.json",
+    "illinoise-2024/variety--christian.json",
+    "illinoise-2024/vulture--sara.json",
+    "illinoise-2024/broadway-news--brittani.json",
+    "illinoise-2024/chicago-tribune--chris.json",
+    "illinoise-2024/deadline--greg.json",
+    "illinoise-2024/new-york-post--johnny.json",
+    "illinoise-2024/new-york-times--jesse.json",
+    "illinoise-2024/observer--jesse-green.json",
+    "illinoise-2024/the-wrap--robert.json",
+    "illinoise-2024/theatermania--david.json",
+    "illinoise-2024/theatrely--joey.json",
+    "illinoise-2024/timeout--adam-feldman.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -394,13 +406,16 @@
     "merrily-we-roll-along-2023/variety-com--unknown.json",
     "merrily-we-roll-along-2023/vult--jackson-mchenry.json",
     "merrily-we-roll-along-2023/vulture--sara.json",
-    "our-town-2024/chtrib--chris-jones.json",
-    "our-town-2024/guardian--adrian-horton.json",
-    "our-town-2024/interestedbystander-com--unknown.json",
-    "our-town-2024/nyp--johnny-oleksinski.json",
-    "our-town-2024/tman--jesse-green.json",
-    "our-town-2024/usatoday--charles-isherwood.json",
-    "our-town-2024/washpost--peter-marks.json"
+    "illinoise-2024/nyt--jesse-green.json",
+    "illinoise-2024/nytg--jonathan-mandell.json",
+    "illinoise-2024/thr--angie-han.json",
+    "illinoise-2024/variety--aramide-tinubu.json",
+    "illinoise-2024/ew--kristen-baldwin.json",
+    "illinoise-2024/guardian--adrian-horton.json",
+    "illinoise-2024/nyp--johnny-oleksinski.json",
+    "illinoise-2024/tman--jesse-green.json",
+    "illinoise-2024/usatoday--david-oliver.json",
+    "illinoise-2024/wrap--steve-pond.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -433,7 +448,8 @@
       "queen-versailles-2025/theaterscene-net--unknown.json",
       "queen-versailles-2025/timeout-ny--adam-feldman.json",
       "merrily-we-roll-along-2023/broadway-news--naveen.json",
-      "merrily-we-roll-along-2023/broadwaynews-com--unknown.json"
+      "merrily-we-roll-along-2023/broadwaynews-com--unknown.json",
+      "illinoise-2024/broadway-news--brittani.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -452,7 +468,9 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "cabaret-2024/newyorktheater-me--unknown.json"
+      "cabaret-2024/newyorktheater-me--unknown.json",
+      "illinoise-2024/chicago-tribune--chris.json",
+      "illinoise-2024/theatrely--joey.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -477,7 +495,9 @@
       "hadestown-2019/towleroad-com--unknown.json",
       "queen-versailles-2025/daily-beast--tim-teeman.json",
       "hamilton-2015/OBSERVER--david-cote.json",
-      "hamilton-2015/wapo--peter-marks.json"
+      "hamilton-2015/wapo--peter-marks.json",
+      "illinoise-2024/observer--jesse-green.json",
+      "illinoise-2024/timeout--adam-feldman.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -630,7 +650,14 @@
       "merrily-we-roll-along-2023/vulture-com--unknown.json",
       "merrily-we-roll-along-2023/am-new-york--matt.json",
       "merrily-we-roll-along-2023/amny-com--unknown.json",
-      "our-town-2024/wsj--charles-isherwood.json"
+      "illinoise-2024/hollywood-reporter--david.json",
+      "illinoise-2024/variety--christian.json",
+      "illinoise-2024/vulture--sara.json",
+      "illinoise-2024/deadline--greg.json",
+      "illinoise-2024/new-york-post--johnny.json",
+      "illinoise-2024/new-york-times--jesse.json",
+      "illinoise-2024/the-wrap--robert.json",
+      "illinoise-2024/theatermania--david.json"
     ]
   }
 }
