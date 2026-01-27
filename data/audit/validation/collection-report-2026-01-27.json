@@ -1,85 +1,97 @@
 {
-  "runDate": "2026-01-27T20:33:02.562Z",
+  "runDate": "2026-01-27T20:34:32.477Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "operation-mincemeat-2025",
+    "showFilter": "queen-versailles-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 14,
-    "failed": 6,
+    "processed": 19,
+    "failed": 8,
     "skipped": 0,
-    "successRate": "70.0%"
+    "successRate": "70.4%"
   },
   "tierBreakdown": {
-    "playwright": 3,
-    "scrapingbee": 3,
-    "brightdata": 3,
-    "archive": 5
+    "playwright": 8,
+    "scrapingbee": 4,
+    "brightdata": 1,
+    "archive": 6
   },
   "statistics": {
-    "tier1Attempts": 17,
-    "tier1Success": 3,
-    "tier2Attempts": 14,
-    "tier2Success": 3,
-    "tier3Attempts": 11,
-    "tier3Success": 3,
-    "tier4Attempts": 18,
-    "tier4Success": 5,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 100
+    "tier1Attempts": 24,
+    "tier1Success": 8,
+    "tier2Attempts": 16,
+    "tier2Success": 4,
+    "tier3Attempts": 12,
+    "tier3Success": 1,
+    "tier4Attempts": 20,
+    "tier4Success": 6,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 150
   },
   "processed": [
-    "operation-mincemeat-2025/variety--frank.json",
-    "operation-mincemeat-2025/vulture--sara.json",
-    "operation-mincemeat-2025/broadway-news--brittani.json",
-    "operation-mincemeat-2025/entertainment-weekly--shania.json",
-    "operation-mincemeat-2025/new-york-stage-review--david.json",
-    "operation-mincemeat-2025/new-york-stage-review--michael.json",
-    "operation-mincemeat-2025/new-york-theatre-guide--caroline.json",
-    "operation-mincemeat-2025/observer--david-cote.json",
-    "operation-mincemeat-2025/the-daily-beast--tim.json",
-    "operation-mincemeat-2025/the-wrap--robert.json",
-    "operation-mincemeat-2025/theatrely--andrew.json",
-    "operation-mincemeat-2025/time-out-new-york--adam.json",
-    "operation-mincemeat-2025/wall-street-journal--charles.json",
-    "operation-mincemeat-2025/wsj-com--unknown.json"
+    "queen-versailles-2025/new-york-magazine-vulture--sara-holdren.json",
+    "queen-versailles-2025/vulture--sara.json",
+    "queen-versailles-2025/associated-press--mark.json",
+    "queen-versailles-2025/entertainment-weekly--dalton.json",
+    "queen-versailles-2025/la-times--charles.json",
+    "queen-versailles-2025/lighting-sound-america--david-barbour.json",
+    "queen-versailles-2025/new-york-post--johnny.json",
+    "queen-versailles-2025/new-york-stage-review--bob.json",
+    "queen-versailles-2025/new-york-stage-review--david.json",
+    "queen-versailles-2025/new-york-theater--jonathan.json",
+    "queen-versailles-2025/new-york-theatre-guide--joe.json",
+    "queen-versailles-2025/new-york-times--laura.json",
+    "queen-versailles-2025/pages-on-stages--mason-pilevsky.json",
+    "queen-versailles-2025/the-daily-beast--tim.json",
+    "queen-versailles-2025/theatermania--zachary.json",
+    "queen-versailles-2025/theaterscene-net--joseph-pisano.json",
+    "queen-versailles-2025/theatre-reviews-limited--david-roberts.json",
+    "queen-versailles-2025/theatrely--joey.json",
+    "queen-versailles-2025/time-out-new-york--adam.json"
   ],
   "failed": [
-    "operation-mincemeat-2025/ew--shania-russell.json",
-    "operation-mincemeat-2025/new-york-daily-news--chris.json",
-    "operation-mincemeat-2025/new-york-times--jesse.json",
-    "operation-mincemeat-2025/nypost--johnny-oleksinski.json",
-    "operation-mincemeat-2025/observer--david.json",
-    "operation-mincemeat-2025/wsj--charles-isherwood.json"
+    "queen-versailles-2025/variety--aramide.json",
+    "queen-versailles-2025/1-minute-critic--matthew-wexler.json",
+    "queen-versailles-2025/interested-bystander--cary-wong.json",
+    "queen-versailles-2025/interestedbystander-com--unknown.json",
+    "queen-versailles-2025/new-york-daily-news--chris.json",
+    "queen-versailles-2025/wapo--naveen-kumar.json",
+    "queen-versailles-2025/washington-post--naveen-kumar.json",
+    "queen-versailles-2025/washington-post--naveen.json"
   ],
   "tierDetails": {
     "playwright": [
-      "operation-mincemeat-2025/new-york-stage-review--david.json",
-      "operation-mincemeat-2025/new-york-stage-review--michael.json",
-      "operation-mincemeat-2025/new-york-theatre-guide--caroline.json"
+      "queen-versailles-2025/lighting-sound-america--david-barbour.json",
+      "queen-versailles-2025/new-york-stage-review--bob.json",
+      "queen-versailles-2025/new-york-stage-review--david.json",
+      "queen-versailles-2025/new-york-theater--jonathan.json",
+      "queen-versailles-2025/new-york-theatre-guide--joe.json",
+      "queen-versailles-2025/pages-on-stages--mason-pilevsky.json",
+      "queen-versailles-2025/theaterscene-net--joseph-pisano.json",
+      "queen-versailles-2025/theatre-reviews-limited--david-roberts.json"
     ],
     "scrapingbee": [
-      "operation-mincemeat-2025/broadway-news--brittani.json",
-      "operation-mincemeat-2025/entertainment-weekly--shania.json",
-      "operation-mincemeat-2025/time-out-new-york--adam.json"
+      "queen-versailles-2025/entertainment-weekly--dalton.json",
+      "queen-versailles-2025/la-times--charles.json",
+      "queen-versailles-2025/theatrely--joey.json",
+      "queen-versailles-2025/time-out-new-york--adam.json"
     ],
     "brightdata": [
-      "operation-mincemeat-2025/observer--david-cote.json",
-      "operation-mincemeat-2025/the-daily-beast--tim.json",
-      "operation-mincemeat-2025/theatrely--andrew.json"
+      "queen-versailles-2025/the-daily-beast--tim.json"
     ],
     "archive": [
-      "operation-mincemeat-2025/variety--frank.json",
-      "operation-mincemeat-2025/vulture--sara.json",
-      "operation-mincemeat-2025/the-wrap--robert.json",
-      "operation-mincemeat-2025/wall-street-journal--charles.json",
-      "operation-mincemeat-2025/wsj-com--unknown.json"
+      "queen-versailles-2025/new-york-magazine-vulture--sara-holdren.json",
+      "queen-versailles-2025/vulture--sara.json",
+      "queen-versailles-2025/associated-press--mark.json",
+      "queen-versailles-2025/new-york-post--johnny.json",
+      "queen-versailles-2025/new-york-times--laura.json",
+      "queen-versailles-2025/theatermania--zachary.json"
     ]
   }
 }
