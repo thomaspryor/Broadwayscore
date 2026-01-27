@@ -69,23 +69,29 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textStatus": "partial",
+  "textStatus": "incomplete",
   "textWordCount": 98,
   "archivePath": "data/archives/reviews/the-roommate-2024/observer--jesse-green_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:28:22.843Z",
+  "textFetchedAt": "2026-01-27T05:12:07.044Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "CAPTCHA or access blocked"
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": false,
+      "error": "No archive snapshot available"
     },
     {
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "ScrapingBee error (507): Request failed with status code 507"
+      "error": "ScrapingBee error (404): Request failed with status code 404"
     },
     {
       "tier": 3,
@@ -99,5 +105,6 @@
   "textIssues": [
     "Word count too low: 98 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "truncationSignals": []
 }
