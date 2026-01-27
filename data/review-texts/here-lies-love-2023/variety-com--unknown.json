@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Byrne and Fatboy Slim’s sung-through score is the star of the 90-minute production, a hypnotic churn of synth beats, funky rhythms and pop momentum that aims squarely for the pelvis.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230901050533",
-  "archiveOrgUrl": "http://web.archive.org/web/20230901050533/https://variety.com/2023/legit/reviews/here-lies-love-review-broadway-imelda-marcos-david-byrne-1235675386/"
+  "archiveOrgUrl": "http://web.archive.org/web/20230901050533/https://variety.com/2023/legit/reviews/here-lies-love-review-broadway-imelda-marcos-david-byrne-1235675386/",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 73,
+      "performances": 73,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "propulsive and glittering ball",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "glorifying its subject is an uneasy proposition that the production hasn't managed to reconcile",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "an extreme sensory feat, unlike any attempted before on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the innovative production design and music while expressing serious concerns about the show's treatment of its controversial historical subject matter, resulting in a mixed recommendation that acknowledges both achievements and fundamental problems. | GPT-4o-mini: The review presents a mixed view, praising performances and music while critiquing the script and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:34.453Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

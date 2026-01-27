@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“It’s a fun enough concert, though not worth sitting through two hours and 30 minutes of a dull musical to get there.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251007094145",
-  "archiveOrgUrl": "http://web.archive.org/web/20251007094145/https://www.vulture.com/2023/06/theater-review-once-upon-a-one-more-time.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251007094145/https://www.vulture.com/2023/06/theater-review-once-upon-a-one-more-time.html",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 53,
+      "performances": 53,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's reductive and pandering, hitting all the expected marks without any unique spark",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "not worth sitting through two hours and 30 minutes of a dull musical to get there",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It's a fun enough concert, though not worth sitting through two hours and 30 minutes of a dull musical to get there",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the show is 'not worth sitting through' and calls it 'dull,' with consistent criticism of the book, direction, and overall execution despite acknowledging some enjoyable Britney songs. | GPT-4o-mini: The review is predominantly negative, criticizing the book and direction while only finding some merit in the performances and music, leading to a strong recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:42.172Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
