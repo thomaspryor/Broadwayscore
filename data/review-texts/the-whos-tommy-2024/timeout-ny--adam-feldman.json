@@ -7,7 +7,63 @@
   "publishDate": "March 28, 2024",
   "fullText": "And yet, despite these problems, the show works, and its epic choral finale somehow feels genuinely rousing and healing. As musical theater, Tommy is limited. On its own terms, it’s often sensational.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 70,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show works, and its epic choral finale somehow feels genuinely rousing and healing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "As musical theater, Tommy is limited",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "On its own terms, it's often sensational",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging the show's limitations as musical theater, the critic concludes it works and is 'often sensational' on its own terms, suggesting a qualified positive recommendation. | GPT-4o-mini: The review indicates that while there are limitations, the show ultimately succeeds in delivering a rousing experience, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:19.796Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

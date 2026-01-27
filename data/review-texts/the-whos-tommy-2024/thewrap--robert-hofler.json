@@ -7,7 +7,60 @@
   "publishDate": "March 28, 2024",
   "fullText": "Well, McAnuff is back at it with a new revival of “The Who’s Tommy” that opened Thursday at the Nederlander Theatre, and it made me want to see the Russell movie again.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 35,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 35,
+    "confidence": "low",
+    "range": {
+      "low": 20,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "it made me want to see the Russell movie again",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "made me want to see the Russell movie again",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic's desire to see the Russell movie instead strongly implies the stage revival is inferior and disappointing. | GPT-4o-mini: The review suggests a lack of engagement with the revival, indicating a negative sentiment overall. | Note: Models differed by 20 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:41.594Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 45,
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 20 points (Claude: 25, OpenAI: 45)"
+    ]
+  }
 }
