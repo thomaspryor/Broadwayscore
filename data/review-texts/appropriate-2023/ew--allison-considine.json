@@ -10,8 +10,64 @@
   "bwwExcerpt": "Director Lila Neugebauer carefully threads the complexities of grief and racism with humor and lightness. The characters lob sharp-tongued dialogue (and a few punches) at one another. It’s a thrilling match.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "carefully threads the complexities of grief and racism with humor and lightness",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sharp-tongued dialogue",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "It's a thrilling match",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistent praise for direction and writing with enthusiastic language like 'thrilling' and appreciation for the director's skill in handling complex themes. | GPT-4o-mini: The review expresses strong praise for the direction and the engaging dialogue, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:33.665Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Of course, historical baggage comes with the heirloom furniture, as becomes all too clear in Branden Jacobs-Jenkins Appropriate, now making its jaw-dropping Broadway debut with Second Stage at the Helen Hayes Theater. It is easily the most electrifying Broadway play of 2023 — something I didn’t expect from a drama that received mixed notices when it first performed off-Broadway in 2014.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/appropriate/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251118030824",
-  "archiveOrgUrl": "http://web.archive.org/web/20251118030824/https://www.theatermania.com/news/review-appropriate-a-cherry-orchard-for-the-southern-gentry_1724209/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251118030824/https://www.theatermania.com/news/review-appropriate-a-cherry-orchard-for-the-southern-gentry_1724209/",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 95,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is easily the most electrifying Broadway play of 2023",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "jaw-dropping Broadway debut",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "A stunning final segment... stands out as one of the most poetic and arresting things I've ever witnessed on a Broadway stage",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic declares this 'easily the most electrifying Broadway play of 2023' and calls the finale 'one of the most poetic and arresting things I've ever witnessed on a Broadway stage' - clear superlative language indicating a rave review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:11.919Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
