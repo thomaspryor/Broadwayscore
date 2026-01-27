@@ -87,7 +87,11 @@ function httpGet(url, maxRedirects = 5) {
  * Search BWW for review roundup article
  */
 async function searchBWWRoundup(show) {
-  const year = new Date(show.openingDate).getFullYear();
+  const openingDate = new Date(show.openingDate);
+  const year = openingDate.getFullYear();
+  const month = String(openingDate.getMonth() + 1).padStart(2, '0');
+  const day = String(openingDate.getDate()).padStart(2, '0');
+  const dateStr = `${year}${month}${day}`;
 
   // Generate title variations for URL
   const titleVariations = [
@@ -100,10 +104,18 @@ async function searchBWWRoundup(show) {
   // Try Google-style search via web search API if available
   // For now, try known URL patterns
 
-  // Also try searching BWW's search API
+  // BWW URL patterns (with full date suffix YYYYMMDD)
   const searchUrls = [];
 
   for (const title of titleVariations) {
+    // Most common patterns with full date
+    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Revival-Officially-Opens-What-Did-the-Critics-Think-${dateStr}`);
+    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Officially-Opens-on-Broadway-What-Did-the-Critics-Think-${dateStr}`);
+    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${dateStr}`);
+    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${dateStr}`);
+    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-${title}-${dateStr}`);
+
+    // Patterns with just year (legacy)
     searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${year}`);
     searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${year}`);
     searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-${year}`);
@@ -114,9 +126,19 @@ async function searchBWWRoundup(show) {
 
   for (const url of searchUrls) {
     const result = await httpGet(url);
-    if (result.found && result.html && result.html.includes('Review Roundup')) {
-      console.log(`  ✓ Found at: ${url}`);
-      return { url, html: result.html };
+    if (result.found && result.html) {
+      // Verify it's a Broadway roundup (not Off-Broadway)
+      const isBroadway = result.html.includes('Broadway') &&
+        !result.html.includes('Off-Broadway') &&
+        !result.html.includes('New York Theatre Workshop');
+
+      // For revivals, also check if it's about the right production
+      const isRightYear = result.html.includes(String(year));
+
+      if (result.html.includes('Review Roundup') && (isBroadway || isRightYear)) {
+        console.log(`  ✓ Found at: ${url}`);
+        return { url, html: result.html };
+      }
     }
     await sleep(200);
   }
@@ -128,6 +150,7 @@ async function searchBWWRoundup(show) {
 /**
  * Extract reviews from BWW Review Roundup HTML
  * BWW stores all reviews in JSON-LD articleBody as plain text
+ * Format: "Critic Name, Outlet: excerpt"
  */
 function extractBWWReviews(html, showId, bwwUrl) {
   const reviews = [];
@@ -143,79 +166,126 @@ function extractBWWReviews(html, showId, bwwUrl) {
     const jsonLd = JSON.parse(jsonLdMatch[1]);
     const articleBody = jsonLd.articleBody || '';
 
-    // Parse individual reviews from article body
-    // Format is typically: "Critic Name, Outlet: <review excerpt>"
-    // Or: "Outlet (Critic Name): <review excerpt>"
+    if (!articleBody) {
+      console.log('    No articleBody in JSON-LD');
+      return reviews;
+    }
 
-    // Known outlets and their patterns
-    const outletPatterns = [
-      { pattern: /Ben Brantley,?\s*(?:The\s*)?New York Times:?\s*([\s\S]*?)(?=\n[A-Z]|\n\n|$)/gi, outlet: 'The New York Times', outletId: 'nytimes' },
-      { pattern: /Jesse Green,?\s*(?:The\s*)?(?:New York Times|Vulture):?\s*([\s\S]*?)(?=\n[A-Z]|\n\n|$)/gi, outlet: 'Vulture', outletId: 'vulture' },
-      { pattern: /(?:The\s*)?New York Times\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'The New York Times', outletId: 'nytimes' },
-      { pattern: /(?:The\s*)?Hollywood Reporter\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'The Hollywood Reporter', outletId: 'THR' },
-      { pattern: /Variety\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'Variety', outletId: 'variety' },
-      { pattern: /Vulture\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'Vulture', outletId: 'vulture' },
-      { pattern: /Time Out(?:\s*(?:New York|NY))?\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'Time Out New York', outletId: 'TIMEOUT' },
-      { pattern: /(?:The\s*)?Guardian\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'The Guardian', outletId: 'GUARDIAN' },
-      { pattern: /Associated Press\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'Associated Press', outletId: 'AP' },
-      { pattern: /TheaterMania\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'TheaterMania', outletId: 'TMAN' },
-      { pattern: /BroadwayWorld\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'BroadwayWorld', outletId: 'BWW' },
-      { pattern: /(?:New York\s*)?Daily News\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'New York Daily News', outletId: 'NYDN' },
-      { pattern: /(?:New York\s*)?Post\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'New York Post', outletId: 'NYP' },
-      { pattern: /Deadline\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'Deadline', outletId: 'DEADLINE' },
-      { pattern: /(?:The\s*)?Wrap\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'The Wrap', outletId: 'WRAP' },
-      { pattern: /Entertainment Weekly\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'Entertainment Weekly', outletId: 'EW' },
-      { pattern: /USA Today\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'USA Today', outletId: 'USAT' },
-      { pattern: /Newsday\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'Newsday', outletId: 'NEWSDAY' },
-      { pattern: /(?:The\s*)?Wall Street Journal\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'Wall Street Journal', outletId: 'WSJ' },
-      { pattern: /Chicago Tribune\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'Chicago Tribune', outletId: 'CHITRIB' },
-      { pattern: /NBC (?:New York|NY)\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'NBC New York', outletId: 'NBCNY' },
-      { pattern: /AM New York\s*(?:\([^)]+\))?:?\s*["']?([\s\S]*?)["']?(?=\n[A-Z]|\n\n|$)/gi, outlet: 'AM New York', outletId: 'AMNY' },
+    // Parse individual reviews from article body
+    // Format is: "Critic Name, Outlet: excerpt" separated by double spaces or newlines
+    // Example: "Jesse Green, The New York Times: Radcliffe's wit..."
+
+    // Known critic patterns with their outlets
+    const knownCriticPatterns = [
+      // Format: Critic Name, Outlet: excerpt
+      { regex: /Jesse Green,?\s*(?:The\s*)?New York Times:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Jesse Green', outlet: 'The New York Times', outletId: 'nytimes' },
+      { regex: /Ben Brantley,?\s*(?:The\s*)?New York Times:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Ben Brantley', outlet: 'The New York Times', outletId: 'nytimes' },
+      { regex: /Laura Collins-Hughes,?\s*(?:The\s*)?New York Times:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Laura Collins-Hughes', outlet: 'The New York Times', outletId: 'nytimes' },
+      { regex: /Maya Phillips,?\s*(?:The\s*)?New York Times:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Maya Phillips', outlet: 'The New York Times', outletId: 'nytimes' },
+      { regex: /Greg Evans,?\s*Deadline:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Greg Evans', outlet: 'Deadline', outletId: 'deadline' },
+      { regex: /Robert Hofler,?\s*(?:The\s*)?Wrap:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Robert Hofler', outlet: 'The Wrap', outletId: 'the-wrap' },
+      { regex: /Sara Holdren,?\s*Vulture:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Sara Holdren', outlet: 'Vulture', outletId: 'vulture' },
+      { regex: /Jackson McHenry,?\s*Vulture:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Jackson McHenry', outlet: 'Vulture', outletId: 'vulture' },
+      { regex: /Johnny Oleksinski,?\s*(?:New York\s*)?Post:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Johnny Oleksinski', outlet: 'New York Post', outletId: 'new-york-post' },
+      { regex: /Adam Feldman,?\s*Time Out(?:\s*(?:New York|NY))?:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Adam Feldman', outlet: 'Time Out New York', outletId: 'time-out-new-york' },
+      { regex: /David Rooney,?\s*(?:The\s*)?Hollywood Reporter:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'David Rooney', outlet: 'The Hollywood Reporter', outletId: 'hollywood-reporter' },
+      { regex: /Frank Scheck,?\s*(?:The\s*)?Hollywood Reporter:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Frank Scheck', outlet: 'The Hollywood Reporter', outletId: 'hollywood-reporter' },
+      { regex: /Matt Windman,?\s*(?:AM\s*)?(?:New York|NY):\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Matt Windman', outlet: 'AM New York', outletId: 'am-new-york' },
+      { regex: /Tim Teeman,?\s*(?:The\s*)?Daily Beast:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Tim Teeman', outlet: 'The Daily Beast', outletId: 'daily-beast' },
+      { regex: /David Gordon,?\s*TheaterMania:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'David Gordon', outlet: 'TheaterMania', outletId: 'theatermania' },
+      { regex: /Zachary Stewart,?\s*TheaterMania:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Zachary Stewart', outlet: 'TheaterMania', outletId: 'theatermania' },
+      { regex: /Joey Merlo,?\s*Theatrely:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Joey Merlo', outlet: 'Theatrely', outletId: 'theatrely' },
+      { regex: /Juan A\. Ramirez,?\s*Theatrely:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Juan A. Ramirez', outlet: 'Theatrely', outletId: 'theatrely' },
+      { regex: /Brittani Samuel,?\s*Broadway News:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Brittani Samuel', outlet: 'Broadway News', outletId: 'broadway-news' },
+      { regex: /Michael Musto,?\s*Village Voice:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Michael Musto', outlet: 'Village Voice', outletId: 'village-voice' },
+      { regex: /Naveen Kumar,?\s*Variety:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Naveen Kumar', outlet: 'Variety', outletId: 'variety' },
+      { regex: /Frank Rizzo,?\s*Variety:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Frank Rizzo', outlet: 'Variety', outletId: 'variety' },
     ];
 
-    // Better approach: Parse the HTML body for structured review blocks
-    // BWW typically has reviews in the article with critic name in bold
-    const articleHtml = html;
+    // Also try generic pattern: "Critic Name, Outlet: excerpt"
+    // Match pattern like "Name Name, Outlet Name: text..."
+    const genericPattern = /([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+),\s*((?:The\s+)?[A-Z][A-Za-z\s]+?):\s*([\s\S]*?)(?=\s{2,}[A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+,|\n\n|$)/g;
 
-    // Pattern: <strong>Critic Name, Outlet:</strong> excerpt
-    // Or: <p><b>Critic Name</b>, <i>Outlet</i>: excerpt</p>
-    const reviewBlockPattern = /(?:<strong>|<b>)([^<,]+)(?:,?\s*(?:<\/strong>|<\/b>)\s*(?:<i>)?([^<:]+)(?:<\/i>)?)?:?\s*(?:<\/strong>|<\/b>)?\s*([\s\S]*?)(?=<(?:strong|b)>|<\/p>|$)/gi;
-
-    let match;
     const foundCritics = new Set();
 
-    // First try to extract from HTML structure
-    const reviewSections = articleHtml.match(/<p[^>]*>.*?(?:<strong>|<b>).*?(?:<\/strong>|<\/b>).*?<\/p>/gi) || [];
+    // First try known critic patterns
+    for (const { regex, critic, outlet, outletId } of knownCriticPatterns) {
+      const match = regex.exec(articleBody);
+      if (match && match[1]) {
+        const excerpt = match[1].trim();
+        if (excerpt.length > 30 && !foundCritics.has(critic.toLowerCase())) {
+          foundCritics.add(critic.toLowerCase());
+          reviews.push({
+            showId,
+            outletId,
+            outlet,
+            criticName: critic,
+            url: null,
+            bwwExcerpt: excerpt.substring(0, 500),
+            bwwRoundupUrl: bwwUrl,
+            source: 'bww-roundup',
+          });
+        }
+      }
+    }
+
+    // Then try generic pattern for remaining reviews
+    let genericMatch;
+    while ((genericMatch = genericPattern.exec(articleBody)) !== null) {
+      const [, criticName, outletName, excerpt] = genericMatch;
+      if (criticName && outletName && excerpt && excerpt.length > 30) {
+        const critic = criticName.trim();
+        if (!foundCritics.has(critic.toLowerCase())) {
+          foundCritics.add(critic.toLowerCase());
+          const outletInfo = mapOutlet(outletName.trim());
+          if (outletInfo) {
+            reviews.push({
+              showId,
+              outletId: outletInfo.outletId,
+              outlet: outletInfo.outlet,
+              criticName: critic,
+              url: null,
+              bwwExcerpt: excerpt.trim().substring(0, 500),
+              bwwRoundupUrl: bwwUrl,
+              source: 'bww-roundup',
+            });
+          }
+        }
+      }
+    }
+
+    console.log(`    Extracted ${reviews.length} reviews from BWW articleBody`);
+
+  } catch (e) {
+    console.log(`    Error parsing BWW JSON-LD: ${e.message}`);
+  }
+
+  // Fallback: Try to extract from HTML structure if articleBody parsing found nothing
+  if (reviews.length === 0) {
+    const foundCritics = new Set();
+    const reviewSections = html.match(/<p[^>]*>.*?(?:<strong>|<b>).*?(?:<\/strong>|<\/b>).*?<\/p>/gi) || [];
 
     for (const section of reviewSections) {
-      // Extract critic and outlet
       const criticOutletMatch = section.match(/(?:<strong>|<b>)([^<]+)(?:<\/strong>|<\/b>)[\s,]*(?:(?:<i>)?([^<:]+)(?:<\/i>)?)?/i);
       if (criticOutletMatch) {
         let [, criticPart, outletPart] = criticOutletMatch;
-
-        // Clean up
         criticPart = (criticPart || '').replace(/<[^>]+>/g, '').trim();
         outletPart = (outletPart || '').replace(/<[^>]+>/g, '').trim();
 
-        // Sometimes format is "Outlet (Critic)" or "Critic, Outlet"
         let criticName = criticPart;
         let outlet = outletPart;
 
-        // Check if critic part contains outlet info
         const commaMatch = criticPart.match(/([^,]+),\s*(.+)/);
         if (commaMatch) {
           criticName = commaMatch[1].trim();
           outlet = commaMatch[2].trim();
         }
 
-        // Skip if we've already found this critic
         if (foundCritics.has(criticName.toLowerCase())) continue;
         foundCritics.add(criticName.toLowerCase());
 
-        // Map outlet to known outlets
         const outletInfo = mapOutlet(outlet || criticName);
         if (outletInfo) {
-          // Extract excerpt (text after the bold/strong)
           const excerptMatch = section.match(/(?:<\/strong>|<\/b>)[^<]*:?\s*["']?([\s\S]*?)["']?(?:<\/p>|$)/i);
           const excerpt = excerptMatch ? excerptMatch[1].replace(/<[^>]+>/g, '').trim() : null;
 
@@ -235,10 +305,7 @@ function extractBWWReviews(html, showId, bwwUrl) {
       }
     }
 
-    console.log(`    Extracted ${reviews.length} reviews from BWW roundup`);
-
-  } catch (e) {
-    console.log(`    Error parsing BWW JSON-LD: ${e.message}`);
+    console.log(`    Extracted ${reviews.length} reviews from HTML fallback`);
   }
 
   return reviews;
