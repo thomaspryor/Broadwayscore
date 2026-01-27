@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broadway-7fc41113",
   "publishDate": "2025-10-16T23:01:45-04:00",
-  "fullText": null,
+  "fullText": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broadway-7fc41113\n\nJoshua Henry, Caissie Levy, Brandon Uranowitz and the company of ‘Ragtime.’ Matthew MurphyNew York\n\nStanding ovations on Broadway are so common you might imagine the seats have been booby-trapped to eject patrons as the curtain calls begin. But at a recent performance of the brightly shining revival of “Ragtime,” the ovation came early—actually two came early—so transported was the audience by the emotional and musical potency of this panorama of America at the turn of the 20th century.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\n‘Bug’ Review: A Broadway Drama of Insidious Delusion\n\nopinionA Word of Caution on Wages\n\nopinionThe Rent-Control Slums of New York\n\nBillionaires’ Row Loses One of Its Last Affordable Buildings\n\nHow to Keep a Deal Alive When a Home Buyer Backs Out",
   "isFullReview": false,
   "bwwExcerpt": "Standing ovations on Broadway are so common you might imagine the seats have been booby-trapped to eject patrons as the curtain calls begin. But at a recent performance of the brightly shining revival of “Ragtime,” the ovation came early—actually two came early—so transported was the audience by the emotional and musical potency of this panorama of America at the turn of the 20th century.",
   "showScoreExcerpt": "\"This sterling production, with its flawless cast and admirable trenchancy amid an extraordinarily complex plot, augurs well for her tenure.\"",
@@ -13,11 +13,11 @@
   "assignedScore": 89,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
-  "textStatus": "missing",
+  "textStatus": "partial",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.988Z",
-  "textQuality": "missing",
-  "sourceMethod": "bww-roundup",
+  "textQuality": "partial",
+  "sourceMethod": "archive",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -75,5 +75,40 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 131,
+  "archivePath": "data/archives/reviews/ragtime-2025/wsj--charles-isherwood_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T04:39:37.751Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "archiveOrgTimestamp": "20260119035810",
+  "archiveOrgUrl": "http://web.archive.org/web/20260119035810/https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broadway-7fc41113",
+  "textIssues": [
+    "Word count too low: 131 (min: 300)"
+  ]
 }
