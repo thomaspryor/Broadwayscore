@@ -13,8 +13,8 @@
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Opens-On-Broadway-20250116",
-  "textStatus": "partial",
-  "textQuality": "partial",
+  "textStatus": "truncated",
+  "textQuality": "truncated",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-lean-positive",
   "scoreConfidence": "low",
@@ -76,14 +76,20 @@
   },
   "textWordCount": 98,
   "archivePath": "data/archives/reviews/marjorie-prime-2025/observer--david-cote_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:30:21.861Z",
+  "textFetchedAt": "2026-01-27T05:13:21.009Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "CAPTCHA or access blocked"
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": false,
+      "error": "No archive snapshot available"
     },
     {
       "tier": 2,
@@ -101,5 +107,8 @@
   "textIssues": [
     "Word count too low: 98 (min: 300)",
     "Show title not found in text"
+  ],
+  "truncationSignals": [
+    "shorter_than_excerpt"
   ]
 }

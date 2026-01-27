@@ -69,10 +69,10 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "textWordCount": 71,
   "archivePath": "data/archives/reviews/marjorie-prime-2025/wsj-com--unknown_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:37:04.931Z",
+  "textFetchedAt": "2026-01-27T05:15:28.939Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -100,11 +100,16 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251231014115",
   "archiveOrgUrl": "http://web.archive.org/web/20251231014115/https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the-ai-future-fb508e75",
   "textIssues": [
     "Word count too low: 71 (min: 300)"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
   ]
 }
