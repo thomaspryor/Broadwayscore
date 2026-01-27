@@ -11,8 +11,8 @@
   "originalScore": null,
   "assignedScore": 89,
   "source": "show-score",
-  "textStatus": "partial",
-  "textQuality": "partial",
+  "textStatus": "truncated",
+  "textQuality": "truncated",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
@@ -74,7 +74,7 @@
   },
   "textWordCount": 86,
   "archivePath": "data/archives/reviews/harry-potter-2021/cititour--brian-scott-lipton_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:26:15.731Z",
+  "textFetchedAt": "2026-01-27T05:02:50.480Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -99,5 +99,9 @@
   "textIssues": [
     "Word count too low: 86 (min: 300)",
     "Show title not found in text"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
   ]
 }

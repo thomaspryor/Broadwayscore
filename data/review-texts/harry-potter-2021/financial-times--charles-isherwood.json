@@ -11,7 +11,7 @@
   "originalScore": null,
   "assignedScore": 89,
   "source": "show-score",
-  "textStatus": "partial",
+  "textStatus": "incomplete",
   "textQuality": "partial",
   "sourceMethod": "scrapingbee",
   "scoreSource": "sentiment-strong-positive",
@@ -74,7 +74,7 @@
   },
   "textWordCount": 122,
   "archivePath": "data/archives/reviews/harry-potter-2021/financial-times--charles-isherwood_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:29:32.183Z",
+  "textFetchedAt": "2026-01-27T05:06:06.669Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -93,5 +93,6 @@
   "textIssues": [
     "Word count too low: 122 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "truncationSignals": []
 }
