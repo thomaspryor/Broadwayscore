@@ -76,26 +76,20 @@
   },
   "textWordCount": 98,
   "archivePath": "data/archives/reviews/oh-mary-2024/observer--david-cote_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T05:10:52.267Z",
+  "textFetchedAt": "2026-01-27T05:33:56.801Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "404 - Page not found"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
-      "success": false,
-      "error": "No archive snapshot available"
+      "error": "CAPTCHA or access blocked"
     },
     {
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "Parse Error: Header overflow"
+      "error": "ScrapingBee error (404): Request failed with status code 404"
     },
     {
       "tier": 3,

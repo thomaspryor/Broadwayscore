@@ -11,6 +11,7 @@ import AwardsCard from '@/components/AwardsCard';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import LotteryRushCard from '@/components/LotteryRushCard';
 import BizBuzzCard from '@/components/BizBuzzCard';
+import ScoreTooltip from '@/components/ScoreTooltip';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -568,6 +569,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 const roundedScore = score ? Math.round(score) : null;
                 const sentiment = score ? getSentimentLabel(score) : null;
 
+                // Get tier counts for tooltip
+                const tier1Count = show.criticScore?.tier1Count || 0;
+                const tier2Count = show.criticScore?.tier2Count || 0;
+                const tier3Count = show.criticScore?.tier3Count || 0;
+
                 // Calculate breakdown
                 const reviews = show.criticScore?.reviews || [];
                 const positive = reviews.filter(r => r.reviewScore >= 65).length;
@@ -587,16 +593,33 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   else scoreColorClass = 'score-skip';
                 }
 
+                const scoreBox = (
+                  <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}>
+                    <span className="text-2xl sm:text-4xl font-extrabold">
+                      {showTBD ? 'TBD' : roundedScore}
+                    </span>
+                  </div>
+                );
+
                 return (
                   <div className="space-y-3">
                     {/* Score row */}
                     <div className="flex items-center gap-3 sm:gap-4">
-                      {/* Score box */}
-                      <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}>
-                        <span className="text-2xl sm:text-4xl font-extrabold">
-                          {showTBD ? 'TBD' : roundedScore}
-                        </span>
-                      </div>
+                      {/* Score box with tooltip */}
+                      {!showTBD && roundedScore !== null && sentiment ? (
+                        <ScoreTooltip
+                          score={roundedScore}
+                          label={sentiment.label}
+                          tier1Count={tier1Count}
+                          tier2Count={tier2Count}
+                          tier3Count={tier3Count}
+                          totalReviews={reviewCount}
+                        >
+                          {scoreBox}
+                        </ScoreTooltip>
+                      ) : (
+                        scoreBox
+                      )}
                       {/* Sentiment and review count */}
                       <div>
                         {showTBD ? (
