@@ -1,37 +1,37 @@
 {
-  "runDate": "2026-01-27T04:34:25.167Z",
+  "runDate": "2026-01-27T04:36:16.290Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "book-of-mormon-2011",
+    "showFilter": "wicked-2003",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 195,
-    "failed": 116,
+    "processed": 198,
+    "failed": 114,
     "skipped": 0,
-    "successRate": "62.7%"
+    "successRate": "63.5%"
   },
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 18,
     "scrapingbee": 16,
-    "brightdata": 20,
-    "archive": 142
+    "brightdata": 21,
+    "archive": 143
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 0,
+    "tier1Attempts": 11,
+    "tier1Success": 1,
     "tier2Attempts": 10,
     "tier2Success": 0,
     "tier3Attempts": 10,
-    "tier3Success": 0,
-    "tier4Attempts": 13,
-    "tier4Success": 2,
-    "totalFailed": 8,
+    "tier3Success": 1,
+    "tier4Attempts": 12,
+    "tier4Success": 3,
+    "totalFailed": 6,
     "scrapingBeeCreditsUsed": 40
   },
   "processed": [
@@ -228,8 +228,11 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "book-of-mormon-2011/backstage-com--unknown.json",
-    "book-of-mormon-2011/independent-co-uk--unknown.json"
+    "wicked-2003/nyt--ben-brantley.json",
+    "wicked-2003/frontmezzjunkies-com--unknown.json",
+    "wicked-2003/nymag-com--unknown.json",
+    "wicked-2003/theater-about-com--unknown.json",
+    "wicked-2003/usatoday30-usatoday-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -340,14 +343,12 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "book-of-mormon-2011/nyt--ben-brantley.json",
-    "book-of-mormon-2011/thr--david-rooney.json",
-    "book-of-mormon-2011/variety--david-rooney.json",
-    "book-of-mormon-2011/vult--jesse-green.json",
-    "book-of-mormon-2011/bwayvoice-com--unknown.json",
-    "book-of-mormon-2011/guardian--brian-logan.json",
-    "book-of-mormon-2011/northjersey-com--unknown.json",
-    "book-of-mormon-2011/washpost--peter-marks.json"
+    "wicked-2003/apnewsarchive-com--unknown.json",
+    "wicked-2003/broadwayreviewed-com--unknown.json",
+    "wicked-2003/content-time-com--unknown.json",
+    "wicked-2003/ew-com--unknown.json",
+    "wicked-2003/guardian--michael-billington.json",
+    "wicked-2003/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -367,7 +368,8 @@
       "hadestown-2019/bwaynews--charles-isherwood.json",
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
-      "hadestown-2019/showshowdown-blogspot-com--unknown.json"
+      "hadestown-2019/showshowdown-blogspot-com--unknown.json",
+      "wicked-2003/usatoday30-usatoday-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -407,7 +409,8 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json"
+      "hadestown-2019/towleroad-com--unknown.json",
+      "wicked-2003/frontmezzjunkies-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -550,8 +553,9 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "book-of-mormon-2011/backstage-com--unknown.json",
-      "book-of-mormon-2011/independent-co-uk--unknown.json"
+      "wicked-2003/nyt--ben-brantley.json",
+      "wicked-2003/nymag-com--unknown.json",
+      "wicked-2003/theater-about-com--unknown.json"
     ]
   }
 }
