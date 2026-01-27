@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:36:27.455Z",
+  "runDate": "2026-01-27T04:36:36.910Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "and-juliet-2022",
+    "showFilter": "the-lion-king-1997",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 201,
-    "failed": 113,
+    "processed": 199,
+    "failed": 120,
     "skipped": 0,
-    "successRate": "64.0%"
+    "successRate": "62.4%"
   },
   "tierBreakdown": {
-    "playwright": 20,
-    "scrapingbee": 17,
-    "brightdata": 21,
+    "playwright": 18,
+    "scrapingbee": 18,
+    "brightdata": 20,
     "archive": 143
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 3,
-    "tier2Attempts": 10,
-    "tier2Success": 1,
-    "tier3Attempts": 9,
-    "tier3Success": 1,
-    "tier4Attempts": 9,
+    "tier1Attempts": 18,
+    "tier1Success": 1,
+    "tier2Attempts": 16,
+    "tier2Success": 2,
+    "tier3Attempts": 14,
+    "tier3Success": 0,
+    "tier4Attempts": 19,
     "tier4Success": 3,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 50
+    "totalFailed": 12,
+    "scrapingBeeCreditsUsed": 60
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,14 +228,12 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "and-juliet-2022/ew-com--unknown.json",
-    "and-juliet-2022/lightingandsoundamerica-com--unknown.json",
-    "and-juliet-2022/stagebuddy-com--unknown.json",
-    "and-juliet-2022/talkinbroadway-com--unknown.json",
-    "and-juliet-2022/theaterlife-com--unknown.json",
-    "and-juliet-2022/theatermania-com--unknown.json",
-    "and-juliet-2022/theaterscene-net--unknown.json",
-    "and-juliet-2022/thefrontrowcenter-com--unknown.json"
+    "the-lion-king-1997/bwayvoice-com--unknown.json",
+    "the-lion-king-1997/ew--jess-cagle.json",
+    "the-lion-king-1997/familyvacationcritic-com--unknown.json",
+    "the-lion-king-1997/flyingthenest-tv--unknown.json",
+    "the-lion-king-1997/timeout-ny--adam-feldman.json",
+    "the-lion-king-1997/timeout-ny--jenna-scherer.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -346,11 +344,18 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "and-juliet-2022/variety--aramide-tinubu.json",
-    "and-juliet-2022/nyp--johnny-oleksinski.json",
-    "and-juliet-2022/talkinbway--nancy-grossman.json",
-    "and-juliet-2022/thebroadwayblog-com--unknown.json",
-    "and-juliet-2022/tman--adam-feldman.json"
+    "the-lion-king-1997/nyt--ben-brantley.json",
+    "the-lion-king-1997/nytimes-com--unknown.json",
+    "the-lion-king-1997/variety--matt-wolf.json",
+    "the-lion-king-1997/AP--michael-kuchwara.json",
+    "the-lion-king-1997/NEWSDAY--linda-winer.json",
+    "the-lion-king-1997/NYP--clive-barnes.json",
+    "the-lion-king-1997/TIME--richard-zoglin.json",
+    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
+    "the-lion-king-1997/jasonraize-net--unknown.json",
+    "the-lion-king-1997/njcom--michael-sommers.json",
+    "the-lion-king-1997/streetdirectory-com--unknown.json",
+    "the-lion-king-1997/talkinbway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -371,9 +376,7 @@
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
       "hadestown-2019/showshowdown-blogspot-com--unknown.json",
-      "and-juliet-2022/lightingandsoundamerica-com--unknown.json",
-      "and-juliet-2022/theaterlife-com--unknown.json",
-      "and-juliet-2022/theaterscene-net--unknown.json"
+      "the-lion-king-1997/timeout-ny--adam-feldman.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -392,7 +395,8 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "and-juliet-2022/ew-com--unknown.json"
+      "the-lion-king-1997/familyvacationcritic-com--unknown.json",
+      "the-lion-king-1997/timeout-ny--jenna-scherer.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -414,8 +418,7 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json",
-      "and-juliet-2022/talkinbroadway-com--unknown.json"
+      "hadestown-2019/towleroad-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -558,9 +561,9 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "and-juliet-2022/stagebuddy-com--unknown.json",
-      "and-juliet-2022/theatermania-com--unknown.json",
-      "and-juliet-2022/thefrontrowcenter-com--unknown.json"
+      "the-lion-king-1997/bwayvoice-com--unknown.json",
+      "the-lion-king-1997/ew--jess-cagle.json",
+      "the-lion-king-1997/flyingthenest-tv--unknown.json"
     ]
   }
 }
