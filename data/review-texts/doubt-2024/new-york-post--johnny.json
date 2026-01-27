@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Still, you could do worse than attend a merely adequate production of one of the best plays of the millennium.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/doubt-a-parable/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240924074855",
-  "archiveOrgUrl": "http://web.archive.org/web/20240924074855/https://nypost.com/2024/03/07/entertainment/liev-schreiber-doubt-broadway-review-nun-play-scorches-even-in-a-so-so-revival/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240924074855/https://nypost.com/2024/03/07/entertainment/liev-schreiber-doubt-broadway-review-nun-play-scorches-even-in-a-so-so-revival/",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 68,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shanley wrote an immaculate work that can stand up to even so-so productions",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you could do worse than attend a merely adequate production of one of the best plays of the millennium",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "director Scott Ellis' production has a bothersome tendency to ride the brakes",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the script as 'immaculate' and calls it 'one of the best plays of the millennium' but criticizes the production as 'merely adequate' and 'so-so,' ultimately giving a qualified recommendation. | GPT-4o-mini: The review acknowledges the strength of the script but highlights significant issues with the direction and the chemistry between the leads, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:14.119Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "She’s matched by her castmates, as well as David Rockwell’s exquisite church set, which rotates to fold in on itself even as its cloistered garden provides a glimmer of hopeful ascent. If this Doubt leaves room for growth, there is still none left as to the play’s intense brilliance.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/doubt-a-parable/",
@@ -38,5 +38,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 89,
+      "direction": 59
+    },
+    "keyPhrases": [
+      {
+        "quote": "what most emerges from this revival is the brilliance of the material",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Scott Ellis' direction is slack where suffocating tension is demanded",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "If this Doubt leaves room for growth, there is still none left as to the play's intense brilliance",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the brilliant material and exceptional performances (especially Amy Ryan) but criticizes the slack direction that fails to create necessary tension, resulting in a qualified positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and the material while noting significant issues with direction, leading to a positive but cautious recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:50.582Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

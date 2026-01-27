@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a love letter to musical theater itself, and Josh Gad and Andrew Rannells deliver performances that are both deeply silly and surprisingly touching.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 84,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "love letter to musical theater itself",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "both deeply silly and surprisingly touching",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a love letter to musical theater itself",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses warm, appreciative language about the show and praises the lead performances with emotional depth indicators, suggesting a positive recommendation despite the brief excerpt. | GPT-4o-mini: The review expresses strong appreciation for the performances and the overall concept of the show, indicating a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:36.626Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

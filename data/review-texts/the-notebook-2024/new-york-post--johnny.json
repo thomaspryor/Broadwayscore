@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Because as elegantly staged as “The Notebook” is by co-directors Michael Greif and Schele Williams, and despite boasting an appealing cast, the show amounts to a series of un-involving pencil sketches rather than a layered portrait of a decades-long love.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240924205520",
-  "archiveOrgUrl": "http://web.archive.org/web/20240924205520/https://nypost.com/2024/03/14/entertainment/the-notebook-review-broadway-musical-doesnt-match-films-sweep/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240924205520/https://nypost.com/2024/03/14/entertainment/the-notebook-review-broadway-musical-doesnt-match-films-sweep/",
+  "llmScore": {
+    "score": 52,
+    "confidence": "high",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 38,
+      "music": 45,
+      "performances": 68,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show amounts to a series of un-involving pencil sketches rather than a layered portrait of a decades-long love",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Not a single change book writer Bekah Brunstetter has made improves the simple story's effectiveness",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's a high note to end on, in a book with few others",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production 'elegantly staged' with an 'appealing cast' but fundamentally flawed, calling it 'un-involving' and criticizing major structural decisions, resulting in a qualified negative assessment. | GPT-4o-mini: The review expresses significant reservations about the book and overall emotional engagement, but acknowledges strong performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:37.680Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 52,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

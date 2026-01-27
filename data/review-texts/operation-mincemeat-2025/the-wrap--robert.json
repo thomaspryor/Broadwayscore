@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Robert Hastie provides the frenzied “Mincemeat” direction. It forced someone behind me to whisper halfway through Act 1, “This is exhausting.” Nothing kills a laugh faster than seeing actors sweat.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 30,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/operation-mincemeat/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250812093921",
-  "archiveOrgUrl": "http://web.archive.org/web/20250812093921/https://www.thewrap.com/operation-mincemeat-broadway-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250812093921/https://www.thewrap.com/operation-mincemeat-broadway-review/",
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 40
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": 25,
+      "performances": 38,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "The rinky-dink tunes elevate the latest Ozempic commercial to something worthy of Sondheim",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Nothing kills a laugh faster than seeing actors sweat",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The other four would not qualify to audition to be 'Oh, Mary!' understudies",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers harsh criticism across all elements - calling the music 'rinky-dink,' criticizing most performances, and describing the production as 'exhausting' with fundamental structural problems. | GPT-4o-mini: The review is predominantly negative, highlighting significant issues with the production, music, and direction, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:00.244Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 35,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

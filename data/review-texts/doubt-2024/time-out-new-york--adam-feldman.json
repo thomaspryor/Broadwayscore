@@ -10,8 +10,64 @@
   "bwwExcerpt": "Even if its principal generates less interest, however, the play grows richer every time you see it. On this latest visit—my fifth encounter with Doubt, including the 2008 film with Meryl Streep and Phillip Seymour Hoffman—I wondered if Ellis’s revival, in deference to modern sensibilities, took too clear a position on what has happened between Father Flynn and Donald. But then I remembered that my own convictions on that subject have changed each time I’ve seen some version of this work. My rea",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play grows richer every time you see it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I wondered if Ellis's revival, in deference to modern sensibilities, took too clear a position",
+        "sentiment": "negative",
+        "strength": 2
+      },
+      {
+        "quote": "my own convictions on that subject have changed each time I've seen some version of this work",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the play's complexity and rewatchability but questions directorial choices, with the review cut off mid-sentence making assessment difficult. | GPT-4o-mini: The review expresses a nuanced appreciation for the play's depth while also indicating some reservations about the revival's clarity, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:37:01.857Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Think of it as Monty Python on speed, and then throw in some Ealing Studio wit and a bit of “Beyond the Fringe” slyness. Too British? Not if you want to laugh uproariously — and perhaps even unexpectedly shed a tear or two.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/operation-mincemeat/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251205014344",
-  "archiveOrgUrl": "http://web.archive.org/web/20251205014344/https://variety.com/2025/legit/reviews/operation-mincemeat-review-broadway-musical-1236343736/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251205014344/https://variety.com/2025/legit/reviews/operation-mincemeat-review-broadway-musical-1236343736/",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 83,
+      "performances": 89,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "Not if you want to laugh uproariously — and perhaps even unexpectedly shed a tear or two",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a well-seasoned show full of pluck, luck and dazzle",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The second act becomes almost too much of a good thing, overstuffed with strange-but-true subplots",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly recommends the show despite some second act concerns, praising the performances, concept, and emotional impact with enthusiastic language throughout. | GPT-4o-mini: The review expresses strong enthusiasm for the show's humor, performances, and creativity, with only minor reservations about the second act's pacing.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:25.542Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

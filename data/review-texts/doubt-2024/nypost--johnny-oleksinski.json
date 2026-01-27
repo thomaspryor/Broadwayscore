@@ -7,7 +7,63 @@
   "publishDate": "March 7, 2024",
   "fullText": "Still, you could do worse than attend a merely adequate production of one of the best plays of the millennium.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "you could do worse than attend",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "merely adequate production",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "one of the best plays of the millennium",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic gives a backhanded recommendation based on the play's inherent quality despite acknowledging the production is only 'merely adequate'. | GPT-4o-mini: The review indicates a lackluster production of a highly regarded play, suggesting a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:44.795Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

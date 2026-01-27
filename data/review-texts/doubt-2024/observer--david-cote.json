@@ -10,8 +10,66 @@
   "bwwExcerpt": "Also unexpected, from Shanley: Doubt is not an urban love story or whimsical mediation on the courtship rituals of men and women. Let me qualify that last point. Doubt is very much about female agency in a male-dominated institution, and how, while trying to fight an injustice you know is real, you may perpetuate evil. It would be absurd if it weren’t so tragic.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you may perpetuate evil",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It would be absurd if it weren't so tragic",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "very much about female agency in a male-dominated institution",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This excerpt focuses on thematic content with troubling implications ('perpetuate evil', 'absurd if it weren't so tragic') suggesting serious reservations about the material, though it's too brief to determine full critical stance. | GPT-4o-mini: The review indicates a clear appreciation for the themes and complexity of the script, suggesting a positive recommendation despite a lack of explicit enthusiasm. | Note: Models differed by 30 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:12.861Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 75,
+    "scoreDelta": 30,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 30 points (Claude: 45, OpenAI: 75)"
+    ]
+  }
 }

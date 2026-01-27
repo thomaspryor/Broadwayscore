@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It’s the packaging part that hits hollowly. In and of itself, Doubt is still a sharp and sturdy piece of writing. It’s also tonally broader than Ellis gives it credit for.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/doubt-a-parable/",
@@ -37,5 +37,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250522042927/https://www.vulture.com/article/theater-review-doubt-returns-broadway.html",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 59,
+      "direction": 54
+    },
+    "keyPhrases": [
+      {
+        "quote": "Doubt feels conspicuously steady... a familiar object rather than a galvanizing event",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "In and of itself, Doubt is still a sharp and sturdy piece of writing",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "While Ellis's ensemble doesn't lag behind the play, neither are they quite pushed to light a fire under it",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic respects Shanley's writing but finds this production disappointingly safe and restrained, lacking the fire and intensity the material demands. | GPT-4o-mini: The review indicates a solid script but critiques the production's execution and performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:37:34.775Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

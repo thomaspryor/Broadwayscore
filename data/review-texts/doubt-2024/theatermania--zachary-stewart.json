@@ -7,7 +7,63 @@
   "publishDate": "March 7, 2024",
   "fullText": "Doubt is still one of the essential dramas of our time, with a story that is more relevant than ever.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "essential dramas of our time",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "more relevant than ever",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Doubt is still one of the essential dramas of our time",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the play's relevance and importance suggests positive recommendation, but lack of production-specific details limits confidence in scoring. | GPT-4o-mini: The review highlights the enduring relevance of the play, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:35.476Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 85,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "this new production, directed by Scott Ellis and starring Schreiber and Amy Ryan, stands on its own. Like its forebears, the revival, which runs through mid-April, keeps things simple – four well-acted performances with a powerful alchemy of faith and righteousness, judicious costumes by Linda Cho, a set by David Rockwell that economically transforms from principal’s office, exterior walled garden and spare pulpit at St Nicholas’s parish in the Bronx, 1964. The stage version carries the subtitle",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 82,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "stands on its own",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "four well-acted performances with a powerful alchemy of faith and righteousness",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "keeps things simple",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows consistent praise for performances and production elements, but the fragment cuts off mid-sentence making a definitive assessment difficult. | GPT-4o-mini: The review highlights strong performances and effective direction, indicating a solid recommendation despite a lack of explicit enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:59.909Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

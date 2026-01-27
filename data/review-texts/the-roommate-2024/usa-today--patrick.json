@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ultimately, it’s a privilege just to spend a spell with icons like Farrow and LuPone, even if like their characters, they seem somewhat mismatched. When you’ve got two certified greats, it’s hard not to wish for something more than just fine.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 62,
+      "music": null,
+      "performances": 76,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a privilege just to spend a spell with icons like Farrow and LuPone, even if like their characters, they seem somewhat mismatched",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "When you've got two certified greats, it's hard not to wish for something more than just fine",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Farrow is a disarming comedic powerhouse",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review appreciates Farrow's exceptional performance and finds the play 'decent' and 'sturdy' but criticizes LuPone's miscast role, underwritten material, and static direction, concluding it's merely 'fine' when it could be more. | GPT-4o-mini: The review highlights strong performances, particularly by Farrow, but notes significant shortcomings in the script and LuPone's character, leading to a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:21.021Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "Both precepts seem plausible, even if one is harsh and one loving, and both are chewily written. The entire play is like that: ideally worded, ingeniously structured, sinewy and swift. It never lets you, or poor Sister James, reach a conclusion as to which, if either, of her superiors is right. By the time Shanley takes the astonishing step of having Aloysius interrogate Donald’s mother — Quincy Tyler Bernstine, scoring big in a short but vividly counterintuitive role — you no longer know what y",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 75.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "sturdy melodrama, an infallible crowd-pleaser",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "much more than that",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "a sturdy melodrama",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses consistently positive descriptors like 'sturdy,' 'infallible crowd-pleaser,' and praises the play's multi-layered nature, suggesting clear appreciation and recommendation. | GPT-4o-mini: The review highlights the show's strengths and appeal, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:07.256Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 85,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

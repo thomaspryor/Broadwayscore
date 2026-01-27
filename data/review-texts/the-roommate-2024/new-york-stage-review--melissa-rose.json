@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "There are a couple twists—one involves a rather questionable Walmart purchase—that push&nbsp;The Roommate&nbsp;from realistic into far-fetched territory. One, unfortunately, is the ending. Again, no spoilers, but it’s a moment for Sharon that should be brimming with possibility, not hampered by implausibility.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -34,5 +34,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20241120064245/https://nystagereview.com/2024/09/12/the-roommate-bronx-bad-girl-meet-midwestern-nervous-nellie/",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "3/5"
+  "extractedStars": "3/5",
+  "llmScore": {
+    "score": 69,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 64,
+      "music": null,
+      "performances": 77,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Farrow looks much livelier. She's bright and bubbly as the overly chatty Sharon",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "There are a couple twists—one involves a rather questionable Walmart purchase—that push The Roommate from realistic into far-fetched territory",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it's a moment for Sharon that should be brimming with possibility, not hampered by implausibility",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the performances, particularly the chemistry between Farrow and LuPone, but criticizes the script's turn toward implausibility and unsatisfying ending, creating a mixed but slightly positive assessment. | GPT-4o-mini: The review highlights strong performances and an interesting premise but notes significant flaws in the script and ending, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:40.635Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

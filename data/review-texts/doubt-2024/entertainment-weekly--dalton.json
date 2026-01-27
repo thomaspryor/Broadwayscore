@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Directed by Scott Ellis, Doubt makes every single second count, and even though it may be over at a brisk 90-minutes, the story and performances will stay with you for much, much longer.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/doubt-a-parable/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes every single second count",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the story and performances will stay with you for much, much longer",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the story and performances will stay with you",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for direction's efficiency and lasting impact of performances/story suggests clear positive recommendation despite brief excerpt. | GPT-4o-mini: The review expresses strong appreciation for the direction and the lasting impact of the production, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:49.434Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

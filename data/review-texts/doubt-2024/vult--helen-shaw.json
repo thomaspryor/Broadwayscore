@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of John Patrick Shanley's Doubt: A Parable feels like a play that's been waiting patiently in the wings for this exact political moment to return.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels like a play that's been waiting patiently in the wings for this exact political moment to return",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "feels like a play that's been waiting patiently in the wings",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "for this exact political moment to return",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The single sentence suggests positive timeliness and relevance, implying the revival is well-suited to current times, but lacks specifics about quality or recommendation strength. | GPT-4o-mini: The review indicates a positive sentiment towards the play's relevance but lacks strong enthusiasm or explicit recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:37:17.647Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

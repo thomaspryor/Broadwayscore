@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It may be given a glossy sheen and a smattering of good punch lines in&nbsp;The Roommate, but it sends us out into the night with the dull sensation of wondering what exactly we were clapping for.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 47,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": null,
@@ -34,5 +34,63 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250114012912",
-  "archiveOrgUrl": "http://web.archive.org/web/20250114012912/https://www.vulture.com/article/theater-review-roommate-lupone-farrow-silverman.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250114012912/https://www.vulture.com/article/theater-review-roommate-lupone-farrow-silverman.html",
+  "llmScore": {
+    "score": 47,
+    "confidence": "low",
+    "range": {
+      "low": 33.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 73,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "This kind of surface-level engagement is all The Roommate can really withstand",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it sends us out into the night with the dull sensation of wondering what exactly we were clapping for",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Farrow and LuPone are fun to watch — especially Farrow",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds significant problems with the play's moral compass, direction, and overall purpose while praising the performances, particularly Farrow's, but ultimately questions what audiences are meant to take away from the experience. | GPT-4o-mini: The review highlights enjoyable performances but criticizes the script's lack of depth and coherence, leading to a mixed recommendation. | Note: Models differed by 17 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:41.616Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 55,
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 17 points (Claude: 38, OpenAI: 55)"
+    ]
+  }
 }

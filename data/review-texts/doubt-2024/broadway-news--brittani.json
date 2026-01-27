@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Perhaps, with more time for Ryan to settle into the habit, I could write a very different review. But until then, this play about faith will continue to commit the ultimate theatrical sin — boredom.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/doubt-a-parable/",
@@ -33,5 +33,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 74,
+      "music": null,
+      "performances": 43,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "this play about faith will continue to commit the ultimate theatrical sin — boredom",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "lifeless revival",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Ellis' staging of this tense drama begs for more traction, energy and, ultimately, direction",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising Shanley's script as 'triumphant' and 'quietly captivating,' the critic condemns this production as 'lifeless' and 'boring,' with weak direction and compromised lead performance. | GPT-4o-mini: The review expresses significant disappointment with the direction and overall production, leading to a strong recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:19.769Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

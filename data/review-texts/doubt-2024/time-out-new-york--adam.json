@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Roundabout Theatre Company’s Broadway revival, directed by Scott Ellis, is mostly very effective.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/doubt-a-parable/",
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 74,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Roundabout Theatre Company's Broadway revival, directed by Scott Ellis, is mostly very effective",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the play grows richer every time you see it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it remains so satisfying to sit in the dark with a crowd of people also wrestling with Doubt",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Critic finds the production 'mostly very effective' with strong praise for the play itself and most elements, though notes one performance weakness that doesn't derail the overall positive assessment. | GPT-4o-mini: The review expresses strong praise for the production and performances, with some minor reservations about one actor's performance, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:37:07.244Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

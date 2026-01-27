@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It is too early in the Broadway season to call something the worst. That caveat aside, “The Roommate” is the saddest spectacle of wasted talent on Broadway since Andre De Shields played a gorilla in “Prymate” in 2004.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250909110459",
-  "archiveOrgUrl": "http://web.archive.org/web/20250909110459/https://www.thewrap.com/the-roommate-broadway-review-mia-farrow-patti-lupone/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250909110459/https://www.thewrap.com/the-roommate-broadway-review-mia-farrow-patti-lupone/",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 18,
+      "music": null,
+      "performances": 38,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is too early in the Broadway season to call something the worst. That caveat aside, 'The Roommate' is the saddest spectacle of wasted talent on Broadway since Andre De Shields played a gorilla in 'Prymate' in 2004.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Silverman has unfortunately confused Iowa with Afghanistan. She has also confused the 'now' time frame of the play with 1970.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Farrow delivers a busy, fussy, twitchy performance that runs whimsy into the ground.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a scathing review calling it nearly the worst show and 'saddest spectacle of wasted talent,' criticizing the script as outdated and unfunny, and finding fault with the lead performance. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the script and performances while noting only minor redeeming qualities, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:49.624Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

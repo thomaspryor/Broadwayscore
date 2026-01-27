@@ -7,7 +7,63 @@
   "publishDate": "March 18, 2024",
   "fullText": "But Herzog and Gold have cleared away any fustiness (which really lies not in Ibsen but in us) and have drawn out Enemy’s inherent muscularity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "cleared away any fustiness",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "drawn out Enemy's inherent muscularity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "drawn out Enemy’s inherent muscularity",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The excerpt praises the directors for revitalizing the material and bringing out its strengths, suggesting a successful production, but the fragment is too brief for high confidence. | GPT-4o-mini: The review highlights a strong direction that revitalizes the material, indicating a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:41.911Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
