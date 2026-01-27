@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 69,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "if you're coming to the play for backstage scuttlebutt, getting behind the scenes of what it felt like on that epically disastrous film shoot, you're probably going to emerge disappointed",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "On Broadway, it feels a little like one more example of the thing it claims to be critiquing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there's enjoyment aplenty to be found in watching Shaw, Donnell, and Brightman try to strike the balance between imitating the actors they're portraying",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds some merit in the performances and design but concludes the show is schematic, disappointing as behind-the-scenes drama, and hypocritically embodies what it critiques about franchise culture. | GPT-4o-mini: The review presents a mixed perspective, highlighting some enjoyment in performances while expressing disappointment in the script and overall execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:17.438Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

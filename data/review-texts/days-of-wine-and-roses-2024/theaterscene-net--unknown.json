@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 32,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 32,
+    "confidence": "medium",
+    "range": {
+      "low": 27,
+      "high": 37
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 30,
+      "performances": 55,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "If there's a saving grace to enduring Days of Wine and Roses as a musical, it's the opportunity to remind others of its much superior source material",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Lucas adds nothing to Miller's original work that doesn't diminish it, which is an unscalable problem",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "O'Hara is never less than luminous, coordinated, and note-perfect",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic fundamentally objects to the musical adaptation, calling it a betrayal of superior source material with an 'unscalable problem' of diminishing the original work, while only praising the performers' technical skills.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:50.442Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 75,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite its faults, this show kept me smiling and laughing",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "if this is your one opportunity to experience the power of Broadway, or more broadly, live theatre in any form, I am not sure this is the show I'd recommend",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "But if you love Monty Python, Spamalot's the show to choose!",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer enjoyed the show personally due to nostalgia but explicitly states they wouldn't recommend it as representative of Broadway's current artistic direction, making it a qualified, conditional recommendation. | GPT-4o-mini: The review expresses enjoyment of the performances and nostalgia for the material, but also highlights significant concerns about the show's relevance and coherence, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:49.224Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

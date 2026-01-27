@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -38,5 +38,61 @@
   ],
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 78,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's an irrefutably great time — one that rivals the Hell's Kitchen clubs mere blocks away",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "thrilling pageant of theatrics, but abstracts Filipino history better than enacting it",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "how much right does anyone who is not Filipino have to party here? It's a difficult question to consider, and one Byrne, Fatboy Slim and Timbers completely avoid",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the theatrical spectacle and entertainment value while raising significant concerns about the show's approach to serious historical subject matter and cultural appropriation issues. | GPT-4o-mini: The review expresses clear enjoyment of the production's entertainment value while raising important questions about cultural representation, leading to a positive recommendation with some reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:29.950Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250328165525/https://theaterpizzazz.com/the-shark-is-broken-an-amusing-self-aggrandized-play/",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "waste of time"
+  "extractedPhrase": "waste of time",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 73,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's revealing and smart/funny. Not satire, but rather a fisheye view.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Broadway venue and price, however, feels out of proportion.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The piece manages to incorporate character idiosyncrasies, relationships, and events with clarity and economy.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the writing, direction, and most performances while expressing clear reservations about whether this intimate play justifies Broadway scale and pricing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:29.576Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

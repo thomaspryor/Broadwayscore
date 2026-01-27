@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Here Lies Love is a show that demands to be experienced, and the Broadway Theatre has been transformed into a dance club environment that puts the audience right in the middle of the action.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "demands to be experienced",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "transformed into a dance club environment that puts the audience right in the middle of the action",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "transformed into a dance club environment",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The phrase 'demands to be experienced' suggests strong enthusiasm for the theatrical experience and immersive production design, indicating a positive recommendation despite limited text. | GPT-4o-mini: The review expresses strong enthusiasm for the immersive experience of the show, indicating it is a must-see. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:22.664Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

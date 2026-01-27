@@ -10,8 +10,50 @@
   "bwwExcerpt": "It is also ingeniously devised to reflect the interior life of Imelda R. Marcos, a provincial teenage beauty queen, who in this show continues to treat life as one long pageant, with an emphasis on the evening gown and talent sections. During the heyday of her husband's protracted rule, from 1965 to 1986, she was also a disco queen, hitting the floors at gilded international night spots, which, thanks to her, included the roof of the palace she occupied in Manila. Mr. Byrne has said he thought t",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HERE-LIES-LOVE-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "low",
+    "range": {
+      "low": 45,
+      "high": 55
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "No reasoning available",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:33.344Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Both models failed to score"
+    ]
+  }
 }

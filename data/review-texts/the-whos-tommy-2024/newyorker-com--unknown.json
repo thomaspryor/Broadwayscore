@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"The 1993 musical's already bizarre story...even less clear in Des McAnuff's reanimation\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250723072150",
-  "archiveOrgUrl": "http://web.archive.org/web/20250723072150/https://www.newyorker.com/magazine/2024/04/08/the-whos-tommy-theatre-review"
+  "archiveOrgUrl": "http://web.archive.org/web/20250723072150/https://www.newyorker.com/magazine/2024/04/08/the-whos-tommy-theatre-review",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 65,
+      "performances": 55,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "yeesh, then the show gets going",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The production, more a reanimation than a revival, seems to think that there's no point in showing us the pinball machine since surely we remember it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The music is still frequently beautiful: it asked me to look within, and to look without. But it certainly never told me to look back",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: While acknowledging the music's beauty and some effective staging moments, the critic systematically dismantles the production's storytelling, direction, and concept, calling it a problematic 'reanimation' that relies too heavily on nostalgia rather than creating fresh theatrical experience. | GPT-4o-mini: The review expresses significant disappointment with the production's storytelling and direction, indicating a clear negative recommendation despite some praise for the music and performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:48.852Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

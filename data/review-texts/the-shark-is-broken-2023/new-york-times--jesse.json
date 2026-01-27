@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Were it not for its curious meta-story, the play would be little more than a pleasant diversion: 95 minutes of bloodless, toothless, Hollywood-adjacent dramedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-shark-is-broken/",
@@ -31,5 +31,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241124003633",
-  "archiveOrgUrl": "http://web.archive.org/web/20241124003633/https://www.nytimes.com/2023/08/10/theater/the-shark-is-broken-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241124003633/https://www.nytimes.com/2023/08/10/theater/the-shark-is-broken-review.html",
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 65,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play would be little more than a pleasant diversion: 95 minutes of bloodless, toothless, Hollywood-adjacent dramedy",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The meta-story gives it a bit more bite",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "these details do not on their own create much dramatic interest",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges strong technical elements and an interesting meta-story but ultimately finds the play dramatically inert, describing it as a 'pleasant diversion' that lacks substance. | GPT-4o-mini: The review highlights both the lack of dramatic interest and the redeeming qualities of the meta-story and performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:46.698Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 58,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

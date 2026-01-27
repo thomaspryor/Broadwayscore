@@ -7,7 +7,63 @@
   "publishDate": "November 13, 2023",
   "fullText": "“Harmony” ultimately packs a punch because the history of that period continues to shock no matter how many times this story is told. What remains open to question, under Warren Carlyle’s splashy direction, is the appeal of the real Comedian Harmonists.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "packs a punch because the history of that period continues to shock",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "What remains open to question... is the appeal of the real Comedian Harmonists",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Warren Carlyle's splashy direction",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges the show's emotional impact from its historical subject matter but questions the fundamental appeal of the central characters, creating a mixed assessment without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:35.253Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

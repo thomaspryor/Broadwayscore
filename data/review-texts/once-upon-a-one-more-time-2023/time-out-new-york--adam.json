@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "I didn’t wanna go, but I admit that a piece of me had a lot of fun at Once Upon a One More Time, a bubblegum-feminist Cinderella story constructed around the pop hits of Britney Spears. For a fan of more substantial musicals, with original scores, it’s a masochistic pleasure. Fine, Broadway, gimme more! Hit me, Broadway, one more time.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
@@ -42,5 +42,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "3/5"
+  "extractedRating": "3/5",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 70,
+      "performances": 75,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a One More Time is a well-assembled and entertaining diversion",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "if you turn off your brain, is merely yummy in a candy-coated way",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "For a fan of more substantial musicals, with original scores, it's a masochistic pleasure",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The 3/5 stars and mixed language praising entertainment value while criticizing lack of substance and originality places this in qualified recommendation territory. | GPT-4o-mini: The review expresses enjoyment of the performances and entertainment value but raises concerns about originality and depth, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:21.653Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

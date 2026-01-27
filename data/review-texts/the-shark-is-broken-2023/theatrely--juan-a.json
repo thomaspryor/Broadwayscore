@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ian Shaw’s The Shark Is Broken, a play with an impossibly successful track record from Edinburgh Fringe to West End hit to, now, Broadway’s Golden Theatre, attempts to pry its mandibles open and serve it two ways: as a father-son memoir and exorcism, and as a look into its notoriously grueling production. It bares its teeth at the former; eats the fat of the latter.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-shark-is-broken/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 78,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "like the shark itself, the play's essential functions scarcely work",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it feels like an SNL skit waiting for its punchline",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The performances are great, Duncan Henderson's recreation of the Orca fishing boat visually compelling, and Guy Masterson's direction is lively enough",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises performances and production elements but finds the play fundamentally flawed, comparing it to an SNL skit and noting its essential functions 'scarcely work,' resulting in a mixed review that leans slightly negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:06.857Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

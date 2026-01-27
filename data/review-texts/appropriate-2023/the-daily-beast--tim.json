@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This is also a play, directed by Lila Neugebauer, of interweaving layers and intentions: a raucous, argument-filled family drama meets comedy, and a pointed indictment of racism meets ghost story. There are no visible ghosts, but the past vibrates meaningfully in each scene.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/appropriate/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 81,
+      "music": null,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Two-time Pulitzer finalist Jacobs-Jenkins really knows how to craft cutting zingers, wincingly comic and dramatic set-pieces, and lacerating verbal battles",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Sarah Paulson—a machine gun of snark, snarl, and curled-lip baiting, malignly knowing every nerve to tweak",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "as brilliantly as it is written, the play feels too shouty at times, too beholden to constant blow-ups and conflagrations",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer consistently praises the writing craft, performances (especially Paulson, Fanning, and Stoll), and the play's intelligent handling of racism themes, with only minor criticisms about excessive shouting. | GPT-4o-mini: The review expresses clear praise for the writing and performances while noting some issues with pacing and shouting, leading to a strong but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:15.125Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

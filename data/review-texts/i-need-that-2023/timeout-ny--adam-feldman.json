@@ -7,7 +7,63 @@
   "publishDate": "November 2, 2023",
   "fullText": "DeVito is a star for a reason: His vulnerable, hilarious performance is a certifiable gem. If only this treasure weren’t so often lost in the piles that surround it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "His vulnerable, hilarious performance is a certifiable gem",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "If only this treasure weren't so often lost in the piles that surround it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "His vulnerable, hilarious performance is a certifiable gem.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for DeVito's performance is undermined by clear criticism of the surrounding production elements, creating a mixed recommendation. | GPT-4o-mini: The review highlights a standout performance but indicates that the overall production may not live up to it, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:22.856Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But far from unlocking the Harmonists’ story, Rabbi’s narration feels awkwardly grafted onto an underdeveloped narrative, an attempt at forcing deeper relevance onto a work that hasn’t otherwise earned it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 60,
+      "performances": 75,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rabbi's narration feels awkwardly grafted onto an underdeveloped narrative, an attempt at forcing deeper relevance onto a work that hasn't otherwise earned it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the searching depth of this finale cannot make up for a broadly unfulfilling work",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The style is formulaic, yet undeniably satisfying",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite praising individual performances and some musical numbers, the critic finds fundamental structural problems with the narrative and concludes it's 'broadly unfulfilling,' indicating more problems than strengths.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:14.811Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
