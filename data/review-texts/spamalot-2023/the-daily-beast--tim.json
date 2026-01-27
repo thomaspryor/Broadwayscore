@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Spamalot, first seen on Broadway in 2005, is back—and the good news is the really good silly bits of this parody of Arthurian legend are just as good-silly as they always were. But the bits that felt dated have only become more dated; one a song about Jews running Broadway at this moment sounds not just dated but also weird in this politically vexed moment (especially with a huge, glittering Star of David), the other is a rousing hymn to gay pride for Sir Lancelot (Taran Killam), which is discordantly beamed in from another era.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/spamalot/",
@@ -44,5 +44,61 @@
   "sourceMethod": "brightdata",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "standing ovation"
+  "extractedPhrase": "standing ovation",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 70,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Spamalot's expertly written and performed silliness is endless, beguiling, and winning, and so well-done that—despite the gay and Jewish clunkers of songs—the musical remains a daffy, rollicking night out",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the bits that felt dated have only become more dated; one a song about Jews running Broadway at this moment sounds not just dated but weird in this politically vexed moment",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "If you've missed snickering at a show comfortable with its own juvenility, you will love the moment",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant problems with dated material but ultimately concludes it's a 'rollicking night out' with 'expertly written and performed silliness' that remains 'winning' despite its flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:21.201Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

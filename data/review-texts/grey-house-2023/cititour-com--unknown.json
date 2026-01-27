@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 17,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "5/30"
+  "extractedRating": "5/30",
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 80,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "For the performances alone, some theatergoers will find 'Grey House' a nice place to visit. No one, however, would ever want to live there.",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Holloway's plot ultimately turns out to be a little too complicated for its own good",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "director Joe Mantello has gotten uniformly superb performances from everyone on stage",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed review that praises performances and production values but criticizes the confusing plot and pacing, offering a qualified recommendation based primarily on acting. | GPT-4o-mini: The review expresses appreciation for the performances but critiques the script and pacing, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:38.190Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
