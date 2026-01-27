@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Sometimes, a song is so good you want to live in it. You want to nestle into its melodies, unravel the chords holding it up and more than anything, wander in the mind fields of the people who created it. David Adjmi’s “Stereophonic” is the play that sparks this very desire.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -36,5 +36,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 245 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 85,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "Naturalism has never looked or sounded as good as it does in David Adjmi's '70s-set, soft rock drama",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "presents an unshakeable, hyperreal slice-of-life drama",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Adjmi builds complex portraits with painstakingly tiny brush strokes",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the writing with superlative language ('never looked or sounded as good', 'unshakeable'), detailed appreciation of craft and naturalism, though the excerpt cuts off before explicit recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the play's naturalism and storytelling, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:41:55.018Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Arguably the best new American drama since Annie Baker’s The Flick, David Adjmi’s Stereophonic shares both a hyper-naturalistic style and a sprawling three-hour running time with that 2013 masterwork.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 80.5,
+      "high": 97.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Arguably the best new American drama since Annie Baker's The Flick",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "2013 masterwork",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the best new American drama since Annie Baker’s The Flick",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Opening with superlative praise calling it 'arguably the best new American drama' in over a decade and comparing it to a 'masterwork' signals extremely high recommendation despite limited excerpt. | GPT-4o-mini: The review indicates strong praise by comparing it favorably to a respected work, suggesting a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:34.849Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

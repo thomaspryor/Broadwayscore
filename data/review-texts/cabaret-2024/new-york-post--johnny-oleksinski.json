@@ -10,8 +10,64 @@
   "bwwExcerpt": "Yet the pricey bells and whistles distract from what is a so-so, overly dreary staging that is often undermined by its own overwrought machinations. Undeniably slick and handsome, this two-hour-and-forty-five-minute musical feels much longer than it should. That’s because, bizarrely for a production that is so determined to get its audience wasted, it’s hesitant to have too much fun itself.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "so-so, overly dreary staging that is often undermined by its own overwrought machinations",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "feels much longer than it should",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Undeniably slick and handsome",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic calls the production 'so-so' and 'overly dreary' with fundamental pacing problems, overwhelmingly negative language despite acknowledging production values. | GPT-4o-mini: The review expresses significant disappointment with the production's dreariness and lack of fun, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:34.560Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

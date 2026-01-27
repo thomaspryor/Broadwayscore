@@ -10,8 +10,64 @@
   "showScoreExcerpt": "â...hard to dislike and ultimatelyâas a medical examiner might say of these womenâwithout a heartbeat.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/death-becomes-her-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "hard to dislike",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "without a heartbeat",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "ultimatelyâas a medical examiner might say of these womenâwithout a heartbeat",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's likability but delivers a damning final verdict that it lacks emotional core or vitality, using a medical examiner metaphor to suggest the production is essentially dead. | GPT-4o-mini: The review suggests a lack of emotional engagement despite some redeeming qualities, leading to a negative overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:49.173Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

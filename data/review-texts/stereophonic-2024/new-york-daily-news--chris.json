@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "What a brilliant piece of must-see Broadway. It’s Chekhovian, babe.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -53,5 +53,61 @@
   "designation": "Must_See",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "must-see"
+  "extractedPhrase": "must-see",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 93,
+      "music": 89,
+      "performances": 94,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "What a brilliant piece of must-see Broadway. It's Chekhovian, babe.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Daniel Aukin's phenomenal direction, David Zinn's mind-blowing set, and the fearless acting",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Don't wait. Tickets will get hard.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Critic uses superlatives throughout ('masterful', 'phenomenal', 'mind-blowing', 'brilliant') and explicitly calls it 'must-see Broadway' while urging readers not to wait, indicating unqualified enthusiasm. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the brilliance of the writing, performances, and direction, with a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:50.161Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

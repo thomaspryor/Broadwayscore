@@ -10,8 +10,64 @@
   "bwwExcerpt": "But Frecknall smartly blurs the lines. All we’re really sure of is that we’re in Weimar-era Berlin. When the Emcee sings the echoey, haunting Aryan anthem “Tomorrow Belongs to Me,” he’s wandering through some kind of dreamland populated by wooden doll-size white men. In “Maybe This Time,” while Sally imagines another life for herself—“Not a loser anymore/ Like the last time and the time before,” she sings—she’s technically in Cliff’s room, but she’s also in some other liminal space. (The self-se",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Frecknall smartly blurs the lines",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "echoey, haunting Aryan anthem",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "Frecknall smartly blurs the lines.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows analytical appreciation for the director's creative choices but is cut off mid-sentence, making it impossible to determine the critic's overall recommendation. | GPT-4o-mini: The review highlights interesting direction and thematic elements but lacks a clear overall recommendation, suggesting a mixed-positive sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:07.503Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
