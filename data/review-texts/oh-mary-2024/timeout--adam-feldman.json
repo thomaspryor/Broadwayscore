@@ -13,10 +13,10 @@
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "textWordCount": 228,
   "archivePath": "data/archives/reviews/oh-mary-2024/timeout--adam-feldman_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T01:55:13.539Z",
+  "textFetchedAt": "2026-01-27T05:11:19.742Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -38,7 +38,7 @@
     }
   ],
   "fetchTier": 3,
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 228 (min: 300)",
@@ -83,5 +83,10 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ]
 }

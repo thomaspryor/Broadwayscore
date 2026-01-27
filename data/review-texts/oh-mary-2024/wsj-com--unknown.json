@@ -13,10 +13,10 @@
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "textWordCount": 122,
   "archivePath": "data/archives/reviews/oh-mary-2024/wsj-com--unknown_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T02:00:31.523Z",
+  "textFetchedAt": "2026-01-27T05:15:07.032Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -44,7 +44,7 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251119083252",
   "archiveOrgUrl": "http://web.archive.org/web/20251119083252/https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
@@ -108,5 +108,10 @@
     "needsReviewReasons": [
       "Models disagree by 55 points (Claude: 25, OpenAI: 80)"
     ]
-  }
+  },
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ]
 }

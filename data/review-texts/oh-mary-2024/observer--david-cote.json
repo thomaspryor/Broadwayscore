@@ -13,8 +13,8 @@
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
-  "textStatus": "partial",
-  "textQuality": "partial",
+  "textStatus": "truncated",
+  "textQuality": "truncated",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
@@ -76,20 +76,26 @@
   },
   "textWordCount": 98,
   "archivePath": "data/archives/reviews/oh-mary-2024/observer--david-cote_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T01:48:05.023Z",
+  "textFetchedAt": "2026-01-27T05:10:52.267Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "CAPTCHA or access blocked"
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": false,
+      "error": "No archive snapshot available"
     },
     {
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "ScrapingBee error (404): Request failed with status code 404"
+      "error": "Parse Error: Header overflow"
     },
     {
       "tier": 3,
@@ -101,5 +107,8 @@
   "textIssues": [
     "Word count too low: 98 (min: 300)",
     "Show title not found in text"
+  ],
+  "truncationSignals": [
+    "shorter_than_excerpt"
   ]
 }
