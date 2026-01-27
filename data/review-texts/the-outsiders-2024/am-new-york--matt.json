@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "However, the book (by playwright Adam Rapp and Justine Levine), which stays dutifully true to the novel, has difficulty reconciling bursts of excitement with the plotting and character details of the novel, with Brody Grant (who looks far too mature to be playing the sensitive 14-year-old Ponyboy Curtis) slowly narrating exposition to the audience and sentimental solos that stop the show in its tracks. By act two, the show felt like a mechanical procession of plot progression and teen melodrama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-outsiders/ -->",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251111052003",
-  "archiveOrgUrl": "http://web.archive.org/web/20251111052003/https://www.amny.com/entertainment/theater/review-outsiders-gets-lost-in-the-rumble/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251111052003/https://www.amny.com/entertainment/theater/review-outsiders-gets-lost-in-the-rumble/",
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 74,
+      "performances": 45,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "At its best, 'The Outsiders' is fresh and rambunctious, with an attractive period country-pop score",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "By act two, the show felt like a mechanical procession of plot progression and teen melodrama",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it is difficult to reconcile the overwhelming sadness expressed in the novel with the musical theater form",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges several strong production elements (score, choreography, design) but finds significant problems with the book and pacing, ultimately questioning whether the source material works as a musical. | GPT-4o-mini: The review presents a mixed perspective, highlighting both the energetic music and choreography while criticizing the book's execution and emotional depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:21.443Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
