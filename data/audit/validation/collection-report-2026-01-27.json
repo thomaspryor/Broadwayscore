@@ -1,79 +1,76 @@
 {
-  "runDate": "2026-01-27T20:37:16.877Z",
+  "runDate": "2026-01-27T20:37:58.385Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "an-enemy-of-the-people-2024",
+    "showFilter": "moulin-rouge-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 9,
-    "failed": 10,
+    "processed": 4,
+    "failed": 19,
     "skipped": 0,
-    "successRate": "47.4%"
+    "successRate": "17.4%"
   },
   "tierBreakdown": {
-    "playwright": 1,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 6
+    "playwright": 2,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 1,
-    "tier2Attempts": 15,
-    "tier2Success": 1,
-    "tier3Attempts": 14,
-    "tier3Success": 1,
-    "tier4Attempts": 24,
-    "tier4Success": 6,
-    "totalFailed": 10,
+    "tier1Attempts": 21,
+    "tier1Success": 2,
+    "tier2Attempts": 19,
+    "tier2Success": 0,
+    "tier3Attempts": 19,
+    "tier3Success": 0,
+    "tier4Attempts": 32,
+    "tier4Success": 2,
+    "totalFailed": 19,
     "scrapingBeeCreditsUsed": 60
   },
   "processed": [
-    "an-enemy-of-the-people-2024/hollywood-reporter--david.json",
-    "an-enemy-of-the-people-2024/entertainment-weekly--dalton.json",
-    "an-enemy-of-the-people-2024/new-york-post--johnny.json",
-    "an-enemy-of-the-people-2024/new-york-theatre-guide--allison.json",
-    "an-enemy-of-the-people-2024/new-york-times--jesse.json",
-    "an-enemy-of-the-people-2024/theaterscene-com--unknown.json",
-    "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
-    "an-enemy-of-the-people-2024/wall-street-journal--charles.json",
-    "an-enemy-of-the-people-2024/wsj-com--unknown.json"
+    "moulin-rouge-2019/new-york-magazine-vulture--sara-holdren.json",
+    "moulin-rouge-2019/broadwaynews-com--unknown.json",
+    "moulin-rouge-2019/new-yorker--alexandra-schwartz.json",
+    "moulin-rouge-2019/time-out-new-york--adam-feldman.json"
   ],
   "failed": [
-    "an-enemy-of-the-people-2024/nyt--jesse-green.json",
-    "an-enemy-of-the-people-2024/nytg--david-gordon.json",
-    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
-    "an-enemy-of-the-people-2024/vult--helen-shaw.json",
-    "an-enemy-of-the-people-2024/hollywoodreporter-com--unknown.json",
-    "an-enemy-of-the-people-2024/new-york-daily-news--chris.json",
-    "an-enemy-of-the-people-2024/nyp--johnny-oleksinski.json",
-    "an-enemy-of-the-people-2024/washingtonpost-com--unknown.json",
-    "an-enemy-of-the-people-2024/washpost--peter-marks.json",
-    "an-enemy-of-the-people-2024/wsj--terry-teachout.json"
+    "moulin-rouge-2019/NYTG--mark-shenton.json",
+    "moulin-rouge-2019/nyt--jesse-green.json",
+    "moulin-rouge-2019/NJCOM--christopher-kelly.json",
+    "moulin-rouge-2019/NYDN--joe-dziemianowicz.json",
+    "moulin-rouge-2019/NYP--johnny-oleksinski.json",
+    "moulin-rouge-2019/NYSR--jesse-oxfeld.json",
+    "moulin-rouge-2019/TDB--tim-teeman.json",
+    "moulin-rouge-2019/USATODAY--patrick-ryan.json",
+    "moulin-rouge-2019/WASHPOST--peter-marks.json",
+    "moulin-rouge-2019/WRAP--robert-hofler.json",
+    "moulin-rouge-2019/amny--matt-windman.json",
+    "moulin-rouge-2019/curtainup-com--unknown.json",
+    "moulin-rouge-2019/ew--leah-greenblatt.json",
+    "moulin-rouge-2019/guardian--alexis-soloski.json",
+    "moulin-rouge-2019/nyp--johnny-oleksinski.json",
+    "moulin-rouge-2019/slleiter-blogspot-com--unknown.json",
+    "moulin-rouge-2019/washingtonpost-com--unknown.json",
+    "moulin-rouge-2019/washpost--peter-marks.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json"
   ],
   "tierDetails": {
     "playwright": [
-      "an-enemy-of-the-people-2024/new-york-theatre-guide--allison.json"
+      "moulin-rouge-2019/broadwaynews-com--unknown.json",
+      "moulin-rouge-2019/time-out-new-york--adam-feldman.json"
     ],
-    "scrapingbee": [
-      "an-enemy-of-the-people-2024/entertainment-weekly--dalton.json"
-    ],
-    "brightdata": [
-      "an-enemy-of-the-people-2024/timeout--adam-feldman.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archive": [
-      "an-enemy-of-the-people-2024/hollywood-reporter--david.json",
-      "an-enemy-of-the-people-2024/new-york-post--johnny.json",
-      "an-enemy-of-the-people-2024/new-york-times--jesse.json",
-      "an-enemy-of-the-people-2024/theaterscene-com--unknown.json",
-      "an-enemy-of-the-people-2024/wall-street-journal--charles.json",
-      "an-enemy-of-the-people-2024/wsj-com--unknown.json"
+      "moulin-rouge-2019/new-york-magazine-vulture--sara-holdren.json",
+      "moulin-rouge-2019/new-yorker--alexandra-schwartz.json"
     ]
   }
 }
