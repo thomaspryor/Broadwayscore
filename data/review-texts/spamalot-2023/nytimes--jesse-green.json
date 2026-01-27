@@ -7,7 +7,63 @@
   "publishDate": "November 16, 2023",
   "fullText": "Throughout, Rhodes has encouraged the cast to personalize the material and, in many cases, enhance it. Taran Killam, expert as Lancelot and several of the quirkiest supporting characters, gives the French taunter not only the requisite outrageous accent but also a raspberry aria worthy of Mozart.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 84,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rhodes has encouraged the cast to personalize the material and, in many cases, enhance it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Taran Killam, expert as Lancelot and several of the quirkiest supporting characters",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "raspberry aria worthy of Mozart",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt shows clear praise for the direction's approach and Killam's expert performance work, suggesting a positive assessment despite being a very limited sample. | GPT-4o-mini: The review highlights strong performances, particularly by Taran Killam, and suggests a positive overall experience, though it lacks comprehensive critique of the book or music.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:28.185Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

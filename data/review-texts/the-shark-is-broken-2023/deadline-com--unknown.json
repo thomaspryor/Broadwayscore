@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Beyond its good will and nostalgic conjuring, ’The Shark Is Broken’ is too slender a tale, too gentle, to provide thrills or even, truth be told, much drama.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230816225914",
-  "archiveOrgUrl": "http://web.archive.org/web/20230816225914/https://deadline.com/2023/08/the-shark-is-broken-broadway-review-jaws-comedy-1235458548/"
+  "archiveOrgUrl": "http://web.archive.org/web/20230816225914/https://deadline.com/2023/08/the-shark-is-broken-broadway-review-jaws-comedy-1235458548/",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 81,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "three fine, uncannily on-point performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Beyond its good will and nostalgic conjuring, The Shark Is Broken is too slender a tale, too gentle, to provide thrills or even, truth be told, much drama",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "On Broadway, it feels a bit out of its depth",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances and production values but finds the material too slight and gentle for Broadway, suggesting it's more suited to a smaller venue discovery than a major theatrical destination. | GPT-4o-mini: While the performances are strong and the production is well-crafted, the play's lack of depth and surprises leads to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:00.313Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "Directed by Kenny Leon, the beauty of the Black vernacular is embedded in the “Purlie Victorious” script. Specificities of Black American life are infused within the jokes as Odom and the cast deftly switch from comedy to drama on a dime. The rapid pacing of the 100-minute show, running without an intermission, means that portions of the audience erupt in laughter at the sharp jokes. In contrast, others sit silently, the countless one-liners soaring above their heads. It presents a stunning cont",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 79,
+      "direction": 74
+    },
+    "keyPhrases": [
+      {
+        "quote": "the beauty of the Black vernacular is embedded in the 'Purlie Victorious' script",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Odom and the cast deftly switch from comedy to drama on a dime",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "portions of the audience erupt in laughter at the sharp jokes. In contrast, others sit silently, the countless one-liners soaring above their heads",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Review praises script quality, performances, and direction but notes audience disconnect with some humor, suggesting a qualified positive recommendation that may depend on audience background. | GPT-4o-mini: The review highlights strong performances and direction while indicating some audience disconnect, leading to a positive but cautious recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:59.549Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

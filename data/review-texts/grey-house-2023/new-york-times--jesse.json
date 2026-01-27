@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Grey House,” at the Lyceum Theater, is certainly an in-your-face assault, more in the manner of John Carpenter movies than anything seen onstage since the age of melodrama. It is so expertly assembled from spare parts by the playwright Levi Holloway and the director Joe Mantello that you may not notice, between the jump scares and the shivery pauses, how little it has on its mind. Something about cycles of abuse? The legacy of misogyny? Sure, let’s go with that.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/grey-house/",
@@ -51,5 +51,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250330185550",
-  "archiveOrgUrl": "http://web.archive.org/web/20250330185550/https://www.nytimes.com/2023/06/01/theater/review-grey-house.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250330185550/https://www.nytimes.com/2023/06/01/theater/review-grey-house.html",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 78,
+      "direction": 72
+    },
+    "keyPhrases": [
+      {
+        "quote": "you may not notice, between the jump scares and the shivery pauses, how little it has on its mind",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "those trappings are superb... Metcalf and the rest of the cast turn that opportunity into a meal",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "what makes the effort meaningful to artists... may not make it meaningful to us",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Green acknowledges the expertly crafted production values and strong performances, particularly praising Metcalf and the technical elements, but ultimately finds the play hollow beneath its surface scares, lacking meaningful substance despite its genre thrills.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:01.479Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

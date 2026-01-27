@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of 'Days of Wine and Roses' is a powerhouse production that transforms the devastating story of addiction into something theatrically compelling, anchored by two extraordinary performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 92,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "powerhouse production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "theatrically compelling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "two extraordinary performances",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong positive language ('powerhouse', 'extraordinary', 'compelling') indicates clear recommendation despite brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the production and highlights extraordinary performances, indicating a must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:42.170Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

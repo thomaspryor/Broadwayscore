@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway musical 'Days of Wine and Roses' is well-made and well-acted, but watching two people slowly kill themselves with alcohol for 2½ hours is about as fun as it sounds.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 53
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 73,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "well-made and well-acted",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "watching two people slowly kill themselves with alcohol for 2½ hours is about as fun as it sounds",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "watching two people slowly kill themselves with alcohol for 2½ hours",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: While acknowledging technical competence in craft and performances, the critic makes it clear that the experience is fundamentally unenjoyable and difficult to endure. | GPT-4o-mini: While the production is praised for its quality and performances, the overall experience is described as unenjoyable and tedious, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:14.999Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 40,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

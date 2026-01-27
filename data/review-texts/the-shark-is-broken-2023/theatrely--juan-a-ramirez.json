@@ -7,7 +7,63 @@
   "publishDate": "August 10, 2023",
   "fullText": "Ian Shaw’s The Shark Is Broken, a play with an impossibly successful track record from Edinburgh Fringe to West End hit to, now, Broadway’s Golden Theatre, attempts to pry its mandibles open and serve it two ways: as a father-son memoir and exorcism, and as a look into its notoriously grueling production. It bares its teeth at the former; eats the fat of the latter.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It bares its teeth at the former; eats the fat of the latter",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "impossibly successful track record from Edinburgh Fringe to West End hit to, now, Broadway's Golden Theatre",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "attempts to pry its mandibles open and serve it two ways",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review uses sharp metaphorical language suggesting the play succeeds at one element (production backstory) but fails at another (father-son memoir), creating a mixed assessment without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:52.424Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“The most haunted, haunting performance comes from Sophia Anne Caruso as Marlow...Cracking wise with aching vulnerability, Caruso is the insistent, irresistible heart of ‘Grey House’ and its sonorous death knell.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230707234202",
-  "archiveOrgUrl": "http://web.archive.org/web/20230707234202/https://variety.com/2023/legit/reviews/grey-house-review-broadway-play-1235630674/"
+  "archiveOrgUrl": "http://web.archive.org/web/20230707234202/https://variety.com/2023/legit/reviews/grey-house-review-broadway-play-1235630674/",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 81,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "The script can drag and the metaphors pile higher that Jenga blocks, but the oblique text of 'Grey House' never lacks for intrigue and edge-of-your-seat fascination",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "the show's fine cast and creatives do their best to make it all less impenetrable",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Caruso is the insistent, irresistible heart of 'Grey House' and its sonorous death knell",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant script issues ('can drag', 'metaphors pile higher') but praises the cast and creative team's efforts to overcome these problems, with particular enthusiasm for performances and production design. | GPT-4o-mini: The review highlights strong performances and intriguing elements but notes significant issues with the script, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:51.159Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

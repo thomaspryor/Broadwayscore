@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": 65,
+      "performances": 70,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "if you hunger for Broadway-based belly laughs, you have two musical options",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "A safe 'Spamalot' doesn't lack shelf-life in 2023, but it could be funnier",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "It's no sin that the 'Spamalot' revival gallops across 'seen-it-all-before' territory, though I also walked out of the theatre evaluating that its finest qualities rely on the borrowed",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show as one of only two options for Broadway comedy but consistently notes its derivative nature, adequate performances, and missed comedic opportunities, landing in qualified recommendation territory. | GPT-4o-mini: The review expresses a mix of appreciation for the humor and performances but notes that the production could be funnier and relies heavily on borrowed material, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:00.921Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

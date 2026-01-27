@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "What do you get by crossing “Six” with “& Juliet”? No, “Bad Cinderella” was last season. Today, that mash-up of two similar musicals gives you the slightly better Cinderella show, which has been tortuously titled “Once Upon a One More Time.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
@@ -51,5 +51,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250917212942",
-  "archiveOrgUrl": "http://web.archive.org/web/20250917212942/https://www.thewrap.com/once-upon-a-one-more-time-broadway-review-britney-spears-musical/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250917212942/https://www.thewrap.com/once-upon-a-one-more-time-broadway-review-britney-spears-musical/",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 50,
+      "performances": 58,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hartmere's book fails to give the girls much to do once they've gone on strike",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Beyond the truly ugly costumes",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Guarini, through sheer and unadulterated vanity, walks away with the first act",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is predominantly negative, criticizing the book as weak, costumes as ugly, and direction as ineffective, with only scattered praise for individual performances like Guarini and Simard. | GPT-4o-mini: The review is predominantly negative, highlighting significant flaws in the book and direction while only offering limited praise for performances and music.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:16.730Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 42,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Nineteen years after winning a Tony Award for the enchanting and sweeping score of “The Light in the Piazza,” Adam Guettel — the extremely gifted and adventurous composer and lyricist who also happens to be the grandson of legendary composer Richard Rodgers and son of Mary Rodgers (composer of “Once Upon a Mattress”) — has finally returned to Broadway with “Days of Wine and Roses,” another musically literate and individualized work that is far more acidic in sound and style.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/days-of-wine-and-roses/",
@@ -53,5 +53,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250721191009",
-  "archiveOrgUrl": "http://web.archive.org/web/20250721191009/https://www.amny.com/entertainment/theater/review-days-of-wine-and-roses/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250721191009/https://www.amny.com/entertainment/theater/review-days-of-wine-and-roses/",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 89,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "musically literate and individualized work",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Kelli O'Hara and Brian d'Arcy James, who shine vocally and dramatically in finely-textured performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "one of the relatively few theatrical adaptations that expands upon its cinematic source material",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the musical sophistication, lead performances, and successful adaptation while showing clear appreciation for Guettel's return to Broadway, with only minor reservations about the source material. | GPT-4o-mini: The review expresses strong praise for the music and performances while maintaining a positive overall tone, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:24.937Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

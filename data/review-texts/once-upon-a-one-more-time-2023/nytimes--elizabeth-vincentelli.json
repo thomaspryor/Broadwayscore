@@ -7,7 +7,63 @@
   "publishDate": "June 22, 2023",
   "fullText": "But this big, splashy show, which is quite entertaining at times, is hampered by a shambolic jumble of sisterhood 101 messaging and defanged fantasy revisionism.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "quite entertaining at times",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "hampered by a shambolic jumble of sisterhood 101 messaging",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "defanged fantasy revisionism",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges entertainment value but is clearly frustrated by weak messaging and storytelling, creating a mixed but slightly negative overall impression. | GPT-4o-mini: The review acknowledges entertainment value but highlights significant structural issues, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:53.678Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

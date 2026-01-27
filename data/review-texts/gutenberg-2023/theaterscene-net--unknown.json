@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": 63,
+      "performances": 78,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "How much you enjoy Gutenberg! The Musical! likely depends on a combination of factors entirely unrelated to that German fellow: familiarity with the tropes it's skewering; your own level of disdain for such hackney execution; and your tolerance for Rannells and Gad's incessant mugging.",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "their peppy antics commendably serve the deliberately puerile Gutenberg! The Musical, with Rannells and Gad reveling in the show-within-a-show's self-referential silliness so completely that it's easy to overlook the fact that they're depicting characters",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Still, to all the Dougs and Buds out there, good luck, you fools!",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the show's self-aware parody and the leads' charismatic performances while acknowledging the material's limitations, resulting in a qualified positive recommendation that depends on audience taste. | GPT-4o-mini: The review presents a mix of appreciation for the performances and humor but acknowledges significant limitations in the material, leading to a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:14.288Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

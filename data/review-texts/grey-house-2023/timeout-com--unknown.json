@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\" ''Grey Houe' is built around themes of guilt, expiation and retribution, but not very solidly—and as a spectator, you’re too busy puzzling out what is happening to think much about what it means...Amid such excellent atmospherics, you may not care when the play itself creaks.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 75,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is a first-class production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you might find that they don't quite cohere",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "you may not care when the play itself creaks",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the production values, direction, and atmosphere as 'first-class' but finds significant problems with the script's coherence and structure, resulting in a mixed recommendation that leans slightly positive due to the strong execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:16.623Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

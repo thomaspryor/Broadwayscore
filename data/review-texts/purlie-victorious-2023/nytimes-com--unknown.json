@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "CRITIC’S PICK: “‘Purlie Victorious’...is every bit as scathingly funny as the 1961 reviews said it was. But even though times have surely changed everything dark in the play is still dark, and the lightness no less necessary.” \n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251027141347",
-  "archiveOrgUrl": "http://web.archive.org/web/20251027141347/https://www.nytimes.com/2023/09/27/theater/purlie-victorious-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251027141347/https://www.nytimes.com/2023/09/27/theater/purlie-victorious-review.html",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "every bit as scathingly funny as the 1961 reviews said it was",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Kenny Leon's thrillingly broad and warp-speed production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this necessary revival",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Green delivers enthusiastic praise for the performances, direction, and relevance of this revival, calling it 'necessary' and describing the production as 'thrilling' with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:50.536Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

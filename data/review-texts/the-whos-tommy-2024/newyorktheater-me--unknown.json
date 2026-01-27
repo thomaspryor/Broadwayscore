@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 80,
+      "performances": 75,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "those songs have lost none of their appeal",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This is where 'Tommy' begins to lose its footing, and the show starts to feel less diligent in its storytelling",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the breakdown into intimidating and incoherent spectacle felt like a nod to the Who's vintage antics",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer praises the timeless appeal of the songs and strong performances in the first act, but criticizes the show's loss of narrative focus and descent into incoherent spectacle in the second half, resulting in a mixed recommendation that acknowledges both strengths and significant weaknesses.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:03.222Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
