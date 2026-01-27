@@ -1,77 +1,17 @@
 {
   "showId": "chicago-1996",
-  "outletId": "NYDN",
+  "outletId": "nydn",
   "outlet": "New York Daily News",
   "criticName": "Howard Kissel",
   "url": "http://www.nydailynews.com/archives/nydn-features/chicago-revival-kind-show-great-cast-songs-jazz-turn-fosse-musical-class-act-article-1.551382",
-  "publishDate": "1996-11-14",
+  "publishDate": "November 14th, 1996",
   "fullText": null,
+  "isFullReview": false,
   "showScoreExcerpt": "\"Because the revival of \"Chicago\" is so wildly entertaining, I'm hesitant to call it important, always an ugly adjective for a reviewer to use...What makes this revival important, is that it reminds us that musicals are about songs and performers, not scenery. When you have material and performances as dynamic as this, you don't need chandeliers.\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/chicago",
   "originalScore": null,
-  "assignedScore": 83,
-  "source": "reviews-json-stub",
-  "needsFullText": true,
-  "textStatus": "missing",
-  "urlSource": "show-score",
-  "urlUpdatedAt": "2026-01-25T14:20:46.937Z",
-  "textQuality": "missing",
-  "sourceMethod": "stub",
-  "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium",
-  "llmScore": {
-    "score": 83,
-    "confidence": "high",
-    "range": {
-      "low": 75.5,
-      "high": 90.5
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": 88,
-      "performances": 88,
-      "direction": 85
-    },
-    "keyPhrases": [
-      {
-        "quote": "so wildly entertaining",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "material and performances as dynamic as this",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "you don't need chandeliers",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic calls the revival 'wildly entertaining' and 'important,' praising the dynamic material and performances while making a broader artistic statement about musical theater excellence. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall entertainment value, indicating a clear recommendation despite hesitance about the show's importance.",
-    "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:14:01.197Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 80,
-    "scoreDelta": 5,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
-  }
+  "assignedScore": null,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true
 }

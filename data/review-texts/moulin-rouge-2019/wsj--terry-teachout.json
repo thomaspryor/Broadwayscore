@@ -4,68 +4,14 @@
   "outlet": "The Wall Street Journal",
   "criticName": "Terry Teachout",
   "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11564101001",
-  "publishDate": "2019-07-25",
+  "publishDate": "July 25th, 2019",
   "fullText": null,
   "isFullReview": false,
-  "showScoreExcerpt": "'Moulin Rouge! The Musical!' Review: Pop Opera Excess. A stage adaptation of Baz Luhrmann's 2001 camp extravaganza is as opulent as it is empty.",
+  "showScoreExcerpt": "\"âMoulin Rouge! The Musical!â Review: Pop Opera Excess. A stage adaptation of Baz Luhrmannâs 2001 camp extravaganza is as opulent as it is empty.\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/moulin-rouge-broadway",
   "originalScore": null,
-  "assignedScore": 39,
+  "assignedScore": null,
   "source": "show-score",
-  "needsFullText": true,
-  "textStatus": "excerpt-only",
-  "textQuality": "missing",
-  "sourceMethod": "showscore",
-  "scoreSource": "enhanced-sentiment-lean-negative",
-  "scoreConfidence": "low",
-  "llmScore": {
-    "score": 39,
-    "confidence": "medium",
-    "range": {
-      "low": 30.5,
-      "high": 47.5
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 45
-    },
-    "keyPhrases": [
-      {
-        "quote": "as opulent as it is empty",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "camp extravaganza",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The headline's characterization of the show as 'as opulent as it is empty' signals a fundamental criticism that the spectacle lacks substance, indicating a negative recommendation despite acknowledging the production values. | GPT-4o-mini: The review indicates a lack of substance despite the visual spectacle, leading to a clear negative recommendation.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:40:35.879Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 35,
-    "scoreDelta": 7,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
-  }
+  "dtliThumb": null,
+  "needsScoring": true
 }

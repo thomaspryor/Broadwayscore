@@ -1,78 +1,17 @@
 {
   "showId": "aladdin-2014",
-  "outletId": "WSJ",
+  "outletId": "wsj",
   "outlet": "The Wall Street Journal",
   "criticName": "Terry Teachout",
   "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978",
-  "publishDate": "2014-03-20",
+  "publishDate": "March 20th, 2014",
   "fullText": null,
+  "isFullReview": false,
   "showScoreExcerpt": "\"It's not nearly as good as the movie, but it does have a terrific star, super-duper sets and sensational special effects.\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": null,
-  "assignedScore": 69,
-  "source": "reviews-json-stub",
-  "needsFullText": true,
-  "bwwExcerpt": "Billing notwithstanding, the real star of \"Aladdin\" is James Monroe Iglehart, who plays the guy in the lamp, a part that was voiced in the movie by Robin Williams at his most frenetic. Mr. Iglehart is just as energetic, though his approach is different: His Genie is a hopped-up cross between Fats Wa...",
-  "textStatus": "missing",
-  "urlSource": "show-score",
-  "urlUpdatedAt": "2026-01-25T14:20:46.942Z",
-  "textQuality": "missing",
-  "sourceMethod": "stub",
-  "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null,
-  "llmScore": {
-    "score": 69,
-    "confidence": "medium",
-    "range": {
-      "low": 60.5,
-      "high": 77.5
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": 83,
-      "direction": 74
-    },
-    "keyPhrases": [
-      {
-        "quote": "It's not nearly as good as the movie",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "it does have a terrific star, super-duper sets and sensational special effects",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the real star of 'Aladdin' is James Monroe Iglehart",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Despite acknowledging the show isn't as good as the movie, the critic praises the lead performance, sets, and special effects strongly enough to suggest a qualified positive recommendation. | GPT-4o-mini: The review highlights strong performances and impressive production elements but notes that it falls short of the film, leading to a mixed-positive recommendation.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:00:35.371Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
-    "scoreDelta": 7,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
-  }
+  "assignedScore": null,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true
 }
