@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Playwright Joshua Harmon seems to be aiming for the reach of Tony Kushner, using maximalist technique to deliver ideas that sprawl forward.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/prayer-for-the-french-republic-broadway/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251101030635",
-  "archiveOrgUrl": "http://web.archive.org/web/20251101030635/https://variety.com/2024/legit/reviews/prayer-for-the-french-republic-review-broadway-1235865240/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251101030635/https://variety.com/2024/legit/reviews/prayer-for-the-french-republic-review-broadway-1235865240/",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": 73,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "But it doesn't tell it in a compelling or nuanced manner",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the relative shapelessness of the Benhamous' journey towards leaving France has a flattening effect on the audience",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Betsy Aidem, undeniably excellent",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental structural and narrative problems with the play despite praising some performances, ultimately concluding it fails to deliver compelling drama or meaningful insights. | GPT-4o-mini: The review expresses significant criticism of the script and direction, indicating a lack of compelling storytelling, leading to a strong negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:43.367Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
