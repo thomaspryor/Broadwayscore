@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
   "designation": "Must_See",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "4/5"
+  "extractedStars": "4/5",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 80,
+      "performances": 70,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Here Lies Love remains an impressive and effective experience; but uptown on Broadway, at the over-sized Broadway, the bloom is off the rose",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The vast array of inventive vibrancy is still there to be seen and felt",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the uptown edition—as of the official opening—is not yet quite so powerful as what enthralled us, three times, down on Astor Place",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: 4/5 star review that acknowledges the show's strengths in design and concept but repeatedly emphasizes how the Broadway transfer has diminished the original's impact and immersive power.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:40.044Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

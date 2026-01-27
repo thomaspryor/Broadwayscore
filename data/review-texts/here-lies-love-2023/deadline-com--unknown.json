@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“The real pull of ‘Here Lies Love’ is the staging, with a malleable performance space, an audience herded to and fro, and cast members finding perches throughout the venue.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20231107182420",
-  "archiveOrgUrl": "http://web.archive.org/web/20231107182420/https://deadline.com/2023/07/here-lies-love-broadway-review-deadline-david-byrne-fatboy-slim-1235438965/"
+  "archiveOrgUrl": "http://web.archive.org/web/20231107182420/https://deadline.com/2023/07/here-lies-love-broadway-review-deadline-david-byrne-fatboy-slim-1235438965/",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 85,
+      "performances": 78,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "what will surely become one of the most popular nights on the town for New Yorkers and tourists alike",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Here Lies Love, a technical marvel of an ever-moving stage production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "feels a bit thin in afterthought",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite criticizing the shallow character development and thin storytelling, the critic clearly predicts this will be highly popular and extensively praises the technical achievements, music, and immersive staging. | GPT-4o-mini: The review expresses strong praise for the music and staging while noting some weaknesses in the narrative, leading to a solid but not overwhelming recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:02.589Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

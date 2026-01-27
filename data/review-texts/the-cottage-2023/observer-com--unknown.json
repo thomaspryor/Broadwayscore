@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“The best thing about ‘The Cottage’ is the cottage, designed by someone with the name Paul Tate dePoo III. Everything else is more like the outhouse. Even as a lark, it’s beneath the standards of Broadway.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 13,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230926060925",
-  "archiveOrgUrl": "http://web.archive.org/web/20230926060925/https://observer.com/2023/07/the-cottage-review-this-new-broadway-farce-is-a-fiasco/"
+  "archiveOrgUrl": "http://web.archive.org/web/20230926060925/https://observer.com/2023/07/the-cottage-review-this-new-broadway-farce-is-a-fiasco/",
+  "llmScore": {
+    "score": 13,
+    "confidence": "high",
+    "range": {
+      "low": 5.5,
+      "high": 20.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 5,
+      "music": null,
+      "performances": 18,
+      "direction": 13
+    },
+    "keyPhrases": [
+      {
+        "quote": "too vulgar, pointless and stupid to describe",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Also noisy, witless and moronic",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Anyone got a blow torch?",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified pan with the critic calling the show 'vulgar, pointless and stupid,' 'abysmal fiasco,' and ending with a joke about needing a blowtorch to destroy it. | GPT-4o-mini: The review is overwhelmingly negative, describing the play as vulgar and pointless, with no redeeming qualities.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:15.649Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 15,
+    "openaiScore": 10,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

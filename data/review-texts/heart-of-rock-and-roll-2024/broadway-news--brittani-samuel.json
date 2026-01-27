@@ -7,7 +7,63 @@
   "publishDate": "April 23, 2024",
   "fullText": "Behold what surely must be the first Broadway musical crafted completely by artificial intelligence. That’s the only explanation for a show as rote and paint-by-numbers predictable as “The Heart of Rock and Roll.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 18,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "rote and paint-by-numbers predictable",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "crafted completely by artificial intelligence",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "the first Broadway musical crafted completely by artificial intelligence",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses strongly dismissive language comparing the show to AI-generated content and calling it formulaic and predictable, indicating a clear negative assessment. | GPT-4o-mini: The review expresses strong disapproval of the show's predictability and quality, indicating a clear rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:59.100Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

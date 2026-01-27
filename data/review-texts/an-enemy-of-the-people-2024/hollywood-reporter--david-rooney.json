@@ -10,8 +10,64 @@
   "bwwExcerpt": "Unlike the lavish 1997 National Theatre production starring Ian McKellen, this staging is on the minimal side, with an effective revolving turntable set and a relatively small cast in which the understudies also play the townspeople in the pivotal climactic town hall meeting scene. Howard Shapiro, Philadelphia Inquirer: I couldn't help but think of an ATF agent named Peter Forcelli while I watched the super-charged Broadway revival of An Enemy of the People, Henrik Ibsen's play about a man who t",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "urgent and effective",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "bracing revival",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "presents a classic drama as a play for our time",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review uses strong positive language like 'urgent and effective' and 'bracing revival' while positioning this as a successful contemporary interpretation of a classic work. | GPT-4o-mini: The review expresses a strong positive sentiment towards the revival's relevance and effectiveness, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:23.360Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

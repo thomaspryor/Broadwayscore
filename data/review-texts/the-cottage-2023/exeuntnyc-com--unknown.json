@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 37,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -35,5 +35,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": null,
+      "performances": 58,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "The audience, however, enjoys little mirth in the course of the overstuffed running time",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "one expects the house itself will soon be vacant",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The actors do their best with what they have, with Moffat and Bundy turning in fully successful performances",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a clear pan with harsh criticism of the script, direction, and overall production while only praising individual performances, concluding with a prediction of failure. | GPT-4o-mini: The review is predominantly negative, criticizing the script and direction while acknowledging some strong performances, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:07.447Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

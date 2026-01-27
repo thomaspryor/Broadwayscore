@@ -7,7 +7,63 @@
   "publishDate": "April 23, 2024",
   "fullText": "Like all great plays, “Mary Jane” catches light from different directions at different times, revealing different ideas. On the other side of the worst of Covid, “Mary Jane” feels less like a parent’s cry for more life than an inquest into the meaning of death.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like all great plays",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "catches light from different directions at different times, revealing different ideas",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Like all great plays, “Mary Jane” catches light from different directions at different times",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic positions 'Mary Jane' among 'great plays' and praises its thematic depth and complexity, but this brief excerpt lacks explicit recommendation language or comprehensive evaluation. | GPT-4o-mini: The review suggests a thoughtful exploration of themes, indicating a clear recommendation despite the lack of explicit praise for specific elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:04.224Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

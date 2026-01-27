@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Yes, there is a world of lousy theater beyond New York City, and “The Cottage,” which opened Monday on Broadway at the Hayes Theatre, is destined for it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 18,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/the-cottage/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 18,
+    "confidence": "medium",
+    "range": {
+      "low": 5.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there is a world of lousy theater beyond New York City",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "destined for it",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Yes, there is a world of lousy theater beyond New York City",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly categorizes the show as 'lousy theater' and predicts it will fail on Broadway, providing a clear and harsh dismissal. | GPT-4o-mini: The review expresses a strong rejection of the show, indicating it is among the worst theater experiences. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:46.050Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 10,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

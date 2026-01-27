@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250605034935",
-  "archiveOrgUrl": "http://web.archive.org/web/20250605034935/https://www.talkinbroadway.com/page/world/HereLiesLove.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250605034935/https://www.talkinbroadway.com/page/world/HereLiesLove.html",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 94,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is, in a nutshell, a triumph of substance and style on all counts, terrifically performed by its all-Filipino cast",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "By any measure, Here Lies Love is a perfectly crafted, thrilling production that should make audiences very happy indeed",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Director Alex Timbers and the entire design team have done a stunning job of reconfiguring the Broadway Theatre into a dance club",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses unqualified superlatives like 'triumph', 'perfectly crafted', and 'thrilling production' while praising all aspects of the show from performances to design, with only minor political commentary that doesn't affect the theatrical recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its performances and overall execution as a triumph, with no significant reservations noted.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:00.326Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

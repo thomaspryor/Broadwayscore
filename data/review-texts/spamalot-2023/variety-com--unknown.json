@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "“The production’s overdesign is a symptom of the broader problem, which is a lack of ingenuity in favor of sheer excess. It is a paradox of throwing money onstage that it can easily come at the expense of creativity. There may be a way to reanimate ‘Spamalot,’ and for Monty Python’s random surrealism to infect a new generation and confront the current moment. But that grail is not to be found here.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production's overdesign is a symptom of the broader problem, which is a lack of ingenuity in favor of sheer excess",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It is a paradox of throwing money onstage that it can easily come at the expense of creativity",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "But that grail is not to be found here",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic delivers harsh criticism of the production's creative choices, describing fundamental problems with overdesign and lack of creativity, culminating in the definitive statement that the show fails to achieve its potential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:02.232Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

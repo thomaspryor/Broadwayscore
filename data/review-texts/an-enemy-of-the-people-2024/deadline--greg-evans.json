@@ -7,7 +7,63 @@
   "publishDate": "March 18, 2024",
   "fullText": "But have no doubt: Audiences on any every night of this limited 16-week run at Circle in the Square will witness a taut and exactingly directed production. Sam Gold’s An Enemy Of The People is one of the best play revivals of the current season to date, right up there with Purlie Victorious, besting Doubt and even Gold’s own, shakier Macbeth starring Daniel Craig in 2022.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the best play revivals of the current season to date",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "taut and exactingly directed production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "besting Doubt and even Gold's own, shakier Macbeth",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Critic explicitly calls this 'one of the best play revivals of the current season' and makes favorable comparisons to other productions, indicating strong recommendation despite measured tone. | GPT-4o-mini: The review expresses strong praise for the direction and overall quality of the production, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:45.107Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 88,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

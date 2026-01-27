@@ -7,7 +7,63 @@
   "publishDate": "November 16, 2023",
   "fullText": "So I was curious to see if Monty Python’s Spamalot, a musical comedy that debuted on Broadway during the second Bush administration, based on a beloved movie released during the incidental reign of Gerald Ford, has a shelf life longer than its namesake canned pork product.\r\n\r\nThe answer is yes, thanks largely to an excellent cast of consummate comedians and a script that derives its humor from the timelessly absurd. It’s still safe to eat, even if certain bites might taste a little off.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "thanks largely to an excellent cast of consummate comedians",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's still safe to eat, even if certain bites might taste a little off",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "derives its humor from the timelessly absurd",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic gives a qualified positive recommendation, praising the cast and timeless humor while acknowledging some elements feel dated, using the food metaphor to suggest it's still worth consuming despite minor flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:51.514Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

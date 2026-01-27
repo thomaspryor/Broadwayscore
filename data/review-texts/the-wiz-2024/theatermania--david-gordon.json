@@ -7,7 +7,63 @@
   "publishDate": "April 17, 2024",
   "fullText": "Unfortunately, the one we’ve ended up getting, now at the Marquis Theatre after a national tour (and you can tell), is so pitiful that it does a major disservice to a genuinely groundbreaking piece of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 18,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 18,
+    "confidence": "medium",
+    "range": {
+      "low": 5.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "so pitiful that it does a major disservice",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "you can tell",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "genuinely groundbreaking piece of theater",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses extremely harsh language ('pitiful', 'major disservice') to condemn this production while acknowledging the original work's merit, indicating a clear negative recommendation. | GPT-4o-mini: The review expresses strong disapproval of the production, labeling it as 'pitiful' and a disservice to the original work, indicating a clear rejection. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:46.738Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 10,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
