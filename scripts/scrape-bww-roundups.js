@@ -161,8 +161,102 @@ async function searchBWWRoundup(show) {
     await sleep(200);
   }
 
-  console.log(`  ✗ Not found via URL patterns`);
+  console.log(`  ✗ Not found via URL patterns, trying web search...`);
+
+  // Fallback: Use web search to find the BWW Review Roundup
+  const searchResult = await searchWebForBWWRoundup(show);
+  if (searchResult) {
+    return searchResult;
+  }
+
+  console.log(`  ✗ Not found via web search either`);
   return null;
+}
+
+/**
+ * Search the web for BWW Review Roundup article
+ * Uses ScrapingBee Google Search API (requires SCRAPINGBEE_API_KEY)
+ */
+async function searchWebForBWWRoundup(show) {
+  const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+
+  if (!SCRAPINGBEE_KEY) {
+    console.log(`  No SCRAPINGBEE_API_KEY, skipping web search`);
+    return null;
+  }
+
+  console.log(`  Searching Google via ScrapingBee: ${show.title}...`);
+  const searchQuery = `site:broadwayworld.com "Review Roundup" "${show.title}" Broadway`;
+  const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(searchQuery)}`;
+
+  try {
+    const response = await new Promise((resolve, reject) => {
+      https.get(apiUrl, { timeout: 30000 }, (res) => {
+        let data = '';
+        res.on('data', chunk => data += chunk);
+        res.on('end', () => {
+          if (res.statusCode === 200) {
+            resolve(JSON.parse(data));
+          } else {
+            reject(new Error(`HTTP ${res.statusCode}`));
+          }
+        });
+      }).on('error', reject);
+    });
+
+    // Parse organic results
+    const results = response.organic_results || [];
+    for (const result of results.slice(0, 5)) {
+      const url = result.url || result.link;
+      if (url && url.includes('broadwayworld.com/article/') && url.toLowerCase().includes('review-roundup')) {
+        console.log(`  Trying search result: ${url}`);
+        const pageResult = await httpGet(url);
+
+        if (pageResult.found && pageResult.html && pageResult.html.includes('Review Roundup')) {
+          // Verify it mentions the show title
+          const titleWords = show.title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+          const htmlLower = pageResult.html.toLowerCase();
+          const matchCount = titleWords.filter(w => htmlLower.includes(w)).length;
+
+          if (matchCount >= Math.min(2, titleWords.length)) {
+            console.log(`  ✓ Found via Google search: ${url}`);
+            saveUrlOverride(show.id, url);
+            return { url, html: pageResult.html };
+          }
+        }
+        await sleep(300);
+      }
+    }
+  } catch (e) {
+    console.log(`  Google search error: ${e.message}`);
+  }
+
+  return null;
+}
+
+/**
+ * Save discovered URL to overrides file for future runs
+ */
+function saveUrlOverride(showId, url) {
+  try {
+    let overrides = {};
+    if (fs.existsSync(BWW_URLS_PATH)) {
+      overrides = JSON.parse(fs.readFileSync(BWW_URLS_PATH, 'utf8'));
+    }
+
+    if (!overrides[showId]) {
+      overrides[showId] = url;
+      const final = { _comment: "Manual and auto-discovered URL overrides for BWW Review Roundups with non-standard URL patterns" };
+      Object.keys(overrides).sort().forEach(k => {
+        if (k !== '_comment') final[k] = overrides[k];
+      });
+
+      fs.writeFileSync(BWW_URLS_PATH, JSON.stringify(final, null, 2));
+      console.log(`  📝 Saved URL to bww-roundup-urls.json for future runs`);
+    }
+  } catch (e) {
+    console.log(`  Warning: Could not save URL override: ${e.message}`);
+  }
 }
 
 /**
