@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...a bitter satire of local politics that soon reveals itself as a slow-boil tragedy\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251105051142",
-  "archiveOrgUrl": "http://web.archive.org/web/20251105051142/https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251105051142/https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 84,
+      "music": null,
+      "performances": 88,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sam Gold's crackling and persuasive production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Everyone in the uniformly excellent cast is complicated in that way",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Strong must have modeled his spectacularly accurate yet non-showy performance on Dr. Anthony Fauci",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Green delivers sustained praise for the production, performances, and adaptation with terms like 'crackling and persuasive,' 'uniformly excellent cast,' and 'spectacularly accurate,' indicating a strong positive recommendation despite the protest interruption discussion. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some thematic complexities, leading to a clear but measured recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:19.353Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 75,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

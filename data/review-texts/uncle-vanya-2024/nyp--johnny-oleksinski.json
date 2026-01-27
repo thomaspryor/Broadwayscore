@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Steve Carell anchors this dazzling Broadway revival with a performance that's both deeply moving and surprisingly restrained, proving once again that comedy stars can excel in dramatic roles.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "dazzling Broadway revival",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "deeply moving and surprisingly restrained",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "proving once again that comedy stars can excel in dramatic roles",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for both the production ('dazzling') and lead performance with multiple positive descriptors, but lacks explicit recommendation language or superlatives that would push it higher. | GPT-4o-mini: The review highlights Carell's strong performance and the overall quality of the revival, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:02.815Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

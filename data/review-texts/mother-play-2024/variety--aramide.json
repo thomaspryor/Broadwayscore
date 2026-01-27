@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Still, despite its imperfections, “Mother Play” is a genuinely engaging examination of a family trying to find equilibrium. It honors the glimmers and low points of mothering and explains why, in some cases, the role is transposed onto those who were never called to it in the first place.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/mother-play/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250104141059",
-  "archiveOrgUrl": "http://web.archive.org/web/20250104141059/https://variety.com/2024/legit/reviews/mother-play-review-broadway-1235981251/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250104141059/https://variety.com/2024/legit/reviews/mother-play-review-broadway-1235981251/",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 85,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mother Play is a genuinely engaging examination of a family trying to find equilibrium",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The performances also reign tall in 'Mother Play,' even when the storylines seem on the verge of teetering too far toward melodrama",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there are two major missteps... some of the major plot points are highly predictable, taking away the story's emotional power",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging two 'major missteps' including predictable plotting and an overlong scene, the critic praises the performances as 'magnificent' and 'delightful,' calls it 'genuinely engaging,' and finds merit in its examination of family dynamics, landing in qualified recommendation territory. | GPT-4o-mini: The review highlights strong performances and production values while acknowledging some predictable plot points, leading to a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:49.310Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

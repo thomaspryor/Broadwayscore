@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230923095219",
-  "archiveOrgUrl": "http://web.archive.org/web/20230923095219/https://nypost.com/2023/08/10/the-shark-is-broken-review-jaws-play-swallowed-by-broadway/"
+  "archiveOrgUrl": "http://web.archive.org/web/20230923095219/https://nypost.com/2023/08/10/the-shark-is-broken-review-jaws-play-swallowed-by-broadway/",
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 40.5,
+      "high": 57.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 68,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shaw and Nixon's wishy-washy play, which opened Thursday at the Golden Theatre, struggles to be either [art or entertainment]",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "on Broadway, the little play gets swallowed up like a doomed teen in Amity",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The three performers have strong chemistry, and manage to rise above mere impressions",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds significant structural problems with the play (repetitive, thin characters, weak dialogue) while praising the performances, ultimately suggesting it doesn't work on Broadway despite having worked elsewhere. | GPT-4o-mini: The review highlights some enjoyable performances but ultimately criticizes the script and repetitiveness, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:06.583Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 52,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

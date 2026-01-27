@@ -10,8 +10,64 @@
   "bwwExcerpt": "So, ok, I won’t call “The Heart of Rock and Roll”  poppy. If not poppy, it’s certainly predictable, a dose of 1980s nostalgia with a by-the-numbers plot that would not be out of place in a conventional 1950s musical comedy. But for what it is, the show has its moments. Cott gives another reliable central performance, surrounded by stand-out supporting players. Lorin Latarro’s choreography rocks, and hops, and sometimes completely flips (there are acrobatic dancers in the ensemble.) In between th",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 75,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "certainly predictable, a dose of 1980s nostalgia with a by-the-numbers plot",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "But for what it is, the show has its moments",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "Lorin Latarro's choreography rocks, and hops, and sometimes completely flips",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed review that criticizes the predictable plot but praises performances and choreography, with the excerpt cutting off mid-sentence limiting full assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:26.524Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

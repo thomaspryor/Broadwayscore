@@ -7,7 +7,63 @@
   "publishDate": "July 24, 2023",
   "fullText": "Yes, there is a world of lousy theater beyond New York City, and “The Cottage,” which opened Monday on Broadway at the Hayes Theatre, is destined for it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 13,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 13,
+    "confidence": "high",
+    "range": {
+      "low": 5.5,
+      "high": 20.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there is a world of lousy theater beyond New York City",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "is destined for it",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Yes, there is a world of lousy theater beyond New York City",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls the show 'lousy theater' and predicts it will fail on Broadway, indicating complete rejection with no redeeming qualities mentioned. | GPT-4o-mini: The review expresses a strong rejection of the show, indicating it is likely to be poorly received.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:51.538Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 15,
+    "openaiScore": 10,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

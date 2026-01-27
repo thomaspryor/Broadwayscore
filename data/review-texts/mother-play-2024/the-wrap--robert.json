@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Tina Landau directs. Her sure hand navigates the play’s many moods — hilarious one moment, tragic the next.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/mother-play/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250913204214",
-  "archiveOrgUrl": "http://web.archive.org/web/20250913204214/https://www.thewrap.com/mother-play-broadway-review-jessica-lange-jim-parsons/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250913204214/https://www.thewrap.com/mother-play-broadway-review-jessica-lange-jim-parsons/",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 85,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "In its excellence, her work in 'Mother Play' recalls what she did on stage as Mary Tyrone in 'Long Day's Journey into Night' in 2016",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Keenan-Bolger is simply brilliant",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it is really a very funny play",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances extensively, particularly calling Keenan-Bolger 'simply brilliant' and praising Lange's 'excellence,' while finding the play 'very funny' and noting strong direction, with only minor reservations about Parsons being 'a little too flamboyant.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:48.109Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

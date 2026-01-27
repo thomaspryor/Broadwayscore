@@ -10,8 +10,64 @@
   "bwwExcerpt": "It’s fitting that the musical named for her wages a similar battle as it unfolds at the Longacre Theatre. An uneven, exposition-heavy book by Carson Kreitzer and Matt Gould, and an industrial set by Riccardo Fernandez, are the show's more mechanical elements. But superb lighting design by Bradley King, an eclectic and electric score, and captivating performances are the pulsating flesh and blood that ultimately render Lempicka’s flaws like stray paint specks on canvas: keeping the work from “per",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 70,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 45,
+      "music": 80,
+      "performances": 85,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "An uneven, exposition-heavy book by Carson Kreitzer and Matt Gould, and an industrial set by Riccardo Fernandez, are the show's more mechanical elements",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "superb lighting design by Bradley King, an eclectic and electric score, and captivating performances are the pulsating flesh and blood",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "ultimately render Lempicka's flaws like stray paint specks on canvas",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges significant flaws in the book and set design but suggests that strong performances, lighting, and score ultimately overcome these weaknesses, indicating a qualified recommendation. | GPT-4o-mini: The review highlights strong performances and music but criticizes the book and direction, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:50.970Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 70,
+    "openaiScore": 70,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

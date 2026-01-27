@@ -7,7 +7,63 @@
   "publishDate": "April 22, 2024",
   "fullText": "Like the best junk food, you won’t remember much about The Heart of Rock and Roll afterward, but at least you’ll have felt you had a fun time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like the best junk food",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "you won't remember much about The Heart of Rock and Roll afterward",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "at least you'll have felt you had a fun time",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic compares the show to 'junk food' that's forgettable but fun, suggesting a mildly positive but disposable entertainment experience. | GPT-4o-mini: The review suggests a fun experience but lacks lasting impact, indicating a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:29.234Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

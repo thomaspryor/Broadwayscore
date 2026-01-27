@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "That tonal balance is delicate, and it could tilt in any number of directions: too grim and it might be impossible to watch (I would understand someone not wanting to engage with the premise), too woo-woo and it might become sentimental. It asks a lot, specifically, of the actress playing Mary Jane. Rachel McAdams turns out to be more than up for the task.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/mary-jane/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 82,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rachel McAdams turns out to be more than up for the task",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "That tonal balance is delicate, and it could tilt in any number of directions",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "It asks a lot, specifically, of the actress playing Mary Jane",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The excerpt focuses positively on McAdams' performance meeting the challenges of a difficult role, but lacks broader context about the overall production quality or explicit recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:55.421Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

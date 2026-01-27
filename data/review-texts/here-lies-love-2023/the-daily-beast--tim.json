@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Immersive theater should feel participatory and intriguing, but right from the beginning Here Lies Love (Broadway Theatre, booking to Sept 3) feels hectoring—before ultimately becoming a big, baffling Broadway mess.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 32,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/here-lies-love-bway/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 32,
+    "confidence": "medium",
+    "range": {
+      "low": 27,
+      "high": 37
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 35,
+      "performances": 65,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "Here Lies Love ends up feeling almost magnificently grotesque",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "a big, baffling Broadway mess",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There is really nothing to disco-dance about here",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a scathing review that condemns the show's fundamental concept as offensive and poorly executed, despite acknowledging strong production values and committed performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:29.309Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

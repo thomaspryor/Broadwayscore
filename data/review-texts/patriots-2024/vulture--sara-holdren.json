@@ -7,7 +7,63 @@
   "publishDate": "April 22, 2024",
   "fullText": "Yet the first stage direction of Patriots is: “A bare stage.” As I left the shadows of Boris and Vladimir behind, I wondered what that version of their story might have looked like, and whether it could have become more than an exercise in (Morgan’s words) “riveting personal interactions”; whether, in its attempt to touch the Russian soul, it could have asked for more of our souls and hazarded more of its own.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": null,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "an exercise in (Morgan's words) \"riveting personal interactions\"",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "could have asked for more of our souls and hazarded more of its own",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "exercise in riveting personal interactions",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic expresses disappointment that the play remains merely an 'exercise' and fails to achieve deeper emotional resonance, suggesting missed potential and artistic limitations. | GPT-4o-mini: The review expresses a sense of disappointment and contemplation about the production's depth, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:05.173Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,63 @@
   "publishDate": "August 10, 2023",
   "fullText": "If not for our ongoing fascination with Jaws, The Shark Is Broken would be of limited interest: three men in a boat reading newspaper articles (“NIXON RESIGNS”), reminiscing about their childhoods, bickering about Hollywood and drinking a whole lot more than they should. But since the movie remains a cultural touchstone, the play makes for pleasant entertainment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "would be of limited interest",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "makes for pleasant entertainment",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "three men in a boat reading newspaper articles, reminiscing about their childhoods, bickering about Hollywood",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic describes the show as 'pleasant entertainment' but acknowledges it would have 'limited interest' without the Jaws connection, suggesting a qualified, lukewarm recommendation. | GPT-4o-mini: The review indicates that while the play is enjoyable, it relies heavily on the cultural significance of 'Jaws' and lacks strong intrinsic value, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:03.644Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

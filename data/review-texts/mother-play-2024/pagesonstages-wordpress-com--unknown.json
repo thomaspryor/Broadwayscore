@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 81,
+      "music": null,
+      "performances": 88,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "I loved that Mother Play was artistically unafraid to stylize its aesthetic in bold, unrealistic ways while handling themes that were serious, heavy, and painfully real",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "By far, the most brilliant moment of Mother Play",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It was absolutely moving and heart breaking",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer expresses clear love for the show's artistic boldness and finds multiple moments 'brilliant' and 'moving,' with detailed appreciation for performances, themes, and specific scenes, indicating strong positive recommendation despite some minor critiques. | GPT-4o-mini: The review expresses strong appreciation for the artistic choices and emotional depth of the performances while acknowledging some complexities in the story, leading to a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:48.134Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

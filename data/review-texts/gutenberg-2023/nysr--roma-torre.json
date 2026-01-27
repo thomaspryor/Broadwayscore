@@ -10,8 +10,64 @@
   "bwwExcerpt": "It’s been said “dying is easy, comedy is hard”.  Well, anyone who’s seen Gutenberg! The Musical might challenge that little showbiz maxim because Josh Gad and Andrew Rannells—the entire cast of this hilarious two-hander—are making the comedy seem downright effortless. The two stars, appearing together on Broadway for the first time since their Tony nominated turns in the original company of The Book of Mormon, are simply divine delivering a master class in musical comedy and likely setting a lan",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 94,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "making the comedy seem downright effortless",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "simply divine delivering a master class in musical comedy",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "this hilarious two-hander",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances with superlatives like 'divine' and 'master class' suggests high positive recommendation, but truncated review limits confidence in full assessment. | GPT-4o-mini: The review expresses strong enthusiasm for the performances, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:51.293Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,63 @@
   "publishDate": "March 28, 2024",
   "fullText": "Truth be told, I was not expecting to be as bowled over by this story, or this revival, as I was. But there’s no arguing with talent, and with so much prowess on and off the stage, Tommy is an electric paean to rock immortality, and talent wherever one can find it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 82.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": 86
+    },
+    "keyPhrases": [
+      {
+        "quote": "I was not expecting to be as bowled over by this story, or this revival, as I was",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Tommy is an electric paean to rock immortality",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there's no arguing with talent, and with so much prowess on and off the stage",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses genuine surprise at being 'bowled over' and uses strong positive language like 'electric paean' and 'prowess' to describe both performances and production, indicating a clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the revival and its talent, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:16.045Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 87,
+    "openaiScore": 88,
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

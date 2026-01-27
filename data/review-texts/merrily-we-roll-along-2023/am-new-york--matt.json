@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The production, which has received a few significant visual and musical upgrades since its Off-Broadway debut, is probably the most convincing, coherent, and compelling rendition of “Merrily” to date, making it the best candidate for its Broadway return. For the show’s many devoted fans (of which I am certainly one), this production is not just a triumph but a homecoming and a vindication.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/merrily-we-roll-along-bway/",
@@ -53,5 +53,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250712002614",
-  "archiveOrgUrl": "http://web.archive.org/web/20250712002614/https://www.amny.com/entertainment/broadway/merrily-broadway-revival-is-a-triumph/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250712002614/https://www.amny.com/entertainment/broadway/merrily-broadway-revival-is-a-triumph/",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 92,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "this production is not just a triumph but a homecoming and a vindication",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the most convincing, coherent, and compelling rendition of 'Merrily' to date",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I am not saying that 'Merrily' is faultless. The songs written after the Broadway premiere lack the vitality of the rest of the score, and much of the dialogue is awkward and heavy-handed",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer calls it a 'triumph' and 'the most convincing rendition to date' with outstanding performances, despite acknowledging some script flaws - this is a clear positive recommendation with enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:05.085Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This puzzling, undercooked, but still arresting play, set in 1977, knows and accords to the genre conventions from whence it derives.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/grey-house/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 77,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "This puzzling, undercooked, but still arresting play",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Grey House ultimately irritates rather than thrills",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's not that you aren't tense in your seat for the duration of Grey House—you really are",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production technically competent with strong performances but fundamentally flawed in execution, creating tension without satisfying payoff. | GPT-4o-mini: The review expresses a mix of appreciation for the performances and production design but ultimately critiques the unclear story and execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:52.908Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

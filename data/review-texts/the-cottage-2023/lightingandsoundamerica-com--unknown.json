@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": null,
+      "performances": 69,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a tasteless, anything-goes enterprise that, ruthlessly milking its often-coarse comic bits, gives artifice a bad name",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "a technically adept company, under the crack direction of Jason Alexander, delivers each of the script's wheezes with remarkable precision",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Cottage would make its point much more strongly if it wasn't constantly trolling for easy laughs",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising the cast and production values, the critic delivers a scathing assessment of the script as 'tasteless' and fundamentally flawed, making this a clear negative recommendation. | GPT-4o-mini: The review is predominantly negative, criticizing the script and overall execution while acknowledging some strong performances and direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:13.354Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

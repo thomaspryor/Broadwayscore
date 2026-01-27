@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Now, though, the world has spun forward enough times to meet “Tommy” where it always lived, meaning its psychologically oriented story of delayed self-actualization due to childhood trauma, and its withering parody of abusive authority figures and celebrity worship.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-whos-tommy/",
@@ -35,5 +35,61 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 82,
+      "performances": 78,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "will sock you right in the gut. Many a replay can be expected at the Nederlander Theatre",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this is the work of late-career people who now care about a lot more than selling tickets",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The feeling is of collective excellence more than star-turns",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic expresses strong admiration for McAnuff's direction, the choreography, and technical elements, calling it emotionally impactful with 'collective excellence,' though notes it lacks stars and may not resonate with all audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:24.233Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

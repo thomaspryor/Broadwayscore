@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "One can see why top-caliber actors would flock to revel in this flurry of familial relationships, hormonal hangering and endless suffering, but I’m still not convinced audiences need to. Or at least not yet. This “Uncle Vanya” still seems to be finding its footing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/uncle-vanya-bway/",
@@ -36,5 +36,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 157 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "comedy-bolstered but disorienting translation",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "familiar and diverse ensemble of theater, film and TV stalwarts",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "disparate gang of hapless characters",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This appears to be an incomplete excerpt that describes the adaptation as 'disorienting' while noting the star-studded cast, but provides no clear recommendation or substantial critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:52.009Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ian Shaw’s The Shark Is Broken, a play with an impossibly successful track record from Edinburgh Fringe to West End hit to, now, Broadway’s Golden Theatre, attempts to pry its mandibles open and serve it two ways: as a father-son memoir and exorcism, and as a look into its notoriously grueling production. It bares its teeth at the former; eats the fat of the latter.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-shark-is-broken/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 48,
+    "confidence": "medium",
+    "range": {
+      "low": 43,
+      "high": 53
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 75,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "like the shark itself, the play's essential functions scarcely work",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "it feels like an SNL skit waiting for its punchline",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The performances are great",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite praising performances and production values, the critic finds fundamental flaws in the play's concept and execution, comparing it unfavorably to SNL and noting its 'essential functions scarcely work.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:06.442Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

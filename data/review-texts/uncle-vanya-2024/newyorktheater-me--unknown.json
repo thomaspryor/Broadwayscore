@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": null,
+      "performances": 75,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "the performances of the nine-member cast do click often enough to reward those of us who are patient",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The Lincoln Center 'Uncle Vanya,' which is the 11th production of the play on Broadway, doesn't completely solve the central difficulties of staging it",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "There is a nagging feeling this detachment comes at the play's expense",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges strong individual performances but identifies fundamental issues with the production's approach and pacing, resulting in a qualified mixed review that rewards patience rather than enthusiastically recommending. | GPT-4o-mini: The review acknowledges strong performances but highlights significant issues with pacing and cultural detachment, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:49.347Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

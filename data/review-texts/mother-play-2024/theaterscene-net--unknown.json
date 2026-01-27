@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 73,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mother Play, though based on Vogel's own life, is at her most schematic, more an outline barely fleshed out with lots of details rather than the intense emotional revelations of her earlier works",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Tina Landau, a long-time Vogel colleague and interpreter, mines Vogel's fast-moving play for every tidbit of emotion",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "AIDS and other markers of the fast-moving decades are served up too quickly and with foregone conclusions in weak attempts to pluck the audience's heart strings",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the strong performances and production elements but finds the script schematic and emotionally shallow compared to Vogel's previous work, resulting in a mixed assessment without clear recommendation. | GPT-4o-mini: The review presents a mixed view, praising performances while criticizing the script and emotional depth, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:36.275Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
