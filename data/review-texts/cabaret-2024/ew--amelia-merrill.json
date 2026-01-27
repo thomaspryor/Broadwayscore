@@ -10,8 +10,64 @@
   "bwwExcerpt": "Kander and Ebb's Cabaret is a much-loved and -revived property such that its twists may not be secrets anymore. Despite the stellar Gayle Rankin’s best efforts to inject the latest revival with a sense of urgency as star performer Sally Bowles, director Rebecca Frecknall’s production, now on Broadway after winning multiple awards in London, stays stagnant. This is not due to the excellent company of dancers at the Kit Kat Club (into which the August Wilson Theatre has been remodeled), but to a d",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 73,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "stays stagnant",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "stellar Gayle Rankin's best efforts",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "excellent company of dancers",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises individual performances but criticizes the direction as 'stagnant,' suggesting more problems than strengths despite some positive elements. | GPT-4o-mini: The review highlights strong performances but criticizes the direction, leading to a mixed recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:21.003Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

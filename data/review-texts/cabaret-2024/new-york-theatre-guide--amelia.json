@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite the stellar&nbsp;Gayle Rankin’s best efforts to inject the latest revival with a sense of urgency as star performer Sally Bowles, director Rebecca Frecknall’s production, now on Broadway after winning multiple awards in London, stays stagnant.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 68,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "stellar Gayle Rankin's best efforts",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "stays stagnant",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Despite the stellar...best efforts",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review structures praise for the lead performer within a 'despite' framework that emphasizes the production's fundamental failure to achieve energy or momentum. | GPT-4o-mini: The review highlights strong performances but ultimately criticizes the production's lack of energy, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:44.806Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 45,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
