@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T15:02:03.746Z",
+  "runDate": "2026-01-27T15:02:30.965Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "aladdin-2014",
+    "showFilter": "book-of-mormon-2011",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 214,
-    "failed": 142,
+    "processed": 221,
+    "failed": 144,
     "skipped": 0,
-    "successRate": "60.1%"
+    "successRate": "60.5%"
   },
   "tierBreakdown": {
-    "playwright": 28,
+    "playwright": 30,
     "scrapingbee": 17,
     "brightdata": 23,
-    "archive": 146
+    "archive": 151
   },
   "statistics": {
-    "tier1Attempts": 10,
+    "tier1Attempts": 9,
     "tier1Success": 0,
-    "tier2Attempts": 10,
+    "tier2Attempts": 9,
     "tier2Success": 0,
-    "tier3Attempts": 10,
+    "tier3Attempts": 9,
     "tier3Success": 0,
     "tier4Attempts": 15,
-    "tier4Success": 0,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 20
+    "tier4Success": 1,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -248,7 +248,14 @@
     "queen-versailles-2025/theaterscene-net--unknown.json",
     "queen-versailles-2025/timeout-ny--adam-feldman.json",
     "hamilton-2015/OBSERVER--david-cote.json",
-    "hamilton-2015/wapo--peter-marks.json"
+    "hamilton-2015/wapo--peter-marks.json",
+    "merrily-we-roll-along-2023/nytimes-com--unknown.json",
+    "merrily-we-roll-along-2023/vulture-com--unknown.json",
+    "merrily-we-roll-along-2023/am-new-york--matt.json",
+    "merrily-we-roll-along-2023/amny-com--unknown.json",
+    "merrily-we-roll-along-2023/broadway-news--naveen.json",
+    "merrily-we-roll-along-2023/broadwaynews-com--unknown.json",
+    "book-of-mormon-2011/backstage-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -383,16 +390,18 @@
     "hamilton-2015/usatoday--elysa-gardner.json",
     "hamilton-2015/washpost--peter-marks.json",
     "hamilton-2015/wsj--terry-teachout.json",
-    "aladdin-2014/nyt--ben-brantley.json",
-    "aladdin-2014/vult--jesse-green.json",
-    "aladdin-2014/deadline--pete-hammond.json",
-    "aladdin-2014/newjerseynewsroom-com--unknown.json",
-    "aladdin-2014/nydn--joe-dziemianowicz.json",
-    "aladdin-2014/nyp--elisabeth-vincentelli.json",
-    "aladdin-2014/talkinbway--matthew-murray.json",
-    "aladdin-2014/tman--david-finkle.json",
-    "aladdin-2014/usatoday--elysa-gardner.json",
-    "aladdin-2014/washpost--peter-marks.json"
+    "merrily-we-roll-along-2023/variety--aramide-tinubu.json",
+    "merrily-we-roll-along-2023/variety-com--unknown.json",
+    "merrily-we-roll-along-2023/vult--jackson-mchenry.json",
+    "merrily-we-roll-along-2023/vulture--sara.json",
+    "book-of-mormon-2011/nyt--ben-brantley.json",
+    "book-of-mormon-2011/thr--david-rooney.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "book-of-mormon-2011/vult--jesse-green.json",
+    "book-of-mormon-2011/bwayvoice-com--unknown.json",
+    "book-of-mormon-2011/guardian--brian-logan.json",
+    "book-of-mormon-2011/northjersey-com--unknown.json",
+    "book-of-mormon-2011/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -423,7 +432,9 @@
       "queen-versailles-2025/newyorktheatreguide-com--unknown.json",
       "queen-versailles-2025/pagesonstages-com--unknown.json",
       "queen-versailles-2025/theaterscene-net--unknown.json",
-      "queen-versailles-2025/timeout-ny--adam-feldman.json"
+      "queen-versailles-2025/timeout-ny--adam-feldman.json",
+      "merrily-we-roll-along-2023/broadway-news--naveen.json",
+      "merrily-we-roll-along-2023/broadwaynews-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -615,7 +626,12 @@
       "cabaret-2024/wsj-com--unknown.json",
       "queen-versailles-2025/nydailynews-com--unknown.json",
       "queen-versailles-2025/nypost--johnny-oleksinski.json",
-      "queen-versailles-2025/theatermania--zachary-stewart.json"
+      "queen-versailles-2025/theatermania--zachary-stewart.json",
+      "merrily-we-roll-along-2023/nytimes-com--unknown.json",
+      "merrily-we-roll-along-2023/vulture-com--unknown.json",
+      "merrily-we-roll-along-2023/am-new-york--matt.json",
+      "merrily-we-roll-along-2023/amny-com--unknown.json",
+      "book-of-mormon-2011/backstage-com--unknown.json"
     ]
   }
 }
