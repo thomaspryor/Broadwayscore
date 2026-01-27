@@ -76,14 +76,20 @@
   },
   "textWordCount": 98,
   "archivePath": "data/archives/reviews/the-great-gatsby-2024/observer--david-cote_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T05:13:34.753Z",
+  "textFetchedAt": "2026-01-27T15:13:31.436Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "CAPTCHA or access blocked"
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": false,
+      "error": "No archive snapshot available"
     },
     {
       "tier": 2,
