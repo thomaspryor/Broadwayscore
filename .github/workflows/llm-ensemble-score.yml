@@ -124,6 +124,40 @@ jobs:
 
           Co-Authored-By: Claude <noreply@anthropic.com>"
 
-          # Pull and rebase before pushing to handle concurrent changes
-          git pull --rebase origin ${{ github.ref_name }} || true
-          git push
+          # Robust push with retry and conflict resolution
+          MAX_RETRIES=5
+          for i in $(seq 1 $MAX_RETRIES); do
+            echo "Push attempt $i of $MAX_RETRIES..."
+
+            # Fetch latest
+            git fetch origin ${{ github.ref_name }}
+
+            # Try rebase first
+            if git rebase origin/${{ github.ref_name }}; then
+              echo "Rebase successful"
+            else
+              echo "Rebase failed, trying merge..."
+              git rebase --abort 2>/dev/null || true
+
+              # Reset to our commit and try merge
+              git reset --hard HEAD
+              if ! git pull --no-rebase -X ours origin ${{ github.ref_name }}; then
+                echo "Merge also failed, will retry..."
+                git merge --abort 2>/dev/null || true
+                sleep $((i * 2))
+                continue
+              fi
+            fi
+
+            # Try to push
+            if git push origin HEAD:${{ github.ref_name }}; then
+              echo "Push successful!"
+              exit 0
+            else
+              echo "Push failed, will retry..."
+              sleep $((i * 2))
+            fi
+          done
+
+          echo "All push attempts failed"
+          exit 1
