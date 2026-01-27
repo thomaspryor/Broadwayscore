@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T05:12:15.739Z",
+  "runDate": "2026-01-27T05:12:19.793Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "and-juliet-2022",
+    "showFilter": "ragtime-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 202,
-    "failed": 118,
+    "processed": 204,
+    "failed": 113,
     "skipped": 0,
-    "successRate": "63.1%"
+    "successRate": "64.4%"
   },
   "tierBreakdown": {
     "playwright": 22,
     "scrapingbee": 17,
-    "brightdata": 20,
-    "archive": 143
+    "brightdata": 21,
+    "archive": 144
   },
   "statistics": {
-    "tier1Attempts": 8,
+    "tier1Attempts": 5,
     "tier1Success": 0,
-    "tier2Attempts": 8,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 8,
-    "tier3Success": 0,
-    "tier4Attempts": 10,
-    "tier4Success": 0,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 20
+    "tier3Attempts": 5,
+    "tier3Success": 1,
+    "tier4Attempts": 4,
+    "tier4Success": 1,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -236,7 +236,9 @@
     "cabaret-2024/pagesonstages-wordpress-com--unknown.json",
     "cabaret-2024/talkinbroadway-com--unknown.json",
     "cabaret-2024/theaterscene-net--unknown.json",
-    "cabaret-2024/wsj-com--unknown.json"
+    "cabaret-2024/wsj-com--unknown.json",
+    "ragtime-2025/nytimes--laura-collins-hughes.json",
+    "ragtime-2025/talkinbroadway-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -349,14 +351,9 @@
     "hadestown-2019/washpost--peter-marks.json",
     "cabaret-2024/interestedbystander-com--unknown.json",
     "cabaret-2024/tman--jesse-green.json",
-    "and-juliet-2022/THR--frank-scheck.json",
-    "and-juliet-2022/variety--aramide-tinubu.json",
-    "and-juliet-2022/WRAP--robert-hofler.json",
-    "and-juliet-2022/ew--leah-greenblatt.json",
-    "and-juliet-2022/nyp--johnny-oleksinski.json",
-    "and-juliet-2022/talkinbway--nancy-grossman.json",
-    "and-juliet-2022/thebroadwayblog-com--unknown.json",
-    "and-juliet-2022/tman--adam-feldman.json"
+    "ragtime-2025/nydailynews-com--unknown.json",
+    "ragtime-2025/washington-post--naveen-kumar.json",
+    "ragtime-2025/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -422,7 +419,8 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json"
+      "hadestown-2019/towleroad-com--unknown.json",
+      "ragtime-2025/talkinbroadway-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -567,7 +565,8 @@
       "hadestown-2019/washingtonpost-com--unknown.json",
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
-      "cabaret-2024/wsj-com--unknown.json"
+      "cabaret-2024/wsj-com--unknown.json",
+      "ragtime-2025/nytimes--laura-collins-hughes.json"
     ]
   }
 }
