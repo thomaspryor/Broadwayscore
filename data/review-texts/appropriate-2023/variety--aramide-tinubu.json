@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Under the direction of Lila Neugebauer, this Broadway revival of Branden Jacobs-Jenkins' 'Appropriate' is a masterclass in tension and family dysfunction that feels both timeless and urgently contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "searing narrative about family ties, past hurts and unbridled pain",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's a shocking play centering on legacy, race and the fragility of memory",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "shocking play centering on legacy, race and the fragility of memory",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the play's thematic impact and emotional power, but excerpt is too brief to assess full critical recommendation. | GPT-4o-mini: The review expresses strong positive sentiments about the play's themes and narrative, indicating a clear recommendation despite the lack of specific performance details.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:22.661Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
