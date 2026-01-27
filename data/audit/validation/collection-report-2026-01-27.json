@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:45:30.746Z",
+  "runDate": "2026-01-27T04:45:39.146Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "harry-potter-2021",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 202,
-    "failed": 127,
+    "processed": 197,
+    "failed": 125,
     "skipped": 0,
-    "successRate": "61.4%"
+    "successRate": "61.2%"
   },
   "tierBreakdown": {
-    "playwright": 18,
-    "scrapingbee": 17,
+    "playwright": 17,
+    "scrapingbee": 16,
     "brightdata": 22,
-    "archive": 145
+    "archive": 142
   },
   "statistics": {
-    "tier1Attempts": 28,
-    "tier1Success": 1,
-    "tier2Attempts": 27,
-    "tier2Success": 1,
-    "tier3Attempts": 26,
+    "tier1Attempts": 21,
+    "tier1Success": 0,
+    "tier2Attempts": 21,
+    "tier2Success": 0,
+    "tier3Attempts": 21,
     "tier3Success": 2,
-    "tier4Attempts": 30,
-    "tier4Success": 5,
-    "totalFailed": 19,
-    "scrapingBeeCreditsUsed": 120
+    "tier4Attempts": 22,
+    "tier4Success": 2,
+    "totalFailed": 17,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,15 +228,10 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "harry-potter-2021/beta-nydailynews-com--unknown.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/financial-times--charles-isherwood.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/newsday-com--unknown.json",
-    "harry-potter-2021/nypost-com--unknown.json",
-    "harry-potter-2021/thetimes-co-uk--unknown.json",
-    "harry-potter-2021/vanityfair-com--unknown.json",
-    "harry-potter-2021/washingtonpost-com--unknown.json"
+    "hamilton-2015/OBSERVER--david-cote.json",
+    "hamilton-2015/newsday-com--unknown.json",
+    "hamilton-2015/wapo--peter-marks.json",
+    "hamilton-2015/wsj--terry-teachout.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -347,25 +342,23 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "harry-potter-2021/NYP--johnny-oleksinski.json",
-    "harry-potter-2021/broadway-blog--matthew-wexler.json",
-    "harry-potter-2021/broadway-news--elizabeth-bradley.json",
-    "harry-potter-2021/curtainup--elyse-sommer.json",
-    "harry-potter-2021/curtainup-com--unknown.json",
-    "harry-potter-2021/deadline--greg-evans.json",
-    "harry-potter-2021/exeunt--kev-berry.json",
-    "harry-potter-2021/front-mezz-junkies--steven-ross.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/medium--christian-lewis.json",
-    "harry-potter-2021/ny1--roma-torre.json",
-    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
-    "harry-potter-2021/theguardian-com--unknown.json",
-    "harry-potter-2021/troy-record--bob-goepfert.json",
-    "harry-potter-2021/wnyc--jennifer-vanasco.json",
-    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
-    "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "hamilton-2015/nyt--ben-brantley.json",
+    "hamilton-2015/thr--david-rooney.json",
+    "hamilton-2015/vult--jesse-green.json",
+    "hamilton-2015/CHTRIB--chris-jones.json",
+    "hamilton-2015/NYP--elisabeth-vincentelli.json",
+    "hamilton-2015/WRAP--robert-hofler.json",
+    "hamilton-2015/amny--matt-windman.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/backstage-barbie--backstage-barbie.json",
+    "hamilton-2015/chtrib--chris-jones.json",
+    "hamilton-2015/clyde-fitch-report--david-finkle.json",
+    "hamilton-2015/guardian--jesse-green.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/nyp--johnny-oleksinski.json",
+    "hamilton-2015/talkinbway--matthew-murray.json",
+    "hamilton-2015/usatoday--elysa-gardner.json",
+    "hamilton-2015/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -385,8 +378,7 @@
       "hadestown-2019/bwaynews--charles-isherwood.json",
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
-      "hadestown-2019/showshowdown-blogspot-com--unknown.json",
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+      "hadestown-2019/showshowdown-blogspot-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -404,8 +396,7 @@
       "death-becomes-her-2024/ew--dalton-ross.json",
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
-      "hadestown-2019/timeout--adam-feldman.json",
-      "harry-potter-2021/financial-times--charles-isherwood.json"
+      "hadestown-2019/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -428,8 +419,8 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "harry-potter-2021/washingtonpost-com--unknown.json"
+      "hamilton-2015/OBSERVER--david-cote.json",
+      "hamilton-2015/wapo--peter-marks.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -572,11 +563,8 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "harry-potter-2021/beta-nydailynews-com--unknown.json",
-      "harry-potter-2021/newsday-com--unknown.json",
-      "harry-potter-2021/nypost-com--unknown.json",
-      "harry-potter-2021/thetimes-co-uk--unknown.json",
-      "harry-potter-2021/vanityfair-com--unknown.json"
+      "hamilton-2015/newsday-com--unknown.json",
+      "hamilton-2015/wsj--terry-teachout.json"
     ]
   }
 }
