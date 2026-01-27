@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "For all the work this show does to illuminate the successes — and failures — of the women’s rights movement, and the constantly evolving nature of our politics, it focuses so much energy on seeming as timely as possible. But, as the suffs learn, movements transform; our government leaders change, as do the demands of the people on the picket line. It’s a lesson the musical should take to heart: You can’t live in the past, present and future of our nation’s politics all at once — at least not without losing your way.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 50,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -34,5 +34,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250121033127/https://www.nytimes.com/2022/04/06/theater/suffs-review-public-theater.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 48,
+      "performances": 68,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "turns out to be all work and mostly no play, and when it comes to the music itself nothing really pops",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the whole production feels so attuned to the gender politics and protests of today, so aware of possible critiques that it takes on its subject with an overabundance of caution",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Colella slays her performance in one such song, the prickly 'This Girl'",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the musical bloated, overly cautious, and musically weak despite some strong individual performances, making it hard to recommend. | GPT-4o-mini: The review presents a mixed view, highlighting strong performances but criticizing the script and direction for being bloated and lacking energy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:35.456Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

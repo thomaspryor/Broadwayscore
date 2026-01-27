@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Shaina Taub has spent eight years researching and condensing the adventures of women’s rights activist Alice Paul and her cronies into a manageable tale. Despite the comparatively concise final product, at nearly three hours in runtime, Suffs (shorthand for women who fought to win the right to vote) still feels too long to absorb in one sitting. Though well crafted by Taub―who wrote the book, music, and lyrics―beautifully performed by the cast of 20 women, and neatly directed by Leigh Silverman, the show could stand to jettison approximately 30 minutes of its repetitive slogans, anthems, chants, and “this is who I am” songs.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -37,5 +37,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 60,
+      "performances": 73,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "well crafted by Taub―who wrote the book, music, and lyrics―beautifully performed by the cast of 19 women and non-binary actors, and neatly directed by Leigh Silverman",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the show could stand to jettison approximately 30 minutes of its repetitive slogans, anthems, chants, and 'this is who I am' songs",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I came away wanting more",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show is well-crafted and beautifully performed but has significant structural issues with length and repetitiveness, creating a mixed recommendation that leans slightly positive due to production quality. | GPT-4o-mini: The review expresses mixed feelings about the production, highlighting strong performances but criticizing the script and pacing, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:04.551Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

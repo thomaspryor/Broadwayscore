@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"4/5 stars! An artful and inspiring historical epic...'Suffs' is remarkably easy to follow as it presents its sheroes in all their imperfect glory, exploring the ideological, generational and racial divides that persist to this day in feminist politics. Although the show is nearly three hours long, not every pioneering woman gets her due...Yet there's much to admire and enjoy.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/suffs",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -35,5 +35,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "4/5"
+  "extractedRating": "4/5",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 83,
+      "performances": 83,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's much to admire and enjoy in Suffs, which may well have a brilliant future ahead of it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "artful and inspiring historical epic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the Black activists...feel sidelined, giving Wells' stirring solo 'Wait My Turn' an unfortunate double meaning",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging significant flaws (runtime, sidelining of Black characters), the critic finds much to admire and enjoy, praising performances, music, and overall ambition while suggesting a bright future for the show. | GPT-4o-mini: The review expresses strong admiration for the production while acknowledging some shortcomings, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:29.081Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

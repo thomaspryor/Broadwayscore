@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But by that point in this overlong musical, it’s hard to drum up the excitement that should have been there from the beginning.&nbsp;Suffs&nbsp;isn’t as miserable an experience as it might read under analysis but, unlike its worthy subject matter and the discussions a stronger throughline could have provoked, it isn’t a drum worth beating.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": null,
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 37.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 43,
+      "music": 50,
+      "performances": 68,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "Suffs isn't as miserable an experience as it might read under analysis but, unlike its worthy subject matter and the discussions a stronger throughline could have provoked, it isn't a drum worth beating.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "But for as radical and boundary-pushing as Paul is set up to be, the character itself is a chore to see played out. An implacable steamroller with no nuance or interiority",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The one confrontation that does play out successfully is the one happening in the score, where the Suffs' samey, Hamilton-lite melodies are beaten out by any number sung by the opposition.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws in the book, music, and overall execution while praising some individual performances, ultimately concluding it's 'not a drum worth beating.' | GPT-4o-mini: The review expresses significant criticisms of the script and character development while acknowledging some strengths in performances and the second act, leading to a mixed recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:23.390Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

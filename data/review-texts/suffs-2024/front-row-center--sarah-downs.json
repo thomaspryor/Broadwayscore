@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"Shaina Taub displays a sweeping virtuosity that is as satisfying as it is exciting.  Satisfying in that a piece of history that has been largely glossed over is finally getting the attention it is due, and exciting because Taub has created a dazzling piece of theater through which to tell that story\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/suffs",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240526154906",
-  "archiveOrgUrl": "http://web.archive.org/web/20240526154906/https://thefrontrowcenter.com/2022/05/suffs/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240526154906/https://thefrontrowcenter.com/2022/05/suffs/",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 87,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shaina Taub displays a sweeping virtuosity that is as satisfying as it is exciting",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Taub has created a dazzling piece of theater through which to tell that story",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There is one bump toward the end of Act I, however. Two excellent Act I closers compete for the same job",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong enthusiasm throughout with superlative language ('extraordinary', 'dazzling', 'sweeping virtuosity') and detailed praise for performances, with only minor structural critique about Act I pacing. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's storytelling, performances, and historical significance, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:20.621Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

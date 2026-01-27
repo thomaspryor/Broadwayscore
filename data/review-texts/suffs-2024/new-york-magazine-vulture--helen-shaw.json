@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"Sheâs worked out a ruthless equation: What the women are doing is serious, and what the men are doing is absurd. For the apotheosis of Suffs, we would need to feel both the gravity and the buffoonery, and right now, the production contains too little of the latter.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/suffs",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 67,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -37,5 +37,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250402183526/https://www.vulture.com/2022/04/theater-review-shaina-taubs-suffs.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 63,
+      "music": 63,
+      "performances": 73,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is already piercing and deeply felt and good. Just a few amendments to go, and, like a certain Constitution I could mention — it might be truly great.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a certain repetitiveness in Taub's musical choices, which can blend together over the course of the show's 38 songs, and Silverman's staging, which does too little to vary the production itself",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The number needs enormous energy; it doesn't get it.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the musical 'piercing and deeply felt and good' but identifies significant structural issues with repetitive music and staging that prevent it from achieving greatness, suggesting a qualified positive recommendation with notable reservations. | GPT-4o-mini: The review presents a balanced view, highlighting both the strengths and weaknesses of the production, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:27.778Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,7 +10,7 @@
   "showScoreExcerpt": "Leaning heavily on rhetorical flourishes, Taub's score is filled with lots of well-meaning exhortations to \"finish the fight,\" earnest appeals that quickly lose emotional resonance through a lack of lyrical variance and depth. The only song that strikes a deeper chord is the late-show \"I Wasn't There,\" a plaintive rejoinder to Lin-Manual Miranda's \"The Room Where It Happens'' from Hamilton, which acknowledges with bitter irony that none of the extraordinary women responsible for the 19th amendment were present when it was signed into law.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/suffs",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 45,
+      "performances": 55,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Leigh Silverman is much too dutiful in bringing Taub's vision to the stage, refusing to edit any of the elements that make the musical unfold like a stilted term paper from a very committed student",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Leaning heavily on rhetorical flourishes, Taub's score is filled with lots of well-meaning exhortations to 'finish the fight,' earnest appeals that quickly lose emotional resonance through a lack of lyrical variance and depth",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The only song that strikes a deeper chord is the late-show 'I Wasn't There,' a plaintive rejoinder to Lin-Manual Miranda's 'The Room Where It Happens' from Hamilton",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic systematically criticizes the book's shallow characterizations, the score's repetitive rhetoric, and the direction's failure to elevate the material, with only isolated praise for one song and some performances. | GPT-4o-mini: The review is predominantly negative, criticizing the script and direction while only offering limited praise for a single song, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:15.625Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

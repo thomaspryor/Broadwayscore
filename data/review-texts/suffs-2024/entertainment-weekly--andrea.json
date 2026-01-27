@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Suffs, which opens tonight at the Public Theater and runs until May 15th, is sharp, engaging, and downright fun — as well as a reminder that even though we can laugh at jokes about how women are treated, we still have so much to fight for.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -43,5 +43,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 85,
+      "performances": 93,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Suffs is sharp, engaging, and downright fun",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Taub's perseverance and determination to see her story through has paid off. Suffs is finally here and hopefully, like the women whose stories are being told, it's here to stay",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "A rousing and inspiring story of the women's suffrage movement",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is overwhelmingly positive with consistent praise for performances, direction, and the show's importance, using strong positive language like 'rousing,' 'inspiring,' 'sharp,' and 'engaging' while expressing hope the show will have lasting impact. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's engaging storytelling, performances, and cultural significance, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:10.568Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
