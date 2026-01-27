@@ -1,97 +1,91 @@
 {
-  "runDate": "2026-01-27T20:43:58.849Z",
+  "runDate": "2026-01-27T20:44:51.309Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "water-for-elephants-2024",
+    "showFilter": "hadestown-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 20,
-    "failed": 6,
+    "processed": 8,
+    "failed": 24,
     "skipped": 0,
-    "successRate": "76.9%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
-    "scrapingbee": 4,
-    "brightdata": 2,
-    "archive": 13
+    "playwright": 2,
+    "scrapingbee": 1,
+    "brightdata": 1,
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 22,
-    "tier1Success": 1,
-    "tier2Attempts": 21,
-    "tier2Success": 4,
-    "tier3Attempts": 17,
-    "tier3Success": 2,
-    "tier4Attempts": 24,
-    "tier4Success": 13,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 170
+    "tier1Attempts": 30,
+    "tier1Success": 2,
+    "tier2Attempts": 28,
+    "tier2Success": 1,
+    "tier3Attempts": 27,
+    "tier3Success": 1,
+    "tier4Attempts": 36,
+    "tier4Success": 4,
+    "totalFailed": 24,
+    "scrapingBeeCreditsUsed": 100
   },
   "processed": [
-    "water-for-elephants-2024/variety--frank-rizzo.json",
-    "water-for-elephants-2024/variety--frank.json",
-    "water-for-elephants-2024/vulture--sara.json",
-    "water-for-elephants-2024/broadway-news--brittani.json",
-    "water-for-elephants-2024/deadline--greg-evans.json",
-    "water-for-elephants-2024/deadline--greg.json",
-    "water-for-elephants-2024/entertainment-weekly--shania.json",
-    "water-for-elephants-2024/new-york-daily-news--chris.json",
-    "water-for-elephants-2024/new-york-post--johnny.json",
-    "water-for-elephants-2024/new-york-times--jesse.json",
-    "water-for-elephants-2024/observer--rex-reed.json",
-    "water-for-elephants-2024/the-wrap--robert.json",
-    "water-for-elephants-2024/theatermania--zachary.json",
-    "water-for-elephants-2024/theatrely--juan-a.json",
-    "water-for-elephants-2024/time-out-new-york--adam-feldman.json",
-    "water-for-elephants-2024/time-out-new-york--adam.json",
-    "water-for-elephants-2024/timeout--adam-feldman.json",
-    "water-for-elephants-2024/wall-street-journal--charles.json",
-    "water-for-elephants-2024/washingtonpost-com--unknown.json",
-    "water-for-elephants-2024/wsj-com--unknown.json"
+    "hadestown-2019/new-york-magazine-vulture--jesse-green.json",
+    "hadestown-2019/am-new-york--matt-windman.json",
+    "hadestown-2019/bwaynews--charles-isherwood.json",
+    "hadestown-2019/deadline--jeremy-gerard.json",
+    "hadestown-2019/lighting-sound-america--david-barbour.json",
+    "hadestown-2019/observer--david-cote.json",
+    "hadestown-2019/time-out-new-york--jenna-scherer.json",
+    "hadestown-2019/wsj-com--unknown.json"
   ],
   "failed": [
-    "water-for-elephants-2024/new-york-magazine-vulture--sara-holdren.json",
-    "water-for-elephants-2024/nytg--joe-dziemianowicz.json",
-    "water-for-elephants-2024/variety--charles-isherwood.json",
-    "water-for-elephants-2024/vult--helen-shaw.json",
-    "water-for-elephants-2024/new-york-theatre-guide--joe.json",
-    "water-for-elephants-2024/talkinbroadway-com--unknown.json"
+    "hadestown-2019/thr--david-rooney.json",
+    "hadestown-2019/thr--frank-scheck.json",
+    "hadestown-2019/NJCOM--christopher-kelly.json",
+    "hadestown-2019/NYP--johnny-oleksinski.json",
+    "hadestown-2019/ROLLINGSTONE--will-hermes.json",
+    "hadestown-2019/TDB--tim-teeman.json",
+    "hadestown-2019/WASHPOST--peter-marks.json",
+    "hadestown-2019/WRAP--thom-geier.json",
+    "hadestown-2019/WSJ--terry-teachout.json",
+    "hadestown-2019/broadway-news--unknown.json",
+    "hadestown-2019/chtrib--chris-jones.json",
+    "hadestown-2019/curtainup--elyse-sommer.json",
+    "hadestown-2019/curtainup-com--unknown.json",
+    "hadestown-2019/deadline--pete-hammond.json",
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/ew--kristen-baldwin.json",
+    "hadestown-2019/nyp--johnny-oleksinski.json",
+    "hadestown-2019/reviewsoffbroadway--scott-mitchell.json",
+    "hadestown-2019/rollstone--rob-sheffield.json",
+    "hadestown-2019/talkinbway--nancy-grossman.json",
+    "hadestown-2019/theaterreviewsfrommyseat--joe-lombardi.json",
+    "hadestown-2019/usatoday--elysa-gardner.json",
+    "hadestown-2019/washpost--peter-marks.json",
+    "hadestown-2019/wnyc--jennifer-vanasco.json"
   ],
   "tierDetails": {
     "playwright": [
-      "water-for-elephants-2024/broadway-news--brittani.json"
+      "hadestown-2019/bwaynews--charles-isherwood.json",
+      "hadestown-2019/lighting-sound-america--david-barbour.json"
     ],
     "scrapingbee": [
-      "water-for-elephants-2024/entertainment-weekly--shania.json",
-      "water-for-elephants-2024/theatrely--juan-a.json",
-      "water-for-elephants-2024/time-out-new-york--adam-feldman.json",
-      "water-for-elephants-2024/time-out-new-york--adam.json"
+      "hadestown-2019/time-out-new-york--jenna-scherer.json"
     ],
     "brightdata": [
-      "water-for-elephants-2024/timeout--adam-feldman.json",
-      "water-for-elephants-2024/washingtonpost-com--unknown.json"
+      "hadestown-2019/observer--david-cote.json"
     ],
     "archive": [
-      "water-for-elephants-2024/variety--frank-rizzo.json",
-      "water-for-elephants-2024/variety--frank.json",
-      "water-for-elephants-2024/vulture--sara.json",
-      "water-for-elephants-2024/deadline--greg-evans.json",
-      "water-for-elephants-2024/deadline--greg.json",
-      "water-for-elephants-2024/new-york-daily-news--chris.json",
-      "water-for-elephants-2024/new-york-post--johnny.json",
-      "water-for-elephants-2024/new-york-times--jesse.json",
-      "water-for-elephants-2024/observer--rex-reed.json",
-      "water-for-elephants-2024/the-wrap--robert.json",
-      "water-for-elephants-2024/theatermania--zachary.json",
-      "water-for-elephants-2024/wall-street-journal--charles.json",
-      "water-for-elephants-2024/wsj-com--unknown.json"
+      "hadestown-2019/new-york-magazine-vulture--jesse-green.json",
+      "hadestown-2019/am-new-york--matt-windman.json",
+      "hadestown-2019/deadline--jeremy-gerard.json",
+      "hadestown-2019/wsj-com--unknown.json"
     ]
   }
 }
