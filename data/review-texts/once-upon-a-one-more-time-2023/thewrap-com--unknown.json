@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250917212942",
-  "archiveOrgUrl": "http://web.archive.org/web/20250917212942/https://www.thewrap.com/once-upon-a-one-more-time-broadway-review-britney-spears-musical/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250917212942/https://www.thewrap.com/once-upon-a-one-more-time-broadway-review-britney-spears-musical/",
+  "llmScore": {
+    "score": 41,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 50,
+      "performances": 63,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hartmere's book fails to give the girls much to do once they've gone on strike",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Beyond the truly ugly costumes",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Guarini, through sheer and unadulterated vanity, walks away with the first act",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is predominantly critical of the book, costumes, and direction while acknowledging some strong individual performances, particularly from supporting players who 'steal the show' from the leads. | GPT-4o-mini: The review expresses significant criticism of the book and production, with only a few moments of praise for performances, leading to a strong recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:18.551Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

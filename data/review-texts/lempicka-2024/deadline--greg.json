@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Though the musical’s book and lyrics remain doggedly by-the-numbers, Chavkin’s direction (and a good cast that includes Andrew Samonsky, Amber Iman, George Abud, Beth Leavel and Natalie Joy Johnson) keeps Lempicka barreling through the last century’s wartime horrors, peacetime optimism and an art that grew from both.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/lempicka/",
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250723084520/https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 4,
+      "direction": 4
+    },
+    "keyPhrases": [
+      {
+        "quote": "April on Broadway, to mangle a phrase from a showtune classic, is bustin' out all over with no fewer than 14 new plays and musicals",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Check this page to see Deadline's takes. Whether you use this page as a guide or as an invitation to argue, drop by often for the latest on Broadway's offerings",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "So crowded are the final weeks of the 2023-24 theater season that three days each will see the openings of two shows, a Broadway rarity",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This is an overview/preview piece listing Broadway shows rather than a review of a specific production, maintaining an enthusiastic tone about the busy Broadway season. | GPT-4o-mini: The review expresses strong enthusiasm for the production's vitality and performances, indicating a clear recommendation despite some structural considerations.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:06.945Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

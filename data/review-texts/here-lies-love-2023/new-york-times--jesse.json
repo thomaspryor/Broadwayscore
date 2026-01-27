@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It’s the applause — including my own — I find troubling.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 58,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/here-lies-love-bway/",
@@ -56,5 +56,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251012042425/https://www.nytimes.com/2023/07/20/theater/here-lies-love-review-david-byrne.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 75,
+      "performances": 65,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's the applause — including my own — I find troubling",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The infernally catchy songs by David Byrne and Fatboy Slim, performed by a tireless and inspired all-Filipino cast, will have you clapping whether you want to or not",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Finally, it's OK to applaud",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Green acknowledges the show's impressive technical achievements and catchy music but expresses deep moral ambivalence about the material and its treatment of historical atrocities, resulting in a conflicted mixed review that neither clearly recommends nor dismisses the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:26.397Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

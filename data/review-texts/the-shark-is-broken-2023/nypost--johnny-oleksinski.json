@@ -7,7 +7,63 @@
   "publishDate": "August 10, 2023",
   "fullText": "“Shark” was a big hit at the Edinburgh Fringe Festival in 2019, and I’m sure it’s a show that would benefit from that kind of scrappiness and intimacy.\r\n\r\nSometimes you need a smaller boat.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 48,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "was a big hit at the Edinburgh Fringe Festival in 2019",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "I'm sure it's a show that would benefit from that kind of scrappiness and intimacy",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Sometimes you need a smaller boat",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review suggests the Broadway production lacks the intimate energy that made the show work at Edinburgh Fringe, implying the current production is diminished by its larger scale. | GPT-4o-mini: The review suggests a mixed sentiment, indicating potential but lacking a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:58.982Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

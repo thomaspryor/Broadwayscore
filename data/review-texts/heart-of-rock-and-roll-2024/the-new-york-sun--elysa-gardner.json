@@ -10,8 +10,64 @@
   "bwwExcerpt": "Strangely, these shortcomings become assets of a sort in “The Heart of Rock and Roll,” the new show now bringing the group’s repertoire to Broadway. Jukebox musicals, for all their contemptible elements, can be most irritating when they try too hard either to deify an artist or to find fresh wit and relevance in a popular repertoire. One of the reasons “Mamma Mia” became an enduring hit is that it steered clear of both these strategies, choosing instead to have giddy fun with what happens to be ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jukebox musicals, for all their contemptible elements, can be most irritating when they try too hard",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "these shortcomings become assets of a sort",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "One of the reasons \"Mamma Mia\" became an enduring hit is that it steered clear of both these strategies",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows mixed sentiment about jukebox musicals in general and suggests this show avoids common pitfalls, but the incomplete nature and lack of clear evaluation makes scoring highly uncertain. | GPT-4o-mini: The review presents a mixed view, acknowledging both shortcomings and redeeming qualities, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:10.257Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 65,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

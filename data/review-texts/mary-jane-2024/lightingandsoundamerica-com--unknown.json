@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"a portrait of an everyday saint, and a compelling one to boot.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 89,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is one of Herzog's finest achievements and it provides McAdams with a most memorable Broadway debut",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "What was so affecting about Mary Jane in its 2017 premiere and remains so today is its understanding that Mary Jane's acceptance of her daily reality",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This time around, I found the final scene, between Mary Jane and Tenkei, slightly disappointing",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic calls this 'one of Herzog's finest achievements,' praises McAdams' 'memorable Broadway debut,' and describes the production's continuing emotional power, despite minor reservations about the ending. | GPT-4o-mini: The review expresses strong praise for the performances and script, with only minor reservations about the ending, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:55.864Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 90,
+      "performances": 82,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "I tangibly felt it accomplish theatre's true aim—reaching people with a powerful story that genuinely moves them",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "30 years later, the grand vision of these interlocking moments can finally connect in a visual, visceral way that makes everything click and fall into place",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Not only was every moment fantastic visually, but Nigrini's transformation of the space transitioned the story into moments that were incredibly raw and painful",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite some audio clarity issues, the critic enthusiastically praises the visual design, emotional impact, and overall experience, concluding it achieves theater's true aim of moving audiences. | GPT-4o-mini: The review expresses strong appreciation for the visual and musical elements of the production, with minor reservations about vocal clarity, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:14.354Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

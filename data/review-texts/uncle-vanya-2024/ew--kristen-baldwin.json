@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Lincoln Center Theater's revival of Chekhov's masterpiece, starring Steve Carell and William Jackson Harper, is a thoughtful, measured production that finds fresh nuance in familiar despair.",
   "originalScore": 88,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "thoughtful, measured production",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "finds fresh nuance in familiar despair",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Chekhov's masterpiece",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review uses measured praise ('thoughtful,' 'fresh nuance') suggesting appreciation but lacks enthusiasm or explicit recommendation language that would push it higher. | GPT-4o-mini: The review indicates a clear recommendation with praise for the production's thoughtfulness and nuance, but lacks superlatives that would indicate a stronger endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:41.624Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

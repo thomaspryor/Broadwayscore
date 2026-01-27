@@ -10,8 +10,64 @@
   "bwwExcerpt": "Power-contralto Eden Espinosa strives mightily  to keep Lempicka – an overstuffed, formulaic musical – in forward motion, to mixed effect. Despite the evident willingness of co-creators Carson Kreitzer and Matt Gould to play fast and loose with history, the show plugs along like a Bugatti (an emblematic subject of the Polish-born painter) in need of a lube job.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": 63,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "overstuffed, formulaic musical",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Eden Espinosa strives mightily to keep Lempicka...in forward motion, to mixed effect",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "the show plugs along like a Bugatti...in need of a lube job",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges Espinosa's strong effort but describes the musical as 'overstuffed' and 'formulaic' with mechanical problems, using a vivid negative metaphor to conclude their assessment. | GPT-4o-mini: The review expresses significant criticism of the musical's structure and execution while acknowledging some effort in performances, leading to a negative overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:28.733Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,63 @@
   "publishDate": "June 22, 2023",
   "fullText": "What do you get by crossing “Six” with “& Juliet”? No, “Bad Cinderella” was last season. Today, that mash-up of two similar musicals gives you the slightly better Cinderella show, which has been tortuously titled “Once Upon a One More Time.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "slightly better Cinderella show",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "tortuously titled",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "No, 'Bad Cinderella' was last season",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This brief excerpt shows mixed sentiment - calling it 'slightly better' than Bad Cinderella suggests modest praise, but the sarcastic tone and criticism of the title indicate lukewarm reception overall. | GPT-4o-mini: The review suggests a mixed recommendation, indicating some improvement over similar shows but also highlighting a negative aspect regarding the title, leading to a conditional score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:07.319Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

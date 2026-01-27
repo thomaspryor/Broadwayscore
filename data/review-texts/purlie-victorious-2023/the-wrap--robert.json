@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Purlie Victorious” is the funniest show now performing on Broadway, and that includes “The Book of Mormon.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/purlie-victorious/",
@@ -51,5 +51,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251211062219",
-  "archiveOrgUrl": "http://web.archive.org/web/20251211062219/https://www.thewrap.com/purlie-victorious-broadway-review-leslie-odom-jr-kenny-leon/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251211062219/https://www.thewrap.com/purlie-victorious-broadway-review-leslie-odom-jr-kenny-leon/",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 95,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "Has there ever been a more outrageous, rambunctious, over-the-top and, in the end, downright joyous production of a play staged on Broadway?",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Purlie Victorious is the funniest show now performing on Broadway, and that includes The Book of Mormon.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Leon and his inspired ensemble make up for all that lost time and then some.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic opens with superlative praise, consistently celebrates the performances and direction throughout, and concludes by declaring it the funniest show on Broadway - this is clearly a rave review with unqualified enthusiasm. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the joyous and outrageous nature of the production, along with standout performances, leading to a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:49.771Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

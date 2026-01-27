@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 78,
+      "performances": 75,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "I left the theatre empowered by the idea that we can infuse our current truth, our current moment into these stories",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I spent a lot of the show unsure if it was crossing lines that I thought had been clear to me",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "That felt like a solid reminder that change is possible, even within a human life span",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite significant discomfort and uncertainty throughout the show, the reviewer ultimately finds it intellectually and emotionally rewarding, praising the production's intentional examination of racial stereotypes and celebrating the progress it represents.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:06.903Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

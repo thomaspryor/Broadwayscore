@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But the maximalist revival that opened at the Marquis Theater on Broadway tonight, following a 13-city national tour, diminishes some of the show’s reliable pleasures with unmitigated, candy-colored exuberance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-wiz-bway/",
@@ -52,5 +52,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250813082342/https://variety.com/2024/legit/reviews/the-wiz-review-broadway-revival-1235973899/",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 45,
+      "music": 55,
+      "performances": 50,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "diminishes some of the show's reliable pleasures with unmitigated, candy-colored exuberance",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Dizzying visuals and overamplification too often swallow both actors and storytelling in a swirling sensory overload",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Richardson is a standout with his liquid, riffy take on 'What Would I Do if I Could Feel'",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review consistently criticizes the production for overwhelming spectacle that undermines storytelling and performances, with only isolated praise for individual moments and performers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:06.402Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

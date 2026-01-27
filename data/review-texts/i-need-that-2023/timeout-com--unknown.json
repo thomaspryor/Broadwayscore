@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“DeVito is a star for a reason: His vulnerable, hilarious performance is a certifiable gem. If only this treasure weren’t so often lost in the piles that surround it.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 85,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "DeVito is a star for a reason: His vulnerable, hilarious performance is a certifiable gem",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "good-natured but threadbare comedy",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "If only this treasure weren't so often lost in the piles that surround it",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review clearly admires DeVito's performance but finds the play itself 'slight' and 'threadbare,' creating a mixed recommendation that leans slightly positive due to the star power. | GPT-4o-mini: The review praises DeVito's performance highly but expresses concerns about the play's script and overall execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:17.023Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

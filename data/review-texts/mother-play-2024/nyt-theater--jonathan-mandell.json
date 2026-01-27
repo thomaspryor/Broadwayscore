@@ -10,8 +10,64 @@
   "bwwExcerpt": "“Mother Play” is not as great as plays Paula Vogel has written in the past – perhaps not as great as she might be able to make it in time – but under Tina Landau’s direction, it is a mesmerizing production, albeit not always easy to watch. That’s not only because of the fully-invested acting, but also because of the fully-infested sets (thanks to projection designer Shawn Duan.)",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 80,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "not as great as plays Paula Vogel has written in the past",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "it is a mesmerizing production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "fully-invested acting",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review that acknowledges script weaknesses but praises the production as 'mesmerizing' with strong performances and direction, landing in qualified recommendation territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:04.668Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

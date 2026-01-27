@@ -7,7 +7,63 @@
   "publishDate": "April 17, 2024",
   "fullText": "Because I must unfortunately report that the new revival of that musical, which opened Wednesday night at the Marquis Theatre, is not the dazzler that fans have waited so long for. Quite the contrary.\r\n\r\nAnd that’s bad news, indeed.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 25,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "is not the dazzler that fans have waited so long for",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Quite the contrary",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "And that's bad news, indeed",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states this revival is disappointing and emphasizes it's 'bad news,' indicating a clear negative recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:13.911Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

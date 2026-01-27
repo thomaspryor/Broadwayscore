@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Smart, funny, splendid to look at and all with a beat you can dance to, this tribute to the Brothers Grimm, the sisters of the Second Wave and, not least, the indomitable Ms. Spears, is a delight.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
@@ -51,5 +51,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250725062238",
-  "archiveOrgUrl": "http://web.archive.org/web/20250725062238/https://deadline.com/2023/06/britney-spears-broadway-review-once-upon-a-one-more-time-deadline-1235421229/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250725062238/https://deadline.com/2023/06/britney-spears-broadway-review-once-upon-a-one-more-time-deadline-1235421229/",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 85,
+      "performances": 87,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "Smart, funny, splendid to look at and all with a beat you can dance to, this tribute to the Brothers Grimm, the sisters of the Second Wave and, not least, the indomitable Ms. Spears, is a delight.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a technicolor confection that's clever enough to play dumb once in a while, giddy enough to make a few points along the way and so winningly performed it seems a collection of beauties, princesses, charmings and mermaids arrived fully formed from some magic land of Broadway make-believe",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's a grace note in a production that's already won our hearts.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Enthusiastic praise throughout with words like 'delight,' 'enchanting,' and 'won our hearts,' plus strong appreciation for performances, design, and creative elements with only minor predictability concerns.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:27.850Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

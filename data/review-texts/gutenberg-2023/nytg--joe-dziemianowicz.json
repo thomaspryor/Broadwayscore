@@ -10,8 +10,64 @@
   "bwwExcerpt": "In the end, Gutenberg! presses beyond pure goofiness to deliver a sweet message about going for one’s dreams. Another idea emerges, too. Between the visible musicians, the brick wall, and the prominent door, the show’s set bears a bit of a resemblance to Saturday Night Live. There, like on Broadway, the best sketches leave you wanting more.        Average Rating: 71.3% {   \"@context\":\"https://schema.org\",   \"@type\":\"LiveBlogPosting\",   \"@id\":\"/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-O",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 66.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": null,
+      "direction": 72
+    },
+    "keyPhrases": [
+      {
+        "quote": "presses beyond pure goofiness to deliver a sweet message about going for one's dreams",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the best sketches leave you wanting more",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Average Rating: 71.3%",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges the show delivers meaningful content beyond comedy and makes a favorable comparison to SNL's best sketches, with the 71.3% rating confirming mixed-positive territory. | GPT-4o-mini: The review indicates a generally positive sentiment about the show's message but lacks strong enthusiasm, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:32.264Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 71,
+    "openaiScore": 72,
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

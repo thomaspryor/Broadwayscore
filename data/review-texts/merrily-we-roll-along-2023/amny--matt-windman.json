@@ -7,7 +7,63 @@
   "publishDate": "October 10, 2023",
   "fullText": "The production, which has received a few significant visual and musical upgrades since its Off-Broadway debut, is probably the most convincing, coherent, and compelling rendition of “Merrily” to date, making it the best candidate for its Broadway return. For the show’s many devoted fans (of which I am certainly one), this production is not just a triumph but a homecoming and a vindication.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "not just a triumph but a homecoming and a vindication",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the most convincing, coherent, and compelling rendition of 'Merrily' to date",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "making it the best candidate for its Broadway return",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlatives like 'triumph' and declares this the best version of the show to date, with strong emotional investment as a devoted fan being vindicated. | GPT-4o-mini: The review expresses strong enthusiasm for the production, calling it a triumph and the best version of the show, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:11.894Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 90,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

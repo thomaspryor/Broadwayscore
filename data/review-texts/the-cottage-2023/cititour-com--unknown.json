@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "6/24"
+  "extractedRating": "6/24",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 62,
+      "music": null,
+      "performances": 79,
+      "direction": 74
+    },
+    "keyPhrases": [
+      {
+        "quote": "decidely crowd-pleasing faux-English drawing room comedy",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Even at its considerable best, the show is little more than a summertime distraction",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "a house that comes with a stacked deck of comic thespians who deserve the on-your-feet appreciation they get nightly",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's crowd-pleasing qualities and praises the performances and design elements, but qualifies it as merely 'a summertime distraction' with predictable plotting, indicating a qualified recommendation. | GPT-4o-mini: The review offers a mix of praise for performances and design while expressing disappointment in the script's predictability and pacing, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:43.494Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

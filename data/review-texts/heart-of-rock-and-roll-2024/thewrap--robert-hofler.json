@@ -7,7 +7,63 @@
   "publishDate": "April 22, 2024",
   "fullText": "Gordon Greenberg directs and Lorin Latarro choreographs, achieving some kind of immortality with all that bubble wrap. Around the edges of this production are a few inspired performances. Raymond J. Lee’s wacky rocker, Tamika Lawrence’s un-PC HR director and Billy Harrigan Tighe’s bleach-blond ukulele-playing male bimbo invariably deliver laughs despite the paper-thin material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 48,
+    "confidence": "medium",
+    "range": {
+      "low": 43,
+      "high": 53
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 72,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "invariably deliver laughs despite the paper-thin material",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "a few inspired performances",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Around the edges of this production",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: While the critic praises specific performances and creative elements, the fundamental criticism of 'paper-thin material' and positioning good performances only 'around the edges' suggests the show's core is weak and not worth recommending.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:35.271Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

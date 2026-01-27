@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Clearly relishing their juicy roles, the dream cast has been impeccably directed by Lila Neugebauer, who burnishes the comedy and cruelty to a bright sheen. Her production would not cohere and hurtle as it does without its superbly unified design.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250612014429",
-  "archiveOrgUrl": "http://web.archive.org/web/20250612014429/https://observer.com/2023/12/review-appropriate-is-a-family-album-of-white-supremacy/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250612014429/https://observer.com/2023/12/review-appropriate-is-a-family-album-of-white-supremacy/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "a far stronger production and for a public primed to discuss race and legacy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the dream cast has been impeccably directed by Lila Neugebauer, who burnishes the comedy and cruelty to a bright sheen",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "nothing will prepare you for the sensory barrage at the end of Appropriate",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises virtually every aspect of the production - calling it 'far stronger' than the original, lauding the 'dream cast' and 'impeccable' direction, and expressing admiration for the design and Jacobs-Jenkins's dramatic control, despite the challenging subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:51.632Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

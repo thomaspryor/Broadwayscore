@@ -56,5 +56,61 @@
   "designation": "Must_See",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "unmissable"
+  "extractedPhrase": "unmissable",
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 82,
+      "performances": 91,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Maria Friedman's unsparing direction and a thrillingly fierce central performance by Jonathan Groff have given the show the hard shell it lacked. Now heartbreaking in the poignant sense only, 'Merrily' has been found in the dark.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I'd call it heartbreaking if the result weren't finally such a palpable hit.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Groff, always a compelling actor, here steps up to an unmissable one.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers strong praise for the revival's success in solving the original's problems, calling it a 'palpable hit' with 'unmissable' performances, despite acknowledging some production limitations. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some issues with the book and overall production, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:13.103Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

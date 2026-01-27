@@ -10,8 +10,64 @@
   "bwwExcerpt": "In Theresa Rebeck’s I Need That — which makes its 100-minute run time feel as stretched out as the waistband of an old pair of sweatpants — Danny DeVito is Character B, or Sam. His daughter, Lucy DeVito, is also his daughter onstage, a.k.a. Character A, or Amelia. Sam, a big fan of old sweatpants, isn’t quite a hoarder, but he’s close. He doesn’t go outside, his house is bursting with heaps and heaps of “junk” (according to Amelia) or “treasure” (according to him), and it’s bad enough that the n",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": 50,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes its 100-minute run time feel as stretched out as the waistband of an old pair of sweatpants",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "isn't quite a hoarder, but he's close",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "his house is bursting with heaps and heaps of 'junk'",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses vivid negative metaphors about pacing and runtime, suggesting a tedious theatrical experience despite neutral character descriptions. | GPT-4o-mini: The review expresses significant dissatisfaction with the pacing and overall experience, indicating a clear negative sentiment towards the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:45.293Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

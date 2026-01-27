@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...Vogel’s latest hits the emotional beats...reminder to call your mom now and then.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": 78,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "excels in some aspects, but feels incomplete in other regards",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Parsons is the standout here... his performance is so funny, charming, and moving",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "probably isn't the first story you've ever seen about American parents failing to understand their children during the '60s and '70s",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The B- grade and mixed language ('excels in some aspects, but feels incomplete') indicate qualified appreciation with significant reservations about predictability and creative risks that don't pay off.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:58.765Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

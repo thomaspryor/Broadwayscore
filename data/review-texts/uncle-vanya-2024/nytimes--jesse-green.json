@@ -7,7 +7,63 @@
   "publishDate": "April 24, 2024",
   "fullText": "If Vanya is properly no hero in this amusing but rarely deeply affecting production, it’s because he’s no one at all. He despairs and disappears.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 53
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 45,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "amusing but rarely deeply affecting",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "he's no one at all",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "He despairs and disappears",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production 'amusing' but criticizes it for lacking emotional depth and failing to create a compelling central character, suggesting significant disappointment with the overall impact. | GPT-4o-mini: The review indicates a lack of depth and emotional engagement, suggesting a negative overall experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:34.851Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 40,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

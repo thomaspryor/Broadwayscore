@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Rachel McAdams soars in poignant slice-of-life play\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 87,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mary Jane is a poignant slice of life and a reminder of how much power can be packed into a 90-minute play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It transcends both traps. Mary Jane is clear-eyed, compassionate, and leavened with humor",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "McAdams is surrounded by four terrific actresses playing dual roles",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises all elements - Herzog's writing, McAdams's performance, the supporting cast, direction, and design - with phrases like 'deeply affecting,' 'transcends,' and 'terrific,' indicating a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:56.250Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

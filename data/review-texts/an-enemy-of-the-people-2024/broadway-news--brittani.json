@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Strong is a standout amid an evening of largely blasé and unbalanced performances. There’s an overall atmosphere of tepidness in what Ibsen demanded be a ferocious work of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -33,5 +33,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 69,
+      "music": null,
+      "performances": 64,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's an overall atmosphere of tepidness in what Ibsen demanded be a ferocious work of theater",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Jeremy Strong — is completely believable as Stockmann. He is clear-spoken and morally upright",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "He takes ambitious directorial swings with this production, but he's wobbly on the follow-through",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises Herzog's adaptation and Strong's performance but criticizes the overall tepid atmosphere and Gold's inconsistent direction, resulting in a mixed assessment without clear recommendation. | GPT-4o-mini: The review presents a mixed perspective, praising the lead performance while criticizing the overall direction and engagement of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:32.299Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway musical 'Lempicka' is a gorgeous mess — emphasis on gorgeous. The show about Polish Art Deco painter Tamara de Lempicka is stuffed with stunning visuals but lacks a compelling story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
   "bwwExcerpt": "Unfortunately, having garishly blared open Sunday night at the Longacre Theatre, it’s far too late for the creators to start over again on a blank canvas. And so, the ugly splatter that audiences are left to parse is a ridiculous two-and-half-hour Eurovision act with stratospheric delusions of grandeur.         Average Rating: 46.1% {   \"@context\":\"https://schema.org\",   \"@type\":\"LiveBlogPosting\",   \"@id\":\"/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-Live-20240414\",   \"about\":{   ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "gorgeous mess — emphasis on gorgeous",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "stuffed with stunning visuals",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "lacks a compelling story",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges spectacular production values but identifies a fundamental flaw in the story, creating a mixed verdict that leans slightly negative due to the lack of compelling narrative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:52.819Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

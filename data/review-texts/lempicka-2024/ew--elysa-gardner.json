@@ -10,8 +10,64 @@
   "bwwExcerpt": "As Tamara, Eden Espinosa gets to once again use the siren-like belt and the mix of might and vulnerability she deployed during several stints as Elphaba in “Wicked” — this time while sporting a platinum-blonde bob that makes her look like 1990s-era Madonna (a noted Lempicka fan, naturally). Granted, the vocal showcases she is provided by composer Matt Gould and lyricist Carson Kreitzer — who collaborated on the book, brd on Ms. Kreitzer’s concept — are seldom as tuneful as they are flamboyant.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 53,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gets to once again use the siren-like belt and the mix of might and vulnerability she deployed during several stints as Elphaba in 'Wicked'",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the vocal showcases she is provided...are seldom as tuneful as they are flamboyant",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the vocal showcases she is provided by composer Matt Gould and lyricist Carson Kreitzer are seldom as tuneful as they are flamboyant",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt praises Espinosa's vocal performance and stage presence but criticizes the songs as more showy than melodic, suggesting a mixed assessment with limited context for overall recommendation. | GPT-4o-mini: The review highlights strong performances but critiques the music, leading to a mixed recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:13.264Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

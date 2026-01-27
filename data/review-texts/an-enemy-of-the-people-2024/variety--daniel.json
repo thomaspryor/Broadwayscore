@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This production has much to recommend it, and Strong in particular should return to the stage as often as he can. But it’s hard not to feel as though this “Enemy of the People,” in which as rootable as possible a hero is ground down by the forces of evil, ended up presenting an opportunity for the audience to put themselves on trial, and then, with a sigh of relief, exonerate themselves.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260101011754",
-  "archiveOrgUrl": "http://web.archive.org/web/20260101011754/https://variety.com/2024/legit/news/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/"
+  "archiveOrgUrl": "http://web.archive.org/web/20260101011754/https://variety.com/2024/legit/news/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 85,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production has much to recommend it, and Strong in particular should return to the stage as often as he can.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's hard not to feel as though this 'Enemy of the People,' in which as rootable as possible a hero is ground down by the forces of evil, ended up presenting an opportunity for the audience to put themselves on trial, and then, with a sigh of relief, exonerate themselves.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Their battle comes to a head in a stunning trial sequence",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises Strong's performance and Gold's innovative staging while identifying meaningful thematic elements, but critiques the adaptation for making the protagonist too sympathetic and letting the audience off the hook morally. | GPT-4o-mini: The review expresses clear praise for the performances, particularly Jeremy Strong's, and the direction, while noting some caveats about the adaptation, leading to a strong recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:27.895Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

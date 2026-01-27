@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 66,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "10/12"
+  "extractedRating": "10/12",
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 38,
+      "performances": 84,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "you'll laugh. You'll wince. You may even tear up a bit. Above all, you'll be incredibly impressed by the pair's incredible chemistry",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "even if you have a good time – and I actually did -- you might wonder why this show isn't at New World Stages",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Gad and Rannells absolutely earn an A+ for effort",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticisms of the material and score, the critic admits having 'a good time' and praises the lead performances highly, suggesting a qualified recommendation based on the stars' chemistry and effort. | GPT-4o-mini: The review highlights strong performances and some enjoyment but criticizes the material and music, leading to a mixed recommendation. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:59.840Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 60,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

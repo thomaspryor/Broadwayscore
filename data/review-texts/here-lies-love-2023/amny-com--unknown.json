@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250713051531",
-  "archiveOrgUrl": "http://web.archive.org/web/20250713051531/https://www.amny.com/entertainment/review-here-lies-love-finally-turns-broadway-into-an-immersive-dance-club/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250713051531/https://www.amny.com/entertainment/review-here-lies-love-finally-turns-broadway-into-an-immersive-dance-club/",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 55,
+      "performances": 75,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Here Lies Love remains as exciting as ever, and its storytelling is more urgent and disturbing today",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The lack of live music remains a stain on an otherwise remarkable show",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "an otherwise remarkable show",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the show as 'remarkable' with 'exciting' storytelling and innovative staging, but has a significant reservation about the prerecorded music, creating a clear mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:45.003Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

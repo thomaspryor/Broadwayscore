@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 27,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "6/22"
+  "extractedRating": "6/22",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 68,
+      "performances": 77,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "well-meaning, overcomplicated, and occasionally nonsensical script (which is full of some wit and lots of jokes cheaper than the pool floaties at WalMart.)",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "hearing those two ladies – now played by Amy Hillner Larsen and Tess Soltai – sing 'Work Bitch' is almost worth the price of admission",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "a number of the songs – no matter how energetically performed by a very talented cast executing directors' Keone and Mari Madrid's highly athletic choreography – fit the circumstances no better than that famed glass slipper did on the feet of Cinderella's stepsisters",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer finds significant flaws in the script and song integration while praising individual performances and moments, resulting in a mixed recommendation that leans slightly positive due to entertainment value. | GPT-4o-mini: The review presents a mix of praise for performances and choreography but criticizes the script and overall coherence, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:51.296Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

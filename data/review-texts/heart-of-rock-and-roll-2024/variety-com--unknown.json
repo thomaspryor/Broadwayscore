@@ -9,8 +9,54 @@
   "isFullReview": false,
   "dtliExcerpt": "\"Humor and brightness is what fuels this engine\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 53,
+    "confidence": "high",
+    "range": {
+      "low": 45.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Humor and brightness is what fuels this engine",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Extremely limited text provides only one positive phrase about humor and energy, but lacks any clear recommendation or critical evaluation to determine actual recommendation strength. | GPT-4o-mini: The review is too vague to provide a strong recommendation, but the mention of humor and brightness suggests some positive aspects.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:20.394Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

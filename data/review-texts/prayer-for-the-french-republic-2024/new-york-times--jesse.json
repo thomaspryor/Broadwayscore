@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "When it ran Off Broadway in 2022, “Prayer for the French Republic” already seemed painfully timely, with the Tree of Life synagogue massacre in Pittsburgh, the murder of a Holocaust survivor in Paris and other antisemitic atrocities barely in the rearview mirror. Two years later, with so much more awfulness to choose from, Harmon, revising his script for Broadway, has cut references to those events. What is too much for the world is way too much for the play.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/prayer-for-the-french-republic-broadway/",
@@ -53,5 +53,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250829103908",
-  "archiveOrgUrl": "http://web.archive.org/web/20250829103908/https://www.nytimes.com/2024/01/09/theater/prayer-for-the-french-republic-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250829103908/https://www.nytimes.com/2024/01/09/theater/prayer-for-the-french-republic-review.html",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 80,
+      "direction": 72
+    },
+    "keyPhrases": [
+      {
+        "quote": "remains mostly riveting is the result of the richness of Harmon's novelistic detail — and the exceptional skill of the principal actors in realizing it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the play ends in sentimental exhaustion",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Running just over three hours, 'Prayer for the French Republic' is still not long enough to do justice to the multiple histories it wants to tell",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Green acknowledges the play remains 'mostly riveting' with exceptional performances and rich direction, but criticizes the overambitious structure, repetitive arguments, and exhausting length, resulting in qualified appreciation without clear recommendation. | GPT-4o-mini: The review presents a mixed view, praising performances and detail while criticizing the script's length and coherence, leading to a conditional recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:10.995Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

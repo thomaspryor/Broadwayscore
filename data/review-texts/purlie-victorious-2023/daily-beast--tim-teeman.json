@@ -10,8 +10,66 @@
   "bwwExcerpt": "A modern audience, a 2023 audience, must travel to 1961—and to Davis’ very deliberate narrative balancing act—to meet the play not just when it was written, but how it was written. This wonderful cast does precisely that, playing the laughs for every ounce of hilarity to be gleaned from them, and then in a sudden turn confronting racism and white supremacy head-on. Ol’ Cap’n, and all he represents, are shown to be both vicious and ridiculous.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 77,
+    "confidence": "low",
+    "range": {
+      "low": 60.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "uproarious satire",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "cultural gut punch",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "both uproarious satire and cultural gut punch",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The excerpt praises the play as both funny and impactful, but lacks explicit recommendation language or evaluation of the production quality to determine clear enthusiasm level. | GPT-4o-mini: The review highlights the play's strong satirical elements and cultural significance, indicating a clear recommendation to see it. | Note: Models differed by 23 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:45.326Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 88,
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 23 points (Claude: 65, OpenAI: 88)"
+    ]
+  }
 }
