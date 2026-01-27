@@ -1,37 +1,37 @@
 {
-  "runDate": "2026-01-27T05:25:25.957Z",
+  "runDate": "2026-01-27T05:29:11.172Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "liberation-2025",
+    "showFilter": "wicked-2003",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 205,
-    "failed": 113,
+    "processed": 203,
+    "failed": 122,
     "skipped": 0,
-    "successRate": "64.5%"
+    "successRate": "62.5%"
   },
   "tierBreakdown": {
     "playwright": 22,
     "scrapingbee": 17,
     "brightdata": 20,
-    "archive": 146
+    "archive": 144
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 13,
     "tier1Success": 0,
-    "tier2Attempts": 6,
+    "tier2Attempts": 13,
     "tier2Success": 0,
-    "tier3Attempts": 6,
+    "tier3Attempts": 13,
     "tier3Success": 0,
-    "tier4Attempts": 6,
-    "tier4Success": 3,
-    "totalFailed": 3,
+    "tier4Attempts": 17,
+    "tier4Success": 1,
+    "totalFailed": 12,
     "scrapingBeeCreditsUsed": 50
   },
   "processed": [
@@ -237,9 +237,7 @@
     "cabaret-2024/talkinbroadway-com--unknown.json",
     "cabaret-2024/theaterscene-net--unknown.json",
     "cabaret-2024/wsj-com--unknown.json",
-    "liberation-2025/lavocedinewyork-com--unknown.json",
-    "liberation-2025/theatermania--rachel-graham.json",
-    "liberation-2025/wsj-com--unknown.json"
+    "wicked-2003/broadwayreviewed-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -352,9 +350,18 @@
     "hadestown-2019/washpost--peter-marks.json",
     "cabaret-2024/interestedbystander-com--unknown.json",
     "cabaret-2024/tman--jesse-green.json",
-    "liberation-2025/interestedbystander-com--unknown.json",
-    "liberation-2025/nydailynews-com--unknown.json",
-    "liberation-2025/washington-post--naveen-kumar.json"
+    "wicked-2003/THR--frank-scheck.json",
+    "wicked-2003/AP--michael-kuchwara.json",
+    "wicked-2003/NEWSDAY--linda-winer.json",
+    "wicked-2003/apnewsarchive-com--unknown.json",
+    "wicked-2003/content-time-com--unknown.json",
+    "wicked-2003/curtainup--elyse-sommer.json",
+    "wicked-2003/ew-com--unknown.json",
+    "wicked-2003/guardian--michael-billington.json",
+    "wicked-2003/journal-news--jacques-le-sourd.json",
+    "wicked-2003/star-ledger--michael-sommers.json",
+    "wicked-2003/washington-post--peter-marks.json",
+    "wicked-2003/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -566,9 +573,7 @@
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
       "cabaret-2024/wsj-com--unknown.json",
-      "liberation-2025/lavocedinewyork-com--unknown.json",
-      "liberation-2025/theatermania--rachel-graham.json",
-      "liberation-2025/wsj-com--unknown.json"
+      "wicked-2003/broadwayreviewed-com--unknown.json"
     ]
   }
 }
