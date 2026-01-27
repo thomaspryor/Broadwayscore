@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T14:52:14.855Z",
+  "runDate": "2026-01-27T14:52:58.856Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "hadestown-2019",
+    "showFilter": "prayer-for-the-french-republic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 215,
-    "failed": 134,
+    "processed": 245,
+    "failed": 139,
     "skipped": 0,
-    "successRate": "61.6%"
+    "successRate": "63.8%"
   },
   "tierBreakdown": {
-    "playwright": 28,
-    "scrapingbee": 17,
-    "brightdata": 23,
-    "archive": 147
+    "playwright": 38,
+    "scrapingbee": 21,
+    "brightdata": 24,
+    "archive": 162
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 1,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 10
+    "tier1Attempts": 38,
+    "tier1Success": 10,
+    "tier2Attempts": 28,
+    "tier2Success": 4,
+    "tier3Attempts": 24,
+    "tier3Success": 1,
+    "tier4Attempts": 24,
+    "tier4Success": 16,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 210
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -249,7 +249,37 @@
     "queen-versailles-2025/timeout-ny--adam-feldman.json",
     "hamilton-2015/OBSERVER--david-cote.json",
     "hamilton-2015/wapo--peter-marks.json",
-    "hadestown-2019/wsj-com--unknown.json"
+    "prayer-for-the-french-republic-2024/newyorker-com--unknown.json",
+    "prayer-for-the-french-republic-2024/nytimes-com--unknown.json",
+    "prayer-for-the-french-republic-2024/variety--daniel.json",
+    "prayer-for-the-french-republic-2024/variety-com--unknown.json",
+    "prayer-for-the-french-republic-2024/vulture--sara.json",
+    "prayer-for-the-french-republic-2024/vulture-com--unknown.json",
+    "prayer-for-the-french-republic-2024/am-new-york--matt.json",
+    "prayer-for-the-french-republic-2024/amny-com--unknown.json",
+    "prayer-for-the-french-republic-2024/broadway-news--brittani.json",
+    "prayer-for-the-french-republic-2024/broadwaynews-com--unknown.json",
+    "prayer-for-the-french-republic-2024/cititour-com--unknown.json",
+    "prayer-for-the-french-republic-2024/culturesauce-com--unknown.json",
+    "prayer-for-the-french-republic-2024/deadline--greg.json",
+    "prayer-for-the-french-republic-2024/deadline-com--unknown.json",
+    "prayer-for-the-french-republic-2024/lightingandsoundamerica-com--unknown.json",
+    "prayer-for-the-french-republic-2024/new-york-times--jesse.json",
+    "prayer-for-the-french-republic-2024/newyorktheater-me--unknown.json",
+    "prayer-for-the-french-republic-2024/newyorktheatreguide-com--unknown.json",
+    "prayer-for-the-french-republic-2024/nydailynews-com--unknown.json",
+    "prayer-for-the-french-republic-2024/nystagereview-com--unknown.json",
+    "prayer-for-the-french-republic-2024/observer-com--unknown.json",
+    "prayer-for-the-french-republic-2024/pagesonstages-wordpress-com--unknown.json",
+    "prayer-for-the-french-republic-2024/talkinbroadway-com--unknown.json",
+    "prayer-for-the-french-republic-2024/theaterlife-com--unknown.json",
+    "prayer-for-the-french-republic-2024/theatermania--zachary.json",
+    "prayer-for-the-french-republic-2024/theatermania-com--unknown.json",
+    "prayer-for-the-french-republic-2024/theaterpizzazz-com--unknown.json",
+    "prayer-for-the-french-republic-2024/theaterscene-net--unknown.json",
+    "prayer-for-the-french-republic-2024/theatrely--joey.json",
+    "prayer-for-the-french-republic-2024/time-out-new-york--adam.json",
+    "prayer-for-the-french-republic-2024/timeout-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -384,8 +414,13 @@
     "hamilton-2015/usatoday--elysa-gardner.json",
     "hamilton-2015/washpost--peter-marks.json",
     "hamilton-2015/wsj--terry-teachout.json",
-    "hadestown-2019/wnyc--jennifer-vanasco.json",
-    "hadestown-2019/wsj--charles-isherwood.json"
+    "prayer-for-the-french-republic-2024/nyt--jesse-green.json",
+    "prayer-for-the-french-republic-2024/thr--david-rooney.json",
+    "prayer-for-the-french-republic-2024/forward--jesse-green.json",
+    "prayer-for-the-french-republic-2024/talkinbway--matthew-murray.json",
+    "prayer-for-the-french-republic-2024/thefrontrowcenter-com--unknown.json",
+    "prayer-for-the-french-republic-2024/washpost--peter-marks.json",
+    "prayer-for-the-french-republic-2024/wsj-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -416,7 +451,17 @@
       "queen-versailles-2025/newyorktheatreguide-com--unknown.json",
       "queen-versailles-2025/pagesonstages-com--unknown.json",
       "queen-versailles-2025/theaterscene-net--unknown.json",
-      "queen-versailles-2025/timeout-ny--adam-feldman.json"
+      "queen-versailles-2025/timeout-ny--adam-feldman.json",
+      "prayer-for-the-french-republic-2024/broadway-news--brittani.json",
+      "prayer-for-the-french-republic-2024/broadwaynews-com--unknown.json",
+      "prayer-for-the-french-republic-2024/culturesauce-com--unknown.json",
+      "prayer-for-the-french-republic-2024/lightingandsoundamerica-com--unknown.json",
+      "prayer-for-the-french-republic-2024/newyorktheatreguide-com--unknown.json",
+      "prayer-for-the-french-republic-2024/nystagereview-com--unknown.json",
+      "prayer-for-the-french-republic-2024/pagesonstages-wordpress-com--unknown.json",
+      "prayer-for-the-french-republic-2024/theaterlife-com--unknown.json",
+      "prayer-for-the-french-republic-2024/theaterscene-net--unknown.json",
+      "prayer-for-the-french-republic-2024/time-out-new-york--adam.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -435,7 +480,11 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "cabaret-2024/newyorktheater-me--unknown.json"
+      "cabaret-2024/newyorktheater-me--unknown.json",
+      "prayer-for-the-french-republic-2024/cititour-com--unknown.json",
+      "prayer-for-the-french-republic-2024/newyorktheater-me--unknown.json",
+      "prayer-for-the-french-republic-2024/theatrely--joey.json",
+      "prayer-for-the-french-republic-2024/timeout-com--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -460,7 +509,8 @@
       "hadestown-2019/towleroad-com--unknown.json",
       "queen-versailles-2025/daily-beast--tim-teeman.json",
       "hamilton-2015/OBSERVER--david-cote.json",
-      "hamilton-2015/wapo--peter-marks.json"
+      "hamilton-2015/wapo--peter-marks.json",
+      "prayer-for-the-french-republic-2024/talkinbroadway-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -609,7 +659,22 @@
       "queen-versailles-2025/nydailynews-com--unknown.json",
       "queen-versailles-2025/nypost--johnny-oleksinski.json",
       "queen-versailles-2025/theatermania--zachary-stewart.json",
-      "hadestown-2019/wsj-com--unknown.json"
+      "prayer-for-the-french-republic-2024/newyorker-com--unknown.json",
+      "prayer-for-the-french-republic-2024/nytimes-com--unknown.json",
+      "prayer-for-the-french-republic-2024/variety--daniel.json",
+      "prayer-for-the-french-republic-2024/variety-com--unknown.json",
+      "prayer-for-the-french-republic-2024/vulture--sara.json",
+      "prayer-for-the-french-republic-2024/vulture-com--unknown.json",
+      "prayer-for-the-french-republic-2024/am-new-york--matt.json",
+      "prayer-for-the-french-republic-2024/amny-com--unknown.json",
+      "prayer-for-the-french-republic-2024/deadline--greg.json",
+      "prayer-for-the-french-republic-2024/deadline-com--unknown.json",
+      "prayer-for-the-french-republic-2024/new-york-times--jesse.json",
+      "prayer-for-the-french-republic-2024/nydailynews-com--unknown.json",
+      "prayer-for-the-french-republic-2024/observer-com--unknown.json",
+      "prayer-for-the-french-republic-2024/theatermania--zachary.json",
+      "prayer-for-the-french-republic-2024/theatermania-com--unknown.json",
+      "prayer-for-the-french-republic-2024/theaterpizzazz-com--unknown.json"
     ]
   }
 }
