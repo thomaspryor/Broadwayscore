@@ -120,6 +120,12 @@ const CONFIG = {
     'wsj.com', 'newyorker.com',
   ],
 
+  // Sites where Archive.org works best (paywalled sites - Wayback has pre-paywall content)
+  archiveFirstSites: [
+    'nytimes.com', 'vulture.com', 'nymag.com', 'washingtonpost.com',
+    'wsj.com', 'newyorker.com', 'theaterly.com', 'ew.com',
+  ],
+
   // Minimum word count for valid review
   minWordCount: 300,
 
@@ -559,6 +565,7 @@ async function fetchReviewText(review) {
   const isKnownBlocked = CONFIG.knownBlockedSites.some(s => urlLower.includes(s));
   const skipPlaywright = CLI.aggressive && isKnownBlocked;
   const isBrightDataPreferred = CONFIG.brightDataPreferred.some(s => urlLower.includes(s));
+  const isArchiveFirst = CONFIG.archiveFirstSites.some(s => urlLower.includes(s));
 
   // Force specific tier if requested
   if (CLI.forceTier) {
@@ -580,6 +587,24 @@ async function fetchReviewText(review) {
       }
     } catch (e) {
       throw new Error(`Forced tier ${tier} failed: ${e.message}`);
+    }
+  }
+
+  // For paywalled sites, try Archive.org FIRST (Wayback often has pre-paywall content)
+  if (isArchiveFirst) {
+    console.log('  [Tier 0] Archive.org (paywalled site - trying archive first)...');
+    try {
+      const result = await fetchFromArchive(url);
+      html = result.html;
+      text = result.text;
+      method = 'archive';
+      archiveData = result;
+      attempts.push({ tier: 0, method: 'archive-first', success: true });
+      return { html, text, method, archiveData, attempts };
+    } catch (error) {
+      attempts.push({ tier: 0, method: 'archive-first', success: false, error: error.message });
+      console.log(`    ✗ Archive.org failed: ${error.message}`);
+      console.log('    Falling back to standard tier chain...');
     }
   }
 
