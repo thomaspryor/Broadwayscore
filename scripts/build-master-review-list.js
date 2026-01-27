@@ -76,6 +76,43 @@ function normalizeCriticName(name) {
 }
 
 /**
+ * Check if two critic names likely refer to the same person
+ * Handles cases like "Jesse" vs "Jesse Green", partial names, etc.
+ */
+function isSameCritic(name1, name2) {
+  const n1 = normalizeCriticName(name1);
+  const n2 = normalizeCriticName(name2);
+
+  // Both empty or unknown
+  if (!n1 || !n2 || n1 === 'unknown' || n2 === 'unknown') {
+    return false;
+  }
+
+  // Exact match
+  if (n1 === n2) return true;
+
+  // One contains the other (handles "Jesse" vs "Jesse Green")
+  if (n1.includes(n2) || n2.includes(n1)) return true;
+
+  // First name matches (handles "Jesse" vs "Jesse Green")
+  const words1 = n1.split(' ');
+  const words2 = n2.split(' ');
+  if (words1[0] === words2[0] && words1[0].length > 2) return true;
+
+  // Last name matches (handles "Green" vs "Jesse Green")
+  if (words1.length > 0 && words2.length > 0) {
+    const last1 = words1[words1.length - 1];
+    const last2 = words2[words2.length - 1];
+    if (last1 === last2 && last1.length > 3) return true;
+  }
+
+  // High Levenshtein similarity (handles typos)
+  if (levenshteinSimilarity(n1, n2) > 0.85) return true;
+
+  return false;
+}
+
+/**
  * Normalize excerpt for comparison (first 100 chars)
  */
 function normalizeExcerpt(excerpt) {
@@ -95,6 +132,163 @@ function slugify(text) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+}
+
+/**
+ * Normalize outlet ID to canonical form for deduplication
+ * Maps all variants of the same outlet to a single ID
+ */
+const OUTLET_ID_CANONICALIZATION = {
+  // New York Times variants
+  'nyt': 'nytimes',
+  'new-york-times': 'nytimes',
+  'nytimes-com': 'nytimes',
+  'nyt-theater': 'nytimes',
+  'nyth': 'nytimes',
+  'nythtr': 'nytimes',
+  'the-new-york-times': 'nytimes',
+
+  // NY Post variants
+  'ny-post': 'nypost',
+  'new-york-post': 'nypost',
+  'nyp': 'nypost',
+  'nypost-com': 'nypost',
+  'the-new-york-post': 'nypost',
+
+  // Vulture / NY Magazine variants
+  'vulture-com': 'vulture',
+  'new-york-magazine-vulture': 'vulture',
+  'ny-magazine': 'vulture',
+  'ny-mag': 'vulture',
+  'nymag': 'vulture',
+
+  // NY Daily News variants
+  'nydn': 'ny-daily-news',
+  'new-york-daily-news': 'ny-daily-news',
+  'nydailynews': 'ny-daily-news',
+  'nydailynews-com': 'ny-daily-news',
+  'daily-news': 'ny-daily-news',
+
+  // NY Theatre Guide variants
+  'nytg': 'ny-theatre-guide',
+  'new-york-theatre-guide': 'ny-theatre-guide',
+  'nytheatreguide': 'ny-theatre-guide',
+  'newyorktheatreguide-com': 'ny-theatre-guide',
+
+  // NY Stage Review variants
+  'nysr': 'ny-stage-review',
+  'new-york-stage-review': 'ny-stage-review',
+  'nystagereview-com': 'ny-stage-review',
+
+  // Hollywood Reporter variants
+  'hr': 'hollywood-reporter',
+  'the-hollywood-reporter': 'hollywood-reporter',
+  'hollywoodreporter': 'hollywood-reporter',
+  'hollywoodreporter-com': 'hollywood-reporter',
+
+  // Deadline variants
+  'deadline-com': 'deadline',
+  'deadline-hollywood': 'deadline',
+
+  // Entertainment Weekly variants
+  'entertainment-weekly': 'ew',
+  'ew-com': 'ew',
+
+  // Time Out variants
+  'time-out-new-york': 'timeout-ny',
+  'time-out': 'timeout-ny',
+  'timeout': 'timeout-ny',
+  'timeout-com': 'timeout-ny',
+  'timeoutny': 'timeout-ny',
+
+  // Variety variants
+  'variety-com': 'variety',
+
+  // TheaterMania variants
+  'theater-mania': 'theatermania',
+  'theatermania-com': 'theatermania',
+
+  // The Wrap variants
+  'the-wrap': 'thewrap',
+  'thewrap-com': 'thewrap',
+
+  // Wall Street Journal variants
+  'wall-street-journal': 'wsj',
+  'the-wall-street-journal': 'wsj',
+  'wsj-com': 'wsj',
+
+  // Washington Post variants
+  'washington-post': 'washpost',
+  'the-washington-post': 'washpost',
+  'washingtonpost-com': 'washpost',
+  'wapo': 'washpost',
+
+  // Guardian variants
+  'the-guardian': 'guardian',
+  'guardian-com': 'guardian',
+
+  // Daily Beast variants
+  'the-daily-beast': 'daily-beast',
+  'thedailybeast': 'daily-beast',
+  'dailybeast-com': 'daily-beast',
+
+  // New Yorker variants
+  'the-new-yorker': 'new-yorker',
+  'newyorker': 'new-yorker',
+  'newyorker-com': 'new-yorker',
+
+  // Observer variants
+  'the-observer': 'observer',
+  'observer-com': 'observer',
+
+  // amNewYork variants
+  'am-new-york': 'amny',
+  'amnewyork': 'amny',
+
+  // Associated Press variants
+  'associated-press': 'ap',
+
+  // Broadway News variants
+  'broadwaynews': 'broadway-news',
+  'broadwaynews-com': 'broadway-news',
+
+  // BroadwayWorld variants
+  'broadway-world': 'broadwayworld',
+  'broadwayworld-com': 'broadwayworld',
+
+  // Theatrely variants
+  'theatrely-com': 'theatrely',
+
+  // USA Today variants
+  'usa-today': 'usatoday',
+  'usatoday-com': 'usatoday',
+
+  // Chicago Tribune variants
+  'chitrib': 'chicago-tribune',
+  'chicagotribune': 'chicago-tribune',
+
+  // LA Times variants
+  'la-times': 'latimes',
+  'los-angeles-times': 'latimes',
+  'the-la-times': 'latimes',
+
+  // Slant variants
+  'slant-magazine': 'slant',
+  'slantmagazine-com': 'slant',
+
+  // CultureSauce variants
+  'culture-sauce': 'culturesauce',
+  'culturesauce-com': 'culturesauce',
+
+  // Cititour variants
+  'citi-tour': 'cititour',
+  'cititour-com': 'cititour',
+};
+
+function normalizeOutletId(outletId) {
+  if (!outletId) return 'unknown';
+  const normalized = outletId.toLowerCase().trim();
+  return OUTLET_ID_CANONICALIZATION[normalized] || normalized;
 }
 
 /**
@@ -148,28 +342,57 @@ function loadShowReviews(showId) {
  * Check if two reviews are likely the same
  */
 function isSameReview(review1, review2) {
+  // Normalize outlet IDs for comparison (nyt, nytimes, new-york-times -> nytimes)
+  const outlet1 = normalizeOutletId(review1.outletId);
+  const outlet2 = normalizeOutletId(review2.outletId);
+
   // 1. Same URL (exact match)
   if (review1.url && review2.url && review1.url === review2.url) {
     return true;
   }
 
-  // 2. Same outlet + critic (fuzzy name matching)
-  if (review1.outletId === review2.outletId) {
+  // 2. Same outlet + same critic (using smart name matching)
+  if (outlet1 === outlet2) {
+    if (isSameCritic(review1.criticName, review2.criticName)) {
+      return true;
+    }
+
+    // If one has Unknown critic, check excerpt similarity
     const name1 = normalizeCriticName(review1.criticName);
     const name2 = normalizeCriticName(review2.criticName);
+    const hasUnknown1 = !name1 || name1 === 'unknown';
+    const hasUnknown2 = !name2 || name2 === 'unknown';
 
-    if (name1 && name2 && levenshteinSimilarity(name1, name2) > 0.85) {
-      return true;
+    if (hasUnknown1 || hasUnknown2) {
+      const excerpt1 = normalizeExcerpt(review1.dtliExcerpt || review1.bwwExcerpt || review1.showScoreExcerpt || review1.fullText);
+      const excerpt2 = normalizeExcerpt(review2.dtliExcerpt || review2.bwwExcerpt || review2.showScoreExcerpt || review2.fullText);
+      if (excerpt1 && excerpt2 && excerpt1.length > 20 && excerpt2.length > 20) {
+        if (levenshteinSimilarity(excerpt1, excerpt2) > 0.5) {
+          return true;
+        }
+      }
     }
   }
 
-  // 3. Same outlet + similar excerpt (Levenshtein > 0.8)
-  if (review1.outletId === review2.outletId) {
+  // 3. Same outlet + similar excerpt (handles different critic name spellings)
+  if (outlet1 === outlet2) {
     const excerpt1 = normalizeExcerpt(review1.dtliExcerpt || review1.bwwExcerpt || review1.showScoreExcerpt || review1.fullText);
     const excerpt2 = normalizeExcerpt(review2.dtliExcerpt || review2.bwwExcerpt || review2.showScoreExcerpt || review2.fullText);
 
     if (excerpt1 && excerpt2 && excerpt1.length > 20 && excerpt2.length > 20) {
-      if (levenshteinSimilarity(excerpt1, excerpt2) > 0.8) {
+      if (levenshteinSimilarity(excerpt1, excerpt2) > 0.7) {
+        return true;
+      }
+    }
+  }
+
+  // 4. Same outlet + same fullText start (most reliable for identifying duplicates)
+  if (outlet1 === outlet2 && review1.fullText && review2.fullText) {
+    const ft1 = normalizeExcerpt(review1.fullText);
+    const ft2 = normalizeExcerpt(review2.fullText);
+
+    if (ft1 && ft2 && ft1.length > 30 && ft2.length > 30) {
+      if (levenshteinSimilarity(ft1, ft2) > 0.8) {
         return true;
       }
     }
