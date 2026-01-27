@@ -5,12 +5,42 @@
   "criticName": "Unknown",
   "url": "https://www.washingtonpost.com/entertainment/theater/2023/11/19/hells-kitchen-alicia-keys-public/",
   "publishDate": null,
-  "fullText": null,
+  "fullText": "Democracy Dies in DarknessReview by  Peter MarksNEW YORK — In “Hell’s Kitchen,” they’ve crafted a perfectly nice musical out of the soul-fired songbook of Alicia Keys. Ali, a character inspired by the teenage Keys and played by newcomer Maleah Joi Moon, is strong-willed but nice. Her boo, Knuck (Chris Lee), is a bit standoffish but also really nice. Despite her hard shell, Ali’s mother, Jersey (Shoshana Bean), seems pretty darn nice, too. As for Ali’s unreliable, mostly absent father, Davis (Brandon Victor Dixon): You’d have to grant that, at some level, he’s kind of — well, you get the picture.",
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": null,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "textStatus": "partial",
+  "textWordCount": 100,
+  "archivePath": "data/archives/reviews/hells-kitchen-2024/washingtonpost-com--unknown_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T02:06:48.472Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 100 (min: 300)"
+  ]
 }
