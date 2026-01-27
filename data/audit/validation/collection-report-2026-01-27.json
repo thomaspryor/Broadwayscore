@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-27T05:45:48.021Z",
+  "runDate": "2026-01-27T05:46:48.648Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "back-to-the-future-2023",
+    "showFilter": "the-lion-king-1997",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,27 +12,27 @@
   },
   "summary": {
     "processed": 205,
-    "failed": 132,
+    "failed": 133,
     "skipped": 0,
-    "successRate": "60.8%"
+    "successRate": "60.7%"
   },
   "tierBreakdown": {
     "playwright": 22,
-    "scrapingbee": 17,
+    "scrapingbee": 18,
     "brightdata": 21,
-    "archive": 145
+    "archive": 144
   },
   "statistics": {
-    "tier1Attempts": 13,
+    "tier1Attempts": 14,
     "tier1Success": 0,
-    "tier2Attempts": 13,
-    "tier2Success": 0,
+    "tier2Attempts": 14,
+    "tier2Success": 1,
     "tier3Attempts": 13,
     "tier3Success": 0,
-    "tier4Attempts": 16,
-    "tier4Success": 1,
-    "totalFailed": 12,
-    "scrapingBeeCreditsUsed": 20
+    "tier4Attempts": 17,
+    "tier4Success": 0,
+    "totalFailed": 13,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -239,7 +239,7 @@
     "cabaret-2024/wsj-com--unknown.json",
     "maybe-happy-ending-2024/observer--jesse-green.json",
     "maybe-happy-ending-2024/washington-post--naveen-kumar.json",
-    "back-to-the-future-2023/wsj--charles-isherwood.json"
+    "the-lion-king-1997/familyvacationcritic-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -362,18 +362,19 @@
     "maybe-happy-ending-2024/tman--david-gordon.json",
     "maybe-happy-ending-2024/washpost--peter-marks.json",
     "maybe-happy-ending-2024/wsj--terry-teachout.json",
-    "back-to-the-future-2023/thr--frank-scheck.json",
-    "back-to-the-future-2023/variety--aramide-tinubu.json",
-    "back-to-the-future-2023/chtrib--chris-jones-tribune.json",
-    "back-to-the-future-2023/ew--dalton-ross.json",
-    "back-to-the-future-2023/nyp--johnny-oleksinski.json",
-    "back-to-the-future-2023/nysr--elysa-gardner.json",
-    "back-to-the-future-2023/nysr--steven-suskin.json",
-    "back-to-the-future-2023/tdb--tim-teeman.json",
-    "back-to-the-future-2023/thly--kobi-kassal.json",
-    "back-to-the-future-2023/tman--adam-feldman.json",
-    "back-to-the-future-2023/usatoday--patrick-ryan.json",
-    "back-to-the-future-2023/wrap--robert-hofler.json"
+    "the-lion-king-1997/nyt--ben-brantley.json",
+    "the-lion-king-1997/nytimes-com--unknown.json",
+    "the-lion-king-1997/thr--frank-scheck.json",
+    "the-lion-king-1997/variety--matt-wolf.json",
+    "the-lion-king-1997/AP--michael-kuchwara.json",
+    "the-lion-king-1997/NEWSDAY--linda-winer.json",
+    "the-lion-king-1997/NYP--clive-barnes.json",
+    "the-lion-king-1997/TIME--richard-zoglin.json",
+    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
+    "the-lion-king-1997/jasonraize-net--unknown.json",
+    "the-lion-king-1997/njcom--michael-sommers.json",
+    "the-lion-king-1997/streetdirectory-com--unknown.json",
+    "the-lion-king-1997/talkinbway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -417,7 +418,8 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "cabaret-2024/newyorktheater-me--unknown.json"
+      "cabaret-2024/newyorktheater-me--unknown.json",
+      "the-lion-king-1997/familyvacationcritic-com--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -586,8 +588,7 @@
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
       "cabaret-2024/wsj-com--unknown.json",
-      "maybe-happy-ending-2024/washington-post--naveen-kumar.json",
-      "back-to-the-future-2023/wsj--charles-isherwood.json"
+      "maybe-happy-ending-2024/washington-post--naveen-kumar.json"
     ]
   }
 }
