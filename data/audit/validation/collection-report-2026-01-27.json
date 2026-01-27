@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-27T05:17:05.084Z",
+  "runDate": "2026-01-27T05:17:16.791Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "book-of-mormon-2011",
+    "showFilter": "maybe-happy-ending-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,27 +12,27 @@
   },
   "summary": {
     "processed": 204,
-    "failed": 125,
+    "failed": 120,
     "skipped": 0,
-    "successRate": "62.0%"
+    "successRate": "63.0%"
   },
   "tierBreakdown": {
     "playwright": 22,
     "scrapingbee": 17,
-    "brightdata": 20,
-    "archive": 145
+    "brightdata": 21,
+    "archive": 144
   },
   "statistics": {
-    "tier1Attempts": 17,
+    "tier1Attempts": 12,
     "tier1Success": 0,
-    "tier2Attempts": 17,
+    "tier2Attempts": 12,
     "tier2Success": 0,
-    "tier3Attempts": 17,
-    "tier3Success": 0,
-    "tier4Attempts": 21,
-    "tier4Success": 2,
-    "totalFailed": 15,
-    "scrapingBeeCreditsUsed": 30
+    "tier3Attempts": 12,
+    "tier3Success": 1,
+    "tier4Attempts": 13,
+    "tier4Success": 1,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -237,8 +237,8 @@
     "cabaret-2024/talkinbroadway-com--unknown.json",
     "cabaret-2024/theaterscene-net--unknown.json",
     "cabaret-2024/wsj-com--unknown.json",
-    "book-of-mormon-2011/backstage-com--unknown.json",
-    "book-of-mormon-2011/washington-post--unknown.json"
+    "maybe-happy-ending-2024/observer--jesse-green.json",
+    "maybe-happy-ending-2024/washington-post--naveen-kumar.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -351,21 +351,16 @@
     "hadestown-2019/washpost--peter-marks.json",
     "cabaret-2024/interestedbystander-com--unknown.json",
     "cabaret-2024/tman--jesse-green.json",
-    "book-of-mormon-2011/VULT--jesse-green.json",
-    "book-of-mormon-2011/nyt--ben-brantley.json",
-    "book-of-mormon-2011/thr--david-rooney.json",
-    "book-of-mormon-2011/variety--david-rooney.json",
-    "book-of-mormon-2011/vult--jesse-green.json",
-    "book-of-mormon-2011/DEADLINE--jeremy-gerard.json",
-    "book-of-mormon-2011/NY1--roma-torre.json",
-    "book-of-mormon-2011/ap--mark-kennedy.json",
-    "book-of-mormon-2011/bwayvoice-com--unknown.json",
-    "book-of-mormon-2011/guardian--brian-logan.json",
-    "book-of-mormon-2011/newsday--linda-winer.json",
-    "book-of-mormon-2011/northjersey-com--unknown.json",
-    "book-of-mormon-2011/ny-daily-news--joe-dziemianowicz.json",
-    "book-of-mormon-2011/washpost--peter-marks.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json"
+    "maybe-happy-ending-2024/nyt--jesse-green.json",
+    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
+    "maybe-happy-ending-2024/ew--shania-russell.json",
+    "maybe-happy-ending-2024/interestedbystander-com--unknown.json",
+    "maybe-happy-ending-2024/ny-daily-news--chris-jones.json",
+    "maybe-happy-ending-2024/nyp--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/talkinbway--matthew-murray.json",
+    "maybe-happy-ending-2024/tman--david-gordon.json",
+    "maybe-happy-ending-2024/washpost--peter-marks.json",
+    "maybe-happy-ending-2024/wsj--terry-teachout.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -431,7 +426,8 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json"
+      "hadestown-2019/towleroad-com--unknown.json",
+      "maybe-happy-ending-2024/observer--jesse-green.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -577,8 +573,7 @@
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
       "cabaret-2024/wsj-com--unknown.json",
-      "book-of-mormon-2011/backstage-com--unknown.json",
-      "book-of-mormon-2011/washington-post--unknown.json"
+      "maybe-happy-ending-2024/washington-post--naveen-kumar.json"
     ]
   }
 }
