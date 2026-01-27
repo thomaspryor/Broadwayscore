@@ -5,7 +5,7 @@
   "criticName": "Unknown",
   "url": "https://www.wsj.com/articles/liberation-review-feminism-and-frustration-on-broadway-537a92b7",
   "publishDate": null,
-  "fullText": "\"Ms. White does elicit uniformly terrific performances that keep the play lively and humming with bright humor.\"\n\nRead more",
+  "fullText": "https://www.wsj.com/articles/liberation-review-feminism-and-frustration-on-broadway-537a92b7\n\nSusannah Flood Joan MarcusEditor’s note: “Liberation” has transferred to Broadway after an off-Broadway run last season. The principal cast and creative team remain the same. Below is the Journal’s review of the off-Broadway production.\n\n“Why does it feel somehow like it’s all slipping away? And how do we get it back?” That lament is spoken by the narrator of “Liberation,” a funny if meandering new play by Bess Wohl presented by the Roundabout Theatre Company that explores the idealistic aims and frequent frustrations of women in the feminist movement in the early 1970s.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nDavid Baldacci Pushed Through Tons of Rejections Before Writing ‘Absolute Power’\n\nTom Stoppard, Playwright of Ideas, Dies at 88\n\n‘Joan Crawford’ Review: In a Hurry to the Top\n\nVisiting the Scotland That Inspired Mary Shelley’s ‘Frankenstein’—and the 2025 Movie",
   "isFullReview": false,
   "dtliExcerpt": "\"Ms. White does elicit uniformly terrific performances that keep the play lively and humming with bright humor.\"\n\nRead more",
   "originalScore": null,
@@ -65,5 +65,43 @@
     "needsReviewReasons": [
       "Models disagree by 35 points (Claude: 40, OpenAI: 75)"
     ]
-  }
+  },
+  "textStatus": "partial",
+  "textWordCount": 144,
+  "archivePath": "data/archives/reviews/liberation-2025/wsj-com--unknown_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T04:40:38.297Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20260119035810",
+  "archiveOrgUrl": "http://web.archive.org/web/20260119035810/https://www.wsj.com/articles/liberation-review-feminism-and-frustration-on-broadway-537a92b7",
+  "textIssues": [
+    "Word count too low: 144 (min: 300)"
+  ]
 }
