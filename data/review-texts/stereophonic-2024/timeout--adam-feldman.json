@@ -64,10 +64,10 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "textWordCount": 228,
   "archivePath": "data/archives/reviews/stereophonic-2024/timeout--adam-feldman_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:52:06.974Z",
+  "textFetchedAt": "2026-01-27T05:09:26.830Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -89,10 +89,15 @@
     }
   ],
   "fetchTier": 3,
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 228 (min: 300)",
     "Show title not found in text"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
   ]
 }
