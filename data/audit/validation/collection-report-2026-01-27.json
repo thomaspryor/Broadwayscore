@@ -1,81 +1,66 @@
 {
-  "runDate": "2026-01-27T20:36:30.995Z",
+  "runDate": "2026-01-27T20:36:40.862Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "harry-potter-2021",
+    "showFilter": "chicago-1996",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 18,
+    "processed": 4,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "25.0%"
+    "successRate": "30.8%"
   },
   "tierBreakdown": {
-    "playwright": 1,
-    "scrapingbee": 2,
-    "brightdata": 1,
+    "playwright": 0,
+    "scrapingbee": 0,
+    "brightdata": 2,
     "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 22,
-    "tier1Success": 1,
-    "tier2Attempts": 21,
-    "tier2Success": 2,
-    "tier3Attempts": 19,
-    "tier3Success": 1,
-    "tier4Attempts": 26,
+    "tier1Attempts": 13,
+    "tier1Success": 0,
+    "tier2Attempts": 13,
+    "tier2Success": 0,
+    "tier3Attempts": 13,
+    "tier3Success": 2,
+    "tier4Attempts": 14,
     "tier4Success": 2,
-    "totalFailed": 18,
-    "scrapingBeeCreditsUsed": 100
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
-    "harry-potter-2021/new-york-magazine-vulture--sara-holdren.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/financial-times--charles-isherwood.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/time-out-new-york--adam-feldman.json",
-    "harry-potter-2021/wsj--terry-teachout.json"
+    "chicago-1996/talkin-broadway--matthew-murray.json",
+    "chicago-1996/talkinbroadway-com--unknown.json",
+    "chicago-1996/theatermania--andy-propst.json",
+    "chicago-1996/theatermania--zachary-stewart.json"
   ],
   "failed": [
-    "harry-potter-2021/NYP--johnny-oleksinski.json",
-    "harry-potter-2021/broadway-blog--matthew-wexler.json",
-    "harry-potter-2021/broadway-news--elizabeth-bradley.json",
-    "harry-potter-2021/curtainup--elyse-sommer.json",
-    "harry-potter-2021/curtainup-com--unknown.json",
-    "harry-potter-2021/deadline--greg-evans.json",
-    "harry-potter-2021/exeunt--kev-berry.json",
-    "harry-potter-2021/front-mezz-junkies--steven-ross.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/medium--christian-lewis.json",
-    "harry-potter-2021/ny1--roma-torre.json",
-    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
-    "harry-potter-2021/theguardian-com--unknown.json",
-    "harry-potter-2021/troy-record--bob-goepfert.json",
-    "harry-potter-2021/wnyc--jennifer-vanasco.json",
-    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
-    "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "chicago-1996/nytimes-com--unknown.json",
+    "chicago-1996/EW--ginia-bellafante.json",
+    "chicago-1996/NEWSDAY--linda-winer.json",
+    "chicago-1996/NYDN--howard-kissel.json",
+    "chicago-1996/TIME--richard-zoglin.json",
+    "chicago-1996/associated-press--michael-kuchwara.json",
+    "chicago-1996/curtainup--elyse-sommer.json",
+    "chicago-1996/curtainup-com--unknown.json",
+    "chicago-1996/oocities-org--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
-    ],
-    "scrapingbee": [
-      "harry-potter-2021/financial-times--charles-isherwood.json",
-      "harry-potter-2021/time-out-new-york--adam-feldman.json"
-    ],
+    "playwright": [],
+    "scrapingbee": [],
     "brightdata": [
-      "harry-potter-2021/cititour--brian-scott-lipton.json"
+      "chicago-1996/talkin-broadway--matthew-murray.json",
+      "chicago-1996/talkinbroadway-com--unknown.json"
     ],
     "archive": [
-      "harry-potter-2021/new-york-magazine-vulture--sara-holdren.json",
-      "harry-potter-2021/wsj--terry-teachout.json"
+      "chicago-1996/theatermania--andy-propst.json",
+      "chicago-1996/theatermania--zachary-stewart.json"
     ]
   }
 }
