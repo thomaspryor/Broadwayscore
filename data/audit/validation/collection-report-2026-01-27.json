@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T05:19:07.905Z",
+  "runDate": "2026-01-27T05:20:25.197Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-outsiders-2024",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 206,
+    "processed": 205,
     "failed": 128,
     "skipped": 0,
-    "successRate": "61.7%"
+    "successRate": "61.6%"
   },
   "tierBreakdown": {
     "playwright": 22,
     "scrapingbee": 17,
-    "brightdata": 21,
-    "archive": 146
+    "brightdata": 22,
+    "archive": 144
   },
   "statistics": {
-    "tier1Attempts": 22,
+    "tier1Attempts": 21,
     "tier1Success": 0,
-    "tier2Attempts": 22,
+    "tier2Attempts": 21,
     "tier2Success": 0,
-    "tier3Attempts": 22,
-    "tier3Success": 1,
-    "tier4Attempts": 24,
-    "tier4Success": 3,
+    "tier3Attempts": 21,
+    "tier3Success": 2,
+    "tier4Attempts": 23,
+    "tier4Success": 1,
     "totalFailed": 18,
-    "scrapingBeeCreditsUsed": 70
+    "scrapingBeeCreditsUsed": 60
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -237,10 +237,9 @@
     "cabaret-2024/talkinbroadway-com--unknown.json",
     "cabaret-2024/theaterscene-net--unknown.json",
     "cabaret-2024/wsj-com--unknown.json",
-    "the-outsiders-2024/nypost--johnny-oleksinki.json",
-    "the-outsiders-2024/nypost--johnny-oleksinski.json",
-    "the-outsiders-2024/timeout--adam-feldman.json",
-    "the-outsiders-2024/wsj--charles-isherwood.json"
+    "hamilton-2015/OBSERVER--david-cote.json",
+    "hamilton-2015/wapo--peter-marks.json",
+    "hamilton-2015/wsj--terry-teachout.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -353,24 +352,24 @@
     "hadestown-2019/washpost--peter-marks.json",
     "cabaret-2024/interestedbystander-com--unknown.json",
     "cabaret-2024/tman--jesse-green.json",
-    "the-outsiders-2024/THR--david-rooney.json",
-    "the-outsiders-2024/nyt--jesse-green.json",
-    "the-outsiders-2024/thr--angie-han.json",
-    "the-outsiders-2024/variety--jesse-green.json",
-    "the-outsiders-2024/vult--jesse-green.json",
-    "the-outsiders-2024/AP--mark-kennedy.json",
-    "the-outsiders-2024/NYDN--chris-jones.json",
-    "the-outsiders-2024/TDB--tim-teeman.json",
-    "the-outsiders-2024/WASHPOST--peter-marks.json",
-    "the-outsiders-2024/WRAP--robert-hofler.json",
-    "the-outsiders-2024/ew--emlyn-travis.json",
-    "the-outsiders-2024/interestedbystander-com--unknown.json",
-    "the-outsiders-2024/nyp--johnny-oleksinski.json",
-    "the-outsiders-2024/rollstone--brittany-spanos.json",
-    "the-outsiders-2024/talkinbway--walter-bilderback.json",
-    "the-outsiders-2024/the-washington-post--elisabeth-vincentelli.json",
-    "the-outsiders-2024/thly--zachary-stewart.json",
-    "the-outsiders-2024/tman--david-gordon.json"
+    "hamilton-2015/THR--david-rooney.json",
+    "hamilton-2015/nyt--ben-brantley.json",
+    "hamilton-2015/thr--david-rooney.json",
+    "hamilton-2015/vult--jesse-green.json",
+    "hamilton-2015/CHTRIB--chris-jones.json",
+    "hamilton-2015/NYP--elisabeth-vincentelli.json",
+    "hamilton-2015/WRAP--robert-hofler.json",
+    "hamilton-2015/amny--matt-windman.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/backstage-barbie--backstage-barbie.json",
+    "hamilton-2015/chtrib--chris-jones.json",
+    "hamilton-2015/clyde-fitch-report--david-finkle.json",
+    "hamilton-2015/guardian--jesse-green.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/nyp--johnny-oleksinski.json",
+    "hamilton-2015/talkinbway--matthew-murray.json",
+    "hamilton-2015/usatoday--elysa-gardner.json",
+    "hamilton-2015/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -437,7 +436,8 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "the-outsiders-2024/timeout--adam-feldman.json"
+      "hamilton-2015/OBSERVER--david-cote.json",
+      "hamilton-2015/wapo--peter-marks.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -583,9 +583,7 @@
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
       "cabaret-2024/wsj-com--unknown.json",
-      "the-outsiders-2024/nypost--johnny-oleksinki.json",
-      "the-outsiders-2024/nypost--johnny-oleksinski.json",
-      "the-outsiders-2024/wsj--charles-isherwood.json"
+      "hamilton-2015/wsj--terry-teachout.json"
     ]
   }
 }
