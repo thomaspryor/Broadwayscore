@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:45:39.146Z",
+  "runDate": "2026-01-27T04:46:05.407Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "hamilton-2015",
+    "showFilter": "hells-kitchen-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 197,
-    "failed": 125,
+    "processed": 198,
+    "failed": 123,
     "skipped": 0,
-    "successRate": "61.2%"
+    "successRate": "61.7%"
   },
   "tierBreakdown": {
     "playwright": 17,
     "scrapingbee": 16,
-    "brightdata": 22,
-    "archive": 142
+    "brightdata": 21,
+    "archive": 144
   },
   "statistics": {
-    "tier1Attempts": 21,
+    "tier1Attempts": 20,
     "tier1Success": 0,
-    "tier2Attempts": 21,
+    "tier2Attempts": 20,
     "tier2Success": 0,
-    "tier3Attempts": 21,
-    "tier3Success": 2,
-    "tier4Attempts": 22,
-    "tier4Success": 2,
-    "totalFailed": 17,
-    "scrapingBeeCreditsUsed": 50
+    "tier3Attempts": 20,
+    "tier3Success": 1,
+    "tier4Attempts": 24,
+    "tier4Success": 4,
+    "totalFailed": 15,
+    "scrapingBeeCreditsUsed": 80
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,10 +228,11 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "hamilton-2015/OBSERVER--david-cote.json",
-    "hamilton-2015/newsday-com--unknown.json",
-    "hamilton-2015/wapo--peter-marks.json",
-    "hamilton-2015/wsj--terry-teachout.json"
+    "hells-kitchen-2024/observer-com--unknown.json",
+    "hells-kitchen-2024/slantmagazine-com--unknown.json",
+    "hells-kitchen-2024/theatermania-com--unknown.json",
+    "hells-kitchen-2024/theaterpizzazz-com--unknown.json",
+    "hells-kitchen-2024/washingtonpost-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -342,23 +343,21 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "hamilton-2015/nyt--ben-brantley.json",
-    "hamilton-2015/thr--david-rooney.json",
-    "hamilton-2015/vult--jesse-green.json",
-    "hamilton-2015/CHTRIB--chris-jones.json",
-    "hamilton-2015/NYP--elisabeth-vincentelli.json",
-    "hamilton-2015/WRAP--robert-hofler.json",
-    "hamilton-2015/amny--matt-windman.json",
-    "hamilton-2015/ap--mark-kennedy.json",
-    "hamilton-2015/backstage-barbie--backstage-barbie.json",
-    "hamilton-2015/chtrib--chris-jones.json",
-    "hamilton-2015/clyde-fitch-report--david-finkle.json",
-    "hamilton-2015/guardian--jesse-green.json",
-    "hamilton-2015/newsday--linda-winer.json",
-    "hamilton-2015/nyp--johnny-oleksinski.json",
-    "hamilton-2015/talkinbway--matthew-murray.json",
-    "hamilton-2015/usatoday--elysa-gardner.json",
-    "hamilton-2015/washpost--peter-marks.json"
+    "hells-kitchen-2024/nyt--jesse-green.json",
+    "hells-kitchen-2024/thr--angie-han.json",
+    "hells-kitchen-2024/vult--jackson-mchenry.json",
+    "hells-kitchen-2024/NYSUN--elysa-gardner.json",
+    "hells-kitchen-2024/WASHPOST--peter-marks.json",
+    "hells-kitchen-2024/ap--mark-kennedy.json",
+    "hells-kitchen-2024/billboard--isabela-raygoza.json",
+    "hells-kitchen-2024/culture-sauce--thom-geier.json",
+    "hells-kitchen-2024/deadline--pete-hammond.json",
+    "hells-kitchen-2024/ew--joey-nolfi.json",
+    "hells-kitchen-2024/guardian--adrian-horton.json",
+    "hells-kitchen-2024/interestedbystander-com--unknown.json",
+    "hells-kitchen-2024/nyp--johnny-oleksinski.json",
+    "hells-kitchen-2024/stgcnma--victor-gluck.json",
+    "hells-kitchen-2024/wsj-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -419,8 +418,7 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "hamilton-2015/OBSERVER--david-cote.json",
-      "hamilton-2015/wapo--peter-marks.json"
+      "hells-kitchen-2024/washingtonpost-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -563,8 +561,10 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "hamilton-2015/newsday-com--unknown.json",
-      "hamilton-2015/wsj--terry-teachout.json"
+      "hells-kitchen-2024/observer-com--unknown.json",
+      "hells-kitchen-2024/slantmagazine-com--unknown.json",
+      "hells-kitchen-2024/theatermania-com--unknown.json",
+      "hells-kitchen-2024/theaterpizzazz-com--unknown.json"
     ]
   }
 }
