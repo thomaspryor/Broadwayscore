@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T05:33:07.762Z",
+  "runDate": "2026-01-27T05:34:42.431Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-lion-king-1997",
+    "showFilter": "water-for-elephants-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 203,
-    "failed": 123,
+    "processed": 206,
+    "failed": 117,
     "skipped": 0,
-    "successRate": "62.3%"
+    "successRate": "63.8%"
   },
   "tierBreakdown": {
     "playwright": 22,
-    "scrapingbee": 18,
-    "brightdata": 20,
-    "archive": 143
+    "scrapingbee": 17,
+    "brightdata": 23,
+    "archive": 144
   },
   "statistics": {
-    "tier1Attempts": 14,
+    "tier1Attempts": 11,
     "tier1Success": 0,
-    "tier2Attempts": 14,
-    "tier2Success": 1,
-    "tier3Attempts": 13,
-    "tier3Success": 0,
-    "tier4Attempts": 17,
-    "tier4Success": 0,
-    "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 40
+    "tier2Attempts": 11,
+    "tier2Success": 0,
+    "tier3Attempts": 11,
+    "tier3Success": 3,
+    "tier4Attempts": 9,
+    "tier4Success": 1,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -237,7 +237,10 @@
     "cabaret-2024/talkinbroadway-com--unknown.json",
     "cabaret-2024/theaterscene-net--unknown.json",
     "cabaret-2024/wsj-com--unknown.json",
-    "the-lion-king-1997/familyvacationcritic-com--unknown.json"
+    "water-for-elephants-2024/deadline-com--unknown.json",
+    "water-for-elephants-2024/talkinbway--matthew-murray.json",
+    "water-for-elephants-2024/timeout--adam-feldman.json",
+    "water-for-elephants-2024/washingtonpost-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -350,19 +353,13 @@
     "hadestown-2019/washpost--peter-marks.json",
     "cabaret-2024/interestedbystander-com--unknown.json",
     "cabaret-2024/tman--jesse-green.json",
-    "the-lion-king-1997/nyt--ben-brantley.json",
-    "the-lion-king-1997/nytimes-com--unknown.json",
-    "the-lion-king-1997/thr--frank-scheck.json",
-    "the-lion-king-1997/variety--matt-wolf.json",
-    "the-lion-king-1997/AP--michael-kuchwara.json",
-    "the-lion-king-1997/NEWSDAY--linda-winer.json",
-    "the-lion-king-1997/NYP--clive-barnes.json",
-    "the-lion-king-1997/TIME--richard-zoglin.json",
-    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
-    "the-lion-king-1997/jasonraize-net--unknown.json",
-    "the-lion-king-1997/njcom--michael-sommers.json",
-    "the-lion-king-1997/streetdirectory-com--unknown.json",
-    "the-lion-king-1997/talkinbway--matthew-murray.json"
+    "water-for-elephants-2024/nyt--jesse-green.json",
+    "water-for-elephants-2024/variety--charles-isherwood.json",
+    "water-for-elephants-2024/vult--helen-shaw.json",
+    "water-for-elephants-2024/nyp--johnny-oleksinski.json",
+    "water-for-elephants-2024/talkinbroadway-com--unknown.json",
+    "water-for-elephants-2024/wsj--charles-isherwood.json",
+    "water-for-elephants-2024/wsj-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -406,8 +403,7 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "cabaret-2024/newyorktheater-me--unknown.json",
-      "the-lion-king-1997/familyvacationcritic-com--unknown.json"
+      "cabaret-2024/newyorktheater-me--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -429,7 +425,10 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json"
+      "hadestown-2019/towleroad-com--unknown.json",
+      "water-for-elephants-2024/talkinbway--matthew-murray.json",
+      "water-for-elephants-2024/timeout--adam-feldman.json",
+      "water-for-elephants-2024/washingtonpost-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -574,7 +573,8 @@
       "hadestown-2019/washingtonpost-com--unknown.json",
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
-      "cabaret-2024/wsj-com--unknown.json"
+      "cabaret-2024/wsj-com--unknown.json",
+      "water-for-elephants-2024/deadline-com--unknown.json"
     ]
   }
 }
