@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 45,
+      "music": 41,
+      "performances": 81,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "Some very gifted people have applied themselves to the task of making a musical out of Days and Wine and Roses but somehow the material proves resistant. It's a downbeat evening, arriving at a conclusion the audience will see coming well in advance, and the songs add little coloration to an extremely bleak picture.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's a brave, honest effort, but, if anything, it is too sober for its own good.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Greif, of course, gets impeccable work from his stars. Brian d'Arcy James' Joe is a needy operator... Kelli O'Hara finds real anguish in Kirsten",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising the stellar performances, the critic fundamentally questions whether this material should be a musical at all, criticizes the score extensively, finds the staging confusing, and concludes it's resistant to musicalization. | GPT-4o-mini: The review expresses significant concerns about the material and its adaptation into a musical, while praising the performances, leading to a mixed recommendation. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:47.283Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 50,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

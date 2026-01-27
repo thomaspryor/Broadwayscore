@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "With Tommy, if the dissonance is sometimes distancing, it’s also fascinating. Though I spent long stretches of the show intrigued and amused rather than earnestly rocking out, I was never not entertained. I had plenty of questions, but I also had a damn good time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-whos-tommy/",
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250829203208",
-  "archiveOrgUrl": "http://web.archive.org/web/20250829203208/https://www.vulture.com/article/theater-review-the-who-tommy-broadway-revival.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250829203208/https://www.vulture.com/article/theater-review-the-who-tommy-broadway-revival.html",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 80,
+      "performances": 82,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "I was never not entertained. I had plenty of questions, but I also had a damn good time.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The second act struggles to refind that sense of momentum and sheer musical euphoria",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Bourzgui has something about him that feels un-modern-Broadway in a completely exciting way",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses genuine enjoyment and entertainment value despite significant structural criticisms of the second act and some dated material, ultimately recommending the experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:00.330Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

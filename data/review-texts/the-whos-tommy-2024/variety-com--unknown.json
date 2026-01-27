@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...this production of 'Tommy' is basically for old people, and not for a new generation\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251113141756",
-  "archiveOrgUrl": "http://web.archive.org/web/20251113141756/https://variety.com/2024/legit/reviews/tommy-review-broadway-musical-2024-1235954615/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251113141756/https://variety.com/2024/legit/reviews/tommy-review-broadway-musical-2024-1235954615/",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 45,
+      "performances": 65,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "the plot, which is pointless, or Lorin Latarro's choreography, which is surprisingly uninspiring",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "this production of 'Tommy' is basically for old people, and not for a new generation",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "there are standout performances",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is predominantly critical of the plot, choreography, and overall production while acknowledging some strong performances and audience enthusiasm, but ultimately dismisses the show as pointless nostalgia.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:39.731Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

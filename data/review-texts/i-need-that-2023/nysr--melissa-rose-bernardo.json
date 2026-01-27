@@ -10,11 +10,67 @@
   "bwwExcerpt": "Directed by Moritz von Stuelpnagel—who helmed Rebeck’s 2018 backstage drama Bernhardt/Hamlet, also at the Roundabout—I Need That runs only 100 intermission-free minutes, but somehow feels padded. Perhaps in an effort to avoid turning the play into The Danny DeVito Show, Rebeck gives Foster and Amelia a few crises and obstacles, most of which feel contrived. Foster going to Cleveland to live right near his son and grandkids, however, does make sense, and it gives rise to Sam’s brilliant one-liner",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 48,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 48,
+    "confidence": "medium",
+    "range": {
+      "low": 43,
+      "high": 53
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "runs only 100 intermission-free minutes, but somehow feels padded",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "most of which feel contrived",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "gives rise to Sam's brilliant one-liner",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review criticizes fundamental structural issues (feels padded despite short runtime, contrived plotting) with only minor positive elements, suggesting more problems than strengths.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:25.828Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

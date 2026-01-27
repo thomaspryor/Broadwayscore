@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251205113818",
-  "archiveOrgUrl": "http://web.archive.org/web/20251205113818/https://theaterpizzazz.com/mother-play-a-play-in-five-evictions/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251205113818/https://theaterpizzazz.com/mother-play-a-play-in-five-evictions/",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 62,
+      "music": null,
+      "performances": 83,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "It didn't move me nearly as much as Mary Jane, but I can't deny that the mere opportunity to see Jessica Lange bring her great beauty, intelligence, vocal power, and sensitivity—not to mention her ability to smoke convincingly!—to the stage within the Hayes Theater's intimate environs is sufficient reason to commend a visit to Mother Play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This is a play designed to push your emotional buttons, so it's predictable that... like much else here, it's been done often enough to border on cliché",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Mother Play touches on familiar issues to which many Broadway playgoers will relate, even if they sometimes smack of contrivance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly recommends seeing the show primarily for Jessica Lange's exceptional performance, despite finding the play itself predictable and less emotionally affecting than a comparable production. | GPT-4o-mini: The review expresses a mix of appreciation for the performances, particularly Jessica Lange's, while also noting the play's familiar themes and clichés, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:30.845Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

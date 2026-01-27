@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Music should deepen this inquisition; characters can now sing through the difficult interactions that, in the documentary, they struggle to speak through. But the mundanity of Yandura’s indistinguishable score rarely coincides with the emotional ebbs and flows of Melocik’s lyrics. You never get the sense that this needs to be a musical at all.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
@@ -33,5 +33,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 69,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 75,
+      "music": 48,
+      "performances": 83,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "this cast makes 'Ohio' an easy-to-love watershed moment for American theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You never get the sense that this needs to be a musical at all",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the outwardly charming, but inwardly middling 'How to Dance in Ohio'",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: While praising the historic casting and educational value as a 'watershed moment,' the critic finds significant flaws in the music, direction, and overall execution, describing it as 'middling' and questioning whether it needs to be a musical. | GPT-4o-mini: The review presents a mixed perspective, highlighting strong performances and meaningful themes while critiquing the music and direction, leading to a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:35.995Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

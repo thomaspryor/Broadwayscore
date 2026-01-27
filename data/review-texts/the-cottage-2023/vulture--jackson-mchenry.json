@@ -7,7 +7,63 @@
   "publishDate": "July 24, 2023",
   "fullText": "The Cottage tries to emphasize the fizz, but nobody remembered to shake the soda can beforehand. It’s full of explanations, light on mess",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 39,
+    "confidence": "medium",
+    "range": {
+      "low": 30.5,
+      "high": 47.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "nobody remembered to shake the soda can beforehand",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "full of explanations, light on mess",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "tries to emphasize the fizz",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The metaphor about flat soda and criticism of being 'full of explanations, light on mess' suggests a production that lacks energy and dramatic tension, indicating a negative recommendation. | GPT-4o-mini: The review expresses significant disappointment with the production, indicating a lack of engagement and excitement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:42.668Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 35,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

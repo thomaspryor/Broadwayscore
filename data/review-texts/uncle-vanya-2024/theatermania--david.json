@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "But this Uncle Vanya is only enjoyable in fits and starts. It’s modern, but not completely; brisk, while still feeling too long.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/uncle-vanya-bway/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "only enjoyable in fits and starts",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "brisk, while still feeling too long",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "It's modern, but not completely",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review expresses lukewarm sentiment with qualified praise that's immediately undermined by significant criticisms about pacing and inconsistent execution. | GPT-4o-mini: The review indicates a mixed experience with enjoyment only in parts and conflicting feelings about pacing, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:28.472Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,11 +10,67 @@
   "bwwExcerpt": "To its credit, The Heart of Rock and Roll tries to get out before the buzz wears off. The second act lags and then accelerates around the point where Bobby’s choice between rock and cardboard gets obvious. While Abrams delights in adding new complications to the book, he seems to get bored of its circumstances about three quarters of the way through, and the show slams into its denouement at 90 miles per hour. There are a few lines of tossed-off explanation, right before the big finale, about wh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 45,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "The second act lags and then accelerates around the point where Bobby's choice between rock and cardboard gets obvious",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "he seems to get bored of its circumstances about three quarters of the way through, and the show slams into its denouement at 90 miles per hour",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The heart of rock and roll is still beating … as long as you don't think too hard about it",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently criticizes the show's structure, pacing, and rushed resolution while offering only backhanded praise that requires audiences not to think critically.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:34.946Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...most gripping when it delivers...the inner workings of a burgeoning mastermind\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240423124845",
-  "archiveOrgUrl": "http://web.archive.org/web/20240423124845/https://www.washingtonpost.com/entertainment/theater/2024/04/22/patriots-broadway-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240423124845/https://www.washingtonpost.com/entertainment/theater/2024/04/22/patriots-broadway-review/",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 75,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "Patriots suffers from a slipperiness of both focus and scale, dramatizing historical incidents and backroom deals while only thinly sketching the characters behind them",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Keen's quietly magnificent performance has the bottled intensity of a homemade bomb, and the show feels less dangerous in his absence",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Patriots lacks a taut organizing principle",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises individual performances, especially Will Keen's Putin, but criticizes the play's structure, focus, and character development, resulting in a mixed assessment without a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:55.141Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "“ ‘Jaja’s African Hair Braiding’ celebrates business owners like Jaja and the ladies who work for her. It’s also a portrait that illustrates everything it takes for Black women, especially immigrants, to survive in this country. Amid the sacrifices and the tears, the play showcases the community these women build among themselves and how they care for each other when no one else will.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "celebrates business owners like Jaja and the ladies who work for her",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "showcases the community these women build among themselves",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Read more",
+        "sentiment": "neutral",
+        "strength": 1
+      }
+    ],
+    "reasoning": "Claude: The review focuses entirely on thematic appreciation with positive language about celebration and community, but lacks any evaluative language about theatrical quality or explicit recommendation. | GPT-4o-mini: The review highlights the play's positive themes and emotional depth, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:32.973Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 85,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

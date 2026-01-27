@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Huey Lewis’ discography is woven into the story with a looseness that makes Escape to Margaritaville seem downright Pulitzer-worthy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 47,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-heart-of-rock-and-roll/",
@@ -41,5 +41,63 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 47,
+    "confidence": "low",
+    "range": {
+      "low": 33.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 53,
+      "performances": 70,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "mostly baffling book",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the show mostly plods through its confounding second act, weighed down by the essential strangeness of Bobby's narrative dilemma",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Corey Cott, take your astonishing abs and fine-ass butt and get the hell out of there!",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite praising some performances and choreographic moments, the critic finds the book 'mostly baffling,' the story logic confounding, and repeatedly mocks the central premise as absurd and depressing. | GPT-4o-mini: The review presents a mixed view, praising some performances and energetic direction while criticizing the confusing book and overall narrative coherence. | Note: Models differed by 17 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:20.986Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 55,
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 17 points (Claude: 38, OpenAI: 55)"
+    ]
+  }
 }

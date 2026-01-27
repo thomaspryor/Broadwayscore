@@ -7,7 +7,63 @@
   "publishDate": "January 9, 2024",
   "fullText": "In three acts, Harmon brilliantly dramatizes these questions and more through the story of one very specific yet completely recognizable Jewish family (fans of last season’s Leopoldstadt will find much to admire here). Scenes of simmering resentment imperceptibly come to a boil as family politics brush up against seismic global forces.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harmon brilliantly dramatizes these questions",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Scenes of simmering resentment imperceptibly come to a boil",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "fans of last season's Leopoldstadt will find much to admire here",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the playwright's dramatic skill and the production's ability to build tension, with positive comparison to acclaimed recent work, indicating clear recommendation despite brief excerpt. | GPT-4o-mini: The review expresses strong praise for the writing and thematic depth, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:19.938Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

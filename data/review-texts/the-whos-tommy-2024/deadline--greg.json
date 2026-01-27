@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "With a superb cast headed by Broadway newcomer Ali Louis Bourzgui as Tommy, the “deaf, dumb and blind kid” – most of whatever language less-than-acceptable by today’s standards has been retained – and Alison Luff as his mom Mrs. Walker, Tommy feels less like a stick-to-what-works revival than a top-to-bottom reimagining. Nearly all of it works beautifully.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-whos-tommy/",
@@ -51,5 +51,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250901211809",
-  "archiveOrgUrl": "http://web.archive.org/web/20250901211809/https://deadline.com/2024/03/the-whos-tommy-broadway-review-1235869837/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250901211809/https://deadline.com/2024/03/the-whos-tommy-broadway-review-1235869837/",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 95,
+      "performances": 90,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "thrilling proof that the premiere concept album of 1969 is great music indeed",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a non-stop surge of electrified energy, a darting pinball of a production",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "had the audience at the reviewed performance on its feet and roaring",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses superlative language throughout ('thrilling proof', 'gloriously directed', 'exhilarating', 'never been better') with minimal criticism and describes audience euphoria, indicating an unqualified rave recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:53.023Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

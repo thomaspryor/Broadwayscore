@@ -10,8 +10,64 @@
   "bwwExcerpt": "With so many characters and so many themes, the work could feel overwhelming. But Cromer, as he has done so often, ensures the show flows smoothly and feels much shorter than its running time. However, neither the play, which can feel overwritten at times, nor the production is perfect. For example, Takeshi Kata’s set design is visually too spare for such a long show while Sarah Laux’s costumes feel uninspired. Still, we should be profoundly grateful that a work of such ambition, scope and impor",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": null,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "we should be profoundly grateful that a work of such ambition, scope and impor",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "neither the play, which can feel overwritten at times, nor the production is perfect",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Cromer, as he has done so often, ensures the show flows smoothly and feels much shorter than its running time",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges significant flaws (overwritten, imperfect production, uninspired design) but ends with profound gratitude for the work's ambition and praises the direction, suggesting a qualified positive recommendation despite the incomplete text. | GPT-4o-mini: The review presents a mix of positive and negative observations, indicating a qualified recommendation but not strong enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:49.721Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

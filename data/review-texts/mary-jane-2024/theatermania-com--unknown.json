@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"It’s difficult to sit through, and yet, there is something consoling about it.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -53,5 +53,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251205232458/https://www.theatermania.com/news/review-amy-herzogs-mournful-lullaby-mary-jane-comes-to-broadway-with-rachel-mcadams_1737981/",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 76,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "Herzog has written a mournful lullaby, somehow simultaneously upsetting and soothing, thoughtful and gut-wrenching",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The supporting cast is, without exception, exceptional",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "However, I can't help feeling that a different performer could have been stronger and rawer",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critic offers substantial praise for Herzog's writing, direction, and supporting cast, with only measured criticism of the lead performance, indicating a clear positive recommendation despite some reservations. | GPT-4o-mini: The review expresses strong praise for the writing and direction, with a commendable performance from McAdams, leading to a clear recommendation despite minor reservations about casting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:22.820Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

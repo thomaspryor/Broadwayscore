@@ -7,7 +7,63 @@
   "publishDate": "November 13, 2023",
   "fullText": "The unevenly staged Harmony is a shakily constructed set of misfiring elements, whose most compelling beats around Nazism, Antisemitism, and bigotry—all points resoundingly and rightly made—feel imposed and didactic rather than flowing naturally from the source material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": null,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "unevenly staged Harmony is a shakily constructed set of misfiring elements",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "feel imposed and didactic rather than flowing naturally from the source material",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "most compelling beats around Nazism, Antisemitism, and bigotry—all points resoundingly and rightly made",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic describes fundamental structural problems with the show ('shakily constructed', 'misfiring elements', 'didactic') while acknowledging some thematic merit, indicating significant issues that outweigh positives. | GPT-4o-mini: The review expresses significant criticism of the construction and staging of the show, indicating a clear negative sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:57.401Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
