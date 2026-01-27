@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"There’s no connection, no chemistry, no soul. \"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -53,5 +53,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251211161306/https://www.theatermania.com/news/review-a-big-empty-revival-of-the-wiz-lacks-the-magic-of-broadway_1737204/",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 68,
+      "performances": 53,
+      "direction": 18
+    },
+    "keyPhrases": [
+      {
+        "quote": "so pitiful that it does a major disservice to a genuinely groundbreaking piece of theater",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "This is as lifeless a production as I've ever seen on Broadway, and, quite frankly, it's shocking",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Lewis, her co-stars, and the ticketbuyers deserve better",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging some individual strengths (Freeman's performance, the music), the critic delivers a scathing assessment calling it 'pitiful,' 'lifeless,' and 'shocking,' with fundamental failures in direction and production design that overshadow any positives. | GPT-4o-mini: The review is overwhelmingly negative, highlighting significant issues with the production, direction, and script, leading to a strong recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:00.370Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
