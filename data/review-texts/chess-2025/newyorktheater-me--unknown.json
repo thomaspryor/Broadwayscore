@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": 73,
+      "performances": 78,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strong's weak book attempts to amp up the stakes of the chess matches to a ludicrous degree while simultaneously undercutting these efforts with a clunky, jokey narrative",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the catchy rock score and the performances by the exciting Broadway pros Aaron Tveit, Lea Michele and Nicholas Christopher",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Chess has the singular distinction of being full of all sorts of dopey puns and incomprehensible, unexplained lingo about chess without my once seeing, or even being asked to visualize, a chess piece",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds significant value in the music and performances but severely criticizes the book and overall coherence, resulting in a mixed review that neither strongly recommends nor dismisses the show. | GPT-4o-mini: While the performances and music received praise, the weak book and convoluted narrative detracted significantly from the overall experience, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:25:14.371Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

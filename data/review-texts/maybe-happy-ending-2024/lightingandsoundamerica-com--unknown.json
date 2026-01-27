@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": 85,
+      "performances": 84,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "This kooky, melancholy robot romance provides the fresh blast of talent every theatre season needs.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Still, originality like this doesn't come along every day.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "For all its successes, Maybe Happy Ending runs into trouble in its final passages",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticisms of the book's vagueness and problematic ending, the critic celebrates the show's originality, exceptional design work, strong performances, and musical craft, concluding it provides 'the fresh blast of talent every theatre season needs.' | GPT-4o-mini: The review expresses strong praise for the production's originality, performances, and design while noting some issues with the book, leading to a solid recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:29:20.291Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20210411051927",
-  "archiveOrgUrl": "http://web.archive.org/web/20210411051927/https://www.newsday.com/entertainment/theater/hamilton-review-even-better-on-broadway-1.10711524"
+  "archiveOrgUrl": "http://web.archive.org/web/20210411051927/https://www.newsday.com/entertainment/theater/hamilton-review-even-better-on-broadway-1.10711524",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 92,
+      "music": 95,
+      "performances": 93,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "hip-hop masterwork",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "even more nuanced, more cohesive in individual performances and its more focused finale",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Little did he know he'd make musical-theater history, too",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified praise calling it a 'masterwork' that makes 'musical-theater history' with superlatives throughout and zero reservations about recommending it. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising its nuance, performances, and direction, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:25:58.879Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

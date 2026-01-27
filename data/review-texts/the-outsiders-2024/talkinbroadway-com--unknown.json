@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 66,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 66,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 70,
+      "music": 53,
+      "performances": 79,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "The songs are pleasant, but do not make much of an impact because they lack the grit and propulsive sense of yearning befitting the characters and situations",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Overall, the performers are uniformly quite strong",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Perhaps the musical, which will certainly have its share of detractors, might produce a similar effect, and inspire a generation of new theatregoers",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: While praising the strong performances and faithful adaptation, the critic identifies significant flaws in the music and staging that prevent a full recommendation, settling on qualified appreciation with acknowledgment of likely mixed reception. | GPT-4o-mini: The review presents a mixed view, praising the performances while expressing significant reservations about the music and direction, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:38:24.614Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 67,
+    "openaiScore": 65,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20160604100250",
-  "archiveOrgUrl": "http://web.archive.org/web/20160604100250/http://hellobeautiful.com/2015/06/02/brandy-in-chicago-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20160604100250/http://hellobeautiful.com/2015/06/02/brandy-in-chicago-review/",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 78.5,
+      "high": 97.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 92,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "taking that ride with Brandy was one of the most enjoyable Broadway experiences I've had in a long time",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Brandy is slaying!",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Her acting was spot-on and her voice was the cherry on top",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive review with enthusiastic praise for Brandy's performance, explicit statement about it being one of the most enjoyable Broadway experiences, and clear recommendation to get tickets. | GPT-4o-mini: The review expresses unqualified enthusiasm for Brandy's performance and the overall experience of the show, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:25:46.276Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 92,
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

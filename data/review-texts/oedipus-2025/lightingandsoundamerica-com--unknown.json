@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 93,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "A shattering, life-crushing series of events unfolds before us, and it is impossible to look away",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "We rarely get theatrical tragedy of this scale and intensity",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Everything in Icke's staging contributes to the play's awful clarity of vision",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic offers sustained, detailed praise for all aspects of the production - performances, direction, design - calling it rare theatrical tragedy of exceptional scale and intensity with no significant reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's direction, performances, and overall impact, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:31:18.190Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

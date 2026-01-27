@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230324091048",
-  "archiveOrgUrl": "http://web.archive.org/web/20230324091048/https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review"
+  "archiveOrgUrl": "http://web.archive.org/web/20230324091048/https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": 72,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "I've no doubt that many people will be transported by The Cursed Child, a strange son of Rowling's lucrative universe that ought not disappoint its creators",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "those problems are dimmed by the giddy magnificence of its design",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Though the script is tinny in parts, and the production often feels rushed despite its luxurious length",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant flaws in the script and pacing but is clearly impressed by the production's stagecraft and believes audiences will be transported by the experience, resulting in a qualified positive recommendation. | GPT-4o-mini: The review expresses a clear appreciation for the production's stagecraft and performances while noting some shortcomings in the script, leading to a positive but cautious recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:26:26.064Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

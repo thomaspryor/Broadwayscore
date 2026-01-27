@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 95,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "Just in Time transcends theatre into a true experience that is part play, part musical, part concert, part nightclub, and all astonishing",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Just in Time is at the upper echelon of performances that the audience wants to linger a little longer in",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "For me, Just in Time is a moment worth holding on to",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is overwhelmingly positive with superlative praise for Groff's performance and the overall experience, with only minor technical criticisms about staging constraints that don't diminish the strong recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the performance and its emotional impact, highlighting Groff's versatility and the overall experience, despite some minor critiques of direction and choreography.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:27:07.365Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 60,
+      "performances": 75,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "no, 'Redwood' is not a wholly satisfying Broadway musical, despite those striking visuals",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "a work of stunning stagecraft that for a few moments even elicits something close to the sort of ineffable feeling of awe one gets in actual Nature",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "'Redwood' seems likely to make tree-huggers of us all",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the show is 'not a wholly satisfying Broadway musical' but praises the stunning production design and performances, creating a mixed recommendation that leans slightly positive due to the technical achievements. | GPT-4o-mini: The review highlights impressive visuals and performances but ultimately finds the musical lacking in narrative and memorable songs, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:34:04.219Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

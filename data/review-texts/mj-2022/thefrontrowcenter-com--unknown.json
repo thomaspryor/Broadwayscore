@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250216044350/https://thefrontrowcenter.com/2022/02/mj/",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 80,
+      "performances": 88,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Each element of the piece, however, was a true showcase of talent, craft, and artistry and deserves to be championed independently",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It is fun, it is catchy, and it brought audience members to hoot, holler, lift their hands, and get to their feet",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It also (much like Michael Jackson himself) comes at a price, and one that the producers weren't willing to acknowledge",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises virtually every production element and performance while expressing significant moral reservations about the show's avoidance of Jackson's controversies, resulting in a qualified recommendation. | GPT-4o-mini: The review highlights strong performances and production elements while acknowledging significant concerns about the narrative's handling of Michael Jackson's legacy, leading to a clear but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:30:56.805Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

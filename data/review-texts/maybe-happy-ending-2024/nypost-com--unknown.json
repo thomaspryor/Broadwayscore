@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250902105829",
-  "archiveOrgUrl": "http://web.archive.org/web/20250902105829/https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250902105829/https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 89.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 90,
+      "performances": 95,
+      "direction": 96
+    },
+    "keyPhrases": [
+      {
+        "quote": "nourishes the soul in a way few Broadway shows even attempt to do",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "And yet he's succeeded brilliantly. He's brought Wall-E to Broadway.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Most shows are lucky to have a single breathtaking moment. At the Belasco, you lose count.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlatives throughout ('sublime', 'brilliantly', 'extraordinarily charming'), compares it favorably to Pixar masterpieces, praises all aspects of the production without meaningful caveats, and concludes with unqualified enthusiasm about the director's achievement. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising its emotional depth, performances, and direction, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:29:31.404Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 94,
+    "openaiScore": 95,
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250327214527",
-  "archiveOrgUrl": "http://web.archive.org/web/20250327214527/https://www.talkinbroadway.com/page/world/Suffs.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250327214527/https://www.talkinbroadway.com/page/world/Suffs.html",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 77,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "not fully able to find its footing either as a straightforward tale, a snappy satire, or captivating entertainment",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "rich performances by a solid ensemble cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "never fully escapes its history lesson tone",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's good intentions and strong performances but finds fundamental flaws in structure and theatrical effectiveness, making this a classic mixed review that struggles to recommend. | GPT-4o-mini: The review highlights strong performances but criticizes the show's execution and pacing, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:35:57.028Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

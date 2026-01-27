@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 73,
+      "performances": 83,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "When at the start of 'Water for Elephants,' Jacob jumps a train during the Depression, he lucks out – and so do we.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's the Big Top-like entertainment, especially the heart-stopping acrobatics, which are not just athletically spectacular but often visually beautiful and emotionally expressive",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Much else in 'Water for Elephants' has its pleasures – the score, the singing, the puppetry, the acting, even the love story — but nothing else matches the circus artistry",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer is clearly enthusiastic about the production, particularly praising the circus elements as 'heart-stopping' and 'sublime', while finding pleasures throughout despite some reservations about the music and story. | GPT-4o-mini: The review expresses strong praise for the circus artistry and performances while noting some weaknesses in the music and book, leading to a solid positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:40:55.809Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250811114308",
-  "archiveOrgUrl": "http://web.archive.org/web/20250811114308/https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-mind-at-the-public/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250811114308/https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-mind-at-the-public/",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 80,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "this feel-good empowerment fable hungers for a home on Broadway. And why not?",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Hell's Kitchen has a warm and spirited book by Kristoffer Diaz that nevertheless struggles to justify its songs by the second act",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "He stages a ridiculously talented cast, topped with a star-making turn by Moon",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic finds significant strengths in the performances and music but notes structural problems with the book, ultimately positioning it as a polished, commercial production worthy of Broadway despite its flaws. | GPT-4o-mini: The review expresses clear praise for the performances and music while acknowledging weaknesses in the book, leading to a solid but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:26:32.351Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

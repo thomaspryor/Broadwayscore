@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 90,
+      "performances": 94,
+      "direction": 91
+    },
+    "keyPhrases": [
+      {
+        "quote": "a trio of stunning star performances",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Perhaps this superlative demonstration of craft in a first-class production can inspire a new generation of talents",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Ragtime remains a musical that could have been written yesterday",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers consistent praise throughout, calling it a 'superlative demonstration of craft in a first-class production' with 'stunning star performances' and 'bravura performances,' with only minor technical quibbles about sound levels. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its relevance, performances, and direction, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:32:53.862Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

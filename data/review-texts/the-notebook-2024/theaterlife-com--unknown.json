@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 48,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 43,
+      "music": 50,
+      "performances": 55,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "little about it that makes much of an impression in the current musical theatre world",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I'm afraid I joined her only in being unimpressed",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "little on view in The Notebook is unique or notably original",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states being 'unimpressed' and finds the show lacking in originality, impact, and memorable elements despite acknowledging its emotional effect on audiences. | GPT-4o-mini: The review expresses a mix of mild appreciation for performances and production elements but ultimately conveys disappointment in the overall impact and originality of the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:37:46.716Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

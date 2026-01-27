@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 63,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "might not hit as hard as its predecessors, but still has the power to inspire an entire generation of young theatergoers just the same",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "While its musical adaptation may have its squabbles, its heart of gold still remains firmly intact. Grade: B",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Unfortunately, the rest of the musical's songs — which were penned by folk duo Jamestown Revival, with contributions from Levine — pale in comparison to the aforementioned tracks",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: A B grade review that praises stellar performances and staging while critiquing weak songs and creative liberties, ultimately recommending despite flaws. | GPT-4o-mini: The review expresses a clear positive sentiment overall, praising performances and direction while noting significant issues with the music and adaptation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:38:12.637Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

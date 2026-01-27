@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 50,
+      "music": 65,
+      "performances": 38,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "its leering invitation to sin has become a mechanical bump and grind and its thrills have lost much of their tinselly, tacky allure",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It's a crowded, tedious sixty minutes, an unnecessary add-on to a production that has inexplicably ballooned to a three-hour running time",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Bebe Neuwirth, raising a fist in fury against a cruel fate she will ultimately accommodate, is nothing less than monumental, stopping the show",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic systematically dismantles most aspects of the production, particularly criticizing the direction as effortful and mechanical, the lead performances as miscast, and the overall concept as compromised, with only isolated praise for supporting performances. | GPT-4o-mini: The review expresses significant disappointment with the production, particularly in its direction and performances, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:24:32.597Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

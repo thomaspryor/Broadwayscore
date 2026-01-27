@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": null,
+      "performances": 93,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "Marjorie Prime ranks among the finest productions of the season. It's a must-see",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Harrison has written a play that asks enduring questions about memory, loss, and love with genuine philosophical rigor",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This production isn't studied or overly controlled—it's achingly real",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls this 'among the finest productions of the season' and 'a must-see,' praising every element from the profound script to the exceptional performances with unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its emotional depth, strong performances, and the profound questions it raises, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:29:00.638Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

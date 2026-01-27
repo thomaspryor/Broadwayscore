@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20180423135208",
-  "archiveOrgUrl": "http://web.archive.org/web/20180423135208/http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034"
+  "archiveOrgUrl": "http://web.archive.org/web/20180423135208/http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 85,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "Eye-popping enchantment regularly flies off the stage",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The show gleams like a bolt of lightning — not one that leaves marks on your forehead, just vivid memories in your mind",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Eventually, the ending gets a bit shaggy and Harry and Ginny's other kids simply go missing in action. But that's nitpicking",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Enthusiastic praise for direction, staging, and magical effects with superlative language throughout, minor plot criticisms explicitly dismissed as 'nitpicking'. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's direction and stagecraft, with minor caveats about the plot's conclusion.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:26:04.727Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 83,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "worth a Broadway production for two reasons: Mia Farrow and Patti LuPone",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Roommate does feel unfinished, its ending reworkable",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "neither greatly nuanced, nor roll-on-the-floor hilarious, although they have their moments",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the star performances of Farrow and LuPone but critiques the script as feeling unfinished and the characters as not greatly nuanced, resulting in a qualified recommendation based primarily on the stars. | GPT-4o-mini: The review highlights strong performances from the leads but expresses significant reservations about the script and overall execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:39:04.382Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

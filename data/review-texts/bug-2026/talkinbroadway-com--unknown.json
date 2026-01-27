@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -42,5 +42,61 @@
   "sourceMethod": "brightdata",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 86,
+    "confidence": "high",
+    "range": {
+      "low": 78.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Carrie Coon and Namir Smallwood are giving exceptionally commanding performances",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "See it, and then go home and take a long hot shower",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "buttressed by the sure hand of director David Cromer",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic gives clear praise for the performances, direction, and production values, explicitly recommends seeing it, and frames the intense experience as a theatrical achievement rather than a flaw. | GPT-4o-mini: The review highlights exceptional performances and strong direction, with an explicit recommendation to see the show, indicating a clear positive sentiment overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:24:10.507Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 88,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 75.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 74,
+      "music": 78,
+      "performances": 88,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "Watching S.E. Hinton's The Outsiders come to life on stage was a truly magical experience",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The Outsiders is a wonderful addition to this season's Broadway offerings",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "When I saw the show, it gripped me from the beginning and held on to me until the end. My attention never wandered",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The reviewer expresses genuine enthusiasm throughout, calling it 'magical' and 'wonderful,' praising the faithful adaptation, strong performances, and emotional impact, with only minor technical criticisms that don't diminish overall recommendation. | GPT-4o-mini: The review expresses strong emotional connection and praise for the adaptation while acknowledging some weaknesses, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:38:18.300Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 85,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

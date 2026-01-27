@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 86,
+    "confidence": "high",
+    "range": {
+      "low": 78.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 86,
+      "performances": 83,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "he may just have written the best stage musical about circuses by making the animals as real as the human characters",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it is director Jessica Stone assisted with circus design by Shana Carroll who has done the most inventive and original work",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The musical version of Water for Elephants is one of the few film-to-stage adaptations in many years to be as successful as the cinema version",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers consistent praise throughout, calling it potentially 'the best stage musical about circuses,' highlighting 'inventive and original work' by the creative team, and declaring it 'as successful as the cinema version' with problems 'beautifully solved.' | GPT-4o-mini: The review expresses strong praise for the musical's adaptation, performances, and direction while highlighting its inventive qualities, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:41:18.565Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 88,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 65,
+      "performances": 79,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "doesn't exactly disappoint, at least not that frequently",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "the musical's unmitigated highlight is the Broadway newcomer Rogers as Betty Boop",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "fitfully enjoyable score from composer David Foster and lyricist Susan Birkenhead",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review is genuinely mixed, praising standout performances (especially Rogers) and Mitchell's direction/choreography while criticizing the book's plot contrivances and inconsistent score, with qualified language throughout suggesting modest entertainment value rather than strong recommendation. | GPT-4o-mini: The review presents a mix of positive and negative elements, with strong performances highlighted but some reservations about the script and overall execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:23:38.312Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

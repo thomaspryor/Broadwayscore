@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": 45,
+      "performances": 73,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "So, spending nearly 3 hours with her and her billionaire timeshare-tycoon husband, David (F. Murray Abraham), in this busy but only fitfully engaging new Broadway musical is a long sit",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "But is it a story that sings? The argument on stage at the St. James Theatre isn't very persuasive",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Crown it a royal mishmash",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review consistently criticizes the musical's core elements - unclear story, weak songs, muddled direction - while praising only Chenoweth's performance, ultimately concluding it's a 'royal mishmash' that fails to justify its nearly 3-hour runtime. | GPT-4o-mini: The review presents a mixed perspective, highlighting strong performances by Chenoweth but criticizing the script and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:32:24.814Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

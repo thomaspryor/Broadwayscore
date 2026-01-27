@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,5 +30,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 70,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 77,
+      "performances": 88,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "There are many features in Six that deserve grades of ten for talent and skill, most especially the sensational cast, each of whom gives a command performance. But somehow, when I do the math, Six's grade still comes out a seven.",
+        "sentiment": "neutral",
+        "strength": 5
+      },
+      {
+        "quote": "it does sometimes feel that there's a hollow at its core",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "slickly entertaining, historically shallow rock musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly gives the show a '7' grade and praises performances while noting significant structural and thematic weaknesses, landing in mixed-positive territory. | GPT-4o-mini: While the performances and musical numbers are praised, the review highlights significant issues with depth and substance, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:35:03.775Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 70,
+    "openaiScore": 70,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 0,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -36,5 +36,61 @@
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Word count too low: 205 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 0,
+    "confidence": "medium",
+    "range": {
+      "low": 0,
+      "high": 5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Smart Hacks for Hassle-free Travel",
+        "sentiment": "neutral",
+        "strength": 1
+      },
+      {
+        "quote": "Family travel should be about making memories, not managing stress.",
+        "sentiment": "neutral",
+        "strength": 1
+      },
+      {
+        "quote": "We'll help you plan unforgettable experiences that work for every family member",
+        "sentiment": "neutral",
+        "strength": 1
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review does not contain any relevant commentary on a theatrical production, indicating it is not a review of a show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:37:09.526Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 0,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

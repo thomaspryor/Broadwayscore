@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 49,
+    "confidence": "high",
+    "range": {
+      "low": 43,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 63,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "This misguided production, in short, has gotten the balance wrong between unsettling and entertaining",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The scenes and songs with Neuwirth and Skybell demonstrate that effective and affecting theater doesn't have to be high concept or reimagined",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "If so much of it weren't so out of balance, this fourth Broadway revival of 'Cabaret' would be impressive",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges impressive elements but repeatedly emphasizes fundamental flaws in the production's concept and execution, calling it 'misguided' and 'out of balance,' with only select performances providing redemption. | GPT-4o-mini: The review expresses significant concerns about the production's balance and effectiveness, but acknowledges some strong performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:24:40.711Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 50,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

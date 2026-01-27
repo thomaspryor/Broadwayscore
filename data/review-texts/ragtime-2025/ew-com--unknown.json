@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 67.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 86,
+      "performances": 89,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "When Henry is center stage, singing his heart out, blowing our hair back, everything melts away: it's just Coalhouse, his pain and Henry's jaw-dropping baritone.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "But the staging also has a tendency to lean on its gimmicks (the turntable stage, the moving staircases) like crutches, wasting opportunities for sprawling choreography and grounded movement.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Ragtime isn't the kind of show you walk out of unscathed, not if you're really paying attention. Grade: B",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The B grade and overall positive language about performances and music outweigh the staging criticisms, indicating a qualified recommendation despite some reservations. | GPT-4o-mini: The review expresses strong praise for the performances and music, with minor reservations about direction and staging, leading to a clear recommendation to see the show. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:32:41.578Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 85,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

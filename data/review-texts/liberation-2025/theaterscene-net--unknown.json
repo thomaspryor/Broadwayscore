@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 86,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Liberation, Bess Wohl's latest play, has weathered the transition from the Roundabout Theatre Company's Laura Pels Theatre to Broadway's James Earl Jones Theatre and the play is now more impressive than before",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The cast is excellent in their distinctive roles",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Wohl's ambitious and engrossing Liberation attempts to investigate the roots of the Women's Liberation Movement",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is consistently positive about performances, direction, and the play's improvement from Off-Broadway to Broadway, with only minor technical notes about clarity, indicating a clear recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and the play's themes, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:28:00.825Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251208015415",
-  "archiveOrgUrl": "http://web.archive.org/web/20251208015415/https://www.theatermania.com/news/review-water-for-elephants-is-broadways-first-fully-integrated-circus-musical_1735237/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251208015415/https://www.theatermania.com/news/review-water-for-elephants-is-broadways-first-fully-integrated-circus-musical_1735237/",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 92,
+      "performances": 89,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "Water for Elephants isn't just the frontrunner for the 2024 Tony Award for Best Musical, it's a bold assertion that this still young artform has plenty of tricks left to reveal",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it is most certainly the best new musical on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the first fully integrated circus musical on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic declares this 'the best new musical on Broadway' and 'the frontrunner for the Tony Award,' using superlatives throughout while praising every aspect of the production with only minor reservations about second act pacing. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the production's innovative integration of circus acts and a strong recommendation for audiences to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:41:11.253Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

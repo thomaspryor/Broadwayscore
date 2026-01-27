@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 75,
+      "performances": 75,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "The fabulous Iglehart, who brought the house down Wednesday afternoon with his 'Friend Like Me' musical number, thrillingly staged in the vein of 'Be Our Guest,' somehow manages to both reinvent Williams' manic brilliance and make that imprisoned wizard his own",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Whenever the Genie is stuck in the lamp, though, the show takes a dive",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "much of the show just skedaddles along, hitting the plot points without enough oomph",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises James Monroe Iglehart's Genie performance and Disney's production values while criticizing the weak book, lack of emotional stakes, and inconsistent tone, resulting in a mixed recommendation that acknowledges both strengths and significant flaws. | GPT-4o-mini: The review highlights strong performances, particularly from the Genie, but criticizes the book and overall emotional stakes, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:21:52.262Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 78,
+      "performances": 82,
+      "direction": 64
+    },
+    "keyPhrases": [
+      {
+        "quote": "vivid, terrifically sung, but hard to love revival",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Chess' music is its greatest asset",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "this Chess may belt to the rafters and flatter the senses, but its stumbling book and cut-out characters keep it from delivering a real checkmate",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic praises the music and performances but finds fundamental flaws in the book and characterization, concluding it fails to deliver despite technical excellence. | GPT-4o-mini: While the music and performances are highly praised, significant issues with the book and character development lead to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:25:33.123Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

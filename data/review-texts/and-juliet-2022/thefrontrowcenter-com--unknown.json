@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240419032331",
-  "archiveOrgUrl": "http://web.archive.org/web/20240419032331/https://thefrontrowcenter.com/2022/11/juliet-2/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240419032331/https://thefrontrowcenter.com/2022/11/juliet-2/",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 58,
+      "music": 78,
+      "performances": 83,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "A magnificent extravaganza of high energy pop music and Shakespeare-inspired comedy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the story line and the playlist don't leave much room for emotional depth or growth within the characters",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "An entertaining, though not deep, night at the theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoys the spectacle, performances, and production values while acknowledging significant weaknesses in storytelling and character development, ultimately describing it as entertaining but shallow. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall entertainment value, but notes significant limitations in emotional depth and storyline.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:23:20.839Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

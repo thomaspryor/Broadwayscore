@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 28,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 28,
+    "confidence": "high",
+    "range": {
+      "low": 20.5,
+      "high": 35.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 18,
+      "music": 23,
+      "performances": 68,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "the creative team responsible for Redwood never takes Jesse as seriously as her suffering, instead relying on Menzel's soaring vocals to defy gravity despite the burden of a leaden score and book",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The book, from the show's director Tina Landau, is a litany of unwieldy exposition, silly contrivances, and self-help bromides",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Diaz cannot string together enough compelling notes to make her other effort more palatable",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This is a harsh pan that systematically dismantles the musical's book, score, and direction while acknowledging only Menzel's vocal prowess, with extensive criticism and no clear recommendation to see the show. | GPT-4o-mini: The review is overwhelmingly critical of the musical's script and music, with only mild praise for Menzel's performance, leading to a clear pan recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:34:37.304Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 74,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "Farrow embodies the role to perfection, using her own time-honored skills in portraying women who are vulnerable, ethereal, intelligent, introspective, and offbeat, yet with surprising touches of inner strength",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The play is not greatly assisted by its increasingly implausible plot turns",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "there is not a lot of substance to what amounts to a 100-minute character study",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed review praising Farrow's performance while criticizing the play's implausible plot and lack of substance, with uneven performances and direction. | GPT-4o-mini: The review highlights strong performances, particularly from Farrow, but expresses significant concerns about the script and overall substance, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:39:17.811Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

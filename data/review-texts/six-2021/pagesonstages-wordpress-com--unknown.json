@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 56,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
   "textIssues": [
     "Word count too low: 278 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 56,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": 80,
+      "performances": 81,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "But it doesn't really feel like theatre",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "If you are in town and have never seen a Broadway show, this is not a true Broadway theatre experience",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Stellar vocal performances, glittering costumes, and high energy feminism abound",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the music and performances but fundamentally questions whether this is even theater, explicitly advising against it for first-time Broadway visitors. | GPT-4o-mini: The review highlights strong vocal performances and a fun concept but criticizes the lack of a storyline and theatrical elements, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:34:56.614Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 60,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": 92,
+      "performances": 93,
+      "direction": 86
+    },
+    "keyPhrases": [
+      {
+        "quote": "The entire cast is superb, led by three magnificent leads with exceptional vocals",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "this unbelievable cast may make this rendering of 'Chess' the best to date",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "delivers a rendition of 'Chess' that is clear, straightforward and intelligent",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Critic consistently praises all elements with superlatives ('superb', 'magnificent', 'unbelievable cast') and concludes this may be the 'best to date' version, indicating strong recommendation despite no explicit star rating. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting the music and performances as standout elements, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:25:39.474Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

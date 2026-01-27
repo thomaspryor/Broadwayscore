@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 28,
+      "performances": 63,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "If this iteration is a hit, it won't be because of quality, which it is sadly lacking",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The show features underwhelming music and lyrics by American singer-songwriter Ingrid Michaelson and a tepid book",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's a treat to see Tony winner Plunkett and Emmy nominee and NAACP Image Award winner Harewood, and Woods nearly steals the show",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic delivers harsh criticism of the music, book, and overall quality while acknowledging some strong individual performances, resulting in a clear negative recommendation despite scattered praise. | GPT-4o-mini: The review is predominantly negative, criticizing the quality of the music, book, and overall execution while only offering limited praise for some performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:38:06.708Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

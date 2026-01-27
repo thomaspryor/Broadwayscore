@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 37.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 45,
+      "performances": 68,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "This may not be your optimum choice for a Broadway night out",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The Notebook has been so smoothly engineered that it's hard to care about these attractive ciphers and their manufactured romantic troubles",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The Notebook might be just the thing for theatregoers looking for a good cry; others might be too distracted by the manipulating hands of its creators",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic systematically dismantles the show's fundamental elements while acknowledging some strong performances, ultimately warning readers away with qualifications that make it difficult to recommend. | GPT-4o-mini: The review presents a balanced view with some praise for performances but significant criticism of the script and emotional manipulation, leading to a mixed recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:37:22.438Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

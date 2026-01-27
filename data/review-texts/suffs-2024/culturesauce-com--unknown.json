@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 84,
+      "music": 89,
+      "performances": 88,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shaina Taub's triumphant new musical Suffs",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "she's written a series of absolute bangers that engage our ears even as the lyrics provoke us to reconsider classic musical-theater tropes",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a remarkable musical that educates and entertains",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses strong positive language ('triumphant', 'remarkable', 'absolute bangers') with only minor production critiques, concluding that the musical 'educates and entertains' with clear enthusiasm for the achievement. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's exploration of important themes, engaging music, and effective performances, indicating a high recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:35:36.300Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

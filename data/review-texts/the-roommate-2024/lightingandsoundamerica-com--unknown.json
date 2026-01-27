@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...a pleasant excuse for stargazing\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 80,
+      "direction": 74
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you have any affection for its stars, The Roommate will provide a fair amount of fun",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "there's so little to it that you fear it might curl up and blow away, like a piece of cornsilk on a windy afternoon",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "If you don't mind its essential thinness, Silverman's play provides a pleasant excuse for stargazing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoys the star performances and professional production values but finds the script formulaic and thin, offering a conditional recommendation primarily for fans of the actors. | GPT-4o-mini: The review indicates a mix of enjoyment from the performances of the stars but criticizes the thinness and formulaic nature of the script, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:38:55.775Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

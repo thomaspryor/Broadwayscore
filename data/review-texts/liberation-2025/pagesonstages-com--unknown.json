@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 84,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "There are many powerful moments in this production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I simply cannot pick it apart like a stagnant work of art",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Liberation fails to make the issue of equality for women seem like everybody's fight",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly values and respects the production despite noting some weaknesses, emphasizing its powerful moments and necessary relevance while acknowledging it doesn't fully succeed with all audiences. | GPT-4o-mini: The review expresses strong praise for the themes and emotional impact of the production, particularly for its relevance and powerful moments, while acknowledging some limitations in audience reception.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:27:49.103Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

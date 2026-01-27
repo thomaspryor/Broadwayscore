@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 38,
+      "performances": 63,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "disappointingly, they've succumbed to creatively mature reimaginers who misinterpreted the fundamental lesson of the Greasers' story",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The cast of The Outsiders: A New Musical bring their own substantial charisma to the stage, but it's been dramaturgically constrained by Adam Rapp and Justin Levine's book, which sacrifices poetry for explanation",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "That isn't the meaning of staying gold, either",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic fundamentally disagrees with the creative choices, arguing the adaptation misunderstands the source material's core message, with significant criticism of the book and score despite praise for individual performances. | GPT-4o-mini: The review expresses significant disappointment with the adaptation's book and score while acknowledging some strong performances, leading to a clear negative recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:38:33.640Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

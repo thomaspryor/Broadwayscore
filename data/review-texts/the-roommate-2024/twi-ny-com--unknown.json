@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,63 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 64,
+    "confidence": "low",
+    "range": {
+      "low": 47.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 78,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kim is amiable and confident as DHH, instantly gaining the audience's faith as he balances the sublime and the ridiculous with acute self-awareness and self-deprecation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Unfortunately, they lack any kind of chemistry, and three-time Tony-winning director Jack O'Brien can't get around Jen Silverman's inconsequential, clichéd script",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "In McNeal, however, he takes on too much, straying from the central focus... even director Bartlett Sher is unable to weave together subplots",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Review covers three shows with mixed verdicts - Yellow Face receives clear praise for performances and direction, The Roommate is largely panned for lack of chemistry and weak script, and McNeal is criticized for taking on too much despite solid lead performance, resulting in an overall mixed assessment. | GPT-4o-mini: The review highlights strong performances and direction while acknowledging some issues with the script, leading to a clear but qualified recommendation. | Note: Models differed by 23 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:39:55.687Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 75,
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 23 points (Claude: 52, OpenAI: 75)"
+    ]
+  }
 }

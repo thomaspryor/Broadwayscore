@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 45,
+      "performances": 78,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "This may not be the best musical of the season but it is enjoyable with some unique staging and inventive casting",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "The music and lyrics created by Ingrid Michaelson do little to further the plot and seem derivative",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Those looking for an emotional musical theatre experience will appreciate the effort made to bring this bestselling novel to the stage",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic offers balanced praise for performances and staging while criticizing the book and music, concluding it's enjoyable but flawed - a qualified, conditional recommendation. | GPT-4o-mini: The review presents a mix of positive and negative elements, particularly praising the performances while criticizing the music and book, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:37:59.948Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
