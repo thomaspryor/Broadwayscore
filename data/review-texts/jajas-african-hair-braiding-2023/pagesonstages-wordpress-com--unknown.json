@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 92,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jaja's African Hair Braiding is truly a masterpiece",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "truly transformative not only in the tightness of the script",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "timely, meaningful, and absolutely beautiful in what it created onstage",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer calls the show 'truly a masterpiece' with extensive praise for the script, performances, and social impact, using superlatives like 'magnificently,' 'transformative,' and 'beautiful' throughout. | GPT-4o-mini: The review expresses unqualified enthusiasm and praise for the show's impact, characters, and overall execution, marking it as a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:55.509Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "Meanwhile, the young performers who make up the seven-member core – all of whom self-identify as autistic – do their best to make us, the audience, comfortable. In a prefatory group speech, one performer notes the availability of “cool-down spaces.” All but the most easily triggered playgoer will want to hang in, though, to hear the melodies – buoyant to poignant – that composer Jacob Yandura has set to the text, portions of which have been lifted verbatim from the film.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": 70,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "do their best to make us, the audience, comfortable",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "All but the most easily triggered playgoer will want to hang in",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "melodies – buoyant to poignant – that composer Jacob Yandura has set to the text",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt shows qualified praise for the music and performances with gentle encouragement to stay despite potential challenges, suggesting a cautious positive recommendation. | GPT-4o-mini: The review highlights positive aspects of the music and performances but lacks a strong overall recommendation, indicating a mixed-positive sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:18.701Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

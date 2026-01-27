@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Friedman’s production meets the audience halfway, and a Broadway audience today just might be able to make up the difference as it couldn’t in 1981. Cross your fingers: It might finally be ’Merrily’s’ time.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 85,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "director Maria Friedman's revival does a superb job—the best I've ever seen—of overlooking them",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Cross your fingers: It might finally be Merrily's time",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This is a show that makes demands of its audience, perhaps sometimes unreasonable ones",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Feldman acknowledges the show's inherent challenges but gives strong praise to the revival's direction, exceptional performances from all three leads, and suggests this production might finally succeed where others failed.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:23.301Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

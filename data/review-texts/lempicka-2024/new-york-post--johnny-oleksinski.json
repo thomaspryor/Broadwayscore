@@ -10,8 +10,64 @@
   "bwwExcerpt": "Unfortunately, having garishly blared open Sunday night at the Longacre Theatre, it’s far too late for the creators to start over again on a blank canvas. And so, the ugly splatter that audiences are left to parse is a ridiculous two-and-half-hour Eurovision act with stratospheric delusions of grandeur.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 15,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 15,
+    "confidence": "high",
+    "range": {
+      "low": 10,
+      "high": 20
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 20
+    },
+    "keyPhrases": [
+      {
+        "quote": "the ugly splatter that audiences are left to parse",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "a ridiculous two-and-half-hour Eurovision act with stratospheric delusions of grandeur",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "having garishly blared open",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rejection using extremely harsh language like 'ugly splatter', 'ridiculous', and 'garishly blared' with no redeeming qualities mentioned. | GPT-4o-mini: The review is overwhelmingly negative, describing the production as a 'ridiculous' and 'ugly splatter', indicating a clear rejection of the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:31.126Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 15,
+    "openaiScore": 15,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 82,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "Uncle Vanya at the Vivian Beaumont was worth every penny",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "as triumphant and glorious as any opera I've ever seen in the exquisite building a stone's throw away",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I was mesmerized by the way this was written and the way Lila Neugebauer directed",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers an unqualified recommendation with superlatives like 'triumphant and glorious' and 'worth every penny,' praising the direction, writing adaptation, and overall artistic achievement despite acknowledging the story's vague structure.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:03.365Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

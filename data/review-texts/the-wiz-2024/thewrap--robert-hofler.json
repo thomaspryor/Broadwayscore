@@ -7,7 +7,58 @@
   "publishDate": "April 17, 2024",
   "fullText": "But the secret sauce here is Amber Ruffin, who’s credited with “additional material for this production.” No way did William F. Brown’s book for the original 1974 Broadway production of “The Wiz” offer this many inspired one-liners.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the secret sauce here is Amber Ruffin",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this many inspired one-liners",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt praises Amber Ruffin's writing contributions with enthusiasm ('secret sauce', 'inspired one-liners'), suggesting the book improvements are a significant positive element, but this is too brief to assess overall recommendation strength with high confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:47.339Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

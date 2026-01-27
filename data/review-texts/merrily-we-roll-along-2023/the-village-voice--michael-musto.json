@@ -10,8 +10,64 @@
   "bwwExcerpt": "But Act Two has some unmitigated joy too, particularly “It’s a Hit,” an ecstatic ditty the three leads sing with Joe when they realize the new show Shepard and Kringas have written, Musical Husbands, is scoring and their lives have been irrevocably changed (“No more writing clever little shows for those basement saloons,” sings Shepard. “No more proclamations from the pros that ‘You can’t hum the tunes’”). Well, more than four decades after it premiered to quizzical expressions, Merrily We Roll ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 81,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Act Two has some unmitigated joy too, particularly 'It's a Hit,' an ecstatic ditty",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "their lives have been irrevocably changed",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "more than four decades after it premiered to quizzical expressions",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows clear appreciation for specific musical moments and emotional impact, suggesting positive reception despite the incomplete nature of the text. | GPT-4o-mini: The review highlights a joyful moment in the show, indicating a positive experience, but lacks a comprehensive evaluation of the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:20.098Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

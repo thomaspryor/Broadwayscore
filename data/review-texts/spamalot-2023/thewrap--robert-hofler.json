@@ -7,7 +7,63 @@
   "publishDate": "November 16, 2023",
   "fullText": "The mustiness now is downright allergy-inducing. One visual reference to “Man of La Mancha” delivered not a laugh at the preview I attended, but then, it has been a while since TCM aired the movie version.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The mustiness now is downright allergy-inducing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "delivered not a laugh at the preview I attended",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The mustiness now is downright allergy-inducing.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic describes the show as 'allergy-inducing' musty and notes that references failed to land with the audience, suggesting a dated production that doesn't connect. | GPT-4o-mini: The review expresses strong negative sentiment about the production's stale quality and lack of humor, indicating a clear recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:51.867Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

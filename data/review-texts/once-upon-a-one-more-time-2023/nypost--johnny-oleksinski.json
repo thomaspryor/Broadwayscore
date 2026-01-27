@@ -7,7 +7,63 @@
   "publishDate": "June 22, 2023",
   "fullText": "Fresh off of “Bad Cinderella” comes the new Broadway musical “Once Upon a One More Time” — an even worse Cinderella.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 18,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 18,
+    "confidence": "medium",
+    "range": {
+      "low": 5.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "even worse Cinderella",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Fresh off of \"Bad Cinderella\" comes the new Broadway musical",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "an even worse Cinderella",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses an unfavorable comparison to suggest this show is worse than another poorly received musical, indicating a clear negative assessment. | GPT-4o-mini: The review clearly expresses a strong negative sentiment, indicating the show is significantly worse than a previous production. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:40.566Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 10,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

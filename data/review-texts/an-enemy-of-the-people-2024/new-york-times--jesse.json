@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It’s too weak to say that this conspiracy of inaction makes “An Enemy of the People” relevant; its issues and ours are not similar but identical. And not just its issues. Its characters, too, are contemporary: doppelgängers of our own vicious demagogues, cowed editors, greasy both-sides-ists and defanged idealists.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -31,5 +31,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250217001028",
-  "archiveOrgUrl": "http://web.archive.org/web/20250217001028/https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html?searchResultPosition=1"
+  "archiveOrgUrl": "http://web.archive.org/web/20250217001028/https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html?searchResultPosition=1",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 78,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sam Gold's crackling and persuasive production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "central to the power of Ibsen's dramatic construction",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The superb and varied lighting",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Review is clearly positive with praise for Gold's direction ('crackling and persuasive'), design elements ('superb lighting'), and Ibsen's construction, but article is cut off preventing full assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:42.407Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

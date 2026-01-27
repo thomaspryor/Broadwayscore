@@ -52,5 +52,61 @@
   "designation": "Must_See",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "must-see"
+  "extractedPhrase": "must-see",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a must-see, especially for DeVito's performance",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "DeVito is the superb centerpiece in Rebeck's profound comedy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the sparkling 100-minute comedy",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic gives an explicit 'must-see' recommendation, praises DeVito's 'superb' performance extensively, calls it a 'sparkling comedy,' and provides detailed positive analysis of themes, direction, and the creative team with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:08.466Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

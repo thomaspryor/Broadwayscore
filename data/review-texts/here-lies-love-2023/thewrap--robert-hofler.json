@@ -7,7 +7,63 @@
   "publishDate": "July 20, 2023",
   "fullText": "No, “Here Lies Love” isn’t about Ferdinand or Imelda or even a bygone Philippines. It’s all about Alex Timbers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 30.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 20
+    },
+    "keyPhrases": [
+      {
+        "quote": "No, \"Here Lies Love\" isn't about Ferdinand or Imelda or even a bygone Philippines",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's all about Alex Timbers",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "No, 'Here Lies Love' isn’t about Ferdinand or Imelda or even a bygone Philippines.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic suggests the director's ego has overshadowed the actual subject matter, implying self-indulgent direction that misses the point of the story. | GPT-4o-mini: The review does not provide a clear recommendation and focuses on the director rather than the overall quality of the show. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:11.886Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 50,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

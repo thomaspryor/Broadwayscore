@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Director Alex Timbers and set designer David Korins have revolutionized and radicalized the capacious Broadway Theatre into a gleaming dance club, walled by dozens of video screens, where audience members—often literally standing in the middle of the action—get swept up in the shifting tides and undertows of history.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/here-lies-love-bway/",
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 82,
+      "performances": 85,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes space for itself like no Broadway show ever has",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "revolutionized and radicalized the capacious Broadway Theatre into a gleaming dance club",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the loudly beating heart of Here Lies Love, a party that hides a mordant critique of civilization",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Feldman celebrates the groundbreaking staging innovation and design while praising the performances and deeper thematic resonance, with only minor historical liberties as critique. | GPT-4o-mini: The review expresses unqualified enthusiasm for the innovative staging and thematic depth of the production, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:31.233Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 95,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

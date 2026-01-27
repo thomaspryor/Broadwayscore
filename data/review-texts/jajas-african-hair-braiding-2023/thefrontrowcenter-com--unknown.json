@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240722164836",
-  "archiveOrgUrl": "http://web.archive.org/web/20240722164836/https://thefrontrowcenter.com/2023/10/jajas-african-hair-braiding/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240722164836/https://thefrontrowcenter.com/2023/10/jajas-african-hair-braiding/",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 82,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "director Whitney White shapes the action into a tight thing of beauty and the ensemble work of the energetic cast is streaked with highlights",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Bioh intertwines their tales",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Marie's reasons for skipping her mother's wedding seem more a handy solution for the playwright, than a true motivation",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the ensemble performances, direction, and production elements with vivid positive language, while noting only minor script concerns, indicating a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:26.633Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

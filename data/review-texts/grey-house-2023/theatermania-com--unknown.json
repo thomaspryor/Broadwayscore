@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251207125736",
-  "archiveOrgUrl": "http://web.archive.org/web/20251207125736/https://www.theatermania.com/news/review-grey-house-is-broadways-camp-horror-guilty-pleasure_1704086/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251207125736/https://www.theatermania.com/news/review-grey-house-is-broadways-camp-horror-guilty-pleasure_1704086/",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "immensely entertaining Grey House",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there's no show on Broadway quite like Grey House",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it was a disappointment, causing the carefully woven spell of Grey House to unravel",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticism of the ending, the critic praises the uniqueness, entertainment value, performances, and direction throughout, landing in clear positive territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:38.861Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“DeVito gets more mileage out of Sam than you’d expect from the page, performing with a loose, raffish panache...Funny pronunciation. Silly faces. Kooky obsessives behaving irrationally. It’s been the stuff of sitcoms for decades and popular for a reason. Still, when you put TV-level product on the Broadway stage, don’t be surprised if the audience talks back.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250906234523",
-  "archiveOrgUrl": "http://web.archive.org/web/20250906234523/https://observer.com/2023/11/review-danny-devito-hoards-laughter-and-tears-in-i-need-that/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250906234523/https://observer.com/2023/11/review-danny-devito-hoards-laughter-and-tears-in-i-need-that/",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 74,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "goes down easy and leaves scant trace",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Its pleasures are mostly due to an endearing and frisky performance by DeVito",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "when you put TV-level product on the Broadway stage, don't be surprised if the audience talks back",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the play formulaic and TV-level material but praises DeVito's performance and acknowledges it as crowd-pleasing entertainment, resulting in a lukewarm mixed response. | GPT-4o-mini: The review presents a mixed view, highlighting strong performances but criticizing the script and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:35.902Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

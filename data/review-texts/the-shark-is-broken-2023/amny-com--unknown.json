@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251106205307",
-  "archiveOrgUrl": "http://web.archive.org/web/20251106205307/https://www.amny.com/entertainment/theater/review-the-shark-is-broken/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251106205307/https://www.amny.com/entertainment/theater/review-the-shark-is-broken/",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 40.5,
+      "high": 65.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 65,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "At its best, the production makes for lightweight fun, especially for movie buffs",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "it is also a slow and static piece built around a premise that probably could not sustain much more than a five-minute 'Saturday Night Live' sketch",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "lightweight fun",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges some entertainment value for movie buffs but delivers a damning assessment that the premise is too thin for a full theatrical production, comparing it to a brief SNL sketch. | GPT-4o-mini: The review presents a mixed view, highlighting some enjoyable aspects while also noting significant weaknesses in pacing and premise sustainability. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:52.726Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

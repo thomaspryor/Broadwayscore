@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "CRITIC’S PICK: “...Neugebauer’s direction, which is so smart and swift for most of the play’s substantial length that you feel gripped by storytelling without being strangled by argument.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251027141348/https://www.nytimes.com/2023/12/18/theater/appropriate-broadway-review.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 95,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "the blistering revival of 'Appropriate' that opened on Broadway on Monday",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Rereading my scathing review in light of what is obviously a rave today",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I've flipped for this revival",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls this 'obviously a rave' and describes having 'flipped for this revival,' praising Paulson's 'eye-opening, sinus-clearing performance' and Neugebauer's 'smart and swift' direction with unqualified enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:30.495Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

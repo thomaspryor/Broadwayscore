@@ -9,8 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "“ ‘Jaja’s’ is a comedy about life as it is lived in this place, about community, aspiration and entrepreneurship. Mostly, though, it’s a show about immigrants getting the job done, and having fun doing it, one braid at a time.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "low",
+    "range": {
+      "low": 40.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a comedy about life as it is lived in this place, about community, aspiration and entrepreneurship",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "a show about immigrants getting the job done, and having fun doing it, one braid at a time",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "a show about immigrants getting the job done, and having fun doing it",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt provides only thematic description without any evaluative language or clear recommendation, making it impossible to determine the critic's actual opinion of the production's quality. | GPT-4o-mini: The review highlights positive themes and community aspects but lacks strong enthusiasm or specific praise for performances or production quality. | Note: Models differed by 25 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:50.367Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 70,
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 45, OpenAI: 70)"
+    ]
+  }
 }

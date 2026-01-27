@@ -7,7 +7,63 @@
   "publishDate": "April 24, 2024",
   "fullText": "What was the guiding light for Schreck and Neugebauer in tackling Vanya? Based on what’s now on stage at the Beaumont, it’s difficult to say. This revival is competent, rarely boring and often funny, but there is no sense of a larger vision. This staging just kind of sits there, without any clear reason to exist.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 65,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival is competent, rarely boring and often funny",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "there is no sense of a larger vision",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "This staging just kind of sits there, without any clear reason to exist",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges competent execution and entertainment value but delivers a damning critique of the production's lack of vision or purpose, suggesting a mediocre experience without strong recommendation either way. | GPT-4o-mini: The review indicates a mixed experience, noting some humor and competence but ultimately lacking a compelling vision or purpose, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:03.601Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

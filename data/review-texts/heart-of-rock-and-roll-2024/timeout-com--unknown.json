@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Squeeze your memories into spandex and get ready to turn back the clock.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 75,
+      "performances": 80,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "For some members of Generation X, what this show offers will be more than enough",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "too often, book writer Jonathan A. Abrams and director Gordon Greenberg are content to get laughs by deploying reliable cultural stereotypes",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The saving grace of The Heart of Rock and Roll—aside from Lewis and company's appealing songs—is the talent of its cast, which is chock-full of pros",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review offers qualified praise for the cast and music while criticizing the book's reliance on stereotypes and weak romantic plot, resulting in a mixed recommendation that depends on audience nostalgia.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:08.721Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 63,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

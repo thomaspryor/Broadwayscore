@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "\"“Patriots” is a wild story of makers switching places\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 55
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "wild story",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "makers switching places",
+        "sentiment": "neutral",
+        "strength": 1
+      }
+    ],
+    "reasoning": "Claude: This appears to be just a headline or excerpt with no actual review content, making it impossible to determine the critic's recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:47.133Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 50,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "Off Broadway, Patrick was played by the canny and empathetic actor Richard Topol. Currently, the part belongs to Anthony Edwards (of TV’s E.R.), who has a wry, befuddled quality that works in group scenes, but leaves him unfocused in monologues directed to the audience. Still, if Prayer’s frame has grown wobbly, the central story remains vibrant and confidently driven by three outstanding women from the original cast: the fierce-willed Aidem; Francis Benhamou as Marcelle’s brilliant but bipolar ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 74,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Prayer's frame has grown wobbly",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the central story remains vibrant and confidently driven by three outstanding women",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "leaves him unfocused in monologues directed to the audience",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review praising female performances ('outstanding women', 'vibrant') but criticizing male lead and noting production issues ('wobbly frame'). | GPT-4o-mini: The review highlights strong performances but expresses concerns about the lead's focus and the overall structure, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:09.449Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

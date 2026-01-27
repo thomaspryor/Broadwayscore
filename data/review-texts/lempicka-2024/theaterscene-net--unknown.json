@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 35,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 35,
+    "confidence": "medium",
+    "range": {
+      "low": 30,
+      "high": 40
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 30,
+      "performances": 55,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lempicka which is never boring is one of those shows with an interesting premise which should have been so much better in its execution",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The cast works hard to put over the new musical but they are defeated by commonplace situations, banal song lyrics, and over-used pronouncements",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Don't blame the hardworking cast who make the most of paper thin characterizations",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws in the book and score while acknowledging some cast effort, ultimately concluding the musical fails to live up to its promising premise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:19.514Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

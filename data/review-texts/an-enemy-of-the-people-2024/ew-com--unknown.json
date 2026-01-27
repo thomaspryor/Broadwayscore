@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -36,5 +36,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "And they will not be disappointed. The actors are tremendous and completely lose themselves in the parts.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A–",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Strong is captivating as the steadfast yet hopelessly naïve do-gooder, completely immersing himself so much in the role",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The A- grade combined with consistent praise for performances, direction, and the play's relevance signals a clear positive recommendation with only minor reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:18.613Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

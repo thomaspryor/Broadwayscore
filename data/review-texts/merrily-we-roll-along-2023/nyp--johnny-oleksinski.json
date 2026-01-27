@@ -10,8 +10,64 @@
   "bwwExcerpt": "If you’ve ever seen the fantastic Groff in concert, you know he’s a singer who loves to make eye contact with audience members. That quality — his desire for personal connection — is what makes him such a strong, layered, sympathetic Frank. And his hopeful glance is what sells an unobtrusive but vital new ending.  Friedman adds a fleeting epilogue featuring Frank back in 1980, alone and staring out at the sky. His life has just played out inside his head, since we’ve never really left the midcen",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "he's a singer who loves to make eye contact with audience members. That quality — his desire for personal connection — is what makes him such a strong, layered, sympathetic Frank",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "his hopeful glance is what sells an unobtrusive but vital new ending",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Friedman adds a fleeting epilogue featuring Frank back in 1980, alone and staring out at the sky",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise for Groff's performance with specific insights about his connection with audiences and effectiveness in the role, plus approval of directorial choices, but excerpt cuts off mid-sentence limiting full assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:01.364Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

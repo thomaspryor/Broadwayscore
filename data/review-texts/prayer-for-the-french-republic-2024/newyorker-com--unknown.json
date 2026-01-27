@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Like any play transferring to Broadway from an Off Broadway success, this ‘Prayer’ is a counterproposal to its earlier, smaller, and more intimate iteration.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251124015431",
-  "archiveOrgUrl": "http://web.archive.org/web/20251124015431/https://www.newyorker.com/magazine/2024/01/22/prayer-for-the-french-republic-theatre-review"
+  "archiveOrgUrl": "http://web.archive.org/web/20251124015431/https://www.newyorker.com/magazine/2024/01/22/prayer-for-the-french-republic-theatre-review",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 68,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harmon too often fails to make his characters into anything other than animated position papers",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Only in scenes with the incredible Robinette, who gives the self-deluding, hopeful Irma a dozen delicate gradations, does Harmon's work create a beautifully rendered illusion of reality",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The production itself seems more tentative than it was before",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review offers thoughtful analysis but contains significant criticisms of character development and script issues, with only selective praise for performances, landing in mixed territory without a clear recommendation. | GPT-4o-mini: The review presents a mixed view, praising the exploration of themes and performances while criticizing character consistency and the production's tentative nature.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:31.500Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

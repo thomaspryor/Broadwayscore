@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251231130110/https://variety.com/2023/legit/reviews/once-upon-a-one-more-time-review-britney-spears-musical-1235649922/",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 85,
+      "performances": 81,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "this pop-musical course correction (authorized by Spears, post-conservatorship) is built for speed and social awareness",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the message and the music of 'Once Upon a One More Time' mostly avoid heavy-handedness, telling this updated fairy tale with equity, energy and originality",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Hartmere's often-witty script is oddly paced at first, and takes more than half the first act to kick in",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer expresses clear appreciation for the show's feminist message, strong performances (especially Guarini and Jackson), effective use of Britney's catalog, and energetic choreography, while noting some pacing issues in the first act that don't derail the overall positive assessment. | GPT-4o-mini: The review expresses strong praise for the music and performances while noting some pacing issues in the script, leading to a generally positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:05.327Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

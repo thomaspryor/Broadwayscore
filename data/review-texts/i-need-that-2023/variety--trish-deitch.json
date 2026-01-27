@@ -10,8 +10,64 @@
   "bwwExcerpt": "There is an attempt, near the end of the show, to add meaning and depth to the story’s otherwise surface-level emotions. Eventually we’re told that the things we’re attached to from the past keep us from living in the present, but the notion isn’t woven into the text or explored throughout the play. It arrives way too late, with the impact of a Hallmark card. Still, “I Need That” will prove satisfying for those looking to be entertained by DeVito and his daughter. He brings real joy and laughter",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 77,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the notion isn't woven into the text or explored throughout the play. It arrives way too late, with the impact of a Hallmark card",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "He brings real joy and laughter",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "will prove satisfying for those looking to be entertained by DeVito and his daughter",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review that criticizes the shallow script and late-arriving themes but acknowledges DeVito's entertaining performance and suggests satisfaction for fans of the stars. | GPT-4o-mini: The review highlights both the lack of depth in the story and the enjoyment derived from the performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:28.110Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

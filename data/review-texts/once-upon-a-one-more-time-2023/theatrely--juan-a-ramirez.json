@@ -7,7 +7,63 @@
   "publishDate": "June 22, 2023",
   "fullText": "But Once Upon a One More Time pays its truest homage to Britney, not by wringing its hands over how to make pop serious, but through its bouncy understanding of fierce fun with laser-sharp choreography. Don’t overthink it, just intoxicate yourself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "pays its truest homage to Britney, not by wringing its hands over how to make pop serious, but through its bouncy understanding of fierce fun with laser-sharp choreography",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Don't overthink it, just intoxicate yourself",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "pays its truest homage to Britney",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly endorses the show's approach and entertainment value, with strong praise for choreography and an explicit directive to enjoy it, indicating a solid positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the production's fun and choreography, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:53.613Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

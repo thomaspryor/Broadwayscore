@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 72,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "this new Spamalot is funny, scrappy, and fast on its feet, thanks to a gaggle of top Broadway clowns",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Spamalot restored my faith in Monty Python's unique brand of high-and-low hilarity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "for laughs that really stick with you, I'd book a trip to Spamalot",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic gives clear praise for the performances, production values, and overall entertainment value of Spamalot, with an explicit recommendation to see it over the alternative show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:11.003Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 32,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -35,5 +35,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 32,
+    "confidence": "medium",
+    "range": {
+      "low": 23.5,
+      "high": 40.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": 58,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "The audience, however, enjoys little mirth in the course of the overstuffed running time",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "one expects the house itself will soon be vacant",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The actors do their best with what they have, with Moffat and Bundy turning in fully successful performances",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This is a clear pan that systematically dismantles the script, direction, and overall production while offering only limited praise for select performances. | GPT-4o-mini: The review is predominantly negative, highlighting significant issues with the script and direction while acknowledging some strong performances.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:09.511Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 28,
+    "openaiScore": 35,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

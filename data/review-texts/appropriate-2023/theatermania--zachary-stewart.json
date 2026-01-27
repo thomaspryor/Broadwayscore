@@ -7,7 +7,63 @@
   "publishDate": "December 18, 2023",
   "fullText": "Of course, historical baggage comes with the heirloom furniture, as becomes all too clear in Branden Jacobs-Jenkins Appropriate, now making its jaw-dropping Broadway debut with Second Stage at the Helen Hayes Theater. It is easily the most electrifying Broadway play of 2023 — something I didn’t expect from a drama that received mixed notices when it first performed off-Broadway in 2014.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "jaw-dropping Broadway debut",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "easily the most electrifying Broadway play of 2023",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "something I didn't expect from a drama that received mixed notices",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified superlatives like 'jaw-dropping' and 'most electrifying Broadway play of 2023' signal exceptional enthusiasm despite earlier mixed reception. | GPT-4o-mini: The review expresses unqualified enthusiasm and positions the play as a standout in the current Broadway season, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:57.619Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

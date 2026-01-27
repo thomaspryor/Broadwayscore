@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 32,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 32,
+    "confidence": "medium",
+    "range": {
+      "low": 27,
+      "high": 37
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 55,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is devoid of the two requirements of drawing room comedy: wit and quotable one-liners",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "however, there are hardly any laughs",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "A hit summer comedy would be a pleasure in this hot season in New York, but this does not fill the bill",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic systematically demolishes the play's fundamental comedy elements while acknowledging some effort from the cast, resulting in a clear negative recommendation despite no explicit 'don't see it' statement.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:36.211Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

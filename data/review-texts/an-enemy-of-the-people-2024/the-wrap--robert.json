@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Best of all is Jeremy Strong’s Dr. Thomas Stockmann, who vividly recalls Dr. Anthony Fauci, especially when this good Norwegian doctor is warning a town about the dangers of an impending epidemic. The only problem with making “Enemy” a blow-by-blow retelling of Trump and Fauci’s battles is that what we all endured in real life a few years ago was so much more dramatic than what’s being offered onstage under the direction of Sam Gold.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250918201449",
-  "archiveOrgUrl": "http://web.archive.org/web/20250918201449/https://www.thewrap.com/an-enemy-of-the-people-broadway-review-jeremy-strong/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250918201449/https://www.thewrap.com/an-enemy-of-the-people-broadway-review-jeremy-strong/",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 85,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Best of all is Jeremy Strong's Dr. Thomas Stockmann",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "what we all endured in real life a few years ago was so much more dramatic than what's being offered onstage",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Has there ever been a more pure hero and a more abused victim on stage than Strong's wonderful doctor?",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises Strong's performance enthusiastically and finds the production improvements over Herzog's previous work, but criticizes the adaptation for being less dramatic than real-life events it mirrors.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:24.505Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 25,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 75,
+      "music": 20,
+      "performances": 40,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "made for a very rough, audibly painful theatrical experience",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "cannot say I enjoyed this production",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I feel an incredible amount of untapped potential in this show",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite recognizing potential in the book and some performances, the reviewer finds the production fundamentally flawed due to miscasting, poor orchestrations, and painful audio experience, explicitly stating they cannot say they enjoyed it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:16.996Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

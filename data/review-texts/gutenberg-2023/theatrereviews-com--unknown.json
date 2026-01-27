@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -37,5 +37,61 @@
     "ends_with_ellipsis"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 45,
+      "performances": 70,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "you might start to feel as if it may actually be as long as the Gutenberg Bible and far less interesting",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "no matter how talented the actors are, they cannot transcend the inferior material",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It is a great evening of entertainment if you are a fan of the two actors",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic harshly criticizes the material as repetitive and inferior while praising the actors' talent, but concludes the performances cannot save the show and recommends it only conditionally for fans of the actors.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:54.685Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

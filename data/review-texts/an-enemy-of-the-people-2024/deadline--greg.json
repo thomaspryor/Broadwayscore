@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But have no doubt: Audiences on any every night of this limited 16-week run at Circle in the Square will witness a taut and exactingly directed production. Sam Gold’s An Enemy Of The People is one of the best play revivals of the current season to date, right up there with Purlie Victorious, besting Doubt and even Gold’s own, shakier Macbeth starring Daniel Craig in 2022.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -54,5 +54,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250701214519/https://deadline.com/2024/03/enemy-of-the-people-broadway-review-1235860766/",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "9/12"
+  "extractedRating": "9/12",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 89,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sam Gold's An Enemy Of The People is one of the best play revivals of the current season to date",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Amy Herzog's adaptation of Ibsen's 1882 classic about a Norwegian town doctor deemed 'an enemy of the people' for his truth-telling about an environmental health hazard is smart, sharp and relevant",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Audiences on every night of this limited 16-week run at Circle in the Square will witness a taut and exactingly-directed production",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic declares this 'one of the best play revivals of the current season' with consistent praise for adaptation, direction, performances, and production values, indicating a strong positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the production, praising its relevance, direction, and performances, indicating it as a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:49.797Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

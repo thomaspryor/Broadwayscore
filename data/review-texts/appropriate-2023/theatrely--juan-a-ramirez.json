@@ -10,8 +10,59 @@
   "bwwExcerpt": "Appropriate is a masterwork the likes of which crop up a handful of times per generation.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "spellbinding Second Stage Theatre production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "an astonishing work of American fact and fiction",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong superlatives like 'spellbinding' and 'astonishing' indicate high enthusiasm, though this appears to be an excerpt limiting full assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:54.653Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

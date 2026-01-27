@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "But the reality here is that this is a show relying on two skilled comic actors and their contrasting relationship. These two stars could do this kind of thing in their sleep, should they so choose, and I suspect their challenge will come from messing with each other and keeping everything fresh.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/gutenberg/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "These two stars could do this kind of thing in their sleep",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "two skilled comic actors and their contrasting relationship",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "I suspect their challenge will come from messing with each other and keeping everything fresh",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges skilled performers but suggests they're not being challenged by the material and may need to create their own interest, indicating a show that's adequate but unremarkable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:06.263Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

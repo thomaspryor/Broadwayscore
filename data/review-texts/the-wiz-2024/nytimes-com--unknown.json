@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“ 'The Wiz' is a pleasant, serviceable time at the theater\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,63 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250724082329/https://www.nytimes.com/2024/04/17/theater/the-wiz-review-broadway.html",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 55,
+    "confidence": "low",
+    "range": {
+      "low": 35,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 78,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "showcases creative visuals and some standout performances, but stops short of bringing modern Blackness to Broadway",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There's plenty of gold to be found along this yellow brick road",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Deborah Cox's Glinda...looks like a jewel and sounds like one, too",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Review praises individual performances but criticizes the production for failing to achieve its stated artistic goal of bringing modern Blackness to Broadway, suggesting fundamental disappointment despite some bright spots. | GPT-4o-mini: The review highlights strong performances and creative visuals but expresses some reservations about the overall impact and modern relevance of the production. | Note: Models differed by 30 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:52.608Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 70,
+    "scoreDelta": 30,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 30 points (Claude: 40, OpenAI: 70)"
+    ]
+  }
 }
