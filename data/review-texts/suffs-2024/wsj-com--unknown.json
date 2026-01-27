@@ -5,7 +5,7 @@
   "criticName": "Unknown",
   "url": "https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-taub-hillary-clinton-fe175dc0",
   "publishDate": null,
-  "fullText": "\"at times the musical comes across as a bright but exhaustingly busy historical pageant\"\n\nRead more",
+  "fullText": "https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-taub-hillary-clinton-fe175dc0\n\nJenn Colella and the ‘Suffs’ company. Photo: Joan MarcusNew York\n\n“Sisters are doin’ it for themselves,” Annie Lennox and Aretha Franklin memorably sang back in the 1980s. The musical “Suffs,” about the struggle for women’s right to vote in the U.S., provides a fresh example. With book, music and lyrics by Shaina Taub, who also plays a principal role among the all-female cast, and Leigh Silverman directing, the show highlights the talents of women, following in the admittedly more momentous footsteps—much marching was involved!—of the characters.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "isFullReview": false,
   "dtliExcerpt": "\"at times the musical comes across as a bright but exhaustingly busy historical pageant\"\n\nRead more",
   "originalScore": null,
@@ -68,5 +68,43 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textStatus": "partial",
+  "textWordCount": 114,
+  "archivePath": "data/archives/reviews/suffs-2024/wsj-com--unknown_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T05:03:44.942Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20240718012504",
+  "archiveOrgUrl": "http://web.archive.org/web/20240718012504/https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-taub-hillary-clinton-fe175dc0",
+  "textIssues": [
+    "Word count too low: 114 (min: 300)"
+  ]
 }
