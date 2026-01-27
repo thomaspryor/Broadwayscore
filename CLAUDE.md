@@ -543,6 +543,95 @@ All automation runs via GitHub Actions - no local commands needed.
 - **Setup guide:** `FORMSPREE-SETUP.md`
 - **Requires:** FORMSPREE_TOKEN secret (see setup guide)
 
+### `.github/workflows/collect-review-texts.yml`
+- **Runs:** Manual trigger only (workflow_dispatch)
+- **Does:**
+  - Fetches full review text from URLs using multi-tier fallback
+  - Tier 1: Playwright with stealth plugin
+  - Tier 2: ScrapingBee API
+  - Tier 3: Bright Data API
+  - Tier 4: Archive.org Wayback Machine (most successful!)
+  - Supports subscription logins for paywalled sites (NYT, WSJ, Vulture, WaPo)
+- **Manual trigger:** `gh workflow run "Collect Review Texts" --field show_filter=show-id`
+- **Parallel runs:** YES - launch multiple with different show_filter values
+- **Key options:**
+  - `batch_size`: Reviews per batch (default 10)
+  - `max_reviews`: Max to process (default 50)
+  - `show_filter`: Process only specific show (REQUIRED for parallel runs)
+  - `stealth_proxy`: Use ScrapingBee stealth mode (75 credits/request)
+- **Script:** `scripts/collect-review-texts.js`
+
+### `.github/workflows/llm-ensemble-score.yml`
+- **Runs:** Manual trigger only (workflow_dispatch)
+- **Does:**
+  - Scores reviews using Claude Sonnet + GPT-4o-mini ensemble
+  - Averages both model scores for final score
+  - Flags reviews where models disagree by >15 points for manual review
+  - Includes calibration and validation steps
+- **Manual trigger:** `gh workflow run "LLM Ensemble Score Reviews"`
+- **Key options:**
+  - `show`: Process specific show only
+  - `limit`: Max reviews to process
+  - `run_calibration`: Run calibration after scoring (default true)
+  - `dry_run`: Don't save changes
+- **Script:** `scripts/llm-scoring/index.ts`
+- **Requires:** ANTHROPIC_API_KEY, OPENAI_API_KEY secrets
+
+## Parallel Workflow Execution Strategy
+
+For large batch operations (review text collection, scoring), run MANY workflows in parallel:
+
+### Why Parallel?
+- Single workflow processes ~50-100 reviews in 30-60 minutes
+- With 700+ reviews needing text, sequential = 7+ hours
+- Parallel with show_filter = 30-40 workflows, done in ~1 hour
+
+### How to Run Parallel Text Collection
+```bash
+# Launch workflows for multiple shows simultaneously
+gh workflow run "Collect Review Texts" --field show_filter=hamilton-2015 &
+gh workflow run "Collect Review Texts" --field show_filter=wicked-2003 &
+gh workflow run "Collect Review Texts" --field show_filter=hadestown-2019 &
+# ... repeat for all shows with scrapable reviews
+```
+
+### Avoiding Git Conflicts
+- Each workflow has robust retry logic (5 attempts)
+- Uses rebase-first, falls back to merge with `-X ours`
+- Show-specific workflows touch different files, minimizing conflicts
+
+### Checking Which Shows Need Processing
+```javascript
+// Find shows with scrapable reviews (have URL but no fullText)
+node -e "
+const fs = require('fs');
+const path = require('path');
+const dir = 'data/review-texts';
+fs.readdirSync(dir)
+  .filter(f => fs.statSync(path.join(dir, f)).isDirectory())
+  .forEach(show => {
+    const files = fs.readdirSync(path.join(dir, show))
+      .filter(f => f.endsWith('.json') && f != 'failed-fetches.json');
+    let scrapable = 0;
+    files.forEach(f => {
+      const d = JSON.parse(fs.readFileSync(path.join(dir, show, f)));
+      if (!d.fullText && d.url) scrapable++;
+    });
+    if (scrapable > 5) console.log(show + ': ' + scrapable);
+  });
+"
+```
+
+### Monitoring Progress
+```bash
+# Check running workflows
+gh run list --limit 20
+
+# Check coverage after workflows complete
+git pull origin main
+node /tmp/analyze-fulltext-potential.js  # If script exists
+```
+
 ## Deployment
 
 ### How It Works (Vercel)
