@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240621134450",
-  "archiveOrgUrl": "http://web.archive.org/web/20240621134450/https://thefrontrowcenter.com/2024/02/days-of-wine-and-roses-at-studio-54/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240621134450/https://thefrontrowcenter.com/2024/02/days-of-wine-and-roses-at-studio-54/",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 92,
+      "performances": 95,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Days of Wine and Roses on Broadway is a work of astonishing artistry, sophistication and emotional depth",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it is up there in my top two shows",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The rush into alcoholism is my one criticism about the show",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlatives like 'astonishing artistry' and 'absolutely superb talents,' places it in their top two shows, and expresses only one minor criticism about pacing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:32.661Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

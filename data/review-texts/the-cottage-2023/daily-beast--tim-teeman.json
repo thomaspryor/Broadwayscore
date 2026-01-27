@@ -7,7 +7,63 @@
   "publishDate": "July 24, 2023",
   "fullText": "The Cottage is not a dud; its momentary outbreaks of hilarity thankfully break up stretches of conversation about characters’ tangled pasts, and restatements of the comic setups in front of us. But, as wittily complicated as those summaries can sound, we’ve already got it. It’s been unpacked for us in the moment, over and over again. If The Cottage isn’t a farce, what is it? This critic couldn’t tell you, and—as presented—the production doesn’t seem to know the answer either.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Cottage is not a dud; its momentary outbreaks of hilarity thankfully break up stretches of conversation",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "the production doesn't seem to know the answer either",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "This critic couldn't tell you",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show confused about its own identity with only 'momentary' humor breaking up tedious stretches, indicating more problems than strengths without a clear recommendation to see it. | GPT-4o-mini: The review highlights some moments of humor but ultimately criticizes the script's repetitiveness and lack of clarity, leading to a negative overall impression.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:49.200Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

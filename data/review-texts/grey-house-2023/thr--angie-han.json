@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Grey House succeeds in creating an atmosphere of genuine dread, even if its scares don't always land with the precision they're aiming for.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "succeeds in creating an atmosphere of genuine dread",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "its scares don't always land with the precision they're aiming for",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "scares don't always land with the precision they're aiming for",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges clear success in atmosphere creation but notes significant execution problems, suggesting a mixed experience that leans slightly positive. | GPT-4o-mini: The review acknowledges a strong atmosphere but notes that the execution of scares is inconsistent, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:59.283Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

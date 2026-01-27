@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "We’re all here just for a moment, of course, stuck in the middle of events mostly out of control. Whatever your identity, rarely in a Broadway theater will you have so powerfully felt your own vulnerability.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/prayer-for-the-french-republic-broadway/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "rarely in a Broadway theater will you have so powerfully felt your own vulnerability",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "We're all here just for a moment, of course, stuck in the middle of events mostly out of control",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "rarely in a Broadway theater will you have so powerfully felt your own vulnerability.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic emphasizes the show's powerful emotional impact and unique theatrical experience, suggesting strong positive engagement despite the brief excerpt. | GPT-4o-mini: The review expresses a significant emotional impact but lacks a clear recommendation or detailed praise, suggesting a mixed-positive sentiment overall. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:52.408Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 70,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

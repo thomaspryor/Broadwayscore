@@ -7,7 +7,65 @@
   "publishDate": "August 10, 2023",
   "fullText": "Fun summer movies are being turned into dreary summer theater this August. The tone-deaf “Back to the Future” musical is now followed by “The Shark Is Broken,” written by Ian Shaw and Joseph Nixon, which tells the behind-the-scenes story of the making of “Jaws.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 29,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 29,
+    "confidence": "low",
+    "range": {
+      "low": 15,
+      "high": 43
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fun summer movies are being turned into dreary summer theater",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "tone-deaf \"Back to the Future\" musical",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "tone-deaf 'Back to the Future' musical",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses strongly negative language ('dreary', 'tone-deaf') to describe both this show and the broader trend of movie-to-theater adaptations, but this appears to be only an excerpt from a longer review. | GPT-4o-mini: The review expresses strong disapproval of the production, indicating it fails to capture the fun of the original movies. | Note: Models differed by 18 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:27.855Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 18 points (Claude: 38, OpenAI: 20)"
+    ]
+  }
 }

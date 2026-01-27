@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-grade",
   "scoreConfidence": "medium",
-  "extractedGrade": "B"
+  "extractedGrade": "B",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 89,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Those who are drawn to its call should definitely pay Grey House a visit — they've been expecting you. Grade: B",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Grey House is a bold, original, and unapologetically eerie play that will continue to haunt theatergoers long after they've left the theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Grey House's puzzle-box mystery doesn't give viewers all the clues they need to fully comprehend the tragic tale it's trying to tell",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic gives a B grade and explicitly recommends visiting the show, praising the performances as exceptional while acknowledging significant structural issues with the plot's clarity. | GPT-4o-mini: The review highlights strong performances and a compelling atmosphere but notes significant issues with the script's clarity, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:16.955Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

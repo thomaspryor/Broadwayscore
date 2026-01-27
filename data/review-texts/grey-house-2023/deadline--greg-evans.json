@@ -10,8 +10,64 @@
   "bwwExcerpt": "When it comes to horror, Broadway typically cedes turf to Hollywood, the occasional Martin McDonough play notwithstanding. There have been giant apes, operatic phantoms, and a misguided vampire or two without providing so much as a single genuine tingle. All of which makes the effort of Grey House so bold. A creepy mash-up of haunted house tropes, cabin in the woods traditions, ghosty kids, errant hatchets, screams, black-outs and the sort of Lynchian lounge music that drips with reverb and mena",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "deliver a savvy tale that might be likened to a dark, lonely lake on a moonless night – scary enough on the surface, scarier still when one ponders what's below the surface",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There are some stretches that start to feel dull or repetitive, possibly the result of confusion as to what, exactly, is going on",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "such moments fade with the next scream",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the show's atmospheric storytelling and depth while acknowledging significant pacing and clarity issues, suggesting a qualified recommendation with notable reservations. | GPT-4o-mini: The review contains both praise for the thematic depth and criticism of pacing, leading to a mixed recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:49.776Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
