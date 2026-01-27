@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -38,5 +38,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 38,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 45.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "falls short of both feminism and comedy",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "hackneyed evening",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Spending an eventful, but hackneyed evening at ‘The Cottage’",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review explicitly states the production 'falls short' in key areas and describes the evening as 'hackneyed,' indicating clear disappointment with the material. | GPT-4o-mini: The review expresses significant disappointment with the production, indicating it fails to deliver on its comedic and thematic promises.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:36.161Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 35,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,63 @@
   "publishDate": "July 24, 2023",
   "fullText": "A lowbrow-highbrow mashup isn’t the worst idea, granted, but here it translates to “Shout til it’s funny.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 35,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 35,
+    "confidence": "high",
+    "range": {
+      "low": 30,
+      "high": 40
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "A lowbrow-highbrow mashup isn't the worst idea, granted",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "but here it translates to \"Shout til it's funny.\"",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "lowbrow-highbrow mashup isn’t the worst idea",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic dismisses the execution as loud and unfunny despite acknowledging the concept has potential, indicating a negative assessment of the production's approach. | GPT-4o-mini: The review suggests a lack of effective execution in the show's concept, indicating a clear negative sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:24.603Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 35,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

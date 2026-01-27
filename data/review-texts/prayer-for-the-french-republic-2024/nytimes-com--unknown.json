@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“What is too much for the world is way too much for the play. And the play, for all its urgency, is already way too much. Running just over three hours, ‘Prayer for the French Republic,’...is still not long enough to do justice to the multiple histories it wants to tell.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250829103908",
-  "archiveOrgUrl": "http://web.archive.org/web/20250829103908/https://www.nytimes.com/2024/01/09/theater/prayer-for-the-french-republic-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250829103908/https://www.nytimes.com/2024/01/09/theater/prayer-for-the-french-republic-review.html",
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 85,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "remains mostly riveting is the result of the richness of Harmon's novelistic detail — and the exceptional skill of the principal actors in realizing it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Running just over three hours, 'Prayer for the French Republic' is still not long enough to do justice to the multiple histories it wants to tell",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the play ends in sentimental exhaustion",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the exceptional performances and rich direction but finds the overlong, overstuffed script fundamentally flawed, creating a mixed recommendation that acknowledges both strengths and significant weaknesses.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:08.433Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

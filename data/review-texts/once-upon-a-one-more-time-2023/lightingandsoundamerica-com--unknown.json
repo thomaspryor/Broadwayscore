@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": 38,
+      "performances": 63,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a One More Time leaves an impression of an enormous amount of expertise expended on a stale, utterly played-out concept",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "we're up to our necks in fractured fairy tales",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "She would have bought tickets to Parade instead",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a predominantly negative review citing a tired concept, princess fatigue, and unfavorable comparisons to other shows, with only isolated praise for individual performers and technical elements. | GPT-4o-mini: The review is predominantly negative, criticizing the stale concept and lack of originality, with only mild praise for some performances.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:07.426Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
