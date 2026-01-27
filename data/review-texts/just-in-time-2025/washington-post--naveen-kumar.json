@@ -13,8 +13,8 @@
   "assignedScore": 86,
   "source": "dtli",
   "dtliThumb": "Up",
-  "textStatus": "partial",
-  "textQuality": "partial",
+  "textStatus": "truncated",
+  "textQuality": "truncated",
   "sourceMethod": "brightdata",
   "llmScore": {
     "score": 86,
@@ -74,7 +74,7 @@
   },
   "textWordCount": 77,
   "archivePath": "data/archives/reviews/just-in-time-2025/washington-post--naveen-kumar_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:45:18.961Z",
+  "textFetchedAt": "2026-01-27T05:06:50.498Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -98,5 +98,8 @@
   "fetchTier": 3,
   "textIssues": [
     "Word count too low: 77 (min: 300)"
+  ],
+  "truncationSignals": [
+    "shorter_than_excerpt"
   ]
 }
