@@ -12,7 +12,7 @@
   "assignedScore": 84,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
-  "textStatus": "partial",
+  "textStatus": "incomplete",
   "textQuality": "partial",
   "sourceMethod": "archive",
   "scoreSource": "enhanced-sentiment-lean-positive",
@@ -74,8 +74,8 @@
     "needsReviewReasons": []
   },
   "textWordCount": 199,
-  "archivePath": "data/archives/reviews/aladdin-2014/thisbroadsway--sandra-mcfarland_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T19:55:15.975Z",
+  "archivePath": "data/archives/reviews/aladdin-2014/thisbroadsway--sandra-mcfarland_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T20:35:16.038Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -107,5 +107,8 @@
   "archiveOrgUrl": "http://web.archive.org/web/20210623183115/http://www.thisbroadsway.com/aladdin.html",
   "textIssues": [
     "Word count too low: 199 (min: 300)"
+  ],
+  "truncationSignals": [
+    "has_footer_text"
   ]
 }
