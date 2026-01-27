@@ -5,12 +5,43 @@
   "criticName": "Unknown",
   "url": "https://www.washingtonpost.com/theater-dance/2023/06/22/one-more-time-broadway-spears/",
   "publishDate": null,
-  "fullText": null,
+  "fullText": "Democracy Dies in DarknessReview by  Peter MarksNEW YORK — You don’t have to wait for the first AI musical. It’s here. Well, the artificial part, anyway.\n\nThe ingredients of “Once Upon a One More Time” — various fairy tales, a bunch of Britney Spears songs, a how-to-strut-and-tut manual — may very well have been fed into a computer and reformulated by Chatbot GPT. For all I know, the musical might unfold in a different, random sequence of songs, words and dance every night at the Marquis Theatre, where it had its official Broadway opening Thursday.",
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": null,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "textWordCount": 95,
+  "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/washingtonpost-com--unknown_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T14:53:10.342Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 95 (min: 300)"
+  ]
 }
