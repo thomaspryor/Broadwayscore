@@ -317,7 +317,8 @@ function extractBWWReviews(html, showId, bwwUrl) {
     // Also try generic pattern: "Critic Name, Outlet: excerpt"
     // Match pattern like "Name Name, Outlet Name: text..."
     // Handles: "John Smith", "JD Knapp", "Melissa Rose Bernardo", "Brian Scott Lipton"
-    const genericPattern = /([A-Z][A-Za-z.]+(?:\s+[A-Z][A-Za-z.]+)+),\s*((?:The\s+)?[A-Z][A-Za-z\s]+?):\s*([\s\S]*?)(?=\s{2,}[A-Z][A-Za-z.]+(?:\s+[A-Z][A-Za-z.]+)+,|\n\n|$)/g;
+    // Note: Outlet pattern includes apostrophe for "Talkin' Broadway", hyphen for "DC Theatre-Arts"
+    const genericPattern = /([A-Z][A-Za-z.]+(?:\s+[A-Z][A-Za-z.]+)+),\s*((?:The\s+)?[A-Z][A-Za-z\s'\-]+?):\s*([\s\S]*?)(?=\s{2,}[A-Z][A-Za-z.]+(?:\s+[A-Z][A-Za-z.]+)+,|\n\n|$)/g;
 
     const foundCritics = new Set();
 
@@ -476,6 +477,8 @@ function mapOutlet(outletName) {
     { pattern: 'the wrap', outlet: 'The Wrap', outletId: 'the-wrap' },
     { pattern: 'the stage', outlet: 'The Stage', outletId: 'the-stage' },
     { pattern: 'usa today', outlet: 'USA Today', outletId: 'usa-today' },
+    { pattern: "talkin' broadway", outlet: "Talkin' Broadway", outletId: 'talkin-broadway' },
+    { pattern: 'talkin broadway', outlet: "Talkin' Broadway", outletId: 'talkin-broadway' },
     // Single word outlets (check LAST to avoid false matches)
     { pattern: 'theatermania', outlet: 'TheaterMania', outletId: 'theatermania' },
     { pattern: 'theatrely', outlet: 'Theatrely', outletId: 'theatrely' },
