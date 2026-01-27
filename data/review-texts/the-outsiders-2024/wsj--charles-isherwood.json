@@ -14,10 +14,10 @@
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.918Z",
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
@@ -79,7 +79,7 @@
   },
   "textWordCount": 88,
   "archivePath": "data/archives/reviews/the-outsiders-2024/wsj--charles-isherwood_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:48:43.588Z",
+  "textFetchedAt": "2026-01-27T05:19:06.002Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -111,5 +111,11 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240704043040/https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-danya-taymor-musical-jamestown-revival-2e20f5ca",
   "textIssues": [
     "Word count too low: 88 (min: 300)"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "shorter_than_excerpt",
+    "possible_mid_word_cutoff"
   ]
 }
