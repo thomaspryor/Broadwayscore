@@ -13,10 +13,10 @@
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "textWordCount": 168,
   "archivePath": "data/archives/reviews/moulin-rouge-2019/broadwaynews-com--unknown_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:33:23.723Z",
+  "textFetchedAt": "2026-01-27T05:10:37.083Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -26,7 +26,7 @@
     }
   ],
   "fetchTier": 1,
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 168 (min: 300)"
@@ -86,5 +86,10 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_paywall_text",
+    "possible_mid_word_cutoff"
+  ]
 }
