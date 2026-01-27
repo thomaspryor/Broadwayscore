@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"Aside from the tonic of Iglehart’s djinn, however, Aladdin is short on magic.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 57,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -42,5 +42,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "3/5"
+  "extractedRating": "3/5",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 60,
+      "performances": 70,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "Aladdin is short on magic",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the plotting drifts into weightless silliness, with a surfeit of generic padding and glitz",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "A carpet with colorful patterns but little texture",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The 3/5 star rating combined with significant structural criticisms ('short on magic', 'weightless silliness') outweighs praise for individual performances, landing in mixed territory. | GPT-4o-mini: The review presents a mixed view, highlighting some enjoyable performances but ultimately criticizing the lack of depth and magic in the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:46.044Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

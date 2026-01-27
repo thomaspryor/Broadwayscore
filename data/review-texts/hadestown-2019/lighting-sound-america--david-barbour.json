@@ -10,7 +10,7 @@
   "showScoreExcerpt": "“What's most engaging about ‘Hadestown’ isn't the story it tells but the way it tells it -- with a barrelhouse sense of rhythm and plenty of blue notes. Under Chavkin's direction, the entire cast is in synch with the music's sassy, cynically upbeat mood, delivering each lyric with a lazy vibrato and a shrugging acknowledgement of the world's wicked ways...‘Hadestown’ delivers its tragic tale with a wink and a snap in its step.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/hadestown-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 94,
+      "performances": 89,
+      "direction": 91
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is a strikingly original work that retells one of western civilization's fundamental myths in a new and thoroughly insinuating way",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "music so infectious that it's impossible not to start moving in your seat",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "If we get one or two more musicals with this much originality and verve, we will be looking at a season to remember",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic delivers enthusiastic praise throughout, calling the work 'strikingly original' with 'infectious' music and predicting it could make the season 'one to remember,' with detailed appreciation for all creative elements. | GPT-4o-mini: The review expresses unqualified enthusiasm for the originality, music, and performances of Hadestown, indicating it as a must-see production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:02.649Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

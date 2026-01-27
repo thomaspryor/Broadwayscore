@@ -10,8 +10,64 @@
   "showScoreExcerpt": "âHaving popped its cork early, the show keeps the bubbles flowing freely for the next two hours.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/death-becomes-her-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Having popped its cork early, the show keeps the bubbles flowing freely for the next two hours",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the show keeps the bubbles flowing freely",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Having popped its cork early",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The champagne metaphor suggests sustained energy and entertainment value throughout the show's duration, indicating a positive recommendation despite the brevity of the excerpt. | GPT-4o-mini: The review suggests a positive experience with the show, indicated by the metaphor of bubbles flowing freely, though it lacks detailed critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:05.520Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
