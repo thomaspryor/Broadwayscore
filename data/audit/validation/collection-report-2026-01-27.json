@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-27T06:28:26.325Z",
+  "runDate": "2026-01-27T06:30:56.156Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-lion-king-1997",
+    "showFilter": "moulin-rouge-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,27 +12,27 @@
   },
   "summary": {
     "processed": 213,
-    "failed": 126,
+    "failed": 134,
     "skipped": 0,
-    "successRate": "62.8%"
+    "successRate": "61.4%"
   },
   "tierBreakdown": {
-    "playwright": 28,
-    "scrapingbee": 18,
+    "playwright": 29,
+    "scrapingbee": 17,
     "brightdata": 21,
     "archive": 146
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 0,
-    "tier2Attempts": 13,
-    "tier2Success": 1,
-    "tier3Attempts": 12,
+    "tier1Attempts": 21,
+    "tier1Success": 1,
+    "tier2Attempts": 20,
+    "tier2Success": 0,
+    "tier3Attempts": 20,
     "tier3Success": 0,
-    "tier4Attempts": 15,
+    "tier4Attempts": 25,
     "tier4Success": 0,
-    "totalFailed": 12,
-    "scrapingBeeCreditsUsed": 40
+    "totalFailed": 20,
+    "scrapingBeeCreditsUsed": 60
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -247,7 +247,7 @@
     "queen-versailles-2025/theatermania--zachary-stewart.json",
     "queen-versailles-2025/theaterscene-net--unknown.json",
     "queen-versailles-2025/timeout-ny--adam-feldman.json",
-    "the-lion-king-1997/familyvacationcritic-com--unknown.json"
+    "moulin-rouge-2019/broadwaynews-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -364,18 +364,26 @@
     "queen-versailles-2025/interestedbystander-com--unknown.json",
     "queen-versailles-2025/talkinbroadway-com--unknown.json",
     "queen-versailles-2025/washington-post--naveen-kumar.json",
-    "the-lion-king-1997/nyt--ben-brantley.json",
-    "the-lion-king-1997/nytimes-com--unknown.json",
-    "the-lion-king-1997/variety--matt-wolf.json",
-    "the-lion-king-1997/AP--michael-kuchwara.json",
-    "the-lion-king-1997/NEWSDAY--linda-winer.json",
-    "the-lion-king-1997/NYP--clive-barnes.json",
-    "the-lion-king-1997/TIME--richard-zoglin.json",
-    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
-    "the-lion-king-1997/jasonraize-net--unknown.json",
-    "the-lion-king-1997/njcom--michael-sommers.json",
-    "the-lion-king-1997/streetdirectory-com--unknown.json",
-    "the-lion-king-1997/talkinbway--matthew-murray.json"
+    "moulin-rouge-2019/nyt--jesse-green.json",
+    "moulin-rouge-2019/vult--jesse-green.json",
+    "moulin-rouge-2019/NJCOM--christopher-kelly.json",
+    "moulin-rouge-2019/NYDN--joe-dziemianowicz.json",
+    "moulin-rouge-2019/NYP--johnny-oleksinski.json",
+    "moulin-rouge-2019/NYSR--jesse-oxfeld.json",
+    "moulin-rouge-2019/TDB--tim-teeman.json",
+    "moulin-rouge-2019/USATODAY--patrick-ryan.json",
+    "moulin-rouge-2019/WASHPOST--peter-marks.json",
+    "moulin-rouge-2019/WRAP--robert-hofler.json",
+    "moulin-rouge-2019/amny--matt-windman.json",
+    "moulin-rouge-2019/curtainup-com--unknown.json",
+    "moulin-rouge-2019/ew--leah-greenblatt.json",
+    "moulin-rouge-2019/guardian--alexis-soloski.json",
+    "moulin-rouge-2019/nyp--johnny-oleksinski.json",
+    "moulin-rouge-2019/slleiter-blogspot-com--unknown.json",
+    "moulin-rouge-2019/tman--jesse-green.json",
+    "moulin-rouge-2019/washingtonpost-com--unknown.json",
+    "moulin-rouge-2019/washpost--peter-marks.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -406,7 +414,8 @@
       "queen-versailles-2025/newyorktheatreguide-com--unknown.json",
       "queen-versailles-2025/pagesonstages-com--unknown.json",
       "queen-versailles-2025/theaterscene-net--unknown.json",
-      "queen-versailles-2025/timeout-ny--adam-feldman.json"
+      "queen-versailles-2025/timeout-ny--adam-feldman.json",
+      "moulin-rouge-2019/broadwaynews-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -425,8 +434,7 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "cabaret-2024/newyorktheater-me--unknown.json",
-      "the-lion-king-1997/familyvacationcritic-com--unknown.json"
+      "cabaret-2024/newyorktheater-me--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
