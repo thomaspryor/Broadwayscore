@@ -68,10 +68,10 @@
     "needsReviewReasons": []
   },
   "isFullReview": false,
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "textWordCount": 124,
   "archivePath": "data/archives/reviews/mj-2022/broadway-news--charles-isherwood_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:28:46.821Z",
+  "textFetchedAt": "2026-01-27T05:03:41.834Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -81,10 +81,15 @@
     }
   ],
   "fetchTier": 1,
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 124 (min: 300)",
     "Show title not found in text"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_paywall_text",
+    "possible_mid_word_cutoff"
   ]
 }
