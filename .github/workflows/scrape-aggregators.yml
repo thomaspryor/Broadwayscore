@@ -1,0 +1,95 @@
+name: Scrape Aggregators
+
+on:
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated show IDs (e.g., merrily-we-roll-along-2023,doubt-2024)'
+        required: false
+      aggregator:
+        description: 'Which aggregator to scrape'
+        required: true
+        type: choice
+        options:
+          - all
+          - dtli
+          - bww
+      all_historical:
+        description: 'Process all historical shows'
+        type: boolean
+        default: false
+
+jobs:
+  scrape-dtli:
+    if: ${{ inputs.aggregator == 'all' || inputs.aggregator == 'dtli' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run DTLI scraper
+        run: |
+          if [ "${{ inputs.all_historical }}" = "true" ]; then
+            node scripts/scrape-dtli.js --all-historical
+          elif [ -n "${{ inputs.shows }}" ]; then
+            node scripts/scrape-dtli.js --shows="${{ inputs.shows }}"
+          else
+            echo "No shows specified. Use --shows or --all-historical"
+            exit 1
+          fi
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "chore: Update DTLI review data"
+          git pull --rebase origin main
+          git push origin main
+
+  scrape-bww:
+    if: ${{ inputs.aggregator == 'all' || inputs.aggregator == 'bww' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs: [scrape-dtli]
+    # Allow this to run even if dtli is skipped
+    if: always() && (inputs.aggregator == 'all' || inputs.aggregator == 'bww')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Get latest after DTLI job
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run BWW Review Roundup scraper
+        run: |
+          if [ "${{ inputs.all_historical }}" = "true" ]; then
+            node scripts/scrape-bww-roundups.js --all-historical
+          elif [ -n "${{ inputs.shows }}" ]; then
+            node scripts/scrape-bww-roundups.js --shows="${{ inputs.shows }}"
+          else
+            echo "No shows specified. Use --shows or --all-historical"
+            exit 1
+          fi
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "chore: Update BWW Review Roundup data"
+          git pull --rebase origin main
+          git push origin main
