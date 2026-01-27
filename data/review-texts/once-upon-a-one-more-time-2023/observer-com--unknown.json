@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250804100501",
-  "archiveOrgUrl": "http://web.archive.org/web/20250804100501/https://observer.com/2023/06/review-once-upon-a-one-more-time-wont-leave-britney-alone/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250804100501/https://observer.com/2023/06/review-once-upon-a-one-more-time-wont-leave-britney-alone/",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 60,
+      "performances": 75,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Book writer Jon Hartmere's premise is contrived bordering on cringe",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "we have a marketing gimmick",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Comic divas and spectacular dances help pass the time",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show to be a cynical marketing gimmick with a cringe-worthy premise, saved only by strong performances and choreography, but ultimately cannot recommend it despite some entertainment value.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:27.040Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
