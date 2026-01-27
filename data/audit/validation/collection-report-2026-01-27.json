@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T05:06:53.048Z",
+  "runDate": "2026-01-27T05:08:26.599Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "just-in-time-2025",
+    "showFilter": "bug-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 204,
-    "failed": 111,
+    "processed": 203,
+    "failed": 117,
     "skipped": 0,
-    "successRate": "64.8%"
+    "successRate": "63.4%"
   },
   "tierBreakdown": {
     "playwright": 22,
     "scrapingbee": 17,
-    "brightdata": 21,
+    "brightdata": 20,
     "archive": 144
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 8,
     "tier1Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 8,
     "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 1,
-    "tier4Attempts": 2,
+    "tier3Attempts": 8,
+    "tier3Success": 0,
+    "tier4Attempts": 8,
     "tier4Success": 1,
-    "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 30
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -237,8 +237,7 @@
     "cabaret-2024/talkinbroadway-com--unknown.json",
     "cabaret-2024/theaterscene-net--unknown.json",
     "cabaret-2024/wsj-com--unknown.json",
-    "just-in-time-2025/theatermania--kenji-fujishima.json",
-    "just-in-time-2025/washington-post--naveen-kumar.json"
+    "bug-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -351,7 +350,13 @@
     "hadestown-2019/washpost--peter-marks.json",
     "cabaret-2024/interestedbystander-com--unknown.json",
     "cabaret-2024/tman--jesse-green.json",
-    "just-in-time-2025/guardian--adrian-horton.json"
+    "bug-2026/nytimes--jason-zinoman.json",
+    "bug-2026/INDIEWIRE--naveen-kumar.json",
+    "bug-2026/NYDN--joe-dziemianowicz.json",
+    "bug-2026/WASHPOST--peter-marks.json",
+    "bug-2026/interestedbystander-com--unknown.json",
+    "bug-2026/theaterscene-org--unknown.json",
+    "bug-2026/washington-post--naveen-kumar.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -417,8 +422,7 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json",
-      "just-in-time-2025/washington-post--naveen-kumar.json"
+      "hadestown-2019/towleroad-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -564,7 +568,7 @@
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
       "cabaret-2024/wsj-com--unknown.json",
-      "just-in-time-2025/theatermania--kenji-fujishima.json"
+      "bug-2026/wsj--charles-isherwood.json"
     ]
   }
 }
