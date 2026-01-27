@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The point, as elsewhere in the show, is to get the audience grooving with the synthy messaging of dictatorship, with enough moral dissonance to make your stomach churn as your feet keep moving—a that’s how they get you parable.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/here-lies-love-bway/",
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250428193044/https://www.vulture.com/2023/07/theater-review-here-lies-love-marcos-byrne-fatboy-slim-broadway.html",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 71,
+      "music": 85,
+      "performances": 78,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Here Lies Love is a great, unsettling time",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The resulting music is irresistible to a totalitarian degree",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "That's a tough tone to sustain, and when it breaks, it breaks toward the breezy and even blithe",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite substantive critiques of the show's moral ambiguity and tonal inconsistencies, the reviewer consistently praises the immersive experience, calls it 'a great, unsettling time,' and celebrates the music, performances, and innovative staging approach. | GPT-4o-mini: The review expresses strong enjoyment of the music and overall experience, with some reservations about character depth and narrative clarity.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:50.559Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
