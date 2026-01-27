@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Cottage is not a dud; its momentary outbreaks of hilarity thankfully break up stretches of conversation about characters’ tangled pasts, and restatements of the comic setups in front of us. But, as wittily complicated as those summaries can sound, we’ve already got it. It’s been unpacked for us in the moment, over and over again. If The Cottage isn’t a farce, what is it? This critic couldn’t tell you, and—as presented—the production doesn’t seem to know the answer either.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-cottage/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 65,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sadly, it is not as funny as it thinks it is, or intends to be",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The Cottage is not a dud; its outbreaks of hilarity thankfully break up stretches of conversation",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "There is no tension in The Cottage because it keeps explaining itself and all its silliness—immediately leaking all the silliness from the silliness",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: While the critic finds some comedic moments and praises certain performances (especially Moffat), they fundamentally view the play as a failed farce that doesn't understand its own genre and undermines its comedic potential through structural problems.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:36.323Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

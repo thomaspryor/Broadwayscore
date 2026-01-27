@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "So, fine, it’s not for me. The cast is clearly having a good time – though only Ethan Slater, swapping through multiple characters, as well as Kritzer, Walker, and especially Killam tap into the all-out comedy the work requires. And the audience? Well, their holy grail was promised and delivered, without much work to obtain it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/spamalot/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 30,
+      "performances": 65,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "So, fine, it's not for me",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The music, by John Du Prez and original Python member Eric Idle, can be described as first-draft, baritonal, and Hasty Puddingsesque. Nothing offensive or inventive about score",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The cast is clearly having a good time – though only Ethan Slater, swapping through multiple characters, as well as Kritzer, Walker, and especially Killam tap into the all-out comedy the work requires",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the material dated and uninspired, criticizes the music as 'first-draft' and book as untouched from 2005, while acknowledging some strong performances but ultimately concluding 'it's not for me' with no recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:56.029Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

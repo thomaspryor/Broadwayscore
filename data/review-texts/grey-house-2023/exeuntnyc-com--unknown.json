@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 77,
+      "direction": 71
+    },
+    "keyPhrases": [
+      {
+        "quote": "I enjoyed Grey House while I was watching it, but I could feel it dissipating even as I walked through Times Square",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the play hinges on the excellence of the young ensemble, and Mantello molds them into a coherent unit while still giving each her own gravity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Grey House as a whole sometimes seems to get trapped between the all-too-human horrors of the murderer, the rapist, the abuser, and the grand guignol horrors of the haunted house",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances and direction but finds the script lacking depth and the overall experience forgettable, enjoying it in the moment but noting it dissipated immediately after leaving. | GPT-4o-mini: The review indicates enjoyment of the performances but expresses significant concerns about character depth and overall impact, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:22.745Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 63,
+    "openaiScore": 65,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

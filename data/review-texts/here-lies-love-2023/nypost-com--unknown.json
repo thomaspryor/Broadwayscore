@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260116075441",
-  "archiveOrgUrl": "http://web.archive.org/web/20260116075441/https://nypost.com/2023/07/20/here-lies-love-review-david-byrne-musical-hits-broadway/"
+  "archiveOrgUrl": "http://web.archive.org/web/20260116075441/https://nypost.com/2023/07/20/here-lies-love-review-david-byrne-musical-hits-broadway/",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 58,
+      "music": 79,
+      "performances": 75,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a ravishing sensory experience unlike any other",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes you crave a stronger point of view on Marcos, rather than just an excuse for party time",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "You'll walk out at the end with no changed opinion of Imelda Marcos, but instead with your eyes opened about the endless possibilities for Broadway theaters",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the innovative production design and immersive experience while criticizing the shallow treatment of its subject matter, landing on a qualified positive recommendation focused on the theatrical innovation rather than storytelling depth. | GPT-4o-mini: The review expresses strong enjoyment of the production's sensory experience and music, but also highlights significant shortcomings in the story and character depth, leading to a positive but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:56.008Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

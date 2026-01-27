@@ -7,7 +7,63 @@
   "publishDate": "November 13, 2023",
   "fullText": "This is a show that my grandparents would have raved about during the post-services Kiddush luncheon: undeniably moving and extremely powerful, the pros of Harmony generally outweigh the cons. It’s not as profound as everyone involved clearly thinks it is, but it’ll give you the good cathartic cry you’ve been waiting for.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "undeniably moving and extremely powerful, the pros of Harmony generally outweigh the cons",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's not as profound as everyone involved clearly thinks it is",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "it'll give you the good cathartic cry you've been waiting for",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging pretensions, the critic clearly states the positives outweigh negatives and promises emotional satisfaction, indicating a qualified but definite recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:12.754Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

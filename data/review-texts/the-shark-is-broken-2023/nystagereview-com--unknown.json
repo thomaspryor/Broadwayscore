@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20231025224930/https://nystagereview.com/2023/08/10/the-shark-is-broken-the-greatest-fish-story-never-told/",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "4/5"
+  "extractedStars": "4/5",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "All laughter, with no threat of a shark attack. 'Cause the shark is broken.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Whatever he's doing, its mighty funny. As is the whole 95 minutes of three men—no, three actors with a broken mechanical shark—on a boat.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The two American actors, by now quite familiar for their Broadway musical appearances, offer exceptionally diverting caricatures.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer consistently praises the performances as 'exceptionally diverting' and finds the show 'mighty funny' throughout, concluding with enthusiastic endorsement of the entertainment value despite the simple premise. | GPT-4o-mini: The review praises the performances and humor while highlighting the production's cleverness, leading to a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:01.123Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

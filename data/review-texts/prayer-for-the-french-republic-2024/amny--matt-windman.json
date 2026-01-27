@@ -7,7 +7,63 @@
   "publishDate": "January 9, 2024",
   "fullText": "“Why do they hate us?” So asks Pierre Salomon, a Holocaust survivor in his 80’s, to his 26-year-old grandson Daniel after being told that Daniel’s family, including Pierre’s adult daughter Marcelle, is relocating from France to Israel (despite not knowing Hebrew or virtually anyone there) because they genuinely fear for their safety due to rising anti-Semitism in “Prayer for the French Republic,” Joshua Harmon’s long-winded (running three hours and 15 minutes) but powerful drama of family, religious identity, politics, and occasional humor.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "long-winded (running three hours and 15 minutes) but powerful drama",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "powerful drama of family, religious identity, politics, and occasional humor",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "long-winded (running three hours and 15 minutes)",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic describes the play as 'powerful' but criticizes its length as 'long-winded,' suggesting a mixed-positive response with qualified enthusiasm. | GPT-4o-mini: The review acknowledges the play's powerful themes but criticizes its length, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:22.650Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

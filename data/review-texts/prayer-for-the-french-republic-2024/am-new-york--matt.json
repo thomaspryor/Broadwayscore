@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Why do they hate us?” So asks Pierre Salomon, a Holocaust survivor in his 80’s, to his 26-year-old grandson Daniel after being told that Daniel’s family, including Pierre’s adult daughter Marcelle, is relocating from France to Israel (despite not knowing Hebrew or virtually anyone there) because they genuinely fear for their safety due to rising anti-Semitism in “Prayer for the French Republic,” Joshua Harmon’s long-winded (running three hours and 15 minutes) but powerful drama of family, religious identity, politics, and occasional humor.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/prayer-for-the-french-republic-broadway/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251108035215",
-  "archiveOrgUrl": "http://web.archive.org/web/20251108035215/https://www.amny.com/entertainment/theater/review-prayer-for-the-french-republic/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251108035215/https://www.amny.com/entertainment/theater/review-prayer-for-the-french-republic/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 88,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "long-winded (running three hours and 15 minutes) but powerful drama",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "with precise direction by David Cromer and superb ensemble performances",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "takes the genre to the next level by not just depicting anti-Semitism or warning against it but in earnestly trying to wrestle with how to respond to it",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite noting the play's length as potentially problematic, the reviewer consistently praises the powerful writing, superb performances, precise direction, and calls it genre-elevating, indicating a clear positive recommendation. | GPT-4o-mini: The review praises the direction and performances highly while acknowledging the play's relevant themes, leading to a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:17.149Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

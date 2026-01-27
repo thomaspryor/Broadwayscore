@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“The wish-come-true of ’Once Upon a One More Time’ is that it lifts without apology or even a slight blush...To spoil the plot beyond this would be unfair, even though you’ll likely see most of the twists and turns coming, or at least predict the overall story arc.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250725062238",
-  "archiveOrgUrl": "http://web.archive.org/web/20250725062238/https://deadline.com/2023/06/britney-spears-broadway-review-once-upon-a-one-more-time-deadline-1235421229/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250725062238/https://deadline.com/2023/06/britney-spears-broadway-review-once-upon-a-one-more-time-deadline-1235421229/",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 86,
+      "performances": 89,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Smart, funny, splendid to look at and all with a beat you can dance to, this tribute to the Brothers Grimm, the sisters of the Second Wave and, not least, the indomitable Ms. Spears, is a delight",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "so winningly performed it seems a collection of beauties, princesses, charmings and mermaids arrived fully formed from some magic land of Broadway make-believe",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's the OFG who, near the end, gets to deliver one of the show's sweetest little surprises, a grace note in a production that's already won our hearts",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The reviewer uses consistently enthusiastic language ('delight', 'enchanting', 'won our hearts') with detailed praise for all production elements and performances, indicating strong recommendation despite acknowledging familiar premise. | GPT-4o-mini: The review expresses strong enthusiasm and praise for the production, highlighting its cleverness, humor, and performances, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:42.468Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

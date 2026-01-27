@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "11/16"
+  "extractedRating": "11/16",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 82.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 82,
+      "performances": 94,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Josh Rhodes' completely delightful revival",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this cheery concoction has arrived just in the nick of time",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "an expert cast of farceurs and musical theater veterans who prove willing to do anything for a laugh",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses consistently enthusiastic language ('completely delightful,' 'expert cast') with specific praise for performances, direction, and production values, making a clear positive recommendation despite minor acknowledgments about plot simplicity. | GPT-4o-mini: The review expresses strong enthusiasm for the revival, highlighting its humor, performances, and direction, with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:40.796Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 87,
+    "openaiScore": 90,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
