@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "standing ovation"
+  "extractedPhrase": "standing ovation",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "director-choreographer Josh Rhodes squeezes every drop of talent out of his all-star cast of comedy heavy hitters",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you'll barely catch wind of any sincerity between the firing squad of hilarious antics",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You'll be too busy stumbling out of the St. James — jaw aching, mind spinning as if you've been shot out of a cannon",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review is overwhelmingly positive about the performances, comedy, and entertainment value, with vivid imagery of audiences leaving exhausted from laughing, despite some minor criticisms of the production design.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:47.545Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

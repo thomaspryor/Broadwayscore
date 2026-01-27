@@ -10,8 +10,64 @@
   "bwwExcerpt": "Directed with sensitivity by Sammi Cannold, How to Dance in Ohio is an underdog itself: a modest production of an original musical that originated in Syracuse, New York, and—like another sincerely inspirational audience-pleaser, Come From Away—rose on its own merits, without big stars, hit songs or well-known pop-culture IP.  “Going places / I am going places / There are places I need to be,” sing the actors in the opening number. “But most of the spaces / That I want to get to / Were not design",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Directed with sensitivity by Sammi Cannold",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "rose on its own merits",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sincerely inspirational audience-pleaser",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review presents positive language about the direction and compares it favorably to Come From Away, suggesting merit-based success, but this appears to be only an excerpt with incomplete analysis. | GPT-4o-mini: The review highlights the direction positively and indicates a clear recommendation for a modest but sincere production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:40.260Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

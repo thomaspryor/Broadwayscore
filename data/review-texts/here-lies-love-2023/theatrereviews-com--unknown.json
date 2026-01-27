@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "ends_with_ellipsis"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 85,
+      "performances": 85,
+      "direction": 86
+    },
+    "keyPhrases": [
+      {
+        "quote": "an immersive spectacle that is almost guaranteed to impress",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "scores very high on the entertainment level",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It may not be the best piece of traditional musical theater",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review offers consistent praise for the immersive experience, performances, and entertainment value, with only minor reservations about traditional musical theater quality. | GPT-4o-mini: The review expresses strong enthusiasm for the production's immersive experience, music, and direction, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:59.948Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

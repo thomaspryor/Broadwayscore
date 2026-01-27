@@ -7,7 +7,63 @@
   "publishDate": "October 12, 2023",
   "fullText": "But the talent onstage is unimpeachable, and their characters’ grief at the state of Broadway finances extends far beyond backroom production teams: Bud’s fictional uncle might have left a lucky fictional inheritance behind, but how many cars have been traded in for a pair of Hamilton seats? Here, one could find a worse deal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the talent onstage is unimpeachable",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Here, one could find a worse deal",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "their characters' grief at the state of Broadway finances",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt clearly praises the performances but the cryptic financial commentary and faint praise ending ('could find a worse deal') suggests qualified recommendation with limited enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:28.535Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

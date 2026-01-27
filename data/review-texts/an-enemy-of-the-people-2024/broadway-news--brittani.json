@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Strong is a standout amid an evening of largely blasé and unbalanced performances. There’s an overall atmosphere of tepidness in what Ibsen demanded be a ferocious work of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -33,5 +33,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 45,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's an overall atmosphere of tepidness in what Ibsen demanded be a ferocious work of theater",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Jeremy Strong is a standout amid an evening of largely blasé and unbalanced performances",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "He takes ambitious directorial swings with this production, but he's wobbly on the follow-through",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the adaptation strong but criticizes the direction for lacking the ferocity Ibsen intended, with only Strong's performance standing out among otherwise tepid work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:24.494Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

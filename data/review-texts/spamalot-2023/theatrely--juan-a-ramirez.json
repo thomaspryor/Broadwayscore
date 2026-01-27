@@ -7,7 +7,63 @@
   "publishDate": "November 16, 2023",
   "fullText": "So, fine, it’s not for me. The cast is clearly having a good time – though only Ethan Slater, swapping through multiple characters, as well as Kritzer, Walker, and especially Killam tap into the all-out comedy the work requires. And the audience? Well, their holy grail was promised and delivered, without much work to obtain it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 49,
+    "confidence": "high",
+    "range": {
+      "low": 43,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 68,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So, fine, it's not for me",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "their holy grail was promised and delivered, without much work to obtain it",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The cast is clearly having a good time",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the show isn't for them and implies it's fan service that doesn't earn its rewards, though acknowledges some cast members succeed in the comedy. | GPT-4o-mini: The review indicates a mixed experience, highlighting strong performances but ultimately suggesting the show may not resonate with all audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:35.646Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 50,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

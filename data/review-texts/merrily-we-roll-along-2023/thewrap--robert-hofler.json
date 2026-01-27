@@ -7,7 +7,63 @@
   "publishDate": "October 10, 2023",
   "fullText": "I’ve seen a few of those revivals, and while each has been an improvement on the original, this Broadway revival directed by Maria Friedman and based on her Mernier Chocolate Factory production in London, is the first that not only works completely but is downright wonderful — with just a very few caveats.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 86,
+    "confidence": "high",
+    "range": {
+      "low": 78.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "is the first that not only works completely but is downright wonderful",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "each has been an improvement on the original",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "with just a very few caveats",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong enthusiasm ('downright wonderful', 'works completely') with only minor reservations ('very few caveats') indicates a clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the revival, indicating it is a significant improvement and 'downright wonderful', with only minor reservations.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:44.677Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 88,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Like all great plays, “Mary Jane” catches light from different directions at different times, revealing different ideas. On the other side of the worst of Covid, “Mary Jane” feels less like a parent’s cry for more life than an inquest into the meaning of death.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/mary-jane/",
@@ -53,5 +53,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251102160205",
-  "archiveOrgUrl": "http://web.archive.org/web/20251102160205/https://www.nytimes.com/2024/04/23/theater/mary-jane-review-rachel-mcadams.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251102160205/https://www.nytimes.com/2024/04/23/theater/mary-jane-review-rachel-mcadams.html",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 85,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "confirms that earlier diagnosis",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Like all great plays, 'Mary Jane' catches light from different directions at different times, revealing different ideas",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The cast, returning or not, is unimprovable",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the play as 'great,' calls the cast 'unimprovable,' and confirms his earlier positive assessment, with detailed appreciation for all production elements and no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:29.581Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

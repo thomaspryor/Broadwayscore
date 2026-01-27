@@ -9,11 +9,67 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, which centers on a group of autistic young adults preparing for a spring formal, is a tender and authentic portrayal that avoids condescension while celebrating neurodiversity.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "tender and authentic portrayal",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "avoids condescension while celebrating neurodiversity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "avoids condescension",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses consistently positive language praising the show's authenticity and respectful treatment of its subject matter, indicating a clear positive recommendation despite being brief. | GPT-4o-mini: The review expresses strong positive sentiment towards the portrayal of its subject matter, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:38.823Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

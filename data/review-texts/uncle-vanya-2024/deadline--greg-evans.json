@@ -7,7 +7,63 @@
   "publishDate": "April 24, 2024",
   "fullText": "Steve Carell makes a solid Broadway debut in a fine, if not overly inspired, new revival of Chekhov’s Uncle Vanya. Smoothly adapted by What The Constitution Means To Me playwright Heidi Schreck and elegantly directed by Lila Neugebauer (demonstrating once again, after this season’s excellent Appropriate, a kinetic crossing-guard facility for keeping large-ish casts moving on spacious sets), this Lincoln Center Theater production places Chekhov’s tale of wasted lives and tenuous optimism amidst a contemporary setting.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 73,
+      "direction": 72
+    },
+    "keyPhrases": [
+      {
+        "quote": "fine, if not overly inspired, new revival",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Steve Carell makes a solid Broadway debut",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "elegantly directed by Lila Neugebauer",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review offers measured praise for performances and direction but the key phrase 'fine, if not overly inspired' suggests a qualified positive recommendation rather than enthusiasm. | GPT-4o-mini: The review highlights solid performances and direction but indicates a lack of inspiration in the overall production, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:13.898Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

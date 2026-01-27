@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"As musical theater, Tommy is limited. On its own terms, it’s often sensational.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -41,5 +41,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "time-out-stars",
   "scoreConfidence": "medium",
-  "originalRating": "5/5 stars"
+  "originalRating": "5/5 stars",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 85,
+      "performances": 82,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "On its own terms, it's often sensational",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the Broadway season's best choreography to date",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "dramaturgically unwieldy—drawn out in the first act, rushed and overstuffed in the second—and sometimes doesn't make sense",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: 4/5 stars with strong praise for performances, design, and choreography ('best of the season') despite clear structural criticisms, landing in solid positive territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:10.438Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

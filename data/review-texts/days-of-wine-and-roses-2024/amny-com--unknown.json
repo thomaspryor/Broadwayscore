@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250721191009",
-  "archiveOrgUrl": "http://web.archive.org/web/20250721191009/https://www.amny.com/entertainment/theater/review-days-of-wine-and-roses/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250721191009/https://www.amny.com/entertainment/theater/review-days-of-wine-and-roses/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 88,
+      "performances": 86,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "another musically literate and individualized work",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Kelli O'Hara and Brian d'Arcy James, who shine vocally and dramatically in finely-textured performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "proves to be one of the relatively few theatrical adaptations that expands upon its cinematic source material",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the musical sophistication, performances, and how the adaptation improves upon its source material, with no significant criticisms despite acknowledging the challenging subject matter. | GPT-4o-mini: The review expresses strong praise for the music and performances, indicating a clear recommendation to see the show despite some neutral observations about the source material.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:35.818Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

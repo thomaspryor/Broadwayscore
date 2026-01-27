@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "In Paula Vogel's new play, family dysfunction becomes a poetic meditation on memory, trauma and the stories we tell ourselves to survive.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 85.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "family dysfunction becomes a poetic meditation",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "memory, trauma and the stories we tell ourselves to survive",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "family dysfunction becomes a poetic meditation on memory, trauma",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This single sentence excerpt offers only thematic description without clear evaluative language or recommendation signals, making it impossible to determine the critic's actual opinion of the production's quality or entertainment value. | GPT-4o-mini: The review indicates a thoughtful exploration of themes, suggesting a positive recommendation despite lacking detailed critique. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:50.345Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 80,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

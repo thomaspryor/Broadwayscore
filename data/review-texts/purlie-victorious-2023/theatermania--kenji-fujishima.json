@@ -7,7 +7,63 @@
   "publishDate": "September 27, 2023",
   "fullText": "But there’s nothing at all musty or reverential about this production. Instead, it makes a convincing case for Davis’s satirical play as a living, breathing work of art, one that, for all its dated elements, still has much to offer to contemporary audiences.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes a convincing case for Davis's satirical play as a living, breathing work of art",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "still has much to offer to contemporary audiences",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "for all its dated elements",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review praises the production for successfully revitalizing classic material and making it relevant for modern audiences, despite acknowledging some dated elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:18.498Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

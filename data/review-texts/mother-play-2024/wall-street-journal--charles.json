@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "But while the final scene—Phyllis, in a nursing home, repeatedly wails, “I want to go home,” and fails to recognize Martha as her daughter—has a piercing sadness as Ms. Lange’s performance reaches a rending climax, too much of “Mother Play” feels evanescent, more a personal exercise in exorcising ghosts than a play that resonates on deeper levels.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/mother-play/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 37.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 74,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has a piercing sadness as Ms. Lange's performance reaches a rending climax",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "too much of \"Mother Play\" feels evanescent, more a personal exercise in exorcising ghosts than a play that resonates on deeper levels",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "too much of 'Mother Play' feels evanescent",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising Lange's powerful performance, the critic fundamentally dismisses the play as a self-indulgent exercise that fails to achieve theatrical resonance. | GPT-4o-mini: The review expresses mixed feelings, praising the performance while criticizing the script's depth, leading to a conditional recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:35.411Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

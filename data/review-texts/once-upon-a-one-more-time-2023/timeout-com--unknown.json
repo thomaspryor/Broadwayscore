@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Simard is delicious; the rest of the show, if you turn off your brain, is merely yummy in a candy-coated way. That’s not nothing: ‘Once Upon a One More Time’ is a well-assembled and entertaining diversion...Musicals are capable of more ambitious roles than merely carrying Spears.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -41,5 +41,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "time-out-stars",
   "scoreConfidence": "medium",
-  "originalRating": "5/5 stars"
+  "originalRating": "5/5 stars",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": 70,
+      "performances": 75,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a One More Time is a well-assembled and entertaining diversion",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "if you turn off your brain, is merely yummy in a candy-coated way",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "For a fan of more substantial musicals, with original scores, it's a masochistic pleasure",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The 3/5 star rating combined with mixed praise ('well-assembled and entertaining') tempered by criticism of lack of substance and originality indicates a qualified, lukewarm recommendation. | GPT-4o-mini: The review indicates a mixed experience, with praise for performances but reservations about originality and depth, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:32.024Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

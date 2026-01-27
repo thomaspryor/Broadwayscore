@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "\"...Peter Morgan’s intelligent historical drama.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -55,5 +55,56 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240808030439/https://www.wsj.com/articles/patriots-review-on-broadway-putin-peter-morgan-russia-michael-stuhlbarg-b5577abf",
   "textIssues": [
     "Word count too low: 95 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 55
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the prospect of watching a drama focused on him would not seem to be an appealing entertainment",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It’s a relief to discover that Vladimir Putin, while a principal figure in Peter Morgan’s play 'Patriots,' is not the central one",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review expresses mixed feelings about the play's focus on Putin, suggesting a conditional interest rather than a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:08.846Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 50,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

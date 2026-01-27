@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 45,
+      "music": 87,
+      "performances": 81,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "What redeems 'Merrily,' of course – what has motivated all those theater artists who have tried to fix it — is the music",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there's so much genuine-feeling joy in their voices and camaraderie evident in their carriage and expressions that it might make you cry",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "If I can't agree that Maria Friedman has solved the problems of Sondheim's musical now and forever",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges fundamental problems with the show remain unsolved but finds enough merit in the performances, music, and direction to create a qualified positive experience worth seeing. | GPT-4o-mini: The review expresses a generally positive sentiment towards the performances and music while acknowledging unresolved issues with the book and direction, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:35.416Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

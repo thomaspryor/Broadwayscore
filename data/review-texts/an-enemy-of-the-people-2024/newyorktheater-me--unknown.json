@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 82,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "their casting turns out to be director Sam Gold's most inspiring choice",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Strong, who certainly has had experience portraying an often unlikeable character, presents the doctor's complexity, including his strengths",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "one can find other satisfactions as well",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the casting choices, performances, and Herzog's adaptation while acknowledging some complexity in the characters - overall a clear positive recommendation with thoughtful analysis.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:57.178Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

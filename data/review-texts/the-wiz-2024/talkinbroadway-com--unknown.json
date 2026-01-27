@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250531000438/https://www.talkinbroadway.com/page/world/TheWiz.html",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 48,
+    "confidence": "medium",
+    "range": {
+      "low": 43,
+      "high": 53
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": 65,
+      "performances": 55,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "its buoyant pleasures abound. Unfortunately, those pleasures are intermittent in the current production",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the show's oft-repeated pledge to ease on down the road is at times more of a slog",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Rather than try to iron out the book problems or attempt to hoodwink audiences with flashy, high-tech spectacle and campy performances, the best approach might be to embrace the messiness and find the magic within",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges the musical's potential pleasures but consistently criticizes this production's execution, calling it 'intermittent' in its successes and 'a slog' at times, with systemic problems in direction, choreography, and design choices.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:21.214Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

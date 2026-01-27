@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,5 +30,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": null,
+      "performances": 70,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "The fascinating but flawed Broadway revival",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Strong gives a magnetic and driven performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's a shame, because flawed heroes are more compelling than martyrs",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds elements to praise (Strong's performance, some supporting actors) but has significant reservations about the adaptation's choices and lack of nuance compared to Ibsen's original, resulting in a mixed assessment that acknowledges both strengths and meaningful flaws. | GPT-4o-mini: The review presents a mix of strong performances, particularly from Jeremy Strong, but critiques the adaptation for lacking nuance and depth, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:36.793Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

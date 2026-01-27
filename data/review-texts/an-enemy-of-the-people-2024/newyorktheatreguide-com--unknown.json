@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Gold's production...skillfully balances the play’s history and its timeliness.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 85,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "this production beautifully integrates its 19th-century Nordic roots",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Strong expertly portrays the demise",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This production of An Enemy of the People may be driven by star power, but its enduring message packs a punch for seasoned theatregoers and those new to Ibsen's works",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the production's relevance, Strong's expert performance, Gold's skillful direction, and the creative staging choices, with no significant negative criticisms and a clear positive recommendation for both Ibsen veterans and newcomers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:11.480Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

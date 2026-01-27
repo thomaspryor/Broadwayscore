@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 58,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 52,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "mildly entertaining view of movie history in the making",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "what most made me critically seasick in The Shark Is Broken was the bombast of its acting, especially the excessively shouting Shaw and the frenetically paranoid Brightman",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the best my old jawbone could muster was about half a dozen modest chuckles",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show 'mildly entertaining' but heavily criticizes the bombastic acting and lack of genuine drama, describing it as gossip magazine material with overdone performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:20.191Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

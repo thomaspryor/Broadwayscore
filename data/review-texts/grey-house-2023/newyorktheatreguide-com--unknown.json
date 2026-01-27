@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“One wishes the series of scenes built to a deeper, more full-scale sense of dread. In terms of fright nights, ’Grey House’ is entertaining, albeit middle of the road.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,5 +30,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 75,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grey House is entertaining, albeit middle of the road",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "it doesn't deliver intense shivers. It's too vague to stir psychological chills",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Mantello has assembled a fine ensemble. His atmospheric production packs jump scares that do their job",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls the show 'middle of the road' and 'entertaining' while praising the production values and performances but criticizing the vague, unsatisfying script that fails to deliver promised thrills. | GPT-4o-mini: The review indicates a mix of positive aspects, particularly in performances and direction, but ultimately suggests a lack of depth and intensity in the story, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:40.139Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

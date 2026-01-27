@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 75,
+      "performances": 82,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "I did genuinely enjoy this production, and it's good that there are lighthearted shows on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the text of Merrily We Roll Along seems to restrict the potential for people to be truly moved by the show and its story",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I felt like director Maria Friedman made the most out of this musical that was possible within the constraints of what is written on the page",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer genuinely enjoyed the production and praised the performances and direction, but has significant reservations about the material itself, particularly character development issues, resulting in a qualified positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:27.373Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

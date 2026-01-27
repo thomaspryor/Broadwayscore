@@ -7,7 +7,63 @@
   "publishDate": "April 14, 2024",
   "fullText": "What “Lempicka,” the mystifying new musical about Polish painter Tamara de Lempicka, needs more than anything else is turpentine.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "mystifying new musical",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "needs more than anything else is turpentine",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "What “Lempicka,” the mystifying new musical about Polish painter Tamara de Lempicka, needs more than anything else is turpentine.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic calls the musical 'mystifying' and suggests it needs 'turpentine' (paint remover), a harsh metaphor implying the show should be erased or cleaned away entirely. | GPT-4o-mini: The review suggests a strong need for improvement, indicating a clear negative sentiment towards the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:02.947Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

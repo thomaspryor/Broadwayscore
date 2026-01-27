@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 87,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-grade",
   "scoreConfidence": "medium",
-  "extractedGrade": "A"
+  "extractedGrade": "A",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 81,
+      "music": 75,
+      "performances": 89,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bravo to a Broadway show that's willing to ask such big questions in such an entertaining way. Grade: A-",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's an important history lesson, an innovative use of theater space, and a disco dance party, all at once",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The score is a little uneven, a classic problem with musicals drawn from real life",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The A- grade combined with extensive praise for the innovative staging, performances, and political relevance, with only minor reservations about the score's unevenness, indicates a strong positive recommendation. | GPT-4o-mini: The review expresses strong praise for the innovative staging, performances, and thematic depth, with only minor reservations about the score.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:15.406Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 88,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

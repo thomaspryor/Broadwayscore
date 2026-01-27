@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The unevenly staged Harmony is a shakily constructed set of misfiring elements, whose most compelling beats around Nazism, Antisemitism, and bigotry—all points resoundingly and rightly made—feel imposed and didactic rather than flowing naturally from the source material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 45,
+      "performances": 65,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "The unevenly staged Harmony is a shakily constructed set of misfiring elements",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "their story and characters seem insubstantial",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it makes for a strangely hollow, hero- and bravery-free musical",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws in the musical's construction, character development, and storytelling, with only scattered praise for individual performances unable to overcome the show's structural problems.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:41.734Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
