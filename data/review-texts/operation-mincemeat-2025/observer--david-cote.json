@@ -13,8 +13,8 @@
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250320",
-  "textStatus": "partial",
-  "textQuality": "partial",
+  "textStatus": "truncated",
+  "textQuality": "truncated",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
@@ -76,20 +76,26 @@
   },
   "textWordCount": 98,
   "archivePath": "data/archives/reviews/operation-mincemeat-2025/observer--david-cote_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:42:30.745Z",
+  "textFetchedAt": "2026-01-27T05:01:16.771Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "CAPTCHA or access blocked"
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": false,
+      "error": "No archive snapshot available"
     },
     {
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "timeout of 60000ms exceeded"
+      "error": "CAPTCHA detected (premium_proxy)"
     },
     {
       "tier": 3,
@@ -101,5 +107,8 @@
   "textIssues": [
     "Word count too low: 98 (min: 300)",
     "Show title not found in text"
+  ],
+  "truncationSignals": [
+    "shorter_than_excerpt"
   ]
 }
