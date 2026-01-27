@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 35,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -35,5 +35,8 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 233 (min: 300)"
-  ]
+  ],
+  "scoreSource": "extracted-strong-negative",
+  "scoreConfidence": "medium",
+  "extractedPhrase": "avoid"
 }

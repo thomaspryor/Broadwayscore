@@ -9,12 +9,11 @@
   "isFullReview": true,
   "showScoreExcerpt": "Tunefully delicious, theatrically tasty...While not its strongest feature, 'Hadestown''s book now...",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 85,
   "source": "show-score",
   "textQuality": "full",
   "sourceMethod": "playwright",
-  "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null,
+  "scoreSource": "extracted-strong-positive",
   "llmScore": {
     "score": 75,
     "confidence": "high",
@@ -83,5 +82,7 @@
       "success": true
     }
   ],
-  "fetchTier": 1
+  "fetchTier": 1,
+  "scoreConfidence": "medium",
+  "extractedPhrase": "standing ovation"
 }

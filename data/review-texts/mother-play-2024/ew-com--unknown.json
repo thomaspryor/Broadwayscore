@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...Vogel’s latest hits the emotional beats...reminder to call your mom now and then.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 35,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -36,5 +36,8 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "scoreSource": "extracted-strong-negative",
+  "scoreConfidence": "medium",
+  "extractedPhrase": "avoid"
 }

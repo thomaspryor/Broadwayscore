@@ -9,14 +9,13 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"Everything looks so tangible, touchable...an argument for live theater\"",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 85,
   "source": "show-score",
   "needsFullText": true,
   "textStatus": "complete",
   "textQuality": "full",
   "sourceMethod": "brightdata",
-  "scoreStatus": "TO_BE_CALCULATED",
-  "scoreSource": null,
+  "scoreSource": "extracted-strong-positive",
   "llmScore": {
     "score": 79,
     "confidence": "high",
@@ -91,5 +90,7 @@
       "success": true
     }
   ],
-  "fetchTier": 3
+  "fetchTier": 3,
+  "scoreConfidence": "medium",
+  "extractedPhrase": "raves"
 }
