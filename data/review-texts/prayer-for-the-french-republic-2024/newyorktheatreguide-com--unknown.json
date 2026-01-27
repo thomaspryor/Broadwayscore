@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“It’s a plus-size play about big social issues that impresses in large structural ways as well as small moments...so this ‘Prayer’ will likely always be relevant. That’s a dramatic triumph – and a scorching reality.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 85,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Read our five-star review of Prayer for the French Republic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "He digs deeper than ever in Prayer for the French Republic and strikes pure gold",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "That's a dramatic triumph – and a scorching reality",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Five-star review with superlative language like 'strikes pure gold' and 'dramatic triumph,' praising script, direction, and performances with only minor note about one performance needing to deepen.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:55.290Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

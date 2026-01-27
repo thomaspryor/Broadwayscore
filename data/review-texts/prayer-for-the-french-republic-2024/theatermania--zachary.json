@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "In three acts, Harmon brilliantly dramatizes these questions and more through the story of one very specific yet completely recognizable Jewish family (fans of last season’s Leopoldstadt will find much to admire here). Scenes of simmering resentment imperceptibly come to a boil as family politics brush up against seismic global forces.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/prayer-for-the-french-republic-broadway/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250315044323",
-  "archiveOrgUrl": "http://web.archive.org/web/20250315044323/https://www.theatermania.com/news/review-prayer-for-the-french-republic-and-a-one-way-ticket-to-israel_1725360/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250315044323/https://www.theatermania.com/news/review-prayer-for-the-french-republic-and-a-one-way-ticket-to-israel_1725360/",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harmon brilliantly dramatizes these questions and more through the story of one very specific yet completely recognizable Jewish family",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Prayer for the French Republic is a powerful reminder that a better future is only possible if you live to have a future",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This is the kind of delicious invective we've come to expect from Harmon through plays like Admissions and Bad Jews, and he spectacularly delivers here with the help of a top-notch cast",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises Harmon's writing as 'brilliant,' celebrates the 'top-notch cast' with specific performance highlights, commends the 'beautiful production,' and concludes with a strong endorsement calling it a 'powerful reminder,' indicating clear recommendation despite the heavy subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:30.794Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "The performances by the ensemble, both veterans and newcomers, are exemplary, with Aidem perhaps the standout as the mother desperately trying to hold everything together in the face of eternal forces. Only Edwards seems a bit out of place, and not only because of his celebrity relative to the rest of the cast. But his performance may sharpen as the run goes on.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 79,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The performances by the ensemble, both veterans and newcomers, are exemplary",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Only Edwards seems a bit out of place",
+        "sentiment": "negative",
+        "strength": 2
+      },
+      {
+        "quote": "his performance may sharpen as the run goes on",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise for ensemble performances with one notable exception, but this excerpt lacks context about the overall production quality and gives no clear recommendation signal. | GPT-4o-mini: The review highlights strong performances overall, with a minor caveat about one actor, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:15.776Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
