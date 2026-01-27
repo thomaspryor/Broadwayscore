@@ -11,8 +11,8 @@
   "originalScore": null,
   "assignedScore": 94,
   "source": "web-search",
-  "textStatus": "partial",
-  "textQuality": "partial",
+  "textStatus": "truncated",
+  "textQuality": "truncated",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
@@ -74,7 +74,7 @@
   },
   "textWordCount": 169,
   "archivePath": "data/archives/reviews/hadestown-2019/bwaynews--charles-isherwood_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T01:48:14.230Z",
+  "textFetchedAt": "2026-01-27T20:30:55.324Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -86,5 +86,10 @@
   "fetchTier": 1,
   "textIssues": [
     "Word count too low: 169 (min: 300)"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_paywall_text",
+    "possible_mid_word_cutoff"
   ]
 }
