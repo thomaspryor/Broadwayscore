@@ -13,8 +13,8 @@
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211004",
-  "textStatus": "partial",
-  "textQuality": "partial",
+  "textStatus": "truncated",
+  "textQuality": "truncated",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
@@ -76,7 +76,7 @@
   },
   "textWordCount": 98,
   "archivePath": "data/archives/reviews/six-2021/observer--david-cote_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:33:48.314Z",
+  "textFetchedAt": "2026-01-27T05:25:52.769Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -101,5 +101,8 @@
   "textIssues": [
     "Word count too low: 98 (min: 300)",
     "Show title not found in text"
+  ],
+  "truncationSignals": [
+    "shorter_than_excerpt"
   ]
 }
