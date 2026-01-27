@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": 65,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the show falls short for me, more an exercise in chills than a satisfying work of theater.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "All these inexplicable goings-on add to a sense of dread and mystery and creepiness, but they don't add up to much of a play.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The design team works wonders, or terrors, especially sound designer Tom Gibbons and lighting designer Natasha Katz",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges strong technical elements and committed performances but finds fundamental flaws in the script and overall theatrical experience, concluding it 'falls short' as satisfying theater.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:23.079Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

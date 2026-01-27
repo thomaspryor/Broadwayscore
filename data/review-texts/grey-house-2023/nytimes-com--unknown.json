@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“That teasing quality, though sometimes charming — and often, if you are a scaredy-cat, a relief from the hard-core jolts — is the giveaway that ‘Grey House’ should not be taken too seriously, regardless of its allusions to real-world horror of the past and present.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230603061941",
-  "archiveOrgUrl": "http://web.archive.org/web/20230603061941/https://www.nytimes.com/2023/06/01/theater/review-grey-house.html?partner=IFTTT"
+  "archiveOrgUrl": "http://web.archive.org/web/20230603061941/https://www.nytimes.com/2023/06/01/theater/review-grey-house.html?partner=IFTTT",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 77,
+      "direction": 69
+    },
+    "keyPhrases": [
+      {
+        "quote": "you may not notice, between the jump scares and the shivery pauses, how little it has on its mind",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "At least those trappings are superb",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "what makes the effort meaningful to artists... may not make it meaningful to us",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Green acknowledges the technical excellence and committed performances but finds the play fundamentally hollow, praising the craft while questioning its deeper value to audiences. | GPT-4o-mini: The review presents a mixed view, praising the performances while criticizing the script and depth of the play, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:18.964Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

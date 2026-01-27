@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The unevenly staged Harmony is a shakily constructed set of misfiring elements, whose most compelling beats around Nazism, Antisemitism, and bigotry—all points resoundingly and rightly made—feel imposed and didactic rather than flowing naturally from the source material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 48,
+      "performances": 58,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "The unevenly staged Harmony is a shakily constructed set of misfiring elements",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "their story and characters seem insubstantial",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it makes for a strangely hollow, hero- and bravery-free musical",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental problems with the musical's structure, character development, and storytelling, describing it as 'shakily constructed' and 'hollow' despite acknowledging some individual bright spots in performances. | GPT-4o-mini: The review is predominantly negative, highlighting significant issues with the script, character development, and overall impact, indicating a clear lack of recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:32.812Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
