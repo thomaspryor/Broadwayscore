@@ -7,7 +7,63 @@
   "publishDate": "June 1, 2023",
   "fullText": "At times, the psychological slow burn of his new dark comedy moves at a snail’s pace — lethargizing the play’s momentum and stretching entire scenes beyond comprehension — but “Grey House” cracks open in its final moments. And by its end, the play accomplishes what only the best of its genre is able to: It reminds us that the scariest monster of all lives in mankind.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 63,
+      "music": null,
+      "performances": null,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "moves at a snail's pace — lethargizing the play's momentum and stretching entire scenes beyond comprehension",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Grey House cracks open in its final moments",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the play accomplishes what only the best of its genre is able to: It reminds us that the scariest monster of all lives in mankind",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed review that criticizes pacing issues but praises the payoff and thematic achievement, suggesting it ultimately succeeds despite flaws. | GPT-4o-mini: The review highlights significant pacing issues but acknowledges a strong thematic conclusion, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:20.662Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
