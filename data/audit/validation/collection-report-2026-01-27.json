@@ -1,97 +1,75 @@
 {
-  "runDate": "2026-01-27T20:34:32.477Z",
+  "runDate": "2026-01-27T20:34:36.740Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "queen-versailles-2025",
+    "showFilter": "harmony-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 19,
-    "failed": 8,
+    "processed": 7,
+    "failed": 12,
     "skipped": 0,
-    "successRate": "70.4%"
+    "successRate": "36.8%"
   },
   "tierBreakdown": {
-    "playwright": 8,
-    "scrapingbee": 4,
-    "brightdata": 1,
+    "playwright": 1,
+    "scrapingbee": 0,
+    "brightdata": 0,
     "archive": 6
   },
   "statistics": {
-    "tier1Attempts": 24,
-    "tier1Success": 8,
-    "tier2Attempts": 16,
-    "tier2Success": 4,
-    "tier3Attempts": 12,
-    "tier3Success": 1,
-    "tier4Attempts": 20,
+    "tier1Attempts": 15,
+    "tier1Success": 1,
+    "tier2Attempts": 14,
+    "tier2Success": 0,
+    "tier3Attempts": 14,
+    "tier3Success": 0,
+    "tier4Attempts": 23,
     "tier4Success": 6,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 150
+    "totalFailed": 12,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
-    "queen-versailles-2025/new-york-magazine-vulture--sara-holdren.json",
-    "queen-versailles-2025/vulture--sara.json",
-    "queen-versailles-2025/associated-press--mark.json",
-    "queen-versailles-2025/entertainment-weekly--dalton.json",
-    "queen-versailles-2025/la-times--charles.json",
-    "queen-versailles-2025/lighting-sound-america--david-barbour.json",
-    "queen-versailles-2025/new-york-post--johnny.json",
-    "queen-versailles-2025/new-york-stage-review--bob.json",
-    "queen-versailles-2025/new-york-stage-review--david.json",
-    "queen-versailles-2025/new-york-theater--jonathan.json",
-    "queen-versailles-2025/new-york-theatre-guide--joe.json",
-    "queen-versailles-2025/new-york-times--laura.json",
-    "queen-versailles-2025/pages-on-stages--mason-pilevsky.json",
-    "queen-versailles-2025/the-daily-beast--tim.json",
-    "queen-versailles-2025/theatermania--zachary.json",
-    "queen-versailles-2025/theaterscene-net--joseph-pisano.json",
-    "queen-versailles-2025/theatre-reviews-limited--david-roberts.json",
-    "queen-versailles-2025/theatrely--joey.json",
-    "queen-versailles-2025/time-out-new-york--adam.json"
+    "harmony-2023/deadline-com--unknown.json",
+    "harmony-2023/entertainment-weekly--emlyn.json",
+    "harmony-2023/new-york-theatre-guide--amelia.json",
+    "harmony-2023/new-york-times--jesse.json",
+    "harmony-2023/theatermania--david.json",
+    "harmony-2023/wall-street-journal--charles.json",
+    "harmony-2023/wsj-com--unknown.json"
   ],
   "failed": [
-    "queen-versailles-2025/variety--aramide.json",
-    "queen-versailles-2025/1-minute-critic--matthew-wexler.json",
-    "queen-versailles-2025/interested-bystander--cary-wong.json",
-    "queen-versailles-2025/interestedbystander-com--unknown.json",
-    "queen-versailles-2025/new-york-daily-news--chris.json",
-    "queen-versailles-2025/wapo--naveen-kumar.json",
-    "queen-versailles-2025/washington-post--naveen-kumar.json",
-    "queen-versailles-2025/washington-post--naveen.json"
+    "harmony-2023/nyt--jesse-green.json",
+    "harmony-2023/thr--david-rooney.json",
+    "harmony-2023/variety--peter-marks.json",
+    "harmony-2023/variety-com--unknown.json",
+    "harmony-2023/vult--helen-shaw.json",
+    "harmony-2023/deadline--greg.json",
+    "harmony-2023/guardian--adrian-horton.json",
+    "harmony-2023/nyp--johnny-oleksinski.json",
+    "harmony-2023/temptalkinbroadway-com--unknown.json",
+    "harmony-2023/the-wrap--robert.json",
+    "harmony-2023/thly--michael-appler.json",
+    "harmony-2023/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
-      "queen-versailles-2025/lighting-sound-america--david-barbour.json",
-      "queen-versailles-2025/new-york-stage-review--bob.json",
-      "queen-versailles-2025/new-york-stage-review--david.json",
-      "queen-versailles-2025/new-york-theater--jonathan.json",
-      "queen-versailles-2025/new-york-theatre-guide--joe.json",
-      "queen-versailles-2025/pages-on-stages--mason-pilevsky.json",
-      "queen-versailles-2025/theaterscene-net--joseph-pisano.json",
-      "queen-versailles-2025/theatre-reviews-limited--david-roberts.json"
+      "harmony-2023/new-york-theatre-guide--amelia.json"
     ],
-    "scrapingbee": [
-      "queen-versailles-2025/entertainment-weekly--dalton.json",
-      "queen-versailles-2025/la-times--charles.json",
-      "queen-versailles-2025/theatrely--joey.json",
-      "queen-versailles-2025/time-out-new-york--adam.json"
-    ],
-    "brightdata": [
-      "queen-versailles-2025/the-daily-beast--tim.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archive": [
-      "queen-versailles-2025/new-york-magazine-vulture--sara-holdren.json",
-      "queen-versailles-2025/vulture--sara.json",
-      "queen-versailles-2025/associated-press--mark.json",
-      "queen-versailles-2025/new-york-post--johnny.json",
-      "queen-versailles-2025/new-york-times--laura.json",
-      "queen-versailles-2025/theatermania--zachary.json"
+      "harmony-2023/deadline-com--unknown.json",
+      "harmony-2023/entertainment-weekly--emlyn.json",
+      "harmony-2023/new-york-times--jesse.json",
+      "harmony-2023/theatermania--david.json",
+      "harmony-2023/wall-street-journal--charles.json",
+      "harmony-2023/wsj-com--unknown.json"
     ]
   }
 }
