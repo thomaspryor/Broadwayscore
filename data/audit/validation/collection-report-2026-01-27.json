@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T05:20:48.291Z",
+  "runDate": "2026-01-27T05:22:27.347Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "boop-2025",
+    "showFilter": "stranger-things-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 202,
-    "failed": 112,
+    "processed": 204,
+    "failed": 122,
     "skipped": 0,
-    "successRate": "64.3%"
+    "successRate": "62.6%"
   },
   "tierBreakdown": {
     "playwright": 22,
-    "scrapingbee": 17,
-    "brightdata": 20,
+    "scrapingbee": 18,
+    "brightdata": 21,
     "archive": 143
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 14,
     "tier1Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 0,
-    "tier4Attempts": 2,
+    "tier2Attempts": 14,
+    "tier2Success": 1,
+    "tier3Attempts": 13,
+    "tier3Success": 1,
+    "tier4Attempts": 14,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 10
+    "totalFailed": 12,
+    "scrapingBeeCreditsUsed": 60
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -236,7 +236,9 @@
     "cabaret-2024/pagesonstages-wordpress-com--unknown.json",
     "cabaret-2024/talkinbroadway-com--unknown.json",
     "cabaret-2024/theaterscene-net--unknown.json",
-    "cabaret-2024/wsj-com--unknown.json"
+    "cabaret-2024/wsj-com--unknown.json",
+    "stranger-things-2024/the-stage--dave-fargnoli.json",
+    "stranger-things-2024/washington-post--naveen-kumar.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -349,8 +351,18 @@
     "hadestown-2019/washpost--peter-marks.json",
     "cabaret-2024/interestedbystander-com--unknown.json",
     "cabaret-2024/tman--jesse-green.json",
-    "boop-2025/daily-beast--tim-teeman.json",
-    "boop-2025/interestedbystander-com--unknown.json"
+    "stranger-things-2024/NYTG--kyle-turner.json",
+    "stranger-things-2024/NYDN--chris-jones.json",
+    "stranger-things-2024/WRAP--robert-hofler.json",
+    "stranger-things-2024/ew--emlyn-travis.json",
+    "stranger-things-2024/guardian--arifa-akbar.json",
+    "stranger-things-2024/guardian--michael-billington.json",
+    "stranger-things-2024/interestedbystander-com--unknown.json",
+    "stranger-things-2024/the-standard--nick-curtis.json",
+    "stranger-things-2024/tickertv--cheryl-king.json",
+    "stranger-things-2024/tman--adam-feldman.json",
+    "stranger-things-2024/wsj--charles-isherwood.json",
+    "stranger-things-2024/wsj-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -394,7 +406,8 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "cabaret-2024/newyorktheater-me--unknown.json"
+      "cabaret-2024/newyorktheater-me--unknown.json",
+      "stranger-things-2024/the-stage--dave-fargnoli.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -416,7 +429,8 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json"
+      "hadestown-2019/towleroad-com--unknown.json",
+      "stranger-things-2024/washington-post--naveen-kumar.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
