@@ -5,7 +5,7 @@
   "criticName": "Jesse Green",
   "url": "https://observer.com/2024/04/suffs-broadway-review-shaina-taub/",
   "publishDate": "April 18, 2024",
-  "fullText": "Taub has created a musical that is both entertaining and educational, managing to make the complex political machinery of the suffrage movement accessible without dumbing it down.",
+  "fullText": "We noticed you're using an ad blocker.\n\t\t\tWe get it: you like to have control of your own internet experience. But advertising revenue helps support our journalism. To read our full stories, please turn off your ad blocker.We'd really appreciate it.\n\nBelow are steps you can take in order to whitelist Observer.com on your browser:\n\nClick the AdBlock button on your browser and select Don't run on pages on this domain.\n\nClick the AdBlock Plus button on your browser and select Enabled on this site.\n\nClick the AdBlock Plus button on your browser and select Disable on Observer.com.",
   "isFullReview": false,
   "dtliExcerpt": "Taub has created a musical that is both entertaining and educational, managing to make the complex political machinery of the suffrage movement accessible without dumbing it down.",
   "originalScore": null,
@@ -68,5 +68,36 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textStatus": "partial",
+  "textWordCount": 98,
+  "archivePath": "data/archives/reviews/suffs-2024/observer--jesse-green_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T04:51:42.331Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (404): Request failed with status code 404"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 98 (min: 300)",
+    "Show title not found in text"
+  ]
 }
