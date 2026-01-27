@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T02:00:49.674Z",
+  "runDate": "2026-01-27T02:04:49.366Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "moulin-rouge-2019",
+    "showFilter": "stranger-things-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 190,
-    "failed": 98,
+    "processed": 191,
+    "failed": 90,
     "skipped": 0,
-    "successRate": "66.0%"
+    "successRate": "68.0%"
   },
   "tierBreakdown": {
-    "playwright": 18,
-    "scrapingbee": 16,
-    "brightdata": 20,
-    "archive": 136
+    "playwright": 19,
+    "scrapingbee": 17,
+    "brightdata": 17,
+    "archive": 138
   },
   "statistics": {
-    "tier1Attempts": 37,
-    "tier1Success": 5,
-    "tier2Attempts": 32,
-    "tier2Success": 2,
-    "tier3Attempts": 30,
-    "tier3Success": 4,
-    "tier4Attempts": 31,
-    "tier4Success": 6,
-    "totalFailed": 20,
-    "scrapingBeeCreditsUsed": 140
+    "tier1Attempts": 30,
+    "tier1Success": 6,
+    "tier2Attempts": 24,
+    "tier2Success": 3,
+    "tier3Attempts": 21,
+    "tier3Success": 1,
+    "tier4Attempts": 22,
+    "tier4Success": 8,
+    "totalFailed": 12,
+    "scrapingBeeCreditsUsed": 160
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -208,23 +208,24 @@
     "wicked-2003/usa-today--elysa-gardner.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/wsj--terry-teachout.json",
-    "moulin-rouge-2019/amny-com--unknown.json",
-    "moulin-rouge-2019/broadwaynews-com--unknown.json",
-    "moulin-rouge-2019/broadwayworld-com--unknown.json",
-    "moulin-rouge-2019/cititour-com--unknown.json",
-    "moulin-rouge-2019/ew-com--unknown.json",
-    "moulin-rouge-2019/frontmezzjunkies-com--unknown.json",
-    "moulin-rouge-2019/hollywoodreporter-com--unknown.json",
-    "moulin-rouge-2019/lightingandsoundamerica-com--unknown.json",
-    "moulin-rouge-2019/newyorktheater-me--unknown.json",
-    "moulin-rouge-2019/nypost-com--unknown.json",
-    "moulin-rouge-2019/nystagereview-com--unknown.json",
-    "moulin-rouge-2019/observer--david-cote.json",
-    "moulin-rouge-2019/talkinbroadway-com--unknown.json",
-    "moulin-rouge-2019/theatermania-com--unknown.json",
-    "moulin-rouge-2019/theaterpizzazz-com--unknown.json",
-    "moulin-rouge-2019/theatrereviews-com--unknown.json",
-    "moulin-rouge-2019/timeout--adam-feldman.json"
+    "stranger-things-2024/variety-com--unknown.json",
+    "stranger-things-2024/amny--matt-windman.json",
+    "stranger-things-2024/bbc-news--neil-armstrong.json",
+    "stranger-things-2024/culturesauce-com--unknown.json",
+    "stranger-things-2024/deadline--greg-evans.json",
+    "stranger-things-2024/ew-com--unknown.json",
+    "stranger-things-2024/lightingandsoundamerica-com--unknown.json",
+    "stranger-things-2024/newyorktheater-me--unknown.json",
+    "stranger-things-2024/newyorktheatreguide-com--unknown.json",
+    "stranger-things-2024/nydailynews-com--unknown.json",
+    "stranger-things-2024/nypost--johnny-oleksinski.json",
+    "stranger-things-2024/pagesonstages-com--unknown.json",
+    "stranger-things-2024/the-daily-mail--luke-jones.json",
+    "stranger-things-2024/the-independent--alice-saville.json",
+    "stranger-things-2024/the-stage--dave-fargnoli.json",
+    "stranger-things-2024/theaterscene-net--unknown.json",
+    "stranger-things-2024/thewrap--robert-hofler.json",
+    "stranger-things-2024/washington-post--naveen-kumar.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -305,26 +306,18 @@
     "wicked-2003/journal-news--jacques-le-sourd.json",
     "wicked-2003/star-ledger--michael-sommers.json",
     "wicked-2003/washington-post--peter-marks.json",
-    "moulin-rouge-2019/nyt--jesse-green.json",
-    "moulin-rouge-2019/vult--jesse-green.json",
-    "moulin-rouge-2019/NJCOM--christopher-kelly.json",
-    "moulin-rouge-2019/NYDN--joe-dziemianowicz.json",
-    "moulin-rouge-2019/NYP--johnny-oleksinski.json",
-    "moulin-rouge-2019/NYSR--jesse-oxfeld.json",
-    "moulin-rouge-2019/TDB--tim-teeman.json",
-    "moulin-rouge-2019/USATODAY--patrick-ryan.json",
-    "moulin-rouge-2019/WASHPOST--peter-marks.json",
-    "moulin-rouge-2019/WRAP--robert-hofler.json",
-    "moulin-rouge-2019/amny--matt-windman.json",
-    "moulin-rouge-2019/curtainup-com--unknown.json",
-    "moulin-rouge-2019/ew--leah-greenblatt.json",
-    "moulin-rouge-2019/guardian--alexis-soloski.json",
-    "moulin-rouge-2019/nyp--johnny-oleksinski.json",
-    "moulin-rouge-2019/slleiter-blogspot-com--unknown.json",
-    "moulin-rouge-2019/tman--jesse-green.json",
-    "moulin-rouge-2019/washingtonpost-com--unknown.json",
-    "moulin-rouge-2019/washpost--peter-marks.json",
-    "moulin-rouge-2019/wsj--terry-teachout.json"
+    "stranger-things-2024/NYDN--chris-jones.json",
+    "stranger-things-2024/WRAP--robert-hofler.json",
+    "stranger-things-2024/ew--emlyn-travis.json",
+    "stranger-things-2024/guardian--arifa-akbar.json",
+    "stranger-things-2024/guardian--michael-billington.json",
+    "stranger-things-2024/interestedbystander-com--unknown.json",
+    "stranger-things-2024/the-standard--nick-curtis.json",
+    "stranger-things-2024/theatermania--pete-hempstead.json",
+    "stranger-things-2024/tickertv--cheryl-king.json",
+    "stranger-things-2024/tman--adam-feldman.json",
+    "stranger-things-2024/wsj--charles-isherwood.json",
+    "stranger-things-2024/wsj-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -341,11 +334,12 @@
       "back-to-the-future-2023/theatrereviews-com--unknown.json",
       "death-of-a-salesman-2026/broadwaynews-com--unknown.json",
       "wicked-2003/timeout--david-cote.json",
-      "moulin-rouge-2019/broadwaynews-com--unknown.json",
-      "moulin-rouge-2019/frontmezzjunkies-com--unknown.json",
-      "moulin-rouge-2019/lightingandsoundamerica-com--unknown.json",
-      "moulin-rouge-2019/nystagereview-com--unknown.json",
-      "moulin-rouge-2019/theatrereviews-com--unknown.json"
+      "stranger-things-2024/culturesauce-com--unknown.json",
+      "stranger-things-2024/lightingandsoundamerica-com--unknown.json",
+      "stranger-things-2024/newyorktheater-me--unknown.json",
+      "stranger-things-2024/newyorktheatreguide-com--unknown.json",
+      "stranger-things-2024/pagesonstages-com--unknown.json",
+      "stranger-things-2024/theaterscene-net--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -362,8 +356,9 @@
       "chess-2025/ew--shania-russell.json",
       "death-becomes-her-2024/ew--dalton-ross.json",
       "wicked-2003/village-voice--michael-feingold.json",
-      "moulin-rouge-2019/broadwayworld-com--unknown.json",
-      "moulin-rouge-2019/cititour-com--unknown.json"
+      "stranger-things-2024/bbc-news--neil-armstrong.json",
+      "stranger-things-2024/ew-com--unknown.json",
+      "stranger-things-2024/the-stage--dave-fargnoli.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -382,10 +377,7 @@
       "wicked-2003/daily-beast--kevin-fallon.json",
       "wicked-2003/new-york-theater--jonathan-mandell.json",
       "wicked-2003/talkin-broadway--matthew-murray.json",
-      "moulin-rouge-2019/ew-com--unknown.json",
-      "moulin-rouge-2019/newyorktheater-me--unknown.json",
-      "moulin-rouge-2019/talkinbroadway-com--unknown.json",
-      "moulin-rouge-2019/timeout--adam-feldman.json"
+      "stranger-things-2024/washington-post--naveen-kumar.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -518,12 +510,14 @@
       "wicked-2003/theatre-is-easy--dan-dinero.json",
       "wicked-2003/usa-today--elysa-gardner.json",
       "wicked-2003/wsj--terry-teachout.json",
-      "moulin-rouge-2019/amny-com--unknown.json",
-      "moulin-rouge-2019/hollywoodreporter-com--unknown.json",
-      "moulin-rouge-2019/nypost-com--unknown.json",
-      "moulin-rouge-2019/observer--david-cote.json",
-      "moulin-rouge-2019/theatermania-com--unknown.json",
-      "moulin-rouge-2019/theaterpizzazz-com--unknown.json"
+      "stranger-things-2024/variety-com--unknown.json",
+      "stranger-things-2024/amny--matt-windman.json",
+      "stranger-things-2024/deadline--greg-evans.json",
+      "stranger-things-2024/nydailynews-com--unknown.json",
+      "stranger-things-2024/nypost--johnny-oleksinski.json",
+      "stranger-things-2024/the-daily-mail--luke-jones.json",
+      "stranger-things-2024/the-independent--alice-saville.json",
+      "stranger-things-2024/thewrap--robert-hofler.json"
     ]
   }
 }
