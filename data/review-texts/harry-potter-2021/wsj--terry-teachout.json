@@ -11,8 +11,8 @@
   "originalScore": null,
   "assignedScore": 54,
   "source": "show-score",
-  "textStatus": "partial",
-  "textQuality": "partial",
+  "textStatus": "truncated",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
@@ -74,7 +74,7 @@
   },
   "textWordCount": 141,
   "archivePath": "data/archives/reviews/harry-potter-2021/wsj--terry-teachout_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T02:11:27.257Z",
+  "textFetchedAt": "2026-01-27T06:06:50.694Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -106,5 +106,10 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251114113637/https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-bringing-the-magic-to-life-1524677142",
   "textIssues": [
     "Word count too low: 141 (min: 300)"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
   ]
 }
