@@ -64,10 +64,10 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "textWordCount": 115,
   "archivePath": "data/archives/reviews/redwood-2025/wsj-com--unknown_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:36:44.931Z",
+  "textFetchedAt": "2026-01-27T05:19:02.567Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -95,11 +95,15 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251119171401",
   "archiveOrgUrl": "http://web.archive.org/web/20251119171401/https://www.wsj.com/articles/redwood-review-idina-menzel-climbs-back-to-broadway-f8998fae",
   "textIssues": [
     "Word count too low: 115 (min: 300)"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text"
   ]
 }
