@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T15:07:14.872Z",
+  "runDate": "2026-01-27T15:07:55.357Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-lion-king-1997",
+    "showFilter": "oh-mary-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 220,
-    "failed": 148,
+    "processed": 222,
+    "failed": 149,
     "skipped": 0,
     "successRate": "59.8%"
   },
   "tierBreakdown": {
     "playwright": 30,
     "scrapingbee": 17,
-    "brightdata": 23,
+    "brightdata": 25,
     "archive": 150
   },
   "statistics": {
-    "tier1Attempts": 12,
+    "tier1Attempts": 15,
     "tier1Success": 0,
-    "tier2Attempts": 12,
+    "tier2Attempts": 15,
     "tier2Success": 0,
-    "tier3Attempts": 12,
-    "tier3Success": 0,
-    "tier4Attempts": 17,
+    "tier3Attempts": 15,
+    "tier3Success": 2,
+    "tier4Attempts": 22,
     "tier4Success": 0,
-    "totalFailed": 12,
-    "scrapingBeeCreditsUsed": 50
+    "totalFailed": 13,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -254,7 +254,9 @@
     "merrily-we-roll-along-2023/am-new-york--matt.json",
     "merrily-we-roll-along-2023/amny-com--unknown.json",
     "merrily-we-roll-along-2023/broadway-news--naveen.json",
-    "merrily-we-roll-along-2023/broadwaynews-com--unknown.json"
+    "merrily-we-roll-along-2023/broadwaynews-com--unknown.json",
+    "oh-mary-2024/observer--david-cote.json",
+    "oh-mary-2024/timeout--adam-feldman.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -393,18 +395,19 @@
     "merrily-we-roll-along-2023/variety-com--unknown.json",
     "merrily-we-roll-along-2023/vult--jackson-mchenry.json",
     "merrily-we-roll-along-2023/vulture--sara.json",
-    "the-lion-king-1997/nyt--ben-brantley.json",
-    "the-lion-king-1997/nytimes-com--unknown.json",
-    "the-lion-king-1997/variety--matt-wolf.json",
-    "the-lion-king-1997/AP--michael-kuchwara.json",
-    "the-lion-king-1997/NEWSDAY--linda-winer.json",
-    "the-lion-king-1997/NYP--clive-barnes.json",
-    "the-lion-king-1997/TIME--richard-zoglin.json",
-    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
-    "the-lion-king-1997/jasonraize-net--unknown.json",
-    "the-lion-king-1997/njcom--michael-sommers.json",
-    "the-lion-king-1997/streetdirectory-com--unknown.json",
-    "the-lion-king-1997/talkinbway--matthew-murray.json"
+    "oh-mary-2024/nyt--jesse-green.json",
+    "oh-mary-2024/thr--angie-han.json",
+    "oh-mary-2024/variety--aramide-tinubu.json",
+    "oh-mary-2024/vult--sara-holdren.json",
+    "oh-mary-2024/NYDN--chris-jones.json",
+    "oh-mary-2024/ew--christian-holub.json",
+    "oh-mary-2024/guardian--adrian-horton.json",
+    "oh-mary-2024/interested-bystander--cary-wong.json",
+    "oh-mary-2024/nyp--johnny-oleksinski.json",
+    "oh-mary-2024/tman--jesse-green.json",
+    "oh-mary-2024/usa-today--patrick-ryan.json",
+    "oh-mary-2024/washpost--peter-marks.json",
+    "oh-mary-2024/wsj-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -481,7 +484,9 @@
       "hadestown-2019/towleroad-com--unknown.json",
       "queen-versailles-2025/daily-beast--tim-teeman.json",
       "hamilton-2015/OBSERVER--david-cote.json",
-      "hamilton-2015/wapo--peter-marks.json"
+      "hamilton-2015/wapo--peter-marks.json",
+      "oh-mary-2024/observer--david-cote.json",
+      "oh-mary-2024/timeout--adam-feldman.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
