@@ -10,8 +10,64 @@
   "bwwExcerpt": "In the church of American theatre, it's practically dogma that John Patrick Shanley's Doubt is excellent. The Pulitzer Prize- and Tony Award-winning play tackles thorny issues of morality, abuse, gender inequality, and progressivism in just over the length of a Catholic Mass. That may seem like too much for one 90-minute show to unpack, but that's the point: As with religion itself, you're meant to come away with more mysteries than answers.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's practically dogma that John Patrick Shanley's Doubt is excellent",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Pulitzer Prize- and Tony Award-winning play tackles thorny issues",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "that's the point: As with religion itself, you're meant to come away with more mysteries than answers",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic presents Doubt as canonically excellent theater that successfully handles complex themes with artistic intention, using reverent language throughout. | GPT-4o-mini: The review conveys strong praise for the play's thematic depth and significance, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:01.651Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
