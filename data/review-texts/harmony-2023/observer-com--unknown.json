@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250812101216",
-  "archiveOrgUrl": "http://web.archive.org/web/20250812101216/https://observer.com/2023/11/review-barry-manilow-writes-the-songs-that-make-harmony-sing/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250812101216/https://observer.com/2023/11/review-barry-manilow-writes-the-songs-that-make-harmony-sing/",
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 55,
+      "performances": 70,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "You might leave humming the title tune, but also unsatisfied",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "A story this compelling could have made a good musical—with less narration, more character development",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Harmony aims higher than jukebox navel-gazing",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's ambitions and some strong performances but finds significant flaws in the music, character development, and focus, ultimately leaving audiences 'unsatisfied' despite the compelling subject matter. | GPT-4o-mini: The review highlights both strengths and weaknesses, ultimately leading to a mixed recommendation with a sense of dissatisfaction despite some positive elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:24.387Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

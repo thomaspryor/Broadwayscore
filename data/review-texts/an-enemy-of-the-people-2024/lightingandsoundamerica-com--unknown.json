@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 71,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strong gives a solid, often compelling performance",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "a play that isn't easily pinned down, that asks complicated questions about the individual versus the crowd, has been made into a homily",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The production will certainly satisfy Strong's many fans",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates Strong's performance and some production elements but fundamentally objects to Herzog's adaptation choices that oversimplify Ibsen's complex original, resulting in qualified approval with significant reservations. | GPT-4o-mini: The review highlights strong performances but criticizes the adaptation and direction, leading to a mixed recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:48.026Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

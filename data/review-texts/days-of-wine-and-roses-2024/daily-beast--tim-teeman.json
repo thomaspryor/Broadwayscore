@@ -10,8 +10,64 @@
   "bwwExcerpt": "What also distinguishes it are its Broadway royalty-level, award-garlanded stars, Kelli O’Hara and Brian D’Arcy James (Tony-nominated this year for Into the Woods), who are more familiar to audiences for playing good or engaging lead characters. Instead, here they play a couple on a relentlessly degrading, depressing, downward spiral. As Kirsten Arnesen and Joe Clay, at least for the first 10 minutes, they represent the kind of sexy partnership who would ordinarily fizz and shine—both are attrac",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 53,
+    "confidence": "high",
+    "range": {
+      "low": 45.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 73,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway royalty-level, award-garlanded stars, Kelli O'Hara and Brian D'Arcy James",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "relentlessly degrading, depressing, downward spiral",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the kind of sexy partnership who would ordinarily fizz and shine",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The excerpt praises the star power and quality of the leads but describes their characters' journey as relentlessly depressing, with the review cutting off mid-sentence making assessment highly uncertain. | GPT-4o-mini: The review highlights strong performances but indicates a negative tone regarding the material, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:24.402Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 50,
+    "openaiScore": 55,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

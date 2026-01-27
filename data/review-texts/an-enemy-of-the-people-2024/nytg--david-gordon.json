@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Jeremy Strong delivers a powerhouse performance as Dr. Stockmann, bringing an intensity that feels both authentic and deeply unsettling. This production successfully modernizes Ibsen's themes of truth versus public opinion.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "powerhouse performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "successfully modernizes Ibsen's themes",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "intensity that feels both authentic and deeply unsettling",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for lead performance and production's approach to classic material, but excerpt is too brief to assess full critical verdict with high confidence. | GPT-4o-mini: The review highlights a strong performance and effective modernization of themes, indicating a clear recommendation with minor reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:58.086Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -37,5 +37,61 @@
     "ends_with_ellipsis"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 75,
+      "performances": 85,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is entertaining, informative, and delivers an important piece of history about a successful musical group that would otherwise be forgotten",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "slightly falters with a long and labored second act",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "These six actors are the heart of this production and define the theatrical term 'triple threat'",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show entertaining and informative with outstanding performances, but notes structural issues with pacing and second act problems, resulting in a qualified recommendation. | GPT-4o-mini: The review expresses clear praise for the performances and music, while acknowledging some pacing issues in the second act, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:20.906Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

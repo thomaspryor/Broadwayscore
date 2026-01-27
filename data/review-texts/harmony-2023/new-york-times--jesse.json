@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Wherever it can — in the plot, in the characterizations and in the sometimes bombastic orchestrations for a heavily synthed and amped orchestra of nine — “Harmony” wields a truncheon instead of the needle it needs. It might have helped if the supposedly comic numbers were actually funny, but neither Manilow and Sussman nor Carlyle excel at that here.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -35,5 +35,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251003034648",
-  "archiveOrgUrl": "http://web.archive.org/web/20251003034648/https://www.nytimes.com/2023/11/13/theater/harmony-review-barry-manilow.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251003034648/https://www.nytimes.com/2023/11/13/theater/harmony-review-barry-manilow.html",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 70,
+      "performances": 58,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "wields a truncheon instead of the needle it needs",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Manilow's vocal arrangements, written with John O'Neill, the show's music director, are marvelous",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a rough ride of an evening",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Green acknowledges strong musical elements but heavily criticizes the book's bleakness, characterization, and dramatic choices, describing it as a 'rough ride of an evening' with more problems than strengths. | GPT-4o-mini: The review expresses significant disappointment in the storytelling and character development while acknowledging some musical strengths, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:20.216Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Making the point even sharper is the entrance of the star, Danny DeVito, as Sam, the impish, 80-ish widower who lives there. Well, it’s not so much an entrance as a disclosure. Only after a series of knocks at the door wakes him up do we realize that amid the clutter submerging almost every surface of this once-handsome living room is Sam himself, indistinguishable from the trash.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/i-need-that/",
@@ -34,5 +34,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250602051832/https://www.nytimes.com/2023/11/02/theater/i-need-that-review-danny-devito.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 72,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play overall, within its neat architecture, feels cluttered and obvious",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Danny DeVito commands interest without having to do much, and rewards it with funny readings of even unfunny lines",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "It's hard to imagine what more one could make of an upbeat play about hoarding. The condition is not funny.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Green acknowledges DeVito's appeal and some structural competence but finds the play fundamentally flawed - calling it 'cluttered and obvious' with mostly 'filler' content, suggesting limited recommendation value.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:16.105Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

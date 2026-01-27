@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "If not for our ongoing fascination with Jaws, The Shark Is Broken would be of limited interest: three men in a boat reading newspaper articles (“NIXON RESIGNS”), reminiscing about their childhoods, bickering about Hollywood and drinking a whole lot more than they should. But since the movie remains a cultural touchstone, the play makes for pleasant entertainment.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-shark-is-broken/",
@@ -42,5 +42,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "3/5"
+  "extractedRating": "3/5",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": 72,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play makes for pleasant entertainment",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "If not for our ongoing fascination with Jaws, The Shark Is Broken would be of limited interest",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The best thing onstage is Brightman, whose huffy, neurotic Dreyfuss powers the show with boosts of dynamic comedy",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The 3/5 star rating and mixed language ('pleasant entertainment' but 'limited interest' without Jaws connection) suggests moderate recommendation with clear reservations about the material's inherent appeal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:54.884Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "In less skilled hands, these flawed characters could push the audience away or else flatten into scapegoats. But James and O'Hara don't let that happen for a second. O'Hara's Kirsten contains multitudes beneath a sheltered, sunny air, including a zeal for what her favorite books describe as \"the human desire penetrate the unknown\" — like the world of booze. James's Joe is magnetic such that when he trades his drunken aggressiveness for tenderness, we immediately root for him again. James and O'H",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "James and O'Hara don't let that happen for a second",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "O'Hara's Kirsten contains multitudes beneath a sheltered, sunny air",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "James's Joe is magnetic such that when he trades his drunken aggressiveness for tenderness, we immediately root for him again",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for both lead performances with sophisticated analysis of character work, but excerpt cuts off mid-sentence limiting assessment of overall recommendation. | GPT-4o-mini: The review highlights the strong performances of the lead actors, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:59.853Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

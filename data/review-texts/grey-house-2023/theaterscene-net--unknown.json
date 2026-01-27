@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 80,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Eerie and irritating in equal measure",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Grey House is frustratingly ambiguous but amusing and entertainingly frightening",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "A frustratingly ambiguous but entertaining take on the strangers stumbling into an eerie mansion shtick",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production simultaneously entertaining and frustrating, praising performances and technical elements while criticizing the derivative plot and ambiguous storytelling, resulting in a qualified mixed recommendation. | GPT-4o-mini: The review presents a mixed but generally positive view, highlighting strong performances and direction while noting frustrations with the script's ambiguity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:35.504Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
