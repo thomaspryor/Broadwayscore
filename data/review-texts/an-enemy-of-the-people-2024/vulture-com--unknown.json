@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Strong and Imperioli both bring a vigorous contemporary affect to the material.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260107143029",
-  "archiveOrgUrl": "http://web.archive.org/web/20260107143029/https://www.vulture.com/article/theater-review-an-enemy-of-the-people-strong-imperioli-gold-herzog-ibsen.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20260107143029/https://www.vulture.com/article/theater-review-an-enemy-of-the-people-strong-imperioli-gold-herzog-ibsen.html",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 89,
+      "music": null,
+      "performances": 89,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "the gesture is as profound as it is pleasurable",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Herzog and Gold have cleared away any fustiness and have drawn out Enemy's inherent muscularity",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it's thrilling to see an American production push further both into visual metaphor and into physical courage and trust than many are ever willing to go",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is an enthusiastic, deeply analytical review that praises Herzog and Gold's innovative adaptation, Strong and Imperioli's performances, and the production's bold theatrical choices with sustained admiration and intellectual engagement. | GPT-4o-mini: The review expresses strong enthusiasm for the production's innovative direction, performances, and thematic depth, indicating it as a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:01.026Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

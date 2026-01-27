@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But Herzog and Gold have cleared away any fustiness (which really lies not in Ibsen but in us) and have drawn out Enemy’s inherent muscularity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260107143029",
-  "archiveOrgUrl": "http://web.archive.org/web/20260107143029/https://www.vulture.com/article/theater-review-an-enemy-of-the-people-strong-imperioli-gold-herzog-ibsen.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20260107143029/https://www.vulture.com/article/theater-review-an-enemy-of-the-people-strong-imperioli-gold-herzog-ibsen.html",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 93,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "the gesture is as profound as it is pleasurable",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Herzog and Gold have cleared away any fustiness and have drawn out Enemy's inherent muscularity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's thrilling to see an American production push further both into visual metaphor and into physical courage and trust than many are ever willing to go",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises Herzog and Gold's adaptation choices, the innovative staging elements, and the lead performances, with particular enthusiasm for the creative risks taken and the contemporary relevance achieved. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising the direction, performances, and innovative staging, indicating it is a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:54.507Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
