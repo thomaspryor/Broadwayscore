@@ -75,30 +75,12 @@
   "sourceMethod": "archive",
   "textWordCount": 131,
   "archivePath": "data/archives/reviews/maybe-happy-ending-2024/washington-post--naveen-kumar_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T05:14:50.830Z",
+  "textFetchedAt": "2026-01-27T15:08:52.935Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Insufficient text: 309 chars"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
