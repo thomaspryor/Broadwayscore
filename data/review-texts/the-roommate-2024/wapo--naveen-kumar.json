@@ -10,8 +10,66 @@
   "bwwExcerpt": "There’s no escaping the pair’s towering reputations, which turn out to be both a blessing and a trap. In this odd-couple comedy by Jen Silverman, Farrow and LuPone are cast as unlikely housemates in rural Iowa, lost souls eager to move on from their pasts. Directed by Jack O’Brien, the production leans generously into the distinctive qualities associated with its stars: Farrow plays a delicate and curious open book, and LuPone a blunt and sardonic riddle. Like most cohabitations, the results are",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 65,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "towering reputations, which turn out to be both a blessing and a trap",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "leans generously into the distinctive qualities associated with its stars",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "the production leans generously into the distinctive qualities associated with its stars",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is incomplete but suggests the star casting creates problems rather than solutions, with mixed signals about whether the production succeeds. | GPT-4o-mini: The review indicates a mix of strengths and weaknesses, particularly focusing on the performances while leaving the overall impression somewhat ambiguous. | Note: Models differed by 20 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:47.319Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 20 points (Claude: 45, OpenAI: 65)"
+    ]
+  }
 }

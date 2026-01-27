@@ -10,7 +10,7 @@
   "bwwExcerpt": "Although director Jack O’Brien’s production features too many prolonged scene transitions and the end of Silverman’s script is a tad self-indulgent, Farrow’s quietly captivating performance makes The Roommate worth the stay.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 79,
+      "direction": 64
+    },
+    "keyPhrases": [
+      {
+        "quote": "Farrow's quietly captivating performance makes The Roommate worth the stay",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "director Jack O'Brien's production features too many prolonged scene transitions and the end of Silverman's script is a tad self-indulgent",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "there is something reserved in LuPone's performance that cannot be chalked up to the character",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Clear qualified recommendation based on Farrow's performance despite noted issues with direction and script, plus mixed assessment of LuPone's work. | GPT-4o-mini: The review highlights strong performances, particularly by Farrow, while noting some issues with the script and direction, leading to a positive but cautious recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:16.277Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

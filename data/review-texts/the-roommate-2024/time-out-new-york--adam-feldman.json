@@ -10,7 +10,7 @@
   "bwwExcerpt": "Sometimes the old can be full of surprises. That’s the running premise of The Roommate, which brings together two very different senior citizens—Sharon, an unworldly Iowan played by Mia Farrow, and her new housemate, Robyn, a streetwise Bronx transplant played by Patti LuPone—and sends them down paths of self-discovery. It’s also what makes this production of Jen Silverman’s crowd-pleasing comedy work as well as it does. A variation on odd-couple themes, the play tills land that has been farmed ",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -37,5 +37,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 89,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "What a delightful surprise",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Farrow tells it masterfully: Her voice spans octaves to dazzling effect, and she positively glows",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the play tills land that has been farmed many times. Yet it finds freshness in the familiar",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging familiar material, the critic praises the production's freshness, celebrates both lead performances (especially Farrow's 'masterful' and 'dazzling' work), and expresses genuine delight at the surprises within. | GPT-4o-mini: The review expresses strong praise for the performances, particularly highlighting the surprising depth and skill of the actors, while also noting the play's fresh take on familiar themes.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:00.192Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

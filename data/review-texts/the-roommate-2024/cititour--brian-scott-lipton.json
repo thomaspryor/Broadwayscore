@@ -10,8 +10,64 @@
   "bwwExcerpt": "Directed with his usual finesse by Jack O’ Brien and beautifully designed by Bob Crowley (who has created a spacious, airy Midwest farmhouse) and lit gorgeously by Natasha Katz, the play serves mostly as a showcase for the spectacular Mia Farrow (in a long-awaited return to the stage) and her real-life bestie, Patti LuPone, each of whom do their considerable best to both illuminate and overcome Silverman’s often facile writing.        Average Rating: 60.0% {   \"@context\":\"https://schema.org\",   ",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 83,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "spectacular Mia Farrow...and her real-life bestie, Patti LuPone, each of whom do their considerable best",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "illuminate and overcome Silverman's often facile writing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "serves mostly as a showcase",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the stellar performances and production values but criticizes the writing as 'facile,' suggesting the show succeeds despite its script rather than because of it. | GPT-4o-mini: The review highlights strong performances and direction but criticizes the writing, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:11.244Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

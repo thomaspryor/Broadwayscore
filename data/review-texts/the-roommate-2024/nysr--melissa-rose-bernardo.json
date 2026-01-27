@@ -10,8 +10,64 @@
   "bwwExcerpt": "There are a couple twists—one involves a rather questionable Walmart purchase—that push The Roommate from realistic into far-fetched territory. One, unfortunately, is the ending. Again, no spoilers, but it’s a moment for Sharon that should be brimming with possibility, not hampered by implausibility.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 48,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "push The Roommate from realistic into far-fetched territory",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it's a moment for Sharon that should be brimming with possibility, not hampered by implausibility",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "a moment for Sharon that should be brimming with possibility",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt focuses entirely on structural problems with the plot, criticizing multiple twists as implausible and expressing disappointment with the ending's execution. | GPT-4o-mini: The review highlights significant issues with the script's plausibility, indicating a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:04.303Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
