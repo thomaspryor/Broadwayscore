@@ -442,6 +442,28 @@ All automation runs via GitHub Actions - no local commands needed.
   - Uses retry loop (5 attempts) with random backoff for git push conflicts
   - After batch runs complete, rebuild `reviews.json` with: `node scripts/rebuild-all-reviews.js`
 
+### `.github/workflows/fetch-aggregator-pages.yml`
+- **Runs:** Manual trigger only
+- **Does:** Fetches and archives HTML pages from ALL THREE aggregator sources
+- **CRITICAL:** Use all three sources for complete review coverage:
+  1. **Show Score** - Best for recent shows, has audience scores + critic reviews
+  2. **DTLI (Did They Like It)** - Excellent historical coverage back to ~2000s
+  3. **BWW Review Roundups** - BroadwayWorld's review collections, good historical data
+- **Manual trigger:**
+  ```bash
+  # Fetch from all aggregators for missing shows
+  gh workflow run "Fetch Aggregator Pages" --field aggregator=all --field shows=missing
+
+  # Fetch specific aggregator for specific shows
+  gh workflow run "Fetch Aggregator Pages" --field aggregator=dtli --field shows=hamilton-2015,wicked-2003
+  ```
+- **Options:**
+  - `aggregator`: show-score, dtli, bww-rr, or **all** (recommended)
+  - `shows`: comma-separated IDs, "all", or "missing" (only fetch shows without archives)
+  - `force`: Re-fetch even if archive exists
+- **Archives saved to:** `data/aggregator-archive/{show-score,dtli,bww-roundups}/`
+- **Why archive?** Avoid painful re-scraping - pages are saved locally with timestamps
+
 ### `.github/workflows/fetch-images.yml`
 - **Runs:** When triggered
 - **Does:** Fetches show images from TodayTix CDN
@@ -733,38 +755,65 @@ Use Playwright MCP for BroadwayWorld and complex sites
 - show-score.com/broadway-shows/[show]
 - broadwayworld.com review roundups
 
-### Show Score Integration
+### Three Aggregator Sources (CRITICAL)
 
-Show Score is an aggregator that provides:
-- **Audience scores** (0-100%) from user ratings
-- **Critic review lists** with outlet, author, date, excerpt, and review URL
+**IMPORTANT:** We use THREE aggregator sources for comprehensive review coverage. Do NOT rely on just one - each has different historical coverage and may have reviews the others miss.
 
-**Two separate integrations:**
+#### 1. Show Score (show-score.com)
+- **Best for:** Recent shows (2015+), audience scores
+- **Provides:** Audience scores (0-100%) + critic review lists with excerpts
+- **URL patterns:**
+  - `{slug}-broadway` (most common, tried first)
+  - `{slug}-the-musical-broadway` (for musicals)
+  - `{slug}` (can redirect to wrong shows - avoid!)
+- **Technical:** Uses Playwright carousel scrolling to get ALL reviews (not just first 8)
+- **Workflow:** `Update Show Score Data` or `Gather Review Data`
 
-1. **Critic Reviews** (via `gather-reviews.js`):
-   - Automatically extracts ALL critic reviews using Playwright with carousel scrolling
-   - Handles Show Score's paginated carousel (reviews load as you scroll)
-   - Creates individual review files in `data/review-texts/{show-id}/`
-   - URL pattern matching tries `-broadway` suffix first to avoid redirects to wrong shows
-   - Detects and rejects redirects to off-broadway/off-off-broadway shows
+#### 2. DTLI - Did They Like It (didtheylikeit.com)
+- **Best for:** Historical shows back to ~2000s, thumbs up/down sentiment
+- **Provides:** Critic reviews with excerpts and thumbs (Up/Down/Meh)
+- **URL pattern:** `didtheylikeit.com/shows/{show-name}/`
+- **Coverage:** Excellent for older shows that may not be on Show Score
+- **Workflow:** `Fetch Aggregator Pages` with aggregator=dtli
 
-2. **Audience Scores** (via `scrape-show-score-audience.js`):
-   - Weekly automated via `update-show-score.yml` workflow
-   - Updates `data/audience-buzz.json` with audience scores
-   - Uses ScrapingBee with JS rendering
+#### 3. BWW Review Roundups (BroadwayWorld)
+- **Best for:** Comprehensive critic coverage, historical archives
+- **Provides:** Review roundups with excerpts, links, often sentiment classification
+- **URL pattern:** `broadwayworld.com/article/...Reviews-{SHOW-NAME}...`
+- **Coverage:** Often has reviews from smaller outlets not on other aggregators
+- **Workflow:** `Fetch Aggregator Pages` with aggregator=bww-rr
 
-**Show Score URL Patterns:**
-Show Score uses various URL patterns for Broadway shows:
-- `{slug}-broadway` (most common, tried first)
-- `{slug}-the-musical-broadway` (for musicals)
-- `{slug}` (can redirect to wrong shows - off-broadway variants)
+### Aggregator Archives
 
-**Important:** Always use `-broadway` suffix patterns first. URLs like `/broadway-shows/redwood` can redirect to `/off-off-broadway-shows/redwood` (a completely different show).
+**ALL aggregator pages are archived locally** to avoid re-scraping:
+```
+data/aggregator-archive/
+  show-score/      # ~41 shows archived
+  dtli/            # ~41 shows archived
+  bww-roundups/    # ~42 shows archived
+```
+
+**To archive pages for new shows:**
+```bash
+# Archive all three sources for missing shows
+gh workflow run "Fetch Aggregator Pages" --field aggregator=all --field shows=missing
+
+# Archive specific shows
+gh workflow run "Fetch Aggregator Pages" --field aggregator=all --field shows=hamilton-2015,wicked-2003
+```
+
+**Scripts for extraction:**
+- `scripts/extract-show-score-reviews.js` - Extract from Show Score HTML
+- `scripts/extract-bww-reviews.js` - Extract from BWW Roundup HTML
+- `scripts/gather-reviews.js` - Main script that searches all sources
+
+### Show Score Technical Details
+
+**URL Pattern Warning:** Always use `-broadway` suffix patterns first. URLs like `/broadway-shows/redwood` can redirect to `/off-off-broadway-shows/redwood` (a completely different show).
 
 **Legacy files (for reference):**
 - `data/show-score-urls.json` - Manual URL mappings (less needed now with auto-discovery)
 - `data/show-score.json` - Legacy extracted data
-- `scripts/extract-show-score-reviews.js` - Legacy JSDOM extraction (superseded by Playwright)
 
 ### SEO
 - JSON-LD structured data with ticket offers, cast, ratings
