@@ -472,13 +472,34 @@ async function scrapeShowScoreWithPlaywright(url) {
       return reviews;
     });
 
+    // Extract expected review count from "Critic Reviews (N)" heading
+    const expectedReviewCount = await page.evaluate(() => {
+      let count = null;
+      document.querySelectorAll('h2').forEach(h2 => {
+        const match = h2.textContent.match(/Critic Reviews\s*\((\d+)\)/);
+        if (match) {
+          count = parseInt(match[1]);
+        }
+      });
+      return count;
+    });
+    if (expectedReviewCount) {
+      console.log(`    Show Score reports ${expectedReviewCount} critic reviews`);
+    }
+
     // Now try to scroll the carousel to get more reviews
     // Click the right arrow multiple times to load all reviews
+    // Increased from 10 to 50 to capture shows with 20-70+ reviews
     let previousCount = reviews.length;
     let scrollAttempts = 0;
-    const maxScrollAttempts = 10;
+    const maxScrollAttempts = 50;
 
     while (scrollAttempts < maxScrollAttempts) {
+      // Early exit if we've captured all expected reviews
+      if (expectedReviewCount && reviews.length >= expectedReviewCount) {
+        console.log(`    Captured all ${reviews.length} reviews (expected ${expectedReviewCount})`);
+        break;
+      }
       // Try to find and click the right arrow
       const rightArrow = await page.$('div[class*="critic"] button[class*="right"], div[class*="critic"] [class*="angle-right"], h2:has-text("Critic Reviews") + div button:last-child');
 

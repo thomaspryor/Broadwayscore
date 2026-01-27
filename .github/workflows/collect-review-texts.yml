@@ -31,13 +31,23 @@ on:
         description: 'Use ScrapingBee stealth proxy - costs 75 credits/request but better CAPTCHA bypass'
         required: false
         default: 'false'
+      parallel:
+        description: 'Run parallel jobs by outlet tier (true/false)'
+        required: false
+        default: 'false'
+      archive_first:
+        description: 'Try Archive.org first for older reviews (true/false)'
+        required: false
+        default: 'true'
 
 jobs:
-  collect-reviews:
+  # Sequential single-job mode (default)
+  collect-reviews-single:
+    if: ${{ inputs.parallel != 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 180  # 3 hour max
+    timeout-minutes: 180
     permissions:
-      contents: write  # Required for incremental commits
+      contents: write
 
     steps:
       - name: Checkout repository
@@ -72,7 +82,6 @@ jobs:
       - name: Run review collection
         id: collect
         env:
-          # Paywall credentials
           NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
           NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
           VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
@@ -81,16 +90,15 @@ jobs:
           WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
           WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
-          # API keys for fallback tiers
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
           BRIGHTDATA_ZONE: mcp_unlocker
-          # Collection settings
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.max_reviews }}
           PRIORITY: ${{ inputs.priority }}
           SHOW_FILTER: ${{ inputs.show_filter }}
           RETRY_FAILED: ${{ inputs.retry_failed }}
+          ARCHIVE_FIRST: ${{ inputs.archive_first }}
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then
@@ -103,21 +111,13 @@ jobs:
 
       - name: Final commit and push
         run: |
-          # Add all changes (in case any were missed by incremental commits)
           git add data/review-texts/ data/archives/reviews/ data/audit/ data/collection-state/
-
-          # Check if there are changes to commit
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "feat: Collect review texts (multi-tier fallback)
-
-          - Used 4-tier fallback: Playwright → ScrapingBee → Bright Data → Archive.org
-          - See collection report for tier breakdown
+            git commit -m "feat: Collect review texts (single job)
 
           Co-Authored-By: GitHub Action <action@github.com>"
-
-            # Pull latest changes before pushing
             git pull --rebase origin main || {
               git rebase --abort || true
               git pull --no-rebase -X ours origin main
@@ -134,3 +134,106 @@ jobs:
             data/audit/validation/collection-report-*.json
             data/collection-state/progress.json
           retention-days: 30
+
+  # Parallel multi-job mode (matrix strategy)
+  collect-reviews-parallel:
+    if: ${{ inputs.parallel == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        outlet_tier: [tier1, tier2, tier3]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Create directories
+        run: |
+          mkdir -p data/archives/reviews
+          mkdir -p data/audit/validation
+          mkdir -p data/collection-state
+
+      - name: Configure git for incremental commits
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Run review collection for ${{ matrix.outlet_tier }}
+        env:
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
+          WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
+          WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
+          WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
+          BRIGHTDATA_ZONE: mcp_unlocker
+          BATCH_SIZE: ${{ inputs.batch_size }}
+          MAX_REVIEWS: ${{ inputs.max_reviews }}
+          OUTLET_TIER: ${{ matrix.outlet_tier }}
+          SHOW_FILTER: ${{ inputs.show_filter }}
+          RETRY_FAILED: ${{ inputs.retry_failed }}
+          ARCHIVE_FIRST: ${{ inputs.archive_first }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.aggressive }}" = "true" ]; then
+            ARGS="$ARGS --aggressive"
+          fi
+          if [ "${{ inputs.stealth_proxy }}" = "true" ]; then
+            ARGS="$ARGS --stealth-proxy"
+          fi
+          node scripts/collect-review-texts.js $ARGS
+
+      - name: Commit and push changes for ${{ matrix.outlet_tier }}
+        run: |
+          git add data/review-texts/ data/archives/reviews/
+          if git diff --staged --quiet; then
+            echo "No changes to commit for ${{ matrix.outlet_tier }}"
+          else
+            git commit -m "feat: Collect review texts (${{ matrix.outlet_tier }})
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+
+            # Robust retry loop for parallel job conflicts
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || {
+                echo "Retry $i: Waiting before retry..."
+                sleep $((RANDOM % 10 + 5))
+                git rebase --abort 2>/dev/null || true
+                git pull --no-rebase -X ours origin main
+              }
+            done
+          fi
+
+      - name: Upload collection report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collection-report-${{ matrix.outlet_tier }}
+          path: |
+            data/audit/validation/collection-report-*.json
+          retention-days: 30
+

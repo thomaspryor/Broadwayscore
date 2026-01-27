@@ -20,6 +20,7 @@ const https = require('https');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'dtli');
+const AGGREGATOR_SUMMARY_PATH = path.join(__dirname, '..', 'data', 'aggregator-summary.json');
 
 // Ensure archive directory exists
 if (!fs.existsSync(ARCHIVE_DIR)) {
@@ -28,6 +29,51 @@ if (!fs.existsSync(ARCHIVE_DIR)) {
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Load aggregator summary data
+ */
+function loadAggregatorSummary() {
+  if (fs.existsSync(AGGREGATOR_SUMMARY_PATH)) {
+    return JSON.parse(fs.readFileSync(AGGREGATOR_SUMMARY_PATH, 'utf8'));
+  }
+  return {
+    _meta: {
+      lastUpdated: null,
+      description: 'Show-level summary data from all aggregators (DTLI, BWW, Show Score)'
+    },
+    dtli: {},
+    bww: {},
+    showScore: {}
+  };
+}
+
+/**
+ * Save aggregator summary data
+ */
+function saveAggregatorSummary(data) {
+  data._meta.lastUpdated = new Date().toISOString();
+  fs.writeFileSync(AGGREGATOR_SUMMARY_PATH, JSON.stringify(data, null, 2));
+}
+
+/**
+ * Save DTLI summary for a show
+ */
+function saveDTLISummary(showId, summary, dtliUrl) {
+  const aggregatorData = loadAggregatorSummary();
+
+  aggregatorData.dtli[showId] = {
+    up: summary.up,
+    meh: summary.meh,
+    down: summary.down,
+    totalReviews: summary.up + summary.meh + summary.down,
+    dtliUrl: dtliUrl,
+    lastUpdated: new Date().toISOString()
+  };
+
+  saveAggregatorSummary(aggregatorData);
+  console.log(`    Saved DTLI summary to aggregator-summary.json`);
 }
 
 function slugify(text) {
@@ -410,6 +456,11 @@ async function processShow(show) {
 
   // Extract reviews
   const { reviews, summary } = extractDTLIReviews(html, show.id, dtliUrl);
+
+  // Save DTLI summary to aggregator-summary.json
+  if (summary.up > 0 || summary.meh > 0 || summary.down > 0) {
+    saveDTLISummary(show.id, summary, dtliUrl);
+  }
 
   // Save reviews
   let created = 0;
