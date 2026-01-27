@@ -7,7 +7,63 @@
   "publishDate": "February 1, 2022",
   "fullText": "Is it possible to make a show about a man whose memory dwells under deep shadow? Of course it is. But you do then have to make a good show. MJ is a Frankenstein’s monster constantly tugging apologetically at its forelock, making a pretense of telling Michael’s story while loudly and pointedly bracketing which parts of the story are available for sale.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 30,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 40
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "MJ is a Frankenstein's monster constantly tugging apologetically at its forelock",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "making a pretense of telling Michael's story while loudly and pointedly bracketing which parts of the story are available for sale",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "But you do then have to make a good show",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses harsh metaphors like 'Frankenstein's monster' and criticizes the show for being disingenuous and commercially calculated rather than authentic storytelling. | GPT-4o-mini: The review expresses strong criticism of the show's execution and concept, indicating a clear rejection of its quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:13.624Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 25,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
