@@ -5,7 +5,7 @@
   "criticName": "Dave Fargnoli",
   "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
   "publishDate": null,
-  "fullText": "Serious about theatre?Join over 100,000 theatremakers who rely on The Stage for trusted news, reviews, and insight. 🔓 Sign in below or create a free account to read 5 free articles. Want to support independent theatre journalism? Subscribe from just £7.99 and unlock: 🗞️ Unlimited access to award-winning theatre journalism 💡Insight and opinion from writers including Lyn Gardner & Amanda Parker 🎟️Discounts and early access to The Stage’s events Invest in The Stage today with a subscription starting at just £7.99",
+  "fullText": "Serious about theatre?Join over 100,000 theatremakers who rely on The Stage for trusted news, reviews, and insight.\n\n🔓 Sign in below or create a free account to read 5 free articles.\n\n🗞️ Unlimited access to award-winning theatre journalism\n\n⭐ 1000+ reviews from across the UK\n\n📧 Breaking news and daily newsletters\n\n💡Insight and opinion from writers including Lyn Gardner & Amanda Parker\n\n🎟️Discounts and early access to The Stage’s events\n\nOr, why not try a subscription for just 99p?\n\nInvest in The Stage today with a subscription starting at just £7.99\n\n© Copyright The Stage Media Company Limited 2026",
   "isFullReview": false,
   "bwwExcerpt": "The production has a strikingly cinematic aesthetic that seamlessly integrates video projections, live action and superbly achieved stage illusions. Groundbreaking work from visual effects designers Jamie Harrison, Chris Fisher and 59 Productions breathe life into the play’s unnatural world: otherworldly monsters pop up out of dark corners; wisps of animated smoke spiral into spectral shapes; flailing bodies are lifted into the air, tossed around and crushed by invisible forces.",
   "showScoreExcerpt": "“Based on the phenomenally popular Netflix series, this visually stunning retro-horror romp is audacious, exhilarating and relentlessly inventive...Subtlety is not the goal here, and this show never quite matches the series’ charming mix of nostalgia, hope and horror. But it is an extraordinary, gripping spectacle.”",
@@ -15,15 +15,15 @@
   "bwwThumb": "Up",
   "bwwUrl": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
   "textStatus": "partial",
-  "textWordCount": 81,
-  "archivePath": "data/archives/reviews/stranger-things-2024/the-stage--dave-fargnoli_2026-01-25.html",
-  "textFetchedAt": "2026-01-25T05:16:13.982Z",
+  "textWordCount": 99,
+  "archivePath": "data/archives/reviews/stranger-things-2024/the-stage--dave-fargnoli_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T01:47:44.311Z",
   "textIssues": [
-    "Word count too low: 81 (min: 300)",
+    "Word count too low: 99 (min: 300)",
     "Show title not found in text"
   ],
   "textQuality": "partial",
-  "sourceMethod": "bww-roundup",
+  "sourceMethod": "scrapingbee",
   "llmScore": {
     "score": 0,
     "confidence": "medium",
@@ -65,5 +65,20 @@
     "needsReviewReasons": [
       "Score (0 → Down) conflicts with aggregator thumbs (Up)"
     ]
-  }
+  },
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2
 }
