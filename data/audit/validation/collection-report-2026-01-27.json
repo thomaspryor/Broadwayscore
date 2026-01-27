@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T02:04:49.366Z",
+  "runDate": "2026-01-27T02:06:12.471Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "stranger-things-2024",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 191,
-    "failed": 90,
+    "processed": 192,
+    "failed": 96,
     "skipped": 0,
-    "successRate": "68.0%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 14,
     "scrapingbee": 17,
-    "brightdata": 17,
-    "archive": 138
+    "brightdata": 21,
+    "archive": 140
   },
   "statistics": {
-    "tier1Attempts": 30,
-    "tier1Success": 6,
-    "tier2Attempts": 24,
+    "tier1Attempts": 37,
+    "tier1Success": 1,
+    "tier2Attempts": 36,
     "tier2Success": 3,
-    "tier3Attempts": 21,
-    "tier3Success": 1,
-    "tier4Attempts": 22,
-    "tier4Success": 8,
-    "totalFailed": 12,
-    "scrapingBeeCreditsUsed": 160
+    "tier3Attempts": 33,
+    "tier3Success": 5,
+    "tier4Attempts": 31,
+    "tier4Success": 10,
+    "totalFailed": 18,
+    "scrapingBeeCreditsUsed": 150
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -208,24 +208,25 @@
     "wicked-2003/usa-today--elysa-gardner.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/wsj--terry-teachout.json",
-    "stranger-things-2024/variety-com--unknown.json",
-    "stranger-things-2024/amny--matt-windman.json",
-    "stranger-things-2024/bbc-news--neil-armstrong.json",
-    "stranger-things-2024/culturesauce-com--unknown.json",
-    "stranger-things-2024/deadline--greg-evans.json",
-    "stranger-things-2024/ew-com--unknown.json",
-    "stranger-things-2024/lightingandsoundamerica-com--unknown.json",
-    "stranger-things-2024/newyorktheater-me--unknown.json",
-    "stranger-things-2024/newyorktheatreguide-com--unknown.json",
-    "stranger-things-2024/nydailynews-com--unknown.json",
-    "stranger-things-2024/nypost--johnny-oleksinski.json",
-    "stranger-things-2024/pagesonstages-com--unknown.json",
-    "stranger-things-2024/the-daily-mail--luke-jones.json",
-    "stranger-things-2024/the-independent--alice-saville.json",
-    "stranger-things-2024/the-stage--dave-fargnoli.json",
-    "stranger-things-2024/theaterscene-net--unknown.json",
-    "stranger-things-2024/thewrap--robert-hofler.json",
-    "stranger-things-2024/washington-post--naveen-kumar.json"
+    "hamilton-2015/nytimes-com--unknown.json",
+    "hamilton-2015/vulture-com--unknown.json",
+    "hamilton-2015/OBSERVER--david-cote.json",
+    "hamilton-2015/amny-com--unknown.json",
+    "hamilton-2015/broadwayworld-com--unknown.json",
+    "hamilton-2015/chicagotribune-com--unknown.json",
+    "hamilton-2015/ew-com--unknown.json",
+    "hamilton-2015/hollywoodreporter-com--unknown.json",
+    "hamilton-2015/huffingtonpost-com--unknown.json",
+    "hamilton-2015/nbcnewyork-com--unknown.json",
+    "hamilton-2015/newyorktheater-me--unknown.json",
+    "hamilton-2015/nypost-com--unknown.json",
+    "hamilton-2015/theatermania-com--unknown.json",
+    "hamilton-2015/thewrap-com--unknown.json",
+    "hamilton-2015/timeout--adam-feldman.json",
+    "hamilton-2015/usatoday-com--unknown.json",
+    "hamilton-2015/wapo--peter-marks.json",
+    "hamilton-2015/washingtontimes-com--unknown.json",
+    "hamilton-2015/wsj--terry-teachout.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -306,18 +307,24 @@
     "wicked-2003/journal-news--jacques-le-sourd.json",
     "wicked-2003/star-ledger--michael-sommers.json",
     "wicked-2003/washington-post--peter-marks.json",
-    "stranger-things-2024/NYDN--chris-jones.json",
-    "stranger-things-2024/WRAP--robert-hofler.json",
-    "stranger-things-2024/ew--emlyn-travis.json",
-    "stranger-things-2024/guardian--arifa-akbar.json",
-    "stranger-things-2024/guardian--michael-billington.json",
-    "stranger-things-2024/interestedbystander-com--unknown.json",
-    "stranger-things-2024/the-standard--nick-curtis.json",
-    "stranger-things-2024/theatermania--pete-hempstead.json",
-    "stranger-things-2024/tickertv--cheryl-king.json",
-    "stranger-things-2024/tman--adam-feldman.json",
-    "stranger-things-2024/wsj--charles-isherwood.json",
-    "stranger-things-2024/wsj-com--unknown.json"
+    "hamilton-2015/nyt--ben-brantley.json",
+    "hamilton-2015/thr--david-rooney.json",
+    "hamilton-2015/vult--jesse-green.json",
+    "hamilton-2015/CHTRIB--chris-jones.json",
+    "hamilton-2015/NYP--elisabeth-vincentelli.json",
+    "hamilton-2015/WRAP--robert-hofler.json",
+    "hamilton-2015/amny--matt-windman.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/backstage-barbie--backstage-barbie.json",
+    "hamilton-2015/chtrib--chris-jones.json",
+    "hamilton-2015/clyde-fitch-report--david-finkle.json",
+    "hamilton-2015/guardian--jesse-green.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/newsday-com--unknown.json",
+    "hamilton-2015/nyp--johnny-oleksinski.json",
+    "hamilton-2015/talkinbway--matthew-murray.json",
+    "hamilton-2015/usatoday--elysa-gardner.json",
+    "hamilton-2015/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -334,12 +341,7 @@
       "back-to-the-future-2023/theatrereviews-com--unknown.json",
       "death-of-a-salesman-2026/broadwaynews-com--unknown.json",
       "wicked-2003/timeout--david-cote.json",
-      "stranger-things-2024/culturesauce-com--unknown.json",
-      "stranger-things-2024/lightingandsoundamerica-com--unknown.json",
-      "stranger-things-2024/newyorktheater-me--unknown.json",
-      "stranger-things-2024/newyorktheatreguide-com--unknown.json",
-      "stranger-things-2024/pagesonstages-com--unknown.json",
-      "stranger-things-2024/theaterscene-net--unknown.json"
+      "hamilton-2015/huffingtonpost-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -356,9 +358,9 @@
       "chess-2025/ew--shania-russell.json",
       "death-becomes-her-2024/ew--dalton-ross.json",
       "wicked-2003/village-voice--michael-feingold.json",
-      "stranger-things-2024/bbc-news--neil-armstrong.json",
-      "stranger-things-2024/ew-com--unknown.json",
-      "stranger-things-2024/the-stage--dave-fargnoli.json"
+      "hamilton-2015/ew-com--unknown.json",
+      "hamilton-2015/newyorktheater-me--unknown.json",
+      "hamilton-2015/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -377,7 +379,11 @@
       "wicked-2003/daily-beast--kevin-fallon.json",
       "wicked-2003/new-york-theater--jonathan-mandell.json",
       "wicked-2003/talkin-broadway--matthew-murray.json",
-      "stranger-things-2024/washington-post--naveen-kumar.json"
+      "hamilton-2015/OBSERVER--david-cote.json",
+      "hamilton-2015/broadwayworld-com--unknown.json",
+      "hamilton-2015/usatoday-com--unknown.json",
+      "hamilton-2015/wapo--peter-marks.json",
+      "hamilton-2015/washingtontimes-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -510,14 +516,16 @@
       "wicked-2003/theatre-is-easy--dan-dinero.json",
       "wicked-2003/usa-today--elysa-gardner.json",
       "wicked-2003/wsj--terry-teachout.json",
-      "stranger-things-2024/variety-com--unknown.json",
-      "stranger-things-2024/amny--matt-windman.json",
-      "stranger-things-2024/deadline--greg-evans.json",
-      "stranger-things-2024/nydailynews-com--unknown.json",
-      "stranger-things-2024/nypost--johnny-oleksinski.json",
-      "stranger-things-2024/the-daily-mail--luke-jones.json",
-      "stranger-things-2024/the-independent--alice-saville.json",
-      "stranger-things-2024/thewrap--robert-hofler.json"
+      "hamilton-2015/nytimes-com--unknown.json",
+      "hamilton-2015/vulture-com--unknown.json",
+      "hamilton-2015/amny-com--unknown.json",
+      "hamilton-2015/chicagotribune-com--unknown.json",
+      "hamilton-2015/hollywoodreporter-com--unknown.json",
+      "hamilton-2015/nbcnewyork-com--unknown.json",
+      "hamilton-2015/nypost-com--unknown.json",
+      "hamilton-2015/theatermania-com--unknown.json",
+      "hamilton-2015/thewrap-com--unknown.json",
+      "hamilton-2015/wsj--terry-teachout.json"
     ]
   }
 }
