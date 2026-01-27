@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“This new ‘Spamalot’ arrives, beefed up, gussied up and yes, even funnier than in its birthing engagement earlier this year...the revival of the Tony-winning musical by Python great Eric Idle, with John Du Prez, brings joy to a land desperately short of guffaws and chuckles and snickers and giggles.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,5 +30,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20231117032039",
-  "archiveOrgUrl": "http://web.archive.org/web/20231117032039/https://www.washingtonpost.com/entertainment/theater/2023/11/16/monty-python-spamalot-broadway-idle/"
+  "archiveOrgUrl": "http://web.archive.org/web/20231117032039/https://www.washingtonpost.com/entertainment/theater/2023/11/16/monty-python-spamalot-broadway-idle/",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 82.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 85,
+      "performances": 93,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "gloriously, patently hilarious, two-hour strut-upon-the-stage",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "What a gift in trying times, to share in an uproarious experience with truly funny people",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This time, I roared",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses unqualified enthusiasm throughout, comparing this revival favorably to the original ('I chortled back then. This time, I roared'), praising all elements from performances to direction, and concluding with strong emotional endorsement. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its humor, performances, and direction, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:05.698Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 87,
+    "openaiScore": 90,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

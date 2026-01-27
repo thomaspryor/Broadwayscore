@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "So I was curious to see if Monty Python’s Spamalot, a musical comedy that debuted on Broadway during the second Bush administration, based on a beloved movie released during the incidental reign of Gerald Ford, has a shelf life longer than its namesake canned pork product. The answer is yes, thanks largely to an excellent cast of consummate comedians and a script that derives its humor from the timelessly absurd. It’s still safe to eat, even if certain bites might taste a little off.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/spamalot/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250430093718",
-  "archiveOrgUrl": "http://web.archive.org/web/20250430093718/https://www.theatermania.com/news/review-monty-pythons-spamalot-returns-to-broadway-in-a-test-of-expiration-dates_1721545/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250430093718/https://www.theatermania.com/news/review-monty-pythons-spamalot-returns-to-broadway-in-a-test-of-expiration-dates_1721545/",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 70,
+      "performances": 88,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "thanks largely to an excellent cast of consummate comedians and a script that derives its humor from the timelessly absurd. It's still safe to eat, even if certain bites might taste a little off",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It asks very little of you over the course of 2 hours, 20 minutes, and sends you on your way with a smile — and when it comes to musical comedy, that's perfectly delightful",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The mustiest numbers come in the second act with 'You Won't Succeed on Broadway' and 'His Name is Lancelot,' a similarly perfunctory shout-out",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer clearly recommends the show despite acknowledging some dated material, praising the 'excellent cast' and concluding it's 'perfectly delightful' entertainment that sends audiences away with smiles.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:54.615Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

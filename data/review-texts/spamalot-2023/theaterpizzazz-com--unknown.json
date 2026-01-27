@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241210174851",
-  "archiveOrgUrl": "http://web.archive.org/web/20241210174851/https://theaterpizzazz.com/bring-out-your-dead-spamalot-is-back/"
+  "archiveOrgUrl": "http://web.archive.org/web/20241210174851/https://theaterpizzazz.com/bring-out-your-dead-spamalot-is-back/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 78,
+      "performances": 88,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "offering more laughs than ever",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "still manages to remain hilarious close to fifty years after inception",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's irresistible and sends the audience out on a cloud of comedy",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the performances, direction, and comedy throughout, with particular enthusiasm for the cast and production values, indicating a clear positive recommendation despite being a revival of familiar material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:23.408Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
