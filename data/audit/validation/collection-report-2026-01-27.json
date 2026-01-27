@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:40:41.227Z",
+  "runDate": "2026-01-27T04:40:58.718Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "liberation-2025",
+    "showFilter": "aladdin-2014",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 206,
-    "failed": 113,
+    "processed": 202,
+    "failed": 118,
     "skipped": 0,
-    "successRate": "64.6%"
+    "successRate": "63.1%"
   },
   "tierBreakdown": {
-    "playwright": 21,
-    "scrapingbee": 18,
+    "playwright": 18,
+    "scrapingbee": 17,
     "brightdata": 22,
     "archive": 145
   },
   "statistics": {
-    "tier1Attempts": 18,
-    "tier1Success": 4,
-    "tier2Attempts": 14,
-    "tier2Success": 2,
-    "tier3Attempts": 12,
+    "tier1Attempts": 19,
+    "tier1Success": 1,
+    "tier2Attempts": 18,
+    "tier2Success": 1,
+    "tier3Attempts": 17,
     "tier3Success": 2,
-    "tier4Attempts": 10,
+    "tier4Attempts": 17,
     "tier4Success": 5,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 110
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 80
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,19 +228,15 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "liberation-2025/amny--matt-windman.json",
-    "liberation-2025/culturesauce-com--unknown.json",
-    "liberation-2025/daily-beast--tim-teeman.json",
-    "liberation-2025/ew--emlyn-travis.json",
-    "liberation-2025/ew-com--unknown.json",
-    "liberation-2025/lightingandsoundamerica-com--unknown.json",
-    "liberation-2025/newyorktheater-me--unknown.json",
-    "liberation-2025/nypost--johnny-oleksinski.json",
-    "liberation-2025/pagesonstages-com--unknown.json",
-    "liberation-2025/talkinbroadway-com--unknown.json",
-    "liberation-2025/theaterscene-net--unknown.json",
-    "liberation-2025/thewrap--robert-hofler.json",
-    "liberation-2025/wsj-com--unknown.json"
+    "aladdin-2014/nytimes-com--unknown.json",
+    "aladdin-2014/chicagotribune-com--unknown.json",
+    "aladdin-2014/huffingtonpost-com--unknown.json",
+    "aladdin-2014/nbcnewyork-com--unknown.json",
+    "aladdin-2014/newsday-com--unknown.json",
+    "aladdin-2014/nypost-com--unknown.json",
+    "aladdin-2014/time-com--unknown.json",
+    "aladdin-2014/timeout--adam-feldman.json",
+    "aladdin-2014/usatoday-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -351,11 +347,16 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "liberation-2025/interestedbystander-com--unknown.json",
-    "liberation-2025/lavocedinewyork-com--unknown.json",
-    "liberation-2025/nydailynews-com--unknown.json",
-    "liberation-2025/theatermania--rachel-graham.json",
-    "liberation-2025/washington-post--naveen-kumar.json"
+    "aladdin-2014/nyt--ben-brantley.json",
+    "aladdin-2014/vult--jesse-green.json",
+    "aladdin-2014/deadline--pete-hammond.json",
+    "aladdin-2014/newjerseynewsroom-com--unknown.json",
+    "aladdin-2014/nydn--joe-dziemianowicz.json",
+    "aladdin-2014/nyp--elisabeth-vincentelli.json",
+    "aladdin-2014/talkinbway--matthew-murray.json",
+    "aladdin-2014/tman--david-finkle.json",
+    "aladdin-2014/usatoday--elysa-gardner.json",
+    "aladdin-2014/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -376,10 +377,7 @@
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
       "hadestown-2019/showshowdown-blogspot-com--unknown.json",
-      "liberation-2025/culturesauce-com--unknown.json",
-      "liberation-2025/lightingandsoundamerica-com--unknown.json",
-      "liberation-2025/pagesonstages-com--unknown.json",
-      "liberation-2025/theaterscene-net--unknown.json"
+      "aladdin-2014/huffingtonpost-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -398,8 +396,7 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "liberation-2025/ew-com--unknown.json",
-      "liberation-2025/newyorktheater-me--unknown.json"
+      "aladdin-2014/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -422,8 +419,8 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "liberation-2025/daily-beast--tim-teeman.json",
-      "liberation-2025/talkinbroadway-com--unknown.json"
+      "aladdin-2014/chicagotribune-com--unknown.json",
+      "aladdin-2014/usatoday-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -566,11 +563,11 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "liberation-2025/amny--matt-windman.json",
-      "liberation-2025/ew--emlyn-travis.json",
-      "liberation-2025/nypost--johnny-oleksinski.json",
-      "liberation-2025/thewrap--robert-hofler.json",
-      "liberation-2025/wsj-com--unknown.json"
+      "aladdin-2014/nytimes-com--unknown.json",
+      "aladdin-2014/nbcnewyork-com--unknown.json",
+      "aladdin-2014/newsday-com--unknown.json",
+      "aladdin-2014/nypost-com--unknown.json",
+      "aladdin-2014/time-com--unknown.json"
     ]
   }
 }
