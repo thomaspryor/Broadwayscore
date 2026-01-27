@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This puzzling, undercooked, but still arresting play, set in 1977, knows and accords to the genre conventions from whence it derives.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/grey-house/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 75,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grey House ultimately irritates rather than thrills",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The actors work admirably hard in its quirkily baffling folds, but the story sticks and stops and starts and eventually disappears into itself",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The payoff is more, 'What the f--- was that?' or 'All that for this?'",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: While the critic praises performances and technical elements, they find the play fundamentally flawed with poor execution, confusing plot, and an unsatisfying payoff that 'irritates rather than thrills.' | GPT-4o-mini: The review expresses a mix of admiration for the performances and production design but ultimately criticizes the unclear story and execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:55.467Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

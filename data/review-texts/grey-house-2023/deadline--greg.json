@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Together, they deliver a savvy tale that might be likened to a dark, lonely lake on a moonless night – scary enough on the surface, scarier still when one ponders what’s below the surface. There are some stretches that start to feel dull or repetitive, possibly the result of confusion as to what, exactly, is going on, but such moments fade with the next scream.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/grey-house/",
@@ -51,5 +51,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251113170300",
-  "archiveOrgUrl": "http://web.archive.org/web/20251113170300/https://deadline.com/2023/06/grey-house-broadway-review-laurie-metcalf-tatiana-maslany-1235375962/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251113170300/https://deadline.com/2023/06/grey-house-broadway-review-laurie-metcalf-tatiana-maslany-1235375962/",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 85,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "The cast is excellent. Metcalf scores another fine collaboration with Mantello",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There are some stretches that start to feel dull or repetitive, possibly the result of confusion as to what, exactly, is going on",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Grey House shows him knocking on all the right doors",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Clear praise for performances, direction, and technical elements with only minor reservations about pacing and some plot confusion, indicating a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:50.237Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
