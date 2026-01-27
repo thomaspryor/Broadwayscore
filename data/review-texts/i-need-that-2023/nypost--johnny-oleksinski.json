@@ -7,7 +7,63 @@
   "publishDate": "November 2, 2023",
   "fullText": "Theresa Rebeck’s new play, which opened Thursday night on Broadway in a production starring Danny DeVito, is not like “that show” either. Not at all. It’s nowhere near as compelling, focused or human.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "not like \"that show\" either. Not at all.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's nowhere near as compelling, focused or human",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "not at all",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic makes a harsh comparative judgment, stating the play is 'nowhere near as compelling, focused or human' as another work, indicating clear disappointment and lack of recommendation. | GPT-4o-mini: The review expresses strong disappointment and a clear lack of recommendation for the play, indicating it fails to engage or resonate.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:12.220Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

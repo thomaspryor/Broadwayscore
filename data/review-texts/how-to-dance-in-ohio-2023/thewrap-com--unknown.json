@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 28,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251210143308",
-  "archiveOrgUrl": "http://web.archive.org/web/20251210143308/https://www.thewrap.com/how-to-dance-in-ohio-broadway-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251210143308/https://www.thewrap.com/how-to-dance-in-ohio-broadway-review/",
+  "llmScore": {
+    "score": 28,
+    "confidence": "high",
+    "range": {
+      "low": 20.5,
+      "high": 35.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": 25,
+      "performances": 65,
+      "direction": 15
+    },
+    "keyPhrases": [
+      {
+        "quote": "Giving a bad review to a show about autistic young people is a little like panning your niece's piano recital at her birthday party. Since I don't have any nieces, or nephews, here goes:",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Much of the show's conflict derives from Dr. Amigo being an intrusive, incompetent therapist... Samayoa defines the word 'unctuous' for two and a half hours on stage",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "In his Broadway debut, Pearce rises above all the narrative chaos and otherwise lackluster material to channel a young Jude Law who can sing. A star is born under the least likely of circumstances.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic opens by acknowledging they're giving a bad review, then systematically tears apart the book, music, direction, and most performances while only praising one actor's breakthrough performance. | GPT-4o-mini: The review is predominantly negative, criticizing the script, direction, and overall execution while only offering limited praise for one performance.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:18:12.010Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

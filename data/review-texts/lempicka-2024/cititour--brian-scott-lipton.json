@@ -10,8 +10,64 @@
   "bwwExcerpt": "Yet, under Rachel Chavkin’s surprisingly frazzled direction, the show, now at the Longacre Theatre, often feels like you’re watching someone put together a misguided collage – one that often incorporates elements of other stronger musicals, most notably “Cabaret” -- as it struggles to decide what story it wants to tell us and what message we’re supposed to take ith us as we leave the theatre. Women can do anything? Women never get the same credit as men? Women are brilliant? Art isn’t easy? You ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": null,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "surprisingly frazzled direction",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "feels like you're watching someone put together a misguided collage",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "struggles to decide what story it wants to tell us",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review criticizes fundamental aspects of the production including 'frazzled direction' and a confused narrative that 'struggles to decide what story it wants to tell,' indicating significant structural problems that would be difficult to recommend. | GPT-4o-mini: The review expresses significant criticism of the direction and overall coherence of the show, indicating a clear negative sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:18.419Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

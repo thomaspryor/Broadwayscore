@@ -7,7 +7,63 @@
   "publishDate": "July 24, 2023",
   "fullText": "Sandy Rustin’s The Cottage has no pretensions to seriousness: It’s a brazenly straightforward drawing-room farce, created for light amusement and delivered on a platter by a properly silly cast of six.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 75,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "no pretensions to seriousness",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "created for light amusement and delivered on a platter",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "properly silly cast of six",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic describes a straightforward farce that successfully delivers its intended light entertainment with good performances, suggesting modest positive recommendation despite limited excerpt. | GPT-4o-mini: The review highlights the light-hearted nature and effective performances, suggesting a qualified recommendation for those seeking amusement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:27.495Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

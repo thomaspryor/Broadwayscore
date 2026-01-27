@@ -7,7 +7,63 @@
   "publishDate": "December 10, 2023",
   "fullText": "Directed with sensitivity by Sammi Cannold, How to Dance in Ohio is an underdog itself: a modest production of an original musical that originated in Syracuse, New York, and—like another sincerely inspirational audience-pleaser, Come From Away—rose on its own merits, without big stars, hit songs or well-known pop-culture IP.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Directed with sensitivity by Sammi Cannold",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "sincerely inspirational audience-pleaser",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "rose on its own merits",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review offers consistent praise for direction and compares favorably to Come From Away, but lacks explicit recommendation language and focuses mainly on the show's underdog story rather than quality assessment. | GPT-4o-mini: The review expresses a clear positive sentiment towards the direction and the underdog nature of the production, suggesting a recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:18:51.749Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

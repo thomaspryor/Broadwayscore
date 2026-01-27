@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250601150516",
-  "archiveOrgUrl": "http://web.archive.org/web/20250601150516/https://www.talkinbroadway.com/page/world/TheWhosTommy.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250601150516/https://www.talkinbroadway.com/page/world/TheWhosTommy.html",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 85,
+      "performances": 88,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "For fans of the original concept album or of the show's previous Broadway production, or even of Ken Russell's truly weird film incarnation, a ticket to The Who's Tommy is a no-brainer. For anyone else, it will be quite the theatrical experience, a rock opera that truly earns its reputation as the genuine article.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Who's Tommy is, by any measure, a visual and auditory tour de force",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a puzzling second act that can't seem to decide whether it wants to carry the show into a darkly satirical mode or to celebrate the post-trauma healing process",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a clear positive recommendation calling it a 'no-brainer' for fans and 'quite the theatrical experience' for others, praising the performances, direction, and design as a 'tour de force' despite some reservations about the second act structure.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:28.736Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

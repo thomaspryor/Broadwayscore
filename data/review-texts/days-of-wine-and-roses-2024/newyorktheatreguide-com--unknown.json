@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "\"Kelli O'Hara and Brian d'Arcy James give career-best performances\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 93,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "career-best performances",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Kelli O'Hara and Brian d'Arcy James give career-best performances",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for lead performances with 'career-best' superlative suggests positive recommendation, but extremely limited text prevents assessment of other elements. | GPT-4o-mini: The review highlights exceptional performances but lacks detail on other aspects of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:45.567Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

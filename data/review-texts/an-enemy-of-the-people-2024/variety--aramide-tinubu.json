@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Strong's Dr. Stockmann is a man of principle who refuses to compromise his values, even when it means losing everything he holds dear. The actor brings a quiet intensity to the role that makes every moment feel urgent and necessary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 84,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "brings a quiet intensity to the role",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes every moment feel urgent and necessary",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Strong's Dr. Stockmann is a man of principle who refuses to compromise his values",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the lead performance with compelling descriptors, but excerpt is too brief to assess overall show recommendation with high confidence. | GPT-4o-mini: The review highlights strong performances and a compelling portrayal, indicating a clear recommendation despite the lack of details on other aspects of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:56.462Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

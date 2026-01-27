@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 75,
+      "performances": 83,
+      "direction": 74
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's the most promising start to any new musical I've seen all year",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Easy to love, it will nevertheless need the goodwill of an audience willing to overlook its first-act muddle",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "How to Dance in Ohio, which proudly displays its heart on its sleeve, is loaded with charmers but it sometimes coasts on our affection for them",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant structural problems and book issues, the critic finds the performances exceptional and the show emotionally moving, ultimately suggesting it's worth seeing for audiences willing to overlook its flaws. | GPT-4o-mini: The review highlights strong performances and music but points out significant issues with the book and pacing, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:10.356Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

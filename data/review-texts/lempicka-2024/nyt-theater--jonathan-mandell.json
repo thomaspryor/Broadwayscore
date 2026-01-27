@@ -10,8 +10,64 @@
   "bwwExcerpt": "In any case, the show’s oft-mentioned fusion of humanity with machinery suddenly struck me as a clarifying metaphor for my mixed reaction to “Lempicka,” which opened on Broadway tonight at the Longacre. Carson Kreitzer, who conceived of the musical and co-wrote the libretto with Matt Gould, has created some artful lyrics for Gould’s music. Director Rachel Chavkin oversees some precisely calibrated moments. Naturally gifted cast members give polished performances, most notably Eden Espinosa in th",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 65,
+      "music": 70,
+      "performances": 75,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "my mixed reaction to 'Lempicka'",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "has created some artful lyrics for Gould's music",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Naturally gifted cast members give polished performances, most notably Eden Espinosa",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states having a 'mixed reaction' and while praising individual elements like lyrics, music, direction, and performances, the overall tone suggests qualified appreciation rather than enthusiasm. | GPT-4o-mini: The review expresses a mixed reaction, highlighting strengths in performances and direction while indicating uncertainty about the overall impact of the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:45.462Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

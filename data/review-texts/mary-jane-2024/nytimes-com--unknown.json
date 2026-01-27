@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...McAdams’s natural sunniness and Mary Jane’s reality enhances the play’s tension.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251102160205",
-  "archiveOrgUrl": "http://web.archive.org/web/20251102160205/https://www.nytimes.com/2024/04/23/theater/mary-jane-review-rachel-mcadams.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251102160205/https://www.nytimes.com/2024/04/23/theater/mary-jane-review-rachel-mcadams.html",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 89,
+      "music": null,
+      "performances": 88,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "confirms that earlier diagnosis",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Like all great plays, 'Mary Jane' catches light from different directions at different times, revealing different ideas",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The cast, returning or not, is unimprovable",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Jesse Green delivers consistent praise for the script ('steel-trap play'), performances ('unimprovable cast'), and production elements, calling it a 'great play' with no significant reservations. | GPT-4o-mini: The review expresses strong praise for the script and performances, highlighting the emotional depth and quality of the production, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:12.160Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 88,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

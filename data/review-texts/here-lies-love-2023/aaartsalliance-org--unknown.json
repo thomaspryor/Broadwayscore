@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": null,
+      "performances": 80,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "The historic all-Filipino cast is a powerhouse, especially the corps ensemble",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there are, however, questionable, perhaps even inflammatory historical inaccuracies in the staging",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "this production exposes the need for more Filipino stories written by Filipinos that center the survivors",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the historic casting and powerful performances while raising significant concerns about historical accuracy, representation, and the show's approach to centering the perpetrator over survivors. | GPT-4o-mini: The review presents a balanced view, praising the performances and representation while highlighting significant historical inaccuracies and complexities that are not fully addressed, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:19.932Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 68,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Featuring brilliant performances by Michael Stuhlbarg as Russian-Jewish businessman Boris Berezovsky and Will Keen, repeating his Olivier Award-winning London performance, as Putin, Patriots is the sort of gripping real-life drama that only makes you want to learn more.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/patriots/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "brilliant performances",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "gripping real-life drama",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "only makes you want to learn more",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances and overall drama quality with clear positive language and engagement indicator, suggesting solid recommendation despite brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:00.350Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

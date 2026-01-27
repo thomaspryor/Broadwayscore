@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "In the end, “Lempicka” takes a potentially fascinating character and turns her into another weepy, boring victim.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/lempicka/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251205055935",
-  "archiveOrgUrl": "http://web.archive.org/web/20251205055935/https://www.thewrap.com/lempicka-broadway-review-lesbians-get-their-big-musical-moment-finally/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251205055935/https://www.thewrap.com/lempicka-broadway-review-lesbians-get-their-big-musical-moment-finally/",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 40,
+      "performances": 55,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "Why have Kreitzer and Gould given their Lempicka nothing but loud, caterwauling screeds to sing?",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's a great book song because it's not only tuneful but filled with action and character",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Lempicka takes a potentially fascinating character and turns her into another weepy, boring victim",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic praises specific songs and some performances but delivers harsh criticism of the lead character's material, direction, and overall concept, concluding with a damning final assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:16.110Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "There have been dysfunctional family dramas as long as there have been plays. (After all, what would you call Medea?) But playwright Branden Jacobs-Jenkins definitely ups the ante in Appropriate, his searing 2013 play only now receiving its belated Broadway premiere in a galvanizing staging by Lila Neugebauer. Featuring a stellar cast headed by Sarah Paulson, Corey Stoll, and, making her stage debut, Elle Fanning, this Second Stage Theater production about a family with enough skeletons in its c",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "searing 2013 play only now receiving its belated Broadway premiere in a galvanizing staging",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Featuring a stellar cast headed by Sarah Paulson, Corey Stoll, and, making her stage debut, Elle Fanning",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "playwright Branden Jacobs-Jenkins definitely ups the ante",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive language including 'searing', 'galvanizing staging', and 'stellar cast' indicates clear enthusiasm despite the review being cut off mid-sentence. | GPT-4o-mini: The review highlights strong performances and direction, suggesting a solid recommendation despite lacking detailed critique of the script.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:26.132Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

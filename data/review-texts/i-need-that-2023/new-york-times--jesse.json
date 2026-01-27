@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Making the point even sharper is the entrance of the star, Danny DeVito, as Sam, the impish, 80-ish widower who lives there. Well, it’s not so much an entrance as a disclosure. Only after a series of knocks at the door wakes him up do we realize that amid the clutter submerging almost every surface of this once-handsome living room is Sam himself, indistinguishable from the trash.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/i-need-that/",
@@ -34,5 +34,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250602051832/https://www.nytimes.com/2023/11/02/theater/i-need-that-review-danny-devito.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 71,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play overall, within its neat architecture, feels cluttered and obvious",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "most of what Rebeck offers is filler",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Danny DeVito commands interest without having to do much, and rewards it with funny readings",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the script cluttered and obvious with too much filler, praising only DeVito's performance and brief authentic moments, suggesting the show has structural problems that outweigh its strengths. | GPT-4o-mini: The review presents a mixed view, praising performances but criticizing the script and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:31.151Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

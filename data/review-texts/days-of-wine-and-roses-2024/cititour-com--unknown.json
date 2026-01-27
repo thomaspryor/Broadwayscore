@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 4,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "1/28"
+  "extractedRating": "1/28",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 74,
+      "music": 86,
+      "performances": 92,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "unless you have a heart of stone, you will be moved",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you will be unbearably grateful to have heard the clarion, celestial voices of the wonderful Kelli O'Hara, in her finest stage performance to date",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "you may leave this unusual show without a truly satisfactory answer",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer expresses clear admiration for the performances and music while acknowledging the questionable premise of musicalizing the source material, but ultimately finds the production moving and worthy despite reservations. | GPT-4o-mini: The review highlights strong performances and a compelling score, with only minor reservations about the adaptation, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:48.024Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

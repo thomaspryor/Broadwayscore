@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "How to Dance in Ohio wobbles in similar fashion. But in the end, this worthwhile musical finds the steps to an upbeat last dance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "wobbles in similar fashion",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "worthwhile musical",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "finds the steps to an upbeat last dance",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges significant flaws ('wobbles') but ultimately deems it 'worthwhile' with a strong finish, suggesting a qualified positive recommendation. | GPT-4o-mini: The review indicates a generally positive sentiment towards the musical's conclusion but acknowledges some inconsistencies, leading to a mixed-positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:50.580Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“All of the actors playing autistic people publicly identify as autistic themselves; they’re also all making their Broadway debuts, and while some are more experienced than others—Pearce, with his expansively emotional voice, is a ringer—they all make winsome impressions.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -41,5 +41,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "time-out-stars",
   "scoreConfidence": "medium",
-  "originalRating": "5/5 stars"
+  "originalRating": "5/5 stars",
+  "llmScore": {
+    "score": 84,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 80,
+      "performances": 86,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "the sweet, uplifting new musical How to Dance in Ohio...guides this tradition in a joyful new direction",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "they all make winsome impressions",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "they've made their own space on Broadway now, and proved that they belong",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The 4/5 star rating combined with consistent praise for the show's heart, performances, and achievement, with only minor reservations about it being 'modest,' places this firmly in positive territory. | GPT-4o-mini: The review expresses strong praise for the musical's uplifting themes, performances, and direction, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:18:45.936Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 88,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

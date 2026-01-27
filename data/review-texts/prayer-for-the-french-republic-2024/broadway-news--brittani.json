@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Prayer for the French Republic” is a formidable feat — it lives up to its gargantuan, time-leaping ambitions and is a sturdy theatrical vehicle for a large cast of actors to delve deep into character work.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/prayer-for-the-french-republic-broadway/",
@@ -36,5 +36,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 261 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harmon meticulously architects characters so personable and living-room spats so heightened that you'll question for a moment if you're not fighting with relatives in your own home",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "His script is ripe with smart, snappy language about the history of conflict and Jewish expulsion, but never condescends to its audience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a pitch-perfect Betsy Aidem",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the script's intelligence and character development, highlights strong performances (particularly Aidem), and uses enthusiastic language about the playwright's craft without significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:49.726Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Lempicka is an undeniably compelling and original piece of art, unique within a season dominated by musicals based on existing films or musical catalogs. It will be deeply meaningful to those who will find resonance in its various thematic threads, from the struggles of artists and the desire for a legacy, to the precarity of queer people.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/lempicka/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251216100023",
-  "archiveOrgUrl": "http://web.archive.org/web/20251216100023/https://www.theatermania.com/news/review-lempicka-on-broadway-pays-tribute-to-a-great-but-unknown-artist_1737182/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251216100023/https://www.theatermania.com/news/review-lempicka-on-broadway-pays-tribute-to-a-great-but-unknown-artist_1737182/",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 55,
+      "performances": 85,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "the performances from Espinosa and the other principals are so exceptional that they more than make up for it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Lempicka is an undeniably compelling and original piece of art",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's hard not to feel disappointed by her latest creation, which lacks her signature touches",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review balances significant praise for the exceptional performances and compelling original story against notable disappointments in direction, design, and some musical elements, ultimately recommending it as a worthwhile if flawed production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:50.849Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250721191009",
-  "archiveOrgUrl": "http://web.archive.org/web/20250721191009/https://www.amny.com/entertainment/theater/review-days-of-wine-and-roses/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250721191009/https://www.amny.com/entertainment/theater/review-days-of-wine-and-roses/",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 88,
+      "performances": 85,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "another musically literate and individualized work",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Kelli O'Hara and Brian d'Arcy James, who shine vocally and dramatically in finely-textured performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the score artfully captures the characters' circumstances and subsequent breakdowns and melancholy",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the musical sophistication, standout performances, and artistic merit while expressing hope for more work from the composer, indicating clear recommendation despite the challenging subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:54.440Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

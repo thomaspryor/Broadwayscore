@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Sam’s realization isn’t the only moment that recalls TV fare. Rebeck’s play, which opened Thursday at Roundabout’s American Airlines Theater, would be better titled “Sanford and Daughter,” even though Rebeck’s attempts at writing one-liners rarely rises to the level of the 1970s sitcom starring Redd Foxx.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/i-need-that/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250803044150",
-  "archiveOrgUrl": "http://web.archive.org/web/20250803044150/https://www.thewrap.com/i-need-that-danny-devito-broadway-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250803044150/https://www.thewrap.com/i-need-that-danny-devito-broadway-review/",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": 33,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sam undergoes a conversion that is as phony as every word and action that came before it",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Lucy DeVito takes that description as the key to her interpretation, but sadly offers nothing else to pad out the stick figure she has been assigned to play",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The desperation shows when DeVito tries to milk a laugh out of strangling the word 'Ohio'",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic systematically dismantles the play's script as phony and desperate, criticizes the performances as inadequate, and finds the direction lacking, with no meaningful positive recommendations. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the script and character development while only offering mild praise for the performances.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:59.762Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

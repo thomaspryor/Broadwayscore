@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 40,
+  "assignedScore": 38,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-stars",
   "scoreConfidence": "medium",
-  "extractedStars": 2
+  "extractedStars": 2,
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 68,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "if you're here for either horror or a captivating story from Broadway's movie-length Grey House, prepare to walk away tragically disappointed",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "as much as I wanted to love Grey House, I mostly felt disappointed with the strange slow-burn horror-tinged comedy we got instead",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Bursting at the seams with admirably talented performers... Grey House seems incapable of giving them equally great material to match",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising the talented cast and some creative elements, the critic explicitly warns audiences to 'prepare to walk away tragically disappointed' and concludes with personal disappointment, making this a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:39.143Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

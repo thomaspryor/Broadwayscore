@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 37,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "1/2"
+  "extractedRating": "1/2",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 43,
+      "performances": 58,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "the disappointing result is more heartbreaking than heartwarming",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Regrettably, I wasn't surprised at the result",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I wish I felt better about what is billed as a feel good show",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic systematically dismantles the adaptation with extensive criticism of the bloated book, unnecessary subplots, and fundamental disconnect between the talented cast and the characters they portray, culminating in explicit disappointment. | GPT-4o-mini: The review expresses significant disappointment with the adaptation, highlighting numerous flaws in the book, direction, and overall execution, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:31.354Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

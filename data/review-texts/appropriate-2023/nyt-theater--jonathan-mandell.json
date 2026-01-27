@@ -10,8 +10,64 @@
   "bwwExcerpt": "“Appropriate,” the last play to open on Broadway in 2023 and one of the best-acted productions of the year,  tells the story of a dysfunctional family who reunite after the death of their patriarch to auction off all his possessions, during which we learn little by little how messed up each and every one of the characters is. But Branden Jacobs-Jenkins’ resonant play also in its own wry and sly way tells a dark story of race in America. If what’s going on beneath the mordant humor on the surface",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 67.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the best-acted productions of the year",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Branden Jacobs-Jenkins' resonant play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "tells the story of a dysfunctional family",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances ('best-acted productions of the year') and the playwright's work ('resonant play') suggests positive recommendation, but the excerpt cuts off mid-sentence limiting full assessment. | GPT-4o-mini: The review highlights strong performances and the impactful themes of the play, indicating a clear recommendation despite not explicitly stating it. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:54.917Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 85,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

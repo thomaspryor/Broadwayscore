@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“This might have been a fascinating portrait of male ego and insecurity, with real insights into the workings of Hollywood in the 1970s...But written by the son of the late Robert Shaw, the piece feels like artless autobiography or maybe even a son’s revenge.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251206210629",
-  "archiveOrgUrl": "http://web.archive.org/web/20251206210629/https://variety.com/2023/legit/reviews/the-shark-is-broken-review-broadway-play-jaws-1235693491/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251206210629/https://variety.com/2023/legit/reviews/the-shark-is-broken-review-broadway-play-jaws-1235693491/",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 58,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "about as fun as a being stuck on a tiny boat in the middle of the ocean for weeks on end with three tiresome men",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "they put their audience to sleep — literally",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Colin Donnell as Roy Scheider stands out, mainly because his performance, like Scheider's in the film, is, for the most part, understated",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the play fundamentally boring and poorly executed, comparing it unfavorably to being trapped with tiresome people, though acknowledging one standout performance. | GPT-4o-mini: The review is predominantly negative, criticizing the script and direction while only offering limited praise for one performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:09.560Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

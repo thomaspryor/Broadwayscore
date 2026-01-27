@@ -17,5 +17,61 @@
   "designation": "Must_See",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "unmissable"
+  "extractedPhrase": "unmissable",
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "thrillingly fierce central performance by Jonathan Groff",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Maria Friedman's unsparing direction",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Merrily has been found in the dark",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for both direction and lead performance with metaphorical language suggesting the production has solved previous problems and achieved artistic success. | GPT-4o-mini: The review highlights strong direction and a powerful performance, indicating a clear recommendation despite not explicitly stating 'must-see'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:06.941Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

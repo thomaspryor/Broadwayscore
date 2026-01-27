@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 56,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 56,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": 74,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "Theresa Rebeck's play about a hoarder is the slightest of comedies. Its plot is paltry. Its insights are pat. It promises more laughs than it delivers.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I Need That does deliver Danny DeVito, and for some, that will be enough.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "His vigorous stage presence does seem at odds with a character who is supposed to be depressed, but it also gives the production its juice.",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the play structurally weak with poor plotting and forced revelations, but acknowledges DeVito's strong performance makes it worthwhile for some audiences - a classic mixed review that qualifiedly recommends based on star power despite material flaws. | GPT-4o-mini: The review presents a mixed view, praising DeVito's performance while criticizing the script and overall execution, leading to a conditional recommendation. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:39.007Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 50,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

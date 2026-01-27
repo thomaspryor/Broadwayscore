@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“In the end, there’s not a lot here: No crazy shark puppets, little sense of the raging seas nor of tormented, insecure actors — not much for the eye to see and very little happening that you don’t anticipate just five or 10 minutes into the show.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230829080856",
-  "archiveOrgUrl": "http://web.archive.org/web/20230829080856/https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-shark-is-broken-chris-jones-20230811-kv4cwl4kqnd65ll7eqlysa4jle-story.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20230829080856/https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-shark-is-broken-chris-jones-20230811-kv4cwl4kqnd65ll7eqlysa4jle-story.html",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 58,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show doesn't deliver much at all. Not only is the low-stakes script dull and pedestrian, but the characters change not at all",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "it makes for thin Broadway gruel, alas, with a 90-minute running time, a straight-up POV, and a series of behind-the-camera recreations",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there's not a lot here: No crazy shark puppets, little sense of the raging seas nor of tormented, insecure actors — not much for the eye to see",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the script 'dull and pedestrian' with characters that 'change not at all,' calling it 'thin Broadway gruel' despite acknowledging some funny moments and solid casting resemblances. | GPT-4o-mini: The review expresses significant disappointment with the script and overall execution, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:46.910Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

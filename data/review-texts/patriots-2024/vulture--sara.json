@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Yet the first stage direction of Patriots is: “A bare stage.” As I left the shadows of Boris and Vladimir behind, I wondered what that version of their story might have looked like, and whether it could have become more than an exercise in (Morgan’s words) “riveting personal interactions”; whether, in its attempt to touch the Russian soul, it could have asked for more of our souls and hazarded more of its own.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/patriots/",
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241216064542",
-  "archiveOrgUrl": "http://web.archive.org/web/20241216064542/https://www.vulture.com/article/patriots-peter-morgan-russia-putin.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241216064542/https://www.vulture.com/article/patriots-peter-morgan-russia-putin.html",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 77,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "Patriots' chief pleasures are intellectual. Morgan's work is thinky, at times witty and always distanced from judgment.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "there's something cool at the center of Patriots that begins to chafe as the play nears its end",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it's got zazz without having psychological or ethical impact",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review appreciates the intellectual content and performances but is significantly frustrated by the production's emotional detachment and lack of meaningful impact, creating a mixed recommendation that leans slightly positive. | GPT-4o-mini: The review presents a mix of intellectual praise for the themes and performances but criticizes the execution and emotional impact, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:12.017Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 68,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

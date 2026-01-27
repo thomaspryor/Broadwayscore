@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This production of An Enemy of the People may be driven by star power, but its enduring message packs a punch for seasoned theatregoers and those new to Ibsen’s works. And audiences will be talking about the bar on stage for years to come.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Sam Gold's production of An Enemy of the People skillfully balances the play's history and its timeliness",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Strong expertly portrays the demise... It's an impactful message",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This production of An Enemy of the People may be driven by star power, but its enduring message packs a punch",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the production's relevance, Strong's expert performance, Gold's skillful direction, and the overall impact, with enthusiastic descriptions of creative staging choices and no significant criticisms.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:28.112Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 65,
+      "performances": 82,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite virtuosic performances, this musical adaptation feels like its subject matter is straining against its form",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there remains a fundamental mismatch between the subject matter and the medium",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The music and lyrics deliver ample opportunities for O'Hara and James to thrill and there are moments where their virtuosic range adds to the tragic arc",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer acknowledges strong performances and musical elements but identifies a fundamental structural problem with the show's concept, resulting in a mixed recommendation that leans neutral.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:42.957Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

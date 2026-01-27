@@ -10,8 +10,64 @@
   "bwwExcerpt": "I Need That is clearly a vehicle for DeVito’s return to Broadway, coming six years after his debut in Arthur Miller’s The Price. DeVito is funny and makes the most of Rebeck’s slapstick material. Within the ensemble and alone, he brings charm and occasional devastation to Sam’s afflictions. A scene where he plays a solo game of Sorry! is arresting and hilarious, an exhibition of his considerable talents.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 84,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "DeVito is funny and makes the most of Rebeck's slapstick material",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "brings charm and occasional devastation to Sam's afflictions",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "an exhibition of his considerable talents",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review focuses heavily on praising DeVito's performance with specific examples, but lacks broader assessment of the show's overall quality or any clear recommendation. | GPT-4o-mini: The review highlights DeVito's strong performance and humor, leading to a clear positive recommendation despite not addressing the overall quality of the script or direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:24.495Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

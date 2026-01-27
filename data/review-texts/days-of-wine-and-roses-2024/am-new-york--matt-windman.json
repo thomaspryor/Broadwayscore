@@ -10,8 +10,64 @@
   "bwwExcerpt": "While the musical respects the film’s structure and setting (though the location is moved from San Francisco to New York City) and recycles much of the original dialogue, it proves to be one of the relatively few theatrical adaptations that expands upon its cinematic source material, as seen in how the score (which is grounded in mid-century jazz) artfully captures the characters’ circumstances (including the high-flying, euphoric rush of endless cocktails) and subsequent breakdowns and melancho",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 80,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the relatively few theatrical adaptations that expands upon its cinematic source material",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the score artfully captures the characters' circumstances",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the musical respects the film’s structure and setting",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the adaptation for expanding on its source material and specifically commends the score's artful capture of character circumstances, suggesting a positive recommendation despite the incomplete excerpt. | GPT-4o-mini: The review highlights the musical's strengths in expanding the source material and capturing character emotions through music, indicating a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:14.087Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

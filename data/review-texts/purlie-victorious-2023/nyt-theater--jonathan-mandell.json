@@ -10,8 +10,64 @@
   "bwwExcerpt": "It’s hard to picture a better cast for this first Broadway revival of Ossie Davis’s 1961 broad, biting comedy about racism in the Old South. As the title character, Leslie Odom Jr., assuming the role originated by Davis himself, feels especially well-matched. Odom of course made his name on Broadway delivering with uncommon clarity the pithiest raps in “Hamilton,” as smooth-talking, untrustworthy but surprisingly sympathetic Aaron Burr.  Similarly, as Purlie Victorious Judson, a newly-minted pre",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's hard to picture a better cast for this first Broadway revival",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "feels especially well-matched",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "broad, biting comedy about racism in the Old South",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise for casting and lead performance suggests positive recommendation, but excerpt cuts off mid-sentence limiting assessment of overall show quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:15.206Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250721001246",
-  "archiveOrgUrl": "http://web.archive.org/web/20250721001246/https://nypost.com/2023/12/10/entertainment/how-to-dance-in-ohio-review-musical-is-a-better-idea-than-show/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250721001246/https://nypost.com/2023/12/10/entertainment/how-to-dance-in-ohio-review-musical-is-a-better-idea-than-show/",
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 30,
+      "performances": 65,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "its execution across the board does not match its admirable intentions",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "we are unfortunately sitting at a missed opportunity",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "They've cast an ideal core seven performers, who are all charming individually as well as when part of a tight ensemble",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising the authentic casting and performances, the critic systematically dismantles the book, score, and direction as fundamentally flawed, calling it a 'missed opportunity' with clear disappointment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:52.648Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

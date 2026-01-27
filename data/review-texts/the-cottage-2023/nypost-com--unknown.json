@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230829222034",
-  "archiveOrgUrl": "http://web.archive.org/web/20230829222034/https://nypost.com/2023/07/24/the-cottage-review-tired-new-broadway-farce-is-forced/"
+  "archiveOrgUrl": "http://web.archive.org/web/20230829222034/https://nypost.com/2023/07/24/the-cottage-review-tired-new-broadway-farce-is-forced/",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": 58,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rustin's irksome writing, though, was a flea in my ear",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "What makes 'The Cottage' habitable is its game and mostly charming actors",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "that physical prop gag is funnier than any one line of dialogue in this entire witless play",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review harshly criticizes the writing as 'irksome' and 'witless' while praising some performances, but concludes with a devastating final line that makes clear this is not recommended. | GPT-4o-mini: The review is predominantly negative, criticizing the writing and structure while acknowledging some decent performances, leading to a recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:35.964Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

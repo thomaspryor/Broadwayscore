@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Truth be told, I was not expecting to be as bowled over by this story, or this revival, as I was. But there’s no arguing with talent, and with so much prowess on and off the stage, Tommy is an electric paean to rock immortality, and talent wherever one can find it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-whos-tommy/",
@@ -35,5 +35,61 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 85,
+      "performances": 90,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tommy is an electric paean to rock immortality, and talent wherever one can find it",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Truth be told, I was not expecting to be as bowled over by this story, or this revival, as I was",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "there's no arguing with talent, and with so much prowess on and off the stage",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses genuine surprise at being 'bowled over' by the revival, praises all design elements working in 'beautiful harmony,' calls the lead 'a new star,' and concludes with an 'electric paean' - clear strong positive recommendation despite no explicit star rating. | GPT-4o-mini: The review expresses strong enthusiasm for the production's talent, direction, and design, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:33.105Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

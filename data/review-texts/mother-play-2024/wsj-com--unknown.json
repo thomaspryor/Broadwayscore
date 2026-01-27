@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "\"...a funny and affecting but slight and fragmentary drama depicting Ms. Lange’s Phyllis\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -55,5 +55,63 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240816022117/https://www.wsj.com/articles/mother-play-review-jessica-langes-tortured-vision-of-parenthood-2850835f",
   "textIssues": [
     "Word count too low: 85 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 55,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": null,
+      "performances": 68,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "funny and affecting but slight and fragmentary drama",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Jessica Lange plays a hapless, helpless and hopelessly bad single mother",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "tortured relationship with her son and daughter across several decades",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges some positive elements ('funny and affecting') but the dominant characterization as 'slight and fragmentary' suggests significant structural weaknesses that outweigh the strengths. | GPT-4o-mini: The review acknowledges some humor and emotional impact but also highlights significant shortcomings in the script, leading to a mixed recommendation. | Note: Models differed by 20 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:40.758Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 20 points (Claude: 45, OpenAI: 65)"
+    ]
+  }
 }

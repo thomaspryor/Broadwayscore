@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\" ''Grey Houe' is built around themes of guilt, expiation and retribution, but not very solidly—and as a spectator, you’re too busy puzzling out what is happening to think much about what it means...Amid such excellent atmospherics, you may not care when the play itself creaks.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 80,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this is a first-class production: Director Joe Mantello and his committed cast sustain a tone that is consistently unsettling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you might find that they don't quite cohere",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Amid such excellent atmospherics, you may not care when the play itself creaks",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Critic praises the production values, direction, and performances highly while finding significant flaws in the script's coherence, resulting in a qualified positive recommendation. | GPT-4o-mini: While the production is praised for its direction and performances, the script lacks coherence and depth, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:20.438Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

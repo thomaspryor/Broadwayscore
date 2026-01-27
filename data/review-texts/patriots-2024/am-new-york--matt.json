@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Patriots,” which comes to Broadway following a London debut in a seamless, tech-savvy production by Rupert Goold (“Ink,” “American Psycho”) is an action-packed, engaging saga that follows Putin’s rise to power, going from Deputy Mayor of St. Petersburg, to Prime Minister, to President of Russia following the sudden resignation of Boris Yeltsin on the eve of the new millennium.",
   "originalScore": null,
-  "assignedScore": 20,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/patriots/",
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251210021245/https://www.amny.com/entertainment/theater/patriots-examines-the-rise-of-putin-and-pals/",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "4/20"
+  "extractedRating": "4/20",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 82,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "an action-packed, engaging saga",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Stuhlbarg gives a high-powered, compelling performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Patriots is primarily a source of entertainment – and it succeeds in that regard",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the production as 'engaging' and 'action-packed' with strong performances, particularly Stuhlbarg's 'compelling' work, and explicitly states it 'succeeds' as entertainment, indicating a clear positive recommendation despite minor caveats about historical accuracy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:22.772Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

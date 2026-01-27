@@ -10,8 +10,64 @@
   "bwwExcerpt": "Even then, at the very least, you will be unbearably grateful to have heard the clarion, celestial voices of the wonderful Kelli O’Hara, in her finest stage performance to date as the naïve secretary Kirsten Arnesen, and the sublime Brian D’Arcy James as the more worldly PR man Joe Clay, who fall in love with each other and the bottle.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 92,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "unbearably grateful to have heard the clarion, celestial voices",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "in her finest stage performance to date",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the sublime Brian D'Arcy James",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses rapturous language about the lead performances with superlatives like 'celestial,' 'sublime,' and 'finest stage performance to date,' indicating strong enthusiasm despite being performance-focused.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:35.814Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

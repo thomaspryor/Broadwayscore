@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Wherever it can — in the plot, in the characterizations and in the sometimes bombastic orchestrations for a heavily synthed and amped orchestra of nine — “Harmony” wields a truncheon instead of the needle it needs. It might have helped if the supposedly comic numbers were actually funny, but neither Manilow and Sussman nor Carlyle excel at that here.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -35,5 +35,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251003034648",
-  "archiveOrgUrl": "http://web.archive.org/web/20251003034648/https://www.nytimes.com/2023/11/13/theater/harmony-review-barry-manilow.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251003034648/https://www.nytimes.com/2023/11/13/theater/harmony-review-barry-manilow.html",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 68,
+      "performances": 55,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "wields a truncheon instead of the needle it needs",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Manilow's vocal arrangements, written with John O'Neill, the show's music director, are marvelous",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "makes a beeline for the bleakest parts of the tale and then bleakens them further",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: While the critic praises Manilow's music and arrangements, the review is predominantly negative about the book's heavy-handedness, weak characterization, and relentless bleakness, with several failed comedy attempts and overall structural problems. | GPT-4o-mini: The review expresses significant disappointment with the show's execution, particularly in its book and comedic elements, leading to a strong negative recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:53.329Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 42,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

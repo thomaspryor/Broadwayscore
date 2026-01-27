@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The script can drag and the metaphors pile higher that Jenga blocks, but the oblique text of “Grey House” never lacks for intrigue and edge-of-your-seat fascination. And the show’s fine cast and creatives do their best to make it all less impenetrable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/grey-house/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230707234202",
-  "archiveOrgUrl": "http://web.archive.org/web/20230707234202/https://variety.com/2023/legit/reviews/grey-house-review-broadway-play-1235630674/"
+  "archiveOrgUrl": "http://web.archive.org/web/20230707234202/https://variety.com/2023/legit/reviews/grey-house-review-broadway-play-1235630674/",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 84,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "The script can drag and the metaphors pile higher that Jenga blocks, but the oblique text of 'Grey House' never lacks for intrigue and edge-of-your-seat fascination",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "And the show's fine cast and creatives do their best to make it all less impenetrable",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Caruso is the insistent, irresistible heart of 'Grey House' and its sonorous death knell",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances and production values while acknowledging significant script issues, ultimately finding the show intriguing despite its flaws. | GPT-4o-mini: While the script has its flaws, the strong performances and direction create a compelling experience, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:32.903Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "Harmon is the talented playwright of Significant Other, about the frailty of friendship; Admissions, about race and privilege; and Bad Jews, about family legacies. He digs deeper than ever in Prayer for the French Republic and strikes pure gold. It’s a plus-size play about big social issues that impresses in large structural ways as well as small moments.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "strikes pure gold",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "impresses in large structural ways as well as small moments",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "digs deeper than ever",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the playwright's work with superlative language like 'strikes pure gold' and emphasis on both structural excellence and intimate moments suggests clear enthusiasm and recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:42.004Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

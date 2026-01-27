@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "ends_with_ellipsis"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 48,
+      "music": 75,
+      "performances": 93,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "This might not appeal to every theater goer but regardless it is a production not to be missed",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "what may dampen that euphoric feeling is the realization that although that might have been two of the best performances you have ever seen, the musical itself was not up to par",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "two of the most notable musical theater actors at the top of their game give performances of a lifetime",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticisms of the script and pacing, the reviewer explicitly states it's 'a production not to be missed' and praises the 'performances of a lifetime,' indicating a qualified but clear recommendation. | GPT-4o-mini: While the performances are highly praised, the script and overall musical quality are seen as lacking, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:58.301Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

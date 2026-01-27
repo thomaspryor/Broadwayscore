@@ -10,8 +10,64 @@
   "bwwExcerpt": "Brian d’Arcy James and Kelli O’Hara return to Broadway for the first time together since 2002 to portray a couple who fall in love with alcohol as much as with one another in this musical adaptation of a dark story that was first a television drama in the 1950s, then a movie.  They last performed together on Broadway in a musical adaptation of another dark movie set in the 1950s, “Sweet Smell of Success.” They were relative newcomers then. It’s thrilling to see them back together for his sixteen",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "thrilling to see them back together",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "couple who fall in love with alcohol as much as with one another",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "first time together since 2002",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review expresses a positive sentiment about the actors' reunion but lacks a strong overall recommendation for the show itself.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:22.039Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 70,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

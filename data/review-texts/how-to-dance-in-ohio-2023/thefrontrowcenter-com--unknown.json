@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240621135011",
-  "archiveOrgUrl": "http://web.archive.org/web/20240621135011/https://thefrontrowcenter.com/2023/12/how-to-dance-in-ohio/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240621135011/https://thefrontrowcenter.com/2023/12/how-to-dance-in-ohio/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 70,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you want a dose of pinpointed joy in this world of horrible news – I say get thee to 'Ohio' where you will meet an extraordinary posse of young folks",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "These performances are the center of the piece as the book and the music are on the predictable – but both are lifted by the performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "By the end of the show you will be whooping yourself",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic gives a clear recommendation ('get thee to Ohio') and promises emotional payoff, though acknowledging predictable book and music, with the exceptional performances elevating the material. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and the universal themes of the show, leading to a clear recommendation despite some predictability in the book and music.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:18:04.452Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“DeVito is a star for a reason: His vulnerable, hilarious performance is a certifiable gem. If only this treasure weren’t so often lost in the piles that surround it.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 83,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "DeVito is a star for a reason: His vulnerable, hilarious performance is a certifiable gem.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "good-natured but threadbare comedy",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "If only this treasure weren't so often lost in the piles that surround it.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises DeVito's performance as a 'certifiable gem' but calls the play 'slight' and 'threadbare,' indicating admiration for the star performance but disappointment with the material itself. | GPT-4o-mini: The review highlights strong performances, particularly by DeVito, but also points out significant weaknesses in the script and overall execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:18:25.275Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

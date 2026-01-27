@@ -7,7 +7,63 @@
   "publishDate": "June 22, 2023",
   "fullText": "Given that Once Upon a One More Time follows those shows in this mini-genre (not to mention their sparkly, belty, much better fairy godmother Six), you might have reason to hope that it refines and improves upon the tropes. Instead, it’s reductive and pandering, hitting all the expected marks without any unique spark.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 34,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 34,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 43
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's reductive and pandering",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "hitting all the expected marks without any unique spark",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "you might have reason to hope that it refines and improves upon the tropes. Instead",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly pans the show as formulaic and disappointing, using harsh terms like 'reductive and pandering' with no redeeming qualities mentioned. | GPT-4o-mini: The review is predominantly negative, criticizing the show for being unoriginal and lacking spark, indicating a clear rejection of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:13.396Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 30,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“The vintage board game Sorry! wasn't designed to be played alone. Leave it to Emmy winner Danny DeVito, who shines as the aimless widow Sam in ‘I Need That’, to turn the unlikely moment into a theatrical highlight that’s silly, sad, and, no joke, poetic.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 58,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 75,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "Danny DeVito, who shines as the aimless widow Sam in I Need That",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Theresa Rebeck's wispy comedy about love, loss, and coping with the aftermath, is all too expected",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "In the end, I Need That is pleasant but leaves you wanting",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer praises DeVito's performance and some production elements but finds the play predictable and unsatisfying overall, describing it as 'pleasant but leaves you wanting.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:53.353Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

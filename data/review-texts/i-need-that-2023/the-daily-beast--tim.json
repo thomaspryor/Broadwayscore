@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Danny DeVito on Broadway: some welcome razzle-dazzle for the New York fall and winter, perhaps? Bluntly, sadly, no. In Theresa Rebeck’s play, I Need That (Roundabout Theatre Company/American Airlines Theatre, to Dec. 30), DeVito plays Sam, a widower who lives surrounded by clutter—his living room more a submarine of tottering piles of objects. Furniture is hidden, blanketed, and camouflaged under bric-a-brac.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/i-need-that/",
@@ -45,5 +45,61 @@
   "designation": "Must_See",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "must-see"
+  "extractedPhrase": "must-see",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 65,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "To match the living circumstances of its lead character, the play feels a deflating mess, with puzzling performances and staging as if no one involved quite knows what it is",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "DeVito deserves a better Broadway canvas",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "DeVito is so magnetic a performer (he can charm and fire up the audience with a glance)",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic delivers harsh criticism of the play's structure and writing while praising DeVito's performance, ultimately concluding he deserves better material - a clear mixed-negative assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:52.671Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

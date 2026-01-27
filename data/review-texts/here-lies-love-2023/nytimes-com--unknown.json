@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“ ‘Here Lies Love’ bets that glamour can make up for narrative — or, rather, that in a show about the dangers of political demagogy, glamour itself is the narrative. It’s a case of form follows function into the fire. We are drawn to cultural and political excitement in much the same, often dangerous way.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 58,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251012042425/https://www.nytimes.com/2023/07/20/theater/here-lies-love-review-david-byrne.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 75,
+      "performances": 65,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's plenty to praise in 'Here Lies Love'... The infernally catchy songs by David Byrne and Fatboy Slim, performed by a tireless and inspired all-Filipino cast, will have you clapping whether you want to or not",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a musical not centered on feelings is a strange thing... it's hard to wring anything from them except a cringe",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Finally, it's OK to applaud",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant strengths in the music, performances, and staging while expressing substantial reservations about the show's emotional core and moral ambiguity, ultimately finding it a fascinating but flawed experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:20.662Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

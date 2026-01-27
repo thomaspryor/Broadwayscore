@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": 78,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "A repetitively thin outlook on grief, I Need That ostensibly concludes with an image of healing, but I'm not sure why, or if it actually does",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "DeVito manages to wring laughs from Sam's sad situation while never letting the audience forget the character's pain",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Rebeck's facile play is in no way prepared to answer the gloomily palpable retort: why bother if all those people are gone?",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic lavishes praise on Danny DeVito's performance but delivers scathing criticism of Theresa Rebeck's script, calling it 'repetitively thin,' 'facile,' and poorly developed, making this difficult to recommend despite the star performance. | GPT-4o-mini: The review highlights significant flaws in the script and direction while praising DeVito's performance, leading to a clear recommendation against the show despite some redeeming qualities.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:42.920Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

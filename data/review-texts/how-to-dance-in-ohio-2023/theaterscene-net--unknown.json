@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 47,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 47,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 53.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 45,
+      "performances": 74,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "works best whenever that magnificent seven is completely together onstage and falters mightily if none of them are present",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "consistently bypassing natural dramatic opportunities in favor of contrived ones",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "they give it their all, doing a particularly captivating job of emotionally putting across Melocik and Yandura's score with far greater depth than the lyrics deserve",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer praises the autistic cast's performances but heavily criticizes the book's missed opportunities, contrived plotting, and problematic character choices, making this more negative than positive overall. | GPT-4o-mini: The review is predominantly critical of the script and character development, with only the performances receiving notable praise, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:56.074Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

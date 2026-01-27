@@ -10,8 +10,59 @@
   "bwwExcerpt": "Lempicka offers a theatrical manifestation of the revival of interest in a woman artist who embraced the avant-garde style of Art Deco, along with a privileged lifestyle and free sexuality, as stated in her own bombastic and defiant words: “I live life in the margins of society, and the rules of normal society don’t apply to those who live on the fringe.” If only the sexualization of women and their nudity in art were not so standard. As questioned in the famous poster by the feminist/activist g",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If only the sexualization of women and their nudity in art were not so standard",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Lempicka offers a theatrical manifestation of the revival of interest in a woman artist",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review fragment shows critical concern about the show's treatment of women's sexuality in art, suggesting problematic elements, but the excerpt is too incomplete to determine the critic's overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:47.011Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

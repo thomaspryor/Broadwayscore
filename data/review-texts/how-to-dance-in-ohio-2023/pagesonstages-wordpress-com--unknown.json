@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 75,
+      "music": 65,
+      "performances": 70,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'm not sure that the show itself will be remembered",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "several errors in judgment from the creative team that might sabotage the success of this production",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I felt very well represented by this cast, and I sincerely hope that they are able to outshine their creative team",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: A deeply conflicted review that praises the representation and writing while harshly criticizing directorial choices and technical issues, ultimately expressing doubt about the show's success despite personal connection. | GPT-4o-mini: While the reviewer appreciated the representation and performances, significant issues with direction and technical elements led to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:14.692Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

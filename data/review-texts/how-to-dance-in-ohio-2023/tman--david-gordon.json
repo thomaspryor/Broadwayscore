@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "How to Dance in Ohio is a heartfelt musical that treats its characters with dignity and respect, offering genuine moments of joy and connection.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "heartfelt musical that treats its characters with dignity and respect",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "offering genuine moments of joy and connection",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "genuine moments of joy and connection",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review expresses clear appreciation for the show's respectful character treatment and emotional impact, indicating a positive recommendation despite being brief. | GPT-4o-mini: The review expresses clear appreciation for the musical's emotional depth and character treatment, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:18:57.795Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

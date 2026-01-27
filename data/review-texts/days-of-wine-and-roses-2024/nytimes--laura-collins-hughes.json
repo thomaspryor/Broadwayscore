@@ -10,8 +10,64 @@
   "bwwExcerpt": "What's astonishing about this show, though — aside from the central performances, which are superb, and Guettel’s anxious, spiky, sumptuous score, which grabs hold of us and doesn’t let go — is the way its devastating chic snuggles right up to catastrophic self-destruction.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 91,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the central performances, which are superb",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Guettel's anxious, spiky, sumptuous score, which grabs hold of us and doesn't let go",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "What's astonishing about this show",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified praise for both performances ('superb') and score ('grabs hold of us and doesn't let go'), with the opening 'What's astonishing' signaling strong positive reaction despite the excerpt's brevity. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and music, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:34.997Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
