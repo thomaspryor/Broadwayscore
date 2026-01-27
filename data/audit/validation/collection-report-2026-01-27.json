@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T05:18:34.396Z",
+  "runDate": "2026-01-27T05:18:49.424Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "mamma-mia-2025",
+    "showFilter": "oedipus-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 203,
-    "failed": 113,
+    "processed": 204,
+    "failed": 115,
     "skipped": 0,
-    "successRate": "64.2%"
+    "successRate": "63.9%"
   },
   "tierBreakdown": {
     "playwright": 22,
     "scrapingbee": 17,
-    "brightdata": 21,
-    "archive": 143
+    "brightdata": 20,
+    "archive": 145
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 7,
     "tier1Success": 0,
-    "tier2Attempts": 4,
+    "tier2Attempts": 7,
     "tier2Success": 0,
-    "tier3Attempts": 4,
-    "tier3Success": 1,
-    "tier4Attempts": 4,
-    "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 0
+    "tier3Attempts": 7,
+    "tier3Success": 0,
+    "tier4Attempts": 8,
+    "tier4Success": 2,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -237,7 +237,8 @@
     "cabaret-2024/talkinbroadway-com--unknown.json",
     "cabaret-2024/theaterscene-net--unknown.json",
     "cabaret-2024/wsj-com--unknown.json",
-    "mamma-mia-2025/talkinbroadway-com--unknown.json"
+    "oedipus-2025/vulture--sara-holdren.json",
+    "oedipus-2025/theatermania--pete-hempstead.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -350,9 +351,11 @@
     "hadestown-2019/washpost--peter-marks.json",
     "cabaret-2024/interestedbystander-com--unknown.json",
     "cabaret-2024/tman--jesse-green.json",
-    "mamma-mia-2025/CHTRIB--chris-jones.json",
-    "mamma-mia-2025/ew--emlyn-travis.json",
-    "mamma-mia-2025/ny-daily-news--chris-jones.json"
+    "oedipus-2025/nytimes--alexis-soloski.json",
+    "oedipus-2025/GUARDIAN--alexis-petridis.json",
+    "oedipus-2025/interestedbystander-com--unknown.json",
+    "oedipus-2025/washington-post--naveen-kumar.json",
+    "oedipus-2025/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -418,8 +421,7 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json",
-      "mamma-mia-2025/talkinbroadway-com--unknown.json"
+      "hadestown-2019/towleroad-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -564,7 +566,9 @@
       "hadestown-2019/washingtonpost-com--unknown.json",
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
-      "cabaret-2024/wsj-com--unknown.json"
+      "cabaret-2024/wsj-com--unknown.json",
+      "oedipus-2025/vulture--sara-holdren.json",
+      "oedipus-2025/theatermania--pete-hempstead.json"
     ]
   }
 }
