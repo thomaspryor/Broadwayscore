@@ -317,16 +317,19 @@ function extractBWWReviews(html, showId, bwwUrl) {
 
   // ============================================================================
   // PRIMARY: Extract from HTML structure - this has URLs!
-  // Pattern: <p><img alt="Thumbs Up/Sideways"> Critic, <a href="URL">Outlet:</a> excerpt</p>
+  // Pattern: <p><img ...> Critic, <a href="URL">Outlet:</a> excerpt</p>
+  // BWW uses two ways to indicate thumbs:
+  //   1. alt="Thumbs Up" attribute (second alt in tag)
+  //   2. Image URL: like-button-icon.png (Up), midlike-button-icon.png (Meh), dislike-button-icon.png (Down)
   // ============================================================================
 
   // Match <p> tags containing review structure: img + critic + link + excerpt
-  // The pattern captures reviews with the format we found in the HTML
-  const reviewBlockRegex = /<p[^>]*>\s*(?:<img[^>]*alt="([^"]*)"[^>]*>)?\s*\n?\s*([^<,]+),\s*<a[^>]*href="([^"]+)"[^>]*>([^<:]+):?\s*<\/a>\s*([\s\S]*?)<\/p>/gi;
+  // Capture the full img tag so we can parse attributes separately
+  const reviewBlockRegex = /<p[^>]*>\s*(<img[^>]*>)?\s*\n?\s*([^<,]+),\s*<a[^>]*href="([^"]+)"[^>]*>([^<:]+):?\s*<\/a>\s*([\s\S]*?)<\/p>/gi;
 
   let match;
   while ((match = reviewBlockRegex.exec(html)) !== null) {
-    const [, thumbAlt, criticName, url, outletName, excerpt] = match;
+    const [, imgTag, criticName, url, outletName, excerpt] = match;
 
     // Clean up the extracted values
     const cleanCritic = (criticName || '').trim();
@@ -348,15 +351,41 @@ function extractBWWReviews(html, showId, bwwUrl) {
     if (foundOutlets.has(dedupKey)) continue;
     foundOutlets.add(dedupKey);
 
-    // Determine thumb from image alt text
+    // Determine thumb from image tag (if present)
     let bwwThumb = null;
-    if (thumbAlt) {
-      if (thumbAlt.toLowerCase().includes('up')) {
-        bwwThumb = 'Up';
-      } else if (thumbAlt.toLowerCase().includes('sideways') || thumbAlt.toLowerCase().includes('mid')) {
-        bwwThumb = 'Meh';
-      } else if (thumbAlt.toLowerCase().includes('down')) {
-        bwwThumb = 'Down';
+    if (imgTag) {
+      // Extract all alt attributes (BWW sometimes has two: first is generic, second has thumb)
+      const altMatches = imgTag.match(/alt="([^"]*)"/gi);
+      const srcMatch = imgTag.match(/src="([^"]*)"/i);
+
+      // Check alt attributes for "Thumbs Up/Down/Sideways"
+      if (altMatches) {
+        for (const altMatch of altMatches) {
+          const altValue = altMatch.match(/alt="([^"]*)"/i)?.[1] || '';
+          const altLower = altValue.toLowerCase();
+          if (altLower.includes('thumbs up')) {
+            bwwThumb = 'Up';
+            break;
+          } else if (altLower.includes('thumbs sideways') || altLower.includes('thumbs mid')) {
+            bwwThumb = 'Meh';
+            break;
+          } else if (altLower.includes('thumbs down')) {
+            bwwThumb = 'Down';
+            break;
+          }
+        }
+      }
+
+      // If no thumb from alt, check src URL for like/midlike/dislike-button-icon.png
+      if (!bwwThumb && srcMatch) {
+        const srcLower = srcMatch[1].toLowerCase();
+        if (srcLower.includes('dislike-button-icon')) {
+          bwwThumb = 'Down';
+        } else if (srcLower.includes('midlike-button-icon')) {
+          bwwThumb = 'Meh';
+        } else if (srcLower.includes('like-button-icon')) {
+          bwwThumb = 'Up';
+        }
       }
     }
 
@@ -729,10 +758,14 @@ function saveReview(review) {
       updated = true;
     }
 
-    // Add BWW thumb if we have it
-    if (!existing.bwwThumb && review.bwwThumb) {
+    // Always use freshly extracted BWW thumb (authoritative source from HTML)
+    if (review.bwwThumb && existing.bwwThumb !== review.bwwThumb) {
+      const oldThumb = existing.bwwThumb;
       existing.bwwThumb = review.bwwThumb;
       updated = true;
+      if (oldThumb) {
+        console.log(`      Corrected bwwThumb: ${oldThumb} → ${review.bwwThumb} in ${filename}`);
+      }
     }
 
     if (updated) {
