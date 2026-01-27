@@ -7,7 +7,63 @@
   "publishDate": "December 10, 2023",
   "fullText": "But as groundbreaking as “How To Dance” is as an idea, its execution across the board does not match its admirable intentions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "groundbreaking as \"How To Dance\" is as an idea",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "its execution across the board does not match its admirable intentions",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "groundbreaking as 'How To Dance' is as an idea",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's innovative concept but clearly states that the execution fails to deliver on its promise across all aspects of the production. | GPT-4o-mini: The review acknowledges the innovative concept but criticizes its execution, leading to a mixed recommendation. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:03.412Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 50,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

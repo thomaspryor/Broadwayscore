@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But as groundbreaking as “How To Dance” is as an idea, its execution across the board does not match its admirable intentions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250721001246",
-  "archiveOrgUrl": "http://web.archive.org/web/20250721001246/https://nypost.com/2023/12/10/entertainment/how-to-dance-in-ohio-review-musical-is-a-better-idea-than-show/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250721001246/https://nypost.com/2023/12/10/entertainment/how-to-dance-in-ohio-review-musical-is-a-better-idea-than-show/",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 35,
+      "performances": 70,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "its execution across the board does not match its admirable intentions",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "we are unfortunately sitting at a missed opportunity",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The actors make the best of what they're given, though",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite praising the authentic casting and performances, the critic systematically dismantles the book, score, and direction as 'shoddy,' 'stalely predictable,' and a fundamental 'missed opportunity.' | GPT-4o-mini: The review expresses significant disappointment in the execution of the show despite some praise for the performances, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:51.356Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

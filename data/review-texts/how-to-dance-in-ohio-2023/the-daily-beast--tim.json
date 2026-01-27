@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The meaningful, welcome impact of How to Dance in Ohio is the twinned jolt of emotion and insight into a world you may not—if you are not autistic—have had much notion of. It’s that wonderful jolt you get when you hear or see or understand a new story, or a set of new perspectives.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 89,
+      "music": 85,
+      "performances": 92,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "How to Dance in Ohio, is the most original new musical on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "you will see the world if not differently, then in a more expansive way. It will stay with you",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a funny, joyful, and cheering assertion of both diversity and self-determination",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic calls this 'the most original new musical on Broadway' and consistently praises its emotional impact, performances, and meaningful representation, with only minor critiques about plot elements ('thorns'). | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical's originality, emotional impact, and representation, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:28.790Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 95,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
