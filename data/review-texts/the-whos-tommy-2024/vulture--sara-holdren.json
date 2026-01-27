@@ -7,7 +7,63 @@
   "publishDate": "March 28, 2024",
   "fullText": "With Tommy, if the dissonance is sometimes distancing, it’s also fascinating. Though I spent long stretches of the show intrigued and amused rather than earnestly rocking out, I was never not entertained. I had plenty of questions, but I also had a damn good time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I was never not entertained",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I also had a damn good time",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "if the dissonance is sometimes distancing",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging some distancing elements and being more 'intrigued' than fully engaged, the critic emphasizes consistent entertainment value and having 'a damn good time,' indicating a qualified positive experience. | GPT-4o-mini: The review expresses a clear sense of enjoyment and entertainment despite some reservations, leading to a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:45.954Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

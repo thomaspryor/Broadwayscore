@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The winner of just about every Off Broadway award there is to be had, Prayer, in this Manhattan Theatre Club production, makes a smooth, nearly flawless transition to the Broadway stage, with most of the original cast intact along with a big name TV star in ER‘s Anthony Edwards along for the move.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/prayer-for-the-french-republic-broadway/",
@@ -51,5 +51,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250102071949",
-  "archiveOrgUrl": "http://web.archive.org/web/20250102071949/https://deadline.com/2024/01/prayer-for-the-french-republic-broadway-review-1235696968/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250102071949/https://deadline.com/2024/01/prayer-for-the-french-republic-broadway-review-1235696968/",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 88,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes a smooth, nearly flawless transition to the Broadway stage",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Prayer for the French Republic offers up a thrilling concoction of drama, comedy and discourse",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Prayer for the French Republic asks big questions – of history, of family, of identity – and, all but miraculously, answers their call",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses consistently strong praise throughout ('nearly flawless', 'thrilling concoction', 'all but miraculously') with only minor reservations about one cast member, indicating a clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the play's writing, performances, and direction, indicating it as a must-see production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:15.120Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

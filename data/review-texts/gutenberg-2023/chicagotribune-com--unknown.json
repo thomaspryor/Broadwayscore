@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 40,
+      "performances": 80,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "On most nights, and if they feel free to deviate a tad from the script, that will be fun for at least their fans to watch.",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "But I also thought the comedy overly crude in some spots; the humor is likely to divide audiences",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Rannells and Gad are, of course, consummate pros very much in their mutual and collective wheelhouses here.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the lead performances and acknowledges professional competence but finds the material derivative, crude, and divisive, with only qualified enthusiasm for fans of the actors. | GPT-4o-mini: The review highlights strong performances but expresses concerns about the show's crude humor and derivative nature, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:40.946Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

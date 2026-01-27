@@ -10,8 +10,64 @@
   "bwwExcerpt": "Flat-out hilarious and stacked with topflight performances led by Leslie Odom, Jr. and Kara Young, Purlie Victorious is also a triumph when it comes to timing. Suffice it to say the play speaks directly to today’s racial tumult.        Average Rating: 88.4% {   \"@context\":\"https://schema.org\",   \"@type\":\"LiveBlogPosting\",   \"@id\":\"/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927\",   \"about\":{     \"@type\":\"Event\",     \"startDate\":\"2023-09-27T10:05:12-05:00\", ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Flat-out hilarious and stacked with topflight performances",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "also a triumph when it comes to timing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "speaks directly to today's racial tumult",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive language including 'flat-out hilarious,' 'triumph,' and 'topflight performances' with an 88.4% average rating clearly indicates enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:29.592Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

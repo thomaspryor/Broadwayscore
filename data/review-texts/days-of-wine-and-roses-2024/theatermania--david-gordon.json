@@ -7,7 +7,63 @@
   "publishDate": "January 28, 2024",
   "fullText": "Depressing and harrowing as it is, it’s not the kind of show we often get around these parts. Its success would signal that there is indeed still an audience for weird art amid the singing lions and flying witches. That would be the most hopeful takeaway of all.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 83.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's not the kind of show we often get around these parts",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Its success would signal that there is indeed still an audience for weird art",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Depressing and harrowing as it is",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging the show is 'depressing and harrowing,' the critic champions it as important 'weird art' that deserves success and represents hope for non-commercial theater. | GPT-4o-mini: The review acknowledges the show's challenging nature but suggests a positive outcome for its success, indicating a mixed-positive recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:07.190Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 65,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "How to Dance in Ohio — which features sparse staging and hardly any costume changes until the big dance itself — often misses by trying to cover too much ground from too many different angles and perspectives. And the music as a whole is only okay. But the moments that do hit — when we see these young adults confronting trepidation and unfamiliarity, and just generally celebrating life — hit hard, and will resonate with both the neurotypical and neurodivergent alike.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 50,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "often misses by trying to cover too much ground from too many different angles and perspectives",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the music as a whole is only okay",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the moments that do hit — when we see these young adults confronting trepidation and unfamiliarity, and just generally celebrating life — hit hard",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: A balanced mixed review that acknowledges significant structural problems and mediocre music while recognizing powerful emotional moments that resonate. | GPT-4o-mini: The review presents a mixed view, acknowledging both impactful moments and significant shortcomings, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:12.104Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

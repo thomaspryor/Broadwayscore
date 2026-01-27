@@ -10,8 +10,64 @@
   "bwwExcerpt": "Strangely, these shortcomings become assets of a sort in “The Heart of Rock and Roll,” the new show now bringing the group’s repertoire to Broadway. Jukebox musicals, for all their contemptible elements, can be most irritating when they try too hard either to deify an artist or to find fresh wit and relevance in a popular repertoire. One of the reasons “Mamma Mia” became an enduring hit is that it steered clear of both these strategies, choosing instead to have giddy fun with what happens to be ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "these shortcomings become assets of a sort",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "contemptible elements",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "giddy fun",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review acknowledges both shortcomings and redeeming qualities, suggesting a mixed experience overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:39.606Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

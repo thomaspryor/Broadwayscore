@@ -7,7 +7,63 @@
   "publishDate": "December 18, 2023",
   "fullText": "Of course, historical baggage comes with the heirloom furniture, as becomes all too clear in Branden Jacobs-Jenkins Appropriate, now making its jaw-dropping Broadway debut with Second Stage at the Helen Hayes Theater. It is easily the most electrifying Broadway play of 2023 — something I didn’t expect from a drama that received mixed notices when it first performed off-Broadway in 2014.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "jaw-dropping Broadway debut",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "easily the most electrifying Broadway play of 2023",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "something I didn't expect from a drama that received mixed notices when it first performed off-Broadway in 2014",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic declares this 'easily the most electrifying Broadway play of 2023' with a 'jaw-dropping' debut, which are superlative endorsements that signal unqualified enthusiasm despite the show's mixed off-Broadway history.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:55.331Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

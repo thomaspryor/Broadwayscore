@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "What lands, over and over again (going by the gasps and responses of the audience), is Bioh’s dialog as expertly, relishingly delivered by her actors. Bioh is not just adept at writing the wit and vim of the conflicts and rivalries at the store, but also the deep friendships and loyalties within it too.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/jajas-african-hair-braiding/",
@@ -44,5 +44,61 @@
   "sourceMethod": "brightdata",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "has all the energy and rich character interplay that her excellent award-winning 2017 play, School Girls; Or, the African Mean Girls Play, possessed",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "What lands, over and over again (going by the gasps and responses of the audience), is Bioh's dialog as expertly, relishingly delivered by her actors",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "In Jaja's African Hair Braiding, Bioh has done them all proud",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is consistently enthusiastic throughout, praising the script, performances, direction, and design with specific superlatives like 'commanding and brilliant,' 'wonderfully bristling canvas,' and noting positive audience responses, concluding that Bioh 'has done them all proud.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:21.874Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

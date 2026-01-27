@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -36,5 +36,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 69,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 58,
+      "performances": 85,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "The seven actors playing Dr. Amigo's clients are all autistic — and they are fantastic.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Unfortunately, not all the songs in How to Dance in Ohio... reach such heights. Many numbers drift in and out without leaving much of a mark.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "But the moments that do hit — when we see these young adults confronting trepidation and unfamiliarity, and just generally celebrating life — hit hard, and will resonate with both the neurotypical and neurodivergent alike.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The B grade and mixed content—praising performances while criticizing music, pacing, and structural choices—indicates a qualified positive recommendation with significant reservations. | GPT-4o-mini: The review highlights strong performances and impactful moments but notes significant weaknesses in the music and overall storytelling, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:10.608Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

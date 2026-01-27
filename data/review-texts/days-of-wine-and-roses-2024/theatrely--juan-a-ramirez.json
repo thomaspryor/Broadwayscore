@@ -10,8 +10,64 @@
   "bwwExcerpt": "Craig Lucas and Adam Guettel, whose book and music for The Light in the Piazza lavishly replicated the dizziness of young love 20 years ago, turn their top-shelf craft toward bleaker outlooks in their adaptation of Days of Wine and Roses. Transferring to Broadway after a well-received premiere at the Atlantic last summer, Kelli O’Hara and Brian d’Arcy James give astonishing voice to two lovers drowning in alcoholism. The subject matter is almost corrosively downbeat but, with its two leads at th",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "give astonishing voice to two lovers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "becomes a cathartic, deeply felt tonic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "with its two leads at the top of their game",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for lead performances with powerful emotional impact described, despite challenging subject matter, suggests clear positive recommendation. | GPT-4o-mini: The review highlights strong performances and emotional impact, leading to a clear recommendation despite the heavy subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:55.561Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

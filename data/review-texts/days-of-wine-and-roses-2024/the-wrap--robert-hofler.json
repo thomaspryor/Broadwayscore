@@ -10,8 +10,64 @@
   "bwwExcerpt": "Most important, Greif obtains truly awesome performances from O’Hara and d’Arcy James. Even if you removed the two actors’ vocals, which are phenomenal, the performances stand on their own — especially the motel room scene where Joe finds Kirsten on an extended bender. O’Hara and d’Arcy James are musical theater stars, but with “Days of Wine and Roses,” we can only mourn all those great “straight” performances they never delivered. Who knows? This gig could open up a whole other door for them in",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": 93,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "truly awesome performances from O'Hara and d'Arcy James",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "vocals, which are phenomenal",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the performances stand on their own",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Extremely strong praise for performances and vocals with superlatives like 'awesome' and 'phenomenal' indicates clear positive recommendation despite being an excerpt. | GPT-4o-mini: The review highlights exceptional performances, particularly praising the leads, indicating a strong recommendation despite not discussing other elements of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:47.211Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

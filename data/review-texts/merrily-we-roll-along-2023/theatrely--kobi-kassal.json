@@ -10,8 +10,64 @@
   "bwwExcerpt": "Further, it's hard to go wrong when you have Daniel Radcliffe, Jonathan Groff, and Lindsay Mendez above the title. The heart of the show lies with this trio whose genuine connection and truth shines out across the Hudson stage eight times a week. Groff, who has the charisma down pat, dazzles as Frank. When paired with Radcliffe’s Charley, filled with loveable charm, and Mendez’s Mary who is utterly gut-wrenching to watch as her true love slips away, this trio equals Broadway perfection.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "all 970 audience members seated at the Hudson Theatre for Merrily We Roll Along are quietly attentive",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a true Sondheim classic, reborn",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "all 970 audience members seated at the Hudson Theatre... are quietly attentive",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The language strongly suggests reverence and transformation of a beloved work, with the imagery of complete audience attention indicating theatrical magic despite being a very brief excerpt. | GPT-4o-mini: The review indicates strong appreciation for the production as a revival of a classic, suggesting a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:29.031Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

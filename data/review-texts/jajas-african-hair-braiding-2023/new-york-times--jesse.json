@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Jaja’s” is full of such treasurable moments, when the drama feels tightly woven with the comedy. And if the weave frays a bit at the end, what doesn’t? Like the Strawberry Knotless Afro-Pop Bob, it’s still a great look.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/jajas-african-hair-braiding/",
@@ -53,5 +53,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251027141349",
-  "archiveOrgUrl": "http://web.archive.org/web/20251027141349/https://www.nytimes.com/2023/10/03/theater/jajas-african-hair-braiding-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251027141349/https://www.nytimes.com/2023/10/03/theater/jajas-african-hair-braiding-review.html",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 74,
+      "music": null,
+      "performances": 85,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "The first 80 minutes of the 90-minute play, which opened on Tuesday in a Manhattan Theater Club production, are a buffet of delights.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this otherwise riotously funny workplace comedy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "And if the weave frays a bit at the end, what doesn't? Like the Strawberry Knotless Afro-Pop Bob, it's still a great look.",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the comedy, performances, and production values while acknowledging minor structural issues in the final act, ultimately delivering a clear positive recommendation with the closing metaphor affirming it's 'still a great look.' | GPT-4o-mini: The review expresses strong enjoyment of the comedy and performances, with minor reservations about the narrative structure, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:28.525Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

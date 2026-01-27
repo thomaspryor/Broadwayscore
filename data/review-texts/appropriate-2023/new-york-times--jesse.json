@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Rereading my scathing review in light of what is obviously a rave today, I am forced to grapple with my own past, and the play’s. It would be easy to say that the difference between then and now is the heavy rewriting Jacobs-Jenkins has done in the interim. And certainly, comparing the two scripts, I see the clearer dramatic architecture and sharper point-of-view that a playwright in his prime, at 38, can impose.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/appropriate/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 84,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "what is obviously a rave today",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "scathing review",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "clearer dramatic architecture and sharper point-of-view",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states this is 'obviously a rave today' despite their previous negative review, indicating a strong positive reassessment of the revised production. | GPT-4o-mini: The review indicates a significant improvement in the play, suggesting a strong recommendation despite some past reservations.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:43.526Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

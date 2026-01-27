@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250529032516",
-  "archiveOrgUrl": "http://web.archive.org/web/20250529032516/https://www.talkinbroadway.com/page/world/MotherPlay.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250529032516/https://www.talkinbroadway.com/page/world/MotherPlay.html",
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": 82,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a well-acted, if thinly plotted character study",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "it is Lange who stands at the center, giving a performance that throughout is full of nuance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "While Parsons and Keenan-Bolger are both very good actors, it's difficult to see Carl and Martha as anything other than idealized versions",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the performances, especially Jessica Lange's nuanced work, but criticizes the thin plot and underwritten supporting characters, resulting in a qualified mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:14.194Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "How do you not get “Baby One More Time” right? That is the first mystery—and the first warning that all may not be well—with Once Upon a One More Time, the musical filled with Britney Spears’ music that opened on Broadway Thursday evening (Marquis Theatre, booking to Nov 19). Truly, if you’re doing this magnificent banger, don’t kick off your big Broadway jukebox musical with it feeling as messy as this musical does.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 35,
+      "music": 45,
+      "performances": 70,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "To be clear, Once Upon a Time One More Time is not a disaster. The company is great, dancing and singing up the necessary storm number after number. This is a pleasant, rather than magically bravura, night out",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "This review is first a plea for a moratorium on the recustomizing of fairytales, if the recustomizing you're doing is the most basic and glib of feminist refits",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "shows like Once Upon a One More Time are depressing reminders of how narrow some horizons are becoming",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show 'pleasant' but fundamentally flawed, criticizing its basic feminist messaging, conservative approach, and wasted opportunities while praising individual performances and acknowledging fan enjoyment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:29.123Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "CRITIC’S PICK: “...Neugebauer’s direction, which is so smart and swift for most of the play’s substantial length that you feel gripped by storytelling without being strangled by argument.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251027141348/https://www.nytimes.com/2023/12/18/theater/appropriate-broadway-review.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 92,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "what is obviously a rave today",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Sarah Paulson in the blistering revival of 'Appropriate' that opened on Broadway on Monday",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Lila Neugebauer's production for Second Stage definitely gets there",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls this 'obviously a rave' and praises Paulson's 'eye-opening' performance, Neugebauer's 'smart and swift' direction, and the production's success in landing the play's brilliance, despite some reservations about the material's difficulty.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:06.275Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,63 @@
   "publishDate": "November 3, 2023",
   "fullText": "It’s not that the production is terrible by any means. It remains humorous and heartwarming at the right times, but with all the thrill of TV dinner meatloaf: low effort, over quickly and indistinguishable on the inside.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not that the production is terrible by any means",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "with all the thrill of TV dinner meatloaf: low effort, over quickly and indistinguishable on the inside",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It remains humorous and heartwarming at the right times",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges some positive elements but the central metaphor comparing the production to 'TV dinner meatloaf' with 'low effort' clearly signals a negative overall assessment despite the measured tone. | GPT-4o-mini: The review expresses mild appreciation for humor and heart but ultimately conveys significant disappointment, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:25.079Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "So I was curious to see if Monty Python’s Spamalot, a musical comedy that debuted on Broadway during the second Bush administration, based on a beloved movie released during the incidental reign of Gerald Ford, has a shelf life longer than its namesake canned pork product. The answer is yes, thanks largely to an excellent cast of consummate comedians and a script that derives its humor from the timelessly absurd. It’s still safe to eat, even if certain bites might taste a little off.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/spamalot/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250430093718",
-  "archiveOrgUrl": "http://web.archive.org/web/20250430093718/https://www.theatermania.com/news/review-monty-pythons-spamalot-returns-to-broadway-in-a-test-of-expiration-dates_1721545/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250430093718/https://www.theatermania.com/news/review-monty-pythons-spamalot-returns-to-broadway-in-a-test-of-expiration-dates_1721545/",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 72,
+      "performances": 89,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's still safe to eat, even if certain bites might taste a little off",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "sends you on your way with a smile — and when it comes to musical comedy, that's perfectly delightful",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The actors help us overlook the dated material by delivering performances that accentuate their own specific comic talents",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges some dated material but clearly recommends the show, praising the excellent cast and concluding it's 'perfectly delightful' entertainment that sends audiences away happy. | GPT-4o-mini: The review highlights strong performances and overall enjoyment, despite some dated material, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:59.693Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

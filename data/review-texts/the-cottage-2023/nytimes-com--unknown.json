@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“...though ‘The Cottage’ operates like a farce it only rarely achieves a farce’s liftoff. That’s when the pressure on the characters becomes so intense that it initiates a kind of verbal and physical fission.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,5 +30,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241122063742",
-  "archiveOrgUrl": "http://web.archive.org/web/20241122063742/https://www.nytimes.com/2023/07/24/theater/the-cottage-review-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241122063742/https://www.nytimes.com/2023/07/24/theater/the-cottage-review-broadway.html",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": 48,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "cannot hide that the stakes are too low",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Dawdling is the play's difficulty as well",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The stunts and capers likewise have no danger in them",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic identifies fundamental structural problems with the play including low stakes, lack of comedic danger, and pacing issues that even skilled direction cannot overcome. | GPT-4o-mini: The review is predominantly negative, highlighting issues with the script and overall stakes, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:10.058Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 71,
+      "music": null,
+      "performances": null,
+      "direction": 59
+    },
+    "keyPhrases": [
+      {
+        "quote": "It actually was not a bad show",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "It sounds fascinating. And it was.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The marketing team profoundly doomed this production",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Reviewer finds the show substantively interesting as a character study but believes it was fundamentally mismarketed and therefore disappointing to audiences expecting comedy, creating a qualified positive assessment undermined by production issues. | GPT-4o-mini: The review presents a mixed view, acknowledging some strengths in the character study while highlighting significant issues with audience expectations and production design.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:58.378Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

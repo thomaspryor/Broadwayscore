@@ -10,8 +10,64 @@
   "bwwExcerpt": "CHAPTER 2, a terrifying sequel to the acclaimed horror film, which follows the haunted Lambert family as they seek to uncover the mysterious childhood secret that has left them dangerously connected to the spirit world. Let's see what the critics had to say: Jeannette Catsoulis, New York Times A mess from start to finish - though, judging by the ending, this story won't be over any time soon - \"Insidious: Chapter 2\" is the kind of lazy, halfhearted product that gives scary movies a bad name. Mat",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PATRIOTS-2024",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 18,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 18,
+    "confidence": "medium",
+    "range": {
+      "low": 5.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 13,
+      "music": null,
+      "performances": null,
+      "direction": 20
+    },
+    "keyPhrases": [
+      {
+        "quote": "A mess from start to finish",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "lazy, halfhearted product that gives scary movies a bad name",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "lazy, halfhearted product",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic calls the production 'a mess from start to finish' and 'lazy, halfhearted product,' indicating a clear pan with no redeeming qualities mentioned. | GPT-4o-mini: The review expresses strong disapproval of the film, labeling it as a 'mess' and 'lazy', indicating a clear rejection. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:32.625Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 10,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

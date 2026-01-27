@@ -9,8 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "“What makes the musical hard for first-time audiences is the fact that it’s like a jigsaw puzzle doled out one piece at a time, so you don’t see a complete picture until the last piece is placed and the show is over...That’s why ‘Merrily We Roll Along’ is art and not comfortably commercial theater.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 69,
+    "confidence": "low",
+    "range": {
+      "low": 55,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's why 'Merrily We Roll Along' is art and not comfortably commercial theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "What makes the musical hard for first-time audiences",
+        "sentiment": "negative",
+        "strength": 2
+      },
+      {
+        "quote": "you don't see a complete picture until the last piece is placed and the show is over",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic frames the show's complexity as artistic merit rather than a flaw, calling it 'art' and praising its sophisticated narrative structure, suggesting appreciation despite acknowledging accessibility challenges. | GPT-4o-mini: The review presents a mixed perspective, acknowledging the artistic value of the musical while also highlighting challenges for first-time audiences, leading to a conditional recommendation. | Note: Models differed by 18 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:52.676Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 60,
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 18 points (Claude: 78, OpenAI: 60)"
+    ]
+  }
 }
