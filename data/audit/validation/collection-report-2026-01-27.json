@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-27T05:04:27.498Z",
+  "runDate": "2026-01-27T05:05:33.614Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "operation-mincemeat-2025",
+    "showFilter": "two-strangers-bway-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -19,8 +19,8 @@
   "tierBreakdown": {
     "playwright": 22,
     "scrapingbee": 17,
-    "brightdata": 21,
-    "archive": 143
+    "brightdata": 20,
+    "archive": 144
   },
   "statistics": {
     "tier1Attempts": 5,
@@ -28,11 +28,11 @@
     "tier2Attempts": 5,
     "tier2Success": 0,
     "tier3Attempts": 5,
-    "tier3Success": 1,
+    "tier3Success": 0,
     "tier4Attempts": 6,
-    "tier4Success": 0,
+    "tier4Success": 1,
     "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 10
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -237,7 +237,7 @@
     "cabaret-2024/talkinbroadway-com--unknown.json",
     "cabaret-2024/theaterscene-net--unknown.json",
     "cabaret-2024/wsj-com--unknown.json",
-    "operation-mincemeat-2025/observer--david-cote.json"
+    "two-strangers-bway-2025/vulture--jackson-mchenry.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -350,10 +350,10 @@
     "hadestown-2019/washpost--peter-marks.json",
     "cabaret-2024/interestedbystander-com--unknown.json",
     "cabaret-2024/tman--jesse-green.json",
-    "operation-mincemeat-2025/ew--shania-russell.json",
-    "operation-mincemeat-2025/nypost--johnny-oleksinski.json",
-    "operation-mincemeat-2025/wsj--charles-isherwood.json",
-    "operation-mincemeat-2025/wsj-com--unknown.json"
+    "two-strangers-bway-2025/nytimes--laura-collins-hughes.json",
+    "two-strangers-bway-2025/NYSR--david-finkle.json",
+    "two-strangers-bway-2025/WRAP--robert-hofler.json",
+    "two-strangers-bway-2025/interestedbystander-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -419,8 +419,7 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json",
-      "operation-mincemeat-2025/observer--david-cote.json"
+      "hadestown-2019/towleroad-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -565,7 +564,8 @@
       "hadestown-2019/washingtonpost-com--unknown.json",
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
-      "cabaret-2024/wsj-com--unknown.json"
+      "cabaret-2024/wsj-com--unknown.json",
+      "two-strangers-bway-2025/vulture--jackson-mchenry.json"
     ]
   }
 }
