@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Like the art it’s satirizing, it’s a genre that can sometimes feel a little dippy and indulgent, but at its best it’s both outrageously funny and strangely, sweetly sublime...Rannells and Gad are wonderfully matched and, it appears, having a real blast with each other. Their comic timing is wetsuit tight, their chemistry indisputable, their energy manic but precise and, crucially, unflagging.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -54,5 +54,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250225084951/https://www.vulture.com/article/theater-review-gutenberg-the-musical-broadway.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": null,
+      "performances": 84,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "For the most part—thanks to its completely winning stars, and to the play's own best stretches of joyful buffoonery—yes.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Gutenberg!'s origins as a one-act remain palpable, and in its current form the show feels padded.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Rannells and Gad are wonderfully matched and, it appears, having a real blast with each other. Their comic timing is wetsuit tight, their chemistry indisputable, their energy manic but precise and, crucially, unflagging.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic offers qualified praise, loving the lead performances while acknowledging significant structural issues and length problems, ultimately answering 'yes' to whether the show works but with clear reservations. | GPT-4o-mini: The review highlights strong performances and humor, but also notes significant issues with pacing and some problematic content, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:58.226Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

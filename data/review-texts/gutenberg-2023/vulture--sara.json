@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "So, what happens when one of these stories actually lands in a Broadway theater? What happens when the impossible dream… comes true? That question hovers around Gutenberg! The Musical! before the show even gets underway, and it’s a question the production dances with but isn’t quite able to resolve.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/gutenberg/",
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250225084951/https://www.vulture.com/article/theater-review-gutenberg-the-musical-broadway.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 75,
+      "performances": 87,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "For the most part—thanks to its completely winning stars, and to the play's own best stretches of joyful buffoonery—yes.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Gutenberg!'s origins as a one-act remain palpable, and in its current form the show feels padded.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Rannells and Gad are wonderfully matched and, it appears, having a real blast with each other. Their comic timing is wetsuit tight, their chemistry indisputable, their energy manic but precise and, crucially, unflagging.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic ultimately recommends the show despite significant reservations about pacing, length, and some content choices, praising the stellar performances of Rannells and Gad as the primary reason to see it. | GPT-4o-mini: The review expresses clear enjoyment of the performances and humor, but notes some issues with pacing and content, leading to a solid but not enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:48.661Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

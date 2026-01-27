@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "\"Even at a fairly pacey two hours the fun eventually turns to wheel-spinning, since the central gag—the ludicrous mismatch between content and form—is established from the start and then merely elaborated.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251224094912/https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c",
   "textIssues": [
     "Word count too low: 71 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "ticklishly funny but, well, paper-thin",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The two exclamation points in the title are a super-spoiler",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "theater-smitten fellows determined to put on a big Broadway show",
+        "sentiment": "neutral",
+        "strength": 1
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show 'ticklishly funny' but emphasizes it's 'paper-thin,' suggesting entertainment value undermined by lack of substance. | GPT-4o-mini: The review indicates some humor and charm but ultimately describes the show as lacking depth, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:28.027Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

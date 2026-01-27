@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "An early candidate for Broadway’s song of the season has announced itself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/operation-mincemeat/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 67.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 84,
+      "performances": 85,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "charming, funny, tonally scattered, and sporadically piercing musical",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the show feels overlong; its brilliant cast ensures it never drags, but it sometimes feels too in service to its admirable mission to explain",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "A significant part of the joy of the show, directed with invention and dazzle by Hastie",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds considerable joy and charm in the production with strong praise for performances and direction, but notes structural issues including tonal scatter and overlength that prevent unqualified recommendation. | GPT-4o-mini: The review highlights strong performances and memorable music, particularly the standout song 'Dear Bill', while acknowledging some tonal inconsistencies, leading to a solid recommendation overall. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:54.009Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 85,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,63 @@
   "publishDate": "November 13, 2023",
   "fullText": "The show — basically a fable — doesn’t meet the moment as much as the moment crashes over it. It’s hard to see the thing itself amid the currents of extra-theatrical context, but there’s no use in ignoring that context, which happens to be the point of Harmony. You may want to perform your little ditties and step to the side, but history will find you.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 51,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 51,
+    "confidence": "high",
+    "range": {
+      "low": 45,
+      "high": 57
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show — basically a fable — doesn't meet the moment as much as the moment crashes over it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's hard to see the thing itself amid the currents of extra-theatrical context",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "history will find you",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic suggests the show is overwhelmed by its historical context and fails to rise to the moment, indicating disappointment without explicit recommendation guidance. | GPT-4o-mini: The review expresses a sense of disconnection and struggle to engage with the show, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:34.111Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 50,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

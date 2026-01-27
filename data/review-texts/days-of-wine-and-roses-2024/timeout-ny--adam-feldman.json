@@ -7,7 +7,63 @@
   "publishDate": "January 28, 2024",
   "fullText": "Days of Wine and Roses reunites composer Adam Guettel with playwright Craig Lucas; as in their previous collaboration, 2005’s The Light in the Piazza, the result is ambitious, artful and musically sophisticated.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "ambitious, artful and musically sophisticated",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "reunites composer Adam Guettel with playwright Craig Lucas",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "the result is ambitious, artful and musically sophisticated.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The positive descriptors 'ambitious, artful and musically sophisticated' suggest strong artistic merit, but this appears to be only an excerpt from a longer review. | GPT-4o-mini: The review highlights the ambitious and sophisticated nature of the musical, indicating a strong recommendation despite lacking explicit calls to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:47.242Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

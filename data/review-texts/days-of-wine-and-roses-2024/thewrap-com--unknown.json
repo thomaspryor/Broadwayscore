@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250515041934",
-  "archiveOrgUrl": "http://web.archive.org/web/20250515041934/https://www.thewrap.com/days-of-wine-and-roses-broadway-review-kelli-ohara-brian-darcy-james/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250515041934/https://www.thewrap.com/days-of-wine-and-roses-broadway-review-kelli-ohara-brian-darcy-james/",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 85,
+      "performances": 95,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "truly awesome performances from O'Hara and d'Arcy James",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "can easily take its place as one of the few great musicals of this century",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The only major criticism to level at 'Days of Wine and Roses' is that it took Guettel so long to write his third musical",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging the challenging, non-hummable nature of the score, the critic delivers overwhelming praise for performances, direction, music composition, and concludes by calling it 'one of the few great musicals of this century' with only one criticism being that it took too long to create. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, with only minor caveats about the music, leading to a high recommendation score.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:26.012Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

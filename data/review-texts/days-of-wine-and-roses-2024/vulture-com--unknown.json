@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...the show evokes a specific kind of quietly disheartened sigh.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -54,5 +54,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250422053055/https://www.vulture.com/2024/01/theater-review-days-wine-roses-on-broadway.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 73,
+      "performances": 85,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "O'Hara and James are capable of leaving us not simply pensive, but elated and shattered, if they had a show that would let them",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "both of whom are at the peak of their artistry",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the show evokes a specific kind of quietly disheartened sigh. It's the sound of great talents put in the service of material that will almost expand to accommodate them, but not quite",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite praising the stellar performances and Guettel's complex score, the critic finds the show fundamentally constrained by didactic material and overly tidy staging that doesn't fully utilize the exceptional talents involved. | GPT-4o-mini: While the performances of O'Hara and James are highly praised, the material and direction are seen as limiting, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:14.631Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

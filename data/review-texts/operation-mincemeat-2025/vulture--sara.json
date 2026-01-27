@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "While some moments certainly sizzle more than others, there’s more than enough sincerity and goofy charisma on stage to keep the show powered.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/operation-mincemeat/",
@@ -37,5 +37,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251114223444/https://www.vulture.com/article/theater-review-operation-mincemeat-on-broadway.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 70,
+      "performances": 82,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Operation Mincemeat isn't exactly blazingly clever—the jokes fly thick and fast, and they tend toward broad grin-crackers rather than breathless zingers—but it overflows with good humor and heartfelt commitment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "SpitLip argues vigorously and convincingly in favor of delight",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Operation Mincemeat has plenty of joy to go around",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the show's charm, performances, and joy while acknowledging some limitations in cleverness and hip-hop sections, resulting in a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:40.309Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
