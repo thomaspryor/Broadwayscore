@@ -10,8 +10,64 @@
   "bwwExcerpt": "(Patrick Maley): Director Mark S. Hoebee also shines here in keeping the show's mood light and quirky. The performances of virtually the entire cast, from Dierdre Friel's delightfully exasperated Mrs. Brill to Liz McCartney's terrifying Miss Andrew, are finely tuned and convey the show's essential gaiety. That is a mood that Hoebee and his team chase down with consistent success. This \"Mary Poppins\" is a refreshing delight.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MARY-JANE-2024",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 'Mary Poppins' is a refreshing delight",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Director Mark S. Hoebee also shines here in keeping the show's mood light and quirky",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The performances of virtually the entire cast...are finely tuned and convey the show's essential gaiety",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently enthusiastic language throughout with no reservations, culminating in calling the show 'a refreshing delight' with praise for both direction and performances. | GPT-4o-mini: The review expresses strong praise for the performances and direction, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:02.187Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

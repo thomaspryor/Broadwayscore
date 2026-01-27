@@ -7,7 +7,63 @@
   "publishDate": "April 23, 2024",
   "fullText": "Ultimately, McAdams gets her big theatrical moment, but much of the play’s power comes from Herzog’s scheme to withhold that moment. We expect Mary Jane to break down, explode, get pissed off long before she does. What sets her off is unexpected. It’s worth the wait.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 80,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's worth the wait",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "much of the play's power comes from Herzog's scheme",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "McAdams gets her big theatrical moment",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the playwright's strategic choices, the lead performance's payoff, and explicitly states the theatrical experience is 'worth the wait,' indicating a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:09.369Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
