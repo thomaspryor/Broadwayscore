@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:36:46.748Z",
+  "runDate": "2026-01-27T04:37:06.827Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "redwood-2025",
+    "showFilter": "marjorie-prime-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 208,
-    "failed": 109,
+    "processed": 209,
+    "failed": 110,
     "skipped": 0,
-    "successRate": "65.6%"
+    "successRate": "65.5%"
   },
   "tierBreakdown": {
     "playwright": 22,
-    "scrapingbee": 19,
-    "brightdata": 22,
-    "archive": 145
+    "scrapingbee": 17,
+    "brightdata": 23,
+    "archive": 147
   },
   "statistics": {
-    "tier1Attempts": 16,
+    "tier1Attempts": 18,
     "tier1Success": 5,
-    "tier2Attempts": 11,
-    "tier2Success": 3,
-    "tier3Attempts": 8,
-    "tier3Success": 2,
-    "tier4Attempts": 6,
-    "tier4Success": 5,
-    "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 90
+    "tier2Attempts": 13,
+    "tier2Success": 1,
+    "tier3Attempts": 12,
+    "tier3Success": 3,
+    "tier4Attempts": 9,
+    "tier4Success": 7,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 80
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,21 +228,22 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "redwood-2025/culturesauce-com--unknown.json",
-    "redwood-2025/ew-com--unknown.json",
-    "redwood-2025/lightingandsoundamerica-com--unknown.json",
-    "redwood-2025/newyorktheater-me--unknown.json",
-    "redwood-2025/newyorktheatreguide-com--unknown.json",
-    "redwood-2025/nypost-com--unknown.json",
-    "redwood-2025/observer-com--unknown.json",
-    "redwood-2025/pagesonstages-com--unknown.json",
-    "redwood-2025/talkinbroadway-com--unknown.json",
-    "redwood-2025/theatermania-com--unknown.json",
-    "redwood-2025/theaterscene-net--unknown.json",
-    "redwood-2025/theatrereviews-com--unknown.json",
-    "redwood-2025/timeout-com--unknown.json",
-    "redwood-2025/washingtonpost-com--unknown.json",
-    "redwood-2025/wsj-com--unknown.json"
+    "marjorie-prime-2025/daily-beast--tim-teeman.json",
+    "marjorie-prime-2025/ew-com--unknown.json",
+    "marjorie-prime-2025/lightingandsoundamerica-com--unknown.json",
+    "marjorie-prime-2025/newyorktheatreguide-com--unknown.json",
+    "marjorie-prime-2025/nydailynews-com--unknown.json",
+    "marjorie-prime-2025/nypost--johnny-oleksinki.json",
+    "marjorie-prime-2025/nypost--johnny-oleksinski.json",
+    "marjorie-prime-2025/observer--david-cote.json",
+    "marjorie-prime-2025/observer-com--unknown.json",
+    "marjorie-prime-2025/pagesonstages-com--unknown.json",
+    "marjorie-prime-2025/talkinbroadway-com--unknown.json",
+    "marjorie-prime-2025/theatermania--zachary-stewart.json",
+    "marjorie-prime-2025/theaterscene-net--unknown.json",
+    "marjorie-prime-2025/theatrereviews-com--unknown.json",
+    "marjorie-prime-2025/thewrap--robert-hofler.json",
+    "marjorie-prime-2025/wsj-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -353,7 +354,8 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "redwood-2025/interestedbystander-com--unknown.json"
+    "marjorie-prime-2025/WRAP--robert-hofler.json",
+    "marjorie-prime-2025/interestedbystander-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -374,11 +376,11 @@
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
       "hadestown-2019/showshowdown-blogspot-com--unknown.json",
-      "redwood-2025/lightingandsoundamerica-com--unknown.json",
-      "redwood-2025/newyorktheatreguide-com--unknown.json",
-      "redwood-2025/pagesonstages-com--unknown.json",
-      "redwood-2025/theaterscene-net--unknown.json",
-      "redwood-2025/theatrereviews-com--unknown.json"
+      "marjorie-prime-2025/lightingandsoundamerica-com--unknown.json",
+      "marjorie-prime-2025/newyorktheatreguide-com--unknown.json",
+      "marjorie-prime-2025/pagesonstages-com--unknown.json",
+      "marjorie-prime-2025/theaterscene-net--unknown.json",
+      "marjorie-prime-2025/theatrereviews-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -397,9 +399,7 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "redwood-2025/ew-com--unknown.json",
-      "redwood-2025/newyorktheater-me--unknown.json",
-      "redwood-2025/timeout-com--unknown.json"
+      "marjorie-prime-2025/ew-com--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -422,8 +422,9 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "redwood-2025/culturesauce-com--unknown.json",
-      "redwood-2025/talkinbroadway-com--unknown.json"
+      "marjorie-prime-2025/daily-beast--tim-teeman.json",
+      "marjorie-prime-2025/observer--david-cote.json",
+      "marjorie-prime-2025/talkinbroadway-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -566,11 +567,13 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "redwood-2025/nypost-com--unknown.json",
-      "redwood-2025/observer-com--unknown.json",
-      "redwood-2025/theatermania-com--unknown.json",
-      "redwood-2025/washingtonpost-com--unknown.json",
-      "redwood-2025/wsj-com--unknown.json"
+      "marjorie-prime-2025/nydailynews-com--unknown.json",
+      "marjorie-prime-2025/nypost--johnny-oleksinki.json",
+      "marjorie-prime-2025/nypost--johnny-oleksinski.json",
+      "marjorie-prime-2025/observer-com--unknown.json",
+      "marjorie-prime-2025/theatermania--zachary-stewart.json",
+      "marjorie-prime-2025/thewrap--robert-hofler.json",
+      "marjorie-prime-2025/wsj-com--unknown.json"
     ]
   }
 }
