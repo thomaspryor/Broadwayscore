@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Were it not for its curious meta-story, the play would be little more than a pleasant diversion: 95 minutes of bloodless, toothless, Hollywood-adjacent dramedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-shark-is-broken/",
@@ -31,5 +31,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241124003633",
-  "archiveOrgUrl": "http://web.archive.org/web/20241124003633/https://www.nytimes.com/2023/08/10/theater/the-shark-is-broken-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241124003633/https://www.nytimes.com/2023/08/10/theater/the-shark-is-broken-review.html",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 66,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play would be little more than a pleasant diversion: 95 minutes of bloodless, toothless, Hollywood-adjacent dramedy",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The meta-story gives it a bit more bite",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "these details do not on their own create much dramatic interest",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges strong production values and an interesting meta-theatrical element but finds the underlying drama lacking in substance, describing it as a 'pleasant diversion' that's 'bloodless' and 'toothless.' | GPT-4o-mini: The review expresses mixed feelings, noting some interesting elements but ultimately describing the play as lacking dramatic interest and only a pleasant diversion.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:20.761Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Amy Herzog's Mary Jane is a profoundly moving meditation on motherhood, sacrifice, and the extraordinary resilience of the human spirit. Rachel McAdams delivers a tour-de-force performance that anchors this intimate drama with stunning authenticity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 93,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "profoundly moving meditation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "tour-de-force performance",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "stunning authenticity",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong superlative language praising both the play's emotional impact and McAdams' performance, with no reservations expressed in this excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the production and highlights a standout performance, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:53.362Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

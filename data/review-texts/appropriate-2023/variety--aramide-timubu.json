@@ -10,8 +10,66 @@
   "bwwExcerpt": "Under director Lila Neugebauer, “Appropriate” creates one of the most engaging family dynamics presented on stage. The set, by multi-disciplinary collective dots, is highly effective: Packed full of boxes and trinkets, it’s a breath away from an episode of “Hoarders.” This adds to Toni, Franz and Bo’s feelings of claustrophobia. The intervals between scenes, however, plunge the audience into total darkness, surrounded by the shrill roaring of cicadas, creating an effect that’s more jarring than ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "creates one of the most engaging family dynamics presented on stage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The set, by multi-disciplinary collective dots, is highly effective",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "an effect that's more jarring than",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows mixed signals with strong praise for direction and set design but criticism of technical choices, and cuts off mid-sentence making assessment very uncertain. | GPT-4o-mini: The review highlights strong direction and effective set design but notes a potential issue with scene transitions, leading to a positive overall recommendation. | Note: Models differed by 30 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:57.874Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 75,
+    "scoreDelta": 30,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 30 points (Claude: 45, OpenAI: 75)"
+    ]
+  }
 }

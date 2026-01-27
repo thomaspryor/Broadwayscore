@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Not that this new production of ’Merrily’ completely fills in and smoothes out the musical’s legendary potholes, but it certainly helps us step around them without too much effort or frustration. You’d be hard-pressed to imagine a better ’Merrily We Roll Along’.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -53,5 +53,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240320142431/https://deadline.com/2023/10/merrily-we-roll-along-broadway-review-1235567197/",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "standing ovation"
+  "extractedPhrase": "standing ovation",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 45,
+      "music": 88,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Maria Friedman's smartly tended production of that most troubled of stage properties, the Stephen Sondheim-George Furth backwards musical Merrily We Roll Along deserves all the applause – and ticket-buying business – it's getting",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You'd be hard-pressed to imagine a better Merrily We Roll Along",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The biggest flaw in Merrily has nothing to do with structure, but rather in characterization, specifically the depictions of the women",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticisms of the book's flaws and dated elements, the critic clearly recommends this production for its exceptional performances, direction, and Sondheim's magnificent music, calling it deserving of applause and ticket sales.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:46.377Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

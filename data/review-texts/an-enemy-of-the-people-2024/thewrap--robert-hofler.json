@@ -7,7 +7,63 @@
   "publishDate": "March 18, 2024",
   "fullText": "Best of all is Jeremy Strong’s Dr. Thomas Stockmann, who vividly recalls Dr. Anthony Fauci, especially when this good Norwegian doctor is warning a town about the dangers of an impending epidemic.\r\n\r\nThe only problem with making “Enemy” a blow-by-blow retelling of Trump and Fauci’s battles is that what we all endured in real life a few years ago was so much more dramatic than what’s being offered onstage under the direction of Sam Gold.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 75,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Best of all is Jeremy Strong's Dr. Thomas Stockmann",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The only problem with making 'Enemy' a blow-by-blow retelling of Trump and Fauci's battles is that what we all endured in real life a few years ago was so much more dramatic than what's being offered onstage",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Best of all is Jeremy Strong’s Dr. Thomas Stockmann",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: While praising Jeremy Strong's performance, the critic fundamentally argues that the production fails to match the drama of the real-life events it parallels, suggesting the theatrical adaptation is insufficient and less compelling than reality. | GPT-4o-mini: The review highlights strong performances but critiques the script and direction, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:53.536Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

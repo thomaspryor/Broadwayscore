@@ -10,8 +10,64 @@
   "bwwExcerpt": "The beauty of “Jaja’s African Hair Braiding” is the play’s ability to bring life to a seemingly mundane space. On the set designed by David Zinn, the salon’s walls are painted a deep, robust pink, with bags of braiding hair hanging along the walls. The television screen propped near the ceiling displays Afrobeats music videos or a Nollywood movie more enticing than anything seen in the theaters recently. Carts full of combs, braiding gel and oil sheen sliding over the floor feel familiar to any ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 85.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "The beauty of 'Jaja's African Hair Braiding' is the play's ability to bring life to a seemingly mundane space",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "displays Afrobeats music videos or a Nollywood movie more enticing than anything seen in the theaters recently",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "the play’s ability to bring life to a seemingly mundane space",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt focuses entirely on praising the production design and atmosphere, but provides no information about the play's overall quality, performances, or story, making it impossible to assess the critic's full recommendation. | GPT-4o-mini: The review highlights the vibrant set design and the engaging atmosphere created, suggesting a strong recommendation despite lacking details on performances or the script. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:07.188Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 80,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

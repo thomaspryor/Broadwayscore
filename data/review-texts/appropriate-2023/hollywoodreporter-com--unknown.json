@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“...funny and sophisticated. The jokes are biting and some lines are impressively abrasive. But it edges away from the satire. Neugebauer’s fine direction instead leans into the acid drama of fraught sibling relationships. The play treats each character’s plight with an earnest consideration. There’s a more reflective, tragicomic stance as it considers what happens to families afraid to confront the past.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -54,5 +54,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250213100804/https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 85,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's still funny and sophisticated. The jokes are biting and some lines are impressively abrasive.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The first-rate cast plunges into the depths of the Lafayettes' psychic damage with performances that highlight, with subtle heart, the desperation brought on by collective delusion.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Neugebauer's fine direction instead leans into the acid drama of fraught sibling relationships.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the performances as 'first-rate,' calls the direction 'fine,' and describes the play as 'sophisticated' and 'funny,' with only minor reservations about the shift away from satire.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:20.977Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

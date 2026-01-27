@@ -9,10 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The seven autistic actors who make up the cast of 'How to Dance in Ohio' are pure joy to watch, bringing an authenticity and heart to this musical that's impossible to fake.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
   "bwwExcerpt": "Also off-putting is that the musical’s rightly expressed message — that people with autism should not be objects of pity or a means to someone else’s inspiration — is undone by a book (Rebekah Greer Melocik) and score (Melocik and Jacob Yandura) that can only manage two things with the subtlety of semi-truck: tears and uplift. Complexity, take a hike.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "pure joy to watch",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "bringing an authenticity and heart to this musical that's impossible to fake",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances with emotionally resonant language, but excerpt too brief to assess other elements or overall recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:57.127Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 92,
+      "direction": 91
+    },
+    "keyPhrases": [
+      {
+        "quote": "Appropriate is the most satisfying new American play on Broadway at this time and should not be missed",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Lila Neugebauer's superb production also has a sublime ensemble",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The cast could not be better",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review contains unqualified praise with superlatives ('superb', 'sublime', 'could not be better') and an explicit strong recommendation ('should not be missed'), indicating clear enthusiasm for all aspects of the production. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its themes, performances, and direction, leading to a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:40.383Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

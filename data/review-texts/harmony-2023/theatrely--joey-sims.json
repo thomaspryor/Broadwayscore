@@ -7,7 +7,63 @@
   "publishDate": "November 13, 2023",
   "fullText": "But far from unlocking the Harmonists’ story, Rabbi’s narration feels awkwardly grafted onto an underdeveloped narrative, an attempt at forcing deeper relevance onto a work that hasn’t otherwise earned it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": null,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "awkwardly grafted onto an underdeveloped narrative",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "attempt at forcing deeper relevance onto a work that hasn't otherwise earned it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Rabbi’s narration feels awkwardly grafted onto an underdeveloped narrative",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The excerpt reveals fundamental structural and narrative problems with harsh language about 'awkward' execution and 'underdeveloped' story, suggesting significant creative failures. | GPT-4o-mini: The review expresses significant criticism of the narrative structure, indicating a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:00.754Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

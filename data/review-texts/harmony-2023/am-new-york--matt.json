@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Even so, there is much to admire and appreciate about “Harmony,” including the fascinating real-life story upon which it is based (which previously inspired a film, a documentary, and even the 1999 Broadway drama “Band in Berlin”), its sense of sincerity and romanticism, Warren Carlyle’s posh art deco-style production (which has improved in quality since Off-Broadway), and the performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -53,5 +53,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251003034629",
-  "archiveOrgUrl": "http://web.archive.org/web/20251003034629/https://www.amny.com/entertainment/review-manilow-harmony/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251003034629/https://www.amny.com/entertainment/review-manilow-harmony/",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 70,
+      "music": 38,
+      "performances": 77,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, 'Harmony' contains a weak score, with surprisingly generic and bland music by Manilow",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there is much to admire and appreciate about 'Harmony,' including the fascinating real-life story",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "'Harmony' often feels like a combination of 'Cabaret,' 'Jersey Boys,' and Rodgers & Hammerstein love duets",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges much to admire including strong performances and production values, but heavily criticizes the weak, generic score and draws unfavorable comparisons to superior shows like 'Cabaret'. | GPT-4o-mini: The review highlights significant weaknesses in the music and score but acknowledges strong performances and an interesting story, leading to a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:21.772Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

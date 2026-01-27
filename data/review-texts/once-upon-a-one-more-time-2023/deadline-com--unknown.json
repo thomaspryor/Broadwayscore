@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“The wish-come-true of ’Once Upon a One More Time’ is that it lifts without apology or even a slight blush...To spoil the plot beyond this would be unfair, even though you’ll likely see most of the twists and turns coming, or at least predict the overall story arc.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250725062238",
-  "archiveOrgUrl": "http://web.archive.org/web/20250725062238/https://deadline.com/2023/06/britney-spears-broadway-review-once-upon-a-one-more-time-deadline-1235421229/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250725062238/https://deadline.com/2023/06/britney-spears-broadway-review-once-upon-a-one-more-time-deadline-1235421229/",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 82,
+      "performances": 90,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Smart, funny, splendid to look at and all with a beat you can dance to, this tribute to the Brothers Grimm, the sisters of the Second Wave and, not least, the indomitable Ms. Spears, is a delight.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "But the wish-come-true of Once Upon a One More Time is that it lifts without apology or even a slight blush.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's already won our hearts",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Consistently enthusiastic praise throughout with specific commendation of performances, direction, and creative elements, calling it 'a delight' and noting it has 'won our hearts' with minimal criticisms.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:42.270Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

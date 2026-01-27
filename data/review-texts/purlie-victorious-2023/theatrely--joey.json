@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Back on Broadway for the first time since its historic 1961 premiere, Davis’ play has lost little of its bite. But under an ill-suited Kenny Leon’s direction, it has received an unevenly paced and tonally confused production that never finds the same delightful boldness as Young’s performance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/purlie-victorious/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 70,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is also one of few moments when this revival of Ossie Davis' razor-sharp satire Purlie Victorious fully comes to life",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it has received an unevenly paced and tonally confused production that never finds the same delightful boldness",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "When the inimitable Kara Young bursts onto stage near the top of the second act of Purlie Victorious, she brings with her precisely the outrageous, manic energy that the production has so desperately been missing",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the source material and some performances (especially Kara Young) but heavily criticizes the direction as 'tonally confused' and 'unevenly paced,' indicating a production that doesn't fully succeed despite its strengths.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:59.825Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

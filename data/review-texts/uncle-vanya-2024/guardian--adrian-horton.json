@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Steve Carell brings a weary gravitas to the role of Uncle Vanya in this handsome but emotionally distant Broadway revival that never quite finds its heart.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 68,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "brings a weary gravitas to the role",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "emotionally distant",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "never quite finds its heart",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: While praising Carell's performance, the critic identifies fundamental emotional failures in the production that undermine the overall recommendation. | GPT-4o-mini: The review indicates a mixed response, praising Carell's performance while criticizing the overall emotional impact of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:53.592Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

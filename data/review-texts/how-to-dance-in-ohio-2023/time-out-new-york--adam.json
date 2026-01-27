@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Directed with sensitivity by Sammi Cannold, How to Dance in Ohio is an underdog itself: a modest production of an original musical that originated in Syracuse, New York, and—like another sincerely inspirational audience-pleaser, Come From Away—rose on its own merits, without big stars, hit songs or well-known pop-culture IP.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 84,
+      "performances": 85,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "the sweet, uplifting new musical How to Dance in Ohio, which depicts a group of autistic people as they prepare for a social event, guides this tradition in a joyful new direction",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "they've made their own space on Broadway now, and proved that they belong",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "At moments like these throughout the show, Melocik and Yandura make the most of what theater is uniquely well-equipped to do: They turn a wall into a window",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Feldman delivers consistent praise throughout, celebrating the show's unique approach, strong performances, and meaningful representation, with only minor critiques about extraneous characters, indicating a clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's themes, performances, and direction, indicating it is a must-see production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:48.128Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

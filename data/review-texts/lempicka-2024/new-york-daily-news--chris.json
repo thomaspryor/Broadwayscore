@@ -9,9 +9,60 @@
   "isFullReview": false,
   "dtliExcerpt": "Frankly, the show would have been far better if it had simply evoked a savvy and brilliant artist in this richest of European eras. Shoving de Lempicka so aggressively through today’s ideological and aesthetic filters, unconscious as the act may be, has the effect of nullifying her singular ambivalence and complexity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/lempicka/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": null,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show would have been far better if it had simply evoked a savvy and brilliant artist",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "has the effect of nullifying her singular ambivalence and complexity",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic argues the show fundamentally fails by forcing its subject through inappropriate modern filters, nullifying what made the artist compelling. | GPT-4o-mini: The review expresses significant disappointment in the show's execution and its failure to capture the complexity of the subject, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:18.923Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

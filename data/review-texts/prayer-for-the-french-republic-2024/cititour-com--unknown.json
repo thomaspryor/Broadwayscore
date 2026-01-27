@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 11,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "1/9"
+  "extractedRating": "1/9",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "In this extraordinary play",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "we should be profoundly grateful that a work of such ambition, scope and importance has made it to the stage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "neither the play, which can feel overwritten at times, nor the production is perfect",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic calls the play 'extraordinary' and expresses profound gratitude for its importance, praising the 'superb ensemble cast' and 'razor-sharp direction' while acknowledging some flaws but maintaining overall strong endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:22.563Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

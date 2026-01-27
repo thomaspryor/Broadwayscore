@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Once Upon a One More Time emerges as a worthwhile concept thwarted by poor execution. It is certainly preferable to a Britney Spears biomusical, which would have been a sad affair for a 41-year-old artist with more yet to offer.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250418092447",
-  "archiveOrgUrl": "http://web.archive.org/web/20250418092447/https://www.theatermania.com/news/review-once-upon-a-one-more-time-broadways-awkwardly-arranged-marriage-of-britney-spears-and-feminism_1706165/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250418092447/https://www.theatermania.com/news/review-once-upon-a-one-more-time-broadways-awkwardly-arranged-marriage-of-britney-spears-and-feminism_1706165/",
+  "llmScore": {
+    "score": 48,
+    "confidence": "medium",
+    "range": {
+      "low": 43,
+      "high": 53
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 65,
+      "music": 35,
+      "performances": 75,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a One More Time emerges as a worthwhile concept thwarted by poor execution",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It is certainly preferable to a Britney Spears biomusical",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "The actors are blameless, and some even manage to deliver excellent performances",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite praising individual performances and concept, the critic identifies fundamental execution problems with music integration, direction, and dramaturgical issues, concluding it's a 'worthwhile concept thwarted by poor execution' without giving a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:11.333Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

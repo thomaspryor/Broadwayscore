@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 50,
+      "music": 65,
+      "performances": 83,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "the seven autistic actors, all Broadway newcomers, are terrific, and they seem to be having the time of their lives onstage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the book is laden with problems, primarily when Melocik strays from the documentary and invents subplots",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it does so with an abundance of charm, even though it occasionally goes astray",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances and production values highly while criticizing the book's invented subplots, ultimately finding the show charming despite its flaws and conveying an important message about autism representation. | GPT-4o-mini: The review highlights strong performances and charm but critiques the book's issues, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:32.351Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

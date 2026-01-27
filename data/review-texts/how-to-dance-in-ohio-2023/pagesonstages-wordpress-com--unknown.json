@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 56,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 56,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 75,
+      "music": 60,
+      "performances": 70,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "I walked out of How to Dance in Ohio feeling that while the importance of telling these stories and making sure that neurodivergent characters were played by neurodivergent actors will be remembered and applauded, I'm not sure that the show itself will",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there were several errors in judgment from the creative team that might sabotage the success of this production",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I felt very well represented by this cast, and I sincerely hope that they are able to outshine their creative team",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer deeply connects with the representation but finds significant creative and production flaws that prevent full recommendation, creating a true mixed assessment where personal connection battles production disappointments. | GPT-4o-mini: The review expresses a strong personal connection to the themes and representation, but also highlights significant issues with direction and audience engagement, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:16.637Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 60,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

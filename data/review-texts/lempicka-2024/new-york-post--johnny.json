@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "What “Lempicka,” the mystifying new musical about Polish painter Tamara de Lempicka, needs more than anything else is turpentine.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/lempicka/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241001131658",
-  "archiveOrgUrl": "http://web.archive.org/web/20241001131658/https://nypost.com/2024/04/14/entertainment/lempicka-broadway-review-painter-musical-is-an-epic-wreck/"
+  "archiveOrgUrl": "http://web.archive.org/web/20241001131658/https://nypost.com/2024/04/14/entertainment/lempicka-broadway-review-painter-musical-is-an-epic-wreck/",
+  "llmScore": {
+    "score": 25,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 15,
+      "music": 30,
+      "performances": 35,
+      "direction": 20
+    },
+    "keyPhrases": [
+      {
+        "quote": "the ugly splatter that audiences are left to parse is a ridiculous two-and-half-hour Eurovision act with stratospheric delusions of grandeur",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "And 'Lempicka' is incoherent",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It's hard to believe this muck is directed by the talented Chavkin",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is a comprehensive pan that systematically demolishes every aspect of the production with harsh language like 'ugly splatter,' 'ridiculous,' 'incoherent,' and 'muck,' offering virtually no redeeming qualities.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:45.411Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

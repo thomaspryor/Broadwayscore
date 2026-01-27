@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": null,
+      "performances": 84,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "there is nothing dated about the play or the production, skillfully directed by Lila Neugebauer to bring out all of its carefully crafted nuances. Indeed, it couldn't be more timely",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the portrait it paints of human frailty and corruption is as ancient and complex as they come",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Appropriate frequently stretches the limits of what it means to be 'over the top'",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the play's timeliness, skillful direction, and complex character work, with only minor reservations about it being 'over the top' at times, indicating clear admiration for the production. | GPT-4o-mini: The review expresses strong praise for the direction and performances while highlighting the play's timely themes, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:13.975Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

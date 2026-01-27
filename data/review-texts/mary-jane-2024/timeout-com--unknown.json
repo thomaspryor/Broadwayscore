@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...Herzog’s play shines like a candle in the dark.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -41,5 +41,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "time-out-stars",
   "scoreConfidence": "medium",
-  "originalRating": "5/5 stars"
+  "originalRating": "5/5 stars",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 82,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Amy Herzog's exquisite and deeply moving Mary Jane",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Both times I've seen this play, I've felt inspired",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "McAdams sometimes feels a bit light for the space (especially vocally)",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: 5/5 stars with effusive praise for Herzog's writing ('exquisite and deeply moving'), personal inspiration from multiple viewings, and strong recommendation despite minor reservation about McAdams' vocal presence.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:58.019Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

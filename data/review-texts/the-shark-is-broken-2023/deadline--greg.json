@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Beyond its good will and nostalgic conjuring, The Shark Is Broken is too slender a tale, too gentle, to provide thrills or even, truth be told, much drama. It’s easy to imagine the delight of unexpectedly stumbling upon the production when it played the Edinburgh Festival Fringe in 2019. On Broadway, it feels a bit out of its depth.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-shark-is-broken/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "too slender a tale, too gentle, to provide thrills or even, truth be told, much drama",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "On Broadway, it feels a bit out of its depth",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Beyond its good will and nostalgic conjuring",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges some charm but finds the material fundamentally inadequate for Broadway, with clear structural criticisms and a dismissive final assessment. | GPT-4o-mini: The review expresses significant disappointment in the production's lack of drama and depth, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:46.504Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

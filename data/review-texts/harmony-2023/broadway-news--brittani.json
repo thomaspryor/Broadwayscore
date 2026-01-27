@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Though “Harmony” is dampened by its formulaic adherence to melancholic moments and a tragedy-laden chronicling of Jewish heritage, this is a show that successfully completes the task at hand. By its end, a palpable grief radiates throughout the Ethel Barrymore Theatre — a palpable shame, as well. One that hopefully urges us to remember our dead and to do everything — everything — in our power to keep their stories alive.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -33,5 +33,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 75,
+      "performances": 80,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is a show that successfully completes the task at hand",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Harmony is dampened by its formulaic adherence to melancholic moments",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Director-choreographer Warren Carlyle's top-notch ensemble bops and croons in all the right places",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant flaws in the formulaic approach and superficial historical treatment, but praises the performances, direction, and music while ultimately deeming the show successful at its core mission of preserving important history.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:12.119Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

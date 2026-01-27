@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Intertwined issues of script, casting, and direction are at work here.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 38,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -54,5 +54,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251228052154/https://www.vulture.com/article/uncle-vanya-steve-carell-heidi-schreck.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 35,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is, unhappily, an example of how all these things can fail to cohere into something powerful. Like its luckless hero, it shoots and misses.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There's an enervating absence of emotional events taking place",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "we're still liable to hear 'boredom' and end up with boring",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic systematically dismantles nearly every aspect of the production - performances lack chemistry and depth, direction fails to unlock Chekhov's subtext, design choices are described as oppressive and clichéd, and the overall effect is boring rather than moving.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:31.978Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

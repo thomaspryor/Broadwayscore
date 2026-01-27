@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The audience becomes part of the show in this immersive disco experience about Imelda Marcos, but the musical's politics are as muddled as its staging.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 47,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 47,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 53.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "immersive disco experience",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the musical's politics are as muddled as its staging",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The audience becomes part of the show",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: While acknowledging the immersive concept positively, the critic's criticism of both the politics and staging as 'muddled' suggests significant structural problems that outweigh the experiential elements. | GPT-4o-mini: The review indicates significant issues with the musical's political clarity and staging, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:08.654Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

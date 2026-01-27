@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251207105251",
-  "archiveOrgUrl": "http://web.archive.org/web/20251207105251/https://stagebuddy.com/theater/theater-review/spamalot"
+  "archiveOrgUrl": "http://web.archive.org/web/20251207105251/https://stagebuddy.com/theater/theater-review/spamalot",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 79,
+      "performances": 85,
+      "direction": 86
+    },
+    "keyPhrases": [
+      {
+        "quote": "Brilliantly directed by Rhodes, 'Spamalot' is diverting and entertaining. The audience was there to have a good time and it did.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You will enjoy 'Spamalot' a lot, but you need to be able to put your intellectual pretensions aside for a while.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The revival of 'Monty Python's Spamalot' did not disappoint.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer consistently praises the production with words like 'brilliantly directed,' 'diverting and entertaining,' and explicitly states the audience 'had a good time' and 'you will enjoy Spamalot a lot,' indicating a clear positive recommendation despite minor caveats about intellectual content. | GPT-4o-mini: The review expresses strong enjoyment of the production, praising the performances and direction while indicating a light-hearted, entertaining experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:12.847Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

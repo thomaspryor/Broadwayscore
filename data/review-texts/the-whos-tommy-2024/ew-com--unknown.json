@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -45,5 +45,61 @@
   "sourceMethod": "brightdata",
   "scoreSource": "extracted-grade",
   "scoreConfidence": "medium",
-  "extractedGrade": "B"
+  "extractedGrade": "B",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 88,
+      "performances": 85,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "See it, feel it — you won't forget it. Grade: B+",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "electrifying, reimagined revival that remains faithful to its masterclass material",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Tommy does suffer from some hiccups. There are multiple moments within the production when so much is unfolding onstage that it can be hard to know exactly where to focus",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging structural issues and pacing problems, the critic gives explicit recommendation ('See it, feel it') with B+ grade and praises performances, music, and overall theatrical experience as electrifying and unforgettable.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:14.219Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

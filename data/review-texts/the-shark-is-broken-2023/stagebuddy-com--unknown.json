@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251112014940",
-  "archiveOrgUrl": "http://web.archive.org/web/20251112014940/https://stagebuddy.com/theater/theater-review/the-shark-is-broken"
+  "archiveOrgUrl": "http://web.archive.org/web/20251112014940/https://stagebuddy.com/theater/theater-review/the-shark-is-broken",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 78,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "I must admit I enjoyed it more than I expected to",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I'm not sure that 'The Shark Is Broken' will entertain a viewer who doesn't know the movie and the time period",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "gives us a look behind the scenes of an iconic film and sometimes the background is even more interesting than the film itself",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses pleasant surprise and enjoyment despite initial reservations, but acknowledges significant limitations about the show's appeal to unfamiliar audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:19.686Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

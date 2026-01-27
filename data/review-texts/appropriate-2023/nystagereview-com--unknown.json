@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "5/5"
+  "extractedStars": "5/5",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 90,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's the standout of the Broadway season thus far",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "★★★★★ Branden Jacobs-Jenkins's acclaimed play makes its Broadway debut in a revelatory staging",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "makes an already powerful play even more powerful",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Five-star review with superlative language ('revelatory', 'galvanizing', 'standout of the Broadway season') and unqualified praise for all production elements despite minor vocal critique of one performer.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:47.647Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

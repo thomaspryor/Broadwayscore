@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "8/13"
+  "extractedRating": "8/13",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 82,
+      "performances": 85,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "the 90-minute show is consistently great for the eye, but its considerable substance, conveyed through an infectious pop-meets-disco score by David Byrne, is too often overwhelmed or obliterated by the design elements",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the entire cast of 23 Filipino performers is to be highly commended for their unceasing commitment and energy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "'Here Lies Love' will go down as a show for the history books, in more ways than one",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer acknowledges the show's spectacle and strong performances while criticizing how the elaborate production design overwhelms the substantial musical content, suggesting a qualified recommendation for a flawed but significant theatrical experience. | GPT-4o-mini: The review expresses strong praise for the performances and visual elements while noting some issues with the substance and clarity of the narrative, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:22.114Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

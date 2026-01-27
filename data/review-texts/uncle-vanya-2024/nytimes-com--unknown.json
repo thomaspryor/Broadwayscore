@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Sleek, lucid, amusing...it’s Chekhov with everything, except the main thing.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250913070509",
-  "archiveOrgUrl": "http://web.archive.org/web/20250913070509/https://www.nytimes.com/2024/04/24/theater/uncle-vanya-review-steve-carell.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250913070509/https://www.nytimes.com/2024/04/24/theater/uncle-vanya-review-steve-carell.html",
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 78,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Collectively, they add up to a lovely evening in the theater. That's not a backhanded compliment.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "this amusing but rarely deeply affecting production",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "the ideal Chekhov balance may require something heavier as ballast",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges a 'lovely evening in the theater' with excellent supporting performances and production values, but finds the central performance lacking emotional weight and the overall production missing Chekhov's tragic depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:49.094Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

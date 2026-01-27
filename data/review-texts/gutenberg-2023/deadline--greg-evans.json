@@ -10,8 +10,64 @@
   "bwwExcerpt": "When Gutenberg! The Musical! debuted Off Broadway 17 years ago, critics wondered whether it was ready for Broadway. Perhaps they should have asked whether Broadway was ready for Gutenberg! All these years later, the answer to both is yes. Not only has the musical been fine-tuned and shined-up, but a Shucked-era Broadway is clearly in the mood for some absurdly silly good fun.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "fine-tuned and shined-up",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "absurdly silly good fun",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Broadway is clearly in the mood for",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review expresses clear positivity about the production improvements and audience reception, but the excerpt is too brief to determine the full extent of the critic's recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:14.146Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "Thirty or so years ago, Vogel told a reporter, “I like theater that makes me feel like it’s a healing.” That’s what “Mother Play” is, a balm that comes in cardboard boxes and packing tape. It honors the dead by making them alive again and nurtures the living by providing a place to put a daughter’s love and rage. Martha’s box is not Pandora’s. It’s just another way of organizing a life.     Adam Feldman , TimeOut New York: Keenan-Bolger and Parsons are very good indeed in Mother Play, but there’",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's what 'Mother Play' is, a balm that comes in cardboard boxes and packing tape",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It honors the dead by making them alive again and nurtures the living by providing a place to put a daughter's love and rage",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I like theater that makes me feel like it's a healing",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses deeply positive metaphors ('balm', 'healing', 'honors the dead by making them alive') to describe the play's emotional impact and therapeutic value, suggesting strong appreciation for its themes and execution. | GPT-4o-mini: The review conveys a strong appreciation for the emotional impact of the play, suggesting a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:24.889Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

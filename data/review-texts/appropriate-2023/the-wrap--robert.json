@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The rotten apples don’t fall very far from the dead tree in Branden Jacobs-Jenkins’s great family comedy “Appropriate.” First seen in 2014, the play receives its belated but totally riveting first Broadway production, which opened Monday at Second Stage’s Helen Hayes Theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/appropriate/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251210200028",
-  "archiveOrgUrl": "http://web.archive.org/web/20251210200028/https://www.thewrap.com/appropriate-broadway-review-sarah-paulson-elle-fanning/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251210200028/https://www.thewrap.com/appropriate-broadway-review-sarah-paulson-elle-fanning/",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "totally riveting first Broadway production",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The incisiveness of Lila Neugebauer's marvelous direction",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this extraordinary ensemble",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer expresses strong enthusiasm for the production with phrases like 'totally riveting,' 'marvelous direction,' and 'extraordinary ensemble,' while praising individual performances extensively with only minor criticism of one character being somewhat clichéd. | GPT-4o-mini: The review expresses strong praise for the performances and direction, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:38.932Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

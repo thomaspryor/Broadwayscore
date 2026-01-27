@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": null,
+      "performances": 83,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is what the Herzog-Gold collaboration manages to do most effectively in the second half of the play",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the production itself gives us two exciting performances at its core",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It is an awkward set-up, with actors' backs turned to one part or another of the audience throughout",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the adaptation's modern relevance, strong performances, and effective second half while noting production awkwardness and mixed execution, suggesting qualified recommendation. | GPT-4o-mini: The review highlights strong performances and effective modern connections in the adaptation, while also noting some structural weaknesses, leading to a positive overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:09.947Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

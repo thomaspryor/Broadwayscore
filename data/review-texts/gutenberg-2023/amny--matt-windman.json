@@ -7,7 +7,63 @@
   "publishDate": "October 12, 2023",
   "fullText": "On Broadway, it feels both overdone (with an elaborate set invoking an empty stage, instead of an actual empty stage, and a band instead of a single piano, losing its original charm) and undercooked (a slight, overextended, and rudimentary comic routine).",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels both overdone...and undercooked",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "losing its original charm",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "slight, overextended, and rudimentary comic routine",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws in both the production choices (overdone) and the material itself (undercooked, rudimentary), with no offsetting positives mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:52.840Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

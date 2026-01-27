@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 74,
+      "music": 85,
+      "performances": 84,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harmony is a powerful portrait of entertainers performing, frantically, on a collapsing stage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The story of the Comedian Harmonists needed to be told and it is done here with considerable feeling and panache",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "some of the first-act humor is more Catskills than Depression Berlin",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This is a clearly positive review that praises the production's ambition, performances, and technical elements while acknowledging some flaws in pacing and humor, concluding with strong endorsement of the project's worthiness. | GPT-4o-mini: The review expresses strong admiration for the production's emotional depth and performances while acknowledging some flaws, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:24.902Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Mother Play is all about the mother’s touch and what it means to mother and be mothered\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 90,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is certainly unmissable for fans of any of the actors or of a consistently celebrated playwright",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Mother Play showcases powerhouse performances by Jessica Lange, Jim Parsons, and Celia Keenan-Bolger",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The world-premiere play, and the trio at its center, will make you laugh and pull at your heartstrings",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is consistently positive throughout, praising performances as 'powerhouse,' calling the show 'unmissable,' and highlighting strong direction and design elements with only minor structural concerns.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:13.816Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

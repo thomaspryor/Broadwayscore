@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": 82,
+      "performances": 89,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "every aspect of Spamalot is relentlessly intent on delivering joy",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "stellar cast as they whirl between multiple characters",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's a fortress of merrymaking that won't let anything serious breach its walls",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the performances, direction, and overall joyful experience while acknowledging the intentionally loose plot structure as a feature rather than a bug, indicating strong recommendation despite some structural looseness. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and humor of the revival, with only minor reservations about the book's structure.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:28.514Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

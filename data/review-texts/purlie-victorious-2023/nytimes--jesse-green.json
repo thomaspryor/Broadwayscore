@@ -10,8 +10,64 @@
   "bwwExcerpt": "Originally played by Dee, and now by Kara Young, Lutiebelle is a rich creation, sweet and hungry, down-home and dirty. Young, a two-time Tony nominee known mostly for dramatic roles (“Halfway Bitches Go Straight to Heaven,” “The New Englanders,” “All the Natalie Portmans”), is also a daring comedian, finding in Lutiebelle a cross between Lucille Ball and Moms Mabley. That she is not afraid to go as far as the part can take her — with a gawky pigeon-toed gait and hilariously lustful line readings",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "every bit as scathingly funny as the 1961 reviews said it was",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "unaccountably its first Broadway revival",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "every bit as scathingly funny",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic strongly affirms the play's comedic power by confirming it lives up to its original reputation, with 'scathingly funny' being emphatic praise, though this appears to be just an excerpt. | GPT-4o-mini: The review expresses strong positive sentiment about the humor of the production, suggesting a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:36.161Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
