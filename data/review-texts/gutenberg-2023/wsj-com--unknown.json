@@ -5,12 +5,55 @@
   "criticName": "Unknown",
   "url": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c",
   "publishDate": null,
-  "fullText": "\"Even at a fairly pacey two hours the fun eventually turns to wheel-spinning, since the central gag—the ludicrous mismatch between content and form—is established from the start and then merely elaborated.\"\n\nRead more",
+  "fullText": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c\n\nAndrew Rannells and Josh Gad Matthew MurphyNew York\n\nThe two exclamation points in the title are a super-spoiler for “Gutenberg! The Musical!,” a ticklishly funny but, well, paper-thin show about two theater-smitten fellows determined to put on a big Broadway show about the inventor of the printing press.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\n‘The Queen of Versailles’ Review: Kristin Chenoweth’s Musical of Gilded Dreams",
   "isFullReview": false,
   "dtliExcerpt": "\"Even at a fairly pacey two hours the fun eventually turns to wheel-spinning, since the central gag—the ludicrous mismatch between content and form—is established from the start and then merely elaborated.\"\n\nRead more",
   "originalScore": null,
   "assignedScore": null,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "textWordCount": 71,
+  "archivePath": "data/archives/reviews/gutenberg-2023/wsj-com--unknown_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T14:53:52.396Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20251224094912",
+  "archiveOrgUrl": "http://web.archive.org/web/20251224094912/https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c",
+  "textIssues": [
+    "Word count too low: 71 (min: 300)"
+  ]
 }
