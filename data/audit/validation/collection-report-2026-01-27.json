@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T15:12:00.852Z",
+  "runDate": "2026-01-27T15:13:05.023Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "maybe-happy-ending-2024",
+    "showFilter": "the-shark-is-broken-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 222,
-    "failed": 146,
+    "processed": 247,
+    "failed": 141,
     "skipped": 0,
-    "successRate": "60.3%"
+    "successRate": "63.7%"
   },
   "tierBreakdown": {
-    "playwright": 30,
-    "scrapingbee": 17,
-    "brightdata": 24,
-    "archive": 151
+    "playwright": 37,
+    "scrapingbee": 22,
+    "brightdata": 26,
+    "archive": 162
   },
   "statistics": {
-    "tier1Attempts": 11,
-    "tier1Success": 0,
-    "tier2Attempts": 11,
-    "tier2Success": 0,
-    "tier3Attempts": 11,
-    "tier3Success": 1,
-    "tier4Attempts": 18,
-    "tier4Success": 1,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 30
+    "tier1Attempts": 38,
+    "tier1Success": 9,
+    "tier2Attempts": 29,
+    "tier2Success": 5,
+    "tier3Attempts": 24,
+    "tier3Success": 3,
+    "tier4Attempts": 29,
+    "tier4Success": 16,
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 240
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -249,14 +249,39 @@
     "queen-versailles-2025/timeout-ny--adam-feldman.json",
     "hamilton-2015/OBSERVER--david-cote.json",
     "hamilton-2015/wapo--peter-marks.json",
-    "merrily-we-roll-along-2023/nytimes-com--unknown.json",
-    "merrily-we-roll-along-2023/vulture-com--unknown.json",
-    "merrily-we-roll-along-2023/am-new-york--matt.json",
-    "merrily-we-roll-along-2023/amny-com--unknown.json",
-    "merrily-we-roll-along-2023/broadway-news--naveen.json",
-    "merrily-we-roll-along-2023/broadwaynews-com--unknown.json",
-    "maybe-happy-ending-2024/observer--jesse-green.json",
-    "maybe-happy-ending-2024/washington-post--naveen-kumar.json"
+    "the-shark-is-broken-2023/nytimes-com--unknown.json",
+    "the-shark-is-broken-2023/variety-com--unknown.json",
+    "the-shark-is-broken-2023/amny-com--unknown.json",
+    "the-shark-is-broken-2023/broadway-news--naveen.json",
+    "the-shark-is-broken-2023/broadwaynews-com--unknown.json",
+    "the-shark-is-broken-2023/cititour-com--unknown.json",
+    "the-shark-is-broken-2023/deadline-com--unknown.json",
+    "the-shark-is-broken-2023/ew-com--unknown.json",
+    "the-shark-is-broken-2023/exeuntnyc-com--unknown.json",
+    "the-shark-is-broken-2023/lightingandsoundamerica-com--unknown.json",
+    "the-shark-is-broken-2023/new-york-post--johnny.json",
+    "the-shark-is-broken-2023/new-york-times--jesse.json",
+    "the-shark-is-broken-2023/newyorktheater-me--unknown.json",
+    "the-shark-is-broken-2023/newyorktheatreguide-com--unknown.json",
+    "the-shark-is-broken-2023/nydailynews-com--unknown.json",
+    "the-shark-is-broken-2023/nypost-com--unknown.json",
+    "the-shark-is-broken-2023/nystagereview-com--unknown.json",
+    "the-shark-is-broken-2023/observer-com--unknown.json",
+    "the-shark-is-broken-2023/pagesonstages-wordpress-com--unknown.json",
+    "the-shark-is-broken-2023/slashfilm-com--unknown.json",
+    "the-shark-is-broken-2023/stagebuddy-com--unknown.json",
+    "the-shark-is-broken-2023/talkinbroadway-com--unknown.json",
+    "the-shark-is-broken-2023/the-daily-beast--tim.json",
+    "the-shark-is-broken-2023/theaterlife-com--unknown.json",
+    "the-shark-is-broken-2023/theatermania-com--unknown.json",
+    "the-shark-is-broken-2023/theaterpizzazz-com--unknown.json",
+    "the-shark-is-broken-2023/theaterscene-net--unknown.json",
+    "the-shark-is-broken-2023/theatrely--juan-a.json",
+    "the-shark-is-broken-2023/thefrontrowcenter-com--unknown.json",
+    "the-shark-is-broken-2023/thewrap-com--unknown.json",
+    "the-shark-is-broken-2023/time-out-new-york--adam.json",
+    "the-shark-is-broken-2023/timeout-com--unknown.json",
+    "the-shark-is-broken-2023/wsj-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -391,20 +416,15 @@
     "hamilton-2015/usatoday--elysa-gardner.json",
     "hamilton-2015/washpost--peter-marks.json",
     "hamilton-2015/wsj--terry-teachout.json",
-    "merrily-we-roll-along-2023/variety--aramide-tinubu.json",
-    "merrily-we-roll-along-2023/variety-com--unknown.json",
-    "merrily-we-roll-along-2023/vult--jackson-mchenry.json",
-    "merrily-we-roll-along-2023/vulture--sara.json",
-    "maybe-happy-ending-2024/nyt--jesse-green.json",
-    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
-    "maybe-happy-ending-2024/ew--shania-russell.json",
-    "maybe-happy-ending-2024/interestedbystander-com--unknown.json",
-    "maybe-happy-ending-2024/ny-daily-news--chris-jones.json",
-    "maybe-happy-ending-2024/nyp--johnny-oleksinski.json",
-    "maybe-happy-ending-2024/talkinbway--matthew-murray.json",
-    "maybe-happy-ending-2024/tman--david-gordon.json",
-    "maybe-happy-ending-2024/washpost--peter-marks.json",
-    "maybe-happy-ending-2024/wsj--terry-teachout.json"
+    "the-shark-is-broken-2023/nyt--jesse-green.json",
+    "the-shark-is-broken-2023/variety--jesse-green.json",
+    "the-shark-is-broken-2023/vulture--jackson.json",
+    "the-shark-is-broken-2023/vulture-com--unknown.json",
+    "the-shark-is-broken-2023/deadline--greg.json",
+    "the-shark-is-broken-2023/nyp--johnny-oleksinski.json",
+    "the-shark-is-broken-2023/queerty-com--unknown.json",
+    "the-shark-is-broken-2023/talkinbway--matthew-murray.json",
+    "the-shark-is-broken-2023/the-wrap--robert.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -436,8 +456,15 @@
       "queen-versailles-2025/pagesonstages-com--unknown.json",
       "queen-versailles-2025/theaterscene-net--unknown.json",
       "queen-versailles-2025/timeout-ny--adam-feldman.json",
-      "merrily-we-roll-along-2023/broadway-news--naveen.json",
-      "merrily-we-roll-along-2023/broadwaynews-com--unknown.json"
+      "the-shark-is-broken-2023/broadway-news--naveen.json",
+      "the-shark-is-broken-2023/broadwaynews-com--unknown.json",
+      "the-shark-is-broken-2023/exeuntnyc-com--unknown.json",
+      "the-shark-is-broken-2023/lightingandsoundamerica-com--unknown.json",
+      "the-shark-is-broken-2023/newyorktheater-me--unknown.json",
+      "the-shark-is-broken-2023/newyorktheatreguide-com--unknown.json",
+      "the-shark-is-broken-2023/pagesonstages-wordpress-com--unknown.json",
+      "the-shark-is-broken-2023/theaterlife-com--unknown.json",
+      "the-shark-is-broken-2023/theaterscene-net--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -456,7 +483,12 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "cabaret-2024/newyorktheater-me--unknown.json"
+      "cabaret-2024/newyorktheater-me--unknown.json",
+      "the-shark-is-broken-2023/cititour-com--unknown.json",
+      "the-shark-is-broken-2023/ew-com--unknown.json",
+      "the-shark-is-broken-2023/slashfilm-com--unknown.json",
+      "the-shark-is-broken-2023/time-out-new-york--adam.json",
+      "the-shark-is-broken-2023/timeout-com--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -482,7 +514,9 @@
       "queen-versailles-2025/daily-beast--tim-teeman.json",
       "hamilton-2015/OBSERVER--david-cote.json",
       "hamilton-2015/wapo--peter-marks.json",
-      "maybe-happy-ending-2024/observer--jesse-green.json"
+      "the-shark-is-broken-2023/talkinbroadway-com--unknown.json",
+      "the-shark-is-broken-2023/the-daily-beast--tim.json",
+      "the-shark-is-broken-2023/theatrely--juan-a.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -631,11 +665,22 @@
       "queen-versailles-2025/nydailynews-com--unknown.json",
       "queen-versailles-2025/nypost--johnny-oleksinski.json",
       "queen-versailles-2025/theatermania--zachary-stewart.json",
-      "merrily-we-roll-along-2023/nytimes-com--unknown.json",
-      "merrily-we-roll-along-2023/vulture-com--unknown.json",
-      "merrily-we-roll-along-2023/am-new-york--matt.json",
-      "merrily-we-roll-along-2023/amny-com--unknown.json",
-      "maybe-happy-ending-2024/washington-post--naveen-kumar.json"
+      "the-shark-is-broken-2023/nytimes-com--unknown.json",
+      "the-shark-is-broken-2023/variety-com--unknown.json",
+      "the-shark-is-broken-2023/amny-com--unknown.json",
+      "the-shark-is-broken-2023/deadline-com--unknown.json",
+      "the-shark-is-broken-2023/new-york-post--johnny.json",
+      "the-shark-is-broken-2023/new-york-times--jesse.json",
+      "the-shark-is-broken-2023/nydailynews-com--unknown.json",
+      "the-shark-is-broken-2023/nypost-com--unknown.json",
+      "the-shark-is-broken-2023/nystagereview-com--unknown.json",
+      "the-shark-is-broken-2023/observer-com--unknown.json",
+      "the-shark-is-broken-2023/stagebuddy-com--unknown.json",
+      "the-shark-is-broken-2023/theatermania-com--unknown.json",
+      "the-shark-is-broken-2023/theaterpizzazz-com--unknown.json",
+      "the-shark-is-broken-2023/thefrontrowcenter-com--unknown.json",
+      "the-shark-is-broken-2023/thewrap-com--unknown.json",
+      "the-shark-is-broken-2023/wsj-com--unknown.json"
     ]
   }
 }
