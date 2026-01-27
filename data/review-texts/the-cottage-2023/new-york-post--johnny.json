@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "A lowbrow-highbrow mashup isn’t the worst idea, granted, but here it translates to “Shout til it’s funny.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/the-cottage/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230829222034",
-  "archiveOrgUrl": "http://web.archive.org/web/20230829222034/https://nypost.com/2023/07/24/the-cottage-review-tired-new-broadway-farce-is-forced/"
+  "archiveOrgUrl": "http://web.archive.org/web/20230829222034/https://nypost.com/2023/07/24/the-cottage-review-tired-new-broadway-farce-is-forced/",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": 63,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rustin's irksome writing, though, was a flea in my ear",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "What makes 'The Cottage' habitable is its game and mostly charming actors",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "that physical prop gag is funnier than any one line of dialogue in this entire witless play",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic harshly condemns the script as 'witless' and 'irksome' while praising some performances, but the overwhelming negativity toward the writing and structure makes this a clear pan with only scattered positive elements. | GPT-4o-mini: The review expresses significant disappointment in the writing and structure of the play, despite some praise for individual performances, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:24.701Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
