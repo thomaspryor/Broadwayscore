@@ -304,99 +304,134 @@ function saveUrlOverride(showId, url) {
 
 /**
  * Extract reviews from BWW Review Roundup HTML
- * BWW stores reviews in JSON-LD liveBlogUpdate array with structured data:
- * - headline: "Outlet Name - Review Title"
- * - articleBody: excerpt
- * - datePublished: date
+ *
+ * BWW roundup pages have reviews in this format:
+ * <p><img ... alt="Thumbs Up/Sideways" > Critic Name, <a href="URL">Outlet:</a> Excerpt</p>
+ *
+ * This is the primary extraction method as it includes URLs directly.
+ * JSON-LD liveBlogUpdate is used as a fallback (has excerpt but no URLs).
  */
 function extractBWWReviews(html, showId, bwwUrl) {
   const reviews = [];
   const foundOutlets = new Set();
 
-  // First try to extract from liveBlogUpdate array (best structured data)
-  const jsonLdMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
-  if (jsonLdMatch) {
-    try {
-      const jsonLd = JSON.parse(jsonLdMatch[1]);
-      const articleBody = jsonLd.articleBody || '';
+  // ============================================================================
+  // PRIMARY: Extract from HTML structure - this has URLs!
+  // Pattern: <p><img alt="Thumbs Up/Sideways"> Critic, <a href="URL">Outlet:</a> excerpt</p>
+  // ============================================================================
 
-      // Look for liveBlogUpdate in the articleBody (it's embedded as JSON string)
-      const liveBlogMatch = articleBody.match(/"liveBlogUpdate":\s*\[([\s\S]*?)\]\s*\}/);
+  // Match <p> tags containing review structure: img + critic + link + excerpt
+  // The pattern captures reviews with the format we found in the HTML
+  const reviewBlockRegex = /<p[^>]*>\s*(?:<img[^>]*alt="([^"]*)"[^>]*>)?\s*\n?\s*([^<,]+),\s*<a[^>]*href="([^"]+)"[^>]*>([^<:]+):?\s*<\/a>\s*([\s\S]*?)<\/p>/gi;
 
-      // Alternative: extract from HTML which has the JSON embedded
-      const liveBlogHtmlMatch = html.match(/"liveBlogUpdate":\s*\[([\s\S]*?)\]\s*\}/);
+  let match;
+  while ((match = reviewBlockRegex.exec(html)) !== null) {
+    const [, thumbAlt, criticName, url, outletName, excerpt] = match;
 
-      let liveBlogData = null;
-      if (liveBlogMatch || liveBlogHtmlMatch) {
-        const matchStr = liveBlogMatch ? liveBlogMatch[0] : liveBlogHtmlMatch[0];
-        try {
-          const wrapper = JSON.parse('{' + matchStr + '}');
-          liveBlogData = wrapper.liveBlogUpdate;
-        } catch (e) {
-          // Try individual parsing
-        }
+    // Clean up the extracted values
+    const cleanCritic = (criticName || '').trim();
+    const cleanOutlet = (outletName || '').replace(/:$/, '').trim();
+    const cleanExcerpt = (excerpt || '').replace(/<[^>]+>/g, '').trim();
+    const cleanUrl = (url || '').trim();
+
+    // Skip if no meaningful content
+    if (!cleanOutlet || cleanExcerpt.length < 30) continue;
+
+    // Skip BWW internal links
+    if (cleanUrl.includes('broadwayworld.com')) continue;
+
+    const outletInfo = mapOutlet(cleanOutlet);
+    if (!outletInfo) continue;
+
+    // Check for duplicates
+    const dedupKey = `${outletInfo.outletId}-${slugify(cleanCritic)}`;
+    if (foundOutlets.has(dedupKey)) continue;
+    foundOutlets.add(dedupKey);
+
+    // Determine thumb from image alt text
+    let bwwThumb = null;
+    if (thumbAlt) {
+      if (thumbAlt.toLowerCase().includes('up')) {
+        bwwThumb = 'Up';
+      } else if (thumbAlt.toLowerCase().includes('sideways') || thumbAlt.toLowerCase().includes('mid')) {
+        bwwThumb = 'Meh';
+      } else if (thumbAlt.toLowerCase().includes('down')) {
+        bwwThumb = 'Down';
       }
+    }
 
-      if (liveBlogData && Array.isArray(liveBlogData)) {
-        console.log(`    Found ${liveBlogData.length} reviews in liveBlogUpdate`);
+    reviews.push({
+      showId,
+      outletId: outletInfo.outletId,
+      outlet: outletInfo.outlet,
+      criticName: cleanCritic || 'Unknown',
+      url: cleanUrl || null,
+      publishDate: null,
+      bwwExcerpt: cleanExcerpt.substring(0, 500),
+      bwwRoundupUrl: bwwUrl,
+      bwwThumb,
+      source: 'bww-roundup',
+    });
+  }
 
-        for (const blogPost of liveBlogData) {
-          const headline = blogPost.headline || '';
-          const excerpt = blogPost.articleBody || '';
-          const datePublished = blogPost.datePublished || null;
+  if (reviews.length > 0) {
+    console.log(`    Extracted ${reviews.length} reviews from HTML structure (with URLs)`);
+    const withUrls = reviews.filter(r => r.url).length;
+    console.log(`    ${withUrls}/${reviews.length} have direct review URLs`);
+  }
 
-          // Parse outlet from headline: "Outlet Name - Review Title"
-          const headlineParts = headline.split(' - ');
-          if (headlineParts.length >= 1) {
-            const outletRaw = headlineParts[0].trim();
-            const outletInfo = mapOutlet(outletRaw);
+  // ============================================================================
+  // FALLBACK: Extract from JSON-LD liveBlogUpdate (no URLs, but good excerpts)
+  // ============================================================================
+  if (reviews.length === 0) {
+    const jsonLdMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    if (jsonLdMatch) {
+      try {
+        const jsonLd = JSON.parse(jsonLdMatch[1]);
+        const articleBody = jsonLd.articleBody || '';
 
-            if (outletInfo && !foundOutlets.has(outletInfo.outletId)) {
-              foundOutlets.add(outletInfo.outletId);
+        // Look for liveBlogUpdate in the articleBody (it's embedded as JSON string)
+        const liveBlogMatch = articleBody.match(/"liveBlogUpdate":\s*\[([\s\S]*?)\]\s*\}/);
 
-              reviews.push({
-                showId,
-                outletId: outletInfo.outletId,
-                outlet: outletInfo.outlet,
-                criticName: 'Unknown', // Will be enhanced by articleBody parsing
-                url: null, // BWW roundups don't have individual URLs
-                publishDate: datePublished ? new Date(datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : null,
-                bwwExcerpt: excerpt.substring(0, 500),
-                bwwRoundupUrl: bwwUrl,
-                source: 'bww-roundup',
-              });
-            }
+        // Alternative: extract from HTML which has the JSON embedded
+        const liveBlogHtmlMatch = html.match(/"liveBlogUpdate":\s*\[([\s\S]*?)\]\s*\}/);
+
+        let liveBlogData = null;
+        if (liveBlogMatch || liveBlogHtmlMatch) {
+          const matchStr = liveBlogMatch ? liveBlogMatch[0] : liveBlogHtmlMatch[0];
+          try {
+            const wrapper = JSON.parse('{' + matchStr + '}');
+            liveBlogData = wrapper.liveBlogUpdate;
+          } catch (e) {
+            // Try individual parsing
           }
         }
-      }
 
-      // Also parse articleBody for critic names using pattern matching
-      if (articleBody) {
-        // Generic pattern: "Critic Name, Outlet: excerpt"
-        const genericPattern = /([A-Z][A-Za-z.]+(?:\s+[A-Z][A-Za-z.]+)+),\s*((?:The\s+)?[A-Z][A-Za-z\s'\-]+?):\s*([\s\S]*?)(?=\s{2,}[A-Z][A-Za-z.]+(?:\s+[A-Z][A-Za-z.]+)+,|\n\n|$)/g;
+        if (liveBlogData && Array.isArray(liveBlogData)) {
+          console.log(`    Found ${liveBlogData.length} reviews in liveBlogUpdate (fallback)`);
 
-        let genericMatch;
-        while ((genericMatch = genericPattern.exec(articleBody)) !== null) {
-          const [, criticName, outletName, excerpt] = genericMatch;
-          if (criticName && outletName && excerpt && excerpt.length > 30) {
-            const critic = criticName.trim();
-            const outletInfo = mapOutlet(outletName.trim());
+          for (const blogPost of liveBlogData) {
+            const headline = blogPost.headline || '';
+            const excerpt = blogPost.articleBody || '';
+            const datePublished = blogPost.datePublished || null;
 
-            if (outletInfo) {
-              // Find matching review and add critic name
-              const matchingReview = reviews.find(r => r.outletId === outletInfo.outletId);
-              if (matchingReview && matchingReview.criticName === 'Unknown') {
-                matchingReview.criticName = critic;
-              } else if (!foundOutlets.has(outletInfo.outletId)) {
-                // Add new review if not found via liveBlogUpdate
+            // Parse outlet from headline: "Outlet Name - Review Title"
+            const headlineParts = headline.split(' - ');
+            if (headlineParts.length >= 1) {
+              const outletRaw = headlineParts[0].trim();
+              const outletInfo = mapOutlet(outletRaw);
+
+              if (outletInfo && !foundOutlets.has(outletInfo.outletId)) {
                 foundOutlets.add(outletInfo.outletId);
+
                 reviews.push({
                   showId,
                   outletId: outletInfo.outletId,
                   outlet: outletInfo.outlet,
-                  criticName: critic,
-                  url: null,
-                  bwwExcerpt: excerpt.trim().substring(0, 500),
+                  criticName: 'Unknown',
+                  url: null, // JSON-LD doesn't have URLs
+                  publishDate: datePublished ? new Date(datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : null,
+                  bwwExcerpt: excerpt.substring(0, 500),
                   bwwRoundupUrl: bwwUrl,
                   source: 'bww-roundup',
                 });
@@ -404,18 +439,56 @@ function extractBWWReviews(html, showId, bwwUrl) {
             }
           }
         }
-      }
 
-      if (reviews.length > 0) {
-        console.log(`    Extracted ${reviews.length} reviews from BWW JSON-LD`);
-      }
+        // Also parse articleBody for critic names using pattern matching
+        if (articleBody) {
+          // Generic pattern: "Critic Name, Outlet: excerpt"
+          const genericPattern = /([A-Z][A-Za-z.]+(?:\s+[A-Z][A-Za-z.]+)+),\s*((?:The\s+)?[A-Z][A-Za-z\s'\-]+?):\s*([\s\S]*?)(?=\s{2,}[A-Z][A-Za-z.]+(?:\s+[A-Z][A-Za-z.]+)+,|\n\n|$)/g;
 
-    } catch (e) {
-      console.log(`    Error parsing BWW JSON-LD: ${e.message}`);
+          let genericMatch;
+          while ((genericMatch = genericPattern.exec(articleBody)) !== null) {
+            const [, criticName, outletName, excerpt] = genericMatch;
+            if (criticName && outletName && excerpt && excerpt.length > 30) {
+              const critic = criticName.trim();
+              const outletInfo = mapOutlet(outletName.trim());
+
+              if (outletInfo) {
+                // Find matching review and add critic name
+                const matchingReview = reviews.find(r => r.outletId === outletInfo.outletId);
+                if (matchingReview && matchingReview.criticName === 'Unknown') {
+                  matchingReview.criticName = critic;
+                } else if (!foundOutlets.has(outletInfo.outletId)) {
+                  // Add new review if not found via liveBlogUpdate
+                  foundOutlets.add(outletInfo.outletId);
+                  reviews.push({
+                    showId,
+                    outletId: outletInfo.outletId,
+                    outlet: outletInfo.outlet,
+                    criticName: critic,
+                    url: null,
+                    bwwExcerpt: excerpt.trim().substring(0, 500),
+                    bwwRoundupUrl: bwwUrl,
+                    source: 'bww-roundup',
+                  });
+                }
+              }
+            }
+          }
+        }
+
+        if (reviews.length > 0) {
+          console.log(`    Extracted ${reviews.length} reviews from BWW JSON-LD`);
+        }
+
+      } catch (e) {
+        console.log(`    Error parsing BWW JSON-LD: ${e.message}`);
+      }
     }
   }
 
-  // Fallback: Try to extract from HTML structure if JSON-LD parsing found nothing
+  // ============================================================================
+  // SECONDARY FALLBACK: HTML structure with strong/b tags
+  // ============================================================================
   if (reviews.length === 0) {
     const reviewSections = html.match(/<p[^>]*>.*?(?:<strong>|<b>).*?(?:<\/strong>|<\/b>).*?<\/p>/gi) || [];
 
@@ -459,47 +532,57 @@ function extractBWWReviews(html, showId, bwwUrl) {
       }
     }
 
-    console.log(`    Extracted ${reviews.length} reviews from HTML fallback`);
+    console.log(`    Extracted ${reviews.length} reviews from HTML fallback (strong/b tags)`);
   }
 
-  // Try to extract individual review URLs from HTML hyperlinks
-  // BWW sometimes includes links to original reviews
+  // ============================================================================
+  // ENHANCEMENT: Try to match any remaining URLs to reviews that don't have them
+  // ============================================================================
   const urlPatterns = [
-    { pattern: /nytimes\.com/i, outletId: 'nytimes' },
-    { pattern: /vulture\.com/i, outletId: 'vulture' },
-    { pattern: /variety\.com/i, outletId: 'variety' },
-    { pattern: /hollywoodreporter\.com/i, outletId: 'thr' },
-    { pattern: /nypost\.com/i, outletId: 'nyp' },
-    { pattern: /deadline\.com/i, outletId: 'deadline' },
-    { pattern: /timeout\.com/i, outletId: 'time-out-new-york' },
-    { pattern: /theatermania\.com/i, outletId: 'theatermania' },
-    { pattern: /theatrely\.com/i, outletId: 'theatrely' },
-    { pattern: /thewrap\.com/i, outletId: 'the-wrap' },
-    { pattern: /ew\.com/i, outletId: 'ew' },
-    { pattern: /wsj\.com/i, outletId: 'wsj' },
-    { pattern: /newyorker\.com/i, outletId: 'new-yorker' },
-    { pattern: /theguardian\.com/i, outletId: 'guardian' },
+    { pattern: /nytimes\.com/i, outletIds: ['nytimes', 'nyt', 'new-york-times'] },
+    { pattern: /vulture\.com/i, outletIds: ['vulture'] },
+    { pattern: /variety\.com/i, outletIds: ['variety'] },
+    { pattern: /hollywoodreporter\.com/i, outletIds: ['thr', 'hollywood-reporter', 'the-hollywood-reporter'] },
+    { pattern: /nypost\.com/i, outletIds: ['nyp', 'nypost', 'new-york-post'] },
+    { pattern: /deadline\.com/i, outletIds: ['deadline'] },
+    { pattern: /timeout\.com/i, outletIds: ['time-out-new-york', 'timeout', 'time-out'] },
+    { pattern: /theatermania\.com/i, outletIds: ['theatermania'] },
+    { pattern: /theatrely\.com/i, outletIds: ['theatrely'] },
+    { pattern: /thewrap\.com/i, outletIds: ['the-wrap', 'thewrap', 'wrap'] },
+    { pattern: /ew\.com/i, outletIds: ['ew', 'entertainment-weekly'] },
+    { pattern: /wsj\.com/i, outletIds: ['wsj', 'wall-street-journal'] },
+    { pattern: /newyorker\.com/i, outletIds: ['new-yorker', 'newyorker', 'the-new-yorker'] },
+    { pattern: /theguardian\.com/i, outletIds: ['guardian', 'the-guardian'] },
+    { pattern: /washingtonpost\.com/i, outletIds: ['wapo', 'washington-post', 'the-washington-post'] },
+    { pattern: /nydailynews\.com/i, outletIds: ['nydn', 'ny-daily-news', 'new-york-daily-news'] },
+    { pattern: /observer\.com/i, outletIds: ['observer'] },
+    { pattern: /thestage\.co\.uk/i, outletIds: ['the-stage', 'stage'] },
+    { pattern: /cititour\.com/i, outletIds: ['cititour'] },
+    { pattern: /newyorktheater\.me/i, outletIds: ['nyt-theater', 'new-york-theater'] },
+    { pattern: /newyorktheatreguide\.com/i, outletIds: ['nytg', 'new-york-theatre-guide'] },
+    { pattern: /nystagereview\.com/i, outletIds: ['nysr', 'new-york-stage-review'] },
   ];
 
-  // Find all external URLs in the HTML
+  // Find all external URLs in the HTML that we haven't matched yet
   const urlRegex = /href="(https?:\/\/[^"]+)"/gi;
   let urlMatch;
   while ((urlMatch = urlRegex.exec(html)) !== null) {
     const url = urlMatch[1];
     // Skip BWW internal links and social media
     if (url.includes('broadwayworld.com') || url.includes('twitter.com') ||
-        url.includes('facebook.com') || url.includes('instagram.com')) {
+        url.includes('facebook.com') || url.includes('instagram.com') ||
+        url.includes('x.com') || url.includes('tiktok.com')) {
       continue;
     }
 
     // Try to match URL to an outlet
-    for (const { pattern, outletId } of urlPatterns) {
+    for (const { pattern, outletIds } of urlPatterns) {
       if (pattern.test(url)) {
-        const matchingReview = reviews.find(r => r.outletId === outletId);
-        if (matchingReview && !matchingReview.url) {
+        // Find any review with matching outletId that doesn't have a URL
+        const matchingReview = reviews.find(r => outletIds.includes(r.outletId) && !r.url);
+        if (matchingReview) {
           matchingReview.url = url;
-          matchingReview.bwwUrl = url; // Also save as bwwUrl field
-          console.log(`    Found URL for ${outletId}: ${url.substring(0, 60)}...`);
+          console.log(`    Matched URL for ${matchingReview.outletId}: ${url.substring(0, 60)}...`);
         }
         break;
       }
@@ -629,6 +712,14 @@ function saveReview(review) {
     const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
 
     let updated = false;
+
+    // Always update URL if we have one and existing doesn't
+    if (!existing.url && review.url) {
+      existing.url = review.url;
+      updated = true;
+      console.log(`      Added URL to ${filename}`);
+    }
+
     if (!existing.bwwExcerpt && review.bwwExcerpt) {
       existing.bwwExcerpt = review.bwwExcerpt;
       updated = true;
@@ -638,13 +729,18 @@ function saveReview(review) {
       updated = true;
     }
 
+    // Add BWW thumb if we have it
+    if (!existing.bwwThumb && review.bwwThumb) {
+      existing.bwwThumb = review.bwwThumb;
+      updated = true;
+    }
+
     if (updated) {
       fs.writeFileSync(filepath, JSON.stringify(existing, null, 2));
       console.log(`      Updated ${filename} with BWW data`);
-      return { created: false, updated: true };
+      return { created: false, updated: true, urlAdded: !!(review.url && !existing.url) };
     } else {
-      console.log(`      Skipped ${filename} (already has BWW data)`);
-      return { created: false, updated: false };
+      return { created: false, updated: false, urlAdded: false };
     }
   }
 
@@ -655,11 +751,12 @@ function saveReview(review) {
     outlet: review.outlet,
     criticName: review.criticName,
     url: review.url,
-    publishDate: null,
+    publishDate: review.publishDate || null,
     fullText: null,
     isFullReview: false,
     bwwExcerpt: review.bwwExcerpt,
     bwwRoundupUrl: review.bwwRoundupUrl,
+    bwwThumb: review.bwwThumb || null,
     originalScore: null,
     assignedScore: null,
     source: 'bww-roundup',
@@ -669,7 +766,7 @@ function saveReview(review) {
 
   fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2));
   console.log(`      Created ${filename}`);
-  return { created: true, updated: false };
+  return { created: true, updated: false, urlAdded: !!review.url };
 }
 
 /**
@@ -718,21 +815,27 @@ async function processShow(show) {
   // Save reviews
   let created = 0;
   let updated = 0;
+  let urlsAdded = 0;
+  const reviewsWithUrls = reviews.filter(r => r.url).length;
 
   for (const review of reviews) {
     const result = saveReview(review);
     if (result.created) created++;
     if (result.updated) updated++;
+    if (result.urlAdded) urlsAdded++;
   }
 
   console.log(`\n  Summary: ${reviews.length} reviews found, ${created} created, ${updated} updated`);
+  console.log(`  URLs: ${reviewsWithUrls}/${reviews.length} extracted, ${urlsAdded} added to existing files`);
 
   return {
     success: true,
     showId: show.id,
     reviewsFound: reviews.length,
+    reviewsWithUrls,
     created,
     updated,
+    urlsAdded,
   };
 }
 
@@ -799,14 +902,18 @@ async function main() {
   let totalFound = 0;
   let totalCreated = 0;
   let totalUpdated = 0;
+  let totalUrlsExtracted = 0;
+  let totalUrlsAdded = 0;
   let notFound = 0;
 
   for (const r of results) {
     if (r.success) {
-      console.log(`✓ ${r.showId}: ${r.reviewsFound} reviews (${r.created} new, ${r.updated} updated)`);
+      console.log(`✓ ${r.showId}: ${r.reviewsFound} reviews (${r.created} new, ${r.updated} updated, ${r.urlsAdded || 0} URLs added)`);
       totalFound += r.reviewsFound;
       totalCreated += r.created;
       totalUpdated += r.updated;
+      totalUrlsExtracted += r.reviewsWithUrls || 0;
+      totalUrlsAdded += r.urlsAdded || 0;
     } else {
       console.log(`✗ ${r.showId || 'unknown'}: ${r.error}`);
       notFound++;
@@ -814,6 +921,7 @@ async function main() {
   }
 
   console.log(`\nTotal: ${totalFound} reviews found, ${totalCreated} created, ${totalUpdated} updated`);
+  console.log(`URLs: ${totalUrlsExtracted} extracted from BWW pages, ${totalUrlsAdded} added to existing review files`);
   console.log(`Shows not found on BWW: ${notFound}`);
 }
 
