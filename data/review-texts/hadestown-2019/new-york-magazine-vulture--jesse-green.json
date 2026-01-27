@@ -10,7 +10,7 @@
   "showScoreExcerpt": "“The likelihood of enjoyment may depend on your willingness to accept that what you are watching is not in fact a musical but more of an illustrated pop concert, if a very pretty one. On the other hand, if you go in hoping for a story told through song, the traditional province of musical theater, you will be very much disappointed...Luckily the singing is generally excellent...When almost everything is narrated, the lack of variety dulls emotion and smothers the pulse.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/hadestown-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250613161952",
-  "archiveOrgUrl": "http://web.archive.org/web/20250613161952/https://www.vulture.com/2016/05/theater-review-hadestown.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250613161952/https://www.vulture.com/2016/05/theater-review-hadestown.html",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 73,
+      "performances": 73,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "if you go in hoping for a story told through song, the traditional province of musical theater, you will be very much disappointed",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the singing is generally excellent; the six-person band, under the music direction of Liam Robinson, is always so",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "If you attend with those expectations, you'll come out happy",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant structural and storytelling flaws while praising the musical performances, ultimately suggesting enjoyment depends on adjusted expectations rather than giving a clear recommendation. | GPT-4o-mini: The review presents a mixed perspective, praising the music and performances while criticizing the storytelling and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:10.164Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
