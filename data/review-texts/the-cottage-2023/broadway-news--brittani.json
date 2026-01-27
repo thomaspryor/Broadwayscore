@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Audience members seemed eager to yield to Rustin’s shticks and howl along, but in reality there’s more delight in looking at “The Cottage” than laughing along to it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/the-cottage/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 65,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's more delight in looking at \"The Cottage\" than laughing along to it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Audience members seemed eager to yield to Rustin's shticks and howl along",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "more delight in looking at 'The Cottage' than laughing along to it",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic suggests the show is more visually appealing than comedically successful, implying the core entertainment value is lacking despite audience engagement. | GPT-4o-mini: The review suggests a lack of genuine humor and enjoyment, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:12.962Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

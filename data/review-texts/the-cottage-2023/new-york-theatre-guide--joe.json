@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "The Cottage is an airy — and gassy — comedy about cheating. Sandy Rustin wrote the play with a single-minded mission — to keep you in stitches — and it largely hits the mark.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-cottage/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 72.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "largely hits the mark",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "to keep you in stitches",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "airy — and gassy — comedy",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the play's clear comedic mission and states it 'largely hits the mark' at achieving laughs, indicating a successful production that delivers on its promise. | GPT-4o-mini: The review indicates a strong enjoyment of the comedy's execution, suggesting a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:44.380Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 80,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
