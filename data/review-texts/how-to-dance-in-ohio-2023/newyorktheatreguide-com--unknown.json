@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“At the heart of the wonderfully performed but uneven musical ‘How to Dance in Ohio’ beats a reality for its key characters that is at once simple and profound...in the end, this worthwhile musical finds the steps to an upbeat last dance.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 75,
+      "performances": 85,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Read our four-star review of How to Dance in Ohio",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "wonderfully performed but uneven musical",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "this worthwhile musical finds the steps to an upbeat last dance",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Four-star review that praises performances and music while acknowledging narrative issues, ultimately recommending it as 'worthwhile' despite being 'uneven.'",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:24.927Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

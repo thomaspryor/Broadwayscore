@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, about teenagers on the autism spectrum preparing for a spring formal, is tender and authentic, but it struggles to find its dramatic footing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 72,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "tender and authentic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "struggles to find its dramatic footing",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review balances significant praise for the show's emotional authenticity with a major structural criticism about dramatic coherence, suggesting a mixed experience without clear recommendation. | GPT-4o-mini: The review expresses a mix of appreciation for the show's authenticity while highlighting significant issues with its dramatic execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:19.880Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

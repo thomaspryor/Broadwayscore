@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The meaningful, welcome impact of How to Dance in Ohio is the twinned jolt of emotion and insight into a world you may not—if you are not autistic—have had much notion of. It’s that wonderful jolt you get when you hear or see or understand a new story, or a set of new perspectives.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 86,
+      "performances": 93,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "How to Dance in Ohio, is the most original new musical on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "By the end of Rebecca Greer Melocik (book and lyrics) and Jacob Yandura's (music) zesty, powerful Broadway musical you will see the world if not differently, then in a more expansive way. It will stay with you.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It is, like the rest of How to Dance in Ohio, a funny, joyful, and cheering assertion of both diversity and self-determination.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic declares this 'the most original new musical on Broadway' and consistently praises its emotional impact, performances, and meaningful representation, with only minor structural critiques. | GPT-4o-mini: The review expresses strong enthusiasm and praise for the musical's originality, emotional impact, and performances, indicating it as a must-see show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:23.727Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

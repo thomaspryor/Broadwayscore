@@ -7,7 +7,63 @@
   "publishDate": "December 10, 2023",
   "fullText": "But as groundbreaking as “How To Dance” is as an idea, its execution across the board does not match its admirable intentions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "groundbreaking as an idea",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "its execution across the board does not match its admirable intentions",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "its execution across the board does not match its admirable intentions.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite praising the concept as groundbreaking, the critic clearly states that execution fails across all elements, indicating significant disappointment and inability to recommend. | GPT-4o-mini: The review indicates significant shortcomings in execution despite acknowledging the show's ambitious concept, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:38.318Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
