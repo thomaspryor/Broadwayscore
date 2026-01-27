@@ -75,8 +75,8 @@ interface LotteryTableProps {
 }
 
 export function LotteryTable({ data }: LotteryTableProps) {
-  const [sortColumn, setSortColumn] = useState<LotteryColumn>('price');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [sortColumn, setSortColumn] = useState<LotteryColumn>('score');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
 
   const handleSort = (column: LotteryColumn) => {
     if (sortColumn === column) {
@@ -184,15 +184,16 @@ export function LotteryTable({ data }: LotteryTableProps) {
                     {lottery?.platform || special?.platform || '—'}
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell">
-                    <span className={`font-bold ${
-                      score === undefined || score === null ? 'text-gray-500' :
-                      score >= 85 ? 'text-emerald-400' :
-                      score >= 75 ? 'text-blue-400' :
-                      score >= 65 ? 'text-yellow-400' :
-                      'text-gray-400'
+                    <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg text-sm font-bold ${
+                      score === undefined || score === null ? 'bg-surface-overlay text-gray-500' :
+                      score >= 85 ? 'score-must-see' :
+                      score >= 75 ? 'score-great' :
+                      score >= 65 ? 'score-good' :
+                      score >= 55 ? 'score-tepid' :
+                      'score-skip'
                     }`}>
                       {score !== undefined && score !== null ? Math.round(score) : '—'}
-                    </span>
+                    </div>
                   </td>
                   <td className="py-3 px-4 text-center hidden lg:table-cell">
                     <div className="flex flex-wrap gap-1 justify-center">
@@ -259,8 +260,8 @@ interface RushTableProps {
 }
 
 export function RushTable({ data }: RushTableProps) {
-  const [sortColumn, setSortColumn] = useState<RushColumn>('price');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [sortColumn, setSortColumn] = useState<RushColumn>('score');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
 
   const handleSort = (column: RushColumn) => {
     if (sortColumn === column) {
@@ -386,15 +387,16 @@ export function RushTable({ data }: RushTableProps) {
                     </div>
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell">
-                    <span className={`font-bold ${
-                      score === undefined || score === null ? 'text-gray-500' :
-                      score >= 85 ? 'text-emerald-400' :
-                      score >= 75 ? 'text-blue-400' :
-                      score >= 65 ? 'text-yellow-400' :
-                      'text-gray-400'
+                    <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg text-sm font-bold ${
+                      score === undefined || score === null ? 'bg-surface-overlay text-gray-500' :
+                      score >= 85 ? 'score-must-see' :
+                      score >= 75 ? 'score-great' :
+                      score >= 65 ? 'score-good' :
+                      score >= 55 ? 'score-tepid' :
+                      'score-skip'
                     }`}>
                       {score !== undefined && score !== null ? Math.round(score) : '—'}
-                    </span>
+                    </div>
                   </td>
                   <td className="py-3 px-4 text-center hidden lg:table-cell">
                     <div className="flex flex-wrap gap-1 justify-center">
