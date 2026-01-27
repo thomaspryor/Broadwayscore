@@ -71,18 +71,12 @@
   },
   "textWordCount": 166,
   "archivePath": "data/archives/reviews/wicked-2003/ew-com--unknown_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T05:35:24.876Z",
+  "textFetchedAt": "2026-01-27T14:52:26.253Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "404 - Page not found"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
