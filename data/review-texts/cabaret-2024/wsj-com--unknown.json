@@ -5,7 +5,7 @@
   "criticName": "Unknown",
   "url": "https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neuwirth-broadway-revival-7905c413",
   "publishDate": null,
-  "fullText": "\"...theatrically sizzling if emotionally tepid Broadway revival of 'Cabaret'.\"\n\nRead more",
+  "fullText": "https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neuwirth-broadway-revival-7905c413\n\nEddie Redmayne in ‘Cabaret’ on Broadway. Photo: Marc BrennerNew York\n\nEven the most decadent denizens of Berlin in the Weimar era—such as a sinewy androgyne presiding as the Emcee at a nightclub where anything goes, sexually speaking—prove to be susceptible to the poisonous seductions of the ascendant Nazis in the theatrically sizzling if emotionally tepid Broadway revival of “Cabaret.”\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "isFullReview": false,
   "dtliExcerpt": "\"...theatrically sizzling if emotionally tepid Broadway revival of 'Cabaret'.\"\n\nRead more",
   "originalScore": null,
@@ -63,5 +63,43 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textStatus": "partial",
+  "textWordCount": 87,
+  "archivePath": "data/archives/reviews/cabaret-2024/wsj-com--unknown_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T04:54:27.032Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20240917212713",
+  "archiveOrgUrl": "http://web.archive.org/web/20240917212713/https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neuwirth-broadway-revival-7905c413",
+  "textIssues": [
+    "Word count too low: 87 (min: 300)"
+  ]
 }
