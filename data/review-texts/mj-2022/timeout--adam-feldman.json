@@ -69,10 +69,10 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "textWordCount": 228,
   "archivePath": "data/archives/reviews/mj-2022/timeout--adam-feldman_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:42:45.517Z",
+  "textFetchedAt": "2026-01-27T15:05:10.443Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -94,10 +94,15 @@
     }
   ],
   "fetchTier": 3,
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 228 (min: 300)",
     "Show title not found in text"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
   ]
 }
