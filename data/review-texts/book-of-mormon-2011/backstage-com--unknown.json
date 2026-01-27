@@ -13,10 +13,10 @@
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "textWordCount": 110,
   "archivePath": "data/archives/reviews/book-of-mormon-2011/backstage-com--unknown_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:30:25.827Z",
+  "textFetchedAt": "2026-01-27T05:08:42.816Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -44,7 +44,7 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20160603215456",
   "archiveOrgUrl": "http://web.archive.org/web/20160603215456/http://www.backstage.com:80/review/ny-theater/broadway/the-book-of-mormon/",
@@ -90,5 +90,10 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ]
 }
