@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250605190117/https://nypost.com/2024/03/18/entertainment/an-enemy-of-the-people-review-jeremy-strong-and-michael-imperioli-duke-it-out-on-broadway/",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": null,
+      "performances": 83,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "Excellent performances like these are all this play needs to be forceful and pulse-pounding",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Gold, whose Broadway 'Macbeth' starring Daniel Craig was a bells-and-whistles disaster, nearly bungles it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Strong is surrounded by great actors",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the excellent performances and compelling material but criticizes the director's choices, ultimately finding more strengths than weaknesses despite significant reservations. | GPT-4o-mini: The review highlights strong performances but expresses significant concerns about the direction and some choices that detract from the overall impact, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:43.339Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

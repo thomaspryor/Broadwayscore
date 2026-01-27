@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,5 +30,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 68,
+      "performances": 83,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "D'Arcy James and especially the luscious-voiced O'Hara sound fantastic performing Guettel's dauntingly complex score",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this is an off-putting exercise on both a narrative and a musical level — one that may leaving you pining for less wine and many more roses",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "makes up in tricky chromatic phrasing and time signatures what it lacks in harmonic earworms",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the stellar performances and sophisticated musicality but ultimately finds the show 'off-putting' and difficult to recommend, landing in mixed territory with a slight lean toward negative. | GPT-4o-mini: The review highlights strong performances and music but expresses significant concerns about the narrative structure, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:14.068Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

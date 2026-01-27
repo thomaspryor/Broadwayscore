@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250328165525/https://theaterpizzazz.com/the-shark-is-broken-an-amusing-self-aggrandized-play/",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "waste of time"
+  "extractedPhrase": "waste of time",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 74,
+      "direction": 76
+    },
+    "keyPhrases": [
+      {
+        "quote": "The piece manages to incorporate character idiosyncrasies, relationships, and events with clarity and economy. It's revealing and smart/funny.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Broadway venue and price, however, feels out of proportion.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Director Guy Masterson channels deft mannerisms for each actor portrayed. Using the confined set with imagination and veracity, he makes the boat seem more spacious.",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the play's writing, direction, and performances while expressing concern about the Broadway venue being inappropriate for the material's scope, suggesting qualified approval.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:40.327Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

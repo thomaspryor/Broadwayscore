@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Thirty or so years ago, Vogel told a reporter, “I like theater that makes me feel like it’s a healing.” That’s what “Mother Play” is, a balm that comes in cardboard boxes and packing tape. It honors the dead by making them alive again and nurtures the living by providing a place to put a daughter’s love and rage. Martha’s box is not Pandora’s. It’s just another way of organizing a life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/mother-play/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's what 'Mother Play' is, a balm that comes in cardboard boxes and packing tape",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It honors the dead by making them alive again and nurtures the living by providing a place to put a daughter's love and rage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I like theater that makes me feel like it's a healing",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses deeply appreciative language describing the play as healing and nurturing, with metaphorical praise for how it handles themes of memory and loss, indicating strong positive sentiment despite the poetic, measured tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:50.939Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

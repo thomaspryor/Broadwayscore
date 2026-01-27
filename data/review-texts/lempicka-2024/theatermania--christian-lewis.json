@@ -7,7 +7,63 @@
   "publishDate": "April 14, 2024",
   "fullText": "Lempicka is an undeniably compelling and original piece of art, unique within a season dominated by musicals based on existing films or musical catalogs. It will be deeply meaningful to those who will find resonance in its various thematic threads, from the struggles of artists and the desire for a legacy, to the precarity of queer people.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "undeniably compelling and original piece of art",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "unique within a season dominated by musicals based on existing films or musical catalogs",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "deeply meaningful to those who will find resonance in its various thematic threads",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for originality and thematic depth, but the qualified language ('to those who will find resonance') suggests limited appeal rather than universal recommendation. | GPT-4o-mini: The review expresses strong appreciation for the originality and thematic depth of the piece, indicating a clear recommendation despite a lack of specific critiques.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:36.531Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

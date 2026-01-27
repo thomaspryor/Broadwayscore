@@ -10,8 +10,64 @@
   "bwwExcerpt": "“Gutenberg! The Musical!” certainly knows how to structure narrative gags, replete with little bits of emotion immediately followed by jokes structured so as to cut the treacle. And it does have a little scenic climax that’s well worth waiting for, and that goes at least some way toward justifying those Broadway prices for this kind of off Broadway-style entertainment, familiar to anyone who enjoys improv and sketch comedy. But the reality here is that this is a show relying on two skilled comic",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 63,
+      "music": null,
+      "performances": 70,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "certainly knows how to structure narrative gags",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "does have a little scenic climax that's well worth waiting for",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "this is a show relying on two skilled comic",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges structural competence and some worthwhile moments but the excerpt cuts off mid-sentence and lacks a clear overall recommendation, suggesting measured praise without strong enthusiasm. | GPT-4o-mini: The review acknowledges some strengths in humor and structure but suggests a reliance on comic performances without strong overall enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:34.473Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

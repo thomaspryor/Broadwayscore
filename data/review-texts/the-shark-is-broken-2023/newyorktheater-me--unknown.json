@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": null,
+      "performances": 74,
+      "direction": 66
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production is not an embarrassment. All three actors give uncanny impersonations that sometimes shade into nuanced portraits.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The main question, though, is why: Why do a backstage comedy about 'Jaws' almost half a century after its release?",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "much of the appeal of 'The Shark Is Broken' is any different from what draws us to a cheesy biopic",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges solid performances and production values but fundamentally questions the show's reason for existing and compares it unfavorably to 'cheesy biopics,' suggesting qualified interest rather than enthusiasm. | GPT-4o-mini: The review presents a mixed view, praising performances while questioning the play's relevance and originality, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:29.620Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

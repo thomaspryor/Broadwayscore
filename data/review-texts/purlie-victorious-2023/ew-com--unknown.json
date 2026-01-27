@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“The pleasures of ’Purlie Victorious’ aren't just verbal. The high-energy production often has the physicality of a top-notch farce, with characters running back and forth across the stage...’Purlie Victorious’ manages to have fun without shying away from the historical reality of Black oppression.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -46,5 +46,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-grade",
   "scoreConfidence": "medium",
-  "extractedGrade": "B"
+  "extractedGrade": "B",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "So it's a welcome development to see the charismatic actor return to Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The pleasures of Purlie Victorious aren't just verbal. The high-energy production often has the physicality of a top-notch farce",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Grade: B+",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: A B+ grade with consistent praise for performances, dialogue, and production values, calling it a 'welcome development' and highlighting multiple strengths with no significant criticisms.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:31.184Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

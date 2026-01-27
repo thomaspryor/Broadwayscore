@@ -7,7 +7,63 @@
   "publishDate": "January 9, 2024",
   "fullText": "As a theatergoing experience, however, the three-hour Prayer for the French Republic is less effectively timed. The play premiered in early 2022 at Manhattan Theatre Club; Dravid Cromer’s production has now moved to MTC’s Broadway venue, the Samuel J. Friedman Theatre. But in the gap between these two mountings, New York got a 10-month run of Tom Stoppard’s Leopoldstadt, which approached the same core issues—the persistence of antisemitism, and the debates about fitting in that surround it—with more gravity, scope and finesse. By comparison, flaws that were already noticeable Off Broadway seem more pronounced.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "flaws that were already noticeable Off Broadway seem more pronounced",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "approached the same core issues with more gravity, scope and finesse",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "less effectively timed",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic identifies structural timing issues and notes that existing flaws have become more pronounced, while unfavorably comparing the production to Stoppard's superior treatment of similar themes. | GPT-4o-mini: The review highlights significant flaws and compares the production unfavorably to another, indicating a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:52.581Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

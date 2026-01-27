@@ -10,8 +10,64 @@
   "bwwExcerpt": "At times it seems like Vogel has been inspired by Tennessee Williams’ The Glass Menagerie. At other times—with that problematic mother losing composure during a series of revealing telephone calls, that ignored and emotionally damaged daughter, that son itching to leave home and go out into the dangerous world—it seems like Vogel is consciously giving us an updated version of what might or could have happened to those forlorn Wingfields had they, and Williams, existed 30 years later. In any even",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "inspired by Tennessee Williams' The Glass Menagerie",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "that problematic mother",
+        "sentiment": "negative",
+        "strength": 2
+      },
+      {
+        "quote": "consciously giving us an updated version",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This incomplete excerpt provides analytical commentary comparing the work to Williams but offers no clear evaluative judgment or recommendation. | GPT-4o-mini: The review suggests a thoughtful exploration of themes but lacks strong enthusiasm or clear recommendation, indicating a mixed-positive sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:44.457Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

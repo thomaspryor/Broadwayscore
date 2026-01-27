@@ -7,7 +7,63 @@
   "publishDate": "August 10, 2023",
   "fullText": "Fun summer movies are being turned into dreary summer theater this August. The tone-deaf “Back to the Future” musical is now followed by “The Shark Is Broken,” written by Ian Shaw and Joseph Nixon, which tells the behind-the-scenes story of the making of “Jaws.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "dreary summer theater",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "tone-deaf",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Fun summer movies are being turned into dreary summer theater",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses strongly negative descriptors like 'tone-deaf' and 'dreary' but this appears to be only an excerpt from a longer review. | GPT-4o-mini: The review expresses strong disapproval of the adaptation and the overall quality, indicating a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:28.261Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

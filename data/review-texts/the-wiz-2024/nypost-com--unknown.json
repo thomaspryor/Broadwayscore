@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"...the new revival...is not the dazzler that fans have waited so long for.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "is not the dazzler that fans have waited so long for",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the new revival",
+        "sentiment": "neutral",
+        "strength": 1
+      },
+      {
+        "quote": "is not the dazzler that fans have waited so long for.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The excerpt clearly states disappointment with the revival failing to meet expectations, but the extreme brevity limits confidence in scoring. | GPT-4o-mini: The review indicates disappointment and suggests that the revival does not meet expectations, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:25.002Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

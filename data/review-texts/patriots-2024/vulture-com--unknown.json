@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Morgan’s work is thinky, at times witty and always distanced from judgment.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241216064542",
-  "archiveOrgUrl": "http://web.archive.org/web/20241216064542/https://www.vulture.com/article/patriots-peter-morgan-russia-putin.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241216064542/https://www.vulture.com/article/patriots-peter-morgan-russia-putin.html",
+  "llmScore": {
+    "score": 67,
+    "confidence": "medium",
+    "range": {
+      "low": 62,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 78,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "Patriots' chief pleasures are intellectual. Morgan's work is thinky, at times witty and always distanced from judgment.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "there's something cool at the center of Patriots that begins to chafe as the play nears its end",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "At a certain point, these stop being mere interesting facts... it's got zazz without having psychological or ethical impact",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the intellectual complexity and strong performances (especially Keen and Stuhlbarg) but finds the production emotionally distant and overly stylized, preventing it from achieving meaningful impact despite its fascinating subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:26.420Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 67,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

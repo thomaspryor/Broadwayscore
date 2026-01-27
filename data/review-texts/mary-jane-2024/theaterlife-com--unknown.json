@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,5 +30,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 92,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "The one that most affected me, even though I'd seen it before, was the decidedly unglitzy Mary Jane with its tender, gently comical, warmly inspiring depiction of a saintly woman's maternal devotion.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Rachel McAdams, whose girl-next-door prettiness radiates human goodness, could not be better as a woman burdened by suffering",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Herzog's generally naturalistic dramaturgy sometimes seeps into theatrical contrivance, like the well-acted, charming, yet somewhat hard-to-swallow chaplain scene",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic gives the play 5 stars and describes being deeply moved by the production, with exceptional praise for McAdams' performance and only minor reservations about some theatrical contrivances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:02.558Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

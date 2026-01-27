@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251108035215",
-  "archiveOrgUrl": "http://web.archive.org/web/20251108035215/https://www.amny.com/entertainment/theater/review-prayer-for-the-french-republic/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251108035215/https://www.amny.com/entertainment/theater/review-prayer-for-the-french-republic/",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 85,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "long-winded (running three hours and 15 minutes) but powerful drama",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "with precise direction by David Cromer and superb ensemble performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "takes the genre to the next level by not just depicting anti-Semitism or warning against it but in earnestly trying to wrestle with how to respond to it",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite criticizing the length, the reviewer praises the powerful themes, superb performances, precise direction, and notes the play's elevated approach to its subject matter, indicating a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:28.595Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

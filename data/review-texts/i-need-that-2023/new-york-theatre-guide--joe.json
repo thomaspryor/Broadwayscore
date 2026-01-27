@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Otherwise, Theresa Rebeck’s wispy comedy about love, loss, and coping with the aftermath, is all too expected. It seeks to say something significant and memorable but doesn’t quite get there.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/i-need-that/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "wispy comedy",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "all too expected",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "doesn't quite get there",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is consistently critical of the script's lack of substance and impact, with language like 'wispy,' 'expected,' and failing to achieve significance indicating disappointment without recommendation. | GPT-4o-mini: The review expresses disappointment in the script's lack of originality and impact, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:01.721Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,63 @@
   "publishDate": "April 17, 2024",
   "fullText": "The real riches are in the cast’s connection to each other, and to the material. Its young leads, as well as their more experienced counterparts, are having the time of their lives and making the most of their roles, singing with an infectious joy typically missing from oft-retread properties. The road to success might have a few bricks missing, but it’s a golden one nonetheless.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "singing with an infectious joy typically missing from oft-retread properties",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's a golden one nonetheless",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The road to success might have a few bricks missing",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging some flaws ('few bricks missing'), the critic emphasizes the cast's joy and connection, concluding with a positive metaphor about a 'golden' road to success.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:23.682Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

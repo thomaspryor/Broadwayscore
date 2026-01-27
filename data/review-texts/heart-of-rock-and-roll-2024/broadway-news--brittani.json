@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Behold what surely must be the first Broadway musical crafted completely by artificial intelligence. That’s the only explanation for a show as rote and paint-by-numbers predictable as “The Heart of Rock and Roll.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/the-heart-of-rock-and-roll/",
@@ -36,5 +36,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 187 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 25.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": 50,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "what surely must be the first Broadway musical crafted completely by artificial intelligence",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "rote but still rollicking musical",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "so desperately referential, it borders on satire",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging the music as 'rollicking' and 'nostalgia-inducing,' the critic delivers harsh criticism of the book as 'rote,' 'paint-by-numbers predictable,' and so bad it must be AI-generated, suggesting more problems than strengths. | GPT-4o-mini: The review expresses strong criticism of the script and overall predictability, indicating a clear rejection of the show. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:06.286Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 30,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

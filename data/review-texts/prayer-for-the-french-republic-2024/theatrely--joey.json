@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It would be a tall order to expect Prayer, a play written and programmed prior to these cascading events, to fully meet the complexity and horror of our current moment. But nor can it escape that context, arriving when it has.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 66,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/prayer-for-the-french-republic-broadway/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 67,
+      "music": null,
+      "performances": 67,
+      "direction": 71
+    },
+    "keyPhrases": [
+      {
+        "quote": "That pivotal casting error leaves Prayer without a center, but there is still heart in its individual threads",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Cromer's typically precise direction invariably finds the individual behind the ideas – every character seems, under his imperceptible hand, fully rounded",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It is hard not to feel discomfort in abstractly pondering 'Could it happen here?' when we see, right now, what is happening there",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review finds significant value in the play's themes and Cromer's direction but is severely undermined by what the critic calls a 'pivotal casting error' with Anthony Edwards, creating a mixed experience with no clear recommendation. | GPT-4o-mini: The review presents a nuanced view, praising the themes and some performances while expressing concerns about casting and the play's ability to address complex issues, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:20.944Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

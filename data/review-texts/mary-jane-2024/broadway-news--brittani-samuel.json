@@ -7,7 +7,58 @@
   "publishDate": "April 24, 2024",
   "fullText": "There are two sick people in Mary Jane’s home, we realize, and Herzog has coaxed us into falling in love with both of them. The realization, just like the play, is gutting.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Herzog has coaxed us into falling in love with both of them",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The realization, just like the play, is gutting",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic describes powerful emotional impact using strong language like 'gutting' and praises the director's skill in making audiences 'fall in love' with characters, indicating deep artistic success.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:21.996Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

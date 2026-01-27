@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Unfortunately, the one we’ve ended up getting, now at the Marquis Theatre after a national tour (and you can tell), is so pitiful that it does a major disservice to a genuinely groundbreaking piece of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 28,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/the-wiz-bway/",
@@ -54,5 +54,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251211161306/https://www.theatermania.com/news/review-a-big-empty-revival-of-the-wiz-lacks-the-magic-of-broadway_1737204/",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 28,
+    "confidence": "high",
+    "range": {
+      "low": 20.5,
+      "high": 35.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 63,
+      "performances": 50,
+      "direction": 18
+    },
+    "keyPhrases": [
+      {
+        "quote": "so pitiful that it does a major disservice to a genuinely groundbreaking piece of theater",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "This is as lifeless a production as I've ever seen on Broadway, and, quite frankly, it's shocking",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Lewis, her co-stars, and the ticketbuyers deserve better",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a devastating pan, calling it 'pitiful,' 'lifeless,' and 'shocking,' with only isolated praise for individual performances unable to salvage an overall rejection of the production. | GPT-4o-mini: The review expresses strong disappointment in the production quality and direction, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:53.162Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

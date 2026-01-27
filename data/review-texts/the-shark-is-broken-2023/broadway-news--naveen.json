@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "But neither these glimpses at their private lives — nor the play’s treatment of the film’s troubled production — much exceed what one could read on Wikipedia. The play amounts to little more than a companion text, a dutiful piece of fan service without its own narrative engine.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-shark-is-broken/",
@@ -36,5 +36,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 245 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "the comedy relies on nostalgia and fandom",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "marvelously recreated here by Duncan Henderson",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "captive-at-sea backstage comedy",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review is descriptive and appreciates the production design but suggests the play depends heavily on nostalgia and fan knowledge without clear endorsement of the work's standalone merit. | GPT-4o-mini: The review highlights strong production elements and a clever premise but lacks explicit enthusiasm for the overall execution, suggesting a mixed-positive recommendation. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:04.329Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 70,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is both a thrilling party and a chilling history lesson, managing to be entertaining while never letting you forget the real-world consequences of the Marcoses' actions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "thrilling party and a chilling history lesson",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "managing to be entertaining while never letting you forget the real-world consequences",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a thrilling party and a chilling history lesson",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic praises the show as both thrilling and meaningful, highlighting its dual success as entertainment and serious historical commentary. | GPT-4o-mini: The review expresses strong enthusiasm for the show's ability to entertain while addressing serious themes, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:47.427Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

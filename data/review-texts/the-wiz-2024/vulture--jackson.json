@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But although the talent is all over the stage, it’s also trapped in confused and even ugly packaging. This revival traveled around the country before coming in New York, and indeed it looks like a cheap touring production rather than something that was honed and improved.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-wiz-bway/",
@@ -37,5 +37,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251030065434/https://www.vulture.com/article/theater-review-the-wiz-broadway-revival.html",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 83,
+      "performances": 83,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "The score of The Wiz, full of funk, R&B, gospel, and more, will still thrill and delight you. Boy, can this cast sing",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "although the talent is all over the stage, it's also trapped in confused and even ugly packaging",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The effect was, as with so much of the revival, of missing out on a moment that could have been great, if only given more care and fine tuning",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the exceptional performances and thrilling score but is deeply critical of the production design, staging, and book revisions, concluding that technical problems and creative choices undermine what could have been great. | GPT-4o-mini: While the performances and music are strong, the production quality and book have significant shortcomings, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:28.118Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

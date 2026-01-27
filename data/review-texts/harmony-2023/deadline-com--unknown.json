@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“...’Harmony’ is nonetheless steadily compelling and not infrequently stirring, attributes that speak as much to the Manilow-Sussman craftsmanship as to an intriguing tale long-lost to history.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251003034803",
-  "archiveOrgUrl": "http://web.archive.org/web/20251003034803/https://deadline.com/2023/11/harmony-danny-and-the-deep-blue-sea-reviews-1235600743/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251003034803/https://deadline.com/2023/11/harmony-danny-and-the-deep-blue-sea-reviews-1235600743/",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 76,
+      "performances": 82,
+      "direction": 74
+    },
+    "keyPhrases": [
+      {
+        "quote": "As a musical, Harmony occasionally soars, occasionally stumbles, but the former more often than the latter",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Harmony is nonetheless steadily compelling and not infrequently stirring",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Harmony insists we pay attention, to it, and to the world",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds Harmony 'steadily compelling' and 'stirring' with strong performances, praising it as accomplishing its goals despite structural limitations, indicating a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:28.711Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It’s no small wonder that this sensational revival manages to synthesize the famous flop’s unwieldy ambitions into a palpable hit.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/merrily-we-roll-along-bway/",
@@ -36,5 +36,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 247 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "this sensational revival manages to synthesize the famous flop's unwieldy ambitions into a palpable hit",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the production's clever sophistication and knock-out performances send the onetime dud soaring to rapturous heights",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Structural problems remain, including a second act that loses momentum as characters retreat into naïveté",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging structural flaws, the critic uses enthusiastic language like 'sensational revival,' 'palpable hit,' and 'rapturous heights' to describe a production that transforms a notorious flop into a success.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:47.312Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

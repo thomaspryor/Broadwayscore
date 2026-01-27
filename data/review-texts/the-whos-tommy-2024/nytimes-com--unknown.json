@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"What I missed in the middle of all that overemphasis was some sense of humanity\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250909234346",
-  "archiveOrgUrl": "http://web.archive.org/web/20250909234346/https://www.nytimes.com/2024/03/28/theater/the-whos-tommy-review-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250909234346/https://www.nytimes.com/2024/03/28/theater/the-whos-tommy-review-broadway.html",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 75,
+      "performances": 65,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "won't provide that, being less interested in trying to put across the story than in obscuring it with relentless noise and banal imagery",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "What I missed in the middle of all that overemphasis was some sense of humanity",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "lovers of rock concerts with tons of effects may yet like 'Tommy'",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: While the critic acknowledges some strengths in the music and performances, the review is dominated by harsh criticism of the direction, design choices, and overall production approach, with no clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:06.088Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,60 @@
   "publishDate": "March 29, 2024",
   "fullText": "If the first 10 minutes of a show are supposed to rope you in, “The Who’s Tommy” dares you to need more than 10 seconds. Director Des McAnuff’s revival staging of the electric rock opera he co-wrote explodes onto the Nederlander Theatre stage in a paroxysm of booming sound, blinding light and crackling projections",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 58,
+    "confidence": "low",
+    "range": {
+      "low": 40.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "dares you to need more than 10 seconds",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "explodes onto the Nederlander Theatre stage in a paroxysm of booming sound, blinding light and crackling projections",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt shows mixed signals - praising the explosive staging while suggesting the opening challenges audience patience, but the fragment is too brief to determine the critic's overall recommendation. | GPT-4o-mini: The review highlights strong production elements but suggests a lack of immediate engagement, leading to a mixed-positive recommendation. | Note: Models differed by 25 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:43.321Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 70,
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 45, OpenAI: 70)"
+    ]
+  }
 }

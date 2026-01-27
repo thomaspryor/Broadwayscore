@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Though its quality is not consistent throughout, ‘Harmony’ has its high points...This immersive quality is chilling, but doesn’t make up for 'Harmony’s' dissonance.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 58,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": 65,
+      "performances": 73,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "The first 20 minutes of Barry Manilow's musical Harmony are, quite frankly, uncomfortable",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Though its quality is not consistent throughout, Harmony has its high points",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "doesn't make up for Harmony's dissonance",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges both strengths (performances, some choreography) and significant weaknesses (structural issues, uncomfortable opening, inconsistent quality), ultimately presenting a show with mixed results that neither strongly recommends nor dismisses. | GPT-4o-mini: The review presents a mix of positive and negative elements, with notable performances and moments but significant structural issues and discomfort in the storytelling.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:14.154Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

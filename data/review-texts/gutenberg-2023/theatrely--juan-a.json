@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But the talent onstage is unimpeachable, and their characters’ grief at the state of Broadway finances extends far beyond backroom production teams: Bud’s fictional uncle might have left a lucky fictional inheritance behind, but how many cars have been traded in for a pair of Hamilton seats? Here, one could find a worse deal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/gutenberg/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 67,
+      "music": 73,
+      "performances": 79,
+      "direction": 71
+    },
+    "keyPhrases": [
+      {
+        "quote": "the talent onstage is unimpeachable",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The humor in Gutenberg! could stand to be a bit more like the rat-infested streets upon which the meta-show's characters walk, and a certain nastiness could have elevated this from good to great",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Here, one could find a worse deal",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the performances and concept while noting the show could be better with sharper humor, ultimately suggesting it's worth seeing despite limitations. | GPT-4o-mini: The review expresses a generally positive sentiment about the performances and humor, but notes some shortcomings in the script and overall execution, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:40.400Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
