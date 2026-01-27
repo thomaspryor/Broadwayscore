@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-01-27T02:13:01.392Z",
+  "runDate": "2026-01-27T04:26:51.535Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
@@ -11,28 +11,28 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 193,
-    "failed": 108,
+    "processed": 194,
+    "failed": 110,
     "skipped": 0,
-    "successRate": "64.1%"
+    "successRate": "63.8%"
   },
   "tierBreakdown": {
     "playwright": 17,
     "scrapingbee": 16,
     "brightdata": 20,
-    "archive": 140
+    "archive": 141
   },
   "statistics": {
-    "tier1Attempts": 50,
-    "tier1Success": 4,
-    "tier2Attempts": 46,
-    "tier2Success": 2,
-    "tier3Attempts": 44,
-    "tier3Success": 4,
-    "tier4Attempts": 44,
-    "tier4Success": 10,
-    "totalFailed": 30,
-    "scrapingBeeCreditsUsed": 230
+    "tier1Attempts": 3,
+    "tier1Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
+    "tier3Success": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 10
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -227,7 +227,8 @@
     "hadestown-2019/timeout--adam-feldman.json",
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
-    "hadestown-2019/washingtonpost-com--unknown.json"
+    "hadestown-2019/washingtonpost-com--unknown.json",
+    "hadestown-2019/wsj-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -337,7 +338,9 @@
     "hadestown-2019/theaterreviewsfrommyseat--joe-lombardi.json",
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
-    "hadestown-2019/washpost--peter-marks.json"
+    "hadestown-2019/washpost--peter-marks.json",
+    "hadestown-2019/wnyc--jennifer-vanasco.json",
+    "hadestown-2019/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -539,7 +542,8 @@
       "hadestown-2019/thefrontrowcenter-com--unknown.json",
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
-      "hadestown-2019/washingtonpost-com--unknown.json"
+      "hadestown-2019/washingtonpost-com--unknown.json",
+      "hadestown-2019/wsj-com--unknown.json"
     ]
   }
 }
