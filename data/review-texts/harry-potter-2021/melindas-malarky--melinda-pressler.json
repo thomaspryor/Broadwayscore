@@ -11,7 +11,7 @@
   "originalScore": null,
   "assignedScore": 89,
   "source": "show-score",
-  "textStatus": "partial",
+  "textStatus": "incomplete",
   "textQuality": "partial",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
@@ -74,7 +74,7 @@
   },
   "textWordCount": 206,
   "archivePath": "data/archives/reviews/harry-potter-2021/melindas-malarky--melinda-pressler_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:31:58.183Z",
+  "textFetchedAt": "2026-01-27T05:08:20.597Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -86,5 +86,6 @@
   "fetchTier": 1,
   "textIssues": [
     "Word count too low: 206 (min: 300)"
-  ]
+  ],
+  "truncationSignals": []
 }
