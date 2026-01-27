@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The score’s most successful numbers are the climactic protest songs that come at the end of each act: The shouts of “we won’t wait another day” and “the young are at the gates,” linking the suffragists of yore to the activists of today. These moments finally get your heart racing, just as Taub (an activist in her own right) has long proved capable of doing through her insightful and cathartic music. If only&nbsp;Suffs&nbsp;weren’t as splintered as the movement.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20220925081517",
-  "archiveOrgUrl": "http://web.archive.org/web/20220925081517/https://www.theatermania.com/off-broadway/reviews/review-shaina-taub-suffs-public-theater_93610.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20220925081517/https://www.theatermania.com/off-broadway/reviews/review-shaina-taub-suffs-public-theater_93610.html",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 63,
+      "performances": 75,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "Suffs, with all its flaws — and there are many in this world-premiere production",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Excellent performers fill out the rest of the supporting cast, but they often feel more like points in a think piece than history come to life",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "These moments finally get your heart racing, just as Taub (an activist in her own right) has long proved capable of doing through her insightful and cathartic music",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant flaws in the book and characterization while praising individual performances and some musical moments, resulting in a mixed review that leans slightly positive due to respect for the subject matter and certain standout elements. | GPT-4o-mini: While the performances and some musical numbers are praised, the script and overall execution are criticized, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:09.372Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

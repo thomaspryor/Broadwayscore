@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Although musical theater often celebrates women, few shows have turned the spotlight on feminism itself. Shaina Taub helps fill that gap with the artful and inspiring historical epic&nbsp;Suffs.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -42,5 +42,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "4/5"
+  "extractedRating": "4/5",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 83,
+      "performances": 81,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "4 out of 5 stars",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there's much to admire and enjoy in Suffs, which may well have a brilliant future ahead of it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Although the show is nearly three hours long, not every pioneering woman gets her due",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: 4/5 star rating with consistent praise for the musical's artistry, performances, and inspiring subject matter, despite some structural criticisms about length and representation gaps. | GPT-4o-mini: The review expresses strong praise for the musical's themes, performances, and music, with only minor reservations about representation and pacing.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:39.429Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

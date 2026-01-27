@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It wouldn’t be right to say that these scenes, at the play’s end, make you forget what came before, the jokes that didn’t land. Instead, they put them into context: She’d been playing at being a person, and now, so many hilarious scams later, she’s become one.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251031024927",
-  "archiveOrgUrl": "http://web.archive.org/web/20251031024927/https://variety.com/2024/legit/reviews/the-roommate-review-mia-farrow-patti-lupone-broadway-1236142188/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251031024927/https://variety.com/2024/legit/reviews/the-roommate-review-mia-farrow-patti-lupone-broadway-1236142188/",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": null,
+      "performances": 85,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "In the main, 'The Roommate' is a spirited entry on Broadway and a welcome showcase for LuPone and — in particular — Farrow",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It wouldn't be right to say that these scenes, at the play's end, make you forget what came before, the jokes that didn't land",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "That actress's last scenes in the play, giving nothing away, are utterly haunting",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant flaws in the script's early sections and dated humor, but ultimately endorses the production as a 'spirited entry' worth seeing, particularly praising the performances and the play's strong finish. | GPT-4o-mini: The review highlights strong performances, particularly from Farrow and LuPone, and acknowledges the play's spirited nature, despite some issues with the script and pacing.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:35.274Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

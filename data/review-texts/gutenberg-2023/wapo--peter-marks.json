@@ -10,8 +10,64 @@
   "bwwExcerpt": "The musical that is “Gutenberg! The Musical” will never be mistaken for “West Side Story,” but that is really not the point. Brown and King have packed the show with numbers that manage to be both entertaining and as clunky as a ’67 station wagon. And composed a piece that might be a bit more fitting in a cabaret than a Broadway theater. That is, of course, until you secure the services of the cutest couple on Broadway.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 53,
+      "performances": 74,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "numbers that manage to be both entertaining and as clunky as a '67 station wagon",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "might be a bit more fitting in a cabaret than a Broadway theater",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the cutest couple on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges entertainment value and praises the lead performances highly, but criticizes the material as clunky and questions its Broadway worthiness, landing in mixed territory with a slight positive lean due to the performance praise. | GPT-4o-mini: The review indicates a mix of entertainment value and clunkiness, suggesting a conditional recommendation based on performances rather than the overall quality of the musical.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:10.344Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 58,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

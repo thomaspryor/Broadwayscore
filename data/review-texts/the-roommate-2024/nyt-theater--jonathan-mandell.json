@@ -10,8 +10,64 @@
   "bwwExcerpt": "It shouldn’t be a terrible surprise that Farrow and LuPone, the ultimate pros with a combined total of 117 years experience as professional performers, keep our attention at all times. It may well be that our appreciation comes as much from memories of their great roles from the past, as from these characters, who are neither greatly nuanced, nor roll-on-the-floor hilarious, although they have their moments. It seems fitting that Bob Crowley’s set of an airy Iowa house feels unfinished, like an ",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 74,
+      "direction": 54
+    },
+    "keyPhrases": [
+      {
+        "quote": "keep our attention at all times",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "neither greatly nuanced, nor roll-on-the-floor hilarious",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "feels unfinished",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the veteran performers but criticizes the characters and production design as underdeveloped, with appreciation seemingly based more on nostalgia than current quality. | GPT-4o-mini: The review indicates a mix of strong performances but critiques the script and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:11.287Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

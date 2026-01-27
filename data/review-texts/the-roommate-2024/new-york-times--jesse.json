@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The problem is that this version of “The Roommate,” working backward from that fact, delivers a pair of very satisfying performances that cancels out the play. You’ll remember LuPone’s sneers and Farrow’s tears — not what caused them.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -55,5 +55,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250630122221",
-  "archiveOrgUrl": "http://web.archive.org/web/20250630122221/https://www.nytimes.com/2024/09/12/theater/the-roommate-review-lupone-farrow.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250630122221/https://www.nytimes.com/2024/09/12/theater/the-roommate-review-lupone-farrow.html",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": null,
+      "performances": 83,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "The two actors, old friends and old hands, play beautifully off each other, expertly riding the seesaw of a play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this version of 'The Roommate,' working backward from that fact, delivers a pair of very satisfying performances that cancels out the play",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "You'll remember LuPone's sneers and Farrow's tears — not what caused them",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Green praises the star performances by LuPone and Farrow but criticizes the direction, production choices, and overall coherence, resulting in a qualified mixed review that acknowledges entertainment value while questioning artistic merit. | GPT-4o-mini: The review highlights strong performances but criticizes the direction and overall coherence of the production, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:53.914Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

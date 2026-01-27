@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This history reads like pretty dry stuff, but right from that beginning chorus, “Suffs” is anything but. This sung-through musical is rousing entertainment for all of its nearly “three hours straight,” and much of the delight comes from seeing how Taub manipulates the material to make it fun.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250521154007",
-  "archiveOrgUrl": "http://web.archive.org/web/20250521154007/https://www.thewrap.com/suffs-off-broadway-review-shaina-taub-musical/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250521154007/https://www.thewrap.com/suffs-off-broadway-review-shaina-taub-musical/",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 73,
+      "performances": 80,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "This sung-through musical is rousing entertainment for all of its nearly 'three hours straight,' and much of the delight comes from seeing how Taub manipulates the material to make it fun.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Her greatest achievement here is a terrific book that takes a sprawling subject and not only gives it real dramatic cohesion but uses recitative for startling economic effect.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "In 'Suffs,' the 20 women on stage seem all to be singing within the same octave, the choral writing being monochromatic to the extreme.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the show as 'rousing entertainment' with a 'terrific book' and excellent direction, with only moderate reservations about the musical writing's range, indicating a clear positive recommendation. | GPT-4o-mini: The review expresses strong praise for the book, performances, and direction, while noting some minor issues with the music, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:00.942Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

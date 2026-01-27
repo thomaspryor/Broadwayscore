@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Your milage may vary. My husband was a wreck after just the first act, but I wasn’t as moved by the musical as I was the film, a form that is simultaneously more intimate and frighteningly real.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250811150511",
-  "archiveOrgUrl": "http://web.archive.org/web/20250811150511/https://www.theatermania.com/news/review-the-notebook-is-broadways-guaranteed-tearjerker_1733888/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250811150511/https://www.theatermania.com/news/review-the-notebook-is-broadways-guaranteed-tearjerker_1733888/",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 75,
+      "music": 53,
+      "performances": 79,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "I wasn't as moved by the musical as I was the film",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "a parade of confessional power ballads that are pretty in the moment, but evaporated from my memory by the time I stepped out onto 45th Street",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "All of it presents a beautiful picture of mortality, but also the universality of love",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the performances, direction, and production values but is significantly disappointed by the forgettable score and finds the musical less emotionally impactful than the film adaptation. | GPT-4o-mini: The review expresses a mix of appreciation for performances and emotional storytelling while critiquing the music, leading to a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:09.048Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

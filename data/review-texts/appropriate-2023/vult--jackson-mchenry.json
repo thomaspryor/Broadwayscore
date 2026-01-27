@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The Jacobs family's three-hour reunion unfolds with the slow burn of a pot coming to boil, and when it finally bubbles over, the explosion feels both inevitable and shocking.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "slow burn of a pot coming to boil",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "explosion feels both inevitable and shocking",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the slow burn of a pot coming to boil",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The metaphor of a slow burn building to an inevitable yet shocking explosion suggests skillful dramatic construction and effective pacing, indicating positive appreciation for the theatrical experience. | GPT-4o-mini: The review indicates a gradual build-up leading to a significant climax, suggesting a qualified recommendation but without explicit enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:39.793Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

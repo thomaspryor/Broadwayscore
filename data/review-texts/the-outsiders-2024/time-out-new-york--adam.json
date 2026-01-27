@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "I suspect that a lot of people will like&nbsp;The Outsiders&nbsp;more than I did. But to me, its approach misses the central thrust of Hinton’s story.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 59,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-outsiders/ -->",
@@ -42,5 +42,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "3/5"
+  "extractedRating": "3/5",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 58,
+      "performances": 73,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "I suspect that a lot of people will like The Outsiders more than I did",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "There are beautiful moments; the yearning 'Great Expectations' reaches out and grabs you by the heart",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this sanitization makes the musical feel oddly superficial. It approaches its subjects from the outside",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The 3/5 star rating combined with mixed critique - praising staging and some performances while criticizing the book's approach and music's limitations - indicates a qualified, lukewarm recommendation. | GPT-4o-mini: The review presents a mix of strong moments and significant criticisms, leading to a conditional recommendation rather than a clear endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:10.066Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
