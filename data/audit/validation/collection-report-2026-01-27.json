@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:45:20.838Z",
+  "runDate": "2026-01-27T04:45:30.746Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "just-in-time-2025",
+    "showFilter": "harry-potter-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 204,
-    "failed": 110,
+    "processed": 202,
+    "failed": 127,
     "skipped": 0,
-    "successRate": "65.0%"
+    "successRate": "61.4%"
   },
   "tierBreakdown": {
-    "playwright": 20,
-    "scrapingbee": 19,
+    "playwright": 18,
+    "scrapingbee": 17,
     "brightdata": 22,
-    "archive": 143
+    "archive": 145
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 3,
-    "tier2Attempts": 10,
-    "tier2Success": 3,
-    "tier3Attempts": 7,
+    "tier1Attempts": 28,
+    "tier1Success": 1,
+    "tier2Attempts": 27,
+    "tier2Success": 1,
+    "tier3Attempts": 26,
     "tier3Success": 2,
-    "tier4Attempts": 5,
-    "tier4Success": 3,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 100
+    "tier4Attempts": 30,
+    "tier4Success": 5,
+    "totalFailed": 19,
+    "scrapingBeeCreditsUsed": 120
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,17 +228,15 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "just-in-time-2025/advertisement--chris-jones.json",
-    "just-in-time-2025/broadway-news--brittani-samuel.json",
-    "just-in-time-2025/chicago-tribune--chris-jones.json",
-    "just-in-time-2025/deadline--greg-evans.json",
-    "just-in-time-2025/ew--shania-russell.json",
-    "just-in-time-2025/lightingandsoundamerica-com--unknown.json",
-    "just-in-time-2025/nypost--johnny-oleksinski.json",
-    "just-in-time-2025/pagesonstages-com--unknown.json",
-    "just-in-time-2025/theaterscene-net--unknown.json",
-    "just-in-time-2025/timeout-ny--adam-feldman.json",
-    "just-in-time-2025/washington-post--naveen-kumar.json"
+    "harry-potter-2021/beta-nydailynews-com--unknown.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/financial-times--charles-isherwood.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/newsday-com--unknown.json",
+    "harry-potter-2021/nypost-com--unknown.json",
+    "harry-potter-2021/thetimes-co-uk--unknown.json",
+    "harry-potter-2021/vanityfair-com--unknown.json",
+    "harry-potter-2021/washingtonpost-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -349,8 +347,25 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "just-in-time-2025/guardian--adrian-horton.json",
-    "just-in-time-2025/theatermania--kenji-fujishima.json"
+    "harry-potter-2021/NYP--johnny-oleksinski.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/broadway-news--elizabeth-bradley.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/curtainup-com--unknown.json",
+    "harry-potter-2021/deadline--greg-evans.json",
+    "harry-potter-2021/exeunt--kev-berry.json",
+    "harry-potter-2021/front-mezz-junkies--steven-ross.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/medium--christian-lewis.json",
+    "harry-potter-2021/ny1--roma-torre.json",
+    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
+    "harry-potter-2021/theguardian-com--unknown.json",
+    "harry-potter-2021/troy-record--bob-goepfert.json",
+    "harry-potter-2021/wnyc--jennifer-vanasco.json",
+    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -371,9 +386,7 @@
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
       "hadestown-2019/showshowdown-blogspot-com--unknown.json",
-      "just-in-time-2025/lightingandsoundamerica-com--unknown.json",
-      "just-in-time-2025/pagesonstages-com--unknown.json",
-      "just-in-time-2025/theaterscene-net--unknown.json"
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -392,9 +405,7 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "just-in-time-2025/broadway-news--brittani-samuel.json",
-      "just-in-time-2025/ew--shania-russell.json",
-      "just-in-time-2025/timeout-ny--adam-feldman.json"
+      "harry-potter-2021/financial-times--charles-isherwood.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -417,8 +428,8 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "just-in-time-2025/chicago-tribune--chris-jones.json",
-      "just-in-time-2025/washington-post--naveen-kumar.json"
+      "harry-potter-2021/cititour--brian-scott-lipton.json",
+      "harry-potter-2021/washingtonpost-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -561,9 +572,11 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "just-in-time-2025/advertisement--chris-jones.json",
-      "just-in-time-2025/deadline--greg-evans.json",
-      "just-in-time-2025/nypost--johnny-oleksinski.json"
+      "harry-potter-2021/beta-nydailynews-com--unknown.json",
+      "harry-potter-2021/newsday-com--unknown.json",
+      "harry-potter-2021/nypost-com--unknown.json",
+      "harry-potter-2021/thetimes-co-uk--unknown.json",
+      "harry-potter-2021/vanityfair-com--unknown.json"
     ]
   }
 }
