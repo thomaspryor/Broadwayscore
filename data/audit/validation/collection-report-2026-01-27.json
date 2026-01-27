@@ -1,83 +1,97 @@
 {
-  "runDate": "2026-01-27T20:43:23.366Z",
+  "runDate": "2026-01-27T20:43:58.849Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "hamilton-2015",
+    "showFilter": "water-for-elephants-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 9,
-    "failed": 15,
+    "processed": 20,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "37.5%"
+    "successRate": "76.9%"
   },
   "tierBreakdown": {
-    "playwright": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 7
+    "playwright": 1,
+    "scrapingbee": 4,
+    "brightdata": 2,
+    "archive": 13
   },
   "statistics": {
-    "tier1Attempts": 20,
-    "tier1Success": 0,
-    "tier2Attempts": 20,
-    "tier2Success": 1,
-    "tier3Attempts": 19,
-    "tier3Success": 1,
-    "tier4Attempts": 25,
-    "tier4Success": 7,
-    "totalFailed": 15,
-    "scrapingBeeCreditsUsed": 80
+    "tier1Attempts": 22,
+    "tier1Success": 1,
+    "tier2Attempts": 21,
+    "tier2Success": 4,
+    "tier3Attempts": 17,
+    "tier3Success": 2,
+    "tier4Attempts": 24,
+    "tier4Success": 13,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 170
   },
   "processed": [
-    "hamilton-2015/new-york-magazine-vulture--jesse-green.json",
-    "hamilton-2015/thr--frank-scheck.json",
-    "hamilton-2015/vulture--jesse.json",
-    "hamilton-2015/OBSERVER--david-cote.json",
-    "hamilton-2015/new-york-times--ben.json",
-    "hamilton-2015/theatermania--zachary.json",
-    "hamilton-2015/time-out-new-york--david-cote.json",
-    "hamilton-2015/wapo--peter-marks.json",
-    "hamilton-2015/wsj--terry-teachout.json"
+    "water-for-elephants-2024/variety--frank-rizzo.json",
+    "water-for-elephants-2024/variety--frank.json",
+    "water-for-elephants-2024/vulture--sara.json",
+    "water-for-elephants-2024/broadway-news--brittani.json",
+    "water-for-elephants-2024/deadline--greg-evans.json",
+    "water-for-elephants-2024/deadline--greg.json",
+    "water-for-elephants-2024/entertainment-weekly--shania.json",
+    "water-for-elephants-2024/new-york-daily-news--chris.json",
+    "water-for-elephants-2024/new-york-post--johnny.json",
+    "water-for-elephants-2024/new-york-times--jesse.json",
+    "water-for-elephants-2024/observer--rex-reed.json",
+    "water-for-elephants-2024/the-wrap--robert.json",
+    "water-for-elephants-2024/theatermania--zachary.json",
+    "water-for-elephants-2024/theatrely--juan-a.json",
+    "water-for-elephants-2024/time-out-new-york--adam-feldman.json",
+    "water-for-elephants-2024/time-out-new-york--adam.json",
+    "water-for-elephants-2024/timeout--adam-feldman.json",
+    "water-for-elephants-2024/wall-street-journal--charles.json",
+    "water-for-elephants-2024/washingtonpost-com--unknown.json",
+    "water-for-elephants-2024/wsj-com--unknown.json"
   ],
   "failed": [
-    "hamilton-2015/THR--david-rooney.json",
-    "hamilton-2015/hollywood-reporter--frank.json",
-    "hamilton-2015/thr--david-rooney.json",
-    "hamilton-2015/CHTRIB--chris-jones.json",
-    "hamilton-2015/NYP--elisabeth-vincentelli.json",
-    "hamilton-2015/WRAP--robert-hofler.json",
-    "hamilton-2015/amny--matt-windman.json",
-    "hamilton-2015/ap--mark-kennedy.json",
-    "hamilton-2015/backstage-barbie--backstage-barbie.json",
-    "hamilton-2015/chtrib--chris-jones.json",
-    "hamilton-2015/clyde-fitch-report--david-finkle.json",
-    "hamilton-2015/newsday--linda-winer.json",
-    "hamilton-2015/nyp--johnny-oleksinski.json",
-    "hamilton-2015/talkinbway--matthew-murray.json",
-    "hamilton-2015/usatoday--elysa-gardner.json"
+    "water-for-elephants-2024/new-york-magazine-vulture--sara-holdren.json",
+    "water-for-elephants-2024/nytg--joe-dziemianowicz.json",
+    "water-for-elephants-2024/variety--charles-isherwood.json",
+    "water-for-elephants-2024/vult--helen-shaw.json",
+    "water-for-elephants-2024/new-york-theatre-guide--joe.json",
+    "water-for-elephants-2024/talkinbroadway-com--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "water-for-elephants-2024/broadway-news--brittani.json"
+    ],
     "scrapingbee": [
-      "hamilton-2015/time-out-new-york--david-cote.json"
+      "water-for-elephants-2024/entertainment-weekly--shania.json",
+      "water-for-elephants-2024/theatrely--juan-a.json",
+      "water-for-elephants-2024/time-out-new-york--adam-feldman.json",
+      "water-for-elephants-2024/time-out-new-york--adam.json"
     ],
     "brightdata": [
-      "hamilton-2015/OBSERVER--david-cote.json"
+      "water-for-elephants-2024/timeout--adam-feldman.json",
+      "water-for-elephants-2024/washingtonpost-com--unknown.json"
     ],
     "archive": [
-      "hamilton-2015/new-york-magazine-vulture--jesse-green.json",
-      "hamilton-2015/thr--frank-scheck.json",
-      "hamilton-2015/vulture--jesse.json",
-      "hamilton-2015/new-york-times--ben.json",
-      "hamilton-2015/theatermania--zachary.json",
-      "hamilton-2015/wapo--peter-marks.json",
-      "hamilton-2015/wsj--terry-teachout.json"
+      "water-for-elephants-2024/variety--frank-rizzo.json",
+      "water-for-elephants-2024/variety--frank.json",
+      "water-for-elephants-2024/vulture--sara.json",
+      "water-for-elephants-2024/deadline--greg-evans.json",
+      "water-for-elephants-2024/deadline--greg.json",
+      "water-for-elephants-2024/new-york-daily-news--chris.json",
+      "water-for-elephants-2024/new-york-post--johnny.json",
+      "water-for-elephants-2024/new-york-times--jesse.json",
+      "water-for-elephants-2024/observer--rex-reed.json",
+      "water-for-elephants-2024/the-wrap--robert.json",
+      "water-for-elephants-2024/theatermania--zachary.json",
+      "water-for-elephants-2024/wall-street-journal--charles.json",
+      "water-for-elephants-2024/wsj-com--unknown.json"
     ]
   }
 }
