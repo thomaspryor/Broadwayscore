@@ -10,11 +10,67 @@
   "bwwExcerpt": "Directed by Moritz von Stuelpnagel—who helmed Rebeck’s 2018 backstage drama Bernhardt/Hamlet, also at the Roundabout—I Need That runs only 100 intermission-free minutes, but somehow feels padded. Perhaps in an effort to avoid turning the play into The Danny DeVito Show, Rebeck gives Foster and Amelia a few crises and obstacles, most of which feel contrived. Foster going to Cleveland to live right near his son and grandkids, however, does make sense, and it gives rise to Sam’s brilliant one-liner",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 49,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 37.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": null,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "runs only 100 intermission-free minutes, but somehow feels padded",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "most of which feel contrived",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "gives rise to Sam's brilliant one-liner",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the play's pacing and contrived plot elements despite its brief runtime, with only minor positive notes about specific moments. | GPT-4o-mini: The review indicates mixed feelings, with criticisms of the script's contrivances but a slight positive note regarding a specific moment, leading to a conditional recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:28.460Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

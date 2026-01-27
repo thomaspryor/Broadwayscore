@@ -10,8 +10,64 @@
   "bwwExcerpt": "DeVito gets more mileage out of Sam than you’d expect from the page, performing with a loose, raffish panache. When Foster tells Sam he’s planning to move to Ohio to be with his son’s family, Sam reacts with visceral incredulity. “Cleveland?!” he repeats, elongating the first syllable with a gargling glottal stop slathered in phlegm and contempt. Funny pronunciation. Silly faces. Kooky obsessives behaving irrationally. It’s been the stuff of sitcoms for decades and popular for a reason. Still, w",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 55.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 74,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "DeVito gets more mileage out of Sam than you'd expect from the page, performing with a loose, raffish panache",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "It's been the stuff of sitcoms for decades and popular for a reason",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "Still, w",
+        "sentiment": "neutral",
+        "strength": 1
+      }
+    ],
+    "reasoning": "Claude: The review is incomplete and cuts off mid-sentence with 'Still, w', making it impossible to determine the critic's final verdict or overall recommendation. | GPT-4o-mini: The review highlights strong performances, particularly by DeVito, but lacks enthusiasm for the overall material, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:19.081Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

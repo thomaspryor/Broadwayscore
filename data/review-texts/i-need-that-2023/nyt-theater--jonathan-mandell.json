@@ -10,8 +10,64 @@
   "bwwExcerpt": "Theresa Rebeck’s play about a hoarder is the slightest of comedies. Its plot is paltry. Its insights are pat. It promises more laughs than it delivers.  It even promises more junk than it delivers: Before the curtain rises, there’s a tantalizing pile-up of old papers and boxes resting on the lip of the stage. But “I Need That” does deliver Danny DeVito, and for some, that will be enough.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 30.5,
+      "high": 53.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": null,
+      "performances": 60,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Its plot is paltry. Its insights are pat. It promises more laughs than it delivers.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "does deliver Danny DeVito, and for some, that will be enough",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "the slightest of comedies",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review systematically criticizes the play's fundamental elements (plot, insights, laughs) while suggesting only DeVito's star power might appeal to some viewers, indicating weak recommendation overall. | GPT-4o-mini: The review is predominantly negative, highlighting significant weaknesses in the script while only offering a mild acknowledgment of Danny DeVito's presence as a redeeming factor. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:41.446Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 35,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

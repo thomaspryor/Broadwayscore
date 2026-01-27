@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“ ‘I Need That’ will prove satisfying for those looking to be entertained by DeVito and his daughter. He brings real joy and laughter, and there’s real value in that.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251122021959",
-  "archiveOrgUrl": "http://web.archive.org/web/20251122021959/https://variety.com/2023/legit/reviews/i-need-that-review-danny-devito-broadway-1235778734/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251122021959/https://variety.com/2023/legit/reviews/i-need-that-review-danny-devito-broadway-1235778734/",
+  "llmScore": {
+    "score": 69,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": null,
+      "performances": 78,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "basically a 90-minute sitcom episode, full of sentimentality",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "He brings real joy and laughter, and there's real value in that",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "will prove satisfying for those looking to be entertained by DeVito and his daughter",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant script weaknesses but finds real value in DeVito's performance and entertainment factor, offering a qualified positive recommendation for fans of the star. | GPT-4o-mini: The review indicates a generally positive experience due to the performances, particularly by DeVito, but notes significant weaknesses in the script and depth of the story.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:18:53.275Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

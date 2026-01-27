@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But after that initial bait-and-switch, not much in Rebeck’s dramatically inert play, or Moritz von Stuelpnagel hands-thrown-up direction, inspired a need to lean in for closer inspection.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 29,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/i-need-that/",
@@ -38,5 +38,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 29,
+    "confidence": "high",
+    "range": {
+      "low": 23,
+      "high": 35
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": null,
+      "performances": 48,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "dramatically inert play",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Rebeck almost sadistically avoids mining the setup for anything more than weak comedy followed by cheap passes at sentimentality",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Very little of the dialogue is of particular significance and...has a meandering quality that quickly becomes grating",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a scathing assessment of the script as 'dramatically inert' with 'weak comedy' and 'cheap sentimentality,' offering only mild praise for DeVito's performance while condemning the writing and direction. | GPT-4o-mini: The review is overwhelmingly critical, highlighting significant flaws in the script, direction, and overall impact, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:56.116Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 28,
+    "openaiScore": 30,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
