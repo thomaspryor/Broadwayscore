@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 84,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "I applaud those who choose to be part of a production that shouldn't still be bold and revolutionary, yet is",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There are many powerful moments in this production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "because of how necessary this production is, I simply cannot pick it apart like a stagnant work of art",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly admires the production's power and relevance, praising performances and direction while acknowledging its cultural necessity, despite some concerns about audience reception. | GPT-4o-mini: The review expresses strong appreciation for the production's relevance and emotional impact, particularly highlighting the performances, but also notes some limitations in audience engagement.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:10:24.654Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

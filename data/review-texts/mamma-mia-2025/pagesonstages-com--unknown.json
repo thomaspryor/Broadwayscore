@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 88,
+      "performances": 83,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a thoroughly enjoyable performance, and even in its most ridiculous, scuba-gear-wearing moments, it never crosses the line into cringe",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Mamma Mia! leaves us all smiling and wanting more. We don't have to learn something to enjoy it as phenomenal entrainment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the frequency of offstage voices (possibly prerecorded Ableton tracks?) was a little disappointing and, at times, disconcerting",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The reviewer consistently praises the show as 'thoroughly enjoyable' and 'phenomenal entertainment' with specific praise for performances, choreography, and production values, while only minor technical criticisms prevent a higher score. | GPT-4o-mini: The review expresses strong enthusiasm for the production's entertainment value and performances, with only minor criticisms regarding technical aspects.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:10:45.367Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

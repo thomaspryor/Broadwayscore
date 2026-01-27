@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 85,
+      "performances": 94,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "bringing a lightning shaft of unalloyed rom-com charm to Broadway's Longacre Theatre is a smashing little British import",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "If Dougal and Robin can carry a cake across New York, you should be able to carry yourself across New York to see them do it. Two Strangers (Carry a Cake Across New York) *****",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's as artificial as AI yet as emotionally delicious as a slice of that cake they shlep around",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer gives 5/5 stars with enthusiastic language throughout, explicitly recommends seeing the show, praises performances as 'stunningly deft' and production elements as 'inventive' and 'clever,' with only minor criticisms. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the charm, performances, and overall quality of the production, leading to a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:21:38.246Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

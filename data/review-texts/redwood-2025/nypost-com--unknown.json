@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 34,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250401131543",
-  "archiveOrgUrl": "http://web.archive.org/web/20250401131543/https://nypost.com/2025/02/13/entertainment/redwood-review-idina-menzel-broadway-musical-is-thin-sappy/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250401131543/https://nypost.com/2025/02/13/entertainment/redwood-review-idina-menzel-broadway-musical-is-thin-sappy/",
+  "llmScore": {
+    "score": 34,
+    "confidence": "high",
+    "range": {
+      "low": 27.5,
+      "high": 40.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": 35,
+      "performances": 58,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "Too bad the Broadway show named after the wooden giant is a toothpick",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "a shallow exploration of grief that's as obvious as its sledgehammered central metaphor",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "what's so puzzling about 'Redwood' is that it's a textbook tearjerker...that leaves your eyes totally dry",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic delivers harsh criticism of the script, music, and overall emotional impact, calling it shallow and ineffective despite some praise for individual performances. | GPT-4o-mini: The review is predominantly negative, criticizing the script and emotional impact while acknowledging some vocal talent, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:15:57.051Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

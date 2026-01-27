@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 84,
+      "performances": 85,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "he may just have written the best stage musical about circuses by making the animals as real as the human characters",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The musical version of Water for Elephants is one of the few film-to-stage adaptations in many years to be as successful as the cinema version",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this production has beautifully solved all of the problems created by the plot's needs",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive review praising the adaptation as potentially 'the best stage musical about circuses' with consistent praise for direction, design, and problem-solving, though some mild reservations about lead performance. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its inventive direction, engaging music, and memorable performances, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:22:41.274Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

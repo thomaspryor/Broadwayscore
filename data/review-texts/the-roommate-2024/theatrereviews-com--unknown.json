@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 91,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "This may not be the greatest play to open on Broadway, but it is undeniably, a theatrical event for any avid theatergoer",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Ms. Silverman provides a weak script, that is disguised by two brilliant performances",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It is worth a visit to the Booth Theatre to catch a glimpse of these two actors navigating complex characters and creating some dazzling magic on the Broadway stage",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite harsh criticism of the script as 'weak and implausible,' the critic clearly recommends seeing the show for the extraordinary performances by Farrow and LuPone, calling it 'worth a visit' and 'a theatrical event.' | GPT-4o-mini: While the script is criticized as weak, the performances by LuPone and Farrow are described as brilliant, leading to a strong overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:21:09.033Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

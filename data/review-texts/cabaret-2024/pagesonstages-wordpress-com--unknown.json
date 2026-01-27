@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 65,
+      "performances": 83,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "it was a magical evening at the theatre. I was absolutely delighted and dazzled by hearing some of these words as if for the first time",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "All in all, had I not won a lottery ticket that landed me a very good orchestra seat, I would not see this show at the face value ticket prices",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "sometimes, it didn't feel like a musical—just a play with music underneath it",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant reservations about pricing and some artistic choices, the reviewer calls it 'a magical evening' and praises the performances and reinterpretations, indicating a qualified but genuine recommendation. | GPT-4o-mini: The review expresses a mix of admiration for the performances and unique interpretations alongside significant reservations about the production's pricing and some creative choices.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:07:34.148Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

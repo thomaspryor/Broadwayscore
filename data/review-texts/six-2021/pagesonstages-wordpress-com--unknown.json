@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
   "textIssues": [
     "Word count too low: 278 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": 83,
+      "performances": 78,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "Six: The Musical is a fun concept and a fun experience. But if you are in town and have never seen a Broadway show, this is not a true Broadway theatre experience.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The vocal performances are moving, but there's not really any acting or dramatic structure.",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "It was a phenomenal concert, but not really a play.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the vocal performances and music but fundamentally questions whether this qualifies as legitimate theater, describing it as 'a phenomenal concert, but not really a play' - a mixed but leaning negative assessment. | GPT-4o-mini: While the review praises the vocal performances and energy, it highlights significant shortcomings in storytelling and theatricality, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:16:45.717Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

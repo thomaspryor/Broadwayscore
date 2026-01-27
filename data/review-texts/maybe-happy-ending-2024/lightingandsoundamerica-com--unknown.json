@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 85,
+      "performances": 84,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "This kooky, melancholy robot romance provides the fresh blast of talent every theatre season needs",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "originality like this doesn't come along every day",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Maybe Happy Ending runs into trouble in its final passages",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant praise for performances, design, and originality, the critic identifies structural problems with the ending and acknowledges the show's limited appeal, resulting in a qualified positive recommendation. | GPT-4o-mini: The review expresses strong appreciation for the production's originality, performances, and design while noting some weaknesses in the book, leading to a solid positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:11:48.456Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

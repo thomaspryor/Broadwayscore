@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": 89,
+      "performances": 84,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "I loved everything about this show, from the beautiful orchestrations to the vocal performances. The Gestalt of this production was a well oiled machine",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "made for a really fabulous night at the theatre with some serious things to think about",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Even these sound issues and the admittedly mediocre lyrics could not obscure the brilliance",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging sound mixing problems and mediocre lyrics, the reviewer expresses overwhelming enthusiasm for the production's visual elements, performances, and overall impact, explicitly stating they 'loved everything about this show' and calling it 'a really fabulous night at the theatre.' | GPT-4o-mini: The review expresses strong admiration for the visual and musical elements while acknowledging some sound issues, leading to a solid positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:18:10.692Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

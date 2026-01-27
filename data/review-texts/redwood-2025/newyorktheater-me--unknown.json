@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 55.5,
+      "high": 68.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 58,
+      "performances": 77,
+      "direction": 74
+    },
+    "keyPhrases": [
+      {
+        "quote": "no, 'Redwood' is not a wholly satisfying Broadway musical, despite those striking visuals",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "That awesome and fascinating tree turns 'Redwood' into a kind of poetry",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "'Redwood' seems likely to make tree-huggers of us all",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges stunning production values and strong performances but explicitly states the show is 'not a wholly satisfying Broadway musical,' indicating qualified appreciation rather than clear recommendation. | GPT-4o-mini: The review highlights impressive visuals and performances but ultimately concludes that the musical lacks a strong narrative and memorable songs, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:15:50.562Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 63,
+    "openaiScore": 60,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251206001602",
-  "archiveOrgUrl": "http://web.archive.org/web/20251206001602/https://theaterscene.com/reviews/chess/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251206001602/https://theaterscene.com/reviews/chess/",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 89,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "this Chess ultimately triumphs on the strength of its performances, its visual sophistication, and its renewed dramatic urgency",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Strong's new book doesn't fully solve the musical's long-standing problem: its stubbornly disjointed story",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "this revival proves that Chess—for all its complexities—remains a singular theatrical experience, one whose bold ambitions are well worth revisiting",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging serious structural flaws in the book, the critic explicitly states the production 'ultimately triumphs' and calls it 'well worth revisiting,' with strong praise for performances, music, and production values. | GPT-4o-mini: The review highlights strong performances and music while acknowledging issues with the book, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:08:11.102Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

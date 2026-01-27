@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 57,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 63,
+      "performances": 78,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "values spectacle over substance",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Those attending Great Gatsby expecting nothing more than a glitzy, glamorous romp through the Roaring Twenties will find themselves satisfied",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "perfection remains close, yet just out of reach",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The C+ grade and qualified satisfaction for only certain audience expectations, combined with significant criticisms of tone, pacing, and substance, indicate a mixed review that doesn't offer a clear recommendation. | GPT-4o-mini: The review presents a mixed perspective, praising performances and visuals while criticizing the script and pacing, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:17:56.135Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 62,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

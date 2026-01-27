@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 95,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "an instant classic of a memory play",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The cast is pitch perfect in their portrayals of women who could all too easily be flattened into stereotypes but here emerge as fully three-dimensional figures",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "this powerful, life-affirming play",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic awards 5/5 stars and uses superlatives like 'instant classic' and 'powerful, life-affirming' while praising virtually every aspect including script, performances, and direction with minimal reservations. | GPT-4o-mini: The review expresses overwhelming praise for the play's script, performances, and direction, indicating it as a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:09:55.113Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

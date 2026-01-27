@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,5 +30,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 73,
+      "performances": 80,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "lively if less than sensational new Broadway juke box musical",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Myles Frost, a remarkable Jackson avatar",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "so much is crammed into the interstices between the many production numbers that they become almost boring distractions, making the two and a half hour show seem even longer",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer gives qualified praise for performances and production values but criticizes the book structure and pacing, ultimately describing it as 'lively if less than sensational' with mixed engagement. | GPT-4o-mini: The review presents a mixed view, praising performances and audience engagement while criticizing the book and pacing, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:13:03.146Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

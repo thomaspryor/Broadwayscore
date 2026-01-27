@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 50,
+      "performances": 75,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Water for Elephants is a thoroughly dazzling theatre experience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The uninspired nature of the lyrics and inconsistent musical genres carried the story forward, but for me it wasn't a story that inspired emotion or intellectual thoughts",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It was a fun experience, but I didn't walk out with a memory of a particular line, lyric, or idea that moved me",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the spectacle and performances but finds the material uninspiring and unmemorable, describing it as a pleasant but forgettable experience that they don't regret but wouldn't revisit. | GPT-4o-mini: The review indicates a generally enjoyable experience with strong performances and design, but a lack of emotional or intellectual engagement with the material leads to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:22:19.069Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

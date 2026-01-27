@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 24,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 24,
+    "confidence": "medium",
+    "range": {
+      "low": 15,
+      "high": 33
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 15,
+      "music": 33,
+      "performances": 43,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you pass by the Broadway Theatre, keep moving; nothing to see here.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The Great Gatsby is a real puzzler, a show that can't make up its mind about what it wants to be.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Like its hero, this Great Gatsby bets it all on entertainment, wooing the audience by any means necessary. It's a wager on which Lady Luck doesn't look too kindly.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly tells readers to 'keep moving; nothing to see here' and systematically critiques the show's confused tone, poor storytelling choices, and fundamental problems with adapting the source material. | GPT-4o-mini: The review is overwhelmingly negative, with the critic advising readers to avoid the show entirely and highlighting numerous flaws in storytelling, direction, and overall coherence.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:18:03.221Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 28,
+    "openaiScore": 20,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

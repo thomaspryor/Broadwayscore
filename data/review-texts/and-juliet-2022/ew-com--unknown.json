@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 92.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": 85,
+      "performances": 86,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grade: B+",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Courtney, a Queens native whose Broadway credits include Dear Evan Hansen and West Side Story, is a tiny dynamo",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There's something a little relentless about & Juliet's dogged eagerness to entertain, but nakedly joyful too",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The B+ grade combined with consistent praise for performances, energy, and entertainment value, despite minor criticisms about cruise-ship energy and relentlessness, indicates a clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the show's energy, performances, and clever integration of music, leading to a clear recommendation despite some minor reservations.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:05:18.222Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 87,
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

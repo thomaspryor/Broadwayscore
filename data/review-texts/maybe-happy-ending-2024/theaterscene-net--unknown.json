@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 92,
+      "performances": 93,
+      "direction": 91
+    },
+    "keyPhrases": [
+      {
+        "quote": "utterly beguiling and may leave you crying your eyes out by the finale or totally mesmerized by the storytelling",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "One of the few totally satisfying musicals to come along in many years, Maybe Happy Ending is an instant classic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a remarkable achievement from two young newcomers to the musical theater",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review contains unqualified praise throughout, calling it 'utterly beguiling,' 'an instant classic,' and 'one of the few totally satisfying musicals to come along in many years' with no meaningful criticisms. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical, highlighting its emotional depth, strong performances, and impressive production values.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:12:22.192Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

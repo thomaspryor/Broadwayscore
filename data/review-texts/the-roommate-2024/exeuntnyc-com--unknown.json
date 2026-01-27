@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": 63,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Roommate doesn't necessarily warrant an eviction notice, but at the same time, you wouldn't be too disappointed if it pulled up stakes and moved out.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "their slim script strains to be funny and poignant at the same time, often falling short of both",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Even the considerable talents of Patti LuPone and Mia Farrow only occasionally elevate what begins to feel like an extended sitcom premise",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws in the script, direction, and production design, with only occasional elevation from the star performances, concluding with a metaphor suggesting mild disappointment rather than recommendation. | GPT-4o-mini: The review expresses significant disappointment with the script and direction, while acknowledging some strong performances, leading to a clear negative recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:20:17.756Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 37.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 50,
+      "performances": 68,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "if you harbor even a trace of skepticism, think carefully: This may not be your optimum choice for a Broadway night out",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The Notebook has been so smoothly engineered that it's hard to care about these attractive ciphers and their manufactured romantic troubles",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The Notebook might be just the thing for theatregoers looking for a good cry; others might be too distracted by the manipulating hands of its creators",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly warns skeptical viewers away, criticizes the material as manufactured and manipulative, and acknowledges it only works for those seeking emotional manipulation. | GPT-4o-mini: The review presents a mixed view, highlighting strong performances but criticizing the book and emotional manipulation, leading to a conditional recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:19:00.673Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

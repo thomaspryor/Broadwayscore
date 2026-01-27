@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"The show is all bark and no bite. \"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 35,
+      "performances": 68,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "Even as Menzel's Jesse climbs to new physical heights, the lumbering Redwood brings her down.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The arc of Jesse's healing is long—nearly two hours without intermission—and it bends toward banality.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The show is all bark and no bite.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Critic systematically criticizes the book as banal and predictable, songs as mostly blah, and characters as thin, while acknowledging strong production values and Menzel's performance isn't enough to save the show. | GPT-4o-mini: The review expresses significant disappointment with the script and music while acknowledging strong performances, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:16:39.557Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

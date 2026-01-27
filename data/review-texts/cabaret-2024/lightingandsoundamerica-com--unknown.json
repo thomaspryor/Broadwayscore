@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 38,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 45.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 30,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "its leering invitation to sin has become a mechanical bump and grind and its thrills have lost much of their tinselly, tacky allure",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Eddie Redmayne's Emcee... is weird in all the wrong ways, moving jerkily -- like a marionette pulled about by a bored child - and delivering breathy vocals compromised by terrible diction",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Bebe Neuwirth... is nothing less than monumental, stopping the show with the lacerating 'What Would You Do?'",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a comprehensive pan of the production, citing fundamental problems with direction, lead performances, and conception while praising only select supporting performances. | GPT-4o-mini: The review is predominantly negative, highlighting significant flaws in direction and performances, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:07:19.617Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 40,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

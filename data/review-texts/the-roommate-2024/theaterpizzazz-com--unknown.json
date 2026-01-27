@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250430082717",
-  "archiveOrgUrl": "http://web.archive.org/web/20250430082717/https://theaterpizzazz.com/the-roommate/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250430082717/https://theaterpizzazz.com/the-roommate/",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 83,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "a mildly diverting two-hander made palatable chiefly by the presence of its stellar cast",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "their pitch-perfect timing, subtextual nuances, and emotional intelligence are worth the price of admission",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it would have been much greater had it been in something of real substance",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly admires the stellar performances by Farrow and LuPone but finds the script weak and implausible, creating a mixed recommendation that's worth seeing primarily for the acting. | GPT-4o-mini: The review indicates a lack of substance in the play itself, but praises the performances, leading to a mixed recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:20:49.534Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 58,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

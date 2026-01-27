@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20130106193901",
-  "archiveOrgUrl": "http://web.archive.org/web/20130106193901/http://www.independent.co.uk:80/arts-entertainment/theatre-dance/features/nothings-sacred-for-the-supersatirists-2261218.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20130106193901/http://www.independent.co.uk:80/arts-entertainment/theatre-dance/features/nothings-sacred-for-the-supersatirists-2261218.html",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "near-rapturous response from New York's notoriously hard-to-please theatre critics with the New York Times's acerbic Ben Brantley comparing Parker and Stone to Rodgers and Hammerstein",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Parker and Stone's show comes across as a genuine breath of fresh air",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's not easy to imagine the religious mockery playing quite as well with the man from Middle America searching for a fun musical",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review highlights overwhelmingly positive critical reception and describes the show as a 'breath of fresh air' with intelligent satire, though notes some concerns about broader audience appeal and treatment of African characters. | GPT-4o-mini: The review expresses strong praise for the originality and humor of the musical while acknowledging some potential concerns about its reception, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:06:10.037Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

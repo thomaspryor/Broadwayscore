@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20221206165937",
-  "archiveOrgUrl": "http://web.archive.org/web/20221206165937/https://www.theatermania.com/broadway/reviews/review-and-juliet-musical-broadway_94560.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20221206165937/https://www.theatermania.com/broadway/reviews/review-and-juliet-musical-broadway_94560.html",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 85,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "against my most crotchety instincts, I include myself in that category",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "& Juliet is a joy ride from start to finish",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "If you're looking for delicate artistry, you'll want to get off at the first exit ramp",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoys the show despite initial reservations, calling it a 'joy ride' and admitting to having 'a great time' against their 'crotchety instincts,' while acknowledging it's not high art but effective entertainment. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall enjoyment of the show, while acknowledging its lack of depth, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:05:51.190Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

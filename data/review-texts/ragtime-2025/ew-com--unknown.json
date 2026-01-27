@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 67.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 88,
+      "performances": 89,
+      "direction": 72
+    },
+    "keyPhrases": [
+      {
+        "quote": "When Henry is center stage, singing his heart out, blowing our hair back, everything melts away: it's just Coalhouse, his pain and Henry's jaw-dropping baritone",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the staging also has a tendency to lean on its gimmicks (the turntable stage, the moving staircases) like crutches, wasting opportunities for sprawling choreography and grounded movement",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Ragtime isn't the kind of show you walk out of unscathed, not if you're really paying attention. Grade: B",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The B grade and consistent praise for performances and music outweigh staging criticisms, indicating a qualified but clear recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and music while acknowledging some directorial shortcomings, leading to a solid recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:14:50.051Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 85,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

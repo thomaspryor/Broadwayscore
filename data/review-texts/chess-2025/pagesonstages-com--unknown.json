@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": 88,
+      "performances": 70,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "there are moments that make it worth seeing—particularly those with Aaron Tveit, Nicholas Christopher, and Hannah Cruz",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "This production sucked the meaning out of it in an attempt to make it more fun",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Though this production is a mixed bag, there are moments that make it worth seeing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer has deep love for the source material but significant reservations about this production's execution, ultimately giving a qualified recommendation based on strong performances and iconic musical moments despite major flaws in book, design, and lead performance. | GPT-4o-mini: The review expresses mixed feelings about the production, highlighting strong performances and music while criticizing the book and direction, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:08:05.055Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

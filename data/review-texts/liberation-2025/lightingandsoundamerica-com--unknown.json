@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 93,
+      "music": null,
+      "performances": 95,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "Liberation -- to my mind, the best new American play of last season -- has transferred to Broadway in tiptop shape",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It has arrived with its superb cast intact",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Liberation is a potent exercise in time travel... all presented without a whiff of nostalgia or condescension",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic calls it 'the best new American play of last season' and praises virtually every aspect with superlatives like 'superb,' 'perfectly portrayed,' and 'potent,' indicating unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm for the play's execution, performances, and relevance, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:10:07.455Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": 73,
+      "performances": 79,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strong's weak book attempts to amp up the stakes of the chess matches to a ludicrous degree while simultaneously undercutting these efforts with a clunky, jokey narrative",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The music, by ABBA's Benny Andersson and Björn Ulvaeus, is the only obvious reason why, 37 years after it flopped on Broadway, 'Chess' is being revived",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the catchy rock score and the performances by the exciting Broadway pros Aaron Tveit, Lea Michele and Nicholas Christopher",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds significant value in the music and performances but harshly criticizes the book as weak and clunky, resulting in a mixed recommendation that acknowledges both strengths and serious flaws. | GPT-4o-mini: The review highlights strong performances and a catchy score but criticizes the weak book and convoluted narrative, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:07:58.298Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

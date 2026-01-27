@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 35,
+      "performances": 58,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "If this iteration is a hit, it won't be because of quality, which it is sadly lacking",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The show features underwhelming music and lyrics by American singer-songwriter Ingrid Michaelson and a tepid book",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The score, with arrangements by Michaelson and music supervisor Carmel Dean and orchestrations by Dean and John Clancy, can't keep pace with the narrative, slowing it down dramatically",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the show 'sadly lacks quality' and criticizes the music as 'underwhelming' and book as 'tepid,' with only modest praise for some performances. | GPT-4o-mini: The review is predominantly negative, highlighting significant issues with the music, book, and overall execution, despite some praise for individual performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:19:38.535Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

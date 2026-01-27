@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250910021922",
-  "archiveOrgUrl": "http://web.archive.org/web/20250910021922/https://www.theatermania.com/news/review-hells-kitchen-a-coming-of-age-musical-set-in-alicia-keyss-new-york_1721623/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250910021922/https://www.theatermania.com/news/review-hells-kitchen-a-coming-of-age-musical-set-in-alicia-keyss-new-york_1721623/",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 84,
+      "music": 90,
+      "performances": 94,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is easily the best new musical at the Public since Hamilton",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's guaranteed to send you into the streets singing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Everyone in the cast delivers knockout interpretations of this music",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review contains overwhelmingly positive language with superlatives like 'best new musical since Hamilton' and explicit enthusiasm ('guaranteed to send you singing'), praising all major elements while noting only minor quibbles. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical, highlighting strong performances, engaging storytelling, and a powerful score, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:09:26.583Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

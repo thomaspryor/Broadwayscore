@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 68,
+      "performances": 75,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "Redwood succeeds. However, for those of us who are coming in cold to this story, the problem is the lack of context, with too much 'tell' and not enough 'show.'",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The result is the most impressive aerial work while singing since Andrea Martin's 2013 Tony-winning turn on a trapeze as Berthe in Pippin.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Despite any sympathy we might have for Jesse, she is not all that interesting a character.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the production's visual spectacle and technical achievements while fundamentally criticizing the lack of character development and emotional engagement, resulting in qualified appreciation rather than recommendation. | GPT-4o-mini: The review highlights both strengths in the production and significant weaknesses in character development and storytelling, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:16:11.468Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 89,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Marjorie Prime has its own well-deserved chance at immortality, as a melancholic meditation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "allowing Squibb, Nixon, and Burstein's gut-wrenching efforts to take center stage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's a graceful note through which Squibb perfectly defines Marjorie's deepest and most heartbreaking desire",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the philosophical depth of Harrison's writing, celebrates the 'gut-wrenching' performances particularly by Squibb, and describes the play as having a 'well-deserved chance at immortality' with strong appreciation for both the material and execution. | GPT-4o-mini: The review highlights strong performances and a thoughtful exploration of themes, leading to a clear recommendation despite some narrative familiarity.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:11:20.854Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

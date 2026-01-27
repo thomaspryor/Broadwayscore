@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 30,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 40
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 25,
+      "performances": 48,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "at intermission, director Marc Bruni's production had me wondering, why is this even being done?",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Songs that seem to be waiting for their cues, like Gatsby's 'For Her,' rather than emerging naturally from conversations",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "And thus, with two bangs followed by a whimper, ends The Great Gatsby, Broadway's latest attempt to transfer a famous novel to the musical stage",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic fundamentally questions the production's reason for existing and systematically dismantles nearly every element - music, book, performances, and direction - with occasional minor praise but overwhelming criticism. | GPT-4o-mini: The review is predominantly negative, highlighting significant issues with the adaptation's execution and overall impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:18:17.794Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 35,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

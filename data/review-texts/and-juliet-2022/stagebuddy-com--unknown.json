@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250715020220",
-  "archiveOrgUrl": "http://web.archive.org/web/20250715020220/https://stagebuddy.com/theater/theater-review/juliet"
+  "archiveOrgUrl": "http://web.archive.org/web/20250715020220/https://stagebuddy.com/theater/theater-review/juliet",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": 80,
+      "performances": 83,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "Silly? Sure-but extremely entertaining",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The music will be recognizable to viewers of a certain age and many in the audience were 'bopping' around in their seats, at one point standing and dancing as if at a concert",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "& Juliet has the audience dancing in their seats and 'all's well that ends well.'",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer finds the show entertaining and engaging despite acknowledging its silliness, praising performances, staging, and audience enjoyment with clear positive sentiment throughout. | GPT-4o-mini: The review expresses strong enthusiasm for the entertainment value, performances, and staging, while acknowledging some narrative flaws, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:05:32.979Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

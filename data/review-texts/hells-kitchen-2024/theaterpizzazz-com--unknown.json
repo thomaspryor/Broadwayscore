@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250328124033",
-  "archiveOrgUrl": "http://web.archive.org/web/20250328124033/https://theaterpizzazz.com/hells-kitchen/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250328124033/https://theaterpizzazz.com/hells-kitchen/",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 90,
+      "performances": 93,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hell's Kitchen, Alicia Keys's vibrant new bio-musical now playing at the Public Theater, is red-hot and ready for Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It belongs on Broadway, and hopefully soon",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "An electrifying two and half hours culminates with Keys's big-bang final number",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer demonstrates strong enthusiasm throughout with praise for all elements (performances, direction, music, book) and explicitly states the show 'belongs on Broadway', indicating a clear recommendation. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the vibrant music, strong performances, and engaging story, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:09:33.060Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

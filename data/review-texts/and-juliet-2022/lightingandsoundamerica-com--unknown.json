@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,63 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 57,
+    "confidence": "low",
+    "range": {
+      "low": 43.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 53,
+      "performances": 65,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a classic example of a just-good-enough musical, a fast, sometimes funny evening that might really take off if it had a decent original score",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "All right, I'm a varlet. Given Something Rotten's 2015 - 2017 run, it's a little early for another musical romp with the Bard, especially one that coasts so heavily on self-congratulation",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Audiences looking to rock out to these vintage hits are likely to go with the book's cheerful, breezily inclusive tone",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic calls it 'just-good-enough' and criticizes the reliance on jukebox songs over original material, while acknowledging it will likely be popular with its target audience but finds significant flaws in execution. | GPT-4o-mini: The review presents a mixed perspective, highlighting both enjoyable elements and significant drawbacks, leading to a conditional recommendation. | Note: Models differed by 17 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:05:26.914Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 65,
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 17 points (Claude: 48, OpenAI: 65)"
+    ]
+  }
 }
