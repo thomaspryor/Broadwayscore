@@ -1,37 +1,37 @@
 {
-  "runDate": "2026-01-27T04:51:27.270Z",
+  "runDate": "2026-01-27T04:54:28.480Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "chicago-1996",
+    "showFilter": "cabaret-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 196,
-    "failed": 113,
+    "processed": 202,
+    "failed": 110,
     "skipped": 0,
-    "successRate": "63.4%"
+    "successRate": "64.7%"
   },
   "tierBreakdown": {
-    "playwright": 17,
-    "scrapingbee": 16,
+    "playwright": 22,
+    "scrapingbee": 17,
     "brightdata": 20,
     "archive": 143
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 0,
-    "tier2Attempts": 8,
-    "tier2Success": 0,
-    "tier3Attempts": 8,
+    "tier1Attempts": 11,
+    "tier1Success": 5,
+    "tier2Attempts": 6,
+    "tier2Success": 1,
+    "tier3Attempts": 5,
     "tier3Success": 0,
-    "tier4Attempts": 8,
+    "tier4Attempts": 5,
     "tier4Success": 3,
-    "totalFailed": 5,
+    "totalFailed": 2,
     "scrapingBeeCreditsUsed": 40
   },
   "processed": [
@@ -228,9 +228,15 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "chicago-1996/variety-com--unknown.json",
-    "chicago-1996/hellobeautiful-com--unknown.json",
-    "chicago-1996/theatermania-com--unknown.json"
+    "cabaret-2024/nytimes-com--unknown.json",
+    "cabaret-2024/ew-com--unknown.json",
+    "cabaret-2024/lightingandsoundamerica-com--unknown.json",
+    "cabaret-2024/newyorktheater-me--unknown.json",
+    "cabaret-2024/newyorktheatreguide-com--unknown.json",
+    "cabaret-2024/pagesonstages-wordpress-com--unknown.json",
+    "cabaret-2024/talkinbroadway-com--unknown.json",
+    "cabaret-2024/theaterscene-net--unknown.json",
+    "cabaret-2024/wsj-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -341,11 +347,8 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "chicago-1996/nyt--ben-brantley.json",
-    "chicago-1996/nytimes-com--unknown.json",
-    "chicago-1996/curtainup-com--unknown.json",
-    "chicago-1996/oocities-org--unknown.json",
-    "chicago-1996/talkinbroadway-com--unknown.json"
+    "cabaret-2024/interestedbystander-com--unknown.json",
+    "cabaret-2024/tman--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -365,7 +368,12 @@
       "hadestown-2019/bwaynews--charles-isherwood.json",
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
-      "hadestown-2019/showshowdown-blogspot-com--unknown.json"
+      "hadestown-2019/showshowdown-blogspot-com--unknown.json",
+      "cabaret-2024/ew-com--unknown.json",
+      "cabaret-2024/lightingandsoundamerica-com--unknown.json",
+      "cabaret-2024/newyorktheatreguide-com--unknown.json",
+      "cabaret-2024/pagesonstages-wordpress-com--unknown.json",
+      "cabaret-2024/theaterscene-net--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -383,7 +391,8 @@
       "death-becomes-her-2024/ew--dalton-ross.json",
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
-      "hadestown-2019/timeout--adam-feldman.json"
+      "hadestown-2019/timeout--adam-feldman.json",
+      "cabaret-2024/newyorktheater-me--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -548,9 +557,9 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "chicago-1996/variety-com--unknown.json",
-      "chicago-1996/hellobeautiful-com--unknown.json",
-      "chicago-1996/theatermania-com--unknown.json"
+      "cabaret-2024/nytimes-com--unknown.json",
+      "cabaret-2024/talkinbroadway-com--unknown.json",
+      "cabaret-2024/wsj-com--unknown.json"
     ]
   }
 }
