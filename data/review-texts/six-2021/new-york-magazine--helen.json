@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "So let the cares of this world roll away. Heck, let the cares of 16th-century England dissolve. This is one liberation in which you don’t have to lift a finger. Queens are doing it for themselves.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/six/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So let the cares of this world roll away",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This is one liberation in which you don't have to lift a finger",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Queens are doing it for themselves",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review uses consistently positive language about escapism and liberation, suggesting the show successfully delivers an enjoyable, carefree theatrical experience. | GPT-4o-mini: The review conveys a positive sentiment about the show's liberating themes and empowerment, suggesting a strong recommendation despite lacking specific critiques.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:15.711Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

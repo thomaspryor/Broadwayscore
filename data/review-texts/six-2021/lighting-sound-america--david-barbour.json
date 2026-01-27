@@ -10,7 +10,7 @@
   "showScoreExcerpt": "Best of all, Six is an original musical, with a wildly novel concept, put together by a young creative team, many of them in their twenties. This is how musical theatre moves forward, not by recycling yesterday's hits but by applying fresh thinking and up-to-date wit to a seemingly unlikely subject.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/six",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -35,5 +35,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 87,
+      "performances": 89,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Six knows exactly what it wants to do and how to go about it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Is it the musical that Broadway needs right now? Verily.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This is how musical theatre moves forward, not by recycling yesterday's hits but by applying fresh thinking and up-to-date wit",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the concept, performances, and production values consistently, concluding it's exactly what Broadway needs right now despite acknowledging it may not be 'for the ages.' | GPT-4o-mini: The review expresses strong enthusiasm for the show's originality, performances, and overall entertainment value, indicating a must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:11.223Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

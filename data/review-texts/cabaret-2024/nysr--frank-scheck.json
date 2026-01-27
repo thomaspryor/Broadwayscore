@@ -10,8 +10,64 @@
   "bwwExcerpt": "As for the show itself (I know, it almost seems like an afterthought), it has been given an undeniably powerful if somewhat imperfect staging. Among its chief strengths are its lead performances, or at least most of them, with Eddie Redmayne repeating his Olivier Award-winning performance (at least through early September) as the leering Emcee. He’s not quite as menacing as Alan Cumming in the Mendes production, at times seeming fragile and almost adorable. But the actor is certainly mesmerizing",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 79,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "undeniably powerful if somewhat imperfect staging",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the actor is certainly mesmerizing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "He's not quite as menacing as Alan Cumming",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review praises the lead performance and staging as 'powerful' but notes imperfections and unfavorable comparisons, suggesting qualified approval with reservations. | GPT-4o-mini: The review highlights strong performances, particularly from Eddie Redmayne, but indicates imperfections in the overall staging, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:02.247Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

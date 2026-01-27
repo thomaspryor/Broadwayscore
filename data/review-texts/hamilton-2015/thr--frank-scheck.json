@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"Having already become a cultural phenomenon in its off-Broadway premiere run earlier this year at the Public Theater, 'Hamilton' — written by and starring Lin-Manuel Miranda, who previously made a name for himself on Broadway with 'In the Heights' — seems a shoo-in for smash hit status and a slew of awards attention...The musical is a triumph.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20210416183341",
-  "archiveOrgUrl": "http://web.archive.org/web/20210416183341/https://www.hollywoodreporter.com/review/lin-manuel-mirandas-hamilton-theater-813145"
+  "archiveOrgUrl": "http://web.archive.org/web/20210416183341/https://www.hollywoodreporter.com/review/lin-manuel-mirandas-hamilton-theater-813145",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 92,
+      "performances": 95,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is a triumph",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "seems a shoo-in for smash-hit status and a slew of awardnoms",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "signals its immensely talented creator and star as a game-changing figure in musical theater",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Review explicitly calls the musical 'a triumph' and predicts major success, with consistent praise across all elements and no significant reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm and highlights the show's triumph, performances, and production quality, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:48.481Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
