@@ -39,5 +39,61 @@
   "designation": "Must_See",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "must-see"
+  "extractedPhrase": "must-see",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 76.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 74,
+      "performances": 88,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Operation Mincemeat is a must-see show for you",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "hilariously performed by its original five-member ensemble",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this nearly ceaselessly amusing affair",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Four-star review with explicit 'must-see' recommendation, consistent praise for performances and humor, with only minor reservations about music memorability. | GPT-4o-mini: The review expresses strong enthusiasm for the show's originality, performances, and humor, with only minor reservations about the music.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:27.780Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 88,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

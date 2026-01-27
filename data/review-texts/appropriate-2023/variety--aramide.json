@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Branden Jacobs-Jenkins’ “Appropriate,” now playing on Broadway, is a searing narrative about family ties, past hurts and unbridled pain. It’s a shocking play centering on legacy, race and the fragility of memory.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/appropriate/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240617112718",
-  "archiveOrgUrl": "http://web.archive.org/web/20240617112718/https://variety.com/2023/legit/reviews/appropriate-review-broadway-sarah-paulson-corey-stoll-1235841181/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240617112718/https://variety.com/2023/legit/reviews/appropriate-review-broadway-sarah-paulson-corey-stoll-1235841181/",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": null,
+      "performances": 85,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "creates one of the most engaging family dynamics presented on stage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "incredible performances from the entire cast, particularly Paulson and Stoll",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "with a runtime approaching three hours, even the humorous bits that slice through the heaviness of the material can't save some of the overlong sections and monologues",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances, themes, and family dynamics as compelling while acknowledging significant structural issues with pacing and length, resulting in a qualified positive recommendation. | GPT-4o-mini: The review praises the performances and the engaging family dynamics while noting some structural issues, leading to a clear but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:29.207Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

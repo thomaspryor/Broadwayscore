@@ -10,8 +10,64 @@
   "bwwExcerpt": "As a three-hour-and-two-intermission multigenerational family epic that’s Serious But Also Funny — and full of prolonged opportunities for actors to shout — it’s essentially purpose-built to win awards, and it has. Off Broadway, it nabbed Outstanding Play and Outstanding New Off-Broadway Play from the Drama Desk and Outer Critics Circle, respectively. It has the shape of something profound and easily laudable, but inside that outline, though it doesn’t shy away from gnarly questions, it often fe",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harmon's play is plenty sharp and by no means gloomy",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "there's a savviness to Prayer's construction that makes it ring false",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Zingy, morbid humor and motormouthed diatribes are the playwright's weapons of choice",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges the playwright's skill and sharp humor but ultimately finds the construction artificial and false, creating a mixed verdict that leans slightly negative. | GPT-4o-mini: The review presents a mixed view, highlighting sharpness and humor but also indicating a significant flaw in the play's construction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:56.370Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

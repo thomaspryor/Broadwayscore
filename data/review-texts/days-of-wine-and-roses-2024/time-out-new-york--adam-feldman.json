@@ -10,8 +10,64 @@
   "bwwExcerpt": "Guettel’s score has the feel of a chamber opera. For moments of drunken euphoria, it dabbles in cocktail jazz: Passages in “Evanesce” sound like vocalese, and in “Are You Blue?” O’Hara scats bebop to herself. But most of it takes an art-song approach, eschewing strong melodies in favor of moment-to-moment expression; some of the lyrics rhyme, some don’t. (The eight-piece band, conducted by Kimberly Grigsby, also plays a lot of underscoring.) This is demanding stuff, both dramatically and musical",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 68,
+      "performances": 70,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Guettel's score has the feel of a chamber opera",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "This is demanding stuff, both dramatically and musical",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "eschewing strong melodies in favor of moment-to-moment expression",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This excerpt focuses on musical analysis without clear recommendation signals, describing the score as challenging and lacking strong melodies while acknowledging its artistic ambitions. | GPT-4o-mini: The review indicates a complex musical score that may appeal to some but lacks strong melodies, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:31.806Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

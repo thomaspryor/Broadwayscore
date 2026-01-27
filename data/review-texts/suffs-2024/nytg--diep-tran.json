@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"In entertainment, there is the assumption that womenâs stories are small, while menâs stories are universal. Just as the suffragists broke down the doors of the patriarchy, Suffs breaks down the doors of musical theatre, showing that a cast and creative team of mostly women can tell a story that is important, powerful, and about all of us. With Taub leading it, the future of musical theatre is female, and itâs about time.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/suffs",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20260110094012/https://www.newyorktheatreguide.com/reviews/suffs-off-broadway-review-public-theater",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 69,
+      "music": 68,
+      "performances": 85,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's an impressive achievement",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Suffs breaks down the doors of musical theatre, showing that a cast and creative team of mostly women can tell a story that is important, powerful, and about all of us",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "at times, the musical feels like a history lesson",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite structural criticisms about pacing and narrative momentum, the review celebrates the show as groundbreaking and important, praising the performances and direction while acknowledging it as an 'impressive achievement.' | GPT-4o-mini: The review expresses clear praise for the performances and direction while noting some narrative weaknesses, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:49.619Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

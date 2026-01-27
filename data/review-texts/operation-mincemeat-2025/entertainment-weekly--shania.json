@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Don't let the modest cast of five fool you, Operation Mincemeat has long surpassed its humble beginnings and become a classic big, brassy Broadway experience. Expect no shortage of pizazz, frills, belly laughs, and, yes, confetti when you step into the John Golden Theatre — not to mention several catchy tunes stuck in your head when you exit.",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 93,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/operation-mincemeat/",
@@ -46,5 +46,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-grade",
   "scoreConfidence": "medium",
-  "extractedGrade": "A"
+  "extractedGrade": "A",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 85.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 82,
+      "performances": 91,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "an undeniable success",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "endlessly entertaining in the hands of its five performers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Grade: A",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review awards an explicit 'A' grade and repeatedly uses unqualified praise like 'undeniable success,' 'astonishing,' and 'endlessly entertaining' with no significant reservations. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's humor, performances, and overall success, culminating in a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:09.152Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 95,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

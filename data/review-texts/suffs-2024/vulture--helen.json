@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical is already piercing and deeply felt and&nbsp;good. Just a few amendments to go, and, like a certain Constitution I could mention — it might be truly great.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 68,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -37,5 +37,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250402183526/https://www.vulture.com/2022/04/theater-review-shaina-taubs-suffs.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 68,
+      "music": 60,
+      "performances": 73,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is already piercing and deeply felt and good. Just a few amendments to go, and, like a certain Constitution I could mention — it might be truly great.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "certain repetitiveness in Taub's musical choices, which can blend together over the course of the show's 38 songs, and Silverman's staging, which does too little to vary the production itself",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "At the risk of sounding like Carrie Chapman Catt, incremental change might be the answer. Fewer songs? A couple more jokes? A touch more light?",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the show's substance and performances but identifies significant structural and staging issues that prevent it from reaching greatness, offering a qualified positive assessment with clear reservations. | GPT-4o-mini: The review indicates a mix of strong themes and performances but also highlights significant flaws in execution and repetitiveness, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:52.534Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 68,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

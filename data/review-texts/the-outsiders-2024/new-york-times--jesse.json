@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It’s a strange paradox of Broadway that its bigness, when used humbly, can honor quite delicate ideas. Whether it can sustain them is another story. In “The Outsiders,” they are not sustained; the structural problems mean its achievements don’t stick. But they’re still achievements, and a show need not be for the ages to be for the moment. In that sense it’s fair, citing Frost, to call it golden — nature’s “hardest hue to hold.”",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 71,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-outsiders/ -->",
@@ -38,5 +38,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20260119170307/https://www.nytimes.com/2024/04/11/theater/review-outsiders-musical.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 69,
+      "performances": 77,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical version of 'The Outsiders' that opened on Thursday has been made with so much love and sincerity it survives with most of its heart intact",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "its achievements don't stick. But they're still achievements, and a show need not be for the ages to be for the moment",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "incidents butt up against one another with insufficient connective tissue; it's bone against bone",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Green acknowledges significant structural flaws and pacing issues but consistently praises the sincere performances, innovative direction, and design work, ultimately finding it worthwhile despite its problems. | GPT-4o-mini: The review expresses a mix of appreciation for the sincerity and performances while highlighting significant structural issues, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:45.351Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

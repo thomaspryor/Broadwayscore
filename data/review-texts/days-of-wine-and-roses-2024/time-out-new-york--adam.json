@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Days of Wine and Roses reunites composer Adam Guettel with playwright Craig Lucas; as in their previous collaboration, 2005’s The Light in the Piazza, the result is ambitious, artful and musically sophisticated.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/days-of-wine-and-roses/",
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 79,
+      "performances": 89,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "ambitious, artful and musically sophisticated",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Both are superb: Playing 'two people stranded at sea,' they navigate their characters' desperate highs and lows...with depth, grit and vocal expertise",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "If Days and Wine and Roses isn't exactly galvanizing—it's too classy for that—it is effectively sober",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the sophisticated music, superb performances, and elegant production while noting it's not galvanizing but is 'effectively sober,' suggesting qualified appreciation rather than enthusiasm. | GPT-4o-mini: The review highlights strong performances and direction while acknowledging some limitations in the material, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:37.055Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
