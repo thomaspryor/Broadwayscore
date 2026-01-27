@@ -892,14 +892,72 @@ function archiveHtml(html, review, method) {
   return archivePath;
 }
 
+// Detect truncation signals in text
+// Returns object with detected signals and whether likely truncated
+function detectTruncationSignals(text, excerptLength = 0) {
+  if (!text || text.trim().length === 0) {
+    return { signals: [], likelyTruncated: false };
+  }
+
+  const signals = [];
+  const trimmedText = text.trim();
+  const lastChar = trimmedText.slice(-1);
+  const last50 = trimmedText.slice(-50);
+  const last500 = trimmedText.slice(-500).toLowerCase();
+
+  // Check for proper sentence ending
+  const endsWithPunctuation = /[.!?"'"\)]$/.test(trimmedText);
+  if (!endsWithPunctuation) {
+    signals.push('no_ending_punctuation');
+  }
+
+  // Check for ellipsis ending
+  if (/\.{3}$|…$/.test(trimmedText)) {
+    signals.push('ends_with_ellipsis');
+  }
+
+  // Check for paywall/subscribe text near end
+  if (/subscribe|sign.?in|log.?in|create.?account|members?.?only/i.test(last500)) {
+    signals.push('has_paywall_text');
+  }
+
+  // Check for "read more" or "continue reading"
+  if (/continue.?reading|read.?more|read.?the.?full|full.?article|full.?review/i.test(last500)) {
+    signals.push('has_read_more_prompt');
+  }
+
+  // Check for common paywall endings
+  if (/privacy.?policy|terms.?of.?use|all.?rights.?reserved|©/i.test(last500)) {
+    signals.push('has_footer_text');
+  }
+
+  // Check if text is suspiciously short compared to excerpt
+  if (excerptLength > 100 && text.length < excerptLength * 1.5) {
+    signals.push('shorter_than_excerpt');
+  }
+
+  // Check for mid-word cutoff (ends with lowercase letter, no punctuation)
+  if (/[a-z]$/.test(lastChar) && !endsWithPunctuation) {
+    signals.push('possible_mid_word_cutoff');
+  }
+
+  // Determine if likely truncated based on signals
+  const severeSignals = ['has_paywall_text', 'has_read_more_prompt', 'ends_with_ellipsis', 'shorter_than_excerpt'];
+  const hasSevereSignal = signals.some(s => severeSignals.includes(s));
+  const likelyTruncated = hasSevereSignal || signals.length >= 2;
+
+  return { signals, likelyTruncated };
+}
+
 // Classify text quality based on rules:
-// - full: >1500 chars AND mentions show title AND >300 words
-// - partial: 500-1500 chars OR mentions show title but <300 words
+// - full: >1500 chars AND mentions show title AND >300 words AND no truncation signals
+// - truncated: Has truncation signals (paywall, read more, etc.)
+// - partial: 500-1500 chars OR larger but missing criteria
 // - excerpt: <500 chars
 // - missing: no text
-function classifyTextQuality(text, showId, wordCount) {
+function classifyTextQuality(text, showId, wordCount, excerptLength = 0) {
   if (!text || text.trim().length === 0) {
-    return 'missing';
+    return { quality: 'missing', truncationSignals: [] };
   }
 
   const charCount = text.length;
@@ -908,25 +966,33 @@ function classifyTextQuality(text, showId, wordCount) {
   const textLower = text.toLowerCase();
   const hasShowTitle = titleLower && textLower.includes(titleLower);
 
-  // Full: >1500 chars AND mentions show title AND >300 words
-  if (charCount > 1500 && hasShowTitle && wordCount > 300) {
-    return 'full';
+  // Detect truncation signals
+  const { signals, likelyTruncated } = detectTruncationSignals(text, excerptLength);
+
+  // If truncation detected, mark as truncated regardless of length
+  if (likelyTruncated) {
+    return { quality: 'truncated', truncationSignals: signals };
+  }
+
+  // Full: >1500 chars AND mentions show title AND >300 words AND no truncation
+  if (charCount > 1500 && hasShowTitle && wordCount > 300 && signals.length === 0) {
+    return { quality: 'full', truncationSignals: signals };
   }
 
   // Partial: 500-1500 chars OR larger but missing criteria
   if (charCount >= 500 && charCount <= 1500) {
-    return 'partial';
+    return { quality: 'partial', truncationSignals: signals };
   }
   if (charCount > 1500 && (!hasShowTitle || wordCount <= 300)) {
-    return 'partial';
+    return { quality: 'partial', truncationSignals: signals };
   }
 
   // Excerpt: <500 chars
   if (charCount < 500) {
-    return 'excerpt';
+    return { quality: 'excerpt', truncationSignals: signals };
   }
 
-  return 'partial';
+  return { quality: 'partial', truncationSignals: signals };
 }
 
 // Map fetch method to standardized sourceMethod
@@ -946,9 +1012,15 @@ function mapSourceMethod(method) {
 function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}) {
   const data = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
 
+  // Get excerpt length for truncation detection
+  const excerptLength = Math.max(
+    (data.dtliExcerpt || '').length,
+    (data.bwwExcerpt || '').length,
+    (data.showScoreExcerpt || '').length
+  );
+
   data.fullText = text;
   data.isFullReview = text.length > 1500;
-  data.textStatus = validation.valid ? 'complete' : 'partial';
   data.textWordCount = validation.wordCount;
   data.archivePath = archivePath;
   data.textFetchedAt = new Date().toISOString();
@@ -958,8 +1030,20 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
   data.fetchAttempts = attempts;
   data.fetchTier = method === 'playwright' ? 1 : method === 'scrapingbee' ? 2 : method === 'brightdata' ? 3 : 4;
 
-  // Text quality classification (new fields)
-  data.textQuality = classifyTextQuality(text, review.showId || data.showId, validation.wordCount);
+  // Text quality classification with truncation detection
+  const qualityResult = classifyTextQuality(text, review.showId || data.showId, validation.wordCount, excerptLength);
+  data.textQuality = qualityResult.quality;
+  data.truncationSignals = qualityResult.truncationSignals;
+
+  // Update textStatus based on quality
+  if (qualityResult.quality === 'full') {
+    data.textStatus = 'complete';
+  } else if (qualityResult.quality === 'truncated') {
+    data.textStatus = 'truncated';
+  } else {
+    data.textStatus = validation.valid ? 'partial' : 'incomplete';
+  }
+
   data.sourceMethod = mapSourceMethod(method);
 
   if (archiveData.archiveTimestamp) {
