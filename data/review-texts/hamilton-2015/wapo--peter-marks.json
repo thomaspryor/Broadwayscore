@@ -12,8 +12,8 @@
   "assignedScore": 95,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
-  "textStatus": "partial",
-  "textQuality": "partial",
+  "textStatus": "truncated",
+  "textQuality": "truncated",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
@@ -75,7 +75,7 @@
   },
   "textWordCount": 89,
   "archivePath": "data/archives/reviews/hamilton-2015/wapo--peter-marks_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:41:40.595Z",
+  "textFetchedAt": "2026-01-27T05:16:28.775Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -99,5 +99,8 @@
   "fetchTier": 3,
   "textIssues": [
     "Word count too low: 89 (min: 300)"
+  ],
+  "truncationSignals": [
+    "shorter_than_excerpt"
   ]
 }
