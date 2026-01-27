@@ -1,37 +1,37 @@
 {
-  "runDate": "2026-01-27T04:40:58.718Z",
+  "runDate": "2026-01-27T04:41:59.144Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "aladdin-2014",
+    "showFilter": "moulin-rouge-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 202,
-    "failed": 118,
+    "processed": 195,
+    "failed": 128,
     "skipped": 0,
-    "successRate": "63.1%"
+    "successRate": "60.4%"
   },
   "tierBreakdown": {
     "playwright": 18,
-    "scrapingbee": 17,
-    "brightdata": 22,
-    "archive": 145
+    "scrapingbee": 16,
+    "brightdata": 21,
+    "archive": 140
   },
   "statistics": {
-    "tier1Attempts": 19,
+    "tier1Attempts": 22,
     "tier1Success": 1,
-    "tier2Attempts": 18,
-    "tier2Success": 1,
-    "tier3Attempts": 17,
-    "tier3Success": 2,
-    "tier4Attempts": 17,
-    "tier4Success": 5,
-    "totalFailed": 10,
+    "tier2Attempts": 21,
+    "tier2Success": 0,
+    "tier3Attempts": 21,
+    "tier3Success": 1,
+    "tier4Attempts": 25,
+    "tier4Success": 0,
+    "totalFailed": 20,
     "scrapingBeeCreditsUsed": 80
   },
   "processed": [
@@ -228,15 +228,8 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "aladdin-2014/nytimes-com--unknown.json",
-    "aladdin-2014/chicagotribune-com--unknown.json",
-    "aladdin-2014/huffingtonpost-com--unknown.json",
-    "aladdin-2014/nbcnewyork-com--unknown.json",
-    "aladdin-2014/newsday-com--unknown.json",
-    "aladdin-2014/nypost-com--unknown.json",
-    "aladdin-2014/time-com--unknown.json",
-    "aladdin-2014/timeout--adam-feldman.json",
-    "aladdin-2014/usatoday-com--unknown.json"
+    "moulin-rouge-2019/broadwaynews-com--unknown.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -347,16 +340,26 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "aladdin-2014/nyt--ben-brantley.json",
-    "aladdin-2014/vult--jesse-green.json",
-    "aladdin-2014/deadline--pete-hammond.json",
-    "aladdin-2014/newjerseynewsroom-com--unknown.json",
-    "aladdin-2014/nydn--joe-dziemianowicz.json",
-    "aladdin-2014/nyp--elisabeth-vincentelli.json",
-    "aladdin-2014/talkinbway--matthew-murray.json",
-    "aladdin-2014/tman--david-finkle.json",
-    "aladdin-2014/usatoday--elysa-gardner.json",
-    "aladdin-2014/washpost--peter-marks.json"
+    "moulin-rouge-2019/nyt--jesse-green.json",
+    "moulin-rouge-2019/vult--jesse-green.json",
+    "moulin-rouge-2019/NJCOM--christopher-kelly.json",
+    "moulin-rouge-2019/NYDN--joe-dziemianowicz.json",
+    "moulin-rouge-2019/NYP--johnny-oleksinski.json",
+    "moulin-rouge-2019/NYSR--jesse-oxfeld.json",
+    "moulin-rouge-2019/TDB--tim-teeman.json",
+    "moulin-rouge-2019/USATODAY--patrick-ryan.json",
+    "moulin-rouge-2019/WASHPOST--peter-marks.json",
+    "moulin-rouge-2019/WRAP--robert-hofler.json",
+    "moulin-rouge-2019/amny--matt-windman.json",
+    "moulin-rouge-2019/curtainup-com--unknown.json",
+    "moulin-rouge-2019/ew--leah-greenblatt.json",
+    "moulin-rouge-2019/guardian--alexis-soloski.json",
+    "moulin-rouge-2019/nyp--johnny-oleksinski.json",
+    "moulin-rouge-2019/slleiter-blogspot-com--unknown.json",
+    "moulin-rouge-2019/tman--jesse-green.json",
+    "moulin-rouge-2019/washingtonpost-com--unknown.json",
+    "moulin-rouge-2019/washpost--peter-marks.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -377,7 +380,7 @@
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
       "hadestown-2019/showshowdown-blogspot-com--unknown.json",
-      "aladdin-2014/huffingtonpost-com--unknown.json"
+      "moulin-rouge-2019/broadwaynews-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -395,8 +398,7 @@
       "death-becomes-her-2024/ew--dalton-ross.json",
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
-      "hadestown-2019/timeout--adam-feldman.json",
-      "aladdin-2014/timeout--adam-feldman.json"
+      "hadestown-2019/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -419,8 +421,7 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "aladdin-2014/chicagotribune-com--unknown.json",
-      "aladdin-2014/usatoday-com--unknown.json"
+      "moulin-rouge-2019/timeout--adam-feldman.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -562,12 +563,7 @@
       "hadestown-2019/thefrontrowcenter-com--unknown.json",
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
-      "hadestown-2019/washingtonpost-com--unknown.json",
-      "aladdin-2014/nytimes-com--unknown.json",
-      "aladdin-2014/nbcnewyork-com--unknown.json",
-      "aladdin-2014/newsday-com--unknown.json",
-      "aladdin-2014/nypost-com--unknown.json",
-      "aladdin-2014/time-com--unknown.json"
+      "hadestown-2019/washingtonpost-com--unknown.json"
     ]
   }
 }
