@@ -10,7 +10,7 @@
   "showScoreExcerpt": "ââââ \"Red alert! Red alert! If you're the kind of person who frets that jukebox musicals are taking over Broadway, prepare to tilt at the windmill that is the gorgeous, gaudy, spectacularly overstuffed 'Moulin Rouge! The Musical.' Directed with opulent showmanship by Alex Timbers, this adaptation of Baz Luhrmann's 2001 movie may be costume jewelry, but its shine is dazzling.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/moulin-rouge-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 90,
+      "performances": 89,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "this adaptation of Baz Luhrmann's 2001 movie may be costume jewelry, but its shine is dazzling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's a very fancy heart-shaped box of Valentine's Day chocolates, and though you know exactly what you're going to get, each bite is still a little surprise",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Moulin Rouge! may turn out to be the jukebox musical to end all jukebox musicals—if only because, among its particular type of jukebox musical at least, it's hard to imagine how it can be topped",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's superficiality but is clearly dazzled by its spectacle, performances, and production values, ultimately positioning it as the pinnacle of its genre. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its dazzling visuals, strong performances, and memorable music, leading to a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:57.320Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
