@@ -12,7 +12,7 @@
   "assignedScore": 84,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
-  "textStatus": "partial",
+  "textStatus": "incomplete",
   "textQuality": "partial",
   "sourceMethod": "playwright",
   "scoreStatus": "TO_BE_CALCULATED",
@@ -74,8 +74,8 @@
     "needsReviewReasons": []
   },
   "textWordCount": 33,
-  "archivePath": "data/archives/reviews/aladdin-2014/catholic-transcript--bernard-carragher_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T19:43:38.243Z",
+  "archivePath": "data/archives/reviews/aladdin-2014/catholic-transcript--bernard-carragher_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T20:27:34.072Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -88,5 +88,8 @@
   "textIssues": [
     "Word count too low: 33 (min: 300)",
     "Show title not found in text"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation"
   ]
 }
