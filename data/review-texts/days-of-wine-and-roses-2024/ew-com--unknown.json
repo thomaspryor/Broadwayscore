@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -37,5 +37,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 84,
+      "performances": 89,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "O'Hara and James rise to the challenge tenfold, pairing perfectly with one another onstage with their incredible chemistry and treating book writer Craig Lucas' powerful material with the nuance and gravity that it rightfully deserves.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Days of Wine and Roses is an affecting, unblinking portrayal of the reality of dealing with addiction that's seldom seen on Broadway.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there are a few scenes within the first and third act that feel a bit drawn out for the musical's crisp, 90-minute runtime",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The B grade combined with consistent praise for performances, music, and subject matter, with only minor pacing criticisms, indicates a clear positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and the handling of the subject matter, with only minor caveats about pacing.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:28.661Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

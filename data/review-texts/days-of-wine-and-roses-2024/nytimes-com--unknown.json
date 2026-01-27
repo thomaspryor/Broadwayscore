@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Gone is the emotional aridity that kept the story at a strange remove.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250724233526",
-  "archiveOrgUrl": "http://web.archive.org/web/20250724233526/https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250724233526/https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html",
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 90,
+      "performances": 91,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "the central performances, which are superb, and Guettel's anxious, spiky, sumptuous score, which grabs hold of us and doesn't let go",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Deeper, wiser and warmer than it was in its premiere at Off Broadway's Atlantic Theater Company last year",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the opening scene is still perplexing, too sparely written and staged",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances and score with noted improvements from Off-Broadway, despite some structural criticisms of the opening and book. | GPT-4o-mini: The review expresses strong praise for the performances and music, with a clear recommendation despite some minor reservations about the script.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:40.441Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

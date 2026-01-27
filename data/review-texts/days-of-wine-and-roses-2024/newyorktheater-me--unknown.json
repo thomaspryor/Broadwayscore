@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 85,
+      "performances": 90,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "The two stars carry 'Days of Wine and Roses,' their exquisite voices bringing out the brilliance of Adam Guettel's jazz-inflected, often operatic score, and investing the characters' rocky emotional journeys with a credibility that few other performers could match",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It seems an odd choice to bring back a story more than sixty years old, which centers around a 1950s-style corporate executive, when there are so many new stories out there about the same problem that reflect more common present-day scenarios",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the shortcomings still pale beside O'Hara and James' rendering of the sharp dialogue and the clever songs",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant flaws in the material's relevance and adaptation choices but is overwhelmed by the exceptional performances of the leads and the brilliant score, ultimately finding it worth seeing despite reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:35.762Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

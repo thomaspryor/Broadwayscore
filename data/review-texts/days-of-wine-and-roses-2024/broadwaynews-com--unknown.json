@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 43,
+      "performances": 63,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "this musical — a passion-lacking passion project from collaborators Adam Guettel and Craig Lucas — doesn't go down easy",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "while you may exit Studio 54 shaken by the work, you won't be stirred",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it grows increasingly difficult to empathize with the couple's explosive unraveling when we were only brief witnesses to their purported union",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a predominantly negative assessment criticizing the shallow exploration of core themes, rushed character development, and fundamental structural problems, with only modest praise for individual performances and direction. | GPT-4o-mini: The review expresses significant disappointment in the script and overall execution, indicating a clear lack of recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:21.498Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
