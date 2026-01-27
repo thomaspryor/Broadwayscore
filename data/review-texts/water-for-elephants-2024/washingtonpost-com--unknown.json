@@ -5,12 +5,42 @@
   "criticName": "Unknown",
   "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/21/water-for-elephants-broadway-review/",
   "publishDate": null,
-  "fullText": null,
+  "fullText": "Democracy Dies in DarknessReview by  Elisabeth Vincentelli NEW YORK — The new Broadway musical “Water for Elephants” looks patched together. In a good way.\n\nAfter all, the Benzini Brothers’ Depression-era traveling circus, where the show is set, is no tiptop big top. The animals are malnourished, and some might be a little mangy. The performers form a tightknit skilled ensemble, but a few carry a lot of miles and seem a little weary. Both the tent and the traveling quarters are on the ragtag side. It’s only fitting, then, that the puppets representing the menagerie appear stitched from well-worn pieces, the company is made of disparate but complementary moving parts, and simple scaffolds bring to life an environment far from Ringling razzmatazz.",
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": null,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "textStatus": "partial",
+  "textWordCount": 122,
+  "archivePath": "data/archives/reviews/water-for-elephants-2024/washingtonpost-com--unknown_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T05:00:41.677Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 122 (min: 300)"
+  ]
 }
