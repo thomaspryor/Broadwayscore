@@ -20,6 +20,14 @@ const https = require('https');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups');
+const BWW_URLS_PATH = path.join(__dirname, '..', 'data', 'bww-roundup-urls.json');
+
+// Load manual URL overrides (for shows with non-standard BWW URL patterns)
+let bwwUrlOverrides = {};
+if (fs.existsSync(BWW_URLS_PATH)) {
+  bwwUrlOverrides = JSON.parse(fs.readFileSync(BWW_URLS_PATH, 'utf8'));
+  delete bwwUrlOverrides._comment;
+}
 
 // Ensure archive directory exists
 if (!fs.existsSync(ARCHIVE_DIR)) {
@@ -87,6 +95,17 @@ function httpGet(url, maxRedirects = 5) {
  * Search BWW for review roundup article
  */
 async function searchBWWRoundup(show) {
+  // Check for manual URL override first (for shows with non-standard URLs)
+  if (bwwUrlOverrides[show.id]) {
+    const url = bwwUrlOverrides[show.id];
+    console.log(`  Using manual URL override: ${url}`);
+    const result = await httpGet(url);
+    if (result.found && result.html) {
+      return { url, html: result.html };
+    }
+    console.log(`  ✗ Manual URL override failed (status: ${result.status})`);
+  }
+
   const openingDate = new Date(show.openingDate);
   const year = openingDate.getFullYear();
   const month = String(openingDate.getMonth() + 1).padStart(2, '0');
@@ -101,8 +120,7 @@ async function searchBWWRoundup(show) {
     slugify(show.title).toUpperCase().replace(/-/g, '-'),
   ];
 
-  // Try Google-style search via web search API if available
-  // For now, try known URL patterns
+  // Try URL patterns
 
   // BWW URL patterns (with full date suffix YYYYMMDD)
   const searchUrls = [];
