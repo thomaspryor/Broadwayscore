@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-27T05:50:30.430Z",
+  "runDate": "2026-01-27T05:55:43.329Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "stereophonic-2024",
+    "showFilter": "our-town-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,27 +12,27 @@
   },
   "summary": {
     "processed": 206,
-    "failed": 132,
+    "failed": 131,
     "skipped": 0,
-    "successRate": "60.9%"
+    "successRate": "61.1%"
   },
   "tierBreakdown": {
     "playwright": 22,
     "scrapingbee": 17,
-    "brightdata": 22,
-    "archive": 145
+    "brightdata": 21,
+    "archive": 146
   },
   "statistics": {
-    "tier1Attempts": 14,
+    "tier1Attempts": 13,
     "tier1Success": 0,
-    "tier2Attempts": 14,
+    "tier2Attempts": 13,
     "tier2Success": 0,
-    "tier3Attempts": 14,
-    "tier3Success": 1,
-    "tier4Attempts": 17,
-    "tier4Success": 1,
-    "totalFailed": 12,
-    "scrapingBeeCreditsUsed": 30
+    "tier3Attempts": 13,
+    "tier3Success": 0,
+    "tier4Attempts": 16,
+    "tier4Success": 2,
+    "totalFailed": 11,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -239,8 +239,8 @@
     "cabaret-2024/wsj-com--unknown.json",
     "maybe-happy-ending-2024/observer--jesse-green.json",
     "maybe-happy-ending-2024/washington-post--naveen-kumar.json",
-    "stereophonic-2024/ny-daily-news--chris-jones.json",
-    "stereophonic-2024/timeout--adam-feldman.json"
+    "our-town-2024/nytimes--jesse-green.json",
+    "our-town-2024/nypost--johnny-oleksinski.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -363,18 +363,17 @@
     "maybe-happy-ending-2024/tman--david-gordon.json",
     "maybe-happy-ending-2024/washpost--peter-marks.json",
     "maybe-happy-ending-2024/wsj--terry-teachout.json",
-    "stereophonic-2024/thr--angie-han.json",
-    "stereophonic-2024/variety--jesse-green.json",
-    "stereophonic-2024/vult--helen-shaw.json",
-    "stereophonic-2024/ap--mark-kennedy.json",
-    "stereophonic-2024/ew--dalton-ross.json",
-    "stereophonic-2024/guardian--adrian-horton.json",
-    "stereophonic-2024/interestedbystander-com--unknown.json",
-    "stereophonic-2024/nyp--johnny-oleksinski.json",
-    "stereophonic-2024/talkinbway--matthew-murray.json",
-    "stereophonic-2024/tman--jesse-green.json",
-    "stereophonic-2024/washpost--peter-marks.json",
-    "stereophonic-2024/wsj--charles-isherwood.json"
+    "our-town-2024/nyt--jesse-green.json",
+    "our-town-2024/variety--frank-rizzo.json",
+    "our-town-2024/vult--jackson-mchenry.json",
+    "our-town-2024/chtrib--chris-jones.json",
+    "our-town-2024/guardian--adrian-horton.json",
+    "our-town-2024/interestedbystander-com--unknown.json",
+    "our-town-2024/nyp--johnny-oleksinski.json",
+    "our-town-2024/tman--jesse-green.json",
+    "our-town-2024/usatoday--charles-isherwood.json",
+    "our-town-2024/washpost--peter-marks.json",
+    "our-town-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -441,8 +440,7 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "maybe-happy-ending-2024/observer--jesse-green.json",
-      "stereophonic-2024/timeout--adam-feldman.json"
+      "maybe-happy-ending-2024/observer--jesse-green.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -589,7 +587,8 @@
       "cabaret-2024/talkinbroadway-com--unknown.json",
       "cabaret-2024/wsj-com--unknown.json",
       "maybe-happy-ending-2024/washington-post--naveen-kumar.json",
-      "stereophonic-2024/ny-daily-news--chris-jones.json"
+      "our-town-2024/nytimes--jesse-green.json",
+      "our-town-2024/nypost--johnny-oleksinski.json"
     ]
   }
 }
