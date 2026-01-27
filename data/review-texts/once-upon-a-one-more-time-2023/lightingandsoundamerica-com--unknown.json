@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 35,
+      "performances": 63,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a One More Time leaves an impression of an enormous amount of expertise expended on a stale, utterly played-out concept",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "these days, we're up to our necks in fractured fairy tales",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "She would have bought tickets to Parade instead",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show conceptually stale and derivative despite acknowledging strong performances and production values, ultimately suggesting audiences would be better served elsewhere. | GPT-4o-mini: The review is predominantly negative, highlighting a stale concept and lack of fresh ideas, with only some praise for performances.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:15.078Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

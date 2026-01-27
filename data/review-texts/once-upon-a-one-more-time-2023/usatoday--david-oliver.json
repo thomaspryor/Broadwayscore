@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "While the musical has its charms and talented performers, it never quite reaches the fairy-tale heights it aspires to achieve.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 50,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -43,5 +43,47 @@
   "sourceMethod": "brightdata",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "standing ovation"
+  "extractedPhrase": "standing ovation",
+  "llmScore": {
+    "score": 50,
+    "confidence": "low",
+    "range": {
+      "low": 45,
+      "high": 55
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "No reasoning available",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:53.236Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Both models failed to score"
+    ]
+  }
 }
