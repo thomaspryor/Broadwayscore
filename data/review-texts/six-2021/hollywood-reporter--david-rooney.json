@@ -10,8 +10,64 @@
   "bwwExcerpt": "This kind of campy conceit was executed with at least as much invention and more genuine charm 16 years ago in the off-Broadway hit Altar Boyz, in which a Christian boy band wrestled with their souls as they spoofed the testosterone-pumped teen sensations of the '90s. Six is probably closer to a three, but it's entertaining enough as bubbly pop confections go. By the time the inevitable curtain-call remix cranks up, there should be no shortage of young audiences ready to scream, \"Yass, queens!\" ",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 65,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Six is probably closer to a three, but it's entertaining enough as bubbly pop confections go",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "This kind of campy conceit was executed with at least as much invention and more genuine charm 16 years ago",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there should be no shortage of young audiences ready to scream, 'Yass, queens!'",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic gives qualified praise calling it 'entertaining enough' while noting it lacks the charm of a similar earlier show and suggesting it's mediocre (closer to a three out of five), landing in mixed territory with slight positive lean. | GPT-4o-mini: The review indicates a mix of charm and entertainment but ultimately suggests a lack of depth compared to previous works, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:04.201Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
