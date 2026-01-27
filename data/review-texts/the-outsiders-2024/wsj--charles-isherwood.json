@@ -79,30 +79,12 @@
   },
   "textWordCount": 88,
   "archivePath": "data/archives/reviews/the-outsiders-2024/wsj--charles-isherwood_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T06:16:49.372Z",
+  "textFetchedAt": "2026-01-27T14:46:50.701Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (500): Request failed with status code 500"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
