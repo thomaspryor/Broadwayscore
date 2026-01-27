@@ -222,9 +222,12 @@ function extractDTLIReviews(html, showId, dtliUrl) {
   while ((match = reviewItemRegex.exec(html)) !== null) {
     const reviewHtml = match[1];
 
-    // Extract outlet from img alt text
+    // Extract outlet from img alt text OR div text
+    // Format 1: <img class="review-item-attribution" alt="OUTLET NAME">
+    // Format 2: <div class="review_image"><div>Outlet Name</div></div>
     const outletMatch = reviewHtml.match(/class="review-item-attribution"[^>]*alt="([^"]+)"/i) ||
-                        reviewHtml.match(/alt="([^"]+)"[^>]*class="review-item-attribution"/i);
+                        reviewHtml.match(/alt="([^"]+)"[^>]*class="review-item-attribution"/i) ||
+                        reviewHtml.match(/class="review_image"[^>]*>\s*<div>([^<]+)<\/div>/i);
 
     // Extract thumb from BigThumbs image
     const thumbMatch = reviewHtml.match(/BigThumbs_(UP|MEH|DOWN)/i);
