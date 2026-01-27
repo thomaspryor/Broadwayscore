@@ -78,30 +78,12 @@
   },
   "textWordCount": 143,
   "archivePath": "data/archives/reviews/hamilton-2015/wsj--terry-teachout_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T05:47:08.523Z",
+  "textFetchedAt": "2026-01-27T20:43:21.895Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (500): Request failed with status code 500"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "timeout of 90000ms exceeded"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
