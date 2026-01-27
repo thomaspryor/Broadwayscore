@@ -1,89 +1,79 @@
 {
-  "runDate": "2026-01-27T20:36:45.509Z",
+  "runDate": "2026-01-27T20:37:16.877Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "suffs-2024",
+    "showFilter": "an-enemy-of-the-people-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 15,
-    "failed": 9,
+    "processed": 9,
+    "failed": 10,
     "skipped": 0,
-    "successRate": "62.5%"
+    "successRate": "47.4%"
   },
   "tierBreakdown": {
-    "playwright": 2,
-    "scrapingbee": 5,
-    "brightdata": 0,
-    "archive": 8
+    "playwright": 1,
+    "scrapingbee": 1,
+    "brightdata": 1,
+    "archive": 6
   },
   "statistics": {
-    "tier1Attempts": 20,
-    "tier1Success": 2,
-    "tier2Attempts": 18,
-    "tier2Success": 5,
-    "tier3Attempts": 13,
-    "tier3Success": 0,
-    "tier4Attempts": 23,
-    "tier4Success": 8,
-    "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 90
+    "tier1Attempts": 16,
+    "tier1Success": 1,
+    "tier2Attempts": 15,
+    "tier2Success": 1,
+    "tier3Attempts": 14,
+    "tier3Success": 1,
+    "tier4Attempts": 24,
+    "tier4Success": 6,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 60
   },
   "processed": [
-    "suffs-2024/new-york-magazine-vulture--helen-shaw.json",
-    "suffs-2024/nyt-theater--jonathan-mandell.json",
-    "suffs-2024/nytg--diep-tran.json",
-    "suffs-2024/vulture--helen.json",
-    "suffs-2024/did-they-like-it--juan-michael.json",
-    "suffs-2024/entertainment-weekly--andrea.json",
-    "suffs-2024/front-row-center--sarah-downs.json",
-    "suffs-2024/new-york-times--maya.json",
-    "suffs-2024/the-wrap--robert.json",
-    "suffs-2024/theatermania--hayley.json",
-    "suffs-2024/theaterscene-net--joseph-pisano.json",
-    "suffs-2024/theatrely--juan-a.json",
-    "suffs-2024/time-out-new-york--raven-snook.json",
-    "suffs-2024/time-out-new-york--raven.json",
-    "suffs-2024/wsj-com--unknown.json"
+    "an-enemy-of-the-people-2024/hollywood-reporter--david.json",
+    "an-enemy-of-the-people-2024/entertainment-weekly--dalton.json",
+    "an-enemy-of-the-people-2024/new-york-post--johnny.json",
+    "an-enemy-of-the-people-2024/new-york-theatre-guide--allison.json",
+    "an-enemy-of-the-people-2024/new-york-times--jesse.json",
+    "an-enemy-of-the-people-2024/theaterscene-com--unknown.json",
+    "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
+    "an-enemy-of-the-people-2024/wall-street-journal--charles.json",
+    "an-enemy-of-the-people-2024/wsj-com--unknown.json"
   ],
   "failed": [
-    "suffs-2024/nyt--jesse-green.json",
-    "suffs-2024/thr--angie-han.json",
-    "suffs-2024/variety--aramide-tinubu.json",
-    "suffs-2024/variety--marylin.json",
-    "suffs-2024/guardian--adrian-horton.json",
-    "suffs-2024/talkin-broadway--james-wilson.json",
-    "suffs-2024/talkinbway--matthew-murray.json",
-    "suffs-2024/washpost--peter-marks.json",
-    "suffs-2024/wsj--charles-isherwood.json"
+    "an-enemy-of-the-people-2024/nyt--jesse-green.json",
+    "an-enemy-of-the-people-2024/nytg--david-gordon.json",
+    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+    "an-enemy-of-the-people-2024/vult--helen-shaw.json",
+    "an-enemy-of-the-people-2024/hollywoodreporter-com--unknown.json",
+    "an-enemy-of-the-people-2024/new-york-daily-news--chris.json",
+    "an-enemy-of-the-people-2024/nyp--johnny-oleksinski.json",
+    "an-enemy-of-the-people-2024/washingtonpost-com--unknown.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json",
+    "an-enemy-of-the-people-2024/wsj--terry-teachout.json"
   ],
   "tierDetails": {
     "playwright": [
-      "suffs-2024/theaterscene-net--joseph-pisano.json",
-      "suffs-2024/time-out-new-york--raven-snook.json"
+      "an-enemy-of-the-people-2024/new-york-theatre-guide--allison.json"
     ],
     "scrapingbee": [
-      "suffs-2024/nyt-theater--jonathan-mandell.json",
-      "suffs-2024/did-they-like-it--juan-michael.json",
-      "suffs-2024/entertainment-weekly--andrea.json",
-      "suffs-2024/theatrely--juan-a.json",
-      "suffs-2024/time-out-new-york--raven.json"
+      "an-enemy-of-the-people-2024/entertainment-weekly--dalton.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "an-enemy-of-the-people-2024/timeout--adam-feldman.json"
+    ],
     "archive": [
-      "suffs-2024/new-york-magazine-vulture--helen-shaw.json",
-      "suffs-2024/nytg--diep-tran.json",
-      "suffs-2024/vulture--helen.json",
-      "suffs-2024/front-row-center--sarah-downs.json",
-      "suffs-2024/new-york-times--maya.json",
-      "suffs-2024/the-wrap--robert.json",
-      "suffs-2024/theatermania--hayley.json",
-      "suffs-2024/wsj-com--unknown.json"
+      "an-enemy-of-the-people-2024/hollywood-reporter--david.json",
+      "an-enemy-of-the-people-2024/new-york-post--johnny.json",
+      "an-enemy-of-the-people-2024/new-york-times--jesse.json",
+      "an-enemy-of-the-people-2024/theaterscene-com--unknown.json",
+      "an-enemy-of-the-people-2024/wall-street-journal--charles.json",
+      "an-enemy-of-the-people-2024/wsj-com--unknown.json"
     ]
   }
 }
