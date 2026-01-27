@@ -7,7 +7,63 @@
   "publishDate": "October 4, 2023",
   "fullText": "“Jaja’s African Hair Braiding” is a refreshing, verbose play, crackling with vibrant characters and culturally-specific comedy — both signatures of playwright Jocelyn Bioh.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "refreshing, verbose play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "crackling with vibrant characters",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "culturally-specific comedy",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review uses consistently positive descriptors like 'refreshing,' 'crackling,' and 'vibrant' with no negative elements, suggesting a clear positive recommendation despite the brief excerpt. | GPT-4o-mini: The review highlights vibrant characters and culturally-specific comedy, indicating a strong positive recommendation despite the lack of explicit call to action.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:26.746Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

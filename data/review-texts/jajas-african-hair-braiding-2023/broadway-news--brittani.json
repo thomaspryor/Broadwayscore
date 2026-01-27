@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Jaja’s African Hair Braiding” is a refreshing, verbose play, crackling with vibrant characters and culturally-specific comedy — both signatures of playwright Jocelyn Bioh.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/jajas-african-hair-braiding/",
@@ -36,5 +36,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 242 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": 78,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "refreshing, verbose play, crackling with vibrant characters and culturally-specific comedy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The show shines in its jovial moments, limps in its solemn ones, and ultimately flails in its hurried, harrowed conclusion",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "still deserves to be crowned the theatrical event of the season for Black women",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite significant script criticisms, the reviewer calls it 'the theatrical event of the season for Black women' and praises the immersive production elements, indicating a qualified but clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:41.359Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

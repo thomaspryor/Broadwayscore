@@ -10,8 +10,59 @@
   "bwwExcerpt": "Jaja’s can sometimes veer a little formulaic or presentational: In the single-scene appearance of Jaja herself, Kakoma spends most of her time standing directly downstage center (in, not to spoil anything, an absolute battleship of a wedding gown), facing out and delivering a rousing monologue about her right to call America “my country.” It rings clear and true, though I wonder how the same speech would have felt had White oriented Jaja as much toward her fellow characters as toward us, or what",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "waves of glee roll through the audience on the regular",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "waves of glee roll through the audience",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The description of 'waves of glee' from the audience suggests strong positive audience response, but this appears to be only an excerpt with limited context for full assessment. | GPT-4o-mini: The review indicates a positive audience reaction, suggesting a strong recommendation despite lacking detailed critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:19:29.992Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 74,
+      "music": null,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "would be a shoo-in for two separate Tony Awards, if either existed – one for hair and wig design, the other for ensemble acting",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The performers make the most of Bioh's sharp eye for character and precise ear for dialogue that's both spot-on and hilarious",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a final scene when the comedy turns to tragedy nevertheless feels abruptly tacked on",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the ensemble acting, direction, design, and dialogue extensively while noting only minor structural issues with the ending, resulting in a clear positive recommendation. | GPT-4o-mini: The review highlights strong performances and engaging character dynamics while acknowledging some structural issues, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:43.335Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

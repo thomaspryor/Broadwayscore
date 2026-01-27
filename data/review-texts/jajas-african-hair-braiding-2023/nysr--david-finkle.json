@@ -10,8 +10,64 @@
   "bwwExcerpt": "Bioh contrives a heart-stopping development that threatens not only Jaja but daughter Marie. She contrives it but awkwardly. As she rapidly heads into ending the play, she leaves things on — forgive this — ice. And this leaves Jaja’s African Hair Braiding as insufficiently dramatic, though never less than amusing, as acted by the 10-member cast and directed by Whitney White, who apparently knows exactly what has a braiding outfit buzzing any and every day. The play does give a reviewer a chance ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 70,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "insufficiently dramatic, though never less than amusing",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "contrives it but awkwardly",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "acted by the 10-member cast and directed by Whitney White, who apparently knows exactly what has a braiding outfit buzzing",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the play's dramatic structure and awkward plotting while praising the performances and direction, landing in mixed territory with the text appearing incomplete. | GPT-4o-mini: The review indicates a mixed experience, noting both amusing elements and significant shortcomings in drama and script quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:08.400Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "The Ghanaian-American playwright (School Girls; Or, The African Mean Girls Play) and director Whitney White (Our Dear Dead Drug Lord) have teamed up with executive producers Taraji P. Henson and LaChanze to paint a brilliant, emotive portrait of a seemingly simple day in the life of the sedulous West African women working at its titular Central Harlem hair braiding shop. As their day progresses, theatergoers will uncover a powerful tale about joy, dreams, societal and familial expectations, comm",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "brilliant, emotive portrait",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "powerful tale about joy, dreams, societal and familial expectations",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "seemingly simple day in the life",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review highlights the production's emotional depth and quality direction, suggesting a strong recommendation despite lacking specific details on performances or script.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:26.452Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

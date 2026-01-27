@@ -10,8 +10,64 @@
   "bwwExcerpt": "It is promising when a theater set gets its own round of applause, and David Zinn’s vibrant and ingenious imagining for Jaja’s African Hair Braiding (Samuel J. Friedman Theatre, booking to Nov. 5) on Broadway deservedly gets just that when the full interior glory of the imagined hair braiding shop in Harlem just off 125th Street reveals itself. Along with its bustling set of chairs, hair model posters, a Ghanian flag, and much, much Barbie-ish pink, Jocelyn Bioh’s play, set in the pre-pandemic s",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 84,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What lands, over and over again (going by the gasps and responses of the audience)",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "expertly, relishingly delivered by her actors",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "adept at writing the wit and vim of the conflicts and rivalries",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for dialogue writing and performances with evidence of audience engagement, but excerpt is too brief to assess overall recommendation strength with high confidence. | GPT-4o-mini: The review highlights strong performances and well-crafted dialogue, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:58.154Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

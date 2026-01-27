@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jocelyn Bioh has created a warm, funny, and deeply human play that celebrates the strength of women and the power of community.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 78.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 84,
+      "music": null,
+      "performances": 88,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "thoroughly engrossing dramedy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "altogether terrific ensemble piece",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "touches the heart amid the comic elements",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses consistently strong positive language throughout, calling it 'thoroughly engrossing,' 'altogether terrific,' and praising the ensemble work, direction, and technical elements with no significant reservations. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its engrossing narrative, terrific ensemble performances, and effective direction, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:10.891Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

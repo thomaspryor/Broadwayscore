@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Despite some narrative clunkiness, ’Jaja’ offers plenty to celebrate...It's a passionate portrayal of Black womanhood in Harlem and all the diverse experiences that encompasses. And it's a love letter to the artistry of hair braiding, a millennia-old form of artistry that allows its participants to express themselves even as they transform themselves. Much like theatre.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 82,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Read our four-star review",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The cast turns in uniformly vibrant performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "despite some narrative clunkiness, Jaja offers plenty to celebrate",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Four-star review with strong praise for performances and cultural significance, despite acknowledged narrative flaws in structure and pacing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:57.913Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

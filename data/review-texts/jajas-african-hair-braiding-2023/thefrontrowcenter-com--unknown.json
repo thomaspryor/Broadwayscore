@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240722164836",
-  "archiveOrgUrl": "http://web.archive.org/web/20240722164836/https://thefrontrowcenter.com/2023/10/jajas-african-hair-braiding/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240722164836/https://thefrontrowcenter.com/2023/10/jajas-african-hair-braiding/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 76,
+      "music": null,
+      "performances": 87,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "director Whitney White shapes the action into a tight thing of beauty and the ensemble work of the energetic cast is streaked with highlights",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Bioh intertwines their tales",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Marie's reasons for skipping her mother's wedding seem more a handy solution for the playwright, than a true motivation",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the direction, ensemble performances, and individual acting work with only minor script criticisms, indicating a clear positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and direction while highlighting the engaging storytelling, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:18:34.748Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

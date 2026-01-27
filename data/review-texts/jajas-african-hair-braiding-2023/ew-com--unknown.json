@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“There are no easy answers to the complex problems that ‘Jaja's African Hair Braiding’ presents, and certainly none that can be solved within the span of a single day. Instead, the play encourages viewers to inspect the way the current world works and, hopefully, leave its salon with a greater sense of compassion and understanding for those around them tirelessly working to make ends meet.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 87,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-grade",
   "scoreConfidence": "medium",
-  "extractedGrade": "A"
+  "extractedGrade": "A",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grade: A–",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a brilliant, emotive portrait of a seemingly simple day in the life",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The result is a play that is equally affecting as it is hilarious",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The A- grade combined with consistent praise for the ensemble, script quality, and emotional impact indicates a strong positive recommendation with only minor reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:40.776Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 87,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

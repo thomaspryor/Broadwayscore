@@ -10,8 +10,64 @@
   "bwwExcerpt": "Through tensions and extensions, Bioh’s day-in-the-life play never loses its comedic potency, and its ensemble shines throughout. When Jennifer  (Rachel Christopher), an aspiring journalist who walks in at open to get micro-braids, everyone deflates with knowingly exhausted chagrin. By the time she leaves, almost at close, she, and us, can hardly believe it’s time to go.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "presents the deluxe version of all her gifts",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a hangout you never want to leave",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "lively production cheerfully directed",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive language about performances and direction with vivid praise ('deluxe version', 'never want to leave') indicates clear recommendation despite being a brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the production and direction, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:18:11.527Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

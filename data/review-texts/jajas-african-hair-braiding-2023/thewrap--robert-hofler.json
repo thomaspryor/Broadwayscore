@@ -7,7 +7,63 @@
   "publishDate": "October 3, 2023",
   "fullText": "Even though “Jaja’s African Hair Braiding” takes place entirely in the hair salon, as does “Steel Magnolias,” the play is a series of short skits, as is “The Women”; and like that Boothe Luce play, many of those scenes lack a good button. They tend to dribble away dramatically rather than end with a comic bang.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 41,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "many of those scenes lack a good button",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "They tend to dribble away dramatically rather than end with a comic bang",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the play is a series of short skits",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic identifies significant structural problems with the play's episodic nature and weak scene endings, suggesting the dramatic construction is fundamentally flawed. | GPT-4o-mini: The review highlights significant issues with the script's structure and dramatic impact, leading to a negative overall impression.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:18:42.122Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

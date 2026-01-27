@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "CRITIC’S PICK: “The first 80 minutes of the 90-minute play...are a buffet of delights. Even David Zinn’s set for the beauty shop’s interior, once the grate is unlocked and lifted, receives entrance applause. From that moment on, the director, Whitney White, keeps the stage activated and the stories simmering at a happy bubble.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "CRITIC'S PICK",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "buffet of delights",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "keeps the stage activated and the stories simmering at a happy bubble",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The 'CRITIC'S PICK' designation combined with enthusiastic language like 'buffet of delights' and praise for direction and design indicates strong positive recommendation despite the excerpt being incomplete. | GPT-4o-mini: The review expresses strong enthusiasm for the production's direction and overall enjoyment, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:49.103Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

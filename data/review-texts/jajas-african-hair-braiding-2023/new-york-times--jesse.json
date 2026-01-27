@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Jaja’s” is full of such treasurable moments, when the drama feels tightly woven with the comedy. And if the weave frays a bit at the end, what doesn’t? Like the Strawberry Knotless Afro-Pop Bob, it’s still a great look.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/jajas-african-hair-braiding/",
@@ -53,5 +53,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251027141349",
-  "archiveOrgUrl": "http://web.archive.org/web/20251027141349/https://www.nytimes.com/2023/10/03/theater/jajas-african-hair-braiding-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251027141349/https://www.nytimes.com/2023/10/03/theater/jajas-african-hair-braiding-review.html",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 85,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "The first 80 minutes of the 90-minute play, which opened on Tuesday in a Manhattan Theater Club production, are a buffet of delights.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "riotously funny workplace comedy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the hasty dramatization of their collateral sacrifice feels a bit like a spinach dessert",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoys the comedy and praises the performances, direction, and production elements, with only minor reservations about the rushed ending, indicating a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:32.732Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

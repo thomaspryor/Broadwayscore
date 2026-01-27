@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251013152158",
-  "archiveOrgUrl": "http://web.archive.org/web/20251013152158/https://www.thewrap.com/jajas-african-hair-braiding-broadway-review-jocelyn-bioh/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251013152158/https://www.thewrap.com/jajas-african-hair-braiding-broadway-review-jocelyn-bioh/",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 69,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "its finest feature is how the playwright weaves the current immigration crisis into her narrative with considerable humor before the story turns extremely dark",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Handled with far less finesse are the bit roles delivered by the actors... Bioh has written them all as cartoons and Whitney White's direction delivers them in primary sitcom colors",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "many of those scenes lack a good button. They tend to dribble away dramatically rather than end with a comic bang",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds notable strengths in the main performances and immigration themes but identifies significant structural problems with the script, underdeveloped secondary characters, and weak scene endings, resulting in a mixed assessment that leans slightly positive. | GPT-4o-mini: The review presents a mixed view, praising character development and humor while criticizing the script's weaknesses and direction, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:18:49.745Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

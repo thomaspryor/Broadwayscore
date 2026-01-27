@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": null,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "a rich, funny and moving entertainment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's a snappy, joyful place to spend an hour and a half",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Despite the potential for cliches, Bioh creates multi-dimensional characters in believable situations",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Clear positive recommendation with praise for performances, direction, and overall entertainment value, despite acknowledging some familiar plot devices and predictable elements. | GPT-4o-mini: The review expresses strong praise for the performances and overall entertainment value while noting some predictable elements in the plot, leading to a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:37.153Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
