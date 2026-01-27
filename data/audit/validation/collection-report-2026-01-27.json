@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T15:02:30.965Z",
+  "runDate": "2026-01-27T15:04:42.054Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "book-of-mormon-2011",
+    "showFilter": "doubt-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 221,
-    "failed": 144,
+    "processed": 228,
+    "failed": 138,
     "skipped": 0,
-    "successRate": "60.5%"
+    "successRate": "62.3%"
   },
   "tierBreakdown": {
-    "playwright": 30,
-    "scrapingbee": 17,
+    "playwright": 32,
+    "scrapingbee": 18,
     "brightdata": 23,
-    "archive": 151
+    "archive": 155
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 0,
-    "tier2Attempts": 9,
-    "tier2Success": 0,
-    "tier3Attempts": 9,
+    "tier1Attempts": 8,
+    "tier1Success": 2,
+    "tier2Attempts": 6,
+    "tier2Success": 1,
+    "tier3Attempts": 5,
     "tier3Success": 0,
-    "tier4Attempts": 15,
-    "tier4Success": 1,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 30
+    "tier4Attempts": 9,
+    "tier4Success": 5,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -255,7 +255,14 @@
     "merrily-we-roll-along-2023/amny-com--unknown.json",
     "merrily-we-roll-along-2023/broadway-news--naveen.json",
     "merrily-we-roll-along-2023/broadwaynews-com--unknown.json",
-    "book-of-mormon-2011/backstage-com--unknown.json"
+    "doubt-2024/vulture--sara.json",
+    "doubt-2024/broadway-news--brittani.json",
+    "doubt-2024/deadline--greg.json",
+    "doubt-2024/new-york-post--johnny.json",
+    "doubt-2024/new-york-times--jesse.json",
+    "doubt-2024/the-wrap--jd.json",
+    "doubt-2024/theatrely--juan-a.json",
+    "doubt-2024/time-out-new-york--adam.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -394,14 +401,8 @@
     "merrily-we-roll-along-2023/variety-com--unknown.json",
     "merrily-we-roll-along-2023/vult--jackson-mchenry.json",
     "merrily-we-roll-along-2023/vulture--sara.json",
-    "book-of-mormon-2011/nyt--ben-brantley.json",
-    "book-of-mormon-2011/thr--david-rooney.json",
-    "book-of-mormon-2011/variety--david-rooney.json",
-    "book-of-mormon-2011/vult--jesse-green.json",
-    "book-of-mormon-2011/bwayvoice-com--unknown.json",
-    "book-of-mormon-2011/guardian--brian-logan.json",
-    "book-of-mormon-2011/northjersey-com--unknown.json",
-    "book-of-mormon-2011/washpost--peter-marks.json"
+    "doubt-2024/vult--helen-shaw.json",
+    "doubt-2024/theatermania--zachary.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -434,7 +435,9 @@
       "queen-versailles-2025/theaterscene-net--unknown.json",
       "queen-versailles-2025/timeout-ny--adam-feldman.json",
       "merrily-we-roll-along-2023/broadway-news--naveen.json",
-      "merrily-we-roll-along-2023/broadwaynews-com--unknown.json"
+      "merrily-we-roll-along-2023/broadwaynews-com--unknown.json",
+      "doubt-2024/broadway-news--brittani.json",
+      "doubt-2024/time-out-new-york--adam.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -453,7 +456,8 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "cabaret-2024/newyorktheater-me--unknown.json"
+      "cabaret-2024/newyorktheater-me--unknown.json",
+      "doubt-2024/theatrely--juan-a.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -631,7 +635,11 @@
       "merrily-we-roll-along-2023/vulture-com--unknown.json",
       "merrily-we-roll-along-2023/am-new-york--matt.json",
       "merrily-we-roll-along-2023/amny-com--unknown.json",
-      "book-of-mormon-2011/backstage-com--unknown.json"
+      "doubt-2024/vulture--sara.json",
+      "doubt-2024/deadline--greg.json",
+      "doubt-2024/new-york-post--johnny.json",
+      "doubt-2024/new-york-times--jesse.json",
+      "doubt-2024/the-wrap--jd.json"
     ]
   }
 }
