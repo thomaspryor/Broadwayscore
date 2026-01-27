@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"Brimming with cheerful obscenity, sharp satire and catchy tunes, The Book of Mormon is a sick mystic revelation, the most exuberantly entertaining Broadway musical in years.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-book-of-mormon",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 88,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the most exuberantly entertaining Broadway musical in years",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a sick mystic revelation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Brimming with cheerful obscenity, sharp satire and catchy tunes",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified superlatives like 'most exuberantly entertaining Broadway musical in years' combined with multiple positive descriptors indicate a clear rave recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong praise for the musical, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:58.306Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
