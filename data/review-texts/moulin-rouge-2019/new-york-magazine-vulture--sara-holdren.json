@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"'Moulin Rouge!' Is Broadwayâs Biggest Karaoke Night. It commits singlemindedly to stuffing as many additional hit tracks as possible.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/moulin-rouge-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251214120718",
-  "archiveOrgUrl": "http://web.archive.org/web/20251214120718/https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251214120718/https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 15,
+      "music": 28,
+      "performances": 43,
+      "direction": 15
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not even very interesting. There's a shapelessness about it, a weird enervation underneath the flash and bang.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It's two and a half hours of karaoke on a multimillion-dollar budget.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The real frustration of Moulin Rouge! is that it feels so completely like a product. Underneath its pulsing, crimson exterior, it's creepily cold-blooded.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a scathing pan, calling it uninteresting karaoke with no passion, criticizing nearly every creative element while acknowledging only the ensemble dancers as a bright spot. | GPT-4o-mini: The review is overwhelmingly critical, highlighting significant flaws in direction, story, and character development, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:34.339Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
