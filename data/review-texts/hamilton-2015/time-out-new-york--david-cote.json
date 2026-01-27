@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"What is left to say? After every critic in town (including me) praised the Public Theater world premiere to high heaven; and after seeing this language-drunk, rhyme-crazy dynamo a second time, I can only marvel: They used up all the damn words. Wait, here are three stragglers, straight from the heart: I love 'Hamilton.' I love it like I love New York, or Broadway when it gets it right. And this is so right.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 95,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -42,5 +42,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "5/5"
+  "extractedRating": "5/5",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 94,
+      "music": 99,
+      "performances": 95,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "I love Hamilton. I love it like I love New York, or Broadway when it gets it right. And this is so right.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the greatest American musical in decades",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "What Miranda does with rhyme is simply staggering",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: 5/5 star review with unqualified superlatives like 'greatest American musical in decades' and deeply personal emotional investment from the critic. | GPT-4o-mini: The review expresses unqualified enthusiasm and admiration for the show, highlighting its innovative music, strong performances, and cultural significance.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:55.358Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
