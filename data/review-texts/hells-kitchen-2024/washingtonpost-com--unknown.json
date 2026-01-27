@@ -16,9 +16,15 @@
   "textStatus": "incomplete",
   "textWordCount": 100,
   "archivePath": "data/archives/reviews/hells-kitchen-2024/washingtonpost-com--unknown_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T05:45:03.121Z",
+  "textFetchedAt": "2026-01-27T15:07:39.574Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
