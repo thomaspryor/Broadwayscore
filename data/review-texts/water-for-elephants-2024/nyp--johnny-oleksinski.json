@@ -10,8 +10,64 @@
   "bwwExcerpt": "“Water” has more exuberance than wit; more catchphrases than character. While the second half lumbers along like a pre-flight Dumbo, the wrong scenes and songs are given too much breathing room and important events such as, you know, murders and catastrophic stampedes are raced through to curtain call. Although “Water” is a love story, that becomes one of its less appealing aspects.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 34,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 34,
+    "confidence": "high",
+    "range": {
+      "low": 27.5,
+      "high": 40.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 30,
+      "performances": null,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "more exuberance than wit; more catchphrases than character",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the second half lumbers along like a pre-flight Dumbo",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "that becomes one of its less appealing aspects",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review consistently criticizes fundamental elements including weak characterization, poor pacing, structural problems, and even finds the central love story unappealing, with no redeeming qualities mentioned. | GPT-4o-mini: The review expresses significant dissatisfaction with the pacing and character development, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:26.475Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

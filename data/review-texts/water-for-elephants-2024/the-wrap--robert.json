@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Disney Theatricals can let out a sigh of relief. Its “Lion King” franchise on cute animal puppets is safe. Very safe.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250910233002",
-  "archiveOrgUrl": "http://web.archive.org/web/20250910233002/https://www.thewrap.com/water-for-elephants-broadway-review-grant-gustin/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250910233002/https://www.thewrap.com/water-for-elephants-broadway-review-grant-gustin/",
+  "llmScore": {
+    "score": 41,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 30,
+      "performances": 48,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rick Elice quickly undercuts Boissereau's magic by deflating the drama",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Because Gustin and McCalla are stuck playing such colorless characters",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's a very literal and kind of tacky rendering of an elephant. This Rosie pales considerably next to the horses in 'War Horse' or any of the animals in 'The Lion King.'",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review is predominantly critical, citing weak dramaturgy, colorless characters, uninspired music, and disappointing puppet design, with only isolated praise for one horse puppet sequence and some acrobatic work. | GPT-4o-mini: The review expresses significant disappointment in the story and direction, with only isolated praise for the horse performance.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:23.792Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

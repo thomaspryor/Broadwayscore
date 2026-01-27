@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Director Jessica Stone beautifully navigates the musical’s tricky order: execute the level of physical extravagance any circus-musical hybrid of this monumental scale demands, but keep Jacob’s potent, time-leaping personal story intact.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -33,5 +33,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 69,
+      "music": 64,
+      "performances": 81,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Jessica Stone beautifully navigates the musical's tricky order",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the interpretation of that score by choreographers Jesse Robb and Shana Carroll consistently stuns",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "PigPen Theatre Co's score remains largely in the background here",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises direction, choreography, and puppetry design enthusiastically while acknowledging weaknesses in the score and book, resulting in a clear positive recommendation despite some reservations. | GPT-4o-mini: The review expresses strong praise for direction and choreography while noting some weaknesses in the book and music, leading to a positive overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:02.466Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

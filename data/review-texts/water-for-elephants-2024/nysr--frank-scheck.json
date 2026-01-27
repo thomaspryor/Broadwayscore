@@ -10,8 +10,64 @@
   "bwwExcerpt": "There’s a lot to take in at the new musical based on Sara Gruen’s best-selling novel (which has already inspired a 2011 film). The show features a melodramatic storyline set amidst a Depression-era traveling circus, puppetry, and numerous circus acts including aerial work, juggling, acrobatics, knife throwing, and even a clown routine. It would be nice to report that all of these elements have blended together to create a magical musical theater experience, but Water for Elephants feels more clu",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "It would be nice to report that all of these elements have blended together to create a magical musical theater experience, but Water for Elephants feels more clu",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There's a lot to take in",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "it would be nice to report that all of these elements have blended together to create a magical musical theater experience",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review sets up anticipation for magical theater but explicitly states disappointment, with the truncated criticism suggesting significant problems with execution despite promising elements. | GPT-4o-mini: The review expresses disappointment in the overall experience, indicating that the various elements do not come together effectively.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:33.018Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 45,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

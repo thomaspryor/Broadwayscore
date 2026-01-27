@@ -10,8 +10,64 @@
   "bwwExcerpt": "A life raft in this troubled “Water” is the production's elastic ensemble, which jolts you awake with their spring-loaded flips and death-defying stunts, ranging from aerial hoops to tightrope walks to trapeze swings. A sequence of the cast pitching a big top is wondrous to behold, as is the effortless athleticism they bring to numbers like \"Zostan.\" In these moments, the show feels like a divine celebration of those restless spirits who run off to join the circus. But the magic is fleeting, and",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 66,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": 83,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "A life raft in this troubled \"Water\" is the production's elastic ensemble",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the show feels like a divine celebration of those restless spirits who run off to join the circus",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "But the magic is fleeting",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the ensemble's physicality and specific musical numbers but clearly signals underlying problems with the show overall, as indicated by calling it 'troubled' and noting the magic is 'fleeting.' | GPT-4o-mini: The review highlights strong performances and impressive athleticism but suggests that the overall impact of the show is inconsistent, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:56.190Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

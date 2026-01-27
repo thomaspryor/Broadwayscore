@@ -10,8 +10,64 @@
   "bwwExcerpt": "It’s all quite entertaining, but also a bit vexing, since these activities keep getting in the way of the show’s main plot. But eventually you realize that there’s not of lot a plot here, nor is it all that original (even if Sara Gruen’s 2006 novel which forms the basis for the musical, was a number one best seller, and the show’s book is by three-time Tony Award nominee Rick Elice). In fact, all the diversions simply add up to a major cause of coitus interruptus.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 49,
+    "confidence": "high",
+    "range": {
+      "low": 43,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's all quite entertaining",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "but also a bit vexing, since these activities keep getting in the way of the show's main plot",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "all the diversions simply add up to a major cause of coitus interruptus",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges entertainment value but expresses frustration with structural problems, lack of plot, and derivative material, suggesting more negatives than positives overall. | GPT-4o-mini: The review expresses mixed feelings about the entertainment value versus the lack of a coherent plot, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:11.076Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 50,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

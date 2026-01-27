@@ -10,8 +10,64 @@
   "bwwExcerpt": "The circus setting is the excuse for what’s most awe-inspiring about this musical adaptation of Sara Gruen’s 2006 bestselling novel, which opened tonight at Broadway’s Imperial Theater. It’s the Big Top-like entertainment, especially the heart-stopping acrobatics, which are not just athletically spectacular but often visually beautiful and emotionally expressive, enhancing the dancing and even advancing the story. Much else in “Water for Elephants” has its pleasures – the score, the singing, the",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": 75,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "what's most awe-inspiring about this musical adaptation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "heart-stopping acrobatics, which are not just athletically spectacular but often visually beautiful and emotionally expressive",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Much else in 'Water for Elephants' has its pleasures – the score, the singing",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows strong enthusiasm for the production's circus elements and general positive sentiment toward other aspects, suggesting a positive recommendation despite the incomplete text. | GPT-4o-mini: The review highlights the impressive acrobatics and overall enjoyment of the musical, indicating a strong recommendation despite not fully elaborating on all aspects.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:45.843Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
