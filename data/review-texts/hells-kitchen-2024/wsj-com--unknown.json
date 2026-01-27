@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 0,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -55,5 +55,45 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240805090816/https://www.wsj.com/articles/hells-kitchen-review-alicia-keys-musical-public-theater-2e68ac00",
   "textIssues": [
     "Word count too low: 66 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 0,
+    "confidence": "medium",
+    "range": {
+      "low": 0,
+      "high": 5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "GPT-4o-mini: The review text does not provide any content to analyze, leading to an inability to assign a score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:33:12.569Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 0,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
