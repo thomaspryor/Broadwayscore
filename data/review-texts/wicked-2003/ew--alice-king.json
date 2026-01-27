@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"'Wicked's' at its cleverest with the girl stuff; the streamlining of Maguire’s story – reducing a totalitarian allegory to an animal-rights flap – weakens the narrative logic. Catchy Stephen Schwartz songs compensate for a dreary opening number, but it’s the 'Wicked' witches who really make magic.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/wicked",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 75,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's the 'Wicked' witches who really make magic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "streamlining of Maguire's story – reducing a totalitarian allegory to an animal-rights flap – weakens the narrative logic",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Catchy Stephen Schwartz songs compensate for a dreary opening number",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review with strong praise for performances ('witches who really make magic') and decent music, but significant criticism of the book's narrative weakening, landing in qualified recommendation territory. | GPT-4o-mini: The review indicates a mix of positive and negative elements, particularly praising the cleverness and music while criticizing the narrative coherence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:25.405Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

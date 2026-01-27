@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "I don’t mean to suggest that you’re unpatriotic if you aren’t moved by Hamilton, Lin-Manuel Miranda’s sensational new hip-hop biomusical at the Public. But in order to dislike it you’d pretty much have to dislike the American experiment. The conflict between independence and interdependence is not just the show’s subject but also its method: It brings the complexity of forming a union from disparate constituencies right to your ears. It may confuse your ears, too; Few are the theatergoers who will be familiar with all of Miranda’s touchstones. I caught the verbal references to Rodgers and Hammerstein, Gilbert and Sullivan, Sondheim, West Side Story, and 1776, but other people had to point out to me the frequent hat-tips to hip-hop: Biggie Smalls, the Fugees, “Blame It (On the Alcohol).” And I’m sure that historians in the audience (the show was “inspired by” Ron Chernow’s 800-page Hamilton biography) will catch references that the rest of us fail to notice. (“The world turned upside down,” a repeated phrase in a number about the Battle of Yorktown, is the name of the ballad supposedly played by Redcoat musicians upon Cornwallis’s surrender there, in 1781.) But for all its complexity — its multistrand plotting and exploding rhyme-grenades — Hamilton is neither a challenge nor a chore. It’s just great.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/hamilton/",
@@ -34,5 +34,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250930220838",
-  "archiveOrgUrl": "http://web.archive.org/web/20250930220838/https://www.vulture.com/2015/02/theater-review-lin-manuel-mirandas-hamilton.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250930220838/https://www.vulture.com/2015/02/theater-review-lin-manuel-mirandas-hamilton.html",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": 90,
+      "performances": 89,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hamilton is neither a challenge nor a chore. It's just great.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Miranda's sensational new hip-hop biomusical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a beautiful and moving musical, whatever its flaws",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic calls the show 'sensational' and 'just great,' praising Miranda's ambition, the innovative musical blend, and the performances, while acknowledging minor structural flaws that don't diminish the overall enthusiastic recommendation. | GPT-4o-mini: The review expresses strong praise for the musical's creativity and performances while acknowledging some structural flaws, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:01.761Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

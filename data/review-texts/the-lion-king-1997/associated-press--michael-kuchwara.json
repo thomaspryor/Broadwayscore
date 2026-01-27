@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"Make no mistake: The Lion King is a rare theater experience. The musical is intelligent spectacle, extravagance with a purpose -- and a heart. From the moment it begins, The Lion King offers astonishing stage magic. Performers walking on giant stilts become giraffes, birds, and a pride of lionesses, dance with a solemn gracefulness that is breathtaking.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-lion-king",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "Make no mistake: The Lion King is a rare theater experience",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "intelligent spectacle, extravagance with a purpose -- and a heart",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "astonishing stage magic",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review uses unqualified superlatives like 'rare theater experience,' 'astonishing stage magic,' and 'breathtaking' with no reservations or criticisms, indicating strong enthusiasm and clear recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the production's spectacle and emotional depth, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:28.443Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

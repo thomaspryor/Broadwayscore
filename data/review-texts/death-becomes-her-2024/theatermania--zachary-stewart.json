@@ -7,7 +7,63 @@
   "publishDate": "November 21, 2024",
   "fullText": "Unlike the writers of so many new musicals on Broadway, Pennette, Mattison, Carey, and director-choreographer Christopher Gattelli know exactly what story they’re telling and for whom, making it explicit in the production number “For the Gaze,” which features Hilty executing a dizzying number of costume changes (she’s both Judy and Liza) while sugar-voiced chorus boys tap-dance around her.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 82,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "know exactly what story they're telling and for whom",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Hilty executing a dizzying number of costume changes",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sugar-voiced chorus boys tap-dance around her",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt praises the creative team's clear vision and highlights impressive performances, particularly Hilty's versatility, suggesting a positive recommendation despite limited context. | GPT-4o-mini: The review highlights a clear understanding of storytelling and engaging production elements, indicating a strong recommendation despite lacking explicit praise for the overall experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:00.766Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

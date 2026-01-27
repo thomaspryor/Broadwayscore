@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"Jam-packed with breakneck plot twists, charming performances, mind-bending spectacle, and, perhaps more surprisingly, moments of theatrical whimsy that feel, amidst the high-tech sorcery, delightfully simple...It effectively weaves serious themes with bouncy adventure narrative, it’s heartfelt and sometimes a touch hokey...You’re pretty much willing to forgive its shortcomings as it sweeps you along in a rush of rip-roaring, good-natured imagination.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/harry-potter-and-the-cursed-child",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251126040107",
-  "archiveOrgUrl": "http://web.archive.org/web/20251126040107/https://www.vulture.com/2018/04/theater-review-harry-potter-and-the-broadway-spectacle.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251126040107/https://www.vulture.com/2018/04/theater-review-harry-potter-and-the-broadway-spectacle.html",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 88,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Cursed Child is a remarkable and fitting addition to the Potter canon",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "extravagantly entertaining",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "if you have even a beginner's taste for this kind of thing, you're pretty much willing to forgive its shortcomings as it sweeps you along in a rush of rip-roaring, good-natured imagination",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging some flaws (could use better editing, some hokey moments), the critic delivers enthusiastic praise for the spectacle, performances, and overall theatrical experience, calling it 'remarkable,' 'extravagantly entertaining,' and worth forgiving shortcomings for. | GPT-4o-mini: The review expresses strong enthusiasm for the production's creativity, performances, and emotional impact, indicating it as a must-see for fans.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:52.362Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
