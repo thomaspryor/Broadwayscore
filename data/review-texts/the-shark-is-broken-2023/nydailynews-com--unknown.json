@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“In the end, there’s not a lot here: No crazy shark puppets, little sense of the raging seas nor of tormented, insecure actors — not much for the eye to see and very little happening that you don’t anticipate just five or 10 minutes into the show.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230829080856",
-  "archiveOrgUrl": "http://web.archive.org/web/20230829080856/https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-shark-is-broken-chris-jones-20230811-kv4cwl4kqnd65ll7eqlysa4jle-story.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20230829080856/https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-shark-is-broken-chris-jones-20230811-kv4cwl4kqnd65ll7eqlysa4jle-story.html",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": 55,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show doesn't deliver much at all. Not only is the low-stakes script dull and pedestrian, but the characters change not at all",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "it makes for thin Broadway gruel, alas",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there's not a lot here: No crazy shark puppets, little sense of the raging seas nor of tormented, insecure actors — not much for the eye to see",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the script 'dull and pedestrian' with 'thin Broadway gruel' and concludes 'there's not a lot here,' delivering a clear negative verdict despite acknowledging some solid performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:24.093Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

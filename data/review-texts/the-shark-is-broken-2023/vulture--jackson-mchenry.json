@@ -7,7 +7,58 @@
   "publishDate": "August 10, 2023",
   "fullText": "Like Back to the Future: The Musical, which just opened a few blocks away, The Shark Is Broken depends on your own affection for the property to make sense.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "depends on your own affection for the property to make sense",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Like Back to the Future: The Musical, which just opened a few blocks away",
+        "sentiment": "neutral",
+        "strength": 1
+      }
+    ],
+    "reasoning": "Claude: The single sentence suggests the show only works if you're already a fan of the source material, implying it lacks universal appeal or strong standalone merit.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:26.753Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

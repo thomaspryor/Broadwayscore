@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251109140059",
-  "archiveOrgUrl": "http://web.archive.org/web/20251109140059/https://www.theatermania.com/news/review-no-shark-but-lots-of-jawing-in-the-shark-is-broken_1711412/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251109140059/https://www.theatermania.com/news/review-no-shark-but-lots-of-jawing-in-the-shark-is-broken_1711412/",
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 78,
+      "direction": 62
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shaw and Brightman give laugh-inducing performances in their respective roles as the constantly sparring Robert Shaw and Richard Dreyfuss, with Donnell coming in a distant third in his well-executed but underwritten and snoozy role as Scheider. With spot-on comedic timing, these three are the reason the show works at all.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "That's because The Shark Is Broken has little in the way of a plot or dramatic tension — and nothing in the way of a shark",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Whether audience members who aren't familiar with the film will get as much out of The Shark Is Broken is an open question.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises strong performances (especially Shaw and Brightman) but criticizes the thin plot and questions the show's appeal beyond Jaws fans, resulting in a qualified recommendation that leans slightly positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:15.137Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
