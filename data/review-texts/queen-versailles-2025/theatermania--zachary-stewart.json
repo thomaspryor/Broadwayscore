@@ -12,8 +12,8 @@
   "assignedScore": 48,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "textStatus": "complete",
-  "textQuality": "partial",
+  "textStatus": "truncated",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "llmScore": {
     "score": 48,
@@ -73,7 +73,7 @@
   },
   "textWordCount": 1173,
   "archivePath": "data/archives/reviews/queen-versailles-2025/theatermania--zachary-stewart_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:56:13.478Z",
+  "textFetchedAt": "2026-01-27T05:23:09.528Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -86,7 +86,7 @@
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
+      "error": "ScrapingBee error (503): Request failed with status code 503"
     },
     {
       "tier": 3,
@@ -102,5 +102,8 @@
   ],
   "fetchTier": 4,
   "archiveOrgTimestamp": "20251205121855",
-  "archiveOrgUrl": "http://web.archive.org/web/20251205121855/https://www.theatermania.com/news/review-the-queen-of-versailles-kristin-chenoweth-in-the-big-house_1811208/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251205121855/https://www.theatermania.com/news/review-the-queen-of-versailles-kristin-chenoweth-in-the-big-house_1811208/",
+  "truncationSignals": [
+    "has_paywall_text"
+  ]
 }
