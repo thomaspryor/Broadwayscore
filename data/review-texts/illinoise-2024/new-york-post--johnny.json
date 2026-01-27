@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "And while my gut tells me the show — from New York City Ballet resident choreographer Justin Peck that’s set to the songs of Sufjan Stevens — is not really a musical per se, it is a transporting and soul-stirring experience all the same.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/illinoise/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241003195241",
-  "archiveOrgUrl": "http://web.archive.org/web/20241003195241/https://nypost.com/2024/04/26/entertainment/illinoise-review-moving-broadway-show-is-about-love-loss-and-dance/"
+  "archiveOrgUrl": "http://web.archive.org/web/20241003195241/https://nypost.com/2024/04/26/entertainment/illinoise-review-moving-broadway-show-is-about-love-loss-and-dance/",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 85,
+      "performances": 89,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is a transporting and soul-stirring experience all the same",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there is real elation in watching brilliant dancers like these get to do what they obviously dream of doing",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "That's great. The last thing Broadway needs is more of the same",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances, choreography, and music extensively while noting structural weaknesses in the first half, ultimately celebrating the show as a refreshing addition to Broadway. | GPT-4o-mini: The review expresses strong praise for the performances and choreography, while noting some structural issues, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:30.220Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

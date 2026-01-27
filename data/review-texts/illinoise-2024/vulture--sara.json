@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "And this is the real triumph of the new show built by Stevens, director and choreographer Justin Peck, and playwright Jackie Sibblies Drury around the epic blueprint of the album: Beyond its many technical glories, and its few brief stumbles, Illinoise achieves a holistic transcendence. For 90 glorious minutes, you do feel.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/illinoise/",
@@ -34,5 +34,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250114173351",
-  "archiveOrgUrl": "http://web.archive.org/web/20250114173351/https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250114173351/https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.html",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 89,
+      "music": 95,
+      "performances": 94,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "For 90 glorious minutes, you do feel. Irony and cynicism slink away with their tails between their legs.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "this is the real triumph of the new show... Illinoise achieves a holistic transcendence",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "May it leave behind seeds for more theater that dances, literally or figuratively, with such joyful abandon",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses rapturous language throughout ('triumph', 'transcendence', 'glorious', 'exquisite') with virtually no reservations, describing a transformative theatrical experience that achieves artistic heights. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its emotional depth, choreography, and performances, indicating it is a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:37:55.164Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "Peck’s choreography is as marvelous as it is moving. Several dance motifs repeat, a nod to the theme of memory and haunting. Often these are tied to characters, like Carl and Henry’s balance-beam swaggering and swaying, or the side-by-side swing-inspired dance and handshake of Henry, Carl, and Shelby. Peck’s choreography is decidedly modern, but his ballet background informs the work, with long-line leg extensions at classic angles and a flurry of precisely-spotted spins and turns.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 78,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "often stirring and fascinating to listen to",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "indelibly be remembered as one of the most singular productions in recent Broadway history",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "not an inherently logical choice for a narrative work of art",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging conceptual challenges, the critic praises the execution and declares it historically significant with superlative language. | GPT-4o-mini: The review expresses strong praise for the uniqueness and stirring quality of the production, indicating a clear recommendation despite some reservations about its narrative logic.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:37:37.879Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

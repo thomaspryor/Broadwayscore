@@ -7,7 +7,63 @@
   "publishDate": "April 26, 2024",
   "fullText": "At the Armory, I found “Illinoise” not only sentimental but downright whimsical. It was intriguing to see three singers walk out on stage wearing enormous fairy wings (costumes by Reid Bartelme and Harriet Jung). Only later did I realize that they were moth wings, because “Illinoise,” with its book by Justin Peck and Jackie Sibblies Drury, is a coming-of-age story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "not only sentimental but downright whimsical",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "It was intriguing to see three singers walk out on stage wearing enormous fairy wings",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "I found 'Illinoise' not only sentimental but downright whimsical.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows mild curiosity and appreciation for the show's whimsical elements but lacks any clear recommendation or substantial critique to determine strong sentiment. | GPT-4o-mini: The review expresses intrigue and whimsy but lacks strong enthusiasm or a clear recommendation, leading to a mixed score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:37:01.396Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

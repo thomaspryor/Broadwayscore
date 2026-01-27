@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Yet in all honesty, for all the obvious delight sprinkled over “Illionise,” it did not move me. It made me want to be moved though, which in a way, is its own sort of illumination.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/illinoise/",
@@ -36,5 +36,63 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 148 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 60,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "commendable, imaginative rendering",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "a theatrical indulgence",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "unique dance-theater-concert hybrid",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review offers lukewarm praise with backhanded compliments like 'theatrical indulgence' and lacks clear recommendation, suggesting a mixed-negative assessment with limited enthusiasm. | GPT-4o-mini: The review expresses a clear positive sentiment towards the direction and concept of the production, indicating a recommendation to see it, albeit with some ambiguity about the overall execution. | Note: Models differed by 30 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:12.918Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 75,
+    "scoreDelta": 30,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 30 points (Claude: 45, OpenAI: 75)"
+    ]
+  }
 }

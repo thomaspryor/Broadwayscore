@@ -7,10 +7,66 @@
   "publishDate": "April 26, 2024",
   "fullText": "But not together: Among a thousand other smart choices, Justin Peck (who directed and choreographed) and Jackie Sibblies Drury (who, with Peck, wrote the story) have delaminated the songs from the characters, thus avoiding the jukebox trap that diminishes both.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 79,
   "dtliThumb": "Up",
   "source": "dtli",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "Among a thousand other smart choices",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "avoiding the jukebox trap that diminishes both",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Among a thousand other smart choices, Justin Peck...have delaminated the songs from the characters",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt praises creative choices by the directors and story structure, suggesting quality work, but it's too brief to assess overall recommendation strength with confidence. | GPT-4o-mini: The review highlights a smart directorial choice that enhances the production, indicating a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:17.799Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

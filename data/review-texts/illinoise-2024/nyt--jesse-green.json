@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, based on Sufjan Stevens's 2005 album, is a gorgeous meditation on memory, loss and the beauty of the American Midwest.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gorgeous meditation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "beauty of the American Midwest",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "gorgeous meditation on memory, loss and the beauty of the American Midwest",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review uses distinctly positive language ('gorgeous') to describe the musical's artistic merit, suggesting clear appreciation despite the very brief excerpt. | GPT-4o-mini: The review expresses strong admiration for the musical's thematic depth and beauty, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:05.431Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

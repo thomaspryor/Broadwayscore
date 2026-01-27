@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Without a word of spoken dialogue, the show pulls us into late adolescence, a time when love, anguish and everything in between are felt perhaps with the greatest intensity. The book co-written by director-choreographer Peck and Drury (who won the 2019 Pulitzer Prize for Drama with her brilliant meta-theatrical race inquiry, Fairview) is skillfully shaped yet invisible in the best sense of undiluted physical, sensorial and elemental storytelling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/illinoise/",
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250826075828",
-  "archiveOrgUrl": "http://web.archive.org/web/20250826075828/https://www.hollywoodreporter.com/lifestyle/arts/illinoise-review-sufjan-stevens-justin-peck-broadway-theater-1235882171/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250826075828/https://www.hollywoodreporter.com/lifestyle/arts/illinoise-review-sufjan-stevens-justin-peck-broadway-theater-1235882171/",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 89,
+      "music": 95,
+      "performances": 93,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "thrilling dance-musical-concert hybrid, alternately rhapsodic and shattering",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Illinoise will be a religious experience",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "art that destroys then rebuilds you",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rave with superlative language throughout ('thrilling,' 'religious experience,' 'ravishing') and comprehensive praise for all elements, concluding with the highest possible endorsement. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the emotional depth, choreography, and music quality, culminating in a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:16.345Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

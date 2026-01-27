@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Now on Broadway at the St. James Theater, this miracle of a show has traded the grandeur of Park Avenue Armory’s monumental Drill Hall for a gentler intimacy. (“Intimate” would not be a typical descriptor for the St. James, but that’s just how massive the Drill Hall is.) It remains, above all else, a magical work of fierce heart that bursts with indescribable wells of emotion.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/illinoise/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 78.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 89,
+      "performances": 88,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "this miracle of a show",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a magical work of fierce heart that bursts with indescribable wells of emotion",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Peck has found a harmony between those two modes, hitting on a beautiful alchemy of personal warmth and epic scale",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language throughout ('miracle of a show', 'magical work', 'beautiful alchemy') with detailed praise for performances, direction, and emotional impact, indicating strong recommendation despite minor critiques. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show's emotional depth and production quality, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:56.420Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

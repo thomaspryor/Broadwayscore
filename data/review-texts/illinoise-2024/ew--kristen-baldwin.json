@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "This gorgeous dance-theater hybrid transforms Sufjan Stevens' beloved indie-folk album into a deeply moving meditation on love, loss, and the search for meaning in small-town America.",
   "originalScore": 88,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 78.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "This gorgeous dance-theater hybrid",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "deeply moving meditation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "transforms Sufjan Stevens' beloved indie-folk album",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Multiple strong positive descriptors ('gorgeous', 'deeply moving') with no caveats suggest clear enthusiasm and recommendation, though the brief excerpt limits confidence in the exact score. | GPT-4o-mini: The review expresses strong enthusiasm for the production's emotional depth and artistic quality, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:55.575Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "This has not been a banner year for new musicals on Broadway, but with “Illinoise,” the final show I saw this season, I glimpsed the majestic future.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/illinoise/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 97
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I glimpsed the majestic future",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This has not been a banner year for new musicals on Broadway",
+        "sentiment": "negative",
+        "strength": 2
+      },
+      {
+        "quote": "not been a banner year for new musicals on Broadway",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses the phrase 'majestic future' to describe the show, indicating extraordinary enthusiasm and positioning it as a standout in a weak season. | GPT-4o-mini: The review expresses optimism about the future of the musical despite acknowledging a lackluster year overall, indicating a positive recommendation. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:20.874Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 80,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

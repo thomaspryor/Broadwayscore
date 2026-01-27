@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "At the Armory, I found “Illinoise” not only sentimental but downright whimsical. It was intriguing to see three singers walk out on stage wearing enormous fairy wings (costumes by Reid Bartelme and Harriet Jung). Only later did I realize that they were moth wings, because “Illinoise,” with its book by Justin Peck and Jackie Sibblies Drury, is a coming-of-age story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/illinoise/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251230151413",
-  "archiveOrgUrl": "http://web.archive.org/web/20251230151413/https://www.thewrap.com/sufjan-stevens-illinoise-broadway-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251230151413/https://www.thewrap.com/sufjan-stevens-illinoise-broadway-review/",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": 28,
+      "direction": 23
+    },
+    "keyPhrases": [
+      {
+        "quote": "Another word to describe 'Illinoise' is 'simple-minded.'",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "a mawkishness infects the whole enterprise",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The mime is strictly amateur",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic systematically dismantles nearly every aspect of the production with harsh descriptors like 'simple-minded,' 'mawkish,' 'precious,' and 'amateur,' offering virtually no positive elements. | GPT-4o-mini: The review is overwhelmingly critical, describing the production as sentimental, whimsical, and simple-minded, leading to a clear recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:33.037Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

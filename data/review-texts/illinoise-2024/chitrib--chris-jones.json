@@ -10,8 +10,64 @@
   "bwwExcerpt": "“Illinoise” is far from a typical Broadway show, and if you’re headed to this 90-minute piece, be aware that you are in for a sensorial experience primarily, even if the emotional underpinning of Peck’s work occasionally reaches out from the stage and grabs your heart. The piece sits very comfortably in the St. James Theatre, a more intimate venue than “Illinoise” enjoyed either in Chicago or on Park Avenue. It’s not a show for all tastes but it certainly makes the case that it belongs on Broadw",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not a show for all tastes",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "it certainly makes the case that it belongs on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sits very comfortably in the St. James Theatre",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review is incomplete but shows qualified appreciation, acknowledging the show's artistic merit while noting it has limited appeal. | GPT-4o-mini: The review suggests a unique experience with emotional moments but indicates that it may not appeal to everyone, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:32.156Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

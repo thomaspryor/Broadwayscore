@@ -10,8 +10,64 @@
   "bwwExcerpt": "At the Armory, those same stories felt monumental — a revolt of mighty compassion against a cruel, suffocating world. And now, as Ilinoise settles in on Broadway, Peck has found a harmony between those two modes, hitting on a beautiful alchemy of personal warmth and epic scale.         Average Rating: 80.0% {   \"@context\":\"https://schema.org\",   \"@type\":\"LiveBlogPosting\",   \"@id\":\"/article/Review-Roundup-ILLINOISE-Arrives-on-Broadway-20240426\",   \"about\":{     \"@type\":\"Event\",     \"startDate\":\"2",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "this miracle of a show",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a magical work of fierce heart that bursts with indescribable wells of emotion",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "has traded the grandeur of Park Avenue Armory's monumental Drill Hall for a gentler intimacy",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic uses extraordinary superlatives like 'miracle' and 'magical work of fierce heart' with no negative caveats, indicating strong positive recommendation despite this being only an excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm and emotional depth, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:50.120Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

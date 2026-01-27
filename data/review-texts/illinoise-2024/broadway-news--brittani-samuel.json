@@ -7,7 +7,63 @@
   "publishDate": "April 27, 2024",
   "fullText": "Yet in all honesty, for all the obvious delight sprinkled over “Illionise,” it did not move me. It made me want to be moved though, which in a way, is its own sort of illumination.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 56,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 56,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it did not move me",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "obvious delight sprinkled over \"Illionise\"",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "It made me want to be moved though, which in a way, is its own sort of illumination",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's evident charm but admits it failed to emotionally connect, creating a mixed response that neither recommends nor discourages attendance. | GPT-4o-mini: The review expresses a desire for emotional impact but ultimately indicates a lack of movement, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:07.931Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 60,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

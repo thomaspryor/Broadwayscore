@@ -10,8 +10,64 @@
   "bwwExcerpt": "There is not a word of dialogue in Illinoise, but this hybrid production fusing dance and music accomplishes far more than mere words can express. Inspired by Sufjan Stevens’ groundbreaking concept album, Illinois, choreographer Justin Peck came up with his own theatrical concept. With Jackie Sibblies Drury as co–book writer, they crafted a narrative that translates the emotional import of Stevens songs into a unique language that can best be described as poetry in motion.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 88,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "accomplishes far more than mere words can express",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "can best be described as poetry in motion",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "groundbreaking concept album",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the artistic achievement and creative concept with evocative language like 'poetry in motion' and 'accomplishes far more than mere words can express' indicates clear positive recommendation. | GPT-4o-mini: The review expresses strong appreciation for the innovative fusion of dance and music, indicating a clear recommendation to see the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:36:00.905Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

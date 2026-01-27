@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The piece sits very comfortably in the St. James Theatre, a more intimate venue than “Illinoise” enjoyed either in Chicago or on Park Avenue. It’s not a show for all tastes but it certainly makes the case that it belongs on Broadway.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/illinoise/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 81,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not a show for all tastes but it certainly makes the case that it belongs on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "hardly a mainstream attraction within the Broadway penumbra",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "his work here is sensual, clearly personal and very cool",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the artistry and finds it worthy of Broadway while acknowledging its niche appeal and non-mainstream nature. | GPT-4o-mini: The review expresses clear appreciation for the choreography and overall experience while acknowledging that it may not appeal to everyone, leading to a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:25.460Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

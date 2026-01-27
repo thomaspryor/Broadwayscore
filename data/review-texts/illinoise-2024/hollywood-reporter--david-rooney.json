@@ -10,8 +10,64 @@
   "bwwExcerpt": "Without a word of spoken dialogue, the show pulls us into late adolescence, a time when love, anguish and everything in between are felt perhaps with the greatest intensity. The book co-written by director-choreographer Peck and Drury (who won the 2019 Pulitzer Prize for Drama with her brilliant meta-theatrical race inquiry, Fairview) is skillfully shaped yet invisible in the best sense of undiluted physical, sensorial and elemental storytelling.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "skillfully shaped yet invisible in the best sense",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "undiluted physical, sensorial and elemental storytelling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "pulls us into late adolescence",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review offers consistent praise for the book's craftsmanship and the production's emotional impact, using sophisticated positive language like 'skillfully shaped' and 'undiluted storytelling' without any negative caveats. | GPT-4o-mini: The review highlights the skillful storytelling and emotional depth of the production, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:10.945Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
