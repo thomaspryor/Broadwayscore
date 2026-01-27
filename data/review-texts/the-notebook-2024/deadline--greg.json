@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Based on Nicholas Sparks’ 1996 bestseller about a young – then older, then much older – couple who survive a lifetime of tribulations (until they don’t), the musical opening tonight at the Schoenfeld Theatre is the theatrical equivalent of muzak, comforting in its unapologetically manipulative way and unabashed in its disregard for anything approaching the grit of the real world.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -54,5 +54,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240924135754/https://deadline.com/2024/03/the-notebook-broadway-review-1235857614/",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 50,
+      "performances": 68,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical opening tonight at the Schoenfeld Theatre is the theatrical equivalent of muzak, comforting in its unapologetically manipulative way and unabashed in its disregard for anything approaching the grit of the real world",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The Notebook goes full-cringe only in its final moments",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it never approaches the finer works of nearly everyone involved",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the musical to be manipulative, muzak-like entertainment with fundamental flaws in storytelling and a particularly offensive ending, despite acknowledging some strong performances. | GPT-4o-mini: The review expresses significant disappointment in the musical's execution and emotional manipulation, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:17.688Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

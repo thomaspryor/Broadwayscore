@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"There are plenty of joys and sorrows to play even in a straightforward cautionary tale.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 45.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "plenty of joys and sorrows to play",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "straightforward cautionary tale",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "There are plenty of joys and sorrows",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The fragment suggests moderate appreciation for the material's theatrical potential but characterizes it as 'straightforward,' implying limited ambition or complexity. | GPT-4o-mini: The review suggests a balanced view with both positive and neutral elements, but lacks a strong recommendation. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:27.439Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 50,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

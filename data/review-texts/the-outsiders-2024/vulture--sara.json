@@ -9,12 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "Chance, Clay, and Levine can, and if&nbsp;The Outsiders&nbsp;sometimes traffics, perhaps unavoidably, in cliché, it makes up for it with the tenderness and muscle of not just its songs but its staging and performances.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-outsiders/ -->",
   "needsScoring": true,
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": 80,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes up for it with the tenderness and muscle of not just its songs but its staging and performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sometimes traffics, perhaps unavoidably, in cliché",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges some clichés but emphasizes that the production compensates with strong songs, staging, and performances, indicating a clear positive recommendation despite minor reservations. | GPT-4o-mini: The review acknowledges clichés but emphasizes the strength of performances and staging, leading to a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:15.765Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

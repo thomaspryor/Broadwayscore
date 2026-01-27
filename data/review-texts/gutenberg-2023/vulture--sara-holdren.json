@@ -10,8 +10,64 @@
   "bwwExcerpt": "Rannells and Gad are wonderfully matched and, it appears, having a real blast with each other. Their comic timing is wetsuit tight, their chemistry indisputable, their energy manic but precise and, crucially, unflagging. It has to be — it’s them and no one but them (well, and the Middlesex Three) for two hours, plus intermission. Which is, frankly, too long. Gutenberg!’s origins as a one-act remain palpable, and in its current form the show feels padded. Its stars are almost able to disguise tha",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the impossible dream… comes true",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the production dances with but isn't quite able to resolve",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the impossible dream… comes true?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This appears to be an opening paragraph that acknowledges the show's Broadway achievement but immediately signals the production has unresolved issues, suggesting mixed feelings without clear recommendation. | GPT-4o-mini: The review suggests a lack of resolution and engagement with the material, indicating a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:41.774Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

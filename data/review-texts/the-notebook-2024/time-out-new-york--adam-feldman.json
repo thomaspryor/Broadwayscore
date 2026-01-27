@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"As much as I rolled my eyes at The Notebook, I canât deny that they sometimes welled up.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-notebook-broadway",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -57,5 +57,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "3/5"
+  "extractedRating": "3/5",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 55,
+      "performances": 75,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "As much as I rolled my eyes at The Notebook, I can't deny that they sometimes welled up",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "At its best, The Notebook finds a way to deliver both, if only in shorthand",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "this threadbare tale is further reduced to its archetypal essentials",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The 3/5 star rating and mixed sentiment throughout - praising performances while criticizing the thin plot and generic music - places this squarely in mixed territory with slight positive lean.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:30.421Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

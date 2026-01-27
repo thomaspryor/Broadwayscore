@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Though it’s surrounded by heavy clouds, Harmon’s play is plenty sharp and by no means gloomy. Zingy, morbid humor and motormouthed diatribes are the playwright’s weapons of choice, not lyricism or sentimentality. Yet there’s a savviness to Prayer’s construction that makes it ring false.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/prayer-for-the-french-republic-broadway/",
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241224194115",
-  "archiveOrgUrl": "http://web.archive.org/web/20241224194115/https://www.vulture.com/2024/01/theater-review-prayer-for-the-french-republic.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241224194115/https://www.vulture.com/2024/01/theater-review-prayer-for-the-french-republic.html",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 71,
+      "direction": 67
+    },
+    "keyPhrases": [
+      {
+        "quote": "it often feels showy in its engagement with them. Like that guy who corners you at the grad-school mixer, Prayer for the French Republic is smart and it has a heart in there, but its primary interest is in its own demonstrations of rhetoric",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "How much you respond to Prayer may ultimately rest on your taste for such harangues. I admit to finding them hard to follow — not intellectually but emotionally. They leave me cold and a little suspicious",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "these questions are still implicit in Prayer for the French Republic, and when we're able to hear them, the play is at its strongest",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the play intellectually ambitious but emotionally cold and rhetorically showy, with mixed praise for performances and direction but significant reservations about the writing's authenticity and emotional impact. | GPT-4o-mini: The review expresses a mix of appreciation for the performances and critiques of the script's execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:03.125Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

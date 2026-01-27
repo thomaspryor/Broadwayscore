@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Now this yarn is a self-aware and droll Broadway musical, a five-character London hit hoping that its very British signature blend of Monty Python and “Goon Show”-like humor, “Billy Elliot”-like music, “Hamilton”-like rhythms and hip, postmodern staging will tickle American fancy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/operation-mincemeat/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "self-aware and droll Broadway musical",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "hoping that its very British signature blend",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "will tickle American fancy",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This brief excerpt describes the show's components positively but frames it as hoping to succeed rather than actually succeeding, creating uncertainty about the critic's final verdict. | GPT-4o-mini: The review indicates a generally positive view of the musical's self-awareness and humor, but lacks strong enthusiasm or specific praise that would elevate the recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:15.859Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
