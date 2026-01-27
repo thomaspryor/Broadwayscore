@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:46:10.802Z",
+  "runDate": "2026-01-27T04:47:55.242Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "maybe-happy-ending-2024",
+    "showFilter": "the-notebook-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 211,
-    "failed": 118,
+    "processed": 210,
+    "failed": 117,
     "skipped": 0,
-    "successRate": "64.1%"
+    "successRate": "64.2%"
   },
   "tierBreakdown": {
-    "playwright": 23,
-    "scrapingbee": 19,
-    "brightdata": 21,
+    "playwright": 22,
+    "scrapingbee": 18,
+    "brightdata": 22,
     "archive": 148
   },
   "statistics": {
-    "tier1Attempts": 28,
-    "tier1Success": 6,
-    "tier2Attempts": 22,
-    "tier2Success": 3,
+    "tier1Attempts": 26,
+    "tier1Success": 5,
+    "tier2Attempts": 21,
+    "tier2Success": 2,
     "tier3Attempts": 19,
-    "tier3Success": 1,
-    "tier4Attempts": 20,
+    "tier3Success": 2,
+    "tier4Attempts": 18,
     "tier4Success": 8,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 120
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 140
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,24 +228,23 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "maybe-happy-ending-2024/vulture-com--unknown.json",
-    "maybe-happy-ending-2024/culturesauce-com--unknown.json",
-    "maybe-happy-ending-2024/deadline--greg-evans.json",
-    "maybe-happy-ending-2024/ew-com--unknown.json",
-    "maybe-happy-ending-2024/lightingandsoundamerica-com--unknown.json",
-    "maybe-happy-ending-2024/newyorktheater-me--unknown.json",
-    "maybe-happy-ending-2024/nypost-com--unknown.json",
-    "maybe-happy-ending-2024/observer--jesse-green.json",
-    "maybe-happy-ending-2024/observer-com--unknown.json",
-    "maybe-happy-ending-2024/pagesonstages-wordpress-com--unknown.json",
-    "maybe-happy-ending-2024/talkinbroadway-com--unknown.json",
-    "maybe-happy-ending-2024/theatermania--david-gordon.json",
-    "maybe-happy-ending-2024/theaterscene-net--unknown.json",
-    "maybe-happy-ending-2024/theatrereviews-com--unknown.json",
-    "maybe-happy-ending-2024/thewrap--robert-hofler.json",
-    "maybe-happy-ending-2024/timeout--adam-feldman.json",
-    "maybe-happy-ending-2024/timeout-ny--adam-feldman.json",
-    "maybe-happy-ending-2024/washington-post--naveen-kumar.json"
+    "the-notebook-2024/ap--mark-kennedy.json",
+    "the-notebook-2024/ew--emlyn-travis.json",
+    "the-notebook-2024/indiewire--erin-strecker.json",
+    "the-notebook-2024/lightingandsoundamerica-com--unknown.json",
+    "the-notebook-2024/nypost--johnny-oleksinski.json",
+    "the-notebook-2024/pagesonstages-wordpress-com--unknown.json",
+    "the-notebook-2024/talkinbroadway-com--unknown.json",
+    "the-notebook-2024/theaterlife-com--unknown.json",
+    "the-notebook-2024/theatermania--zachary-stewart.json",
+    "the-notebook-2024/theaterscene-net--unknown.json",
+    "the-notebook-2024/theatrereviews-com--unknown.json",
+    "the-notebook-2024/thewrap--robert-hofler.json",
+    "the-notebook-2024/timeout--adam-feldman.json",
+    "the-notebook-2024/twi-ny-com--unknown.json",
+    "the-notebook-2024/vu--sara-holdren.json",
+    "the-notebook-2024/washington-post--naveen-kumar.json",
+    "the-notebook-2024/wsj--charles-isherwood.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -356,16 +355,15 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "maybe-happy-ending-2024/nyt--jesse-green.json",
-    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
-    "maybe-happy-ending-2024/ew--shania-russell.json",
-    "maybe-happy-ending-2024/interestedbystander-com--unknown.json",
-    "maybe-happy-ending-2024/ny-daily-news--chris-jones.json",
-    "maybe-happy-ending-2024/nyp--johnny-oleksinski.json",
-    "maybe-happy-ending-2024/talkinbway--matthew-murray.json",
-    "maybe-happy-ending-2024/tman--david-gordon.json",
-    "maybe-happy-ending-2024/washpost--peter-marks.json",
-    "maybe-happy-ending-2024/wsj--terry-teachout.json"
+    "the-notebook-2024/variety--aramide-tinubu.json",
+    "the-notebook-2024/deadline--greg-evans.json",
+    "the-notebook-2024/deadline--pete-hammond.json",
+    "the-notebook-2024/guardian--adrian-horton.json",
+    "the-notebook-2024/guardian--gloria-oladipo.json",
+    "the-notebook-2024/nyp--johnny-oleksinski.json",
+    "the-notebook-2024/the-new-york-daily-news--chris-jones.json",
+    "the-notebook-2024/thly--andy-lefkowitz.json",
+    "the-notebook-2024/tman--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -386,12 +384,11 @@
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
       "hadestown-2019/showshowdown-blogspot-com--unknown.json",
-      "maybe-happy-ending-2024/culturesauce-com--unknown.json",
-      "maybe-happy-ending-2024/lightingandsoundamerica-com--unknown.json",
-      "maybe-happy-ending-2024/newyorktheater-me--unknown.json",
-      "maybe-happy-ending-2024/pagesonstages-wordpress-com--unknown.json",
-      "maybe-happy-ending-2024/theaterscene-net--unknown.json",
-      "maybe-happy-ending-2024/theatrereviews-com--unknown.json"
+      "the-notebook-2024/lightingandsoundamerica-com--unknown.json",
+      "the-notebook-2024/pagesonstages-wordpress-com--unknown.json",
+      "the-notebook-2024/theaterlife-com--unknown.json",
+      "the-notebook-2024/theaterscene-net--unknown.json",
+      "the-notebook-2024/twi-ny-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -410,9 +407,8 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "maybe-happy-ending-2024/ew-com--unknown.json",
-      "maybe-happy-ending-2024/timeout--adam-feldman.json",
-      "maybe-happy-ending-2024/timeout-ny--adam-feldman.json"
+      "the-notebook-2024/ew--emlyn-travis.json",
+      "the-notebook-2024/theatrereviews-com--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -435,7 +431,8 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "maybe-happy-ending-2024/observer--jesse-green.json"
+      "the-notebook-2024/timeout--adam-feldman.json",
+      "the-notebook-2024/washington-post--naveen-kumar.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -578,14 +575,14 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "maybe-happy-ending-2024/vulture-com--unknown.json",
-      "maybe-happy-ending-2024/deadline--greg-evans.json",
-      "maybe-happy-ending-2024/nypost-com--unknown.json",
-      "maybe-happy-ending-2024/observer-com--unknown.json",
-      "maybe-happy-ending-2024/talkinbroadway-com--unknown.json",
-      "maybe-happy-ending-2024/theatermania--david-gordon.json",
-      "maybe-happy-ending-2024/thewrap--robert-hofler.json",
-      "maybe-happy-ending-2024/washington-post--naveen-kumar.json"
+      "the-notebook-2024/ap--mark-kennedy.json",
+      "the-notebook-2024/indiewire--erin-strecker.json",
+      "the-notebook-2024/nypost--johnny-oleksinski.json",
+      "the-notebook-2024/talkinbroadway-com--unknown.json",
+      "the-notebook-2024/theatermania--zachary-stewart.json",
+      "the-notebook-2024/thewrap--robert-hofler.json",
+      "the-notebook-2024/vu--sara-holdren.json",
+      "the-notebook-2024/wsj--charles-isherwood.json"
     ]
   }
 }
