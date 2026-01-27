@@ -1,0 +1,88 @@
+name: Submit to IndexNow
+
+on:
+  # Trigger when shows.json or reviews change
+  push:
+    branches: [main]
+    paths:
+      - 'data/shows.json'
+      - 'data/reviews.json'
+      - 'data/lottery-rush.json'
+      - 'data/grosses.json'
+      - 'data/audience-buzz.json'
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Submission mode'
+        required: true
+        default: 'sitemap'
+        type: choice
+        options:
+          - sitemap    # Key pages only
+          - all        # All pages
+      shows:
+        description: 'Specific show IDs (comma-separated, for show mode)'
+        required: false
+        type: string
+
+  # Weekly full submission (Sundays at 6 AM UTC)
+  schedule:
+    - cron: '0 6 * * 0'
+
+jobs:
+  submit-indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Determine submission mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "mode=all" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ -n "${{ inputs.shows }}" ]; then
+              echo "mode=shows" >> $GITHUB_OUTPUT
+              echo "shows=${{ inputs.shows }}" >> $GITHUB_OUTPUT
+            else
+              echo "mode=${{ inputs.mode }}" >> $GITHUB_OUTPUT
+            fi
+          else
+            # Push event - submit key pages plus any changed show pages
+            echo "mode=sitemap" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Submit to IndexNow
+        run: |
+          MODE="${{ steps.mode.outputs.mode }}"
+          SHOWS="${{ steps.mode.outputs.shows }}"
+
+          if [ "$MODE" = "shows" ] && [ -n "$SHOWS" ]; then
+            node scripts/submit-indexnow.js --shows "$SHOWS"
+          elif [ "$MODE" = "all" ]; then
+            node scripts/submit-indexnow.js --all
+          else
+            node scripts/submit-indexnow.js
+          fi
+
+      - name: Summary
+        run: |
+          echo "## IndexNow Submission Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Mode:** ${{ steps.mode.outputs.mode }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "URLs submitted to IndexNow will be crawled by:" >> $GITHUB_STEP_SUMMARY
+          echo "- Bing" >> $GITHUB_STEP_SUMMARY
+          echo "- Yandex" >> $GITHUB_STEP_SUMMARY
+          echo "- Seznam" >> $GITHUB_STEP_SUMMARY
+          echo "- Naver" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "*Note: Google does not currently support IndexNow*" >> $GITHUB_STEP_SUMMARY

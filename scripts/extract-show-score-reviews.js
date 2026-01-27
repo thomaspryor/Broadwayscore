@@ -39,6 +39,27 @@ function extractShowData(html, showId, sourceUrl) {
     return null;
   }
 
+  // Detect West End / London pages - these are NOT Broadway
+  // Check title for London/West End WITHOUT "(Broadway)" marker
+  const titleHasBroadway = title.includes('(Broadway)');
+  const titleHasLondon = title.includes('London') || title.includes('West End');
+
+  // Check canonical URL for West End path
+  const canonicalMatch = html.match(/<link rel="canonical" href="([^"]+)"/);
+  const canonicalUrl = canonicalMatch ? canonicalMatch[1] : '';
+  const canonicalIsWestEnd = canonicalUrl.includes('/uk/') ||
+                              canonicalUrl.includes('/london/') ||
+                              canonicalUrl.includes('west-end-shows');
+
+  const isWestEnd = (titleHasLondon && !titleHasBroadway) || canonicalIsWestEnd;
+
+  if (isWestEnd) {
+    console.log(`  SKIP: ${showId} - West End page detected (not Broadway)`);
+    console.log(`         Title: ${title.slice(0, 80)}...`);
+    console.log(`         Canonical: ${canonicalUrl}`);
+    return { isWestEnd: true };
+  }
+
   // Extract audience score from JSON-LD
   const jsonLdScripts = doc.querySelectorAll('script[type="application/ld+json"]');
   for (const script of jsonLdScripts) {
@@ -148,7 +169,12 @@ function main() {
 
       const data = extractShowData(html, showId, sourceUrl);
 
-      if (data) {
+      if (data && data.isWestEnd) {
+        // Track West End pages separately
+        if (!showScoreData.westEndPages) showScoreData.westEndPages = [];
+        showScoreData.westEndPages.push(showId);
+        failCount++;
+      } else if (data) {
         showScoreData.shows[showId] = data;
         console.log(`  OK: Score ${data.audienceScore}%, ${data.audienceReviewCount} audience reviews, ${data.criticReviews.length}/${data.criticReviewCount} critic reviews extracted`);
         successCount++;
@@ -168,6 +194,9 @@ function main() {
   console.log(`\n=== Summary ===`);
   console.log(`Successful: ${successCount}`);
   console.log(`Failed/Skipped: ${failCount}`);
+  if (showScoreData.westEndPages && showScoreData.westEndPages.length > 0) {
+    console.log(`West End pages (need correct Broadway URLs): ${showScoreData.westEndPages.join(', ')}`);
+  }
   console.log(`Output written to: ${outputPath}`);
 }
 
