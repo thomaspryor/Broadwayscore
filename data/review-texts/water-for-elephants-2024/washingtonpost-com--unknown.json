@@ -13,12 +13,18 @@
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
-  "textStatus": "partial",
+  "textStatus": "incomplete",
   "textWordCount": 122,
   "archivePath": "data/archives/reviews/water-for-elephants-2024/washingtonpost-com--unknown_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T05:00:41.677Z",
+  "textFetchedAt": "2026-01-27T20:43:54.413Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
@@ -98,5 +104,6 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "truncationSignals": []
 }
