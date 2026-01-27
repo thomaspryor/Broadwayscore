@@ -289,26 +289,26 @@
     @apply py-section;
   }
 
-  /* Header nav link */
+  /* Header nav link - subtle, secondary navigation */
   .nav-link {
-    @apply relative px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors;
+    @apply relative px-2 py-1 text-xs text-gray-500 hover:text-gray-300 transition-colors;
   }
 
   .nav-link::after {
     content: '';
-    @apply absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-brand rounded-full transition-all duration-300;
+    @apply absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-brand/60 rounded-full transition-all duration-300;
   }
 
   .nav-link:hover::after {
-    @apply w-6;
+    @apply w-4;
   }
 
   .nav-link-active {
-    @apply text-white;
+    @apply text-gray-400;
   }
 
   .nav-link-active::after {
-    @apply w-6;
+    @apply w-4 bg-brand;
   }
 
   /* Show card mobile - enhanced */

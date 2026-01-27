@@ -69,17 +69,23 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textStatus": "partial",
+  "textStatus": "incomplete",
   "textWordCount": 98,
   "archivePath": "data/archives/reviews/suffs-2024/observer--jesse-green_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:51:42.331Z",
+  "textFetchedAt": "2026-01-27T05:24:00.140Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "CAPTCHA or access blocked"
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": false,
+      "error": "No archive snapshot available"
     },
     {
       "tier": 2,
@@ -99,5 +105,6 @@
   "textIssues": [
     "Word count too low: 98 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "truncationSignals": []
 }

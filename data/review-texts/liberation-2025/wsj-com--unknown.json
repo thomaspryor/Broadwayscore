@@ -66,10 +66,10 @@
       "Models disagree by 35 points (Claude: 40, OpenAI: 75)"
     ]
   },
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "textWordCount": 144,
   "archivePath": "data/archives/reviews/liberation-2025/wsj-com--unknown_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:40:38.297Z",
+  "textFetchedAt": "2026-01-27T05:25:22.458Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -97,11 +97,16 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260119035810",
   "archiveOrgUrl": "http://web.archive.org/web/20260119035810/https://www.wsj.com/articles/liberation-review-feminism-and-frustration-on-broadway-537a92b7",
   "textIssues": [
     "Word count too low: 144 (min: 300)"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
   ]
 }

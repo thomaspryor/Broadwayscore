@@ -13,7 +13,7 @@
   "originalScore": null,
   "assignedScore": 59,
   "source": "show-score",
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
@@ -73,10 +73,10 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "textWordCount": 172,
-  "archivePath": "data/archives/reviews/our-town-2024/wsj--charles-isherwood_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T23:39:46.645Z",
+  "archivePath": "data/archives/reviews/our-town-2024/wsj--charles-isherwood_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T05:35:05.816Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -108,5 +108,10 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251125015720/https://www.wsj.com/articles/our-town-review-thornton-wilder-back-on-broadway-23333989",
   "textIssues": [
     "Word count too low: 172 (min: 300)"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
   ]
 }
