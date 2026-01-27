@@ -10,8 +10,64 @@
   "bwwExcerpt": "The enlivening pulse created by Radcliffe, Mendez, and Groff gains strength and drive through the production’s rock-solid ensemble. Gilmour (also the costume designer) dresses them in softly period, unified swaths of color as the play moves back in time — blues, then beiges, then, in the lavish, La Dolce Vita–ish early ‘60s, in hard black and white. There’s something smart happening here: Groff, as Frank, wears varyingly sophisticated versions of the same white shirt and black trousers throughou",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 89,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "irresistible energy and chemistry",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "lift Merrily up, yet keep it grounded with real, apparent affection and emotional heft",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "They are the ones reviving the play, by revealing and jump-starting its heart",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the three lead performances with language suggesting they elevate and transform the material, indicating clear positive recommendation despite being performance-focused. | GPT-4o-mini: The review highlights strong performances and emotional depth, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:10.456Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

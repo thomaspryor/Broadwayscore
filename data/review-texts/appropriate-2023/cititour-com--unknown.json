@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 67,
+  "assignedScore": 87,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "12/18"
+  "extractedRating": "12/18",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "now getting a belated – and yes, excellent -- Broadway production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's a singular work that commands our attention, especially in Lila Neugebauer's excellently calibrated production",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "what haunts you long after the curtain comes down",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses strong praise throughout ('excellent', 'magnificent', 'superb', 'singular work') with no significant reservations, calling it a haunting theatrical experience that commands attention. | GPT-4o-mini: The review expresses strong praise for the performances and direction, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:48.261Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 88,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

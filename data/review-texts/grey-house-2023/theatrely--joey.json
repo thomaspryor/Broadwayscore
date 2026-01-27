@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Holloway similarly uses elements of horror to dissect intergenerational cycles of male violence, and to interrogate the lengths to which women must go for protection and preservation. The play’s deployment of horror in attacking these themes, particularly its more surreal turns, is often highly effective in director Joe Mantello’s freaky, disquieting staging. Yet the play lands on a vague, sentimental conclusion that blunts its overall power.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/grey-house/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": null,
+      "performances": 82,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grey House is an absorbing and often brilliant work, but it never quite lives up to its own potential",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "The play's deployment of horror in attacking these themes, particularly its more surreal turns, is often highly effective in director Joe Mantello's freaky, disquieting staging",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Yet the play lands on a vague, sentimental conclusion that blunts its overall power",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds much to admire in the performances and direction but is ultimately disappointed by the script's vague resolution and tonal inconsistencies, describing it as brilliant but unfulfilled.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:54.887Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

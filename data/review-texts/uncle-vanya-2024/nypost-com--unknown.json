@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...the actor’s [Steve Carell] presence gets laughs before he does much of anything.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241003164521",
-  "archiveOrgUrl": "http://web.archive.org/web/20241003164521/https://nypost.com/2024/04/24/entertainment/uncle-vanya-review-steve-carells-broadway-play-is-funny-not-feeling/"
+  "archiveOrgUrl": "http://web.archive.org/web/20241003164521/https://nypost.com/2024/04/24/entertainment/uncle-vanya-review-steve-carells-broadway-play-is-funny-not-feeling/",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 63,
+      "music": null,
+      "performances": 71,
+      "direction": 54
+    },
+    "keyPhrases": [
+      {
+        "quote": "So much is individually right about Lincoln Center's revival of 'Uncle Vanya.' But, like these mis-matched characters who are always at each other's throats, they just don't come together.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "This half-there staging, on the other hand, has us in stitches in the first half and then exhausted after intermission when the drama revs up.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "turns out to be a splendid theater actor who is shrewdly cast",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises individual performances (especially Harper and Carell) but finds the production fundamentally flawed in its failure to balance comedy and pathos, with uneven direction that doesn't bring the elements together cohesively. | GPT-4o-mini: The review highlights strong individual performances but indicates significant shortcomings in the overall production, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:22.967Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

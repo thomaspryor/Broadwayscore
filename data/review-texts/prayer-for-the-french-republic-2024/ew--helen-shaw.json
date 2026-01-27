@@ -10,8 +10,64 @@
   "bwwExcerpt": "Like any play transferring to Broadway from an Off Broadway success, this “Prayer” is a counterproposal to its earlier, smaller, and more intimate iteration. In some practical ways—for instance, the recasting of Patrick with Edwards, whose discomfort with his narrator duties hobbles the play from the start—the competition is weighted toward the Off Broadway version. That production, though, now feels like a relic from another time, before the recent Hamas attacks and the war in Gaza. The play’s ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 38,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "whose discomfort with his narrator duties hobbles the play from the start",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the competition is weighted toward the Off Broadway version",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "That production, though, now feels like a relic from another time",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt is heavily critical of the Broadway transfer, particularly the recasting and suggests the Off-Broadway version was superior, but the fragment is too incomplete to assess overall recommendation strength with confidence. | GPT-4o-mini: The review indicates significant issues with the performances and suggests a preference for the previous Off Broadway version, leading to a negative overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:26.453Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

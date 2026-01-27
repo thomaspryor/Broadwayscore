@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 58,
+      "performances": 74,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Heart of Rock and Roll formula feels phony and forced, but if you don't find fun in the familiar, you may discover some moving moments through its fringe characters",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Still, we're left feeling empowered by the show's unintended star, Tamika Lawrence's Roz, who reminds us it's never too late to break free from conformity",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Too frequently throughout the show, orchestrations and audio mixing sound a bit off, with acoustically unbalanced arrangements, overwrought harmonies, and voices competing and clashing with the instrumentation",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the formulaic plot and lead performance while praising supporting characters and choreography, resulting in a qualified mixed recommendation that leans slightly positive due to some redeeming elements. | GPT-4o-mini: The review presents a mixed view, praising performances and choreography while criticizing the book and some musical numbers, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:03.089Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

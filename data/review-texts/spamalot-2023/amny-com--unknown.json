@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251017023130",
-  "archiveOrgUrl": "http://web.archive.org/web/20251017023130/https://www.amny.com/news/review-spamalot-broadway-revival-2023/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251017023130/https://www.amny.com/news/review-spamalot-broadway-revival-2023/",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "\"Spamalot\" is the musical we need right now",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I had a wonderful time at the revival and left feeling rejuvenated, with its burlesque spirit serving as medicine",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "While the revival may not necessarily be better than the original Broadway production, it is just as good – which is a rare achievement",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses clear enthusiasm for the revival, calling it exactly what we need right now and describing a wonderful, rejuvenating experience despite initial skepticism. | GPT-4o-mini: The review expresses strong enjoyment and a clear recommendation for the revival, highlighting its relevance and impact in today's cultural climate.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:19.630Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

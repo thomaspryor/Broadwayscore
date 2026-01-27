@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Lempicka doesn’t have the craft...to make its title character a relatable modern woman\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251205055934",
-  "archiveOrgUrl": "http://web.archive.org/web/20251205055934/https://www.nytimes.com/2024/04/14/theater/lempicka-review-chavkin-espinosa.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251205055934/https://www.nytimes.com/2024/04/14/theater/lempicka-review-chavkin-espinosa.html",
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 38,
+      "music": 73,
+      "performances": 81,
+      "direction": 59
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's no denying the realness of the vocal power",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the story too often feels incredible in the wrong sense of the word",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Perhaps if it were less of a machine she could be more of a monster",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Green praises the vocal performances and some staging elements but finds fundamental flaws in the book's historical liberties and character development, resulting in a qualified mixed verdict with no clear recommendation. | GPT-4o-mini: The review presents a mix of strong performances and musical elements but criticizes the script and historical inaccuracies, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:02.624Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

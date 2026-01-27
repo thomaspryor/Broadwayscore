@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Avoiding the play’s pitfalls, Imperioli and the rest of the cast refrain from going overboard with shouts and violent lunges. They force the audience to listen closely to their arguments rather than cause us to quickly tone out the angriest voices.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -52,5 +52,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250605190117/https://nypost.com/2024/03/18/entertainment/an-enemy-of-the-people-review-jeremy-strong-and-michael-imperioli-duke-it-out-on-broadway/",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 85,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "Excellent performances like these are all this play needs to be forceful and pulse-pounding",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Strong is surrounded by great actors",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Gold, whose Broadway 'Macbeth' starring Daniel Craig was a bells-and-whistles disaster, nearly bungles it",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite significant directorial criticism, the review praises the compelling revival, excellent performances across the board, and Strong's commanding lead performance, with the negative elements treated as surmountable flaws rather than fatal problems.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:09.210Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

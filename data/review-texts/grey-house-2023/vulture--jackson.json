@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But if you’ve seen a lot of this onscreen, capital-H horror of this kind is less often done on Broadway, and in that context, the scares are fresher. The production makes a good case for more full-on spookiness onstage, even if it’s a less convincing one for this play in particular.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/grey-house/",
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230926190148/https://www.vulture.com/2023/06/theater-review-grey-house-with-laurie-metcalf.html?utm_source=tw&utm_medium=s1&utm_campaign=vulture",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 77,
+      "direction": 71
+    },
+    "keyPhrases": [
+      {
+        "quote": "If it doesn't fully succeed on its own terms, it's at least a solid reminder that terror is as worthy of drama as any other kind of spectacle",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "The production makes a good case for more full-on spookiness onstage, even if it's a less convincing one for this play in particular",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "There's only so many times kids can say things like 'tell a lie and a mama die' before things turn silly",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the concept and performances but finds significant flaws in the script and execution, ultimately offering a qualified mixed response that neither strongly recommends nor discourages attendance. | GPT-4o-mini: The review presents a mixed perspective, praising some performances and the fresh approach to horror on stage, but also highlighting significant flaws in clarity and execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:08.129Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

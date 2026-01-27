@@ -10,8 +10,64 @@
   "bwwExcerpt": "Raucous laughs. Loud gasps. Stunned silence. All turn out to be appropriate responses to “Appropriate,” Branden Jacobs-Jenkins’ provocative play, now getting a belated – and yes, excellent -- Broadway production via Second Stage at the Hayes Theater.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "excellent Broadway production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "provocative play",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Raucous laughs. Loud gasps. Stunned silence. All turn out to be appropriate responses",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic describes strong audience engagement and calls it an 'excellent Broadway production' of a 'provocative play,' indicating clear enthusiasm and recommendation despite the brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its effectiveness and quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:41.812Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

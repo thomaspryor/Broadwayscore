@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 81,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "an amiable, funny, beautifully acted piece that remains in dramatic dry dock all night long",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "As a summertime entertainment for film fans, The Shark is Broken has its moments",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "a little more heft would be welcome; in this case, a blockbuster film has given birth to a featurette for the stage",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances and production design extensively but finds the material dramatically inert and lacking substance, describing it as having 'moments' but remaining in 'dramatic dry dock' - classic mixed review language. | GPT-4o-mini: The review highlights strong performances and humor but indicates a lack of depth in the script, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:23.097Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 68,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

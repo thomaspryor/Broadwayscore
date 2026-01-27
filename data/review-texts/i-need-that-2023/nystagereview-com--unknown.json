@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250726022021/https://nystagereview.com/2023/11/02/i-need-that-a-play-about-hoarding-not-cluttered-by-nuance/",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "3/5"
+  "extractedStars": "3/5",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 83,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "DeVito is such a skilled performer that he makes the play watchable from beginning to end despite its frequent slow spots",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "that's about the only psychological insight to be gleaned from the play, which otherwise leans heavily on sitcom-style one-liners",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Noel Coward, it's not",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises DeVito's performance highly and acknowledges the production's visual spectacle, but criticizes the script as shallow and sitcom-like, creating a mixed recommendation that leans slightly positive due to the star power. | GPT-4o-mini: The review highlights strong performances, particularly by DeVito, but criticizes the script for lacking depth, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:33.247Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

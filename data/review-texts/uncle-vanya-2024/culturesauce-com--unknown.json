@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,5 +30,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": 72,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "sparks some needed life into an otherwise dreary revival",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Carell and Harper are easily the best part of director Lila Neugebauer's mostly lethargic production",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Too often, the rest of the cast seems to feeling their way around the material — or operating in different shows altogether",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises Carell and Harper's performances but calls the overall production 'dreary,' 'lethargic,' and criticizes most other elements including direction, other performances, and design - a classic mixed review with more problems than strengths. | GPT-4o-mini: The review highlights strong performances from Carell and Harper but criticizes the overall lethargy of the production, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:08.713Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

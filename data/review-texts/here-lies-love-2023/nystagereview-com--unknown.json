@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
   "designation": "Must_See",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "4/5"
+  "extractedStars": "4/5",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 80,
+      "performances": 68,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "★★★★☆ The visceral impact of the David Byrne-Fatboy Slim-Alex Timbers musical is slightly dissipated as it strives to fill an oversized Broadway house",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Here Lies Love remains an impressive and effective experience; but uptown on Broadway, at the over-sized Broadway, the bloom is off the rose",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The vast array of inventive vibrancy is still there to be seen and felt",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The 4/5 star rating and praise for the show's inventive qualities are tempered by significant concerns about the Broadway transfer losing the intimate magic of the original production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:10.427Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

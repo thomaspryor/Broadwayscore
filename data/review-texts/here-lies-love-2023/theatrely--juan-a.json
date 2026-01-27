@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It asks us to embody the ambition, mendacity, and ruthlessness we carry with us, even when we think we’ve danced them off, and question our complicity. After the non-stop party, the show’s sobering end reminds us that dancing can be as inattentive as it is cathartic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/here-lies-love-bway/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 90,
+      "performances": 88,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a spectacular look at celebrity, vanity, and power, undergirded by a nonstop parade of danceable, singable hits",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "proves itself more than a gimmick, or an Obama-era flash in the pan",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Byrne's concept, impeccably executed through his lyrics, and the music he co-wrote with Fatboy Slim, is a digestible, hip-shaking challenge",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses strong enthusiasm for the production with praise for its formal innovation, thematic depth, performances, and creative elements, calling it 'spectacular' and noting it exceeds expectations from a decade earlier. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's execution and thematic depth, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:08.421Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

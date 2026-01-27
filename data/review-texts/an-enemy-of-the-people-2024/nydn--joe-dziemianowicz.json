@@ -10,8 +10,64 @@
   "bwwExcerpt": "One word comes up more than a dozen times in the new Broadway revival of “An Enemy of the People”: “restraint.” Ironically, it’s exactly what’s lacking in this amped-up production of the Henrik Ibsen classic, which is broader than the Otra River. Elisabeth Vincentelli, NY Post: Gaines, who often plays good guys and saps, makes the most of his sympathy capital. At first you feel for his character, especially since he has noble intentions. But then he claims, self-servingly, that “the majority is ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 58,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ironically, it's exactly what's lacking in this amped-up production",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "broader than the Otra River",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Gaines, who often plays good guys and saps, makes the most of his sympathy capital",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic heavily criticizes the production's lack of restraint and excessive broadness, with only mild praise for one performer's work. | GPT-4o-mini: The review expresses significant criticism of the production's direction and overall execution, with only a slight positive note about the performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:09.037Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

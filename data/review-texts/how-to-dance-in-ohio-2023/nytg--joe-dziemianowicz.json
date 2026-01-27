@@ -10,8 +10,64 @@
   "bwwExcerpt": "Characters have been invented, as have subplots about divorce, deaths, career dilemmas, and college acceptances. Anxiety is in the air as the group prepares for the prom and deals with daily life — from hygiene to personal safety to decisions about college. A countdown clock ticks down days on the set, where letters are scattered, alphabet soup-style. Presumably, it’s a peek at neurodiverse brains. Some of the narrative embroidery works, and some gets knotted.        Average Rating: 68.2% {   \"@",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": null,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "Some of the narrative embroidery works, and some gets knotted",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Average Rating: 68.2%",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Anxiety is in the air as the group prepares for the prom and deals with daily life",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review presents a balanced assessment with mixed elements - acknowledging that some narrative choices work while others don't, culminating in an explicitly stated average rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:07.975Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "Richard Thomas does everything but twirl his mustache as the bogeyman in the Broadway revival of “An Enemy of the People.” That’s because he doesn’t have a mustache to twirl. The other accouterments of villainy -- black top hat and bowtie framing a lip-curling sneer, cape and cane wielded with menacing flourishes -- are all accounted for in Doug Hughes’s clipped vaudeville of a production. Terry Teachout, Wallstreet Journal: Rebecca Lenkiewicz's \"new version\" of \"An Enemy of the People\" is yet a",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 40,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "does everything but twirl his mustache as the bogeyman",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "clipped vaudeville of a production",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Richard Thomas does everything but twirl his mustache as the bogeyman",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt uses theatrical imagery to mock Thomas's over-the-top performance and dismisses Hughes's direction as vaudevillian, suggesting a production that lacks subtlety and seriousness. | GPT-4o-mini: The review contains critical language about the production's direction and characterization, indicating a negative overall sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:14.793Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

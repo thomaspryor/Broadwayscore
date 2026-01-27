@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "\"...brings an intoxicating energy to the story of a boy who survives trauma\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -55,5 +55,63 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250907151520/https://www.wsj.com/articles/the-whos-tommy-review-broadway-des-mcanuff-pete-townshend-ali-louis-bourzgui-5a35a465",
   "textIssues": [
     "Word count too low: 110 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 60,
+    "confidence": "low",
+    "range": {
+      "low": 25,
+      "high": 95
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A big blast of boomer pleasure has arrived on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "thunderous and thoroughly intoxicating revival",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "giving a seismic jolt to the mostly lusterless musical season",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This appears to be only the opening paragraph of a longer review with strongly positive language, but without the full review content, I cannot determine the critic's overall recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the revival, highlighting its impact and enjoyment, indicating a strong recommendation to see it. | Note: Models differed by 60 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:41.345Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 30,
+    "openaiScore": 90,
+    "scoreDelta": 60,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 60 points (Claude: 30, OpenAI: 90)"
+    ]
+  }
 }

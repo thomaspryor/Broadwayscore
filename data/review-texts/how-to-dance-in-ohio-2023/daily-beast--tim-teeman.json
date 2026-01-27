@@ -10,8 +10,64 @@
   "bwwExcerpt": "“An object at rest stays at rest,” Liam sings in his final song, “Building Momentum,” which is a song about crafting one’s own destiny, the future that makes sense to you. And in the decisions and end-points of the characters on stage—and in their final rock-out dance and singing—that is the emphatic common theme. The song is not a plea for understanding and acceptance of any kind. It is, like the rest of How to Dance in Ohio, a funny, joyful, and cheering assertion of both diversity and self-de",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The meaningful, welcome impact",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "twinned jolt of emotion and insight",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "that wonderful jolt you get when you hear or see or understand a new story",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review expresses genuine appreciation for the show's emotional impact and perspective-expanding qualities, using positive language like 'meaningful,' 'welcome,' and 'wonderful jolt,' indicating a clear positive recommendation despite being brief. | GPT-4o-mini: The review expresses strong appreciation for the emotional and insightful impact of the show, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:46.061Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

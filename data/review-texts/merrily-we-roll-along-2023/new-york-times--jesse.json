@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Maria Friedman’s unsparing direction and a thrillingly fierce central performance by Jonathan Groff have given the show the hard shell it lacked. Now heartbreaking in the poignant sense only, “Merrily” has been found in the dark.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/merrily-we-roll-along-bway/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "thrillingly fierce central performance by Jonathan Groff",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Maria Friedman's unsparing direction",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Merrily has been found in the dark",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for both lead performance and direction with language suggesting the production has solved previous problems and achieved artistic success. | GPT-4o-mini: The review highlights strong direction and a standout performance, indicating a clear recommendation despite not addressing the script or music.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:29.302Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

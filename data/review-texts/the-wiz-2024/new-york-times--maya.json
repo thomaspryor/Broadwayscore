@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "All of which is to say that “The Wiz” is a pleasant, serviceable time at the theater, but as a new production of a musical with a legacy of bringing Blackness to one of Hollywood’s and Broadway’s favorite fairy tales, it’s less satisfying.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-wiz-bway/",
@@ -34,5 +34,63 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250724082329/https://www.nytimes.com/2024/04/17/theater/the-wiz-review-broadway.html",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 58,
+    "confidence": "low",
+    "range": {
+      "low": 40.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 78,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "showcases creative visuals and some standout performances, but stops short of bringing modern Blackness to Broadway",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There's plenty of gold to be found along this yellow brick road",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Deborah Cox's Glinda... looks like a jewel and sounds like one, too",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises individual performances but concludes the production 'stops short' of its ambitious goals, suggesting disappointment with the overall execution despite some strong elements. | GPT-4o-mini: The review highlights strong performances and visuals but indicates that the production does not fully achieve its ambitious goals, leading to a mixed-positive recommendation. | Note: Models differed by 25 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:30.929Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 70,
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 45, OpenAI: 70)"
+    ]
+  }
 }

@@ -7,7 +7,65 @@
   "publishDate": "April 17, 2024",
   "fullText": "But the maximalist revival that opened at the Marquis Theater on Broadway tonight, following a 13-city national tour, diminishes some of the show’s reliable pleasures with unmitigated, candy-colored exuberance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 51,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 51,
+    "confidence": "low",
+    "range": {
+      "low": 37,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "diminishes some of the show's reliable pleasures",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "unmitigated, candy-colored exuberance",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "diminishes some of the show’s reliable pleasures",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic suggests this revival weakens the show's core strengths through excessive stylistic choices, indicating disappointment despite acknowledging the show's inherent appeal. | GPT-4o-mini: The review indicates a mixed response, noting a loss of some pleasures due to the production's exuberance, suggesting a conditional recommendation. | Note: Models differed by 18 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:52.131Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 60,
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 18 points (Claude: 42, OpenAI: 60)"
+    ]
+  }
 }

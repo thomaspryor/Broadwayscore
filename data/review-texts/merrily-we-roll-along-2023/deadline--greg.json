@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "So Maria Friedman’s smartly tended production of that most troubled of stage properties, the Stephen Sondheim-George Furth backwards musical Merrily We Roll Along deserves all the applause – and ticket-buying business – it’s getting at Broadway‘s Hudson Theatre.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/merrily-we-roll-along-bway/",
@@ -54,5 +54,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240320142431/https://deadline.com/2023/10/merrily-we-roll-along-broadway-review-1235567197/",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "standing ovation"
+  "extractedPhrase": "standing ovation",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 58,
+      "music": 90,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "deserves all the applause – and ticket-buying business – it's getting",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You'd be hard-pressed to imagine a better Merrily We Roll Along",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The biggest flaw in Merrily has nothing to do with structure, but rather in characterization, specifically the depictions of the women",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticisms of Furth's book and character development, the critic clearly recommends the production based on exceptional performances, direction, and Sondheim's music, explicitly stating it deserves ticket sales and calling it the best possible version of this troubled musical. | GPT-4o-mini: The review expresses strong praise for the performances and direction, while acknowledging some flaws in the book, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:32.064Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
