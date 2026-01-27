@@ -10,8 +10,64 @@
   "bwwExcerpt": "Though his only previous Broadway appearance was in the 2017 revival of Arthur Miller’s “The Price,” Danny DeVito commands interest without having to do much, and rewards it with funny readings of even unfunny lines. Yet despite his likability, the only parts of “I Need That” that feel authentic are those, near the end, in which the nonissue of Sam’s hoarding is momentarily swept offstage to make space for a few minutes of real father-daughter drama. To this, the DeVitos bring a vibrant understa",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 65,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "Making the point even sharper is the entrance of the star, Danny DeVito",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "indistinguishable from the trash",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "this once-handsome living room",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This excerpt appears to describe a staging choice with mixed implications - praising DeVito's performance while noting the character's degraded state, but lacks enough context for a confident overall assessment. | GPT-4o-mini: The review hints at a notable performance by Danny DeVito but also suggests a negative aspect regarding the character's situation, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:10.552Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 50,
+    "openaiScore": 60,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

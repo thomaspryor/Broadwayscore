@@ -10,8 +10,64 @@
   "bwwExcerpt": "Indeed, a perceived need to glob on enough sexy-modern Broadway pizzazz to appeal to a broader public might well be what torpedoed “Lempicka,” now at the Longacre Theatre. This potentially appealing show would have sat more easily as a feminist, non-musical drama in a less pressured space, where the director, Rachel Chavkin, and the performers, all too aware of their need to liven up this clunky bio-musical, did not have to push so darn hard.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 45,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "what torpedoed \"Lempicka\"",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "This potentially appealing show would have sat more easily as a feminist, non-musical drama",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "clunky bio-musical",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses harsh language like 'torpedoed' and 'clunky bio-musical' while suggesting the show fundamentally doesn't work as a Broadway musical, indicating a clear negative assessment despite acknowledging some potential. | GPT-4o-mini: The review expresses significant criticism of the show's execution and direction, indicating a clear negative sentiment overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:58.746Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

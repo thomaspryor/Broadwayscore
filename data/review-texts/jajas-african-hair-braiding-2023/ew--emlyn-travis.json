@@ -10,8 +10,64 @@
   "bwwExcerpt": "The Ghanaian-American playwright (School Girls; Or, The African Mean Girls Play) and director Whitney White (Our Dear Dead Drug Lord) have teamed up with executive producers Taraji P. Henson and LaChanze to paint a brilliant, emotive portrait of a seemingly simple day in the life of the sedulous West African women working at its titular Central Harlem hair braiding shop. As their day progresses, theatergoers will uncover a powerful tale about joy, dreams, societal and familial expectations, comm",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 75.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "paint a brilliant, emotive portrait",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "powerful tale about joy, dreams",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "brilliant, emotive portrait",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review uses strong positive language like 'brilliant' and 'emotive portrait' and 'powerful tale' to describe the production, indicating clear approval despite the excerpt being incomplete. | GPT-4o-mini: The review highlights the emotional depth and quality of the production, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:33.368Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 85,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

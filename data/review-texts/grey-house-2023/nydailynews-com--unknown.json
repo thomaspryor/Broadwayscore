@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“ ‘Grey House’ is trying to honor that unstinting parentage, despite the baked-in demands on a mostly young cast of kids, who give it all they’ve got. The show also has to whip up interest on a hot summer night. That’s not an easy combo, and you can see the strains it puts on the second half of the show, but much of worth gets unpacked here. Scarily so, to boot.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230725192637",
-  "archiveOrgUrl": "http://web.archive.org/web/20230725192637/https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-grey-house-20230602-rxh2xumeqnbalcqlqhwwhzeane-story.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20230725192637/https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-grey-house-20230602-rxh2xumeqnbalcqlqhwwhzeane-story.html",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 77,
+      "music": null,
+      "performances": 78,
+      "direction": 72
+    },
+    "keyPhrases": [
+      {
+        "quote": "I think it's a worthwhile challenge",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "much of worth gets unpacked here",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "I'm not sure those are the right initial expectations to raise",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic admires the play's ambitious post-modern approach and sophisticated writing but expresses significant concerns about its commercial appeal and audience comprehension on Broadway. | GPT-4o-mini: The review expresses appreciation for the play's complexity and performances but notes challenges in audience engagement and pacing, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:36.522Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

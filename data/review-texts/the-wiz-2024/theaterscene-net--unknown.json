@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": 79,
+      "performances": 83,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Wiz is still an entertaining, satisfying show",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "While the new incarnation of The Wiz is no longer cutting edge or trailblazing, it is still an entertaining, satisfying show",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "a joyous, colorful affair",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the production's entertainment value, performances, and design while acknowledging it's no longer groundbreaking, indicating a solid recommendation with minor reservations. | GPT-4o-mini: The review expresses strong praise for the performances, direction, and overall entertainment value, indicating a clear recommendation despite some acknowledgment of the show's less groundbreaking nature.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:09.332Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

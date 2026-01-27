@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251108035215",
-  "archiveOrgUrl": "http://web.archive.org/web/20251108035215/https://www.amny.com/entertainment/theater/review-prayer-for-the-french-republic/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251108035215/https://www.amny.com/entertainment/theater/review-prayer-for-the-french-republic/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 88,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "long-winded (running three hours and 15 minutes) but powerful drama",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "precise direction by David Cromer and superb ensemble performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "takes the genre to the next level by not just depicting anti-Semitism or warning against it but in earnestly trying to wrestle with how to respond to it",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the performances, direction, and thematic depth while acknowledging the play's length as a flaw, resulting in a clear positive recommendation despite reservations. | GPT-4o-mini: The review provides strong praise for the direction and performances while highlighting the play's timely relevance, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:28.192Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

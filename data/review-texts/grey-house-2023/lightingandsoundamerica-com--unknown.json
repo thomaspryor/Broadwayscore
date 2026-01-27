@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": 64,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "this impressively slick production fails to return the thriller to its old pride of place",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "As Max and Henry discover, once you enter Raleigh's hellish home, it is almost impossible to leave. Believe me, I felt for them.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "for the first forty minutes or so, Grey House casts a certain malevolent spell",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite praising the design elements and Metcalf's performance, the critic finds the plot incoherent, characters underdeveloped, and the ending unsatisfying, ultimately comparing the audience's experience to being trapped in the hellish house. | GPT-4o-mini: The review highlights significant flaws in the plot and character development, leading to a clear negative recommendation despite some praise for the performances and production design.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:34.885Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

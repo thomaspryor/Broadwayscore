@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240415192833",
-  "archiveOrgUrl": "http://web.archive.org/web/20240415192833/https://thefrontrowcenter.com/2023/10/purlie-victorious/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240415192833/https://thefrontrowcenter.com/2023/10/purlie-victorious/",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 92,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Every actor in this show gives us their character's suffering through exposing the raw truth of the matter",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The wisdom is that humanity triumphs through comedy delivered with love which builds community and heals the tremendous pain of oppression",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The return of this show to Broadway is revealing to us that, tho sixty-one years have passed since the original staging, it is urgent that we insert love into the world before it is too late",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer finds deep artistic and social value in the production, praising the performances extensively and connecting the work to urgent contemporary themes about healing and love. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and the overall impact of the show, indicating it as a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:06.142Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

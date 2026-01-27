@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"The Wiz is all about feeling...in complex times, its simple message rings loud and clear\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -35,5 +35,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250302155334/https://ew.com/the-wiz-broadway-revival-review-8635100",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 95,
+      "performances": 94,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Run, don't ease, on down the road to this spectacular revival",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "what may be the best version of The Wiz to date",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "leaves you feeling nothing short of euphoric",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The headline's imperative 'Run, don't ease' combined with calling it 'spectacular' and 'perhaps the best iteration yet' signals strong enthusiasm, with only minor venue acoustics complaints tempering an otherwise rapturous review. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the cast's performances and the show's uplifting message, with only minor caveats regarding acoustics.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:44.693Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

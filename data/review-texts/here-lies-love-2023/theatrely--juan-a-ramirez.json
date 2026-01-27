@@ -7,7 +7,63 @@
   "publishDate": "July 20, 2023",
   "fullText": "It asks us to embody the ambition, mendacity, and ruthlessness we carry with us, even when we think we’ve danced them off, and question our complicity. After the non-stop party, the show’s sobering end reminds us that dancing can be as inattentive as it is cathartic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It asks us to embody the ambition, mendacity, and ruthlessness we carry with us",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the show's sobering end reminds us that dancing can be as inattentive as it is cathartic",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the show’s sobering end reminds us that dancing can be as inattentive as it is cathartic",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows intellectual engagement with the show's themes and suggests meaningful theatrical experience, but lacks clear recommendation language or evaluation of production quality. | GPT-4o-mini: The review reflects a thoughtful engagement with the show's themes but lacks strong enthusiasm or clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:02.101Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

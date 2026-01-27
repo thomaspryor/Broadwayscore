@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is caught in the middle, but it’s still a beautifully directed, acted, written and composed piece about, yes, alcohol but also about our responsibility to the very few people in our lives who depend on us absolutely for their own happiness and survival. We all have them. This show might help with that.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/days-of-wine-and-roses/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 80,
+      "performances": 80,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "beautifully directed, acted, written and composed piece",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The show is caught in the middle",
+        "sentiment": "negative",
+        "strength": 2
+      },
+      {
+        "quote": "This show might help with that",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging the show is 'caught in the middle,' the critic praises all major elements (direction, acting, writing, composition) and suggests the show has meaningful value, indicating a clear positive recommendation. | GPT-4o-mini: The review expresses clear appreciation for the direction, performances, and thematic depth, indicating a strong recommendation despite some ambiguity in the overall impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:53.951Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,9 +9,60 @@
   "isFullReview": false,
   "dtliExcerpt": "Why does everyone hate us? Where can we go that’s safe? These stubbornly open-ended questions pop up repeatedly in Joshua Harmon’s piercing and pointedly amusing Prayer for the French Republic, now on Broadway following its 2022 Off-Broadway premiere.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/prayer-for-the-french-republic-broadway/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "piercing and pointedly amusing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "stubbornly open-ended questions pop up repeatedly",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The excerpt describes the play with notably positive adjectives ('piercing and pointedly amusing') suggesting the critic appreciates Harmon's work, but this is too brief to determine full recommendation strength. | GPT-4o-mini: The review indicates a positive sentiment towards the play's themes and humor, suggesting a clear recommendation despite not being overwhelmingly enthusiastic.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:57.799Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...this Oz comes across more like a playground than a coming-of-age purgatory\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250813082342/https://variety.com/2024/legit/reviews/the-wiz-review-broadway-revival-1235973899/",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 63,
+      "performances": 60,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "diminishes some of the show's reliable pleasures with unmitigated, candy-colored exuberance",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Dizzying visuals and overamplification too often swallow both actors and storytelling in a swirling sensory overload",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Hip-hop moves provide the production's most electrifying moments",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the musical's inherent strengths but finds this production overwhelmed by excessive design choices that undermine the storytelling and performances, with more criticism than praise overall. | GPT-4o-mini: The review presents a mix of positive and negative elements, highlighting strong performances but criticizing the overwhelming production style and lack of coherence in the storytelling.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:15.259Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

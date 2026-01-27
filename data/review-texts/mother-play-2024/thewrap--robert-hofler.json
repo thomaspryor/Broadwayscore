@@ -7,7 +7,63 @@
   "publishDate": "April 25, 2024",
   "fullText": "Tina Landau directs. Her sure hand navigates the play’s many moods — hilarious one moment, tragic the next.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "Her sure hand navigates the play's many moods",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "hilarious one moment, tragic the next",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Tina Landau directs.",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt praises the director's skill in handling complex tonal shifts, suggesting professional competence and artistic merit, but lacks broader context for a confident assessment. | GPT-4o-mini: The review praises the direction and the ability to navigate different moods, indicating a clear recommendation despite the lack of detail on other aspects.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:41.175Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

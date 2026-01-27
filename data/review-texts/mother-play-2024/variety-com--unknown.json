@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...a genuinely engaging examination of a family trying to find equilibrium.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250104141059",
-  "archiveOrgUrl": "http://web.archive.org/web/20250104141059/https://variety.com/2024/legit/reviews/mother-play-review-broadway-1235981251/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250104141059/https://variety.com/2024/legit/reviews/mother-play-review-broadway-1235981251/",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 85,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "genuinely engaging examination of a family trying to find equilibrium",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The performances also reign tall in 'Mother Play,' even when the storylines seem on the verge of teetering too far toward melodrama",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there are two major missteps... some of the major plot points are highly predictable, taking away the story's emotional power",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging 'two major missteps' and predictable plot points, the critic praises the performances as magnificent, calls it 'genuinely engaging,' and emphasizes what works well in the production. | GPT-4o-mini: The review highlights strong performances and engaging themes but notes significant predictability in the plot, leading to a solid but not exceptional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:55.376Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

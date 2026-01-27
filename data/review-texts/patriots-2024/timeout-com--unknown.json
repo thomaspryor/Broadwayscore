@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "3/5 Stars. The play's not the thing here...Stuhlbarg and Keen are the crème de la Kremlin.\n\nRead more",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "time-out-stars",
   "scoreConfidence": "medium",
-  "originalRating": "3/5 stars"
+  "originalRating": "3/5 stars",
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 85,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play's not the thing here; the players are, and Stuhlbarg and Keen are the crème de la Kremlin",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "unsatisfying new modern-history play",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "But it feels exhausting, not exhilarating",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review that praises the central performances (especially Stuhlbarg) as 'tremendous' while criticizing the play itself as 'unsatisfying' and 'exhausting' - ultimately recommending it for the acting despite script weaknesses.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:35.683Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

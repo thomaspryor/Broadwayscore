@@ -7,7 +7,63 @@
   "publishDate": "October 12, 2023",
   "fullText": "But with more than two hours of can-you-bottom-this yucks, it’s exhausting work — for them and for us.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 34,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 34,
+    "confidence": "medium",
+    "range": {
+      "low": 23,
+      "high": 45
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 35,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's exhausting work — for them and for us",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "more than two hours of can-you-bottom-this yucks",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "exhausting work",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic describes the show as 'exhausting work' for both performers and audience over two hours, suggesting a tedious, overlong experience that wears out its welcome. | GPT-4o-mini: The review expresses significant fatigue with the material, indicating a negative overall experience. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:37.062Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 28,
+    "openaiScore": 40,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

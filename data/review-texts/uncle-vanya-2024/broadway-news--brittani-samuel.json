@@ -7,7 +7,63 @@
   "publishDate": "April 25, 2024",
   "fullText": "One can see why top-caliber actors would flock to revel in this flurry of familial relationships, hormonal hangering and endless suffering, but I’m still not convinced audiences need to. Or at least not yet. This “Uncle Vanya” still seems to be finding its footing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'm still not convinced audiences need to",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "top-caliber actors would flock to revel in this",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "still seems to be finding its footing",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly questions whether audiences need to see this production and notes it's still finding its footing, despite acknowledging strong performances. | GPT-4o-mini: The review expresses uncertainty about the production's value and suggests it may not yet be ready for audiences, indicating a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:37.746Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

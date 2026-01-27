@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Her title, like many theatrical matriarchs, is awfully hard to live up to, which is also what Mother Play struggles to do.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/mother-play/",
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241226130526",
-  "archiveOrgUrl": "http://web.archive.org/web/20241226130526/https://www.vulture.com/article/theater-review-paula-vogel-mother-play.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241226130526/https://www.vulture.com/article/theater-review-paula-vogel-mother-play.html",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 55,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "Good material not yet fully refined and processed",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "she never becomes someone I can see in full focus",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Your mileage may vary on the concept of a creepy-crawly cockroach dream ballet, but I have to say I found it delightful",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds interesting elements in the production design and some moments but criticizes the script's lack of focus and synthesis, with performances that feel constrained by references to other works.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:14.475Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

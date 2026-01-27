@@ -7,7 +7,63 @@
   "publishDate": "April 23, 2024",
   "fullText": "Herzog weaves each of these strings into her narrative delicately, carefully piling them on without causing suffocation. And it’s Mary Jane’s dedication to an unseen peaceful future, filtered through McAdams’ touching performance, that stops it from becoming unbearable. Like the character, Mary Jane reaches the depths of dread, but with the most human of touches.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 84,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "McAdams' touching performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Herzog weaves each of these strings into her narrative delicately, carefully",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "with the most human of touches",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises both the narrative construction and lead performance with appreciative language, suggesting a well-crafted production worth seeing despite heavy subject matter. | GPT-4o-mini: The review highlights a strong performance and emotional depth, indicating a solid recommendation despite some ambiguity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:42.921Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
