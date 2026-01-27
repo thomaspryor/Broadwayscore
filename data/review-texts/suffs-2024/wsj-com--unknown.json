@@ -69,42 +69,29 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "textWordCount": 114,
   "archivePath": "data/archives/reviews/suffs-2024/wsj-com--unknown_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T05:03:44.942Z",
+  "textFetchedAt": "2026-01-27T15:14:26.571Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (500): Request failed with status code 500"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
   "fetchTier": 4,
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240718012504",
   "archiveOrgUrl": "http://web.archive.org/web/20240718012504/https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-taub-hillary-clinton-fe175dc0",
   "textIssues": [
     "Word count too low: 114 (min: 300)"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
   ]
 }
