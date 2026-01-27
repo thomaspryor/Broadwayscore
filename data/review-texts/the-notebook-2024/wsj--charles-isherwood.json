@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/the-notebook-review-broadway-musical-nicholas-sparks-ingrid-michaelson-46fd2416",
   "publishDate": null,
-  "fullText": "https://www.wsj.com/articles/the-notebook-review-broadway-musical-nicholas-sparks-ingrid-michaelson-46fd2416\n\nJoy Woods and Ryan Vasquez Photo: Photo: Julieta Cervantes\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nBuy Side from WSJExpert recommendations on products and services, independent from The Wall Street Journal newsroom.\n\n34 Things Every Student Needs to Pack for College\n\nDoes Turning Off Your A/C When You’re Not Home Actually Save Money?\n\nThe Best Compression Socks, According to Doctors, Physical Therapists, and Travel Pros\n\nThese Savings Accounts Pay 5% and Still Let You Write Checks\n\nWhy Do Lenders Keep Inviting Me to Check My Credit?\n\nThe 22 Best Deals to Shop Online Right Now\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
+  "fullText": "https://www.wsj.com/articles/the-notebook-review-broadway-musical-nicholas-sparks-ingrid-michaelson-46fd2416\n\nJoy Woods and Ryan Vasquez Photo: Photo: Julieta Cervantes\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nBuy Side from WSJExpert recommendations on products and services, independent from The Wall Street Journal newsroom.\n\nHere Are Today’s Top 5-Year CD Rates\n\n24 Best Gift Ideas for a Dad Who Has Everything\n\nThe Best Father’s Day Gifts for Every Type of Dad\n\n30 Best Last-Minute Father’s Day Gifts\n\nElevate Your Golf Game With a Premium Mullybox\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "isFullReview": false,
   "bwwExcerpt": "Nevertheless, the comparative simplicity of the teary tale at its center—love at first sight strikes boy and girl like lightning, they are separated for a decade, and then the couple reunites for a striding-into-the-sunset happy ending (before age and illness impinge)—left me dry-eyed and occasionally tempted to check my watch. This may put me in the minority, given the story’s proven success in other mediums, but for all its sweetness and polish “The Notebook” never rises to truly transporting heights—except when Ms. Plunkett, as the heroine, Allie, in her later years, and Dorian Harewood, as her husband, Noah, are the focus.",
   "showScoreExcerpt": "\"The musical moves the story forward in time. \"",
@@ -14,8 +14,8 @@
   "source": "bww-roundup",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.wsj.com/articles/the-notebook-review-broadway-musical-nicholas-sparks-ingrid-michaelson-46fd2416",
-  "textStatus": "partial",
-  "textQuality": "partial",
+  "textStatus": "truncated",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "llmScore": {
     "score": 54,
@@ -73,32 +73,14 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textWordCount": 116,
+  "textWordCount": 94,
   "archivePath": "data/archives/reviews/the-notebook-2024/wsj--charles-isherwood_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:47:51.428Z",
+  "textFetchedAt": "2026-01-27T20:36:14.173Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (500): Request failed with status code 500"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -106,6 +88,12 @@
   "archiveOrgTimestamp": "20240617025320",
   "archiveOrgUrl": "http://web.archive.org/web/20240617025320/https://www.wsj.com/articles/the-notebook-review-broadway-musical-nicholas-sparks-ingrid-michaelson-46fd2416",
   "textIssues": [
-    "Word count too low: 116 (min: 300)"
+    "Word count too low: 94 (min: 300)"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "shorter_than_excerpt",
+    "possible_mid_word_cutoff"
   ]
 }
