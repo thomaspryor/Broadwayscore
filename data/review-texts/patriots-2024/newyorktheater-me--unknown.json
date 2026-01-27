@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 78,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is a smart and entertaining historical drama, if an odd fit for Broadway right now",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "intelligently written, directed efficiently and with a flourish by Rupert Goold, and uniformly well-acted",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "But 'Patriots' ultimately feels like a play for a different time and a different place",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the writing, direction, and performances but questions the play's relevance and timing for Broadway, concluding it feels misplaced despite its technical merits. | GPT-4o-mini: While the performances and direction are praised, the play's relevance and depth regarding current events are questioned, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:40.965Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
