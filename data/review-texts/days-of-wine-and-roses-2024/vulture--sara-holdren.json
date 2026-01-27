@@ -10,8 +10,66 @@
   "bwwExcerpt": "Of course, there is a perspective from which too much grousing about Days of Wine and Roses feels unkind: Lucas has been sober for 19 years, Guettel went through his own journey to sobriety more recently, and O’Hara has told the story of a woman thanking her after the show and whispering, in parting, “23 years.” If the show—if any show—strikes someone, somewhere, for some reason, to the heart, well, so shines a good deed in a weary world. And yet… I hunger for more. O’Hara and James are capable ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 54,
+    "confidence": "low",
+    "range": {
+      "low": 40.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 79,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "does Days of Wine and Roses feel constrained, a little narrow and flat",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the show evokes a specific kind of quietly disheartened sigh",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "great talents put in the service of material that will almost expand to accommodate them, but not quite",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising the vocal performances and chemistry, the critic fundamentally criticizes the show as constrained and disappointing, using vivid negative metaphors like 'disheartened sigh' to describe the overall experience. | GPT-4o-mini: The review highlights strong performances but expresses disappointment in the material, leading to a mixed-positive recommendation. | Note: Models differed by 17 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:59.845Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 62,
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 17 points (Claude: 45, OpenAI: 62)"
+    ]
+  }
 }
