@@ -13,10 +13,10 @@
   "assignedScore": 98,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-Updating-LIVE-20150806",
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.932Z",
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
@@ -78,7 +78,7 @@
   },
   "textWordCount": 143,
   "archivePath": "data/archives/reviews/hamilton-2015/wsj--terry-teachout_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:45:36.876Z",
+  "textFetchedAt": "2026-01-27T05:20:23.630Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -110,5 +110,11 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251118040836/https://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-1438907400",
   "textIssues": [
     "Word count too low: 143 (min: 300)"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "shorter_than_excerpt",
+    "possible_mid_word_cutoff"
   ]
 }
