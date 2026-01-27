@@ -10,8 +10,64 @@
   "bwwExcerpt": "The proceedings, all in all, are rather schizoid. Those seeking a smart night out, with sharply-delineated themes, are likely to react with a weary ‘Boop-Boop-a-Droop.’ There’s always the danger of showstopper fatigue setting in, as if you’ve eaten eight or nine hot fudge sundaes in a row. But as a respite from present-day realities and woes, and you know the ones I mean, Boop! could just be the tonic the doctor ordered.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Those seeking a smart night out, with sharply-delineated themes, are likely to react with a weary 'Boop-Boop-a-Droop.'",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There's always the danger of showstopper fatigue setting in, as if you've eaten eight or nine hot fudge sundaes in a row.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "But as a respite from present-day realities and woes, and you know the ones I mean, Boop! could just be the tonic the doctor ordered.",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review presents conflicting signals - criticizing the show's lack of thematic coherence and potential for excess, but ultimately suggesting it serves a valuable escapist function. | GPT-4o-mini: The review expresses mixed feelings, highlighting both fatigue with the production and a potential for enjoyment as a light escape, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:12.059Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

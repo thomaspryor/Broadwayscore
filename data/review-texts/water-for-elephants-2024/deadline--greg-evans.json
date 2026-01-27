@@ -10,7 +10,7 @@
   "bwwExcerpt": "That’s faint praise, to be sure, but credit where it’s due: Despite source material whose hold on at least some segment of the popular imagination remains inscrutable to the rest of us, the new musical is never less than diverting, with its gorgeous aerial acrobatics, solid work from director Jessica Stone (Kimberly Akimbo) and a plucky pastiche of a score that hints, to my ears, at ’30s-era novelty songs, old timey banjo music, Tin Pan Alley, Black gospel, Jesus Christ Superstar-era Andrew Lloy",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -53,5 +53,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250724215955",
-  "archiveOrgUrl": "http://web.archive.org/web/20250724215955/https://deadline.com/2024/03/water-for-elephants-broadway-review-1235863179/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250724215955/https://deadline.com/2024/03/water-for-elephants-broadway-review-1235863179/",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 70,
+      "performances": 75,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "the new musical is never less than diverting, with its gorgeous aerial acrobatics, solid work from director Jessica Stone",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "It's modest pleasures are never anything but safe, even without a net",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Water For Elephants holds our attention with some terrific acrobatics, tumbling and high-flying aerial feats",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's visual appeal and solid craftsmanship but criticizes it for being predictable, safe, and having a thin book, resulting in a qualified recommendation with significant reservations. | GPT-4o-mini: The review indicates a mix of positive elements (visuals, performances) but overall suggests a lack of depth and excitement, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:17.809Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

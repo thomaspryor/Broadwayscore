@@ -10,8 +10,64 @@
   "bwwExcerpt": "David Adjmi’s intimately epic behind-the-music drama Stereophonic has now moved to Broadway after a hit fall run at Playwrights Horizons. At the smaller venue, the audience felt almost immersed in the room where the show takes place: a wood-paneled 1970s recording studio—decked out by set designer David Zinn as a plush vision of brown, orange, mustard, sage and rust—where a rock band is trying to perfect what could be its definitive album. Some fans of the play have wondered if it could work as ",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "intimately epic behind-the-music drama",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the audience felt almost immersed",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "plush vision of brown, orange, mustard, sage and rust",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review indicates a strong positive sentiment towards the production's immersive qualities and design, suggesting a recommendation despite the incomplete nature of the text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:45:00.410Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

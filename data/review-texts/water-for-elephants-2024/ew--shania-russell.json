@@ -10,11 +10,67 @@
   "bwwExcerpt": "If nothing else, we never wonder how Jacob is swept away by the circus. The romance may fall short, and the songs lack a certain luster, but the magic of the circus is winning. Grade: B–",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 66,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "scoreSource": "extracted-grade",
   "scoreConfidence": "medium",
-  "extractedGrade": "B"
+  "extractedGrade": "B",
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 53,
+      "performances": null,
+      "direction": 72
+    },
+    "keyPhrases": [
+      {
+        "quote": "the magic of the circus is winning",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The romance may fall short, and the songs lack a certain luster",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Grade: B–",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: B- grade with mixed elements - strong praise for circus spectacle balances criticism of romance and songs, landing in mixed-positive territory. | GPT-4o-mini: The review expresses mixed feelings, noting shortcomings in romance and music but highlights the charm of the circus, leading to a moderate recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:37.174Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

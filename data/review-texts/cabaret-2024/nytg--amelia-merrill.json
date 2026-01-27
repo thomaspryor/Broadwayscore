@@ -10,8 +10,64 @@
   "bwwExcerpt": "Kander and Ebb's Cabaret is a much-loved and -revived property such that its twists may not be secrets anymore. Despite the stellar Gayle Rankin’s best efforts to inject the latest revival with a sense of urgency as star performer Sally Bowles, director Rebecca Frecknall’s production, now on Broadway after winning multiple awards in London, stays stagnant. This is not due to the excellent company of dancers at the Kit Kat Club (into which the August Wilson Theatre has been remodeled), but to a d",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 73,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite the stellar Gayle Rankin's best efforts",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "director Rebecca Frecknall's production...stays stagnant",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "excellent company of dancers at the Kit Kat Club",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the director's work as 'stagnant' despite praising individual performances, suggesting a production that fails to achieve its potential. | GPT-4o-mini: The review highlights strong performances but criticizes the direction and overall production quality, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:20.687Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

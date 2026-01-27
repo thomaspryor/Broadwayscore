@@ -10,7 +10,7 @@
   "bwwExcerpt": "This musical will not change your brain in any way, but it delivers what it promises: a big Broadway production that leaves you grinning, and a star performer with the poise, charm and chops to make you believe that what the world needs now might be, of all things, a little more Betty Boop.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 76,
+      "performances": 88,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "savor this show's red-hot cinnamon heart: Jasmine Amy Rogers, making a sensational Broadway debut",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a big Broadway production that leaves you grinning",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This musical will not change your brain in any way, but it delivers what it promises",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging the show's formulaic nature and derivative elements, the critic clearly enjoys the production and praises the lead performance, production values, and entertainment value, concluding it delivers on its promises. | GPT-4o-mini: The review expresses strong enthusiasm for the production and performances, particularly highlighting the lead's debut, while acknowledging its light-hearted and familiar nature.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:59.073Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

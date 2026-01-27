@@ -10,7 +10,7 @@
   "bwwExcerpt": "For followers of the book and film, the climactic moment on stage remains equally thrilling — and the most creative stampede since the wildebeest run in “The Lion King” (whose co-producer Peter Schneider is also top-lined here). This underdog circus troupe may promote its entertainment as “Benzini Brothers’ Most Spectacular Show on Earth,” but for this rube’s nickels, “Water for Elephants” could be the greatest show on Broadway.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251112075210",
-  "archiveOrgUrl": "http://web.archive.org/web/20251112075210/https://variety.com/2024/legit/reviews/water-for-elephants-review-broadway-musical-1235948534/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251112075210/https://variety.com/2024/legit/reviews/water-for-elephants-review-broadway-musical-1235948534/",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 86,
+      "performances": 93,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "Water for Elephants could be the greatest show on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "offers escapism, enchantment and heart — and thrills, too",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "elevates the musical to new and literal heights with its seamless integration of theatrical and cirque artistry",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review concludes with the superlative 'could be the greatest show on Broadway' and consistently praises every aspect from performances to technical elements with enthusiasm and no significant reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its escapism, strong performances, and creative staging, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:45:09.729Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

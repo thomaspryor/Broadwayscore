@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "For three glorious hours, Stereophonic drops its audience into a unique agony: the pursuit of artistic perfection. David Adjimi’s astounding new work, itself near-perfect, captures the wondrous highs and excruciating lows of the creative process with a hilarious, painstaking precision. You’ll want to live in this play forever.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 90,
+      "performances": 93,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "David Adjmi's astounding new work, itself near-perfect",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "You'll want to live in this play forever",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "We could hang out with these characters in the Golden forever",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language calling the work 'astounding' and 'near-perfect,' expresses desire to experience it indefinitely, and offers only minor reservations about one plot element while praising all other aspects extensively. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising its writing, performances, and direction, indicating it is a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:39.134Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,7 +10,7 @@
   "showScoreExcerpt": "âFocusing on an Anglo-American band whose sharp-elbowed members include two troubled couples, Stereophonic is unlikely to see Mick Fleetwood or Stevie Nicks in the audience, but, even for non-fans of the classic album Rumours, this account of internecine personal and creative struggles is hard to beatâ¦Across a luxurious three hours -- to be sure, the action never drags -- relationships crumble, friendships are betrayed, and nerve endings are given a thorough flaying...Stereophonic compels as a poignant character study and needle-sharp comedy.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/stereophonic",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 84,
+      "music": 85,
+      "performances": 89,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "this account of internecine personal and creative struggles is hard to beat",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Under the pinpoint direction of Daniel Aukin, everyone inhabits their roles with rare authenticity",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Stereophonic compels as a poignant character study and needle-sharp comedy",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises all elements of the production with sophisticated analysis and strong positive language throughout, culminating in clear endorsement of the show's artistic merit. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its character study, direction, and performances, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:40.942Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

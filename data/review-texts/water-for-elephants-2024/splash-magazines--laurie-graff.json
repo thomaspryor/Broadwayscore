@@ -10,8 +10,64 @@
   "bwwExcerpt": "They fly through the air with the greatest of ease… literally. Right in front of your eyes is the show within the show – the circus. The most astonishing artistry included acrobatics, hand-balancing, tossing partners, aerials, gymnastics, trapeze, clowning, juggling and pole dancing. All interwoven into a big bang of a Broadway book with music and choreography. It was stunning to see the exquisite work, to hold your breath as the kinkers performed their magic moves. And the puppets. The menageri",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "The most astonishing artistry",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It was stunning to see the exquisite work",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "to hold your breath as the kinkers performed their magic moves",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances and spectacle with superlatives like 'astonishing,' 'stunning,' and 'exquisite,' but incomplete excerpt limits confidence in overall assessment. | GPT-4o-mini: The review expresses unqualified enthusiasm for the artistry and performances, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:05.812Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

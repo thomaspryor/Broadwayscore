@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Here, by blending the worlds of Broadway and the not-so-big top, a tent always in danger of collapse, Stone captures a milieu that has slipped away from many hands.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240330160007",
-  "archiveOrgUrl": "http://web.archive.org/web/20240330160007/https://www.nydailynews.com/2024/03/21/broadway-review-circus-themed-musical-water-for-elephants-boasts-remarkable-ensemble/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240330160007/https://www.nydailynews.com/2024/03/21/broadway-review-circus-themed-musical-water-for-elephants-boasts-remarkable-ensemble/",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 73,
+      "performances": 83,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the more remarkable ensembles ever seen on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "one of the most authentic circus-themed shows to make it to Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I'm not convinced we needed quite so much of the gruff outer frame, which both meanders and chops up the action at times, but that's not a major quibble",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Critic offers substantial praise for the ensemble, direction, and authenticity while acknowledging some weaknesses in the book structure, resulting in a clear positive recommendation. | GPT-4o-mini: The review highlights the remarkable ensemble and direction while acknowledging some weaknesses in the book and music, leading to a strong overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:44.293Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

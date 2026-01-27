@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251112075210",
-  "archiveOrgUrl": "http://web.archive.org/web/20251112075210/https://variety.com/2024/legit/reviews/water-for-elephants-review-broadway-musical-1235948534/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251112075210/https://variety.com/2024/legit/reviews/water-for-elephants-review-broadway-musical-1235948534/",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 86,
+      "music": 84,
+      "performances": 90,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "Water for Elephants could be the greatest show on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "offers escapism, enchantment and heart — and thrills, too",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "elevates the musical to new and literal heights with its seamless integration of theatrical and cirque artistry",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review concludes with the superlative 'could be the greatest show on Broadway' and consistently praises all elements of the production with enthusiasm and specific details. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's creativity, performances, and production quality with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:45:17.250Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

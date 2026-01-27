@@ -10,8 +10,64 @@
   "bwwExcerpt": "Little of it feels original, and none of it feels necessary. But just like actual Betty Boop merchandise — the many toys, t-shirts, scrunchies and socks covered with her image – ‘Boop!’ doesn’t have to feel necessary; it’s fun. And the main reason for that is Jasmine Amy Rogers.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Little of it feels original, and none of it feels necessary",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it doesn't have to feel necessary; it's fun",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "And the main reason for that is Jasmine Amy Rogers",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant flaws in originality and necessity but finds the show fun primarily due to the lead performance, landing in mixed territory with a slight positive lean. | GPT-4o-mini: The review acknowledges a lack of originality and necessity but highlights the fun factor and strong performance, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:18.273Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

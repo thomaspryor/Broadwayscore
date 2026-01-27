@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250618152304/https://www.thewrap.com/six-broadway-review-musical-wives-henry-viii/",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 70,
+      "music": 65,
+      "performances": 75,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "Those theatrical commonplaces aside, 'Six' is a needed antidote to 'Anastasia,' 'Frozen,' 'Jagged Little Pill,' 'Wicked' and other pompous shows of female empowerment.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A disappointment is Carrie-Anne Ingrouillle's choreography.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "a dozen adolescent girls got up from their seats in the third row of the orchestra — and promptly leave the Brooks Atkinson Theatre en masse!",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic offers qualified praise for the show's irreverence and performances while noting significant flaws in choreography and questioning whether audiences are truly engaged, resulting in a mixed recommendation. | GPT-4o-mini: The review presents a mixed view, praising the music and performances while expressing disappointment in choreography and questioning the show's appeal to its target audience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:55.026Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

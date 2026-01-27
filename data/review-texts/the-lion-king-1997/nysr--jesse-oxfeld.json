@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"It’s Julie Taymor’s puppetry that continues to astound...The problem is that the rest of the musical is not as good as Taymor’s vision for the animals and their gorgeous ensemble numbers...Now, the beauty is there, but the show feels a bit worn...The few big numbers aside, much of the John-Rice score is middling ’90s pop rock...That said, the performances, even now, are rather lovely...But you’re not here for the performances. You’re here for the puppets. And they’re worth it.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-lion-king",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 50,
+      "performances": 75,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "you're not here for the performances. You're here for the puppets. And they're worth it.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "much of the John-Rice score is middling '90s pop rock",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the show feels a bit worn",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite criticizing the music and noting the show feels worn, the critic clearly recommends it for Taymor's stunning puppetry and acknowledges the performances are lovely, concluding it's 'worth it' for the spectacle. | GPT-4o-mini: The review highlights impressive puppetry and performances but indicates significant shortcomings in the music and overall production, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:48.270Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

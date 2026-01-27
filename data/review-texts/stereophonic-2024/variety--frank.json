@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Audiences may feel the same way after seeing this work of theatrical virtuosity, realizing that all the tiny details, wild rhythms, and clever hooks presented on stage have added up to a work that is brave, purposeful, and rich.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "theatrical virtuosity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "brave, purposeful, and rich",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "all the tiny details, wild rhythms, and clever hooks presented on stage have added up to a work",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise using superlative language like 'theatrical virtuosity' and 'brave, purposeful, and rich' indicates clear positive recommendation despite being a brief excerpt. | GPT-4o-mini: The review expresses strong admiration for the production's craftsmanship and thematic depth, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:45:20.652Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

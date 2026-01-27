@@ -10,7 +10,7 @@
   "bwwExcerpt": "Step right up, come one, come all, ladies and gentlemen, boys and girls, step right up to the greatest—well, okay, not the greatest show on Broadway, but a dang fine show nonetheless. Although Water for Elephants is set at a circus, and includes several moments of thrilling spectacle, what makes it so appealing is its modesty, not glitz. Like the story’s one-ring Benzini Brothers Circus, a scrappy company touring the country in the early years of the Depression, this original musical knows it’s ",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -44,5 +44,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "4/5"
+  "extractedRating": "4/5",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 74,
+      "music": 78,
+      "performances": 75,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "a dang fine show nonetheless",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "what it lacks in size, it makes up for in wonder, and it's pretty wonderful at making things up",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The stakes of this familiar romantic triangle are not, in and of themselves, enough to anchor a big tent",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: 4/5 stars with consistent praise for direction, staging, and circus elements, though acknowledging the familiar plot and noting the real spectacle lies in the physical performances rather than the leads. | GPT-4o-mini: The review expresses clear enthusiasm for the production's creativity and execution, leading to a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:43.000Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Remember the first time you saw your favorite artist in concert? The tingling sensation that took over your body, the thrill of being in community with strangers, the expectation that your favorite songs will be performed. Going to Six feels exactly like that.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/six/",
@@ -38,5 +38,61 @@
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 95,
+      "performances": 93,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "Going to Six feels exactly like that. Except, this time the artists in question have been brought back from beyond the grave.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "an electrifying experience that educates, challenges, and entertains",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's one of those musicals I wanted to sit through again the moment it ended.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic expresses unqualified enthusiasm throughout, comparing the experience to seeing a favorite artist in concert, calling it 'electrifying' and wanting to see it again immediately upon ending. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its entertainment value, strong performances, and cultural relevance, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:50.844Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

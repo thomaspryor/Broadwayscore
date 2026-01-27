@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Yet somehow “Six,” by Toby Marlow and Lucy Moss, isn’t a philosophically incoherent jumble; it’s a rollicking, reverberant blast from the past. I don’t just mean that it’s loud, though it is; you may clutch your ears even before the audience, primed by streaming audio and TikTok, starts singing along to the nine inexhaustibly catchy songs. I also mean that though gleefully anachronistic, mixing 16th-century marital politics with 21st-century selfies and shade, it suggests a surprising, disturbing and ultimately hopeful commonality. Which shouldn’t work, but does.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/six/",
@@ -38,5 +38,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20260119073029/https://www.nytimes.com/2021/10/03/theater/six-review-broadway.html",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 86,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a rollicking, reverberant blast from the past",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "That means a fantastic physical production and unimprovable performances by a diverse cast whose singing is arena-ready but also characterful",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Call it #MeSix and be prepared: The confetti canon is aimed at you",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Green delivers a thoughtful positive review that acknowledges the show's conceptual tensions while praising its execution, performances, and entertainment value with clear enthusiasm. | GPT-4o-mini: The review expresses strong enthusiasm for the show's energy, performances, and music, with only minor caveats about its structure and themes.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:22.907Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

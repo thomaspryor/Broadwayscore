@@ -52,5 +52,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250603083125/https://www.nydailynews.com/2025/04/07/broadway-preview-boop-the-musical-is-a-joyous-family-friendly-charmer/",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 82,
+      "performances": 89,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "BOOP! is now a stellar little showcase for its ascendant young star, Jasmine Amy Rogers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Thus 'BOOP!' builds and communicates its own optimistic world, inhabits it fully and makes no apology to anyone",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Vastly improved from its 2023 Chicago tryout",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critic consistently praises the lead performance, improvements from the tryout, and the show's confidence in its own world, with only minor reservations about score elements. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall production quality, with only minor reservations about the script, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:01.722Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

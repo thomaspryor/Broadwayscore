@@ -10,8 +10,64 @@
   "bwwExcerpt": "Circus sagas so easily lend themselves to bathos: “Ridi, pagliaccio” and all that. Director Jessica Stone’s stage rendition of Water for Elephants – adapted by book writer Rick Elice from the best-selling novel (2006) and film (2011) – captures all the drama, but it’s clean-cut and concise, propulsive with passion and action. Unlike some other literary adaptations in the works or already on the boards, this production stands on its own merits as theatre. You could walk in with no prior knowledge",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "captures all the drama, but it's clean-cut and concise, propulsive with passion and action",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this production stands on its own merits as theatre",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You could walk in with no prior knowledge",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the adaptation's theatrical effectiveness and accessibility, specifically highlighting strong direction and successful translation from source material, indicating clear recommendation despite measured professional tone. | GPT-4o-mini: The review expresses strong approval of the production's direction and overall execution, indicating a solid recommendation despite a lack of specific praise for performances or the script.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:39.965Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

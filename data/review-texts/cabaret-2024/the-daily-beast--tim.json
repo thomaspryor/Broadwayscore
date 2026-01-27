@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Those performers—led by movie star&nbsp;Eddie Redmayne&nbsp;as the Emcee, Gayle Rankin as Sally Bowles, Ato Blankson-Wood as American fish-out-of-water Cliff, Bebe Neuwirth as Fraulein Schneider and Steven Skybell as Herr Schultz—are impressively operating on a small, raised, circular plinth, surrounded on all sides by the audience. Working within this self-imposed physical constraint, director Rebecca Frecknall produces clever and piercing thrill after thrill.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "impressively operating",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "clever and piercing thrill after thrill",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "self-imposed physical constraint",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for both performances and direction with vivid positive language like 'thrill after thrill' and 'impressively,' though this appears to be an excerpt limiting full assessment. | GPT-4o-mini: The review highlights impressive performances and clever direction, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:33.993Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

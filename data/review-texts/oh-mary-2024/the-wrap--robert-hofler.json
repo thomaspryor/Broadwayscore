@@ -10,8 +10,64 @@
   "bwwExcerpt": "“Oh, Mary!” plays even better on Broadway than it did downtown at the Lucille Lortel Theater earlier this year. Experiencing this comedy with a few hundred more theatergoers takes the laughter from boisterous to atomic and the effect is absolutely radioactive. Plot-wise, it continues to be best to write as little as possible. There are outrageous twists and turns in the story that genuinely shock an audience into delayed convulsions of laughter. Let’s just say that Escola has somehow managed to ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "plays even better on Broadway than it did downtown",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the effect is absolutely radioactive",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "outrageous twists and turns in the story that genuinely shock an audience into delayed convulsions of laughter",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is enthusiastically positive with vivid language praising the comedy's improvement on Broadway and its shocking, hilarious plot twists, though the excerpt cuts off mid-sentence. | GPT-4o-mini: The review expresses strong enthusiasm and excitement about the production, indicating it is a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:24.587Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

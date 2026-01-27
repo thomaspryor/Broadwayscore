@@ -10,8 +10,64 @@
   "bwwExcerpt": "The script, and the direction of Sam Pinkleton (erstwhile choreographer of Natasha, Pierre & the Great Comet of 1812), start things off at too high a level that eventually leads to some lulls. And Mary’s character arc, while necessarily schizophrenic, could be laid out more cleanly. But with this many laughs and surprises at every juncture, who can be bothered to carp? Does the show merit multiple viewings during its limited run? And is there more than enough room and incentive for a sequel? Oh,",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "with this many laughs and surprises at every juncture, who can be bothered to carp?",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Does the show merit multiple viewings during its limited run?",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "start things off at too high a level that eventually leads to some lulls",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite noting structural issues with pacing and character development, the critic is clearly entertained and suggests the show merits repeat viewings, indicating a solid positive recommendation. | GPT-4o-mini: While the review highlights some structural issues, the overall enjoyment and humor suggest a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:12.020Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

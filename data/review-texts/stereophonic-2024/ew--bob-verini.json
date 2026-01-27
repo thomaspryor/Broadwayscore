@@ -10,8 +10,64 @@
   "bwwExcerpt": "Playwright David Adjmi’s extensive resume has included an intimate portrait of Syrian Jews in Brooklyn (Stunning), a fanciful contempo take on Marie Antoinette, and 3C, a controversial sexed-up parody of the sitcom Three’s Company. Interesting work all around, but none of it prepares us for the hyperrealistic triumph that is Stereophonic, now at the Golden Theatre for a limited run after a similarly limited run at Playwrights Horizons.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 92,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "hyperrealistic triumph that is Stereophonic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "none of it prepares us for",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Interesting work all around",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic calls Stereophonic a 'hyperrealistic triumph' and suggests it surpasses Adjmi's previous 'interesting work,' indicating unqualified enthusiasm despite the brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the production, describing it as a 'hyperrealistic triumph', indicating a must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:29.667Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

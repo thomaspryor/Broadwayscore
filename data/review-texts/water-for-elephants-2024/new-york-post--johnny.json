@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Water” has more exuberance than wit; more catchphrases than character.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250725162627",
-  "archiveOrgUrl": "http://web.archive.org/web/20250725162627/https://nypost.com/2024/03/21/entertainment/water-for-elephants-review-acrobats-cant-save-broadway-circus/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250725162627/https://nypost.com/2024/03/21/entertainment/water-for-elephants-review-acrobats-cant-save-broadway-circus/",
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 48,
+      "performances": 38,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "By that point, nobody cares if Jacob and Marlena get together in the end or not. We just pray somebody will come onstage and do a backflip.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Thankfully, it's rescued from total banality by a group of wonderful acrobats",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Act Two is where the show really wobbles. Plenty happens, but the proceedings have the pacing of a pachyderm.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently criticizes the show's structure, pacing, chemistry between leads, and overall execution while only finding merit in the acrobatic performances, culminating in a dismissive final line that suggests audience disengagement. | GPT-4o-mini: The review is predominantly negative, highlighting significant issues with pacing, character development, and overall engagement, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:55.422Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
