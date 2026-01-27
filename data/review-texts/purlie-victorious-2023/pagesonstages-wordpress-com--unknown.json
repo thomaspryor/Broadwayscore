@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 77,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I appreciated every moment in which the actors/characters did not hold back on my account",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "For me, Purlie Victorious evoked both laughter and serious thoughts and ideas for me to continue to examine",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Leslie Odom, Jr.'s titular character didn't really do it for me",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite criticizing the lead performance, the reviewer found the production intellectually and emotionally engaging, praising its challenging themes and powerful impact. | GPT-4o-mini: The review expresses a strong appreciation for the themes and performances, particularly highlighting the complexity of Gitlow's character, while also noting some reservations about Purlie's portrayal, leading to a positive overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:03.515Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

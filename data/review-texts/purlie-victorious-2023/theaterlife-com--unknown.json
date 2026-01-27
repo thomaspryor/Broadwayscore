@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 94,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "like its title, it's victorious",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Purlie Victorious, running a swift and intermissionless 100 minutes, is theatre for everyone: truly funny, socially meaningful, historically educational, politically progressive, appealingly accessible, emotionally inspiring, and marvelously performed",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "One hopes it's still remembered when Tony time comes around",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rave with superlative language throughout ('victorious,' 'brilliant,' 'marvelously performed') and an explicit declaration that it's 'theatre for everyone' with multiple positive descriptors, plus Tony consideration hopes.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:04.141Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

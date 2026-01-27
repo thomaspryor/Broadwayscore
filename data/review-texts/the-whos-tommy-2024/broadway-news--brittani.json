@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "If the first 10 minutes of a show are supposed to rope you in, “The Who’s Tommy” dares you to need more than 10 seconds. Director Des McAnuff’s revival staging of the electric rock opera he co-wrote explodes onto the Nederlander Theatre stage in a paroxysm of booming sound, blinding light and crackling projections",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-whos-tommy/",
@@ -36,5 +36,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 280 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 88,
+      "performances": 80,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "explodes onto the Nederlander Theatre stage in a paroxysm of booming sound, blinding light and crackling projections",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "that juxtaposition is exactly where the magic (and music, also by Townshend) lies",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Townshend's layered compositions have never sounded better",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The reviewer expresses strong enthusiasm for the production's technical elements, music, and performances, with particular praise for the director's vision and sound design, indicating a clear positive recommendation despite some overwhelming sensory elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:57.657Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

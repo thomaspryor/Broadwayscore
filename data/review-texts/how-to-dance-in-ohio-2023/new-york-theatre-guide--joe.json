@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "How to Dance in Ohio wobbles in similar fashion. But in the end, this worthwhile musical finds the steps to an upbeat last dance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "How to Dance in Ohio wobbles in similar fashion",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "this worthwhile musical",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "finds the steps to an upbeat last dance",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging problems ('wobbles'), the critic calls it 'worthwhile' and ends on a positive note about finding its footing, suggesting a qualified but ultimately positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:05.645Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

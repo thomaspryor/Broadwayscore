@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Smart, funny, splendid to look at and all with a beat you can dance to, this tribute to the Brothers Grimm, the sisters of the Second Wave and, not least, the indomitable Ms. Spears, is a delight.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
@@ -51,5 +51,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250725062238",
-  "archiveOrgUrl": "http://web.archive.org/web/20250725062238/https://deadline.com/2023/06/britney-spears-broadway-review-once-upon-a-one-more-time-deadline-1235421229/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250725062238/https://deadline.com/2023/06/britney-spears-broadway-review-once-upon-a-one-more-time-deadline-1235421229/",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 84,
+      "music": 88,
+      "performances": 90,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "Smart, funny, splendid to look at and all with a beat you can dance to, this tribute to the Brothers Grimm, the sisters of the Second Wave and, not least, the indomitable Ms. Spears, is a delight.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "so winningly performed it seems a collection of beauties, princesses, charmings and mermaids arrived fully formed from some magic land of Broadway make-believe",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's the OFG who, near the end, gets to deliver one of the show's sweetest little surprises, a grace note in a production that's already won our hearts.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses consistently enthusiastic language throughout ('delight', 'enchanting', 'won our hearts'), praises all aspects of the production from performances to design, and expresses clear enjoyment and recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising its creativity, performances, and overall enjoyment, indicating it is a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:36.659Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

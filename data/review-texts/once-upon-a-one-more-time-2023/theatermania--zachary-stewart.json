@@ -7,7 +7,58 @@
   "publishDate": "June 22, 2023",
   "fullText": "Once Upon a One More Time emerges as a worthwhile concept thwarted by poor execution. It is certainly preferable to a Britney Spears biomusical, which would have been a sad affair for a 41-year-old artist with more yet to offer.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "worthwhile concept thwarted by poor execution",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "certainly preferable to a Britney Spears biomusical",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the concept has merit but explicitly states it's 'thwarted by poor execution,' making it difficult to recommend despite faint praise about what it's not.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:46.107Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

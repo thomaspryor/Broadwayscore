@@ -9,10 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Jacobs-Jenkins has crafted a work that feels both intimately personal and broadly universal, a family drama that doubles as a meditation on how we reckon with the past.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
   "bwwExcerpt": "If you grew up with it, there’s something inherently nostalgic about the sound of cicadas. The incessant chorus, once every 17 years, conjures something primordial, unsettling, country, past. Appropriate, the excellent production of Branden Jacobs-Jenkins’s play at the Helen Hayes Theater, plunges its audience into that portal at the show’s onset – all darkness and trilling racket. The sound design, lush and unnerving, is controlled by Bray Poor and Will Pickens.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "crafted a work that feels both intimately personal and broadly universal",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "family drama that doubles as a meditation on how we reckon with the past",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "a family drama that doubles as a meditation on how we reckon with the past",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt praises the playwright's craft and thematic depth with substantive positive language, suggesting a strong positive assessment despite the brief nature of the text. | GPT-4o-mini: The review highlights the personal and universal themes of the work, indicating a strong recommendation despite lacking explicit praise for performances or direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:55.401Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

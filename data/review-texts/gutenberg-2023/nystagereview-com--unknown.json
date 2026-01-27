@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "3/5"
+  "extractedStars": "3/5",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 45,
+      "performances": 80,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "thin charms and relentless meta-humor don't prove quite as accessible in the large James Earl Jones Theatre",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Gad and Rannells are at the top of their game, elevating the proceedings considerably with their expert physical shtick and comic delivery",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's hard not to wish that the show was once again housed in a more intimate venue and that it ran 90 minutes instead of a bloated two hours",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The 3/5 star rating combined with strong praise for the lead performances but significant criticism of the material's thinness and Broadway adaptation suggests a qualified, lukewarm recommendation. | GPT-4o-mini: The review presents a mixed perspective, highlighting strong performances but criticizing the overall humor and material, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:02.030Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

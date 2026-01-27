@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\" 'Gutenberg!' is not designed to be anyone’s gateway musical or inspire a career in that impossible, flop-filled field, but it’s firmly imprinted on my heart, sans serif.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250724231609",
-  "archiveOrgUrl": "http://web.archive.org/web/20250724231609/https://observer.com/2023/10/review-of-gutenberg-the-musical-print-is-hilariously-not-dead/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250724231609/https://observer.com/2023/10/review-of-gutenberg-the-musical-print-is-hilariously-not-dead/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 70,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Oh my Gad yes. The shorter and rounder of the comedy duo exudes panicked glee from every pore",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's a treat to see Timbers work his signature blend of irony and ecstasy on a smaller scale with a tighter focus",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Gutenberg! is not designed to be anyone's gateway musical or inspire a career in that impossible, flop-filled field, but it's firmly imprinted on my heart, sans serif",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer clearly enjoys the show despite its intentionally bad premise, praising the performances extensively (especially Gad), celebrating Timbers' direction, and ending with genuine affection for the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:12.063Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

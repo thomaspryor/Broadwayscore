@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 45,
+      "performances": 70,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "she cannot overcome the fact that she is working with a cliché-ridden show about an artist who is undoubtedly interesting but who is painted only in slashes and slathers of color that prevent us from seeing her as an actual human being",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Here, less successfully, she tries to distract us with a constantly fast-paced light-and-sound display",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the show's best numbers are offered up by two other characters",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises individual performances but delivers harsh criticism of the book as 'cliché-ridden' and direction as unsuccessful distraction, with fundamental structural problems preventing emotional connection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:47.429Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

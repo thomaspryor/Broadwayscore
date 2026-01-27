@@ -7,7 +7,63 @@
   "publishDate": "November 13, 2023",
   "fullText": "Even so, there is much to admire and appreciate about “Harmony,” including the fascinating real-life story upon which it is based (which previously inspired a film, a documentary, and even the 1999 Broadway drama “Band in Berlin”), its sense of sincerity and romanticism, Warren Carlyle’s posh art deco-style production (which has improved in quality since Off-Broadway), and the performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 75,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "there is much to admire and appreciate about \"Harmony\"",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Warren Carlyle's posh art deco-style production (which has improved in quality since Off-Broadway)",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "its sense of sincerity and romanticism",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds 'much to admire' across multiple elements including story, production design, and performances, with specific praise for improvements since Off-Broadway, indicating a qualified positive recommendation. | GPT-4o-mini: The review highlights several positive aspects of the production, particularly its sincerity and design, leading to a clear recommendation despite a lack of explicit enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:13.606Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

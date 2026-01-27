@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But this big, splashy show, which is quite entertaining at times, is hampered by a shambolic jumble of sisterhood 101 messaging and defanged fantasy revisionism.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
@@ -53,5 +53,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251007094145",
-  "archiveOrgUrl": "http://web.archive.org/web/20251007094145/https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251007094145/https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html",
+  "llmScore": {
+    "score": 52,
+    "confidence": "high",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": 53,
+      "performances": 60,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "This big, splashy show, which is quite entertaining at times, is hampered by a shambolic jumble of sisterhood 101 messaging and defanged fantasy revisionism",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the songs often barely suit the story, even with some tweaked lyrics",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "This timidity is but one example of the ways in which the show comes up short, both as a feminist text and as a tribute to Spears's songbook",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show occasionally entertaining but ultimately disappointing, citing fundamental problems with the book, song integration, and feminist messaging while praising some performances and choreography. | GPT-4o-mini: The review expresses mixed feelings about the production, highlighting some entertaining elements but ultimately criticizing the script and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:34.305Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 52,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

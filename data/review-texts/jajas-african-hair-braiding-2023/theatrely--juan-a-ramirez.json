@@ -10,8 +10,64 @@
   "bwwExcerpt": "Through tensions and extensions, Bioh’s day-in-the-life play never loses its comedic potency, and its ensemble shines throughout. When Jennifer  (Rachel Christopher), an aspiring journalist who walks in at open to get micro-braids, everyone deflates with knowingly exhausted chagrin. By the time she leaves, almost at close, she, and us, can hardly believe it’s time to go.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "presents the deluxe version of all her gifts",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a hangout you never want to leave",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "lively production cheerfully directed",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language throughout with 'deluxe version of all her gifts' and 'hangout you never want to leave' indicating clear recommendation, though excerpt length limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:45.332Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

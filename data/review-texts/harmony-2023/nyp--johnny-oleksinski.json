@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Barry Manilow's 'Harmony' is a beautiful story about a German singing group that was destroyed by the Nazis, but the musical itself is frustratingly uneven.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 51,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 51,
+    "confidence": "high",
+    "range": {
+      "low": 45,
+      "high": 57
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "beautiful story about a German singing group that was destroyed by the Nazis",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "frustratingly uneven",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the musical itself is frustratingly uneven",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the story as 'beautiful' but condemns the execution as 'frustratingly uneven,' creating a mixed verdict that suggests disappointment with the musical's realization of its promising material. | GPT-4o-mini: The review acknowledges a beautiful story but highlights significant issues with the musical's execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:38.020Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 50,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

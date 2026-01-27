@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Who's Tommy is a show that succeeds despite itself, transforming a rock opera that was never quite coherent into a theatrical experience that feels both intimate and epic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Carrie Coon and Namir Smallwood are giving exceptionally commanding performances in the lead roles",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This production, the first time Bug has appeared on Broadway, is buttressed by the sure hand of director David Cromer",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "See it, and then go home and take a long hot shower",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review praises the direction, performances, and production values consistently, ending with a clear recommendation to 'See it' despite acknowledging the challenging subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:43.104Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

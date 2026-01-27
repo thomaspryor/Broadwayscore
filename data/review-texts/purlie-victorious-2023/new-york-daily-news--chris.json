@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Kenny Leon’s supremely well-toned revival of Ossie Davis’ “Purlie Victorious, A Non-Confederate Romp Through the Cotton Patch,” the new arrival at Broadway’s Music Box Theater, is a knockout show, as hilarious as it is cutting and as emotionally warmhearted as it is politically potent.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/purlie-victorious/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "is a knockout show",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "as hilarious as it is cutting and as emotionally warmhearted as it is politically potent",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "supremely well-toned revival",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified praise with strong superlatives like 'knockout show' and 'supremely well-toned' plus layered appreciation of both humor and political depth indicates rave-level enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its humor and emotional depth, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:12.677Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

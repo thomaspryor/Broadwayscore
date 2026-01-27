@@ -10,8 +10,64 @@
   "bwwExcerpt": "“Gutenberg! The Musical!” is deliberately bad – that’s the central joke of it – but much of what’s bad about it isn’t deliberate. The score is largely unmemorable. The premise makes little sense. There are some funny lines, but no more than an hour’s worth of laughs in a show that’s a two-hour, two-person vaudeville routine that becomes tedious. There is also one joke that is almost shockingly unfunny.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 31,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 31,
+    "confidence": "high",
+    "range": {
+      "low": 25,
+      "high": 37
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": 25,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The score is largely unmemorable. The premise makes little sense.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "no more than an hour's worth of laughs in a show that's a two-hour, two-person vaudeville routine that becomes tedious",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "There are some funny lines",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws in the show's premise, music, and structure, calling it tedious and criticizing its length despite acknowledging minimal comedic moments. | GPT-4o-mini: The review is predominantly negative, highlighting significant flaws in the script and humor, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:27.288Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": 30,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

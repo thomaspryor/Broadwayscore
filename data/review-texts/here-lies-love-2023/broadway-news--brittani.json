@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "As a frequenter of both, it was easy to surrender to “Here Lies Love.” But that ease feels directly tied to my lack of cultural connection to the musical’s complicated history. The production boasts that it can be enjoyed by all, but who decides when populism helps Filipino people — offering greater representation to a wider audience — and when it harms them?",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/here-lies-love-bway/",
@@ -39,5 +39,61 @@
   ],
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 85,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's an irrefutably great time — one that rivals the Hell's Kitchen clubs mere blocks away",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "abstracts Filipino history better than enacting it",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "how much right does anyone who is not Filipino have to party here? It's a difficult question to consider, and one Byrne, Fatboy Slim and Timbers completely avoid",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the theatrical experience and entertainment value while raising serious concerns about cultural appropriation and the treatment of serious historical material, resulting in a qualified positive recommendation. | GPT-4o-mini: The review expresses clear enjoyment of the production's energy and craftsmanship while raising important questions about cultural representation, leading to a positive recommendation with some reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:24.412Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

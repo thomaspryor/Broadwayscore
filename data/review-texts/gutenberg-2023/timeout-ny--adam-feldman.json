@@ -7,7 +7,63 @@
   "publishDate": "October 12, 2023",
   "fullText": "Affection is the key that opens the show’s comedy: As ridiculous as Doug and Bud may be, you feel for these guys and even root for them. As stupid as their historical musical may be, you can’t deny that they’ve got heart.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you feel for these guys and even root for them",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "As stupid as their historical musical may be",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "you can't deny that they've got heart",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges significant flaws in the material while emphasizing the emotional connection and heart that makes the show worthwhile despite its shortcomings. | GPT-4o-mini: The review expresses a mix of affection for the characters and criticism of the show's quality, leading to a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:12.129Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
