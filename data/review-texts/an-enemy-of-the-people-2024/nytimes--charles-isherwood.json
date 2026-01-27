@@ -10,8 +10,64 @@
   "bwwExcerpt": "The pedal-to-the-metal approach has its advantages. With voices clamoring from the stage at top volume for much of the evening, your attention is rarely likely to stray from the finely spun web of ideas animating Ibsen’s play, about the ruckus raised in a Norwegian spa town when the local doctor discovers that the waters are poisoned.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "The pedal-to-the-metal approach has its advantages",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "your attention is rarely likely to stray from the finely spun web of ideas animating Ibsen's play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "voices clamoring from the stage at top volume for much of the evening",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the production's energy and engagement with Ibsen's ideas but the excerpt suggests measured praise for an intense directorial approach without clear overall recommendation. | GPT-4o-mini: The review indicates a generally positive experience with the production's direction and engagement but lacks a strong overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:26.550Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

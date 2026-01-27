@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Gold’s 'An Enemy of the People'... feels pointedly modern\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -41,5 +41,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "time-out-stars",
   "scoreConfidence": "medium",
-  "originalRating": "5/5 stars"
+  "originalRating": "5/5 stars",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "engrossing new production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This version of the play is a plea to the audience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "none that focused so intently and mournfully on the underlying issue of contamination",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: 4/5 stars with consistent praise for the production's modern relevance, Strong's performance, and Gold's direction, despite some minor reservations about character development. | GPT-4o-mini: The review expresses strong praise for the performances and direction while highlighting the modern relevance of the adaptation, leading to a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:35.459Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

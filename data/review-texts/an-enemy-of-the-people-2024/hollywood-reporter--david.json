@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It’s far from the first time Ibsen — and this work in particular — has been dragged into the present, but it’s urgent and effective. Ultimately one of the key strengths of this bracing revival is that it presents a classic drama as a play for our time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250805190842",
-  "archiveOrgUrl": "http://web.archive.org/web/20250805190842/https://www.hollywoodreporter.com/lifestyle/arts/an-enemy-of-the-people-theater-review-jeremy-strong-michael-imperioli-broadway-ibsen-revival-1235854269/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250805190842/https://www.hollywoodreporter.com/lifestyle/arts/an-enemy-of-the-people-theater-review-jeremy-strong-michael-imperioli-broadway-ibsen-revival-1235854269/",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 88,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "Gold's crackling production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this bracing revival is that it presents a classic drama as a play for our time",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's far from the first time Ibsen — and this work in particular — has been dragged into the present, but it's urgent and effective",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the production as 'crackling,' 'bracing,' 'urgent and effective' with strong performances and direction, despite some minor reservations about pacing and structural choices. | GPT-4o-mini: The review expresses strong praise for the performances, direction, and relevance of the adaptation, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:35.835Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 72,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production will certainly satisfy Strong's many fans, and it often captures the dark comedy of a town ruled by a venal herd mentality",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "a play that isn't easily pinned down, that asks complicated questions about the individual versus the crowd, has been made into a homily",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "This time, Herzog and Gold aren't challenging their audiences; instead, they're catering to them",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: While the critic appreciates Strong's performance and finds moments of dark comedy effective, they fundamentally criticize the adaptation for oversimplifying Ibsen's complex work into an easily digestible message that lacks the original's dramatic tension.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:56.899Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

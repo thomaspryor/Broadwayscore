@@ -7,7 +7,65 @@
   "publishDate": "March 18, 2024",
   "fullText": "It’s too weak to say that this conspiracy of inaction makes “An Enemy of the People” relevant; its issues and ours are not similar but identical. And not just its issues. Its characters, too, are contemporary: doppelgängers of our own vicious demagogues, cowed editors, greasy both-sides-ists and defanged idealists.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 67,
+    "confidence": "low",
+    "range": {
+      "low": 50.5,
+      "high": 83.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "its issues and ours are not similar but identical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "doppelgängers of our own vicious demagogues, cowed editors, greasy both-sides-ists and defanged idealists",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "conspiracy of inaction makes 'An Enemy of the People' relevant",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic strongly praises the play's contemporary relevance and character authenticity, suggesting it powerfully mirrors current political dynamics without explicit recommendation language. | GPT-4o-mini: The review indicates a mixed sentiment, acknowledging relevance but lacking strong enthusiasm or clear recommendation. | Note: Models differed by 23 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:37.778Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 55,
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 23 points (Claude: 78, OpenAI: 55)"
+    ]
+  }
 }

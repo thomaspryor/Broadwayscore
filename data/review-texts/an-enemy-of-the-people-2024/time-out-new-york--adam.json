@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "I have seen productions that laid out the counterarguments and personality conflicts more compellingly, but none that focused so intently and mournfully on the underlying issue of contamination, both of the environment and of public discourse. This version of the play is a plea to the audience.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -42,5 +42,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "4/5"
+  "extractedRating": "4/5",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 85,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "engrossing new production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "none that focused so intently and mournfully on the underlying issue of contamination",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This version of the play is a plea to the audience",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The 4/5 star rating combined with sustained praise for the production's relevance, Strong's performance, and Gold's direction clearly indicates a positive recommendation despite some acknowledged limitations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:12.940Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

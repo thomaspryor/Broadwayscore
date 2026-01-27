@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 82,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "This forceful and vigorous production led by television stars Jeremy Strong and Michael Imperioli is robustly staged",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The cast made up of seven speaking roles is excellent and fully up to the job",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "While Sam Gold's production of An Enemy of the People is not bigger than the sum of its parts, it does offer a timely and engrossing play for our moment in history",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the adaptation's timeliness, the excellent cast performances, and the inventive staging concepts, but notes the production isn't transcendent ('not bigger than the sum of its parts'), indicating a solid, recommendable production with clear strengths but some limitations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:23.124Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

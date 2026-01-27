@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Strong seemed to remain in character, even asking for the protesters to be allowed to speak as Imperioli and others, also in character, helped kick them out. The tension in his sulky disposition at that moment – half commitment, half actual anguish – proved to be the most incendiary comment on performativity, idealism, and action of the night.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 68,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "Amy Herzog's watered-down adaptation was already a lost cause",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "the cast turns in fine performances",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The play about noble perseverance made a fatal concession toward likability",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic harshly criticizes the adaptation as 'a lost cause' and condemns the production's gimmicky elements, though acknowledging fine performances from the cast.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:43.850Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
