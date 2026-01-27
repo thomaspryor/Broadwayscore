@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230923095219",
-  "archiveOrgUrl": "http://web.archive.org/web/20230923095219/https://nypost.com/2023/08/10/the-shark-is-broken-review-jaws-play-swallowed-by-broadway/"
+  "archiveOrgUrl": "http://web.archive.org/web/20230923095219/https://nypost.com/2023/08/10/the-shark-is-broken-review-jaws-play-swallowed-by-broadway/",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 65,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "The effect of their macho antics, however, is much the same as listening to your drunken friends argue about capitalism at 2 a.m. They keep on yapping and are not getting anywhere, so you zone out.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "on Broadway, the little play gets swallowed up like a doomed teen in Amity",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the three performers have strong chemistry, and manage to rise above mere impressions",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review harshly criticizes the play's repetitive structure, weak writing, and poor fit for Broadway while praising the performances, particularly Ian Shaw's, resulting in a clear negative recommendation despite some bright spots.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:53.784Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

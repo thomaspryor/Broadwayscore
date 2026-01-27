@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": null,
+      "performances": 87,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jocelyn Bioh whose career continues on an upper trajectory has a potential hit with Jaja's African Hair Braiding which is both funny and serious, revealing and surprising",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Whitney White has done wonders with the cast of 11 who play 17 characters, all of whom will stay with you long after you have left the theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This is not adequately prepared for but does not damage the play too much; however, it does stick out like a shift in tone",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic expresses clear enthusiasm for the performances, direction, and overall experience while noting only minor structural issues, calling it a 'potential hit' and praising how memorable the characters are. | GPT-4o-mini: The review expresses strong appreciation for the play's humor, performances, and design, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:30.763Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

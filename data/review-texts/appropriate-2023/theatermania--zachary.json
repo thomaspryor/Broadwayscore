@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Of course, historical baggage comes with the heirloom furniture, as becomes all too clear in Branden Jacobs-Jenkins Appropriate, now making its jaw-dropping Broadway debut with Second Stage at the Helen Hayes Theater. It is easily the most electrifying Broadway play of 2023 — something I didn’t expect from a drama that received mixed notices when it first performed off-Broadway in 2014.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/appropriate/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251118030824",
-  "archiveOrgUrl": "http://web.archive.org/web/20251118030824/https://www.theatermania.com/news/review-appropriate-a-cherry-orchard-for-the-southern-gentry_1724209/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251118030824/https://www.theatermania.com/news/review-appropriate-a-cherry-orchard-for-the-southern-gentry_1724209/",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 95,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is easily the most electrifying Broadway play of 2023",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "A stunning final segment, in which the house itself emerges as the main character of this story, stands out as one of the most poetic and arresting things I've ever witnessed on a Broadway stage",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "jaw-dropping Broadway debut",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic declares this 'the most electrifying Broadway play of 2023' and describes the finale as 'one of the most poetic and arresting things I've ever witnessed on a Broadway stage,' indicating unqualified enthusiasm and a must-see recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its electrifying nature and powerful performances, particularly from Sarah Paulson.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:03.619Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

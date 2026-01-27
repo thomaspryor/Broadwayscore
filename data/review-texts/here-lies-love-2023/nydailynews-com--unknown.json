@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“You can sit and observe the show all around you or you can pay to hit the orchestra floor and party with the Marcoses. Whee!...At no more than 100 minutes long, ‘Here Lies Love’ never over-indulges nor does it lose the audience’s attention for a moment. “\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230721160107",
-  "archiveOrgUrl": "http://web.archive.org/web/20230721160107/https://www.nydailynews.com/entertainment/broadway/ny-broadway-here-lies-love-20230721-joy2ffbfq5bcpctiqwdzipcisq-story.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20230721160107/https://www.nydailynews.com/entertainment/broadway/ny-broadway-here-lies-love-20230721-joy2ffbfq5bcpctiqwdzipcisq-story.html",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 92,
+      "performances": 78,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "the new show at the Broadway Theatre is as artful as it is radically inventive",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "more beautiful, more exciting and more surprising than any score on Broadway last season",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "That's Broadway doing its job for democracy and art",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic enthusiastically praises the innovative staging, exceptional music, and artistic achievement while acknowledging this as groundbreaking Broadway theater that serves both art and democracy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:23.307Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

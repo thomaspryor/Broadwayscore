@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Clutter – physical, emotional – is the subject of Theresa Rebeck’s new Broadway play ‘I Need That’, a comedy-drama that stars Danny DeVito works mightily and with increasing futility to stuff with laughs and meaning.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20231219220553",
-  "archiveOrgUrl": "http://web.archive.org/web/20231219220553/https://deadline.com/2023/11/danny-devito-i-need-that-broadway-review-1235589573/"
+  "archiveOrgUrl": "http://web.archive.org/web/20231219220553/https://deadline.com/2023/11/danny-devito-i-need-that-broadway-review-1235589573/",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": 63,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "a comedy-drama that star Danny DeVito works mightily and with increasing futility to stuff with laughs and meaning",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "takes a thin premise and crams it with repetition, filler and character developments that are either predictable or unconvincing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "at best, a decent enough excuse to see the great comedian of Taxi and It's Always Sunny In Philadelphia live and in person",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic systematically dismantles the play's script, structure, and direction while acknowledging DeVito's star power isn't enough to save the production from its fundamental flaws. | GPT-4o-mini: The review highlights significant flaws in the script and direction while acknowledging some redeeming qualities in the performances, leading to a clear negative recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:15.131Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

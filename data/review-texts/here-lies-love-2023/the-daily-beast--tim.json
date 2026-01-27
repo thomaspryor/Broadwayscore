@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Immersive theater should feel participatory and intriguing, but right from the beginning Here Lies Love (Broadway Theatre, booking to Sept 3) feels hectoring—before ultimately becoming a big, baffling Broadway mess.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 28,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/here-lies-love-bway/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 28,
+    "confidence": "high",
+    "range": {
+      "low": 20.5,
+      "high": 35.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": 38,
+      "performances": 63,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "Here Lies Love ends up feeling almost magnificently grotesque",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "a big, baffling Broadway mess",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There is really nothing to disco-dance about here",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging strong visual spectacle and committed performances, the critic fundamentally condemns the show as inappropriate subject matter handled carelessly, calling it 'magnificently grotesque' and a 'baffling mess.' | GPT-4o-mini: The review is overwhelmingly critical, highlighting significant flaws in the show's execution and thematic handling, leading to a clear recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:28.837Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

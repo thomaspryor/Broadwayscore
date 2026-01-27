@@ -7,7 +7,63 @@
   "publishDate": "January 28, 2024",
   "fullText": "The only major criticism to level at “Days of Wine and Roses” is that it took Guettel so long to write his third musical, which can easily take its place as one of the few great musicals of this century.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 95,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the few great musicals of this century",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The only major criticism to level at",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "can easily take its place",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic's only complaint is that the composer took too long to create this work, which they declare one of the great musicals of the century - this is unqualified praise disguised as criticism.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:47.380Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

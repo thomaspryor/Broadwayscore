@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 82,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strong is Dr. Thomas Stockmann, the local physician who insists on raising the alarm about the life-threatening pollution in the new local spa resort. This turns the entire town against him, including (especially!) his brother Mayor Peter Stockmann, played by Imperioli in his Broadway debut, because shutting down the spa would ruin the small town's economy.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Strong, who certainly has had experience portraying an often unlikeable character, presents the doctor's complexity, including his strengths, while subtly suggesting that his stubbornness may have many roots — insecurity, grief, ambition.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Herzog uses a modern ear to replace the often-ponderous English translations of Ibsen's language, paring down the dialogue and the monologues to get more quickly to the point.",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic provides thoughtful analysis of the adaptation's strengths, particularly praising the casting choices and performances, while acknowledging the production's complexity and artistic merit without overwhelming enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:52.402Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

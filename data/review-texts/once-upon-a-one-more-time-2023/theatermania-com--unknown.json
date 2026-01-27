@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 47,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250418092447",
-  "archiveOrgUrl": "http://web.archive.org/web/20250418092447/https://www.theatermania.com/news/review-once-upon-a-one-more-time-broadways-awkwardly-arranged-marriage-of-britney-spears-and-feminism_1706165/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250418092447/https://www.theatermania.com/news/review-once-upon-a-one-more-time-broadways-awkwardly-arranged-marriage-of-britney-spears-and-feminism_1706165/",
+  "llmScore": {
+    "score": 47,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 53.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 53,
+      "music": 38,
+      "performances": 73,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a One More Time emerges as a worthwhile concept thwarted by poor execution",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It is certainly preferable to a Britney Spears biomusical",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "The actors are blameless, and some even manage to deliver excellent performances",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds merit in the concept and praises individual performances but identifies fundamental execution problems with music integration, orchestrations, and direction that prevent a clear recommendation. | GPT-4o-mini: The review expresses significant disappointment in the execution of the concept, despite some praise for the performances, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:57.667Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

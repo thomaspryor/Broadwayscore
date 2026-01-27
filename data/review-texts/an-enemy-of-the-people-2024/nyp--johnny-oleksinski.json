@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Jeremy Strong gives a disappointingly weak performance in this Ibsen revival that fails to find its contemporary relevance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 32,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 32,
+    "confidence": "medium",
+    "range": {
+      "low": 27,
+      "high": 37
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 25,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "disappointingly weak performance",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "fails to find its contemporary relevance",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review delivers two major criticisms - a weak lead performance and the production's failure to achieve contemporary relevance - with no offsetting positives mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:23.356Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

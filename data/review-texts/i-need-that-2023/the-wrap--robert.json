@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Sam’s realization isn’t the only moment that recalls TV fare. Rebeck’s play, which opened Thursday at Roundabout’s American Airlines Theater, would be better titled “Sanford and Daughter,” even though Rebeck’s attempts at writing one-liners rarely rises to the level of the 1970s sitcom starring Redd Foxx.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 32,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/i-need-that/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250803044150",
-  "archiveOrgUrl": "http://web.archive.org/web/20250803044150/https://www.thewrap.com/i-need-that-danny-devito-broadway-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250803044150/https://www.thewrap.com/i-need-that-danny-devito-broadway-review/",
+  "llmScore": {
+    "score": 32,
+    "confidence": "medium",
+    "range": {
+      "low": 27,
+      "high": 37
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 35,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sam undergoes a conversion that is as phony as every word and action that came before it",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The desperation shows when DeVito tries to milk a laugh out of strangling the word 'Ohio'",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Sam, as written by Rebeck and played by DeVito, is far too adorable to be a chronic problem to anyone",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental problems with the script's authenticity and character development, calling key moments 'phony' and 'bogus,' while criticizing the performances as underwritten and the comedy as desperate.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:18.170Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250422130647",
-  "archiveOrgUrl": "http://web.archive.org/web/20250422130647/https://theaterpizzazz.com/appropriate/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250422130647/https://theaterpizzazz.com/appropriate/",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play is engrossing, entertaining (and often funny) and thought-provoking",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Director Lila Neugebauer's casting is perfect, placing talented actors in roles that resonate with their public personas",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There are also moments where the themes seem a bit muddied",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic clearly recommends the show despite noting some script weaknesses, praising the performances, direction, and overall impact while calling it 'engrossing, entertaining and thought-provoking.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:32.319Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

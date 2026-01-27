@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Fresh off of “Bad Cinderella” comes the new Broadway musical “Once Upon a One More Time” — an even worse Cinderella.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230703102424",
-  "archiveOrgUrl": "http://web.archive.org/web/20230703102424/https://nypost.com/2023/06/22/once-upon-a-one-more-time-review-britney-spears-awful-show/?utm_source=dlvr.it&utm_medium=twitter"
+  "archiveOrgUrl": "http://web.archive.org/web/20230703102424/https://nypost.com/2023/06/22/once-upon-a-one-more-time-review-britney-spears-awful-show/?utm_source=dlvr.it&utm_medium=twitter",
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 13,
+      "music": 30,
+      "performances": 63,
+      "direction": 23
+    },
+    "keyPhrases": [
+      {
+        "quote": "The dreadful show",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It's bibbidi-bobbidi-brainless",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "I look forward to seeing them all in something not so toxic",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses consistently harsh language throughout ('dreadful show', 'brainless', 'toxic'), systematically criticizes every aspect except individual performances, and ends with a clear dismissal. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the script, music, and overall execution while only mildly praising some performances.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:21.553Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

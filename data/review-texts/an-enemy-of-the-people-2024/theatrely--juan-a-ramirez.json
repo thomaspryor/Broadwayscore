@@ -7,7 +7,65 @@
   "publishDate": "March 18, 2024",
   "fullText": "Strong seemed to remain in character, even asking for the protesters to be allowed to speak as Imperioli and others, also in character, helped kick them out. The tension in his sulky disposition at that moment – half commitment, half actual anguish – proved to be the most incendiary comment on performativity, idealism, and action of the night.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 58,
+    "confidence": "low",
+    "range": {
+      "low": 40.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 70,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "proved to be the most incendiary comment on performativity, idealism, and action of the night",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The tension in his sulky disposition at that moment – half commitment, half actual anguish",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "the most incendiary comment on performativity, idealism, and action of the night",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt focuses on one moment of performance excellence but provides no overall assessment of the show's quality or recommendation, suggesting limited engagement with the production as a whole. | GPT-4o-mini: The review highlights strong performances and a thought-provoking moment, but lacks a clear overall recommendation. | Note: Models differed by 25 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:36.561Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 70,
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 45, OpenAI: 70)"
+    ]
+  }
 }

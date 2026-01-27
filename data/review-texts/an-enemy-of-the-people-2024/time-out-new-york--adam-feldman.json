@@ -10,8 +10,64 @@
   "bwwExcerpt": "Like its spiritual grandchild The Normal Heart, Ibsen’s drama scores hard points against real social ills while also suggesting that a passionate crusader, frozen in the spotlight of his truth, can sometimes be his own worst enemy. Adam Markavitz, Entertainment Weekly: Never mind that it takes place in 19th-century Norway. The battle between two brothers in An Enemy of the People, Henrik Ibsen's spitting-mad screed against political hypocrisy among polite small-towners, tackles more hot-button e",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "scores hard points against real social ills",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "spitting-mad screed against political hypocrisy",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "tackles more hot-button",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows appreciation for the play's social relevance and contemporary resonance, but is too fragmentary to determine the critic's overall recommendation. | GPT-4o-mini: The review highlights the play's engagement with relevant social issues and suggests a strong thematic resonance, leading to a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:09.242Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
