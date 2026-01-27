@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“...the crowd itself is ‘Here Lies Love’s’ main character, this mass of people looking to be appeased by a good performance, no matter who’s singing the political karaoke. The show ends with democracy, but it has a wary relationship with the masses. The thought may be that, lured by a beat good enough, they’ll dance along to anything.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -54,5 +54,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250428193044/https://www.vulture.com/2023/07/theater-review-here-lies-love-marcos-byrne-fatboy-slim-broadway.html",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 85,
+      "performances": 78,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Here Lies Love is a great, unsettling time",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The resulting music is irresistible to a totalitarian degree",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Hedonism and didacticism are oil and water, and the trick of Here Lies Love involves keeping the show moving quickly enough to generate a frothy emulsion",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoys the show despite its moral complexities, praising the music as 'irresistible,' the direction as compelling, and calling it 'a great, unsettling time' - indicating strong recommendation with thoughtful reservations. | GPT-4o-mini: The review expresses strong praise for the music and overall experience while noting some shortcomings in character depth, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:55.990Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

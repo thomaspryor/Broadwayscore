@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "“ 'Prayer for the French Republic' addresses, with nuance, detail and understated passion, the tensions and the connections between history and current events.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "addresses, with nuance, detail and understated passion",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the tensions and the connections between history and current events",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "'Prayer for the French Republic' addresses, with nuance, detail and understated passion",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the play's thoughtful approach with 'nuance, detail and understated passion,' suggesting appreciation for its treatment of complex themes, but the brief excerpt provides limited context for a definitive recommendation. | GPT-4o-mini: The review expresses a positive sentiment regarding the nuanced and passionate handling of themes, indicating a strong recommendation despite the lack of detailed critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:33.182Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
