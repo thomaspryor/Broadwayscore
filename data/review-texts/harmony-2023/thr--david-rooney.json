@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German sextet silenced by the Nazis, is earnest and well-intentioned but dramatically inert.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "earnest and well-intentioned",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "dramatically inert",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging good intentions, the critic's assessment of 'dramatically inert' indicates fundamental structural problems that make the show difficult to recommend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:04.073Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
