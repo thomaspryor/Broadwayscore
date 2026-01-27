@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"An actorly, Broadway face-off between Jeremy Strong and Michael Imperioli\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240415003126",
-  "archiveOrgUrl": "http://web.archive.org/web/20240415003126/https://variety.com/2024/legit/reviews/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240415003126/https://variety.com/2024/legit/reviews/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 69,
+      "music": null,
+      "performances": 85,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production has much to recommend it, and Strong in particular should return to the stage as often as he can.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's hard not to feel as though this 'Enemy of the People,' in which as rootable as possible a hero is ground down by the forces of evil, ended up presenting an opportunity for the audience to put themselves on trial, and then, with a sigh of relief, exonerate themselves.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Their battle comes to a head in a stunning trial sequence... It's a big physical performance by an actor best known for a performance... that was buttoned-up until it wasn't, exploding into tears and rage. He accomplishes something similar here, with a performance that's big but well-calibrated.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises Strong's performance extensively and appreciates Gold's staging concept, but criticizes the adaptation for making the protagonist too sympathetic and letting the audience off the hook morally. | GPT-4o-mini: The review expresses clear praise for the performances and direction while noting some reservations about the adaptation and character dynamics, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:26.455Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,54 @@
   "isFullReview": false,
   "dtliExcerpt": "\"Climate activists disrupting Jeremy Strong was the best part of the play\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 18,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 18,
+    "confidence": "medium",
+    "range": {
+      "low": 5.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Climate activists disrupting Jeremy Strong was the best part of the play",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states that a real-world disruption was better than the actual theatrical content, indicating severe disappointment with the production itself. | GPT-4o-mini: The review suggests that the only notable aspect of the play was an external disruption, indicating a complete lack of value in the production itself. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:26.553Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 10,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
