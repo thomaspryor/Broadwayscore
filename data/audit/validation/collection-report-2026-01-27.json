@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:48:45.701Z",
+  "runDate": "2026-01-27T04:48:54.273Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-outsiders-2024",
+    "showFilter": "chess-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 205,
-    "failed": 127,
+    "processed": 200,
+    "failed": 111,
     "skipped": 0,
-    "successRate": "61.7%"
+    "successRate": "64.3%"
   },
   "tierBreakdown": {
-    "playwright": 19,
-    "scrapingbee": 18,
-    "brightdata": 22,
-    "archive": 146
+    "playwright": 22,
+    "scrapingbee": 16,
+    "brightdata": 20,
+    "archive": 142
   },
   "statistics": {
-    "tier1Attempts": 31,
-    "tier1Success": 2,
-    "tier2Attempts": 29,
-    "tier2Success": 2,
-    "tier3Attempts": 27,
-    "tier3Success": 2,
-    "tier4Attempts": 29,
-    "tier4Success": 6,
-    "totalFailed": 19,
-    "scrapingBeeCreditsUsed": 130
+    "tier1Attempts": 10,
+    "tier1Success": 5,
+    "tier2Attempts": 5,
+    "tier2Success": 0,
+    "tier3Attempts": 5,
+    "tier3Success": 0,
+    "tier4Attempts": 5,
+    "tier4Success": 2,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,18 +228,13 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "the-outsiders-2024/amny--matt-windman.json",
-    "the-outsiders-2024/deadline--greg-evans.json",
-    "the-outsiders-2024/ew-com--unknown.json",
-    "the-outsiders-2024/newyorktheatreguide-com--unknown.json",
-    "the-outsiders-2024/pagesonstages-wordpress-com--unknown.json",
-    "the-outsiders-2024/talkinbroadway-com--unknown.json",
-    "the-outsiders-2024/theatermania--zachary-stewart.json",
-    "the-outsiders-2024/theaterscene-net--unknown.json",
-    "the-outsiders-2024/thewrap--robert-hofler.json",
-    "the-outsiders-2024/timeout--adam-feldman.json",
-    "the-outsiders-2024/timeout-ny--adam-feldman.json",
-    "the-outsiders-2024/wsj--charles-isherwood.json"
+    "chess-2025/lightingandsoundamerica-com--unknown.json",
+    "chess-2025/newyorktheater-me--unknown.json",
+    "chess-2025/nypost-com--unknown.json",
+    "chess-2025/pagesonstages-com--unknown.json",
+    "chess-2025/theaterscene-com--unknown.json",
+    "chess-2025/theaterscene-net--unknown.json",
+    "chess-2025/theatrereviews-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -350,25 +345,9 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "the-outsiders-2024/nyt--jesse-green.json",
-    "the-outsiders-2024/thr--angie-han.json",
-    "the-outsiders-2024/variety--jesse-green.json",
-    "the-outsiders-2024/vult--jesse-green.json",
-    "the-outsiders-2024/AP--mark-kennedy.json",
-    "the-outsiders-2024/NYDN--chris-jones.json",
-    "the-outsiders-2024/TDB--tim-teeman.json",
-    "the-outsiders-2024/WASHPOST--peter-marks.json",
-    "the-outsiders-2024/WRAP--robert-hofler.json",
-    "the-outsiders-2024/ew--emlyn-travis.json",
-    "the-outsiders-2024/interestedbystander-com--unknown.json",
-    "the-outsiders-2024/nyp--johnny-oleksinski.json",
-    "the-outsiders-2024/nypost--johnny-oleksinki.json",
-    "the-outsiders-2024/nypost--johnny-oleksinski.json",
-    "the-outsiders-2024/rollstone--brittany-spanos.json",
-    "the-outsiders-2024/talkinbway--walter-bilderback.json",
-    "the-outsiders-2024/the-washington-post--elisabeth-vincentelli.json",
-    "the-outsiders-2024/thly--zachary-stewart.json",
-    "the-outsiders-2024/tman--david-gordon.json"
+    "chess-2025/interestedbystander-com--unknown.json",
+    "chess-2025/washingtonpost-com--unknown.json",
+    "chess-2025/wsj-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -389,8 +368,11 @@
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
       "hadestown-2019/showshowdown-blogspot-com--unknown.json",
-      "the-outsiders-2024/pagesonstages-wordpress-com--unknown.json",
-      "the-outsiders-2024/theaterscene-net--unknown.json"
+      "chess-2025/lightingandsoundamerica-com--unknown.json",
+      "chess-2025/newyorktheater-me--unknown.json",
+      "chess-2025/pagesonstages-com--unknown.json",
+      "chess-2025/theaterscene-net--unknown.json",
+      "chess-2025/theatrereviews-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -408,9 +390,7 @@
       "death-becomes-her-2024/ew--dalton-ross.json",
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
-      "hadestown-2019/timeout--adam-feldman.json",
-      "the-outsiders-2024/ew-com--unknown.json",
-      "the-outsiders-2024/timeout-ny--adam-feldman.json"
+      "hadestown-2019/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -432,9 +412,7 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json",
-      "the-outsiders-2024/talkinbroadway-com--unknown.json",
-      "the-outsiders-2024/timeout--adam-feldman.json"
+      "hadestown-2019/towleroad-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -577,12 +555,8 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "the-outsiders-2024/amny--matt-windman.json",
-      "the-outsiders-2024/deadline--greg-evans.json",
-      "the-outsiders-2024/newyorktheatreguide-com--unknown.json",
-      "the-outsiders-2024/theatermania--zachary-stewart.json",
-      "the-outsiders-2024/thewrap--robert-hofler.json",
-      "the-outsiders-2024/wsj--charles-isherwood.json"
+      "chess-2025/nypost-com--unknown.json",
+      "chess-2025/theaterscene-com--unknown.json"
     ]
   }
 }
