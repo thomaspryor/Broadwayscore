@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250605034935",
-  "archiveOrgUrl": "http://web.archive.org/web/20250605034935/https://www.talkinbroadway.com/page/world/HereLiesLove.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250605034935/https://www.talkinbroadway.com/page/world/HereLiesLove.html",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 92,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is, in a nutshell, a triumph of substance and style on all counts",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "By any measure, Here Lies Love is a perfectly crafted, thrilling production that should make audiences very happy indeed",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Arielle Jacobs, who steals the show",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses unqualified superlatives like 'triumph' and 'perfectly crafted, thrilling production' with no meaningful reservations about the theatrical experience itself.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:18.016Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 89,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

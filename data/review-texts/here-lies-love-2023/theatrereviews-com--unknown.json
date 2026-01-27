@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "ends_with_ellipsis"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 85,
+      "performances": 84,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "an immersive spectacle that is almost guaranteed to impress",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It may not be the best piece of traditional musical theater, but it scores very high on the entertainment level",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "What would best describe 'Here Lies Love' is a theatrical experience, which is both entertaining and enlightening",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer clearly recommends the show as entertaining and impressive despite acknowledging it's not traditional musical theater, with consistent praise for the innovative production and strong performances. | GPT-4o-mini: The review expresses strong enthusiasm for the production's immersive experience, music, and direction, indicating a clear recommendation despite acknowledging it may not fit traditional musical theater standards.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:18.582Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

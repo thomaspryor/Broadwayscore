@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 72.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 80,
+      "performances": 84,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "As I sat in the audience, I found myself genuinely having a good time. I enjoyed all of the performances, the cheesy humor, the intensity of Jennifer Simard's 'Toxic'",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This would be a great show to take a young girl to that isn't a familiar Disney story, and an incredible way to introduce a child to the types of issues frequently addressed in theatre",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Once Upon a One More Time made space for a musical that feels good to watch. It made space for the audience to show up and have fun, to not take themselves too seriously, to laugh and to smile, and then to leave",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoyed the show and makes multiple explicit recommendations about who should see it, praising the performances, design, and empowering message while acknowledging it's not profound. | GPT-4o-mini: The review expresses strong enjoyment and appreciation for the show's fun and empowering themes, leading to a clear recommendation despite some reservations about depth.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:33.181Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 80,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
