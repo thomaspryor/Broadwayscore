@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Transferring to Broadway after a well-received premiere at the Atlantic last summer, Kelli O’Hara and Brian d’Arcy James give astonishing voice to two lovers drowning in alcoholism. The subject matter is almost corrosively downbeat but, with its two leads at the top of their game, the one-act musical becomes a cathartic, deeply felt tonic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/days-of-wine-and-roses/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 85,
+      "performances": 90,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kelli O'Hara and Brian d'Arcy James give astonishing voice to two lovers drowning in alcoholism",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the one-act musical becomes a cathartic, deeply felt tonic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The predeterminism is a bit dreary, but Lucas' book ably creates moments of tenderness",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances and music with clear positive language like 'astonishing' and 'cathartic,' despite acknowledging the deliberately downbeat subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:10.140Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 68,
+      "performances": 80,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite virtuosic performances, this musical adaptation of the 1962 film about a pair of alcoholics feels like its subject matter is straining against its form",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there remains a fundamental mismatch between the subject matter and the medium",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The music and lyrics of the show deliver ample opportunities for O'Hara and James to thrill and there are moments where their virtuosic range adds to the tragic arc of the story",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges strong performances but fundamentally criticizes the musical form as ill-suited to the serious subject matter of alcoholism, creating a qualified mixed recommendation. | GPT-4o-mini: The review highlights strong performances and music but indicates significant issues with the adaptation's handling of serious themes, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:26.192Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
