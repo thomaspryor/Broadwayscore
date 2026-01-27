@@ -161,6 +161,14 @@ Important: Only report a review if you actually find one via web search. Do not 
  */
 async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
   return new Promise((resolve) => {
+    // Validate URL before making request
+    try {
+      new URL(searchUrl);
+    } catch (e) {
+      resolve({ found: false, error: `Invalid URL: ${searchUrl}` });
+      return;
+    }
+
     const req = https.get(searchUrl, { timeout: 15000 }, (res) => {
       if (res.statusCode === 200) {
         let data = '';
@@ -168,8 +176,20 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
         res.on('end', () => resolve({ found: true, html: data, finalUrl: searchUrl }));
       } else if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         // Check if redirect goes to homepage (not what we want)
-        const redirectUrl = res.headers.location;
-        if (redirectUrl.includes('/shows/all') || redirectUrl.endsWith('/shows')) {
+        let redirectUrl = res.headers.location;
+
+        // Handle relative redirects by making them absolute
+        if (redirectUrl.startsWith('/')) {
+          try {
+            const originalUrl = new URL(searchUrl);
+            redirectUrl = `${originalUrl.protocol}//${originalUrl.host}${redirectUrl}`;
+          } catch (e) {
+            resolve({ found: false, error: `Invalid redirect: ${redirectUrl}` });
+            return;
+          }
+        }
+
+        if (redirectUrl.includes('/shows/all') || redirectUrl.endsWith('/shows') || redirectUrl === '/') {
           // Redirected to homepage - this URL doesn't exist
           resolve({ found: false, redirectedToHomepage: true });
         } else if (maxRedirects > 0) {
