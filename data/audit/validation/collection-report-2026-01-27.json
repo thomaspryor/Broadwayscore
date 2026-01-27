@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T05:38:10.450Z",
+  "runDate": "2026-01-27T05:38:41.459Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "oh-mary-2024",
+    "showFilter": "the-outsiders-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 207,
-    "failed": 133,
+    "processed": 205,
+    "failed": 139,
     "skipped": 0,
-    "successRate": "60.9%"
+    "successRate": "59.6%"
   },
   "tierBreakdown": {
     "playwright": 22,
     "scrapingbee": 17,
-    "brightdata": 23,
-    "archive": 145
+    "brightdata": 22,
+    "archive": 144
   },
   "statistics": {
-    "tier1Attempts": 16,
+    "tier1Attempts": 20,
     "tier1Success": 0,
-    "tier2Attempts": 16,
+    "tier2Attempts": 20,
     "tier2Success": 0,
-    "tier3Attempts": 16,
-    "tier3Success": 2,
-    "tier4Attempts": 18,
-    "tier4Success": 1,
-    "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 20
+    "tier3Attempts": 20,
+    "tier3Success": 1,
+    "tier4Attempts": 22,
+    "tier4Success": 0,
+    "totalFailed": 19,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -239,9 +239,7 @@
     "cabaret-2024/wsj-com--unknown.json",
     "maybe-happy-ending-2024/observer--jesse-green.json",
     "maybe-happy-ending-2024/washington-post--naveen-kumar.json",
-    "oh-mary-2024/observer--david-cote.json",
-    "oh-mary-2024/timeout--adam-feldman.json",
-    "oh-mary-2024/wsj-com--unknown.json"
+    "the-outsiders-2024/timeout--adam-feldman.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -364,19 +362,25 @@
     "maybe-happy-ending-2024/tman--david-gordon.json",
     "maybe-happy-ending-2024/washpost--peter-marks.json",
     "maybe-happy-ending-2024/wsj--terry-teachout.json",
-    "oh-mary-2024/NYTG--austin-fimmano.json",
-    "oh-mary-2024/nyt--jesse-green.json",
-    "oh-mary-2024/thr--angie-han.json",
-    "oh-mary-2024/variety--aramide-tinubu.json",
-    "oh-mary-2024/vult--sara-holdren.json",
-    "oh-mary-2024/NYDN--chris-jones.json",
-    "oh-mary-2024/ew--christian-holub.json",
-    "oh-mary-2024/guardian--adrian-horton.json",
-    "oh-mary-2024/interested-bystander--cary-wong.json",
-    "oh-mary-2024/nyp--johnny-oleksinski.json",
-    "oh-mary-2024/tman--jesse-green.json",
-    "oh-mary-2024/usa-today--patrick-ryan.json",
-    "oh-mary-2024/washpost--peter-marks.json"
+    "the-outsiders-2024/THR--david-rooney.json",
+    "the-outsiders-2024/nyt--jesse-green.json",
+    "the-outsiders-2024/thr--angie-han.json",
+    "the-outsiders-2024/variety--jesse-green.json",
+    "the-outsiders-2024/vult--jesse-green.json",
+    "the-outsiders-2024/AP--mark-kennedy.json",
+    "the-outsiders-2024/NYDN--chris-jones.json",
+    "the-outsiders-2024/TDB--tim-teeman.json",
+    "the-outsiders-2024/WASHPOST--peter-marks.json",
+    "the-outsiders-2024/WRAP--robert-hofler.json",
+    "the-outsiders-2024/ew--emlyn-travis.json",
+    "the-outsiders-2024/interestedbystander-com--unknown.json",
+    "the-outsiders-2024/nyp--johnny-oleksinski.json",
+    "the-outsiders-2024/rollstone--brittany-spanos.json",
+    "the-outsiders-2024/talkinbway--walter-bilderback.json",
+    "the-outsiders-2024/the-washington-post--elisabeth-vincentelli.json",
+    "the-outsiders-2024/thly--zachary-stewart.json",
+    "the-outsiders-2024/tman--david-gordon.json",
+    "the-outsiders-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -444,8 +448,7 @@
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
       "maybe-happy-ending-2024/observer--jesse-green.json",
-      "oh-mary-2024/observer--david-cote.json",
-      "oh-mary-2024/timeout--adam-feldman.json"
+      "the-outsiders-2024/timeout--adam-feldman.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -591,8 +594,7 @@
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
       "cabaret-2024/wsj-com--unknown.json",
-      "maybe-happy-ending-2024/washington-post--naveen-kumar.json",
-      "oh-mary-2024/wsj-com--unknown.json"
+      "maybe-happy-ending-2024/washington-post--naveen-kumar.json"
     ]
   }
 }
