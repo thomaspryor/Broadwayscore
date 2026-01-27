@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 29,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241207175756",
-  "archiveOrgUrl": "http://web.archive.org/web/20241207175756/https://observer.com/2023/06/review-broadways-grey-house-raids-the-grave-for-horror-cliches/"
+  "archiveOrgUrl": "http://web.archive.org/web/20241207175756/https://observer.com/2023/06/review-broadways-grey-house-raids-the-grave-for-horror-cliches/",
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 20.5,
+      "high": 37.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": 53,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "Here, there's only the mounting dread that you're trapped in a pretentious trauma-drama using horror tropes to diminishing effect",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "audiences who pay for his pretentious pulp? Not so much",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the real star is the design team; their work is mysterious and spooky, and altogether ooky",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a scathing review of the script and concept while praising only the design elements, with language like 'pretentious pulp' and 'tedious' clearly indicating this is not recommended viewing. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the script and overall execution while only offering slight praise for the design and some performances.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:28.681Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": 25,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,63 @@
   "publishDate": "June 1, 2023",
   "fullText": "Holloway similarly uses elements of horror to dissect intergenerational cycles of male violence, and to interrogate the lengths to which women must go for protection and preservation. The play’s deployment of horror in attacking these themes, particularly its more surreal turns, is often highly effective in director Joe Mantello’s freaky, disquieting staging. Yet the play lands on a vague, sentimental conclusion that blunts its overall power.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": null,
+      "performances": null,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "often highly effective in director Joe Mantello's freaky, disquieting staging",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "lands on a vague, sentimental conclusion that blunts its overall power",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The play's deployment of horror in attacking these themes...is often highly effective",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review that praises the direction and thematic effectiveness but criticizes the play's weak conclusion, resulting in qualified appreciation rather than strong recommendation. | GPT-4o-mini: The review highlights effective elements in direction and thematic exploration but ultimately points out a significant flaw in the play's conclusion, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:58.959Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

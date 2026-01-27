@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Cottage tries to emphasize the fizz, but nobody remembered to shake the soda can beforehand. It’s full of explanations, light on mess",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/the-cottage/",
@@ -34,5 +34,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240828212653",
-  "archiveOrgUrl": "http://web.archive.org/web/20240828212653/https://www.vulture.com/2023/07/theater-review-cottage-broadway-farce.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20240828212653/https://www.vulture.com/2023/07/theater-review-cottage-broadway-farce.html",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 69,
+      "direction": 56
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not un-fun to guess at how everyone is related, but you'll never be wrong in your first assumptions. It's an enjoyable unraveling instead",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "The overlarge performances come along with the meta-self-consciousness of Rustin's script, and that's a problem",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Like a lot of The Cottage, it all fits together pleasantly and too neatly",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show 'pleasant' and 'enjoyable' but criticizes it as predictable, lacking tension, and too meta-conscious, suggesting a lukewarm experience that's neither particularly recommended nor panned. | GPT-4o-mini: The review presents a mixed perspective, highlighting some enjoyable performances but criticizing the script and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:53.713Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

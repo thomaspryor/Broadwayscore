@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "This new version adds another layer, exploring how our overreliance on technology can turn us into mindless sheep. It had me from start to finish, and it’s an amazing journey I’d love to take again.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-whos-tommy/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It had me from start to finish",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's an amazing journey I'd love to take again",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This new version adds another layer",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong enthusiasm with phrases like 'amazing journey' and desire to see it again, plus appreciation for the thematic depth, indicates clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and a desire to experience the show again, indicating a high recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:02.424Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

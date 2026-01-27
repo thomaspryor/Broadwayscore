@@ -10,8 +10,64 @@
   "bwwExcerpt": "With so many characters and so many themes, the work could feel overwhelming. But Cromer, as he has done so often, ensures the show flows smoothly and feels much shorter than its running time. However, neither the play, which can feel overwritten at times, nor the production is perfect. For example, Takeshi Kata’s set design is visually too spare for such a long show while Sarah Laux’s costumes feel uninspired. Still, we should be profoundly grateful that a work of such ambition, scope and impor",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": null,
+      "performances": null,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "ensures the show flows smoothly and feels much shorter than its running time",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "neither the play, which can feel overwritten at times, nor the production is perfect",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "we should be profoundly grateful that a work of such ambition, scope and impor",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is mixed with praise for direction keeping the show flowing but criticism of the overwritten script and production elements, ending on a positive note about the work's importance despite being cut off. | GPT-4o-mini: The review acknowledges both strengths and weaknesses, leading to a mixed recommendation with more positives than negatives overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:08.215Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "When it comes to horror, Broadway typically cedes turf to Hollywood, the occasional Martin McDonough play notwithstanding. There have been giant apes, operatic phantoms, and a misguided vampire or two without providing so much as a single genuine tingle. All of which makes the effort of Grey House so bold. A creepy mash-up of haunted house tropes, cabin in the woods traditions, ghosty kids, errant hatchets, screams, black-outs and the sort of Lynchian lounge music that drips with reverb and mena",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "deliver a savvy tale that might be likened to a dark, lonely lake on a moonless night – scary enough on the surface, scarier still when one ponders what's below the surface",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There are some stretches that start to feel dull or repetitive",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "such moments fade with the next scream",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the show's atmospheric depth and effectiveness despite acknowledging pacing issues, with the positive imagery and recovery from dull moments suggesting qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:35.782Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

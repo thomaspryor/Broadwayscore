@@ -7,7 +7,63 @@
   "publishDate": "April 22, 2024",
   "fullText": "Goold allows nothing to impede the forward progress of the plot — so why does it so often feel inert? Why does the story of who will lead the country with the largest stockpile of nuclear weapons feel so low stakes?",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "why does it so often feel inert?",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Why does the story of who will lead the country with the largest stockpile of nuclear weapons feel so low stakes?",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Goold allows nothing to impede the forward progress of the plot",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges competent direction but fundamentally criticizes the production for feeling 'inert' and 'low stakes' despite its momentous subject matter, indicating significant structural problems that undermine the theatrical experience. | GPT-4o-mini: The review expresses significant concerns about the plot's engagement and stakes, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:26.111Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

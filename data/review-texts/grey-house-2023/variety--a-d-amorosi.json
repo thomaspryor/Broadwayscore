@@ -7,7 +7,63 @@
   "publishDate": "June 1, 2023",
   "fullText": "The script can drag and the metaphors pile higher that Jenga blocks, but the oblique text of “Grey House” never lacks for intrigue and edge-of-your-seat fascination. And the show’s fine cast and creatives do their best to make it all less impenetrable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 73,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "The script can drag and the metaphors pile higher that Jenga blocks",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "never lacks for intrigue and edge-of-your-seat fascination",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the show's fine cast and creatives do their best to make it all less impenetrable",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review that praises the show's intrigue and cast while criticizing the script's pacing and overly complex metaphors, suggesting qualified interest. | GPT-4o-mini: The review acknowledges both intriguing elements and significant issues with the script, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:27.380Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

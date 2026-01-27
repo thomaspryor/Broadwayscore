@@ -7,7 +7,58 @@
   "publishDate": "November 13, 2023",
   "fullText": "The problem is that while “Harmony” is about a sextet of singers whose voices blend like milk and coffee, its elements do not similarly fuse into a cohesive and satisfying musical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 65,
+      "performances": 75,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "voices blend like milk and coffee",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "its elements do not similarly fuse into a cohesive and satisfying musical",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the musical's lack of cohesion despite praising the vocal performances, indicating fundamental structural problems that outweigh the positive elements. | GPT-4o-mini: The review indicates a clear dissatisfaction with the musical's cohesion and overall quality, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:24.956Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

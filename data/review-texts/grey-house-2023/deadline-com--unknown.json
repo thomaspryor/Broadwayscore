@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“...a savvy tale that might be likened to a dark, lonely lake on a moonless night – scary enough on the surface, scarier still when one ponders what’s below the surface. There are some stretches that start to feel dull or repetitive, possibly the result of confusion as to what, exactly, is going on, but such moments fade with the next scream.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251113170300",
-  "archiveOrgUrl": "http://web.archive.org/web/20251113170300/https://deadline.com/2023/06/grey-house-broadway-review-laurie-metcalf-tatiana-maslany-1235375962/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251113170300/https://deadline.com/2023/06/grey-house-broadway-review-laurie-metcalf-tatiana-maslany-1235375962/",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 85,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "The cast is excellent. Metcalf scores another fine collaboration with Mantello",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Grey House shows him knocking on all the right doors",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There are some stretches that start to feel dull or repetitive, possibly the result of confusion as to what, exactly, is going on",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is predominantly positive with extensive praise for performances, direction, and technical elements, though it acknowledges some pacing issues and narrative confusion that prevent it from being a rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:04.679Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "So, fine, it’s not for me. The cast is clearly having a good time – though only Ethan Slater, swapping through multiple characters, as well as Kritzer, Walker, and especially Killam tap into the all-out comedy the work requires. And the audience? Well, their holy grail was promised and delivered, without much work to obtain it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/spamalot/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 40,
+      "performances": 68,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "So, fine, it's not for me",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The music...can be described as first-draft, baritonal, and Hasty Puddingsesque. Nothing offensive or inventive about score",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The cast is clearly having a good time – though only Ethan Slater...as well as Kritzer, Walker, and especially Killam tap into the all-out comedy the work requires",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws in the material (dated humor, weak music, unchanged book from 2005) while acknowledging some strong performances and audience enjoyment, but ultimately cannot recommend the show. | GPT-4o-mini: The review presents a mixed perspective, acknowledging strong performances while criticizing the outdated material and lack of engagement with contemporary themes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:44.809Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

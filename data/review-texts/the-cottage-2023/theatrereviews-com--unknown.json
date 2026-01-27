@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -37,5 +37,61 @@
     "ends_with_ellipsis"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 85,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a production that succeeds in its mission, solely to entertain and treat the audience to some lighthearted laughter",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The remarkable cast outshines the book showcasing their impeccable comedic timing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It makes for a great summer evening at the theatre, where you can sit back, relax, and enjoy some mindless humor",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging significant flaws in the script ('shortcomings of the book', 'low brow humor gets a bit too broad'), the critic clearly recommends the show as entertaining summer theater with exceptional performances and skillful direction that overcome the material's weaknesses. | GPT-4o-mini: The review expresses strong praise for the performances and direction, while acknowledging some shortcomings in the script, leading to a positive overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:55.070Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

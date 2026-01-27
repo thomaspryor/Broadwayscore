@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But the audience’s three-camera sit-com chuckle does reveal this “Vanya”’s chief shortcoming straightaway. While the production has got the jokes down pat, it is quite a bit shakier when it comes to the pathos and hardship that spring from them.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/uncle-vanya-bway/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241003164521",
-  "archiveOrgUrl": "http://web.archive.org/web/20241003164521/https://nypost.com/2024/04/24/entertainment/uncle-vanya-review-steve-carells-broadway-play-is-funny-not-feeling/"
+  "archiveOrgUrl": "http://web.archive.org/web/20241003164521/https://nypost.com/2024/04/24/entertainment/uncle-vanya-review-steve-carells-broadway-play-is-funny-not-feeling/",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 72,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "So much is individually right about Lincoln Center's revival of 'Uncle Vanya.' But, like these mis-matched characters who are always at each other's throats, they just don't come together.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "This half-there staging, on the other hand, has us in stitches in the first half and then exhausted after intermission when the drama revs up.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "His is the revival's finest performance, with Carell, whose face conceals an underlying darkness, in a close second.",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges individual strengths in performances and humor but criticizes the production's inability to achieve Chekhov's essential balance of comedy and pathos, with the final line explicitly stating the elements 'just don't come together.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:22.188Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

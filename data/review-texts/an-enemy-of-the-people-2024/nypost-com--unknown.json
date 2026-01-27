@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250605190117/https://nypost.com/2024/03/18/entertainment/an-enemy-of-the-people-review-jeremy-strong-and-michael-imperioli-duke-it-out-on-broadway/",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 85,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "Excellent performances like these are all this play needs to be forceful and pulse-pounding",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Strong is surrounded by great actors",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "nearly bungles it by serving the audience free shots of Linie Aquavit between the first and second halves from a hopping bar onstage",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite criticizing the director's gimmicky intermission choices, the reviewer consistently praises the 'excellent performances' and calls the revival 'compelling,' indicating a clear positive recommendation anchored by strong acting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:59.434Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

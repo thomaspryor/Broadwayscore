@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 55,
+      "music": 35,
+      "performances": 85,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a brave, honest effort, but, if anything, it is too sober for its own good.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Some very gifted people have applied themselves to the task of making a musical out of Days and Wine and Roses but somehow the material proves resistant.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Greif, of course, gets impeccable work from his stars.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges strong performances but fundamentally questions whether this material should be a musical at all, citing weak songs, structural problems, and concluding it's 'too sober for its own good' despite being a 'brave effort.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:04.060Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

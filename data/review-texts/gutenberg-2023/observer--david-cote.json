@@ -10,8 +10,66 @@
   "bwwExcerpt": "Scenic designer Scott Pask simulates a disorganized backstage area with tables, technical gear and touches that suggest a Nutley yard sale (I see he bought the Star Wars bedsheets from my childhood on eBay) and costume designer Emily Rebholz gives the boys the perfect level of dweeby élan, down to Rannells’ tucked-in sweater. I don’t know if the bazillion trucker hats are sets, costumes, props or what, but give someone a Tony. Having staged much costlier and busier spectacles, it’s a treat to se",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "low",
+    "range": {
+      "low": 50.5,
+      "high": 85.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "give someone a Tony",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's a treat to se",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the perfect level of dweeby élan",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt focuses entirely on positive praise for design elements (scenic, costume) with enthusiastic language, but it's clearly incomplete and provides no sense of the overall show quality or recommendation. | GPT-4o-mini: The review expresses strong appreciation for the design elements and overall production, indicating a clear positive recommendation. | Note: Models differed by 25 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:57.789Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 80,
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 55, OpenAI: 80)"
+    ]
+  }
 }

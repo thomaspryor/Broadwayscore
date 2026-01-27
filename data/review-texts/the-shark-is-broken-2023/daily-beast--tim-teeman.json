@@ -7,7 +7,63 @@
   "publishDate": "August 10, 2023",
   "fullText": "But what they don’t know is that Jaws will go on to become the cultural totem we know it as today—and it is in the humorous and profound gap of past and present, known and unknown, and ignorance and wisdom that The Shark Is Broken wittily excels not just as a clever time capsule, but as an examination of male bonding and competitiveness, ego, frailty, fame, and film-making.\r\n\r\nWhich is to say: you don’t miss the shark for one second.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Shark Is Broken wittily excels not just as a clever time capsule, but as an examination of male bonding and competitiveness, ego, frailty, fame, and film-making",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you don't miss the shark for one second",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "humorous and profound gap of past and present, known and unknown, and ignorance and wisdom",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the play's wit, intelligence, and thematic depth, concluding with a strong endorsement that audience engagement never wavers despite the absence of the titular shark. | GPT-4o-mini: The review expresses strong appreciation for the show's cleverness and thematic depth, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:29.381Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

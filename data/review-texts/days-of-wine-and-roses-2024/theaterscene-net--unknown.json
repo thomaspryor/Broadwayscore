@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 29,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 20.5,
+      "high": 37.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": 33,
+      "performances": 58,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "If there's a saving grace to enduring Days of Wine and Roses as a musical, it's the opportunity to remind others of its much superior source material",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the creators of the shiny new stage adaptation have prioritized style over substance, giving Brian d'Arcy James and Kelli O'Hara...plenty of chances to look and sound fantastic but not a single moment to perform convincingly",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "it's much too beautiful",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer frames the musical as an ordeal to 'endure,' systematically dismantles the adaptation choices, and argues the creators fundamentally misunderstood the source material's core darkness. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the adaptation for lacking depth and substance, while acknowledging some quality in performances but ultimately recommending against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:17:40.208Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": 25,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

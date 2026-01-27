@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"It’s an easily digestible version of history\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 75,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Morgan's Wikipedia-esque play does its best to track the perilous tango between oligarchy and politics, but it's built around the assumption that it's amusing and ironic",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Rupert Goold enlivens a mediocre play into a fairly entertaining spectacle of lights and projection",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Rupert Goold's electric direction elevates the material to make history feel like a blur of lights and sound",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the script as oversimplified and problematic while praising Goold's direction for elevating mediocre material into entertaining spectacle, resulting in a qualified mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:55.318Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

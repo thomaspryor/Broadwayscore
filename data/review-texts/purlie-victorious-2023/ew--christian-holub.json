@@ -10,8 +10,64 @@
   "bwwExcerpt": "Along with the revival of The Sign in Sidney Brustein's Window earlier this year, this second-ever Broadway production of Purlie Victorious makes you wonder how many other vital works by Black playwrights are sitting somewhere, underused and underseen, waiting to be brought up under the bright lights where they belong.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "vital works by Black playwrights",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "waiting to be brought up under the bright lights where they belong",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes you wonder how many other vital works by Black playwrights are sitting somewhere, underused and underseen",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic frames this production as part of important theatrical work that deserves to be seen on Broadway, suggesting strong cultural value and implicit recommendation despite lacking specific production details. | GPT-4o-mini: The review suggests a positive sentiment towards the revival of a vital work but lacks strong enthusiasm or specific praise for the production itself.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:16.849Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

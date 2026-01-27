@@ -7,7 +7,63 @@
   "publishDate": "November 13, 2023",
   "fullText": "Wherever it can — in the plot, in the characterizations and in the sometimes bombastic orchestrations for a heavily synthed and amped orchestra of nine — “Harmony” wields a truncheon instead of the needle it needs. It might have helped if the supposedly comic numbers were actually funny, but neither Manilow and Sussman nor Carlyle excel at that here.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 35,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 35,
+    "confidence": "medium",
+    "range": {
+      "low": 30,
+      "high": 40
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 30,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "wields a truncheon instead of the needle it needs",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the supposedly comic numbers were actually funny",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "bombastic orchestrations for a heavily synthed and amped orchestra",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws in the show's approach, criticizing it as heavy-handed across plot, characterizations, and orchestrations, with failed comedy and poor execution by the creative team.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:03.206Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

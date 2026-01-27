@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“What is too much for the world is way too much for the play. And the play, for all its urgency, is already way too much. Running just over three hours, ‘Prayer for the French Republic,’...is still not long enough to do justice to the multiple histories it wants to tell.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250829103908",
-  "archiveOrgUrl": "http://web.archive.org/web/20250829103908/https://www.nytimes.com/2024/01/09/theater/prayer-for-the-french-republic-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250829103908/https://www.nytimes.com/2024/01/09/theater/prayer-for-the-french-republic-review.html",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 78,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "remains mostly riveting is the result of the richness of Harmon's novelistic detail — and the exceptional skill of the principal actors in realizing it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the play, for all its urgency, is already way too much. Running just over three hours... is still not long enough to do justice to the multiple histories it wants to tell",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the arguments have stripped their gears completely, and the play ends in sentimental exhaustion",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising exceptional performances and production values, the critic finds fundamental flaws in the overlong, structurally confused script that ultimately undermine the theatrical experience. | GPT-4o-mini: The review expresses a mix of appreciation for the performances and production while highlighting significant issues with the script and pacing, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:03.888Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

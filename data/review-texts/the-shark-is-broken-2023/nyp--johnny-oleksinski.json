@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The three-man show about the making of 'Jaws' is funny, profane and surprisingly moving as it captures the camaraderie and tension during the film's troubled production.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 80,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "funny, profane and surprisingly moving",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "captures the camaraderie and tension during the film's troubled production",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "captures the camaraderie and tension",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses multiple positive descriptors ('funny', 'surprisingly moving') and praises the show's ability to capture both emotion and the source material's essence, indicating a clear positive recommendation despite being brief. | GPT-4o-mini: The review highlights the show's humor and emotional depth, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:52.590Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

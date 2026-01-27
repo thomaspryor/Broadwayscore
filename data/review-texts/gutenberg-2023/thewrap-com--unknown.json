@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250918033019",
-  "archiveOrgUrl": "http://web.archive.org/web/20250918033019/https://www.thewrap.com/gutenberg-the-musical-broadway-review-josh-gad-andrew-rannells/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250918033019/https://www.thewrap.com/gutenberg-the-musical-broadway-review-josh-gad-andrew-rannells/",
+  "llmScore": {
+    "score": 25,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 15,
+      "music": 15,
+      "performances": 70,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "they're asking us to be entertained by a two-hander staging of an absolutely dreadful musical",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "the songs and the book for this parody of a musical within a musical that is 'Gutenberg!' are witless and relentlessly repetitive",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Josh Gad and Andrew Rannells bring a great Oscar-and-Felix chemistry to the stage. They also work tirelessly and exert their considerable charm",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic calls the musical 'absolutely dreadful' with 'witless and relentlessly repetitive' songs, praising only the performers' efforts despite the poor material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:20.575Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

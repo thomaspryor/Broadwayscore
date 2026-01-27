@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The laughs are there, thanks to a comedically fine-tuned cast, but, befitting a bed-hopping plot, a tender, surprising altruism keeps them on your face.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-cottage/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 69,
+      "music": null,
+      "performances": 79,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "a well-crafted comedy with simple, sturdy laughs",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The laughs are there, thanks to a comedically fine-tuned cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Everyone has a grand entrance and exit in this silly, straight-forward comedy",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the performances and craft while acknowledging the play's limitations, presenting it as a solid, enjoyable comedy worth seeing despite not being groundbreaking. | GPT-4o-mini: The review expresses a clear recommendation for the performances and humor, though it notes some limitations in the plot, leading to a positive overall sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:48.889Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

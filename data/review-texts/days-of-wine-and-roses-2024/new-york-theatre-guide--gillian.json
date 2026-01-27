@@ -9,9 +9,57 @@
   "isFullReview": false,
   "dtliExcerpt": "Since its Off-Broadway premiere in 2023, the Days of Wine and Roses musical, featuring largely the same company, has aged like, well, wine.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/days-of-wine-and-roses/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 69,
+    "confidence": "low",
+    "range": {
+      "low": 55,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has aged like, well, wine",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The wine metaphor strongly suggests improvement and maturation since the Off-Broadway run, indicating a positive recommendation despite the extremely brief excerpt. | GPT-4o-mini: The review suggests a neutral sentiment about the musical's development since its premiere, indicating a mixed-positive recommendation. | Note: Models differed by 18 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:15.258Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 60,
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 18 points (Claude: 78, OpenAI: 60)"
+    ]
+  }
 }

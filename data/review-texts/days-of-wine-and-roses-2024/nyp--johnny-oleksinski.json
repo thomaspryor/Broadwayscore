@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway musical 'Days of Wine and Roses' is well-made and well-acted, but watching two people slowly kill themselves with alcohol for 2½ hours is about as fun as it sounds.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 73,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "well-made and well-acted",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "watching two people slowly kill themselves with alcohol for 2½ hours is about as fun as it sounds",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "watching two people slowly kill themselves with alcohol",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging technical competence and good performances, the critic finds the experience fundamentally unenjoyable and tedious, making it hard to recommend. | GPT-4o-mini: While the production is noted for its quality in acting, the overall experience is described as unenjoyable, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:40.982Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

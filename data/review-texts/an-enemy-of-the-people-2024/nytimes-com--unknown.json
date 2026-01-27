@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...a bitter satire of local politics that soon reveals itself as a slow-boil tragedy\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251105051142",
-  "archiveOrgUrl": "http://web.archive.org/web/20251105051142/https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251105051142/https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sam Gold's crackling and persuasive production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Everyone in the uniformly excellent cast is complicated in that way",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Strong must have modeled his spectacularly accurate yet non-showy performance",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the production as 'crackling and persuasive,' calls the cast 'uniformly excellent,' and describes Strong's performance as 'spectacularly accurate,' with detailed appreciation for Herzog's adaptation and Gold's direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:52.111Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250320123038",
-  "archiveOrgUrl": "http://web.archive.org/web/20250320123038/https://theaterpizzazz.com/once-upon-a-one-more-time-who-controls-the-narrative/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250320123038/https://theaterpizzazz.com/once-upon-a-one-more-time-who-controls-the-narrative/",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 85,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "the high-octane production is an eye-popping extravaganza that shimmers with delight",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Final kudos go to the creative teams, the fine ensemble work and outstanding performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Is the concept tired? It depends",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The reviewer consistently praises the production values, performances, and entertainment value while acknowledging some conceptual limitations, resulting in a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:40.224Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "What’s astonishing about this show, though — aside from the central performances, which are superb, and Guettel’s anxious, spiky, sumptuous score, which grabs hold of us and doesn’t let go — is the way its devastating chic snuggles right up to catastrophic self-destruction.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/days-of-wine-and-roses/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250724233526",
-  "archiveOrgUrl": "http://web.archive.org/web/20250724233526/https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250724233526/https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html",
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 74,
+      "music": 89,
+      "performances": 91,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "the central performances, which are superb, and Guettel's anxious, spiky, sumptuous score, which grabs hold of us and doesn't let go",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Deeper, wiser and warmer than it was in its premiere at Off Broadway's Atlantic Theater Company last year",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the opening scene is still perplexing, too sparely written and staged to situate the audience properly",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite some structural criticisms, the critic praises the 'superb' performances, 'sumptuous' score, and notes significant improvement from the Off-Broadway version, indicating strong overall recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and music, with only minor reservations about the script, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:21.119Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

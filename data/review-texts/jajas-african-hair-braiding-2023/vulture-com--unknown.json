@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Bioh has written a colorful, tactile, and caring work, letting us in on both the beauty of the braiding process...and the intense labor of it”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250112082623",
-  "archiveOrgUrl": "http://web.archive.org/web/20250112082623/https://www.vulture.com/2023/10/theater-review-jajas-african-hair-braiding.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250112082623/https://www.vulture.com/2023/10/theater-review-jajas-african-hair-braiding.html",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": null,
+      "performances": 89,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "waves of glee roll through the audience on the regular. People are cackling, downright screaming with delight",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it's bright, generous, and forceful, and those currents carry the day",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Jaja's can sometimes veer a little formulaic or presentational",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic celebrates the audience's joyful recognition and connection to the material, praises the ensemble performances extensively, and notes only minor structural concerns while emphasizing the show's generous spirit and cultural authenticity. | GPT-4o-mini: The review highlights strong performances and a humorous, engaging script, with only minor reservations about formulaic elements.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:01.873Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

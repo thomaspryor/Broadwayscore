@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 49,
+    "confidence": "high",
+    "range": {
+      "low": 43,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 65,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "I had difficulty getting into this production. It felt to me like watching a sitcom being filmed.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "theatre was the wrong method of delivering that content",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The show's most brilliant moment was Danny DeVito, alone on stage, playing a game of Sorry with himself",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising DeVito's performance and acknowledging the clever concept, the critic fundamentally argues the material doesn't work as theater and had difficulty engaging with the production. | GPT-4o-mini: The review expresses significant reservations about the script and character development while acknowledging some strong performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:32.275Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 50,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

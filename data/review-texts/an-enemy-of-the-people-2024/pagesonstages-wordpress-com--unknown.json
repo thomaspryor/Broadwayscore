@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 89,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "This cast was fully committed in a way that was commendable and meaningful",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The stunt with dumping the ice on Dr. Stockmann and then using the ice to represent rocks breaking his window was brilliant",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the five minute interval where the audience was give complimentary liquor and some audience members were taken on stage as part of the drinking debacle felt like a very abrupt, nonsensical transition",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite some staging criticisms, the reviewer is deeply engaged with the production's thematic relevance, praises the committed performances and clever staging moments, and finds the overall experience meaningful and impactful. | GPT-4o-mini: The review expresses strong praise for the performances and the thematic relevance of the production, with only minor criticisms regarding the pacing and lighting choices.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:01.755Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

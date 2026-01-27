@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "First staged over 140 years ago, Ibsen’s play feels eerily prescient when performed here and now on Broadway, in an era where truth is constantly discarded for “alternative facts” and more conveniently advantageous narratives. In the hands of writer Amy Herzog, director Sam Gold, and a committed cast, it also is a striking portrait of oppositional forces both strategically manipulative and stunningly violent.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -43,5 +43,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "they will not be disappointed. The actors are tremendous and completely lose themselves in the parts",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a striking portrait of oppositional forces both strategically manipulative and stunningly violent",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A–",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The A- grade combined with strong praise for performances, direction, and thematic relevance, plus explicit statement that audiences 'will not be disappointed' signals clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:04.315Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

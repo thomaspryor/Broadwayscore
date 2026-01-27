@@ -7,9 +7,67 @@
   "publishDate": "June 1, 2023",
   "fullText": "“Grey House,” at the Lyceum Theater, is certainly an in-your-face assault, more in the manner of John Carpenter movies than anything seen onstage since the age of melodrama. It is so expertly assembled from spare parts by the playwright Levi Holloway and the director Joe Mantello that you may not notice, between the jump scares and the shivery pauses, how little it has on its mind. Something about cycles of abuse? The legacy of misogyny? Sure, let’s go with that.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "dtliThumb": "Meh",
   "source": "dtli",
   "bwwExcerpt": "“Grey House,” at the Lyceum Theater, is certainly an in-your-face assault, more in the manner of John Carpenter movies than anything seen onstage since the age of melodrama. It is so expertly assembled from spare parts by the playwright Levi Holloway and the director Joe Mantello that you may not notice, between the jump scares and the shivery pauses, how little it has on its mind. Something about cycles of abuse? The legacy of misogyny? Sure, let’s go with that. A. D. Amorosi, Variety: As Max, ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
+  "llmScore": {
+    "score": 54,
+    "confidence": "low",
+    "range": {
+      "low": 40.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": null,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "so expertly assembled from spare parts by the playwright Levi Holloway and the director Joe Mantello",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "how little it has on its mind",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Something about cycles of abuse? The legacy of misogyny? Sure, let's go with that.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the technical execution and craft while dismissively critiquing the shallow content and themes, resulting in a mixed recommendation that leans slightly positive due to acknowledged expertise. | GPT-4o-mini: The review expresses significant criticism of the show's depth and substance, indicating a clear negative recommendation. | Note: Models differed by 17 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:13.575Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 17 points (Claude: 62, OpenAI: 45)"
+    ]
+  }
 }

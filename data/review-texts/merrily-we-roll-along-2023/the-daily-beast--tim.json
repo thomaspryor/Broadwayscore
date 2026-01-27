@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The joy of the show is watching Radcliffe, Mendez, and Groff together, because they are quite visibly having the time of their performing lives.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/merrily-we-roll-along-bway/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 93,
+      "performances": 89,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's mainly still just as good it was in its luminous downtown incarnation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This show, it hits you in the gut every second",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "More general shortcomings of the book swing into view on Broadway far more than downtown",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant book criticisms, the critic consistently praises the performances, music, and overall emotional impact, recommending it as a deeply moving theatrical experience. | GPT-4o-mini: The review expresses strong praise for the performances and music while acknowledging some narrative shortcomings, leading to a solid positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:02.110Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250624163214",
-  "archiveOrgUrl": "http://web.archive.org/web/20250624163214/https://www.theatermania.com/news/review-music-and-passion-and-bourgeoning-fascism-in-barry-manilows-harmony_1720947/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250624163214/https://www.theatermania.com/news/review-music-and-passion-and-bourgeoning-fascism-in-barry-manilows-harmony_1720947/",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": 70,
+      "performances": 81,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "undeniably moving and extremely powerful, the pros of Harmony generally outweigh the cons",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's not as profound as everyone involved clearly thinks it is, but it'll give you the good cathartic cry you've been waiting for",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Chief among the problems is how the writers bog the show down in the kind of bombastic schmaltz that pervaded a lot of shows from the British Mega-Musical generation",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed-positive review that acknowledges significant flaws in the writing and tone but ultimately concludes the show's emotional power and strong performances make it worth seeing despite its problems. | GPT-4o-mini: The review presents a generally positive view of the show, highlighting strong performances and emotional impact while acknowledging significant flaws in the writing and execution.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:32.426Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250529032722",
-  "archiveOrgUrl": "http://web.archive.org/web/20250529032722/https://www.talkinbroadway.com/page/world/Patriots.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250529032722/https://www.talkinbroadway.com/page/world/Patriots.html",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "The tug-of-war between them is endlessly fascinating and is more than enough reason to check out Patriots",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you will find yourself mesmerized by the manic performance by Michael Stuhlbarg",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there are excellent performances all around",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic provides clear praise for the performances, direction, and central dramatic conflict, explicitly stating the show is 'more than enough reason to check out Patriots' despite some thematic reservations. | GPT-4o-mini: The review expresses strong praise for the performances and direction, particularly highlighting the engaging dynamic between the lead characters, leading to a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:09.497Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

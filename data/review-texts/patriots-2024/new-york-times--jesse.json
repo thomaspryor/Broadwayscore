@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“In the West you have no idea.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/patriots/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250509192252",
-  "archiveOrgUrl": "http://web.archive.org/web/20250509192252/https://www.nytimes.com/2024/04/22/theater/patriots-review-putin-peter-morgan.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250509192252/https://www.nytimes.com/2024/04/22/theater/patriots-review-putin-peter-morgan.html",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 85,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Both lead actors are superb, bringing physical, gestural and thus emotional life to characters who might seem, from the outside, to have no insides worth exploring",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it's a bit cheesy, making its sometimes baggy drama (it could reasonably have been half or twice as long) from a highly tendentious selection of facts",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "it provides, also like 'The Crown,' the opportunity for some very enjoyable performances",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Green praises the performances as 'superb' and finds the production 'entertaining,' but criticizes the script as 'cheesy' and 'baggy' with questionable historical accuracy - overall a qualified positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:33.810Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

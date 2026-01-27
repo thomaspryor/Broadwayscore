@@ -10,8 +10,64 @@
   "bwwExcerpt": "Pay attention to those loud, annoying cicadas – they seem to have a story to tell. At least they do in Branden Jacobs-Jenkins superb, marvelously performed Appropriate, the Second Stage production opening tonight at the Helen Hayes Theater with one of the best casts – headed by an astonishing Sarah Paulson – on Broadway. A blistering family drama directed by Lila Neugebauer (easily matching her exemplary work in 2018’s The Waverly Gallery), Appropriate is a wicked cacophony of nerve-wrenching my",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "A blistering family drama directed by Lila Neugebauer (easily matching her exemplary work in 2018's The Waverly Gallery)",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "wicked cacophony of nerve-wrenching mystery, old resentments and laugh-out-loud comedy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the latter all the more remarkable coming, as it does, within a story about the darkest horrors of America's legacies",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language throughout with 'blistering,' 'exemplary,' and 'remarkable,' praising both direction and the play's ability to blend comedy with serious themes, with no negative caveats. | GPT-4o-mini: The review expresses strong enthusiasm for the direction and the blend of drama and comedy, indicating a must-see production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:02.463Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

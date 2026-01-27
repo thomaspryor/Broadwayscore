@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "I wish I had been there (alas, I attended the following night), as it would have been an exciting addition to this uneven production of a timely work.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251107033836",
-  "archiveOrgUrl": "http://web.archive.org/web/20251107033836/https://www.amny.com/entertainment/broadway/review-enemy-of-the-people-broadway/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251107033836/https://www.amny.com/entertainment/broadway/review-enemy-of-the-people-broadway/",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 68,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "this uneven production of a timely work",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The production truly works best in the town meeting sequence",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Much of the acting feels stiff and stodgy",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic calls it an 'uneven production' with significant design and directional flaws but praises the material's relevance and highlights one particularly effective sequence. | GPT-4o-mini: The review presents a mixed view, highlighting strong moments in the production while also pointing out significant flaws in direction and acting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:42.468Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Clutter – physical, emotional – is the subject of Theresa Rebeck’s new Broadway play ‘I Need That’, a comedy-drama that stars Danny DeVito works mightily and with increasing futility to stuff with laughs and meaning.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20231219220553",
-  "archiveOrgUrl": "http://web.archive.org/web/20231219220553/https://deadline.com/2023/11/danny-devito-i-need-that-broadway-review-1235589573/"
+  "archiveOrgUrl": "http://web.archive.org/web/20231219220553/https://deadline.com/2023/11/danny-devito-i-need-that-broadway-review-1235589573/",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 65,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "a decent enough excuse to see the great comedian of Taxi and It's Always Sunny In Philadelphia live and in person",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "takes a thin premise – a hoarder (Danny DeVito) lives amidst a house-full of life's detritus in an unwinnable attempt to hold onto the past – and crams it with repetition, filler and character developments that are either predictable or unconvincing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it's tough not to wish everyone – the characters and the actors portraying them – well. They all seem like very nice people, deserving of long, uncluttered lives away from things that can't come unstuck",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the play fundamentally flawed with weak writing and repetitive dialogue, praising only Danny DeVito's performance while suggesting the material is beneath the talented cast.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:12.849Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

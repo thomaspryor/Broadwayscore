@@ -10,8 +10,64 @@
   "bwwExcerpt": "Stories of horror are fantastical, but need to follow their own inner logic once the parameters of that fantasy have been established. One game played in “Grey House” dictates that a mother will die if the “it” person tells a lie. Well, many lies are told and Raleigh, while tortured, somehow survives. If she’s the kids’ mother, why doesn’t she die? If she isn’t their mother, why is she tortured by these lies? Raleigh survives because if she didn’t, “Grey House” would end well before Holloway del",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stories of horror are fantastical, but need to follow their own inner logic once the parameters of that fantasy have been established",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Well, many lies are told and Raleigh, while tortured, somehow survives. If she's the kids' mother, why doesn't she die?",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Raleigh survives because if she didn't, 'Grey House' would end well before Holloway del",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt reveals significant criticism of the play's internal logic and plot holes, suggesting structural problems with the script, though the review appears incomplete. | GPT-4o-mini: The review raises significant questions about the logic and coherence of the story, indicating a lack of recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:16:03.380Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

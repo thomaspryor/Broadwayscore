@@ -10,8 +10,64 @@
   "bwwExcerpt": "That this Manhattan Theater Club production, directed by David Cromer, remains mostly riveting is the result of the richness of Harmon’s novelistic detail — and the exceptional skill of the principal actors in realizing it.     Daniel D'Addario, Variety: That’s not to say that “Prayer for the French Republic” should have been about something other than the story it tells. But it doesn’t tell it in a compelling or nuanced manner — despite Harmon having set himself up to succeed with a flashback s",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "high",
+    "range": {
+      "low": 50,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 80,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "remains mostly riveting is the result of the richness of Harmon's novelistic detail — and the exceptional skill of the principal actors",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it doesn't tell it in a compelling or nuanced manner",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "remains mostly riveting is the result of the richness of Harmon’s novelistic detail",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed signals with praise for performances and direction keeping it 'riveting' but criticism of the storytelling as lacking compelling narrative execution. | GPT-4o-mini: The review highlights strong performances but critiques the script's lack of compelling storytelling, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:55.488Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 55,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

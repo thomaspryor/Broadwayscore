@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -35,5 +35,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 261 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 84,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harmon meticulously architects characters so personable and living-room spats so heightened that you'll question for a moment if you're not fighting with relatives in your own home",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "His script is ripe with smart, snappy language about the history of conflict and Jewish expulsion, but never condescends to its audience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "pitch-perfect Betsy Aidem",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the script's intelligence and emotional authenticity, plus specific commendation of performances, with sophisticated language analysis indicating clear positive recommendation despite being an excerpt. | GPT-4o-mini: The review highlights strong character development and a well-crafted script while maintaining a positive tone throughout, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:57.301Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Paula Vogel may be playwriting royalty, but if her latest work “Mother Play” is any indication, she has not lost sight of the instruction in the first half of her job title: play. In this new, often funny mashup between a memory play and an apartment tragedy (Vogel calls it “a play in five evictions”), the dramatist turns her typically insightful lens on her own family.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/mother-play/",
@@ -36,5 +36,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 162 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 67.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "profound and humorous new American play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "turns her typically insightful lens on her own family",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "often funny mashup between a memory play and an apartment tragedy",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review shows clear appreciation for Vogel's writing craft and the play's humor and insight, but appears to be an incomplete excerpt that cuts off mid-review, limiting confidence in the full critical assessment. | GPT-4o-mini: The review expresses strong praise for Vogel's writing and the play's exploration of family dynamics, indicating a clear recommendation to see it. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:45.080Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 85,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

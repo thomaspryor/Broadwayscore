@@ -10,8 +10,64 @@
   "bwwExcerpt": "At times it seems like Vogel has been inspired by Tennessee Williams’ The Glass Menagerie. At other times—with that problematic mother losing composure during a series of revealing telephone calls, that ignored and emotionally damaged daughter, that son itching to leave home and go out into the dangerous world—it seems like Vogel is consciously giving us an updated version of what might or could have happened to those forlorn Wingfields had they, and Williams, existed 30 years later. In any even",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "seems like Vogel has been inspired by Tennessee Williams’ The Glass Menagerie",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "problematic mother losing composure during a series of revealing telephone calls",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "updated version of what might or could have happened",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review suggests an interesting premise but hints at issues with character development and emotional depth, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:46.001Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 60,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
