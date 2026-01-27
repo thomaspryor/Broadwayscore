@@ -10,8 +10,64 @@
   "bwwExcerpt": "It’s probably a good thing there’s no intermission in Days of Wine and Roses, the musical adaptation of Blake Edwards’s 1962 film. The harrowing and hugely captivating Broadway production wastes no time diving into the toll that alcoholism takes on married couple Kirsten and Joe Clay, and it’s doubtful any audience member would be inclined to pony up for a mid-show sippy cup of Chardonnay. Director Michael Greif’s production is shot through with heartache and hangovers, and worth all the squirmi",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "hugely captivating Broadway production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "worth all the squirmi",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "harrowing",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review uses strong positive language like 'hugely captivating' and explicitly states the production is 'worth' seeing, despite acknowledging its difficult subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:40.739Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

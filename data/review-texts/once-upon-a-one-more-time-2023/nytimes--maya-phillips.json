@@ -10,8 +10,64 @@
   "bwwExcerpt": "With its blatant messaging about female empowerment and revisionist approach, not unlike two recent Broadway musicals - \"Six\" and \"Diana,\" both of which recast famous women from history as self-possessed and self-reliant feminist icons - \"Once Upon a One More Time\" reflects the broad strokes of modern-day feminism but shies away from anything too hefty or complex. That includes the pink-pigtailed elephant in the room: Spears herself, who has documented what she has called years of exploitation i",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ONCE-UPON-A-ONE-MORE-TIME-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "reflects the broad strokes of modern-day feminism but shies away from anything too hefty or complex",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "blatant messaging about female empowerment and revisionist approach",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "blatant messaging about female empowerment",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses dismissive language about 'blatant messaging' and criticizes the show for avoiding complexity, suggesting a superficial treatment of important themes. | GPT-4o-mini: The review indicates a lack of depth and complexity in the show's themes, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:04.420Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

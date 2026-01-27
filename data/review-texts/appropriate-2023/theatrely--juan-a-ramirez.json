@@ -10,8 +10,61 @@
   "bwwExcerpt": "Appropriate is a masterwork the likes of which crop up a handful of times per generation.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "low",
+    "range": {
+      "low": 20.5,
+      "high": 95.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "spellbinding Second Stage Theatre production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "astonishing work of American fact and fiction",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This appears to be only an opening excerpt of a much longer review, containing exclusively positive language about both the play and production, making it impossible to determine the critic's full recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and praise for the production, indicating a must-see experience. | Note: Models differed by 65 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:50.811Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 90,
+    "scoreDelta": 65,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 65 points (Claude: 25, OpenAI: 90)"
+    ]
+  }
 }

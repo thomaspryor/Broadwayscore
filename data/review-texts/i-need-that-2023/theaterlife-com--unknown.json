@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "1/2"
+  "extractedRating": "1/2",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 57.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 82,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Its structure is essentially that of a situation, with material suitable for an hour-long one-act unconvincingly stretched to fill an extra 40 minutes or so",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "No doubt about it: this is the Danny DeVito show... a consistently enjoyable presence, his comical cantankerousness both funny and honest",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "If you're a theatrical hoarder, anxious to collect as many Broadway memories as you can, you'll need to add I Need That to your pile, if only for the chance to appreciate DeVito doing what he does best",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer gives 3.5/4 stars and offers a qualified recommendation based primarily on DeVito's performance, but criticizes the script's structural problems and padding, resulting in a mixed-positive assessment. | GPT-4o-mini: The review offers a clear recommendation to see the show primarily for DeVito's performance, despite some structural criticisms. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:26.161Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 75,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

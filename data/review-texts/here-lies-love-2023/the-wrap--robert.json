@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "No, “Here Lies Love” isn’t about Ferdinand or Imelda or even a bygone Philippines. It’s all about Alex Timbers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/here-lies-love-bway/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251108013844",
-  "archiveOrgUrl": "http://web.archive.org/web/20251108013844/https://www.thewrap.com/here-lies-love-broadway-review-david-byrne-musical/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251108013844/https://www.thewrap.com/here-lies-love-broadway-review-david-byrne-musical/",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 48,
+      "music": 55,
+      "performances": 83,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Alex Timbers' extraordinarily inventive direction of 'Here Lies Love' makes this musical worth seeing",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the overhaul warrants a trip to the Broadway Theatre",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The score is tuneful in a generic jingly-jangly sort of way, which ultimately becomes tiresome in its extreme repetition",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticisms of the music and story, the critic explicitly states the show is 'worth seeing' and 'warrants a trip' based on the extraordinary direction and production design. | GPT-4o-mini: While the direction and performances are highly praised, the repetitive score and lack of a strong book lead to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:36.648Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

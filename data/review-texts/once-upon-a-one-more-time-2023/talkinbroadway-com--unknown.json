@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250605035507",
-  "archiveOrgUrl": "http://web.archive.org/web/20250605035507/https://www.talkinbroadway.com/page/world/OnceUponaOneMoreTime.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250605035507/https://www.talkinbroadway.com/page/world/OnceUponaOneMoreTime.html",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 80,
+      "performances": 85,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "against all odds, Once Upon a One More Time...is a surprisingly tasty treat, both for the eyes and for the ears",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "has found a formula that might very well turn it into a major hit",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "what makes Once Upon a One More Time rise above your typical jukebox musical is a combination of outstanding talent and a genuine spirit of collaboration",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic expresses genuine surprise at how well the show works despite initial skepticism, praising the performances, direction, and creative team collaboration while predicting commercial success.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:47.885Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "“It’s hard to imagine what more one could make of an upbeat play about hoarding. The condition is not funny...In a disposable society, hostile to aging, in which anything or anyone no longer obviously useful belongs in the landfill, he believes in hanging on. His hoarding isn’t a condition, it’s a protest.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 63,
+    "confidence": "low",
+    "range": {
+      "low": 45.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's hard to imagine what more one could make of an upbeat play about hoarding",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "His hoarding isn't a condition, it's a protest",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The condition is not funny...",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses admiration for how well the play handles difficult subject matter, suggesting strong execution even if the excerpt is limited. | GPT-4o-mini: The review presents a mix of insights about the play's themes but lacks clear enthusiasm or strong recommendation. | Note: Models differed by 25 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:16.385Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 50,
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 75, OpenAI: 50)"
+    ]
+  }
 }

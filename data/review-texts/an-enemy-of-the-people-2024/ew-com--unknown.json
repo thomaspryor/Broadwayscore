@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -36,5 +36,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 92,
+      "direction": 86
+    },
+    "keyPhrases": [
+      {
+        "quote": "they will not be disappointed. The actors are tremendous and completely lose themselves in the parts",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A–",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Strong is captivating as the steadfast yet hopelessly naïve do-gooder, completely immersing himself so much in the role",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The A- grade combined with consistent praise for performances, direction, and the play's contemporary relevance indicates a clear positive recommendation despite no explicit 'must-see' language. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, indicating a must-see experience for audiences, particularly fans of the lead actors.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:18.447Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

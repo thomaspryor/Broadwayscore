@@ -7,7 +7,63 @@
   "publishDate": "March 28, 2024",
   "fullText": "With a superb cast headed by Broadway newcomer Ali Louis Bourzgui as Tommy, the “deaf, dumb and blind kid” – most of whatever language less-than-acceptable by today’s standards has been retained – and Alison Luff as his mom Mrs. Walker, Tommy feels less like a stick-to-what-works revival than a top-to-bottom reimagining. Nearly all of it works beautifully.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "superb cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Nearly all of it works beautifully",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "top-to-bottom reimagining",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for cast and overall production with the unqualified statement that 'nearly all of it works beautifully' indicates a clear positive recommendation despite being a brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:38.617Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

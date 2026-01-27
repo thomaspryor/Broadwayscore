@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Idle’s comic genius remains entirely evident here and he and Du Prez came up with the kind of brassy, swirling score that screamed Big Night Out On Broadway, even as it lampooned everything from scantily clad choruses to divas devolving in Act Two.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/spamalot/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 86,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "comic genius remains entirely evident",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "brassy, swirling score that screamed Big Night Out On Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Idle’s comic genius remains entirely evident here",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for Idle's talent and the musical score suggests positive recommendation, but excerpt is too brief to determine full critical stance. | GPT-4o-mini: The review highlights the comic genius and strong musical score, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:26.572Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

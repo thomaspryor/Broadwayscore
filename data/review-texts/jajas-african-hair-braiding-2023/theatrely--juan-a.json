@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Her Broadway debut, Jaja’s African Hair Braiding at MTC’s Friedman Theatre, presents the deluxe version of all her gifts, in a lively production cheerfully directed by Whitney White as a hangout you never want to leave.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/jajas-african-hair-braiding/",
@@ -35,5 +35,61 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 89,
+      "direction": 86
+    },
+    "keyPhrases": [
+      {
+        "quote": "presents the deluxe version of all her gifts, in a lively production cheerfully directed by Whitney White as a hangout you never want to leave",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Through tensions and extensions, Bioh's day-in-the-life play never loses its comedic potency, and its ensemble shines throughout",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "By the time she leaves, almost at close, she, and us, can hardly believe it's time to go",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently enthusiastic praise for Bioh's writing, the ensemble performances, and White's direction, with vivid appreciation for the world-building and no significant criticisms. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its lively direction, engaging performances, and rich storytelling, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:57.291Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

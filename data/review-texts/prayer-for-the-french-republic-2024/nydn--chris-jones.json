@@ -10,8 +10,64 @@
   "bwwExcerpt": "We’re all here just for a moment, of course, stuck in the middle of events mostly out of control. Whatever your identity, rarely in a Broadway theater will you have so powerfully felt your own vulnerability.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "rarely in a Broadway theater will you have so powerfully felt your own vulnerability",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "stuck in the middle of events mostly out of control",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "rarely in a Broadway theater will you have so powerfully felt your own vulnerability.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic emphasizes the show's powerful emotional impact and rare ability to make audiences feel vulnerable, suggesting a deeply affecting theatrical experience worthy of strong recommendation. | GPT-4o-mini: The review expresses a positive sentiment about the emotional impact of the show, suggesting a clear recommendation despite the lack of specific details.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:03.990Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 75,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

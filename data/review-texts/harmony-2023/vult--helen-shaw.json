@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is earnest and well-meaning, but it's also overstuffed and dramatically inert, a musical that feels more like a history lesson than a living piece of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 41,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "earnest and well-meaning",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "overstuffed and dramatically inert",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "feels more like a history lesson than a living piece of theater",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging good intentions, the critic delivers damning criticisms about the show being 'dramatically inert' and feeling like a lecture rather than engaging theater. | GPT-4o-mini: The review expresses strong criticism of the show's execution while acknowledging its good intentions, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:12.431Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

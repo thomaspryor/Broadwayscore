@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Overall, this piece doesn’t land at the top of Rebeck’s impressively diverse oeuvre, and I’d wager you’ll see some things coming far faster than any fire department. But I’m partial to plays that deal with experiences almost everyone shares and throwing stuff out is far higher on the list of life traumas than you might think.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/i-need-that/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this piece doesn't land at the top of Rebeck's impressively diverse oeuvre",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "you'll see some things coming far faster than any fire department",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I'm partial to plays that deal with experiences almost everyone shares",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the play's predictability and places it below the playwright's best work, but expresses personal appreciation for its relatable themes about universal life experiences. | GPT-4o-mini: The review expresses mixed feelings, noting weaknesses in predictability and overall impact while acknowledging the thematic relevance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:35.511Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
