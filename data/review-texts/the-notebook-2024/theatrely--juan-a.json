@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "A shrug from a tear-stained shoulder is certainly not the worst way to exit a musical, so even if&nbsp;The Notebook&nbsp;isn’t reinventing any wheels, it turns them with earnest, somehow not-too-sentimental, precision.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": 79,
+      "performances": 81,
+      "direction": 76
+    },
+    "keyPhrases": [
+      {
+        "quote": "A shrug from a tear-stained shoulder is certainly not the worst way to exit a musical, so even if The Notebook isn't reinventing any wheels, it turns them with earnest, somehow not-too-sentimental, precision",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "provides as good a cry as you might imagine",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The middle pairing, which makes up most of the second act, feels both rushed yet incomplete at points",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review offers qualified praise with some structural criticisms, ultimately finding the show competent and emotionally effective despite not being groundbreaking. | GPT-4o-mini: The review expresses a generally positive sentiment towards the performances and music, despite some criticisms of pacing and completeness.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:16.133Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

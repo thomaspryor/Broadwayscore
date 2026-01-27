@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Much beloved is the 2004 movie version in which an old man tries to reawaken his wife’s memory by reading aloud from her notebook. The new musical gets half the story right. Unfortunately, it’s the wrong half. Or the wrong third, as it turns out in this unusually cast production.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250915092059",
-  "archiveOrgUrl": "http://web.archive.org/web/20250915092059/https://www.thewrap.com/the-notebook-broadway-review-ingrid-michaelson/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250915092059/https://www.thewrap.com/the-notebook-broadway-review-ingrid-michaelson/",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 48,
+      "performances": 63,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new musical gets half the story right. Unfortunately, it's the wrong half.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "When these two veteran actors are on stage together, 'The Notebook' is the moving, unabashed, heartfelt tearjerker it's needs to be.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Ingrid Michaelson's score is middle-of-the-road pop. It's pleasant. It's easy on the ears. It's not in any way what this musical needs to be",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic identifies significant structural problems with the musical adaptation, praises only the older actors while criticizing the younger performers, and finds the score inadequate, resulting in more problems than strengths. | GPT-4o-mini: The review expresses significant disappointment with the script and direction while acknowledging some positive performances, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:00.000Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
