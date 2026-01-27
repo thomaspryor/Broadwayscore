@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T15:10:58.003Z",
+  "runDate": "2026-01-27T15:12:00.852Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "hells-kitchen-2024",
+    "showFilter": "maybe-happy-ending-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 221,
-    "failed": 151,
+    "processed": 222,
+    "failed": 146,
     "skipped": 0,
-    "successRate": "59.4%"
+    "successRate": "60.3%"
   },
   "tierBreakdown": {
     "playwright": 30,
     "scrapingbee": 17,
     "brightdata": 24,
-    "archive": 150
+    "archive": 151
   },
   "statistics": {
-    "tier1Attempts": 16,
+    "tier1Attempts": 11,
     "tier1Success": 0,
-    "tier2Attempts": 16,
+    "tier2Attempts": 11,
     "tier2Success": 0,
-    "tier3Attempts": 16,
+    "tier3Attempts": 11,
     "tier3Success": 1,
-    "tier4Attempts": 26,
-    "tier4Success": 0,
-    "totalFailed": 15,
-    "scrapingBeeCreditsUsed": 40
+    "tier4Attempts": 18,
+    "tier4Success": 1,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -255,7 +255,8 @@
     "merrily-we-roll-along-2023/amny-com--unknown.json",
     "merrily-we-roll-along-2023/broadway-news--naveen.json",
     "merrily-we-roll-along-2023/broadwaynews-com--unknown.json",
-    "hells-kitchen-2024/washingtonpost-com--unknown.json"
+    "maybe-happy-ending-2024/observer--jesse-green.json",
+    "maybe-happy-ending-2024/washington-post--naveen-kumar.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -394,21 +395,16 @@
     "merrily-we-roll-along-2023/variety-com--unknown.json",
     "merrily-we-roll-along-2023/vult--jackson-mchenry.json",
     "merrily-we-roll-along-2023/vulture--sara.json",
-    "hells-kitchen-2024/nyt--jesse-green.json",
-    "hells-kitchen-2024/thr--angie-han.json",
-    "hells-kitchen-2024/vult--jackson-mchenry.json",
-    "hells-kitchen-2024/NYSUN--elysa-gardner.json",
-    "hells-kitchen-2024/WASHPOST--peter-marks.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json",
-    "hells-kitchen-2024/billboard--isabela-raygoza.json",
-    "hells-kitchen-2024/culture-sauce--thom-geier.json",
-    "hells-kitchen-2024/deadline--pete-hammond.json",
-    "hells-kitchen-2024/ew--joey-nolfi.json",
-    "hells-kitchen-2024/guardian--adrian-horton.json",
-    "hells-kitchen-2024/interestedbystander-com--unknown.json",
-    "hells-kitchen-2024/nyp--johnny-oleksinski.json",
-    "hells-kitchen-2024/stgcnma--victor-gluck.json",
-    "hells-kitchen-2024/wsj-com--unknown.json"
+    "maybe-happy-ending-2024/nyt--jesse-green.json",
+    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
+    "maybe-happy-ending-2024/ew--shania-russell.json",
+    "maybe-happy-ending-2024/interestedbystander-com--unknown.json",
+    "maybe-happy-ending-2024/ny-daily-news--chris-jones.json",
+    "maybe-happy-ending-2024/nyp--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/talkinbway--matthew-murray.json",
+    "maybe-happy-ending-2024/tman--david-gordon.json",
+    "maybe-happy-ending-2024/washpost--peter-marks.json",
+    "maybe-happy-ending-2024/wsj--terry-teachout.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -486,7 +482,7 @@
       "queen-versailles-2025/daily-beast--tim-teeman.json",
       "hamilton-2015/OBSERVER--david-cote.json",
       "hamilton-2015/wapo--peter-marks.json",
-      "hells-kitchen-2024/washingtonpost-com--unknown.json"
+      "maybe-happy-ending-2024/observer--jesse-green.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -638,7 +634,8 @@
       "merrily-we-roll-along-2023/nytimes-com--unknown.json",
       "merrily-we-roll-along-2023/vulture-com--unknown.json",
       "merrily-we-roll-along-2023/am-new-york--matt.json",
-      "merrily-we-roll-along-2023/amny-com--unknown.json"
+      "merrily-we-roll-along-2023/amny-com--unknown.json",
+      "maybe-happy-ending-2024/washington-post--naveen-kumar.json"
     ]
   }
 }
