@@ -5,18 +5,18 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144",
   "publishDate": "2025-11-13",
-  "fullText": null,
+  "fullText": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144\n\nThe cast of ‘Oedipus.’ Julieta CervantesNew York\n\nA powerful politician’s night of triumph descends precipitously into waking-nightmare territory in the transfixing “Oedipus,” an adaptation of Sophocles’ tragedy from the British writer-director Robert Icke. In this ingeniously reimagined contemporary staging on Broadway (“created by” Mr. Icke “after” Sophocles), the Theban king of the original becomes a hard-driving candidate hoping to lead his country as he gathers with his family on election night to await the returns, while a dark fate gradually encircles him like a snake ready to spring.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nNew York State to Loosen Environmental Rules to Speed Up Homebuilding\n\nThousands of New York City Nurses Go On Strike\n\nopinionBreads Lines in Mamdani’s New York\n\nopinionHow Mamdani and Cea Weaver Plan to End Private Housing\n\n‘Bug’ Review: A Broadway Drama of Insidious Delusion",
   "showScoreExcerpt": "\"I thought what might follow would be Mr. Ickeâs most provocativeâand logical and interestingâdeparture from Sophocles, an ending of a more ambiguous and less gruesome kind. \"",
   "originalScore": null,
   "assignedScore": 53,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "I thought what might follow would be Mr. Icke’s most provocative—and logical and interesting—departure from Sophocles, an ending of a more ambiguous and less gruesome kind. Instead he reverts to tradition. It’s an understandable move: Many might feel shortchanged if Mr. Icke had chosen otherwise. Ne...",
-  "textStatus": "missing",
+  "textStatus": "partial",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.959Z",
-  "textQuality": "missing",
-  "sourceMethod": "stub",
+  "textQuality": "partial",
+  "sourceMethod": "archive",
   "scoreStatus": "TO_BE_CALCULATED",
   "scoreSource": null,
   "llmScore": {
@@ -74,5 +74,41 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "isFullReview": false,
+  "textWordCount": 144,
+  "archivePath": "data/archives/reviews/oedipus-2025/wsj--charles-isherwood_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T04:49:25.889Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "archiveOrgTimestamp": "20260119035809",
+  "archiveOrgUrl": "http://web.archive.org/web/20260119035809/https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144",
+  "textIssues": [
+    "Word count too low: 144 (min: 300)"
+  ]
 }
