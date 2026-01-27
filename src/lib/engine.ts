@@ -156,6 +156,8 @@ export interface CriticScoreResult {
   weightedScore: number;        // Weighted average using tier weights
   reviewCount: number;
   tier1Count: number;
+  tier2Count: number;
+  tier3Count: number;
   label: string;                // Rave, Positive, Mixed, Negative
   reviews: ComputedReview[];
 }
@@ -357,12 +359,16 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
   const weightedScore = Math.round((weightedSum / totalWeight) * 100) / 100;
 
   const tier1Count = computedReviews.filter(r => r.tier === 1).length;
+  const tier2Count = computedReviews.filter(r => r.tier === 2).length;
+  const tier3Count = computedReviews.filter(r => r.tier === 3).length;
 
   return {
     score: simpleScore,
     weightedScore,
     reviewCount: reviews.length,
     tier1Count,
+    tier2Count,
+    tier3Count,
     label: getCriticLabel(simpleScore),
     reviews: computedReviews.sort((a, b) => b.reviewScore - a.reviewScore),
   };
