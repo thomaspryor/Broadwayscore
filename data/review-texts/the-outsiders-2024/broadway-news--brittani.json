@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Despite picture-perfect staging and a passionate cast of triple threats, “The Outsiders” coasts only on Golden-Age appeals — its traditional structure, its beautiful, big-feeling people and its aimless wanderlust.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-outsiders/ -->",
@@ -36,5 +36,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 275 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": null,
+      "performances": 71,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Broadway adaptation of S.E. Hinton's bestselling novel is a tame rendering of the American novel",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "scenic designers AMP and Tatiana Kahvegian's tactile set of crunching dirt, exposed scaffolding and tire towers captures more authentic grit than any of the pugnacious characters do",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "director Danya Taymor's tight ensemble works like a well-oiled (well-greased?) machine",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the adaptation as 'tame' and notes that the set design has more authenticity than the characters, but praises the ensemble work and acknowledges the production's technical demands are well-met. | GPT-4o-mini: The review presents a mixed view, highlighting strong performances and design while criticizing the adaptation's depth and overall execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:26.597Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

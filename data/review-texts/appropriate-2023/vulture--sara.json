@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "In the sensitive hands of director Lila Neugebauer and her top-notch cast, these people are complicated and they’re blinkered, monstrous and pitiable, trying and failing, not individually hateful and collectively matured in a slow cooker of unexamined bias and malice.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/appropriate/",
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240531022124/https://www.vulture.com/2023/12/theater-review-branden-jacobs-jenkinss-appropriate.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 91,
+      "music": null,
+      "performances": 93,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "Neugebauer has bravely steered in the opposite direction. She and her actors are taking the risk of taking these people seriously.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Paulson and Stoll provide a supercharged core",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Jacobs-Jenkins's writing lives entirely and electrically in the space of 'and.'",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is a deeply admiring review that praises Jacobs-Jenkins's writing as brilliant and complex, celebrates Neugebauer's direction as brave and insightful, and lauds the ensemble performances, particularly Paulson and Stoll, with sustained analysis showing genuine intellectual and artistic appreciation. | GPT-4o-mini: The review expresses strong enthusiasm for the writing, performances, and direction, indicating a must-see production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:56.660Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
