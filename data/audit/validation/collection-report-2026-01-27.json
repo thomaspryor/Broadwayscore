@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T05:19:07.905Z",
+  "runDate": "2026-01-27T05:20:27.546Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-outsiders-2024",
+    "showFilter": "buena-vista-social-club-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 206,
-    "failed": 128,
+    "processed": 204,
+    "failed": 112,
     "skipped": 0,
-    "successRate": "61.7%"
+    "successRate": "64.6%"
   },
   "tierBreakdown": {
-    "playwright": 22,
+    "playwright": 23,
     "scrapingbee": 17,
-    "brightdata": 21,
-    "archive": 146
+    "brightdata": 20,
+    "archive": 144
   },
   "statistics": {
-    "tier1Attempts": 22,
-    "tier1Success": 0,
-    "tier2Attempts": 22,
+    "tier1Attempts": 4,
+    "tier1Success": 1,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 22,
-    "tier3Success": 1,
-    "tier4Attempts": 24,
-    "tier4Success": 3,
-    "totalFailed": 18,
-    "scrapingBeeCreditsUsed": 70
+    "tier3Attempts": 3,
+    "tier3Success": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 10
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -237,10 +237,8 @@
     "cabaret-2024/talkinbroadway-com--unknown.json",
     "cabaret-2024/theaterscene-net--unknown.json",
     "cabaret-2024/wsj-com--unknown.json",
-    "the-outsiders-2024/nypost--johnny-oleksinki.json",
-    "the-outsiders-2024/nypost--johnny-oleksinski.json",
-    "the-outsiders-2024/timeout--adam-feldman.json",
-    "the-outsiders-2024/wsj--charles-isherwood.json"
+    "buena-vista-social-club-2025/pagesonstages-com--unknown.json",
+    "buena-vista-social-club-2025/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -353,24 +351,8 @@
     "hadestown-2019/washpost--peter-marks.json",
     "cabaret-2024/interestedbystander-com--unknown.json",
     "cabaret-2024/tman--jesse-green.json",
-    "the-outsiders-2024/THR--david-rooney.json",
-    "the-outsiders-2024/nyt--jesse-green.json",
-    "the-outsiders-2024/thr--angie-han.json",
-    "the-outsiders-2024/variety--jesse-green.json",
-    "the-outsiders-2024/vult--jesse-green.json",
-    "the-outsiders-2024/AP--mark-kennedy.json",
-    "the-outsiders-2024/NYDN--chris-jones.json",
-    "the-outsiders-2024/TDB--tim-teeman.json",
-    "the-outsiders-2024/WASHPOST--peter-marks.json",
-    "the-outsiders-2024/WRAP--robert-hofler.json",
-    "the-outsiders-2024/ew--emlyn-travis.json",
-    "the-outsiders-2024/interestedbystander-com--unknown.json",
-    "the-outsiders-2024/nyp--johnny-oleksinski.json",
-    "the-outsiders-2024/rollstone--brittany-spanos.json",
-    "the-outsiders-2024/talkinbway--walter-bilderback.json",
-    "the-outsiders-2024/the-washington-post--elisabeth-vincentelli.json",
-    "the-outsiders-2024/thly--zachary-stewart.json",
-    "the-outsiders-2024/tman--david-gordon.json"
+    "buena-vista-social-club-2025/nyt--jesse-oxfeld.json",
+    "buena-vista-social-club-2025/variety--aramide-tinubu.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -395,7 +377,8 @@
       "cabaret-2024/lightingandsoundamerica-com--unknown.json",
       "cabaret-2024/newyorktheatreguide-com--unknown.json",
       "cabaret-2024/pagesonstages-wordpress-com--unknown.json",
-      "cabaret-2024/theaterscene-net--unknown.json"
+      "cabaret-2024/theaterscene-net--unknown.json",
+      "buena-vista-social-club-2025/pagesonstages-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -436,8 +419,7 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json",
-      "the-outsiders-2024/timeout--adam-feldman.json"
+      "hadestown-2019/towleroad-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -583,9 +565,7 @@
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
       "cabaret-2024/wsj-com--unknown.json",
-      "the-outsiders-2024/nypost--johnny-oleksinki.json",
-      "the-outsiders-2024/nypost--johnny-oleksinski.json",
-      "the-outsiders-2024/wsj--charles-isherwood.json"
+      "buena-vista-social-club-2025/theatermania--zachary-stewart.json"
     ]
   }
 }
