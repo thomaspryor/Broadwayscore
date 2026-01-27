@@ -21,6 +21,7 @@ const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups');
 const BWW_URLS_PATH = path.join(__dirname, '..', 'data', 'bww-roundup-urls.json');
+const AGGREGATOR_SUMMARY_PATH = path.join(__dirname, '..', 'data', 'aggregator-summary.json');
 
 // Load manual URL overrides (for shows with non-standard BWW URL patterns)
 let bwwUrlOverrides = {};
@@ -45,6 +46,48 @@ const BWW_URL_PATTERNS = [
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Load aggregator summary data
+ */
+function loadAggregatorSummary() {
+  if (fs.existsSync(AGGREGATOR_SUMMARY_PATH)) {
+    return JSON.parse(fs.readFileSync(AGGREGATOR_SUMMARY_PATH, 'utf8'));
+  }
+  return {
+    _meta: {
+      lastUpdated: null,
+      description: 'Show-level summary data from all aggregators (DTLI, BWW, Show Score)'
+    },
+    dtli: {},
+    bww: {},
+    showScore: {}
+  };
+}
+
+/**
+ * Save aggregator summary data
+ */
+function saveAggregatorSummary(data) {
+  data._meta.lastUpdated = new Date().toISOString();
+  fs.writeFileSync(AGGREGATOR_SUMMARY_PATH, JSON.stringify(data, null, 2));
+}
+
+/**
+ * Save BWW summary for a show
+ */
+function saveBWWSummary(showId, reviewCount, bwwUrl) {
+  const aggregatorData = loadAggregatorSummary();
+
+  aggregatorData.bww[showId] = {
+    totalReviews: reviewCount,
+    bwwRoundupUrl: bwwUrl,
+    lastUpdated: new Date().toISOString()
+  };
+
+  saveAggregatorSummary(aggregatorData);
+  console.log(`    Saved BWW summary to aggregator-summary.json`);
 }
 
 function slugify(text) {
@@ -261,122 +304,119 @@ function saveUrlOverride(showId, url) {
 
 /**
  * Extract reviews from BWW Review Roundup HTML
- * BWW stores all reviews in JSON-LD articleBody as plain text
- * Format: "Critic Name, Outlet: excerpt"
+ * BWW stores reviews in JSON-LD liveBlogUpdate array with structured data:
+ * - headline: "Outlet Name - Review Title"
+ * - articleBody: excerpt
+ * - datePublished: date
  */
 function extractBWWReviews(html, showId, bwwUrl) {
   const reviews = [];
+  const foundOutlets = new Set();
 
-  // Extract from JSON-LD articleBody
+  // First try to extract from liveBlogUpdate array (best structured data)
   const jsonLdMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
-  if (!jsonLdMatch) {
-    console.log('    No JSON-LD found');
-    return reviews;
-  }
+  if (jsonLdMatch) {
+    try {
+      const jsonLd = JSON.parse(jsonLdMatch[1]);
+      const articleBody = jsonLd.articleBody || '';
 
-  try {
-    const jsonLd = JSON.parse(jsonLdMatch[1]);
-    const articleBody = jsonLd.articleBody || '';
+      // Look for liveBlogUpdate in the articleBody (it's embedded as JSON string)
+      const liveBlogMatch = articleBody.match(/"liveBlogUpdate":\s*\[([\s\S]*?)\]\s*\}/);
 
-    if (!articleBody) {
-      console.log('    No articleBody in JSON-LD');
-      return reviews;
-    }
+      // Alternative: extract from HTML which has the JSON embedded
+      const liveBlogHtmlMatch = html.match(/"liveBlogUpdate":\s*\[([\s\S]*?)\]\s*\}/);
 
-    // Parse individual reviews from article body
-    // Format is: "Critic Name, Outlet: excerpt" separated by double spaces or newlines
-    // Example: "Jesse Green, The New York Times: Radcliffe's wit..."
-
-    // Known critic patterns with their outlets
-    const knownCriticPatterns = [
-      // Format: Critic Name, Outlet: excerpt
-      { regex: /Jesse Green,?\s*(?:The\s*)?New York Times:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Jesse Green', outlet: 'The New York Times', outletId: 'nytimes' },
-      { regex: /Ben Brantley,?\s*(?:The\s*)?New York Times:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Ben Brantley', outlet: 'The New York Times', outletId: 'nytimes' },
-      { regex: /Laura Collins-Hughes,?\s*(?:The\s*)?New York Times:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Laura Collins-Hughes', outlet: 'The New York Times', outletId: 'nytimes' },
-      { regex: /Maya Phillips,?\s*(?:The\s*)?New York Times:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Maya Phillips', outlet: 'The New York Times', outletId: 'nytimes' },
-      { regex: /Greg Evans,?\s*Deadline:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Greg Evans', outlet: 'Deadline', outletId: 'deadline' },
-      { regex: /Robert Hofler,?\s*(?:The\s*)?Wrap:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Robert Hofler', outlet: 'The Wrap', outletId: 'the-wrap' },
-      { regex: /Sara Holdren,?\s*Vulture:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Sara Holdren', outlet: 'Vulture', outletId: 'vulture' },
-      { regex: /Jackson McHenry,?\s*Vulture:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Jackson McHenry', outlet: 'Vulture', outletId: 'vulture' },
-      { regex: /Johnny Oleksinski,?\s*(?:New York\s*)?Post:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Johnny Oleksinski', outlet: 'New York Post', outletId: 'new-york-post' },
-      { regex: /Adam Feldman,?\s*Time Out(?:\s*(?:New York|NY))?:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Adam Feldman', outlet: 'Time Out New York', outletId: 'time-out-new-york' },
-      { regex: /David Rooney,?\s*(?:The\s*)?Hollywood Reporter:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'David Rooney', outlet: 'The Hollywood Reporter', outletId: 'hollywood-reporter' },
-      { regex: /Frank Scheck,?\s*(?:The\s*)?Hollywood Reporter:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Frank Scheck', outlet: 'The Hollywood Reporter', outletId: 'hollywood-reporter' },
-      { regex: /Matt Windman,?\s*(?:AM\s*)?(?:New York|NY):\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Matt Windman', outlet: 'AM New York', outletId: 'am-new-york' },
-      { regex: /Tim Teeman,?\s*(?:The\s*)?Daily Beast:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Tim Teeman', outlet: 'The Daily Beast', outletId: 'daily-beast' },
-      { regex: /David Gordon,?\s*TheaterMania:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'David Gordon', outlet: 'TheaterMania', outletId: 'theatermania' },
-      { regex: /Zachary Stewart,?\s*TheaterMania:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Zachary Stewart', outlet: 'TheaterMania', outletId: 'theatermania' },
-      { regex: /Joey Merlo,?\s*Theatrely:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Joey Merlo', outlet: 'Theatrely', outletId: 'theatrely' },
-      { regex: /Juan A\. Ramirez,?\s*Theatrely:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Juan A. Ramirez', outlet: 'Theatrely', outletId: 'theatrely' },
-      { regex: /Brittani Samuel,?\s*Broadway News:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Brittani Samuel', outlet: 'Broadway News', outletId: 'broadway-news' },
-      { regex: /Michael Musto,?\s*Village Voice:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Michael Musto', outlet: 'Village Voice', outletId: 'village-voice' },
-      { regex: /Naveen Kumar,?\s*Variety:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Naveen Kumar', outlet: 'Variety', outletId: 'variety' },
-      { regex: /Frank Rizzo,?\s*Variety:\s*([\s\S]*?)(?=\s{2,}[A-Z]|\n\n|$)/gi, critic: 'Frank Rizzo', outlet: 'Variety', outletId: 'variety' },
-    ];
-
-    // Also try generic pattern: "Critic Name, Outlet: excerpt"
-    // Match pattern like "Name Name, Outlet Name: text..."
-    // Handles: "John Smith", "JD Knapp", "Melissa Rose Bernardo", "Brian Scott Lipton"
-    // Note: Outlet pattern includes apostrophe for "Talkin' Broadway", hyphen for "DC Theatre-Arts"
-    const genericPattern = /([A-Z][A-Za-z.]+(?:\s+[A-Z][A-Za-z.]+)+),\s*((?:The\s+)?[A-Z][A-Za-z\s'\-]+?):\s*([\s\S]*?)(?=\s{2,}[A-Z][A-Za-z.]+(?:\s+[A-Z][A-Za-z.]+)+,|\n\n|$)/g;
-
-    const foundCritics = new Set();
-
-    // First try known critic patterns
-    for (const { regex, critic, outlet, outletId } of knownCriticPatterns) {
-      const match = regex.exec(articleBody);
-      if (match && match[1]) {
-        const excerpt = match[1].trim();
-        if (excerpt.length > 30 && !foundCritics.has(critic.toLowerCase())) {
-          foundCritics.add(critic.toLowerCase());
-          reviews.push({
-            showId,
-            outletId,
-            outlet,
-            criticName: critic,
-            url: null,
-            bwwExcerpt: excerpt.substring(0, 500),
-            bwwRoundupUrl: bwwUrl,
-            source: 'bww-roundup',
-          });
+      let liveBlogData = null;
+      if (liveBlogMatch || liveBlogHtmlMatch) {
+        const matchStr = liveBlogMatch ? liveBlogMatch[0] : liveBlogHtmlMatch[0];
+        try {
+          const wrapper = JSON.parse('{' + matchStr + '}');
+          liveBlogData = wrapper.liveBlogUpdate;
+        } catch (e) {
+          // Try individual parsing
         }
       }
-    }
 
-    // Then try generic pattern for remaining reviews
-    let genericMatch;
-    while ((genericMatch = genericPattern.exec(articleBody)) !== null) {
-      const [, criticName, outletName, excerpt] = genericMatch;
-      if (criticName && outletName && excerpt && excerpt.length > 30) {
-        const critic = criticName.trim();
-        if (!foundCritics.has(critic.toLowerCase())) {
-          foundCritics.add(critic.toLowerCase());
-          const outletInfo = mapOutlet(outletName.trim());
-          if (outletInfo) {
-            reviews.push({
-              showId,
-              outletId: outletInfo.outletId,
-              outlet: outletInfo.outlet,
-              criticName: critic,
-              url: null,
-              bwwExcerpt: excerpt.trim().substring(0, 500),
-              bwwRoundupUrl: bwwUrl,
-              source: 'bww-roundup',
-            });
+      if (liveBlogData && Array.isArray(liveBlogData)) {
+        console.log(`    Found ${liveBlogData.length} reviews in liveBlogUpdate`);
+
+        for (const blogPost of liveBlogData) {
+          const headline = blogPost.headline || '';
+          const excerpt = blogPost.articleBody || '';
+          const datePublished = blogPost.datePublished || null;
+
+          // Parse outlet from headline: "Outlet Name - Review Title"
+          const headlineParts = headline.split(' - ');
+          if (headlineParts.length >= 1) {
+            const outletRaw = headlineParts[0].trim();
+            const outletInfo = mapOutlet(outletRaw);
+
+            if (outletInfo && !foundOutlets.has(outletInfo.outletId)) {
+              foundOutlets.add(outletInfo.outletId);
+
+              reviews.push({
+                showId,
+                outletId: outletInfo.outletId,
+                outlet: outletInfo.outlet,
+                criticName: 'Unknown', // Will be enhanced by articleBody parsing
+                url: null, // BWW roundups don't have individual URLs
+                publishDate: datePublished ? new Date(datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : null,
+                bwwExcerpt: excerpt.substring(0, 500),
+                bwwRoundupUrl: bwwUrl,
+                source: 'bww-roundup',
+              });
+            }
           }
         }
       }
+
+      // Also parse articleBody for critic names using pattern matching
+      if (articleBody) {
+        // Generic pattern: "Critic Name, Outlet: excerpt"
+        const genericPattern = /([A-Z][A-Za-z.]+(?:\s+[A-Z][A-Za-z.]+)+),\s*((?:The\s+)?[A-Z][A-Za-z\s'\-]+?):\s*([\s\S]*?)(?=\s{2,}[A-Z][A-Za-z.]+(?:\s+[A-Z][A-Za-z.]+)+,|\n\n|$)/g;
+
+        let genericMatch;
+        while ((genericMatch = genericPattern.exec(articleBody)) !== null) {
+          const [, criticName, outletName, excerpt] = genericMatch;
+          if (criticName && outletName && excerpt && excerpt.length > 30) {
+            const critic = criticName.trim();
+            const outletInfo = mapOutlet(outletName.trim());
+
+            if (outletInfo) {
+              // Find matching review and add critic name
+              const matchingReview = reviews.find(r => r.outletId === outletInfo.outletId);
+              if (matchingReview && matchingReview.criticName === 'Unknown') {
+                matchingReview.criticName = critic;
+              } else if (!foundOutlets.has(outletInfo.outletId)) {
+                // Add new review if not found via liveBlogUpdate
+                foundOutlets.add(outletInfo.outletId);
+                reviews.push({
+                  showId,
+                  outletId: outletInfo.outletId,
+                  outlet: outletInfo.outlet,
+                  criticName: critic,
+                  url: null,
+                  bwwExcerpt: excerpt.trim().substring(0, 500),
+                  bwwRoundupUrl: bwwUrl,
+                  source: 'bww-roundup',
+                });
+              }
+            }
+          }
+        }
+      }
+
+      if (reviews.length > 0) {
+        console.log(`    Extracted ${reviews.length} reviews from BWW JSON-LD`);
+      }
+
+    } catch (e) {
+      console.log(`    Error parsing BWW JSON-LD: ${e.message}`);
     }
-
-    console.log(`    Extracted ${reviews.length} reviews from BWW articleBody`);
-
-  } catch (e) {
-    console.log(`    Error parsing BWW JSON-LD: ${e.message}`);
   }
 
-  // Fallback: Try to extract from HTML structure if articleBody parsing found nothing
+  // Fallback: Try to extract from HTML structure if JSON-LD parsing found nothing
   if (reviews.length === 0) {
-    const foundCritics = new Set();
     const reviewSections = html.match(/<p[^>]*>.*?(?:<strong>|<b>).*?(?:<\/strong>|<\/b>).*?<\/p>/gi) || [];
 
     for (const section of reviewSections) {
@@ -395,8 +435,8 @@ function extractBWWReviews(html, showId, bwwUrl) {
           outlet = commaMatch[2].trim();
         }
 
-        if (foundCritics.has(criticName.toLowerCase())) continue;
-        foundCritics.add(criticName.toLowerCase());
+        if (foundOutlets.has(slugify(criticName))) continue;
+        foundOutlets.add(slugify(criticName));
 
         const outletInfo = mapOutlet(outlet || criticName);
         if (outletInfo) {
@@ -409,8 +449,8 @@ function extractBWWReviews(html, showId, bwwUrl) {
               outletId: outletInfo.outletId,
               outlet: outletInfo.outlet,
               criticName: criticName || 'Unknown',
-              url: null, // BWW roundups don't always have individual URLs
-              bwwExcerpt: excerpt.substring(0, 500), // Truncate long excerpts
+              url: null,
+              bwwExcerpt: excerpt.substring(0, 500),
               bwwRoundupUrl: bwwUrl,
               source: 'bww-roundup',
             });
@@ -420,6 +460,50 @@ function extractBWWReviews(html, showId, bwwUrl) {
     }
 
     console.log(`    Extracted ${reviews.length} reviews from HTML fallback`);
+  }
+
+  // Try to extract individual review URLs from HTML hyperlinks
+  // BWW sometimes includes links to original reviews
+  const urlPatterns = [
+    { pattern: /nytimes\.com/i, outletId: 'nytimes' },
+    { pattern: /vulture\.com/i, outletId: 'vulture' },
+    { pattern: /variety\.com/i, outletId: 'variety' },
+    { pattern: /hollywoodreporter\.com/i, outletId: 'thr' },
+    { pattern: /nypost\.com/i, outletId: 'nyp' },
+    { pattern: /deadline\.com/i, outletId: 'deadline' },
+    { pattern: /timeout\.com/i, outletId: 'time-out-new-york' },
+    { pattern: /theatermania\.com/i, outletId: 'theatermania' },
+    { pattern: /theatrely\.com/i, outletId: 'theatrely' },
+    { pattern: /thewrap\.com/i, outletId: 'the-wrap' },
+    { pattern: /ew\.com/i, outletId: 'ew' },
+    { pattern: /wsj\.com/i, outletId: 'wsj' },
+    { pattern: /newyorker\.com/i, outletId: 'new-yorker' },
+    { pattern: /theguardian\.com/i, outletId: 'guardian' },
+  ];
+
+  // Find all external URLs in the HTML
+  const urlRegex = /href="(https?:\/\/[^"]+)"/gi;
+  let urlMatch;
+  while ((urlMatch = urlRegex.exec(html)) !== null) {
+    const url = urlMatch[1];
+    // Skip BWW internal links and social media
+    if (url.includes('broadwayworld.com') || url.includes('twitter.com') ||
+        url.includes('facebook.com') || url.includes('instagram.com')) {
+      continue;
+    }
+
+    // Try to match URL to an outlet
+    for (const { pattern, outletId } of urlPatterns) {
+      if (pattern.test(url)) {
+        const matchingReview = reviews.find(r => r.outletId === outletId);
+        if (matchingReview && !matchingReview.url) {
+          matchingReview.url = url;
+          matchingReview.bwwUrl = url; // Also save as bwwUrl field
+          console.log(`    Found URL for ${outletId}: ${url.substring(0, 60)}...`);
+        }
+        break;
+      }
+    }
   }
 
   return reviews;
@@ -625,6 +709,11 @@ async function processShow(show) {
 
   // Extract reviews
   const reviews = extractBWWReviews(html, show.id, bwwUrl);
+
+  // Save BWW summary to aggregator-summary.json
+  if (reviews.length > 0) {
+    saveBWWSummary(show.id, reviews.length, bwwUrl);
+  }
 
   // Save reviews
   let created = 0;

@@ -12,6 +12,56 @@ const path = require('path');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
+const AGGREGATOR_SUMMARY_PATH = path.join(__dirname, '../data/aggregator-summary.json');
+
+/**
+ * Load aggregator summary data
+ */
+function loadAggregatorSummary() {
+  if (fs.existsSync(AGGREGATOR_SUMMARY_PATH)) {
+    return JSON.parse(fs.readFileSync(AGGREGATOR_SUMMARY_PATH, 'utf8'));
+  }
+  return {
+    _meta: {
+      lastUpdated: null,
+      description: 'Show-level summary data from all aggregators (DTLI, BWW, Show Score)'
+    },
+    dtli: {},
+    bww: {},
+    showScore: {}
+  };
+}
+
+/**
+ * Save aggregator summary data
+ */
+function saveAggregatorSummary(data) {
+  data._meta.lastUpdated = new Date().toISOString();
+  fs.writeFileSync(AGGREGATOR_SUMMARY_PATH, JSON.stringify(data, null, 2));
+}
+
+/**
+ * Extract DTLI thumb counts from HTML
+ */
+function extractDTLIThumbCounts(content) {
+  const thumbUpMatch = content.match(/thumbs-up\/thumb-(\d+)\.png/);
+  const thumbMehMatch = content.match(/thumbs-meh\/thumb-(\d+)\.png/);
+  const thumbDownMatch = content.match(/thumbs-down\/thumb-(\d+)\.png/);
+
+  return {
+    up: thumbUpMatch ? parseInt(thumbUpMatch[1]) : 0,
+    meh: thumbMehMatch ? parseInt(thumbMehMatch[1]) : 0,
+    down: thumbDownMatch ? parseInt(thumbDownMatch[1]) : 0
+  };
+}
+
+/**
+ * Extract DTLI URL from archived HTML header
+ */
+function extractDTLIUrl(content) {
+  const urlMatch = content.match(/Source:\s*(https?:\/\/[^\n]+)/);
+  return urlMatch ? urlMatch[1].trim() : null;
+}
 
 // Outlet normalization
 const outletNormalization = {
@@ -213,6 +263,10 @@ console.log('Extracting reviews from DTLI pages:\n');
 let totalReviews = 0;
 let totalShows = 0;
 let totalUrls = 0;
+let totalThumbsSaved = 0;
+
+// Load aggregator summary for saving thumb counts
+const aggregatorSummary = loadAggregatorSummary();
 
 for (const file of files.sort()) {
   const filePath = path.join(dtliDir, file);
@@ -220,6 +274,22 @@ for (const file of files.sort()) {
   const content = fs.readFileSync(filePath, 'utf-8');
 
   const reviews = extractReviewsFromDTLI(content, showId);
+
+  // Extract and save thumb counts
+  const thumbCounts = extractDTLIThumbCounts(content);
+  const dtliUrl = extractDTLIUrl(content);
+
+  if (thumbCounts.up > 0 || thumbCounts.meh > 0 || thumbCounts.down > 0) {
+    aggregatorSummary.dtli[showId] = {
+      up: thumbCounts.up,
+      meh: thumbCounts.meh,
+      down: thumbCounts.down,
+      totalReviews: thumbCounts.up + thumbCounts.meh + thumbCounts.down,
+      dtliUrl: dtliUrl,
+      lastUpdated: new Date().toISOString()
+    };
+    totalThumbsSaved++;
+  }
 
   if (reviews.length > 0) {
     totalShows++;
@@ -230,13 +300,18 @@ for (const file of files.sort()) {
       if (review.url) urlCount++;
     }
     totalUrls += urlCount;
-    console.log(`${showId}: ${reviews.length} reviews (${urlCount} with URLs)`);
+    console.log(`${showId}: ${reviews.length} reviews (${urlCount} with URLs) [${thumbCounts.up}↑ ${thumbCounts.meh}↔ ${thumbCounts.down}↓]`);
   } else {
-    console.log(`${showId}: 0 reviews found`);
+    console.log(`${showId}: 0 reviews found [${thumbCounts.up}↑ ${thumbCounts.meh}↔ ${thumbCounts.down}↓]`);
   }
 }
+
+// Save aggregator summary with all thumb counts
+saveAggregatorSummary(aggregatorSummary);
 
 console.log(`\n========================================`);
 console.log(`Total: ${totalReviews} reviews from ${totalShows} shows`);
 console.log(`Reviews with URLs: ${totalUrls}`);
+console.log(`DTLI thumb counts saved: ${totalThumbsSaved} shows`);
 console.log(`Saved to: ${outputDir}/`);
+console.log(`Aggregator summary: ${AGGREGATOR_SUMMARY_PATH}`);
