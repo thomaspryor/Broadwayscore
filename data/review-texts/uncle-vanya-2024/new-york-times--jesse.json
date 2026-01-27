@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "If Vanya is properly no hero in this amusing but rarely deeply affecting production, it’s because he’s no one at all. He despairs and disappears.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/uncle-vanya-bway/",
@@ -53,5 +53,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250913070509",
-  "archiveOrgUrl": "http://web.archive.org/web/20250913070509/https://www.nytimes.com/2024/04/24/theater/uncle-vanya-review-steve-carell.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250913070509/https://www.nytimes.com/2024/04/24/theater/uncle-vanya-review-steve-carell.html",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 77,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "Collectively, they add up to a lovely evening in the theater. That's not a backhanded compliment.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "this amusing but rarely deeply affecting production",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "the ideal Chekhov balance may require something heavier as ballast",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls this 'a lovely evening in the theater' and praises individual elements extensively, but consistently notes it lacks the deeper emotional weight that Chekhov requires, making it a qualified positive recommendation. | GPT-4o-mini: The review presents a generally enjoyable production with strong performances but highlights significant shortcomings in the central character and overall impact, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:42.339Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
