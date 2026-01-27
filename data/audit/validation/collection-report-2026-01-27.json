@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T05:48:30.685Z",
+  "runDate": "2026-01-27T05:50:30.430Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "harry-potter-2021",
+    "showFilter": "stereophonic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 209,
-    "failed": 139,
+    "processed": 206,
+    "failed": 132,
     "skipped": 0,
-    "successRate": "60.1%"
+    "successRate": "60.9%"
   },
   "tierBreakdown": {
-    "playwright": 23,
-    "scrapingbee": 18,
-    "brightdata": 23,
+    "playwright": 22,
+    "scrapingbee": 17,
+    "brightdata": 22,
     "archive": 145
   },
   "statistics": {
-    "tier1Attempts": 24,
-    "tier1Success": 1,
-    "tier2Attempts": 23,
-    "tier2Success": 1,
-    "tier3Attempts": 22,
-    "tier3Success": 2,
-    "tier4Attempts": 26,
+    "tier1Attempts": 14,
+    "tier1Success": 0,
+    "tier2Attempts": 14,
+    "tier2Success": 0,
+    "tier3Attempts": 14,
+    "tier3Success": 1,
+    "tier4Attempts": 17,
     "tier4Success": 1,
-    "totalFailed": 19,
-    "scrapingBeeCreditsUsed": 100
+    "totalFailed": 12,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -239,11 +239,8 @@
     "cabaret-2024/wsj-com--unknown.json",
     "maybe-happy-ending-2024/observer--jesse-green.json",
     "maybe-happy-ending-2024/washington-post--naveen-kumar.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/financial-times--charles-isherwood.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/thetimes-co-uk--unknown.json",
-    "harry-potter-2021/washingtonpost-com--unknown.json"
+    "stereophonic-2024/ny-daily-news--chris-jones.json",
+    "stereophonic-2024/timeout--adam-feldman.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -366,25 +363,18 @@
     "maybe-happy-ending-2024/tman--david-gordon.json",
     "maybe-happy-ending-2024/washpost--peter-marks.json",
     "maybe-happy-ending-2024/wsj--terry-teachout.json",
-    "harry-potter-2021/NYP--johnny-oleksinski.json",
-    "harry-potter-2021/broadway-blog--matthew-wexler.json",
-    "harry-potter-2021/broadway-news--elizabeth-bradley.json",
-    "harry-potter-2021/curtainup--elyse-sommer.json",
-    "harry-potter-2021/curtainup-com--unknown.json",
-    "harry-potter-2021/deadline--greg-evans.json",
-    "harry-potter-2021/exeunt--kev-berry.json",
-    "harry-potter-2021/front-mezz-junkies--steven-ross.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/medium--christian-lewis.json",
-    "harry-potter-2021/ny1--roma-torre.json",
-    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
-    "harry-potter-2021/theguardian-com--unknown.json",
-    "harry-potter-2021/troy-record--bob-goepfert.json",
-    "harry-potter-2021/wnyc--jennifer-vanasco.json",
-    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
-    "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "stereophonic-2024/thr--angie-han.json",
+    "stereophonic-2024/variety--jesse-green.json",
+    "stereophonic-2024/vult--helen-shaw.json",
+    "stereophonic-2024/ap--mark-kennedy.json",
+    "stereophonic-2024/ew--dalton-ross.json",
+    "stereophonic-2024/guardian--adrian-horton.json",
+    "stereophonic-2024/interestedbystander-com--unknown.json",
+    "stereophonic-2024/nyp--johnny-oleksinski.json",
+    "stereophonic-2024/talkinbway--matthew-murray.json",
+    "stereophonic-2024/tman--jesse-green.json",
+    "stereophonic-2024/washpost--peter-marks.json",
+    "stereophonic-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -409,8 +399,7 @@
       "cabaret-2024/lightingandsoundamerica-com--unknown.json",
       "cabaret-2024/newyorktheatreguide-com--unknown.json",
       "cabaret-2024/pagesonstages-wordpress-com--unknown.json",
-      "cabaret-2024/theaterscene-net--unknown.json",
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+      "cabaret-2024/theaterscene-net--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -429,8 +418,7 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "cabaret-2024/newyorktheater-me--unknown.json",
-      "harry-potter-2021/financial-times--charles-isherwood.json"
+      "cabaret-2024/newyorktheater-me--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -454,8 +442,7 @@
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
       "maybe-happy-ending-2024/observer--jesse-green.json",
-      "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "harry-potter-2021/washingtonpost-com--unknown.json"
+      "stereophonic-2024/timeout--adam-feldman.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -602,7 +589,7 @@
       "cabaret-2024/talkinbroadway-com--unknown.json",
       "cabaret-2024/wsj-com--unknown.json",
       "maybe-happy-ending-2024/washington-post--naveen-kumar.json",
-      "harry-potter-2021/thetimes-co-uk--unknown.json"
+      "stereophonic-2024/ny-daily-news--chris-jones.json"
     ]
   }
 }
