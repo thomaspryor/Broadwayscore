@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Perhaps most satisfying about ’Spamalot’ is how it differs from other movie-to-stage adaptations in landing every punchline even for those who know what’s coming.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240306015514",
-  "archiveOrgUrl": "http://web.archive.org/web/20240306015514/https://deadline.com/2023/11/spamalot-broadway-review-1235612888/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240306015514/https://deadline.com/2023/11/spamalot-broadway-review-1235612888/",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 82,
+      "performances": 94,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "Perfectly cast and splendidly performed, with Josh Rhodes' deceptively no-frills direction (and choreography) placing the irresistible goings-on front and center",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Spamalot boasts one of the best ensembles currently on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the die-hards will be as pleased as the newbies with this very funny revival",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers consistent praise throughout, calling it 'very funny,' highlighting 'one of the best ensembles currently on Broadway,' and praising virtually every aspect of the production with superlatives like 'perfectly cast and splendidly performed.' | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, highlighting the show's humor and charm, leading to a high recommendation score.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:10.628Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

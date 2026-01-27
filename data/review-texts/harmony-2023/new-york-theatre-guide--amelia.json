@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "As the Comedian Harmonists, a ragtag group of male singers in Weimar Germany, gradually find their footing, so does the show: The songs grow more polished, the choreography by director Warren Carlyle more precise, the performances more distinguishable. For a show that debuted over 25 years ago, however, how have subsequent productions, including last year’s Off-Broadway run with the National Yiddish Theatre Folksbiene, not addressed such structural issues?",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 54,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 38,
+      "music": 60,
+      "performances": 70,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "The first 20 minutes of Barry Manilow's musical Harmony are, quite frankly, uncomfortable",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "how have subsequent productions, including last year's Off-Broadway run with the National Yiddish Theatre Folksbiene, not addressed such structural issues?",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Harmony has its high points. Julie Benko as Ruth, a daring young Jewish communist, is a firecracker",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review identifies significant structural problems and uncomfortable elements while acknowledging strong individual performances and choreographic moments, resulting in a show that's hard to recommend despite some merits. | GPT-4o-mini: The review highlights significant structural issues and mixed performances, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:07.979Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
