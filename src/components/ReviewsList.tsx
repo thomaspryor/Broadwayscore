@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, memo } from 'react';
+import { getOutletLogoUrl, getOutletFaviconUrl, getOutletConfig } from '@/config/outlet-logos';
 
 interface Review {
   showId: string;
@@ -54,72 +55,54 @@ function getScoreClasses(score: number): string {
 }
 
 function OutletLogo({ outlet }: { outlet: string }) {
-  const outletLower = outlet.toLowerCase();
+  const [imageError, setImageError] = useState(false);
+  const [useFallbackFavicon, setUseFallbackFavicon] = useState(false);
 
-  if (outletLower.includes('new york times') || outletLower === 'nyt') {
+  const logoUrl = getOutletLogoUrl(outlet);
+  const faviconUrl = getOutletFaviconUrl(outlet);
+  const config = getOutletConfig(outlet);
+
+  // If we have a logo URL and haven't errored, try to show the logo
+  if (logoUrl && !imageError) {
+    const imgSrc = useFallbackFavicon ? faviconUrl : logoUrl;
+
+    if (imgSrc) {
+      return (
+        <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 overflow-hidden">
+          <img
+            src={imgSrc}
+            alt=""
+            className="w-6 h-6 object-contain"
+            onError={() => {
+              if (!useFallbackFavicon && faviconUrl) {
+                setUseFallbackFavicon(true);
+              } else {
+                setImageError(true);
+              }
+            }}
+          />
+        </div>
+      );
+    }
+  }
+
+  // Fallback to colored circle with abbreviation
+  if (config) {
+    const abbrev = config.abbrev || outlet.charAt(0).toUpperCase();
+    const bgColor = config.color || '#374151';
+    const textSize = abbrev.length > 2 ? 'text-[9px]' : abbrev.length > 1 ? 'text-[10px]' : 'text-sm';
+
     return (
-      <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-        <span className="text-black font-serif font-bold text-lg leading-none">T</span>
+      <div
+        className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+        style={{ backgroundColor: bgColor }}
+      >
+        <span className={`text-white font-bold ${textSize} leading-none`}>{abbrev}</span>
       </div>
     );
   }
 
-  if (outletLower.includes('vulture')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
-        <span className="text-white font-bold text-sm leading-none">V</span>
-      </div>
-    );
-  }
-
-  if (outletLower.includes('variety')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center flex-shrink-0">
-        <span className="text-white font-bold text-sm leading-none">V</span>
-      </div>
-    );
-  }
-
-  if (outletLower.includes('hollywood reporter')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0 border border-white/20">
-        <span className="text-white font-bold text-[10px] leading-none">THR</span>
-      </div>
-    );
-  }
-
-  if (outletLower.includes('ny post') || outletLower.includes('new york post')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-red-700 flex items-center justify-center flex-shrink-0">
-        <span className="text-white font-bold text-[10px] leading-none">POST</span>
-      </div>
-    );
-  }
-
-  if (outletLower.includes('entertainment weekly')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center flex-shrink-0">
-        <span className="text-white font-bold text-xs leading-none">EW</span>
-      </div>
-    );
-  }
-
-  if (outletLower.includes('timeout') || outletLower.includes('time out')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center flex-shrink-0">
-        <span className="text-white font-bold text-[10px] leading-none">TO</span>
-      </div>
-    );
-  }
-
-  if (outletLower.includes('theatermania')) {
-    return (
-      <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center flex-shrink-0">
-        <span className="text-white font-bold text-[10px] leading-none">TM</span>
-      </div>
-    );
-  }
-
+  // Ultimate fallback - first letter
   const firstLetter = outlet.charAt(0).toUpperCase();
   return (
     <div className="w-8 h-8 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0 border border-white/10">
