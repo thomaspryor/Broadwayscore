@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-danya-taymor-musical-jamestown-revival-2e20f5ca",
   "publishDate": "2024-04-11",
-  "fullText": null,
+  "fullText": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-danya-taymor-musical-jamestown-revival-2e20f5ca\n\nThe cast of ‘The Outsiders.’ Photo: Matthew MurphyNew York\n\nA fierce competition is heating up on West 45th Street. I am not referring to the friction between the have-a-lots and the have-nothings in “The Outsiders,” the musical adaptation of the 1967 book by S.E. Hinton and the 1983 movie directed by Francis Ford Coppola, at the Bernard B. Jacobs Theatre.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "isFullReview": false,
   "bwwExcerpt": "uction starts with how brilliantly cast it is, from top to bottom. By the end of the opening song, called “Tulsa ’67,” we have somehow already met and grown inexplicably fond of every single Greaser. Charles Isherwood, Wall Street Journal: The musical’s cast shouldn’t leave anyone pining for starshine, so assured are its members in embodying the characters not as familiar pop-culture figures but as the raw, wounded, volatile and sensitive people they are. Teller of the tale, if not leader of the pack, is Brody Grant’s Ponyboy, the youngest of three brothers whose parents died in a car accident, with the oldest, Darrel, played by a touchingly conflicted Brent Comer, unhappily taking charge, while the middle boy, Sodapop (a buoyant, sometimes shirtless Jason Schmidt, winning the beefcake prize), tries to soothe the tension between his siblings. Average Rating: 69.5% REVIEW ROUNDUP REAL-TIME ALERTS To read more reviews, click here ! Discuss the show on the BroadwayWorld Forum Buy Tickets",
   "showScoreExcerpt": "“ 'The Outsiders' will hit the bull’s-eye.\"",
@@ -14,11 +14,11 @@
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
-  "textStatus": "missing",
+  "textStatus": "partial",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.918Z",
-  "textQuality": "missing",
-  "sourceMethod": "bww-roundup",
+  "textQuality": "partial",
+  "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -76,5 +76,40 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 88,
+  "archivePath": "data/archives/reviews/the-outsiders-2024/wsj--charles-isherwood_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T04:48:43.588Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "archiveOrgTimestamp": "20240704043040",
+  "archiveOrgUrl": "http://web.archive.org/web/20240704043040/https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-danya-taymor-musical-jamestown-revival-2e20f5ca",
+  "textIssues": [
+    "Word count too low: 88 (min: 300)"
+  ]
 }
