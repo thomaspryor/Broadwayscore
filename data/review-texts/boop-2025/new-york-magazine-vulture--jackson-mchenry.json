@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"Unsteadiness in premise can be covered for by verve of execution, which Boop! does find here and there\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/boop-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260103021238",
-  "archiveOrgUrl": "http://web.archive.org/web/20260103021238/https://www.vulture.com/article/theater-review-betty-boop-broadway-musical.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20260103021238/https://www.vulture.com/article/theater-review-betty-boop-broadway-musical.html",
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 58,
+      "performances": 71,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "the thing adds up to less than the sum of its bits",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Rogers has the kind of charm and ease with physical comedy that makes you resort to old-fashioned forms of praise: a cutup, a laugh riot, a real pistol",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Boop! is so slapdash, you long for a more thought-out inquiry",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds individual elements charming (particularly Rogers' performance) but ultimately deems the show incoherent and poorly conceived, with significant structural and aesthetic problems that prevent recommendation. | GPT-4o-mini: The review reflects a mix of positive and negative elements, with some praise for performances but significant criticism of the book and overall coherence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:08.654Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

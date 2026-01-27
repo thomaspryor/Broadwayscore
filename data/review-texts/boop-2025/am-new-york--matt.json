@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Yes, it’s kid-friendly. Yes, it’s visually slick. But it’s also toothless. A show about a boundary-pushing cartoon icon shouldn’t feel this safe or generic. Betty Boop may be ready for her close-up, but this isn’t the vehicle she deserves. You are better off watching the original animated shorts on YouTube.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251110111914",
-  "archiveOrgUrl": "http://web.archive.org/web/20251110111914/https://www.amny.com/entertainment/broadway/boop-the-musical-boop-oop-a-dont/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251110111914/https://www.amny.com/entertainment/broadway/boop-the-musical-boop-oop-a-dont/",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 30,
+      "performances": 53,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "polished, peppy, and painfully underwhelming",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "You are better off watching the original animated shorts on YouTube",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "it's also toothless. A show about a boundary-pushing cartoon icon shouldn't feel this safe or generic",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly tells readers they are 'better off' skipping the show, systematically criticizes the book, music, and direction while offering only scattered praise for technical elements and some performances. | GPT-4o-mini: The review expresses significant disappointment with the musical's execution, plot, and music, leading to a clear recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:28.287Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

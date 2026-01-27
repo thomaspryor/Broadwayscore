@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "And Mitchell handles everything with his usual slick, Broadway-style flair, filling the stage with so much energy that you get caught up in the sheer giddiness of it all.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 71,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -34,5 +34,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250725025647/https://nystagereview.com/2025/04/07/boop-boop-oop-a-doop/",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "3/5"
+  "extractedStars": "3/5",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 43,
+      "music": 58,
+      "performances": 87,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "But you know what? You'll have a hell of a good time anyway.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "She's single-handedly responsible for that fourth star you see in the box above this review.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Boop! suffers from myriad problems, including a clunky book, generally unmemorable score, and cheap-looking production values.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticism of the book and score, the critic gives 4 stars and explicitly states audiences will have 'a hell of a good time,' with the lead performance earning extraordinary praise that elevates the overall experience. | GPT-4o-mini: The review highlights strong performances, particularly from Jasmine Amy Rogers, but criticizes the book and overall narrative, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:33.439Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
