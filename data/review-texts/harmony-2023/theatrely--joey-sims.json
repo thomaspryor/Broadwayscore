@@ -7,7 +7,63 @@
   "publishDate": "November 13, 2023",
   "fullText": "But far from unlocking the Harmonists’ story, Rabbi’s narration feels awkwardly grafted onto an underdeveloped narrative, an attempt at forcing deeper relevance onto a work that hasn’t otherwise earned it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 39,
+    "confidence": "medium",
+    "range": {
+      "low": 30.5,
+      "high": 47.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels awkwardly grafted onto an underdeveloped narrative",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "an attempt at forcing deeper relevance onto a work that hasn't otherwise earned it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Rabbi’s narration feels awkwardly grafted onto an underdeveloped narrative",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws in the narrative structure and artificial attempts at relevance, indicating a production that fails to achieve its dramatic goals. | GPT-4o-mini: The review expresses strong criticism of the narrative structure and the effectiveness of the narration, indicating a clear negative sentiment towards the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:00.436Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 35,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
