@@ -582,6 +582,17 @@ All automation runs via GitHub Actions - no local commands needed.
   - `show_filter`: Process only specific show (REQUIRED for parallel runs)
   - `stealth_proxy`: Use ScrapingBee stealth mode (75 credits/request)
 - **Script:** `scripts/collect-review-texts.js`
+- **Truncation Detection:** The script detects if scraped text is truncated:
+  - Checks for paywall text ("subscribe", "sign in", "members only")
+  - Checks for "read more" or "continue reading" prompts
+  - Checks if text ends with proper punctuation
+  - Checks if fullText is shorter than 1.5x the excerpt
+  - Checks for footer junk ("privacy policy", "terms of use")
+  - Marks reviews as `textQuality: "truncated"` if signals detected
+- **Audit script:** `node scripts/audit-truncated-reviews.js`
+  - Scans all existing reviews for truncation signals
+  - Flags false positives (marked "full" but actually truncated)
+  - Saves list to `data/audit/truncated-reviews-to-fix.json`
 
 ### `.github/workflows/llm-ensemble-score.yml`
 - **Runs:** Manual trigger only (workflow_dispatch)
