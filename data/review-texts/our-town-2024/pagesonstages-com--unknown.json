@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 67,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 58,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show is beautiful and moving on its own merits— without anything flashy at all",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the spoken words don't quite hold up as well as the overarching concepts do",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "spending a couple hours of our lives watching Our Town and thinking about how small we are might be emboldening in some way",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticisms of the script and lead performance, the reviewer finds the production 'beautiful and moving' with excellent design and ultimately suggests the theater experience is worthwhile and 'emboldening.' | GPT-4o-mini: The review expresses mixed feelings, praising the production's aesthetic and themes while criticizing the script and performances, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:13:33.382Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 62,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

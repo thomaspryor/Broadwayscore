@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 37.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": 68,
+      "performances": 73,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "little of \"Moulin Rouge\" is done better than the movie, which is half an hour shorter and twice as sweet",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it does feel like a throwback to an era when musicals meant little more than the efficient and intellectually-deficient delivery of a collection of melodies",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Derek McLane's set is arguably to \"Moulin Rouge\" what the 20 foot puppet is to \"King Kong\" – the one undiluted delight, and the main reason to make the trip to the theater",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite praising the spectacular set design and capable performances, the critic finds the show fundamentally disappointing compared to the film, calling it 'intellectually-deficient' and suggesting the set is the only reason to attend. | GPT-4o-mini: The review expresses mixed feelings, praising the set design and performances while criticizing the overall execution compared to the film, leading to a conditional recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:09:03.590Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

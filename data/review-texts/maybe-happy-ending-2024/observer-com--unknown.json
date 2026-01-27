@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"I can only tell you how impossible it is to relate the freshness, the joy and the quality that elevate every aspect of this extraordinary work of theatre artistry. While the rapturous music and lyrics by the team of Will Aronson and Hue Park break your heart, the dazzling direction by Michael Arden reaches levels of perfection in staging and the technical marvels in the settings by Dane Laffrey leave you slack-jawed with awe. There is nothing familiar, no “seen it before” feeling to the action sequences that unfold... I love this show and cannot wait to see it again—and often.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 97,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 97,
+    "confidence": "high",
+    "range": {
+      "low": 90.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 98,
+      "performances": null,
+      "direction": 99
+    },
+    "keyPhrases": [
+      {
+        "quote": "I can only tell you how impossible it is to relate the freshness, the joy and the quality that elevate every aspect of this extraordinary work of theatre artistry",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the dazzling direction by Michael Arden reaches levels of perfection in staging",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I love this show and cannot wait to see it again—and often",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rave with superlative language ('extraordinary', 'perfection', 'impossible to relate'), explicit love declaration, and enthusiastic return intent. | GPT-4o-mini: The review expresses overwhelming enthusiasm and admiration for the show's music, direction, and overall artistry, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:05:59.185Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 98,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

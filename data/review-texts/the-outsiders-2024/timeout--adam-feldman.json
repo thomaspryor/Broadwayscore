@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The Outsiders is a surprisingly effective musical adaptation that captures the raw emotion and class tensions of S.E. Hinton's beloved novel with genuine heart and impressive stagecraft.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "surprisingly effective musical adaptation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "captures the raw emotion and class tensions",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "genuine heart and impressive stagecraft",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently positive language praising the adaptation's effectiveness, emotional authenticity, and production values without major reservations suggests a clear recommendation. | GPT-4o-mini: The review expresses strong positive sentiments about the adaptation's effectiveness and emotional depth, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:23:19.427Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

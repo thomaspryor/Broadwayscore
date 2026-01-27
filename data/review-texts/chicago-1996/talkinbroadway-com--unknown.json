@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"Chicago is as good now as it's ever been--a heartening experience, a life-affirming dedication to the magic and art of theatre, and something that absolutely should not be missed. Though all shows must eventually close, the glory and genius of Chicago should be celebrated while it's here, and with any luck, it will still be gracing and energizing Broadway for many years to come.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "absolutely should not be missed",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Chicago is as good now as it's ever been",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the glory and genius of Chicago should be celebrated",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified enthusiasm with explicit must-see language ('absolutely should not be missed') and superlative praise calling it 'glory and genius' with no reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm and a strong recommendation to see the show, indicating it is a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:51:33.796Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251114143731",
-  "archiveOrgUrl": "http://web.archive.org/web/20251114143731/https://stagebuddy.com/theater/theater-review/death-of-a-salesman"
+  "archiveOrgUrl": "http://web.archive.org/web/20251114143731/https://stagebuddy.com/theater/theater-review/death-of-a-salesman",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 88,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play is still moving and engrossing and the main themes remain the same",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "As Willie, Wendell Pierce is so passionate that it's hard not to care about him",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Race adds another dimension to this new version of the 'Death of A Salesman,' a subtext while enhancing the bigger message",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the performances, finds the play 'moving and engrossing,' and appreciates how the racial casting adds meaningful dimension without concerns being realized. | GPT-4o-mini: The review highlights strong performances and meaningful themes, indicating a clear recommendation despite some reservations about the revival's changes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:52:38.622Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

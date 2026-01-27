@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251204073827",
-  "archiveOrgUrl": "http://web.archive.org/web/20251204073827/https://nypost.com/2022/10/09/death-of-a-salesman-broadway-review-so-so-revival-lacks-fire/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251204073827/https://nypost.com/2022/10/09/death-of-a-salesman-broadway-review-so-so-revival-lacks-fire/",
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": 55,
+      "performances": 54,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "None of these add-ons refresh or galvanize the story — they sedate it like theatrical Xanax",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The pieces don't connect, and neither do we",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Nice songs, but not enough attention was paid to the basics",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is predominantly critical of direction, design, and overall execution, with only modest praise for some performances and the racial casting choice, clearly not recommending the production. | GPT-4o-mini: The review is predominantly negative, criticizing the direction and overall execution while acknowledging some performances, leading to a low recommendation score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:52:26.484Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

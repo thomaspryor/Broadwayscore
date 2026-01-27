@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20151018122035",
-  "archiveOrgUrl": "http://web.archive.org/web/20151018122035/http://articles.philly.com/2011-03-24/news/29181934_1_mormonism-andrew-rannells-show-ends"
+  "archiveOrgUrl": "http://web.archive.org/web/20151018122035/http://articles.philly.com/2011-03-24/news/29181934_1_mormonism-andrew-rannells-show-ends",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 77.5,
+      "high": 100
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Its triumph - that's not too strong a word",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The show is a hoot - and a literal guilty pleasure",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the ultimate feel-good musical, and Broadway's genuine paradox",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses strong positive language like 'triumph' and 'ultimate feel-good musical,' praises performances as 'wonderful' and 'maximum ingratiation,' and despite noting the show's controversial content, ultimately celebrates its deeper message about faith and comfort. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show, highlighting its humor and underlying message, leading to a strong recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:48:08.792Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 95,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

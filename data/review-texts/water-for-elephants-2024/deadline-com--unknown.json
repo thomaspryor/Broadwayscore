@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"Water For Elephants is a pleasant, visually beguiling show\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 72
+    },
+    "keyPhrases": [
+      {
+        "quote": "pleasant",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "visually beguiling",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "pleasant, visually beguiling show",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses mild positive language ('pleasant', 'visually beguiling') but the brevity and lukewarm tone suggest qualified approval rather than strong enthusiasm. | GPT-4o-mini: The review offers a generally positive sentiment but lacks depth and specific praise, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:23:43.353Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

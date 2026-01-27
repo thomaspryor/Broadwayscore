@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250723025348",
-  "archiveOrgUrl": "http://web.archive.org/web/20250723025348/https://www.theatermania.com/news/review-real-women-have-curves-is-the-realest-musical-on-broadway-right-now_1774090/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250723025348/https://www.theatermania.com/news/review-real-women-have-curves-is-the-realest-musical-on-broadway-right-now_1774090/",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": 76,
+      "performances": 89,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "it scores an all-around 10 in the story it wants to tell",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "this triumphant musical",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It may not be the flashiest musical of the season, but it's real. The realest thing Broadway has seen in quite some time.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses strongly positive language like 'triumphant musical' and '10 in the story it wants to tell,' praises performances extensively, and concludes it's desperately needed and 'the realest thing Broadway has seen in quite some time.' | GPT-4o-mini: The review expresses strong enthusiasm for the musical's themes, performances, and direction, indicating it as a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:15:35.831Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

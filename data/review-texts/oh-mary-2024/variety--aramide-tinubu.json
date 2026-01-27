@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Cole Escola's irreverent comedy about Mary Todd Lincoln is a raucous, profane and utterly delightful romp that feels like a much-needed tonic for our times.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "utterly delightful romp",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "feels like a much-needed tonic for our times",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "raucous, profane and utterly delightful",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language throughout with superlatives like 'utterly delightful' and describing it as a 'much-needed tonic' suggests clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and enjoyment, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:12:28.873Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

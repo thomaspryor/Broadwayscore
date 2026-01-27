@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Book of Mormon is easily the best new American musical in years, a ravishing entertainment that's both hilarious and surprisingly sweet.",
   "originalScore": 100,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 94,
+      "music": 93,
+      "performances": 92,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Book of Mormon is a sick mystic revelation, the most exuberantly entertaining Broadway musical in years",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Brimming with cheerful obscenity, sharp satire and catchy tunes",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you will be transported back ten years, when The Producers and Urinetown resurrected American musical comedy",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: A 5/5 star review with unqualified superlatives like 'sick mystic revelation' and 'most exuberantly entertaining Broadway musical in years' represents the highest tier of critical enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm and praise for the musical's writing, performances, and direction, indicating it as a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:49:48.794Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

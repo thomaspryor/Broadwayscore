@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 78,
+      "performances": 91,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "all of whom deserve kudos for the revelatory production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "If seeing previous productions of Death of a Salesman has inured you to Willy's ultimate fate, this one should bring back the tears",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "could almost convince you that somebody has finally staged the production of Death of a Salesman that Miller always had in mind",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic calls this a 'revelatory production' with exceptional performances, particularly praising Pierce and Clarke, while noting some historical limitations that don't significantly detract from the overall positive assessment. | GPT-4o-mini: The review highlights strong performances and a revelatory production while acknowledging some historical omissions, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:53:05.860Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

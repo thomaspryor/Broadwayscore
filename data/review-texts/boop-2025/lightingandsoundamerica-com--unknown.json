@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "“..such lively, lighthearted fun…you might as well sit back and surrender.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "lively, lighthearted fun",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you might as well sit back and surrender",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "such lively, lighthearted fun",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt suggests clear positive sentiment with 'lively, lighthearted fun' and advises surrender to the experience, indicating recommendation, but extremely limited text prevents higher confidence. | GPT-4o-mini: The review expresses a clear enjoyment of the show, suggesting a positive recommendation despite the lack of detailed critique.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:50:14.410Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

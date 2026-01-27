@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The Book of Mormon is a heavenly musical comedy that manages to be both deeply irreverent and surprisingly sweet-natured, a show that skewers religious fanaticism while affirming the human need for faith and community.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "heavenly musical comedy",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "manages to be both deeply irreverent and surprisingly sweet-natured",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "skewers religious fanaticism while affirming the human need for faith and community",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise using 'heavenly' and highlighting the show's sophisticated balance of irreverence with genuine heart, indicating clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and highlights both the irreverence and sweetness of the show, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:50:09.473Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

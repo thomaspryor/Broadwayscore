@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"The endless production becomes totally reliant on the amped-up singing of leads... I was board all right.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 30,
+      "performances": 35,
+      "direction": 20
+    },
+    "keyPhrases": [
+      {
+        "quote": "The endless production becomes totally reliant on the amped-up singing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I was board all right",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The endless production becomes totally reliant on the amped-up singing of leads",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states boredom and criticizes the production as 'endless' and overly dependent on loud vocals to compensate for other deficiencies. | GPT-4o-mini: The review expresses clear dissatisfaction with the production, indicating boredom and reliance on singing without positive elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:51:00.647Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

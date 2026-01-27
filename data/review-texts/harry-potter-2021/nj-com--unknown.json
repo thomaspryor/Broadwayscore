@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20181005133906",
-  "archiveOrgUrl": "http://web.archive.org/web/20181005133906/https://www.nj.com/entertainment/index.ssf/2018/04/harry_potter_cursed_child_broadway_review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20181005133906/https://www.nj.com/entertainment/index.ssf/2018/04/harry_potter_cursed_child_broadway_review.html",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 90,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "a magnificent treat — both an ingenious continuation of the Potter saga and a complete reinvention of it for an entirely new form",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I sat through this two-part, five-and-a-half-hour effort alternately awestruck and giddy",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "one of the most visually majestic, consistently surprising Broadway productions ever mounted",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is unqualified enthusiasm with superlative language throughout ('magnificent treat', 'awestruck and giddy', 'most visually majestic ever'), praising every aspect from story to direction to effects with no meaningful reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its emotional depth and visual spectacle, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:00:05.859Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

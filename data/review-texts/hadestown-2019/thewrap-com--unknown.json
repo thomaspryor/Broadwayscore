@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250709181458",
-  "archiveOrgUrl": "http://web.archive.org/web/20250709181458/https://www.thewrap.com/hadestown-broadway-review-anais-mitchell-musical-orpheus-eurydice-trump/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250709181458/https://www.thewrap.com/hadestown-broadway-review-anais-mitchell-musical-orpheus-eurydice-trump/",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 83,
+      "performances": 75,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "there is something refreshing about a new musical that nods to the past even as it presents stage images and melodies that seem entirely fresh and new",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Mitchell's supple and often haunting score, a melodic mashup of folk-pop, jazz, blues, ragtime and even a tinge of gospel",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there's just not much story here — not nearly enough for a two and a half hour show",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticisms of the book and pacing, the critic finds much to admire in the music, design, and overall production, concluding with refreshing praise that outweighs the reservations. | GPT-4o-mini: The review expresses clear praise for the music and performances while acknowledging significant shortcomings in the book and pacing, leading to a balanced positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:55:25.356Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

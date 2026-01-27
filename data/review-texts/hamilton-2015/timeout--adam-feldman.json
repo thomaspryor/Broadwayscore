@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Hamilton is a knockout: a smart, stylish, emotionally generous show that pumps the exuberance of hip-hop through the frame of classic musical theater.",
   "originalScore": 100,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": 97,
+      "performances": 94,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "I love Hamilton. I love it like I love New York, or Broadway when it gets it right. And this is so right.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the greatest American musical in decades",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "What Miranda does with rhyme is simply staggering",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: 5/5 star review with unqualified superlatives like 'greatest American musical in decades' and passionate personal endorsement expressing love for the show. | GPT-4o-mini: The review expresses unqualified enthusiasm and praise for the show, highlighting its cultural impact and artistic achievements.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:58:16.244Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 92,
+      "performances": 93,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Book of Mormon, a must for South Park fans as well as the rest of mankind",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "uproariously entertaining, sometimes provocative musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The whole cast is top-notch",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is consistently positive throughout with enthusiastic language, praises all elements (book, score, direction, cast), and ends with an explicit 'must-see' recommendation for everyone. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical, highlighting its humor, performances, and inventive score, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:49:25.770Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

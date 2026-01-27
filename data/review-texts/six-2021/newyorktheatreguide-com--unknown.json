@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"The show itself is a retro-mashup with Gabrielle Slade’s bedazzled costumes featuring Reformation-inspired silhouettes; Carrie-Anne Ingrouille’s choreography showcases Tudor-meets-pop moves; and Emma Bailey’s scenery and Tim Deiling’s lighting feels like what a royal ballroom might look like in a techno disco. \n\nUltimately, the queens’ own stories of overcoming struggles and the show’s circuitous journey to Broadway are also beacons for the power of positivity, perseverance, and coming together in times of struggle. Just like these six “ex-wives,” we’ve all had it rough for the past year and a half, and the queens are here to bring in a new regime. Long may they reign.\" \n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "beacons for the power of positivity, perseverance, and coming together in times of struggle",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the queens are here to bring in a new regime. Long may they reign",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the queens’ own stories of overcoming struggles and the show’s circuitous journey to Broadway are also beacons for the power of positivity",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review celebrates the production design and themes with enthusiastic language, ending with strong endorsement despite focusing mainly on technical elements rather than comprehensive critique. | GPT-4o-mini: The review expresses enthusiasm for the show's themes and design, indicating a strong recommendation despite some lack of detail on specific elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:15:59.742Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

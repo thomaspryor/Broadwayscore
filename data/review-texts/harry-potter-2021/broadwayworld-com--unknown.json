@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's a good amount of entertainment in the special effects, including eye-tricking costume changes, a funky time-travel effect and flying objects passing over the audience",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "From row P of the orchestra section of the cavernous Lyric Theatre, one might feel a bit disconnected from the characters and plot",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Surely, judging from the enthusiastic responses throughout the two-parter, fans of the books and films were having a blast",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges entertainment value in the spectacle and fan enthusiasm but expresses significant disconnection from the material and notes accessibility issues for newcomers, resulting in a qualified, conditional response. | GPT-4o-mini: The review indicates enjoyment for fans but also highlights significant disconnect for those unfamiliar with the source material, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:59:06.992Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

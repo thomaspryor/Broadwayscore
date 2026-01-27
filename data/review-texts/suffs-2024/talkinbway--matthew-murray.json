@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Suffs is a musical that's more interested in being educational than entertaining, and while there's nothing wrong with that approach, it makes for a show that feels more like a history lesson than a theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "more interested in being educational than entertaining",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "feels more like a history lesson than a theatrical experience",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there's nothing wrong with that approach",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic fundamentally criticizes the show's prioritization of education over entertainment, suggesting it fails as theater despite acknowledging the validity of its educational approach. | GPT-4o-mini: The review indicates a lack of entertainment value, suggesting a mixed recommendation that leans towards indifference.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:19:59.711Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 50,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 43,
+      "music": 85,
+      "performances": 79,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "you'll likely be transfixed by most of what happens",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "John Logan's book is so utterly simplistic it feels like it took the Tony-winning scribe took 15 minutes to pen it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "this crowd-pleasing spectacle",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite harsh criticism of the book's simplicity, the reviewer is clearly impressed by the production values, performances, and musical numbers, describing the show as 'transfixing' and acknowledging its crowd-pleasing nature. | GPT-4o-mini: The review expresses clear enjoyment of the production's visual and musical elements but critiques the simplistic book and character depth, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:08:19.319Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

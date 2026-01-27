@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 70,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": null,
+      "performances": 77,
+      "direction": 61
+    },
+    "keyPhrases": [
+      {
+        "quote": "Our Town's power remains undimmed",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "If this isn't the most fully realized revival, it nevertheless allows enough of Wilder's singular vision to come through",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "it is plagued by many niggling decisions that point to a certain blurriness of vision",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly respects the play's enduring power and praises many performances, but identifies significant directorial and design flaws that prevent this from being a definitive revival, ultimately concluding it's worth seeing despite its imperfections. | GPT-4o-mini: While the review highlights some strong performances and the enduring power of the script, it also points out significant flaws in direction and vision, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:13:17.088Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 68,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

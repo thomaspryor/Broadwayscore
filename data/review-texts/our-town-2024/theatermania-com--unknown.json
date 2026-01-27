@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250720101219",
-  "archiveOrgUrl": "http://web.archive.org/web/20250720101219/https://www.theatermania.com/news/review-our-town-returns-to-broadway-with-jim-parsons-a-diverse-cast-and-onstage-seating_1752331/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250720101219/https://www.theatermania.com/news/review-our-town-returns-to-broadway-with-jim-parsons-a-diverse-cast-and-onstage-seating_1752331/",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 76.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 82,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kenny Leon's new revival of Our Town at the Ethel Barrymore Theatre answers that question with a resounding Yes",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the emotional impact is a testament to the power of the play and this production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "No need to bother with a cornerstone. Our Town is here to stay",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review strongly praises Leon's direction and reimagining of the classic, notes terrific performances from the large cast, and concludes with clear endorsement despite minor criticisms of some performances and chemistry. | GPT-4o-mini: The review expresses strong praise for the direction and performances, highlighting the emotional impact and modern relevance of the production, with only minor reservations about some performances.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:13:54.161Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 88,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

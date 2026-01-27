@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Hadestown is a triumph of musical theater craft, weaving together mythology and melody into something genuinely moving. Mitchell's folk-inflected score is both catchy and complex, served by a cast that sings with power and nuance.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": 89,
+      "performances": 78,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hadestown is something special, a sensory feast that's also a passionate debate between pragmatism and romance",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Mitchell's music, lush and strange and lyrically brilliant, has found its match in this cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The one weak spot is Daunno, whose vocal and acting chops don't stack up against his peers",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: 4/5 stars with enthusiastic praise for music, concept, and most performances, despite one noted weak performance - falls solidly in positive recommendation range. | GPT-4o-mini: The review expresses strong praise for the music and overall production, with only a minor critique of one performance, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:55:38.082Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

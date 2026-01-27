@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"For many, that will be enough. For others, it will feel like just a shadow of a play.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250727130049",
-  "archiveOrgUrl": "http://web.archive.org/web/20250727130049/https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-broadway-1236375485/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250727130049/https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-broadway-1236375485/",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 68,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "For many, that will be enough. For others, it will feel like just a shadow of a play.",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "misses that mark, and only manages to achieve a sci-fi, comic-book experience",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The best advice is not to overthink — or even just not to think of — the show and instead just hang on for the visceral thrill ride",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges spectacular production values and effects but finds the narrative and emotional connection lacking, ultimately presenting it as a conditional recommendation that 'depends on your taste' for spectacle over substance. | GPT-4o-mini: The review highlights strong production values and performances but criticizes the narrative and emotional depth, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:19:01.291Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

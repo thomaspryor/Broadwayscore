@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": 84,
+      "performances": 90,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "it redeems itself, gloriously",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a happy musical, the kind of traditional sweet and sassy Broadway entertainment that offers a generous and strategic mix of gorgeous sets, razzmatazz dance numbers, catchy tunes, a clever story, and well-timed hilarity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Josh Gad in what is likely to be a star-making performance",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging the show's controversial and vulgar content, the critic ultimately praises it as traditional Broadway entertainment with excellent performances, clever story, and strong production values, concluding it 'redeems itself, gloriously.' | GPT-4o-mini: The review expresses strong praise for the musical's entertainment value and performances while acknowledging some discomfort with its subject matter, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:48:58.423Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

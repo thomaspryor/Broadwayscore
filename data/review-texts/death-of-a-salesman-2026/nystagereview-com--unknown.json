@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 87,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pierce and Clarke deliver tremendous performances that keep us emotionally engaged despite the production's gimmicks",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "director Miranda Cromwell seems intent on imposing theatrical stylizations that call more attention to her contributions than the text",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Death of a Salesman still proves devastating with its Greek tragedy-like power. That is, if a director knows enough to stay out of its way",
+        "sentiment": "neutral",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The 3/5 star rating reflects a truly mixed review where outstanding lead performances battle against what the critic sees as misguided directorial choices that undermine Miller's classic text. | GPT-4o-mini: The review highlights strong performances but criticizes the direction and production choices, leading to a mixed recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:52:32.709Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

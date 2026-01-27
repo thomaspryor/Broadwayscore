@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251227130753",
-  "archiveOrgUrl": "http://web.archive.org/web/20251227130753/https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251227130753/https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force/",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 76,
+      "music": null,
+      "performances": 92,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "you can really go to this as not a fan and still have a very enjoyable time at the theatre",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "around five hours of really astonishing on-stage magic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The staging is true magic. The creators are up against incredible challenges... And they succeed wildly.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Consistently enthusiastic praise for the staging, direction, and performances with strong superlatives like 'astonishing,' 'sublime,' and 'wildly successful,' clearly recommending the show to both fans and newcomers. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its visual effects, performances, and emotional impact, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:00:50.232Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is at its best when it focuses on Jackson's artistry and creative process, particularly during rehearsal sequences that showcase his perfectionism and attention to detail.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is at its best when it focuses on Jackson's artistry and creative process",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "at its best when",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "the show is at its best when it focuses on Jackson's artistry",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The phrase 'at its best when' implies the show has weaker moments, suggesting a qualified positive response to specific elements rather than an overall endorsement. | GPT-4o-mini: The review highlights strengths in the portrayal of Jackson's artistry but lacks a broader recommendation for the show overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:07:37.818Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

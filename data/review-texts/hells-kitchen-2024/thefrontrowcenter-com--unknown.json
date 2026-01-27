@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240526155535",
-  "archiveOrgUrl": "http://web.archive.org/web/20240526155535/https://thefrontrowcenter.com/2023/11/hells-kitchen/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240526155535/https://thefrontrowcenter.com/2023/11/hells-kitchen/",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 73,
+      "performances": 83,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lewis is nothing short of brilliant, and this song stops the show",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the story and the musical numbers do not lineup. It often feels like the appearance of a song is checking off a box rather than moving the story along",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "surprised at the depth and vibrance of some of Keys' writing as well as the off-the-charts artistry shown by these performers",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises individual performances (especially Kecia Lewis) and Alicia Keys' music but identifies significant structural problems with the book and staging that prevent a clear recommendation. | GPT-4o-mini: The review highlights strong performances and musical elements but expresses significant concerns about the story's coherence and overall execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:03:55.332Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

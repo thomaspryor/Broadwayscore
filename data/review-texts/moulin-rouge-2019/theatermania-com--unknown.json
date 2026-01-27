@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230321181014",
-  "archiveOrgUrl": "http://web.archive.org/web/20230321181014/https://www.theatermania.com/broadway/reviews/moulin-rouge-on-broadway-is-spectacular_89397.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20230321181014/https://www.theatermania.com/broadway/reviews/moulin-rouge-on-broadway-is-spectacular_89397.html",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 90,
+      "performances": 85,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "They'll flock (as they should) to revel in its extraordinary showmanship — some of the best Broadway currently has on offer.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "If you go in expecting a spectacle, you will not be disappointed.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "If there is a major weakness in Moulin Rouge, it is the ending.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly recommends the show despite story weaknesses, praising the spectacular production values, performances, and music while explicitly stating audiences 'should' attend for the extraordinary showmanship. | GPT-4o-mini: The review expresses strong enthusiasm for the spectacle, music, and performances while noting some issues with the book and ending, leading to a solid recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:09:39.522Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

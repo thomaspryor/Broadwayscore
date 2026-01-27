@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 55,
+      "music": 80,
+      "performances": 43,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "the real problem with this revival is not its racial message but Cromwell's decision to infuse the play with the cheap, surface humor of sitcoms",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it's hard to take the mugging Wendell Pierce seriously, certainly it's even harder to care about the two clowns that are his sons",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "it has little of the universality and humanity of Miller's original play",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging some positive elements like the music and set design, the critic fundamentally rejects this production for undermining Miller's serious drama with sitcom-style humor and failing to capitalize on the racial recasting concept. | GPT-4o-mini: The review expresses significant criticism of the production's direction and character portrayals, leading to a clear negative recommendation despite some praise for individual elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:52:50.271Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 45,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

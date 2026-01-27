@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "This jukebox musical, which opened Thursday at the Stephen Sondheim Theatre, is actually fun — a rarity in the genre that's usually about as enjoyable as a root canal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 66,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "is actually fun",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a rarity in the genre that's usually about as enjoyable as a root canal",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "a rarity in the genre",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic calls the show 'actually fun' and positions it positively against the typically poor jukebox musical genre, suggesting qualified approval despite the very brief excerpt. | GPT-4o-mini: The review indicates that while the musical is fun, it also highlights the low expectations typically associated with the genre, leading to a mixed recommendation. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:47:47.645Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 60,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

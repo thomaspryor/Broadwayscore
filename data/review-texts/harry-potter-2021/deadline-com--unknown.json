@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251113162152",
-  "archiveOrgUrl": "http://web.archive.org/web/20251113162152/https://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251113162152/https://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 89,
+      "music": null,
+      "performances": 93,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cursed Child is a marvel, a shape-shifting play that effortlessly incorporates music and choreographed movement, classic storytelling and fresh perspectives",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "In a Broadway season of award-worthy revivals, this tale of whatever happened to The Boy Who Lived feels bracingly, piercingly new",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Harry Potter and The Cursed Child summons it all. Voila.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Critic uses superlatives like 'marvel' and 'bracingly, piercingly new,' praises all elements from story to stagecraft, and concludes with triumphant 'Voila,' indicating unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its innovative storytelling, impressive stagecraft, and emotional depth, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:59:27.129Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

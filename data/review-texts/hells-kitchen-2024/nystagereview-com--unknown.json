@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 48,
+      "music": 85,
+      "performances": 89,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical ultimately triumphs thanks to the soul-stirring music",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Making a remarkable stage debut, the 21-year-old performer instantly proves herself a budding star with her powerhouse vocals and irresistibly charming performance",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "not very interestingly told via the underwhelming book",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticism of the book, the 4/4 star rating and overwhelming praise for the music and lead performance, plus the phrase 'ultimately triumphs,' indicates a clear positive recommendation. | GPT-4o-mini: The review highlights strong performances and music while critiquing the book, leading to a solid positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:02:39.939Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

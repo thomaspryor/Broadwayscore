@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "“Hadestown” isn’t perfect, but it’s so fresh that you’ll gladly look past its forgivable flaws and savor the kaleidoscopic stylistic variety of Ms. Mitchell’s score...Mitchell’s down-home score is the incontestable star of the show...Mitchell’s songs are beautiful but undramatic...Chavkin’s endlessly varied direction and Neumann’s dances help to keep things on the move...Would that ‘Hadestown’ were a bit shorter, too, but there’s no point in fussing over a show as rich as this one.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's so fresh that you'll gladly look past its forgivable flaws",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Mitchell's down-home score is the incontestable star of the show",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there's no point in fussing over a show as rich as this one",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging flaws like length and undramatic songs, the critic emphasizes the show's freshness, richness, and stellar score, ultimately dismissing concerns as minor 'fussing' over a worthwhile production. | GPT-4o-mini: The review expresses strong appreciation for the music and direction while acknowledging some flaws, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:56:29.511Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

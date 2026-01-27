@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230329002427",
-  "archiveOrgUrl": "http://web.archive.org/web/20230329002427/https://thebroadwayblog.com/harry-potter-and-the-cursed-child-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20230329002427/https://thebroadwayblog.com/harry-potter-and-the-cursed-child-review/",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 78.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 88,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "the greatest one of all is that of great theater, which mesmerized viewers of all ages",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The triple-threat integration of stagecraft, technology, and good ole' acting chops legitimize Harry Potter's Broadway arrival",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Harry Potter is able to maintain focus as well as a captivating emotional integrity throughout",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Critic consistently praises the production's theatrical magic, performances, and technical achievements with minimal reservations, describing it as mesmerizing and legitimately successful on Broadway. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its captivating theatrical experience and exceptional performances, indicating a must-see status.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:00:43.702Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

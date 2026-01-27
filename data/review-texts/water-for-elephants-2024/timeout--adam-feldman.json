@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Water for Elephants is a show that aims for the heart and mostly hits its mark, even if it doesn't always soar as high as its big-top ambitions suggest.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 63.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "aims for the heart and mostly hits its mark",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "doesn't always soar as high as its big-top ambitions suggest",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review gives qualified praise with 'mostly hits its mark' but immediately undercuts it with the caveat that it 'doesn't always soar,' creating a mixed recommendation that leans slightly positive. | GPT-4o-mini: The review indicates a clear positive sentiment with some reservations about the show's execution, suggesting a recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:24:14.377Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 75,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

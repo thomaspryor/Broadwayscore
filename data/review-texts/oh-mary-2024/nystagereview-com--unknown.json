@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 71,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'm obliged to admit I agreed with the jollity during some of the time",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "Escola made it difficult for me to find all that much funny in a script that seeks hilarity by having Mary Todd Lincoln gleefully blast not only the f-word but also the c-word",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Escola has surrounded themself with an accomplished, willing cast, directed with no holds barred by Sam Pinkleton",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The 3/5 star rating combined with lukewarm language ('agreed with the jollity during some of the time') and criticism of the script's reliance on crude humor places this in mixed territory, though the praise for performances keeps it from being negative. | GPT-4o-mini: The review presents a mixed view of the production, highlighting some amusing moments while critiquing the overall script and humor, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:11:05.172Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

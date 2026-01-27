@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 80.5,
+      "high": 97.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 89,
+      "music": 90,
+      "performances": 93,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "is the feel-good show of the season, making us root for the characters to succeed",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Huerta and Velez's Mexican and Broadway tinged score does not have a weak link in it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Not only is Real Women Have Curves a joyous entertainment, it is also a moving tribute to the Mexican immigrant experience",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic delivers unqualified praise calling it 'the feel-good show of the season' and 'joyous entertainment,' with specific acclaim for all creative elements and performances, positioning it as both entertaining and meaningful. | GPT-4o-mini: The review is overwhelmingly positive, highlighting strong performances, a vibrant score, and a meaningful narrative, leading to a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:15:22.410Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 92,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

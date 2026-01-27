@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 88,
+      "performances": 80,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "I really enjoyed the show and highly recommend Stranger Things: The First Shadow",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Utterly unique in dramatic structure, Stranger Things encapsulates a full spectrum of types of stories told on stage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The show's most outstanding features are its scenic, illusions, sound, and original music",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Clear explicit recommendation with extensive praise for design elements, structure, and overall theatrical effectiveness, despite some disturbing content. | GPT-4o-mini: The review expresses strong enthusiasm and high praise for the production's unique structure and design elements, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:18:42.529Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

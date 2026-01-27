@@ -9,8 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "If you are the kind of theatergoer who finds even the most energetic musicals insufficiently hyper-stimulating, 'Moulin Rouge! The Musical' may be just your cup of absinthe.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 51,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 51,
+    "confidence": "low",
+    "range": {
+      "low": 35,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you are the kind of theatergoer who finds even the most energetic musicals insufficiently hyper-stimulating",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "may be just your cup of absinthe",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "theatergoer who finds even the most energetic musicals insufficiently hyper-stimulating",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review offers a qualified, conditional recommendation suggesting the show appeals to a specific niche audience seeking extreme stimulation, implying it may be too much for general audiences. | GPT-4o-mini: The review suggests that the show may appeal only to a very specific audience, indicating a lack of broad recommendation. | Note: Models differed by 22 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:09:23.815Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 40,
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 22 points (Claude: 62, OpenAI: 40)"
+    ]
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20221227195357",
-  "archiveOrgUrl": "http://web.archive.org/web/20221227195357/https://www.theatermania.com/broadway/reviews/is-hadestown-the-smartest-new-musical-on-broadway_88455.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20221227195357/https://www.theatermania.com/broadway/reviews/is-hadestown-the-smartest-new-musical-on-broadway_88455.html",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 87,
+      "performances": 77,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "if you're looking for a gorgeous, formally challenging, and finely performed show wrapped in the comforting blanket of the classics, you can do no better than Hadestown",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Hadestown is visually and aurally stunning — which is why I was disappointed that it left no emotional impact on me",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "appears to be the smartest new musical on Broadway — but does that automatically make it a great show?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the production values, score, and staging extensively but is disappointed by the emotional impact and book, ultimately giving a qualified recommendation for those seeking intelligent, well-crafted theater. | GPT-4o-mini: While the review praises the music and production, it expresses disappointment in the emotional impact and character development, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:55:03.849Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

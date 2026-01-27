@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"Two of the producers of the musical Wicked bear the name Platt, which (in German) means flat, and one the name Stone, which (in English) means heavy. Why not also one called Long, although it is too much to ask for one called Boring, all of which apply to the show.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 18,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 18,
+    "confidence": "medium",
+    "range": {
+      "low": 5.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "flat",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "heavy",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "too much to ask for one called Boring, all of which apply to the show",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses a clever wordplay critique to call the show flat, heavy, long, and boring - all clearly negative descriptors that pan the production. | GPT-4o-mini: The review is overwhelmingly negative, suggesting a complete rejection of the show. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:24:56.865Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 10,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 94,
+      "performances": 92,
+      "direction": 91
+    },
+    "keyPhrases": [
+      {
+        "quote": "Quite possibly the most exciting new musical of the Broadway season",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's a lovely way to end a show that casts a seductive spell in its first note and never lets you go",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The music is reliably gorgeous throughout",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Enthusiastic praise throughout with superlatives like 'most exciting new musical of the season' and 'reliably gorgeous,' with detailed appreciation for all elements and no significant reservations. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the musical's excitement, strong performances, and effective direction, leading to a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:53:52.493Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

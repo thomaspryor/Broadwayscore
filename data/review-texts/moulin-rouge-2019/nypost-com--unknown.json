@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250724143204",
-  "archiveOrgUrl": "http://web.archive.org/web/20250724143204/https://nypost.com/2019/07/25/moulin-rouge-review-nycs-hottest-nightclub-is-on-broadway/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250724143204/https://nypost.com/2019/07/25/moulin-rouge-review-nycs-hottest-nightclub-is-on-broadway/",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 88,
+      "performances": 89,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "The fabulous new musical that opened Thursday night on Broadway: raucous sensory overload",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The finest show of its kind since 'Mamma Mia!,' 'Moulin Rouge!' is a reminder that jukebox musicals aren't required to be soulless behemoth tourist traps. They can be — gasp! — creative.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Just what Broadway needed: A 'Rouge' awakening.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Reviewer uses consistently enthusiastic language ('fabulous,' 'finest show of its kind'), praises creativity and performances, and concludes with strong endorsement that this is exactly what Broadway needed. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its creativity, performances, and overall impact, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:09:11.126Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

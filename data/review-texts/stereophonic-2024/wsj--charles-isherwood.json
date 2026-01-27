@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "This ambitious three-hour musical about a rock band making an album in the 1970s is both exhausting and exhilarating, a work that earns its epic length through its authentic portrait of the creative process.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "both exhausting and exhilarating",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "earns its epic length through its authentic portrait of the creative process",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "ambitious three-hour musical",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic uses balanced positive language ('exhilarating', 'earns its epic length') while acknowledging the demanding nature ('exhausting', 'three-hour'), indicating a clear recommendation despite the show's challenges. | GPT-4o-mini: The review expresses a strong positive sentiment about the musical's ambitious nature and its authentic portrayal, suggesting a clear recommendation despite the lengthy runtime.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:17:52.609Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"The show is pure sunshine baked into a musical and dressed in disco balls, sequins, and feathered boas. My, my, how could we resist this?\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "pure sunshine baked into a musical",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "My, my, how could we resist this?",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The show is pure sunshine baked into a musical",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Enthusiastic praise using vivid positive imagery and rhetorical question suggesting irresistible appeal, indicating strong recommendation despite brief excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm and joy about the show, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:04:51.640Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

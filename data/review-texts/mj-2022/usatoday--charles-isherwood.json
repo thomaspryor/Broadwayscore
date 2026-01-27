@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The show succeeds in capturing the electricity of Jackson's performances, even if it doesn't dig deep into the complexities of his life and legacy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 73,
+      "direction": 72
+    },
+    "keyPhrases": [
+      {
+        "quote": "succeeds in capturing the electricity of Jackson's performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "even if it doesn't dig deep into the complexities of his life and legacy",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the show succeeds in capturing the electricity of Jackson's performances",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the show's ability to capture Jackson's performance energy but notes a significant limitation in depth, suggesting a qualified positive recommendation. | GPT-4o-mini: The review highlights strong performances but notes a lack of depth in storytelling, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:07:32.162Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

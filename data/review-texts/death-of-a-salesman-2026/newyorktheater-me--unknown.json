@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,63 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 52,
+    "confidence": "low",
+    "range": {
+      "low": 37,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": 70,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Death of a Salesman is a disappointment in several ways",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "These two formidable talents do give largely invigorating performances",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "makes the three hour and ten minute running time – half an hour longer than the 2012 Broadway revival – feel overlong",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: While praising Pierce and Clarke's performances, the critic finds the production fundamentally flawed with historical credibility issues, directorial problems, and excessive length, calling it 'a disappointment in several ways.' | GPT-4o-mini: The review acknowledges strong performances but highlights significant issues with direction and historical credibility, leading to a mixed recommendation. | Note: Models differed by 20 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:52:21.050Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 62,
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 20 points (Claude: 42, OpenAI: 62)"
+    ]
+  }
 }

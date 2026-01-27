@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "“ 'Ragtime' is generous to all of its characters...But there is still something touching about its conviction that they will have a better life. I mean, Americans look to musicals for hope, don’t we?\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 65.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ragtime is generous to all of its characters",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "there is still something touching about its conviction that they will have a better life",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Americans look to musicals for hope, don't we?",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows appreciation for the show's emotional qualities and hopeful message, suggesting a positive reception, though the brevity and lack of specific production details creates significant uncertainty. | GPT-4o-mini: The review expresses a positive sentiment about the themes of hope and character generosity but lacks strong enthusiasm or specific praise for the production elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:14:42.469Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

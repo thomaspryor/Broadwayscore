@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20221017130232",
-  "archiveOrgUrl": "http://web.archive.org/web/20221017130232/https://www.washingtonpost.com/entertainment/theater_dance/hadestown-arrives-on-broadway-and-well-it-all-goes-to-you-know-where/2019/04/17/ed83afa8-6112-11e9-9ff2-abc984dc9eec_story.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20221017130232/https://www.washingtonpost.com/entertainment/theater_dance/hadestown-arrives-on-broadway-and-well-it-all-goes-to-you-know-where/2019/04/17/ed83afa8-6112-11e9-9ff2-abc984dc9eec_story.html",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 45,
+      "performances": 63,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "Then again, in a season thus far of disappointing musicals, the mysteries encompassing this earnestly humorless show... hardly seem worth unraveling",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "never fulfills that essential mandate — revealing why a jazzy adaptation of Orpheus and Eurydice's story should merit all this muscular stomping around",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "At the show's few memorably emotional musical moments... the elements of the production converge harmoniously",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show fundamentally flawed despite praising individual elements like design and some performances, calling it part of a disappointing Broadway season and questioning its essential worth. | GPT-4o-mini: The review expresses significant disappointment with the overall execution of the musical, highlighting more problems than strengths, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:56:14.893Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

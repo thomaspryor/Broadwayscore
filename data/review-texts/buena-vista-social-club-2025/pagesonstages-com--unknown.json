@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Concerts disguised as musicals annoy me.\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Concerts disguised as musicals annoy me",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Concerts disguised as musicals annoy me.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic expresses clear annoyance with the show's concept, suggesting it fails as a musical by being merely a concert, but the extremely brief excerpt limits confidence in the full assessment. | GPT-4o-mini: The review expresses a clear disdain for the concept of the show, indicating a strong rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:50:26.232Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

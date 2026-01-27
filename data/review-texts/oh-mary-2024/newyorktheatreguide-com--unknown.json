@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"the entire ensemble elevates very silly jokes into a work of art that keeps you riveted from start to finish\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 94,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "Oh, Mary! lands on Broadway with a triumphant flourish",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "we had literally laughed until our faces hurt",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the entire ensemble elevates very silly jokes into a work of art that keeps you riveted from start to finish",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Enthusiastic review with superlative language ('triumphant flourish', 'work of art'), strong praise for performances, and clear evidence of audience engagement ('laughed until our faces hurt'). | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and overall experience, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:10:46.099Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

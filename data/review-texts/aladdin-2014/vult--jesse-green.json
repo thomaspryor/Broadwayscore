@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is gorgeous to look at, but it's also exhausting — like being trapped in a very expensive, very loud toy store.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is gorgeous to look at",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "it's also exhausting",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "like being trapped in a very expensive, very loud toy store",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges visual beauty but the vivid negative metaphor of being 'trapped' in an overwhelming experience suggests they cannot recommend it despite production values. | GPT-4o-mini: The review acknowledges visual appeal but emphasizes exhaustion and a negative experience overall, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:47:37.485Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

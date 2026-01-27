@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251210081147",
-  "archiveOrgUrl": "http://web.archive.org/web/20251210081147/https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251210081147/https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 94,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "She's utterly fabulous!",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "If you're like me, you'll laugh until there are tears in your eyes.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Escola is magnificent as Mary",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic expresses unqualified enthusiasm for Cole Escola's performance and the show's irreverent humor, with strong positive language throughout and an explicit emotional recommendation about laughing until tears. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and the overall experience, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:11:33.441Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

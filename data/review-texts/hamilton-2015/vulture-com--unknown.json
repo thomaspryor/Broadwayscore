@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"A second look suggests that something even more significant is going on. The breakthrough isn’t so much the incorporation of those contemporary genres; after all, Miranda already did that, throwing in Latin music to boot, in the charming 'In the Heights.' But 'Hamilton' not only incorporates newish-to-Broadway song forms; it requires and advances them, in the process opening up new territory for exploitation. It’s the musical theater, not just American history, that gets refurbished. And perhaps popular music, too. Call it Miranda’s manifest destiny, though one dreads the caravans of poor imitators that will surely trail behind.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260102010909",
-  "archiveOrgUrl": "http://web.archive.org/web/20260102010909/https://www.vulture.com/2015/08/theater-review-hamilton.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20260102010909/https://www.vulture.com/2015/08/theater-review-hamilton.html",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 87,
+      "music": 95,
+      "performances": 88,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "So let's not call Hamilton groundbreaking. Let's call it, with hope for the future, historic.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The breakthrough isn't so much the incorporation of those contemporary genres; after all, Miranda already did that...But Hamilton not only incorporates newish-to-Broadway song forms; it requires and advances them, in the process opening up new territory for exploitation.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "that, like all my other cavils, is far outweighed by everything that's great",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers overwhelming praise for Hamilton's revolutionary approach to musical theater, calling it 'historic' and noting how it advances the art form itself, with only minor technical criticisms that are explicitly 'outweighed by everything that's great.' | GPT-4o-mini: The review expresses strong enthusiasm for the innovative musical elements and performances, indicating a must-see experience despite minor critiques.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:58:37.551Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

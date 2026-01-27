@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240621150124",
-  "archiveOrgUrl": "http://web.archive.org/web/20240621150124/https://thefrontrowcenter.com/2018/04/harry-potter-and-the-cursed-child/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240621150124/https://thefrontrowcenter.com/2018/04/harry-potter-and-the-cursed-child/",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 92,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "we stood up and cheered farewell, like the crowds used to do when a ship was leaving. If given our druthers we would have put on an invisibility cloak and joined them.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Under the spectacular direction of John Tiffany we are included, indeed, we are beckoned, into the world of witches",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "These are not the fancy schmancy special effect, but they are spectacular. They are simplicity itself, made of puppetry magic and lighting that tells us exactly where to look.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer expresses unqualified enthusiasm throughout, describing spectacular direction and effects, audience engagement ('cheered', 'gasps of recognition'), and ends with the ultimate endorsement of wanting to join the characters on stage. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising its storytelling, direction, and overall experience, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:00:59.272Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

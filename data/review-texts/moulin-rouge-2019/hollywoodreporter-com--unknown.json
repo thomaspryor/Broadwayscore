@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20210201220136",
-  "archiveOrgUrl": "http://web.archive.org/web/20210201220136/https://www.hollywoodreporter.com/review/moulin-rouge-musical-theater-1226326"
+  "archiveOrgUrl": "http://web.archive.org/web/20210201220136/https://www.hollywoodreporter.com/review/moulin-rouge-musical-theater-1226326",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 89,
+      "performances": 85,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "But it virtually defies you not to be entertained",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's safe to assume nobody will leave the Al Hirschfeld Theatre feeling they haven't gotten a big, glitzy, sexy bang for their buck",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "book writer John Logan hasn't done much to fortify the material dramatically",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite criticizing the weak book, Rooney clearly recommends this as spectacular entertainment that delivers value, praising the performances, direction, and musical arrangements extensively. | GPT-4o-mini: The review expresses strong enthusiasm for the production's spectacle and performances while noting some weaknesses in the book, leading to a solid positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:08:44.429Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

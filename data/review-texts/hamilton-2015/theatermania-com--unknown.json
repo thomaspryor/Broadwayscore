@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 98,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230129162922",
-  "archiveOrgUrl": "http://web.archive.org/web/20230129162922/https://www.theatermania.com/broadway/reviews/hamilton_73764.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20230129162922/https://www.theatermania.com/broadway/reviews/hamilton_73764.html",
+  "llmScore": {
+    "score": 98,
+    "confidence": "high",
+    "range": {
+      "low": 93,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": 99,
+      "performances": 98,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is nothing short of a masterpiece, destined to change Broadway forever",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "He's created a work sure to be enjoyed by generations to come",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Every detail and moment has been delicately crafted",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rave review that calls Hamilton 'nothing short of a masterpiece' with virtually no criticisms and superlative praise for all elements. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical, highlighting its artistic merit and cultural significance, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:58:03.665Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 98,
+    "openaiScore": 98,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

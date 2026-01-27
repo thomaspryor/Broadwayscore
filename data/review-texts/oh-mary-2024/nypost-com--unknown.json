@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240922191120",
-  "archiveOrgUrl": "http://web.archive.org/web/20240922191120/https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240922191120/https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 86,
+      "music": null,
+      "performances": 94,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a fiery, venomous, irrepressible, doofy, mesmeric performance that is an unmissable highlight of the season",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "this season's finest comedy, 'Oh, Mary!,' is making is 'em laugh just as hard",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Escola has also written a taut and unexpectedly absorbing story",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic calls this 'this season's finest comedy' with Escola's performance an 'unmissable highlight of the season,' praising virtually every element with consistent enthusiasm and superlatives throughout. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and the overall comedic execution, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:10:58.553Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250724190600",
-  "archiveOrgUrl": "http://web.archive.org/web/20250724190600/https://deadline.com/2025/04/real-women-have-curves-broadway-review-1236378219/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250724190600/https://deadline.com/2025/04/real-women-have-curves-broadway-review-1236378219/",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 58,
+      "performances": 73,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, there are too few other moments in Real Woman Have Curves that soar like that, that deliver the joy and delight",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the musical somehow flattens the experience with triteness, cliche and lack of real surprise",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Real Women finds its true strength in its cast (fine singers all, and well-directed and choreographed by Sergio Trujillo)",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises one standout scene and the cast performances but criticizes the book as trite and clichéd, the music as merely pleasant, and Ana's storyline as lacking real stakes, resulting in a mixed assessment with no clear recommendation. | GPT-4o-mini: The review highlights strong performances but criticizes the book and overall execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:14:56.219Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

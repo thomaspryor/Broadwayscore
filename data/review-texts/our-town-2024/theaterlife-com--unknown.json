@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 83,
+      "music": null,
+      "performances": 38,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite a cast including highly regarded actors, not one managed to touch any of my emotional buttons",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "This production may not be my vision of Our Town, but from what I've heard, it may very well be yours",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "you can't deny the show's inherent appeal, or Leon's ability to fetch attention",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The reviewer systematically criticizes nearly every creative choice—direction, design, pacing, and performances—while only praising Wilder's original text, resulting in a qualified negative assessment despite acknowledging the play's inherent worth. | GPT-4o-mini: The review is predominantly negative, criticizing the direction and performances while acknowledging the strength of the original play, leading to a low recommendation score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:13:46.166Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

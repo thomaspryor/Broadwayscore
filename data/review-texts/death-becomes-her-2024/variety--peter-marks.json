@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of the 1992 film manages to capture some of the dark comedy's spirit, though it struggles at times to find its own theatrical identity beyond the source material's shadow.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "manages to capture some of the dark comedy's spirit",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "struggles at times to find its own theatrical identity beyond the source material's shadow",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "captures some of the dark comedy's spirit",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges the adaptation captures the source material's spirit but criticizes it for struggling with theatrical identity, indicating mixed feelings without clear recommendation. | GPT-4o-mini: The review indicates a mix of appreciation for the adaptation's spirit but highlights significant struggles with its identity, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:51:59.352Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -11,7 +11,7 @@
   "dtliExcerpt": null,
   "bwwExcerpt": null,
   "originalScore": "3/5 stars",
-  "assignedScore": 60,
+  "assignedScore": 69,
   "source": "show-score",
   "textStatus": "complete",
   "notes": "Mixed review. Noted the show 'traces the early years of Grammy-winning artist Alicia Keys, but it only scratches at the surface' and offers 'a sanitized version of young adult life instead of a gritty retelling with a bit more substance.' Praised Kecia Lewis's performance and the orchestrations by Adam Blackstone and Tom Kitt.",
@@ -48,5 +48,61 @@
   ],
   "fetchTier": 4,
   "archiveOrgTimestamp": "20241204234326",
-  "archiveOrgUrl": "http://web.archive.org/web/20241204234326/https://www.metroweekly.com/2024/05/alicia-keys-makes-broadway-magic-with-hells-kitchen-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20241204234326/https://www.metroweekly.com/2024/05/alicia-keys-makes-broadway-magic-with-hells-kitchen-review/",
+  "llmScore": {
+    "score": 69,
+    "confidence": "high",
+    "range": {
+      "low": 62.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 80,
+      "performances": 85,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lewis's performance (also nominated) alone is worth the price of a ticket",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The dearth of dramatic tension makes it seem like a sanitized version of young adult life instead of a gritty retelling with a bit more substance",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's one of the few shows on Broadway with consistently phenomenal voices from stage veterans and debut makers alike",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Three-star review that praises exceptional performances and vocals while criticizing a weak, sanitized book that lacks dramatic substance. | GPT-4o-mini: The review highlights strong performances and music but criticizes the book for lacking depth, leading to a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:02:10.591Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 67,
+    "openaiScore": 70,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

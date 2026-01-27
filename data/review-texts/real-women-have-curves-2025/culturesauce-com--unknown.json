@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 86,
+      "music": 90,
+      "performances": 89,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "a sensational surprise: Real Women Have Curves... is a celebration of female empowerment, body positivity, and the indomitable work ethic of immigrants that is even more timely today",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "★★★★★",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Real Women Have Curves tells a simple story with musicality, with humor, with authenticity, and with an embrace of its female characters as fully rounded, three-dimensional individuals",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic awards five stars and calls it a 'sensational surprise,' praising virtually every aspect from performances to music to direction with specific enthusiasm and no meaningful reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical, highlighting its themes, performances, and overall production quality, culminating in a perfect star rating.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:14:50.128Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

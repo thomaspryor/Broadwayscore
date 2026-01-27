@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"If the Kander & Ebb style can be described in one word, it’s showstopper. And though their detractors might argue that the tenacity can be wearying, they’ll find scant support for that position in “Chicago.” Even in a concert staging, the momentum starts high and gets higher.\" \n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 82,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If the Kander & Ebb style can be described in one word, it's showstopper",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the momentum starts high and gets higher",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "they'll find scant support for that position in 'Chicago'",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review expresses clear enthusiasm for Chicago's energy and momentum, dismissing detractors and praising the showstopping quality of Kander & Ebb's work. | GPT-4o-mini: The review expresses strong enthusiasm for the production's momentum and style, indicating a clear recommendation despite a minor caveat about potential weariness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:51:44.494Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "\"...a buzzy Broadway revival that rips the skin off the 1966 musical.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "low",
+    "range": {
+      "low": 30,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "rips the skin off the 1966 musical",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "buzzy Broadway revival",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "a buzzy Broadway revival",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The violent metaphor 'rips the skin off' suggests destructive treatment of the source material, though 'buzzy' implies some cultural attention, creating mixed signals with limited context. | GPT-4o-mini: The review hints at a strong recommendation with positive language, but lacks detailed analysis. | Note: Models differed by 40 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:50:45.953Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 75,
+    "scoreDelta": 40,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 40 points (Claude: 35, OpenAI: 75)"
+    ]
+  }
 }

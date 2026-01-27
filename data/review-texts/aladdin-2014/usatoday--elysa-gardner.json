@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway musical 'Aladdin' is a colorful, energetic spectacle that should delight families and Disney devotees, even if it doesn't quite achieve the magic of the best stage adaptations.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "should delight families and Disney devotees",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "doesn't quite achieve the magic of the best stage adaptations",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "colorful, energetic spectacle",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review gives a qualified positive recommendation with clear target audience appeal but acknowledges significant limitations compared to superior stage adaptations. | GPT-4o-mini: The review expresses a generally positive sentiment while noting some shortcomings, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:47:32.554Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

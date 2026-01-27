@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 93,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "This play and production is theatrical genius with layers upon layers of cape-tastic excitement and wand-elishous magic that just keep out-doing itself, raising the bar from one moment to the next.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "They all have achieved a gold standard that very few have done this season, taking a hugely entertaining and gripping story to a higher level of being, one that will go down in theatrical history.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "If you don't have yours, do what you can to get one. This piece of theater magic is well worth the effort.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language throughout ('theatrical genius', 'gold standard', 'will go down in theatrical history') and explicitly urges readers to get tickets, making this a clear rave review. | GPT-4o-mini: The review expresses overwhelming enthusiasm and excitement for the production, highlighting its theatrical brilliance and the emotional engagement it offers to audiences, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:59:48.410Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

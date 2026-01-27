@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250812145604",
-  "archiveOrgUrl": "http://web.archive.org/web/20250812145604/https://www.newyorktheatreguide.com/reviews/hells-kitchen-off-broadway-review-alicia-keys"
+  "archiveOrgUrl": "http://web.archive.org/web/20250812145604/https://www.newyorktheatreguide.com/reviews/hells-kitchen-off-broadway-review-alicia-keys",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 88,
+      "performances": 89,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Moon, the belting badass Shoshana Bean (as Jersey), the silk-voiced Brandon Victor Dixon (as Ali's father, Davis), and the heart-wrenching Kecia Lewis (as Ali's piano teacher, Miss Liza Jane)",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Keys's music, including three excellent new tunes alongside her many existing hits, soars on stage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Diaz's book barely has time between songs to capture all the story's nuances and themes",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critic praises the music, performances, and overall experience while acknowledging book weaknesses, resulting in a clear positive recommendation with minor reservations. | GPT-4o-mini: The review expresses strong praise for the music and performances while acknowledging some limitations in the book, leading to a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:02:16.662Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

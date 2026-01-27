@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a technical marvel, with sound design that makes you feel like you're in the recording studio with the band, and performances that feel utterly authentic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "technical marvel",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "performances that feel utterly authentic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sound design that makes you feel like you're in the recording studio",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for technical elements and performances suggests positive recommendation, but brief excerpt limits confidence in overall assessment. | GPT-4o-mini: The review highlights exceptional sound design and authentic performances, indicating a strong recommendation despite lacking details about the script or overall narrative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:17:20.480Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

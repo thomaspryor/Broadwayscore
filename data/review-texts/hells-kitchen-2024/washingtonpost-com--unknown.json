@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -42,5 +42,61 @@
   "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 100 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 65,
+      "performances": 70,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "they've crafted a perfectly nice musical",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "soul-fired songbook of Alicia Keys",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "perfectly nice... nice... really nice... pretty darn nice",
+        "sentiment": "neutral",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The repeated emphasis on everything being 'nice' suggests competent but uninspiring theater - praising the Alicia Keys songbook and performances but with notably lukewarm language that signals mediocrity. | GPT-4o-mini: The review indicates a generally positive sentiment towards the musical's crafting but lacks strong enthusiasm or compelling reasons to recommend it outright.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:04:31.714Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

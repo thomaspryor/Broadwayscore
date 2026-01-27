@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "CRITIC’S PICK: \"You have to admire the glee and cheek with which Escola mauls American history, drawing humor from the collision of high importance and low piffle, puncturing one while elevating the other.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251029144834",
-  "archiveOrgUrl": "http://web.archive.org/web/20251029144834/https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251029144834/https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 84,
+      "music": null,
+      "performances": 89,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the best crafted and most exactingly directed Broadway comedies in years",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It merely wants you to lose your breath guffawing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you could do worse during your summer vacation than spend 80 minutes in a profoundly air-conditioned theater",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Green delivers unqualified praise for the craft, direction, and performances, calling it 'one of the best crafted Broadway comedies in years' with clear enthusiasm for the theatrical experience. | GPT-4o-mini: The review expresses strong enthusiasm for the production's direction and performances, highlighting its cleverness and humor, leading to a high recommendation score.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:11:18.204Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

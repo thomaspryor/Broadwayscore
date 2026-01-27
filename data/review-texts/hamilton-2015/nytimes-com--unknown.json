@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "CRITIC'S PICK\n\"Yes, it really is that good...I am loath to tell people to mortgage their houses and lease their children to acquire tickets to a hit Broadway show. But 'Hamilton,' directed by Thomas Kail and starring Mr. Miranda, might just about be worth it — at least to anyone who wants proof that the American musical is not only surviving but also evolving in ways that should allow it to thrive and transmogrify in years to come.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250119032443",
-  "archiveOrgUrl": "http://web.archive.org/web/20250119032443/https://www.nytimes.com/2015/08/07/theater/review-hamilton-young-rebels-changing-history-and-theater.html?ref=theater&_r=0"
+  "archiveOrgUrl": "http://web.archive.org/web/20250119032443/https://www.nytimes.com/2015/08/07/theater/review-hamilton-young-rebels-changing-history-and-theater.html?ref=theater&_r=0",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "might just about be worth it — at least to anyone who wants proof that the American musical is not only surviving but also evolving in ways that should allow it to thrive and transmogrify in years to come",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Hamilton is making its own resonant history by changing the language of musicals",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I am loath to tell people to mortgage their houses and lease their children to acquire tickets to a hit Broadway show. But Hamilton... might just about be worth it",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging the hype fatigue, the critic gives an extraordinarily strong endorsement, suggesting people 'mortgage their houses' for tickets and calling it proof that musicals are evolving and will thrive for years to come. | GPT-4o-mini: The review expresses strong enthusiasm for the show's innovation and cultural significance, indicating a must-see status despite initial skepticism.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:57:51.135Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

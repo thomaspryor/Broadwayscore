@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 93,
+      "music": 95,
+      "performances": 93,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "there has been nothing on Broadway in the past 20 years to rival the riveting, exhilarating and haunting Hamilton (**** out of four stars)",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Miranda's pulsing score and dazzling, piercing rhymes",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Watching that tradition move boldly forward in Hamilton, a fan can't help but feeling a little pride",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: 4/4 star review with unqualified superlatives declaring nothing has rivaled it on Broadway in 20 years, calling it 'riveting, exhilarating and haunting' with extensive praise for all elements. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its innovative music, performances, and overall impact, leading to a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:58:26.669Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

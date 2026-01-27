@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 71,
+      "direction": 49
+    },
+    "keyPhrases": [
+      {
+        "quote": "entertaining, yes, bawdy, queer, tasteless – i.e. camp – but like an overlong sketch",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "the humor in the silliness, sure, but it wears thin",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Cole Escola as a potential future cabaret legend, and maybe not even niche",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's entertainment value and Escola's talent but finds it wearing thin as 'an overlong sketch' with direction that's too hammy and humor that doesn't sustain, creating a qualified mixed response. | GPT-4o-mini: The review presents a mixed view, highlighting some talent and humor but ultimately expressing dissatisfaction with the overall execution and humor quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:10:39.833Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

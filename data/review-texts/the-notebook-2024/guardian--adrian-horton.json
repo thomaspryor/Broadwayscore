@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The Notebook musical transforms Nicholas Sparks's saccharine love story into something more complex and emotionally resonant, with stunning performances that elevate the familiar material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "transforms Nicholas Sparks's saccharine love story into something more complex and emotionally resonant",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "stunning performances that elevate the familiar material",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "transforms Nicholas Sparks's saccharine love story into something more complex",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the adaptation for improving upon source material and highlights exceptional performances, indicating a clear positive recommendation despite the brief excerpt. | GPT-4o-mini: The review highlights strong performances and emotional depth, indicating a clear recommendation despite not providing extensive details on other aspects.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:22:13.688Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

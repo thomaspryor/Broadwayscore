@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"People without people’s problems, humor or original insights—which is to say, hardly human at all.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "People without people's problems, humor or original insights",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "hardly human at all",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "People without people’s problems, humor or original insights",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The fragment contains extremely harsh criticism calling the characters inhuman and lacking basic human qualities, suggesting a fundamental rejection of the material. | GPT-4o-mini: The review expresses a strong negative sentiment, indicating a complete lack of human qualities in the production, leading to a clear rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:05:36.353Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

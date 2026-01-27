@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Suffs is a musical that knows what it wants to say and says it with clarity and passion, even if the execution doesn't always match the ambition.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 66,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "knows what it wants to say and says it with clarity and passion",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "execution doesn't always match the ambition",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review balances praise for the show's clear message and passion against criticism of flawed execution, suggesting a mixed reception without a clear recommendation either way. | GPT-4o-mini: The review expresses a clear appreciation for the musical's message and clarity but notes that the execution falls short, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:20:20.170Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

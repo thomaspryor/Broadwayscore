@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Keys has fashioned a musical that feels both deeply personal and universally accessible, with a book by Kristoffer Diaz that finds the right balance between specificity and broader themes.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "partial",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 88,
+      "performances": 92,
+      "direction": 86
+    },
+    "keyPhrases": [
+      {
+        "quote": "Moon is simply astonishing in her Broadway debut, and she commands the stage like a seasoned rock star",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Hell's Kitchen concludes with what can best be described as a giant, unabashed, and goosebump-inducing love letter to New York City",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Miraculously, Hell's Kitchen, particularly in its final, glorious minutes, offers a pertinent and most-appreciated reminder of when and why people fall madly in love with New York",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is consistently positive throughout, praising performances (especially Moon and Lewis), music integration, direction, and design, culminating in enthusiastic praise for the finale and overall experience. | GPT-4o-mini: The review expresses strong enthusiasm for the performances, particularly highlighting the lead's debut and the emotional impact of the music and direction, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:03:19.607Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

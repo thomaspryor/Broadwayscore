@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 71,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "What The Last Shadow lacks in effective storytelling it compensates for with fan service and mesmerizing stagecraft",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "The action set-pieces, staged with visual flair (and sometimes flares) and a cinematic sense of pacing by director Stephen Daldry and co-director Justin Martin, are truly incredible",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the story frequently falls into a series of 'and then, and then' scenes that sap our interest in following the narrative thread",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The 3/5 star rating combined with praise for spectacular production values but significant criticism of the weak, convoluted story creates a mixed recommendation that leans slightly positive due to the technical achievements. | GPT-4o-mini: The review highlights impressive production values and performances but criticizes the convoluted plot and lack of character development, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:17:58.377Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

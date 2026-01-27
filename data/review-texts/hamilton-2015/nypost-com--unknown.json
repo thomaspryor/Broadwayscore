@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250505112047",
-  "archiveOrgUrl": "http://web.archive.org/web/20250505112047/https://nypost.com/2015/08/06/hamilton-isnt-quite-revolutionary/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250505112047/https://nypost.com/2015/08/06/hamilton-isnt-quite-revolutionary/",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 69,
+      "music": 84,
+      "performances": 80,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Miranda's 'Hamilton' is a phenomenon",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Thomas Kail's direction and Andy Blankenbuehler's choreography is inventive and kinetic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "So, no doubt, will 'Hamilton'",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the music, direction, choreography, and key performances while noting some limitations in the book and Miranda's acting, but concludes with confidence in the show's success. | GPT-4o-mini: The review expresses strong appreciation for the performances and music while noting some limitations in the script and historical context, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:57:39.708Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

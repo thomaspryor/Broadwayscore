@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 88,
+      "performances": 86,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "So hurry up, you delightful and decadent chickens, and get your tickets to Broadway's newest sensation, before the gloriousness of this ridiculously fun and wise Moulin Rouge! is eaten all up by the masses starved for a piece of its dark deliciousness",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Within this new musical, directed dynamically and deliciously by Alex Timbers, the team has done the impossible",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It truly is remarkable that the solid work of the whole creative team has mashed together this tale with such surprising force, frivolity, and passion",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite some minor criticisms, the reviewer expresses breathless enthusiasm throughout, calls it a 'sensation,' praises the creative team for doing 'the impossible,' and explicitly urges readers to hurry and get tickets. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the production's grandeur, performances, and overall experience, with only minor caveats.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:08:36.398Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

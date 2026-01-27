@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"Eddie Redmayne and Gayle Rankin dazzle in jaw-dropping Broadway revival\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "dazzle",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "jaw-dropping Broadway revival",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Eddie Redmayne and Gayle Rankin dazzle",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong superlative language ('dazzle', 'jaw-dropping') suggests enthusiastic recommendation, but extremely limited text makes confidence low. | GPT-4o-mini: The review highlights the impressive performances of the lead actors, indicating a strong recommendation despite the lack of detail on other aspects of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:50:36.344Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

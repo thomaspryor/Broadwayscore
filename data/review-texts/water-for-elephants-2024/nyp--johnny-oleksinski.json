@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "This gorgeous spectacle about love and survival during the Great Depression is one of the most visually stunning shows to hit Broadway in years.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "gorgeous spectacle",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "one of the most visually stunning shows to hit Broadway in years",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "gorgeous spectacle about love and survival",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise with superlatives about visual impact places this in the clear positive recommendation range despite the brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the visual aspects of the production, indicating it is a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:23:54.693Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

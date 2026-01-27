@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Though each queen gets her moment to tell her tale and claim her victimhood, the show's true power lies in their final realization that they need not compete for the title of most abused.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show's true power lies in their final realization",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "each queen gets her moment to tell her tale and claim her victimhood",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "need not compete for the title of most abused",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt identifies thematic strength and a meaningful message but lacks clear recommendation language or broader production assessment. | GPT-4o-mini: The review highlights a significant thematic strength but lacks strong enthusiasm or explicit recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:16:05.716Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

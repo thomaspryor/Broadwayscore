@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"Everything is so exaggerated and phony that it’s hard to believe\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 20,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "Everything is so exaggerated and phony",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it's hard to believe",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Everything is so exaggerated and phony that it’s hard to believe",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production fundamentally unconvincing due to excessive exaggeration and phoniness, suggesting major flaws in execution. | GPT-4o-mini: The review expresses a strong negative sentiment, indicating disbelief in the show's authenticity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:24:03.701Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

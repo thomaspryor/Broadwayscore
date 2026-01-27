@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 83,
+      "performances": 70,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "looks and sounds terrific, and yet it lacks something vital",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "While Hadestown scarcely shapes up into an essential Broadway destination, it is among the better attractions in what so far has been a lackluster season for musicals",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "there's no denying the infernal red-hot charms of the jazzy, jumping, blues-streaked score",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Four-star review that praises the score, staging, and design extensively while acknowledging significant flaws in the book and lead romance, ultimately recommending it as 'among the better attractions' despite not being essential. | GPT-4o-mini: The review highlights strong production values and music but expresses significant reservations about the story and emotional impact, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:54:15.591Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

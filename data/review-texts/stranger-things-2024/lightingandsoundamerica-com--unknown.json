@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 40.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 73,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "a deeply unnecessary piece of stage hokum that will likely amuse the hardcore crowd, leaving everyone else feeling like victims of The Mind Flayer",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "A massive, expensive piece of foolishness that doesn't quite capture the charm of its bonkers, inventive source material",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "practically guaranteed to fill seats with the series' faithful and tourists looking for thrills. It's a self-selecting audience, likely to be satisfied by what they find",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges impressive technical achievements and strong performances but fundamentally views this as expensive fan service that fails as standalone drama, recommending it only for existing fans of the series. | GPT-4o-mini: The review expresses significant disappointment in the production's reliance on spectacle over substance, leading to a clear negative recommendation despite some praise for performances. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:18:16.478Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

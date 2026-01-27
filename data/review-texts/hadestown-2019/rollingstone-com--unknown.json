@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240717010024",
-  "archiveOrgUrl": "http://web.archive.org/web/20240717010024/https://www.rollingstone.com/culture/culture-features/hadestown-broadway-anais-mitchell-musical-review-822688/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240717010024/https://www.rollingstone.com/culture/culture-features/hadestown-broadway-anais-mitchell-musical-review-822688/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 88,
+      "performances": 84,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "The whole cast is on point",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's good to see Hadestown has kept its soul in the process",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's lost some intimacy from its Off-Broadway run, and gained some more conventional expository show tunes, which lard the opening section perilously",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer expresses clear admiration for the performances, music, and overall production while acknowledging some limitations in the Broadway transfer, ultimately affirming the show has maintained its artistic integrity. | GPT-4o-mini: The review expresses strong praise for the performances and music while acknowledging some loss of intimacy in the transition to Broadway, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:54:40.404Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

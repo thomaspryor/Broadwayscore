@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Best of all, Six is an original musical, with a wildly novel concept, put together by a young creative team, many of them in their twenties. This is how musical theatre moves forward, not by recycling yesterday's hits but by applying fresh thinking and up-to-date wit to a seemingly unlikely subject.\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Best of all, Six is an original musical, with a wildly novel concept",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This is how musical theatre moves forward",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "applying fresh thinking and up-to-date wit",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic celebrates Six as innovative and forward-thinking with superlative language ('Best of all', 'wildly novel'), positioning it as a model for musical theatre's future. | GPT-4o-mini: The review expresses strong enthusiasm for the originality and fresh approach of the musical, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:15:53.847Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

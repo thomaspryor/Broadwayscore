@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 86,
+      "performances": 90,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "they'll be missing out on a whole lotta sung, danced and acted glory",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Those heavily loaded guns go off consistently, firing not bullets but uproarious lines and highly entertaining numbers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The cheers following the sequence are echoed repeatedly throughout the two-act show",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Enthusiastic praise throughout with superlatives like 'glory,' 'hilarious,' 'uproarious,' and 'highly entertaining,' plus strong endorsement of performances and consistent audience response described. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its humor, performances, and overall impact, while acknowledging potential controversy.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:48:50.881Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

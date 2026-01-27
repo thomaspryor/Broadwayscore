@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": 83,
+      "performances": 80,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "so stacked with extravagant, crowd-pleasing effort and ingenuity, it's easy to believe that it could, like the original movie's show within a show, run for 50 years. B+",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "And the sets, by Derek McLane, are a genuine wonder",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "an overstimulating and occasionally uneven one, maybe",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The B+ grade and overwhelmingly positive language about production values, performances, and entertainment value clearly indicate a strong recommendation despite minor reservations about pacing and romantic chemistry. | GPT-4o-mini: The review expresses strong enthusiasm for the production's spectacle and performances, with only minor reservations about the book and chemistry between leads, warranting a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:08:26.464Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

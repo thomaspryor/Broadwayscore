@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“’Hadestown’ has arrived...And its current manifestation feels lush, vigorous, and formally exciting, not to mention witchily prescient...As an intricate and gorgeous feat of songwriting, as a vehicle for dynamite performances, as a visionary long-term collaboration and a courageous experiment with form, ‘Hadestown’ is cause for celebration...Mitchell’s lyrics are image-rich and clever, her tunes exhilarating...Page and Gray are the twin sensations of the show.” \n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260108043635",
-  "archiveOrgUrl": "http://web.archive.org/web/20260108043635/https://www.vulture.com/2019/04/hadestown-is-a-songwriting-and-storytelling-tour-de-force.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20260108043635/https://www.vulture.com/2019/04/hadestown-is-a-songwriting-and-storytelling-tour-de-force.html",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": 90,
+      "performances": 88,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "as an intricate and gorgeous feat of songwriting, as a vehicle for dynamite performances, as a visionary long-term collaboration and a courageous experiment with form, Hadestown is cause for celebration",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Page and Gray are the twin sensations of the show",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "in terms of character and narrative pathos, Hadestown is more than a bit out of balance",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic celebrates the musical as a songwriting triumph with sensational performances and innovative form, despite acknowledging character imbalances - clear positive recommendation with minor reservations. | GPT-4o-mini: The review expresses strong praise for the music and performances, with some reservations about character development, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:56:06.315Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

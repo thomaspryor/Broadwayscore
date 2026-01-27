@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240414113844",
-  "archiveOrgUrl": "http://web.archive.org/web/20240414113844/https://thefrontrowcenter.com/2022/10/death-of-a-salesman-2/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240414113844/https://thefrontrowcenter.com/2022/10/death-of-a-salesman-2/",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 98,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pierce gives a gigantic performance... His is a deeply rooted, authentic and ultimately devastating portrayal",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "When you sit back at the final moment, the tide of emotion washing over you leaves you breathless. This is why we go to the theater.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the production is compelling in its visual simplicity and emotional depth",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review contains overwhelming praise for performances and production with powerful closing statement about why theater matters, indicating strong recommendation despite no explicit star rating. | GPT-4o-mini: The review is overwhelmingly positive, highlighting exceptional performances and direction, with no significant caveats.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:53:11.673Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

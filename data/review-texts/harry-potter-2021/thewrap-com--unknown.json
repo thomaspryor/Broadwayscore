@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251119071557",
-  "archiveOrgUrl": "http://web.archive.org/web/20251119071557/https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251119071557/https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 70,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "the two-part play is great children's theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It doesn't take many speeches like that to bog down an already long show",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "These three actors and others in the production give fine performances, but in a Broadway season replete with great acting it's difficult to see any of them being singled out come Tony time",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds value in the production design and performances but has significant reservations about the script's accessibility and pacing, resulting in qualified praise that's more mixed than positive. | GPT-4o-mini: The review presents a mixed view, praising the performances and some aspects of the production while criticizing the script and pacing, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:01:12.047Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

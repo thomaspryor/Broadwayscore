@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a big, colorful, entertaining show that should find its audience and run for years. Disney has created another Broadway winner with this lavish adaptation of their 1992 animated film.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "big, colorful, entertaining show that should find its audience and run for years",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Disney has created another Broadway winner",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "lavish adaptation",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Clear positive recommendation with praise for production values and commercial prospects, suggesting strong audience appeal and longevity. | GPT-4o-mini: The review expresses strong enthusiasm for the show as a successful and entertaining adaptation, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:46:46.668Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

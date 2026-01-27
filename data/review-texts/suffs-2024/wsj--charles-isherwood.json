@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Taub has created a rousing, intelligent musical that brings fresh energy to a familiar story, with a score that skillfully blends period flavors with contemporary sensibilities.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "rousing, intelligent musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "brings fresh energy to a familiar story",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "score that skillfully blends period flavors with contemporary sensibilities",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently positive language praising the musical's intelligence, energy, and skillful score composition without any caveats or criticisms. | GPT-4o-mini: The review expresses strong praise for the musical's energy and score, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:21:01.350Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

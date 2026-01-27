@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -42,5 +42,61 @@
   "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 84 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 65.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Potterholics are going to be hitting the ticket-buying website refresh button so often they'll be in danger of breaking keyboards and fingers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "an incantation may be the only way to scare up tickets",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "desperate Muggles a leg up on performance availability",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt focuses entirely on anticipated high demand for tickets, implying the show is worth seeing, but contains no actual critical evaluation of the production's quality. | GPT-4o-mini: The review expresses a sense of excitement about ticket demand but lacks a clear recommendation or detailed critique of the production itself. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:01:26.994Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 70,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

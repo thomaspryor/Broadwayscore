@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 79,
+      "direction": 72
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is a thoughtful, well-crafted production that captures that spirit, and nudges it forward a bit",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There's a certain push-me-pull-me element to Leon's approach to this undeniably old-fashioned material, which he both wants to respect and update for a modern perspective",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Race-blind casting that reinforces certain cultural stereotypes isn't much of an advancement",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic concludes with clear praise calling it 'thoughtful, well-crafted' but raises significant concerns about the casting choices and directorial approach throughout, resulting in a qualified positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and overall production quality while noting some flaws, leading to a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:13:10.337Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

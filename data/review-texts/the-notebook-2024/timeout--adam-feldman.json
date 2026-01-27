@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The Notebook is a sincere and well-crafted musical that hits its emotional marks, even if it doesn't transcend the familiar territory of its source material.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 57.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "sincere and well-crafted musical that hits its emotional marks",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "doesn't transcend the familiar territory of its source material",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "sincere and well-crafted musical",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Balanced review praising craft and emotional effectiveness but criticizing lack of originality, suggesting competent but unremarkable execution. | GPT-4o-mini: The review expresses a clear positive sentiment about the musical's emotional impact and craftsmanship, despite noting it doesn't break new ground. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:22:29.712Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 75,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

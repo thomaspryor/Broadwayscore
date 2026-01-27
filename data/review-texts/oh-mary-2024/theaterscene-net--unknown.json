@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 82,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is difficult to avoid guffawing at their magnificent awfulness helped by Escola's constant silly shtick and blatant playing to the audience, all of whom seemed to be having fun",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This is not a clever take on Lincoln et al, but a chance for Escola to show off their immense talent to shock and, yes, entertain",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Escola goes for the easy laugh and seems to have an uncanny gift for campy overstatement",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's entertainment value and audience appeal while critiquing its lack of cleverness, indicating a qualified positive recommendation for those who enjoy campy humor. | GPT-4o-mini: The review expresses strong praise for the performances and humor, indicating a clear recommendation despite some reservations about the script.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:11:39.160Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

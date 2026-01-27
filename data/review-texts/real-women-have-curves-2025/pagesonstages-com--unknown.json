@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 97
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 82,
+      "performances": 89,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "This story is incredibly entertaining, full of clever bilingual word play, characters with a lot to love despite their flaws, music that makes the audience move in their seats",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Sound design was a little rough. At times, the band was mixed far above the vocals, and I struggled with clarity of the words",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "This show, like its characters, is teaming with life. It reinforces that, even in dark moments, life is worth fighting for",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Enthusiastic praise for performances, direction, themes, and emotional impact with only minor technical sound issues as criticism, resulting in a clear positive recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show's themes, performances, and direction, with only minor criticisms of sound design.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:15:09.118Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

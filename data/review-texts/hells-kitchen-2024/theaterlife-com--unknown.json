@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 83,
+      "performances": 82,
+      "direction": 74
+    },
+    "keyPhrases": [
+      {
+        "quote": "audibly and visually entertaining but not otherwise fulfilling",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Alicia Keys's score deserves a niche in Off-Broadway heaven",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the triteness of the book is largely overwhelmed by the conviction of the performances",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic gives 3.5/4 stars and concludes the score 'deserves a niche in Off-Broadway heaven' despite criticizing the weak book, indicating a qualified positive recommendation based on strong performances and music. | GPT-4o-mini: While the performances and music are praised, the review highlights significant issues with the book and overall fulfillment, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:03:26.559Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

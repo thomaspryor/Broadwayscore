@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of the 1992 dark comedy film is a glitzy spectacle that delivers on camp and visual effects but struggles to find its emotional core.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "glitzy spectacle that delivers on camp and visual effects",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "struggles to find its emotional core",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed review that praises the production values and spectacle while criticizing the fundamental emotional connection, suggesting a show that's visually impressive but dramatically hollow. | GPT-4o-mini: The review acknowledges strong visual elements but highlights a significant emotional deficiency, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:51:54.847Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

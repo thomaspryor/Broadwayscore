@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The frivolous first act and the stirring second act deliciously dance together.\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "deliciously dance together",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "stirring second act",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "frivolous first act",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The poetic language suggests appreciation for the show's overall structure and emotional arc, with 'deliciously' and 'stirring' indicating positive sentiment, though the brevity makes confidence low. | GPT-4o-mini: The review suggests a positive experience with a notable contrast between the acts, indicating a clear recommendation despite limited detail.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:14:32.603Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

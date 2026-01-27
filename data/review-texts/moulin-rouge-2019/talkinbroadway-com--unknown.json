@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 88,
+      "performances": 86,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Moulin Rouge is a phenomenon that cannot easily be dismissed",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "All in all, Moulin Rouge is a high octane rush of a musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Karen Olivo performs the hell out of the medley, and there is no question that she deserves to be the star",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic clearly recommends the show despite minor quibbles, praising it as a 'phenomenon' and 'high octane rush' with strong performances and spectacular production values. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and music, with only minor quibbles about compatibility between leads, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:09:32.345Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

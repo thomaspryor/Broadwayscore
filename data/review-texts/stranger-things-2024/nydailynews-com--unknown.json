@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"I thought while watching, this show would be able to breathe more, let the audience feel and care more and that we all suffered together from diminishing technical returns\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260102192848",
-  "archiveOrgUrl": "http://web.archive.org/web/20260102192848/https://www.nydailynews.com/2025/04/22/broadway-review-stranger-things-is-peak-fusion-of-streaming-tv-and-theater/"
+  "archiveOrgUrl": "http://web.archive.org/web/20260102192848/https://www.nydailynews.com/2025/04/22/broadway-review-stranger-things-is-peak-fusion-of-streaming-tv-and-theater/",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 79,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'd venture so far as to say here that I've never seen this scale of richly realized horror on a Broadway stage before",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "In an ideal world, I thought while watching, this show would be able to breathe more, let the audience feel and care more",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Terrifying and brilliant, both at the same time",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant technical achievements and strong performances while expressing reservations about pacing and emotional depth, landing in qualified recommendation territory with the striking final phrase 'terrifying and brilliant.' | GPT-4o-mini: The review expresses strong appreciation for the production's horror elements and performances while noting some pacing issues, leading to a positive overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:18:35.635Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

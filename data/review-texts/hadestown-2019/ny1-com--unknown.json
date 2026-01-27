@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250913164018",
-  "archiveOrgUrl": "http://web.archive.org/web/20250913164018/https://ny1.com/nyc/all-boroughs/news/2019/04/18/roma-torre-theater-review-hadestown-rachel-chavkin-reeve-carney-eva-noblezada"
+  "archiveOrgUrl": "http://web.archive.org/web/20250913164018/https://ny1.com/nyc/all-boroughs/news/2019/04/18/roma-torre-theater-review-hadestown-rachel-chavkin-reeve-carney-eva-noblezada",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 88,
+      "performances": 90,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "the creative team behind the stunningly visceral production delivered in spades",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it is a collaborative tour de force",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "while this free-wheeling version of the Orpheus myth may not appeal to everyone",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive review with high praise for performances, direction, and production values, despite acknowledging it won't appeal to everyone - the superlatives like 'tour de force' and 'delivered in spades' indicate clear recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its creative execution and thematic depth, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:53:58.301Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241226154031",
-  "archiveOrgUrl": "http://web.archive.org/web/20241226154031/https://www.vulture.com/2023/11/theater-review-alicia-keyss-hells-kitchen.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241226154031/https://www.vulture.com/2023/11/theater-review-alicia-keyss-hells-kitchen.html",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 77,
+      "performances": 87,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though it sticks to the tried-and-true in its form, Hell's Kitchen manages to avoid '-and-trite' as often as it does because of the sheer force of its performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The show's establishing beats are its most stale, which makes sense given the textbook coming-of-age premise",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "able to pull off the feat of making the musically familiar feel brand new",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges formulaic elements and generic storyline but is won over by exceptional performances, particularly praising Lewis and Moon, and Keys's skillful adaptation of her songs for theatrical context. | GPT-4o-mini: While the review highlights some generic elements in the story and music, the strong performances and emotional moments lead to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:04:24.502Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

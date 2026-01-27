@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250910232509",
-  "archiveOrgUrl": "http://web.archive.org/web/20250910232509/https://theaterpizzazz.com/moulin-rouge-tujour-amour/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250910232509/https://theaterpizzazz.com/moulin-rouge-tujour-amour/",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 83,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a splendid colorful storybook of characters of love and romance, sex and grit displayed in an embarrassment of opulence",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "powerhouse, gorgeous Karen Olivo",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You'll have to sell your soul to the devil on this one as ticket prices sky rocket",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses enthusiastic language throughout ('splendid', 'spectacular', 'dazzling', 'outstanding') and praises the performances, production values, and choreography extensively, with only minor concerns about the convoluted plot structure and high ticket prices. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the vibrant production, strong performances, and engaging music, with only minor caveats about the complexity of the story.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:09:45.671Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

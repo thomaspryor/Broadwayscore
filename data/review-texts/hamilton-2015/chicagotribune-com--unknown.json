@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20160221200608",
-  "archiveOrgUrl": "http://web.archive.org/web/20160221200608/http://www.chicagotribune.com/entertainment/theater/broadway/sc-hamilton-broadway-review-20150806-column.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20160221200608/http://www.chicagotribune.com/entertainment/theater/broadway/sc-hamilton-broadway-review-20150806-column.html",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 95,
+      "performances": 90,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is, for sure, an extraordinary new show that commands attention",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "audaciously ambitious and supremely executed new musical is surely the most entertaining, provocative and moving civics lesson in Broadway history",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the truly thrilling story of 'Hamilton' deserves to — and surely will be — told on Broadway for many years to come",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language throughout ('extraordinary', 'supremely executed', 'most entertaining...in Broadway history') with sustained enthusiasm and no significant reservations, clearly indicating this is a must-see production. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's innovative qualities, strong performances, and significant cultural impact, leading to a high recommendation score.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:56:49.371Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 88,
+      "performances": 76,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "I get the show in a way I did not initially. The reason for three Schuyler Sisters, even though Peggy doesn't really figure in the plot, is so that the number \"The Schuyler Sisters\" evokes R&B/Soul girl trios like Destiny's Child or the Supremes.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Some of the performers couldn't be better. James Monroe Iglehart... is spectacular. He has a beautiful deep voice, and a playful nature that draws us in.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "one of the things the latest performance of \"Hamilton\" on Broadway made clear to me is that the replacement cast members don't have to give star quality performances for the show to shine.",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic demonstrates deep appreciation for Hamilton's artistic merits and structure, praises several performances as 'spectacular,' and concludes the show shines even without star-quality performances across the board. | GPT-4o-mini: The review expresses strong praise for the performances, particularly highlighting the new cast members, while also acknowledging some reservations about the overall impact compared to the original cast.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:57:29.586Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241207105727",
-  "archiveOrgUrl": "http://web.archive.org/web/20241207105727/https://www.nytimes.com/2023/11/19/theater/hells-kitchen-review-alicia-keys.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241207105727/https://www.nytimes.com/2023/11/19/theater/hells-kitchen-review-alicia-keys.html",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 73,
+      "performances": 80,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "What's surprising in this promising show...is how thrilling it is until then",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "disappoints after the mid-show break, tumbling directly into the potholes it spent its first half so smartly avoiding",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I hope 'Hell's Kitchen' will be too [Broadway-ready]...Ali's discovery that art is love...is too rich not to reach a bigger audience",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critic praises a thrilling first act with excellent performances and production values but finds significant structural problems in the second act, ultimately expressing hope the show can reach Broadway despite its flaws. | GPT-4o-mini: The review highlights strong first act ambitions and performances but expresses significant disappointment in the second act, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:02:53.185Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

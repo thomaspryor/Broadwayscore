@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "Hell's Kitchen is a musical that feels like it was reverse-engineered from a playlist, but Keys's songs are strong enough to make that approach work more often than not.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 69,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 77,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels like it was reverse-engineered from a playlist",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Keys's songs are strong enough to make that approach work more often than not",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Keys's songs are strong enough to make that approach work more often than not.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges fundamental structural problems with the musical's construction but finds the strength of Keys's songs sufficient to overcome these issues most of the time, suggesting a qualified positive experience. | GPT-4o-mini: The review highlights the strength of the songs while indicating a lack of originality in the overall approach, suggesting a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:04:17.228Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

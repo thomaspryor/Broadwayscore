@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"I can’t say the score is destined for greatness, but it facilitates a clever rhyme here and there as well as rigorously silly comic staging\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 48,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 45,
+      "performances": null,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "I can't say the score is destined for greatness",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "facilitates a clever rhyme here and there",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "rigorously silly comic staging",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the score won't achieve greatness while acknowledging some positive elements like clever staging, suggesting a lukewarm assessment with more negatives than positives. | GPT-4o-mini: The review expresses a mixed sentiment, highlighting some cleverness in the staging but ultimately suggesting the score lacks greatness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:12:58.471Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

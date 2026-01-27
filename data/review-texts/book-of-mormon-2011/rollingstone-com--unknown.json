@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20170518052810",
-  "archiveOrgUrl": "http://web.archive.org/web/20170518052810/http://www.rollingstone.com:80/movies/videos/the-book-of-mormon-the-genii-of-south-park-hit-broadway-and-history-is-made-20110325"
+  "archiveOrgUrl": "http://web.archive.org/web/20170518052810/http://www.rollingstone.com:80/movies/videos/the-book-of-mormon-the-genii-of-south-park-hit-broadway-and-history-is-made-20110325",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 95,
+      "performances": 92,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "it should keep audiences in shock and awe for years",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "That makes it the new gold standard for rowdy fun on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "For hilarity you can hum, The Book of Mormon is as good as it gets",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Four-star review with unqualified superlatives like 'new gold standard,' 'as good as it gets,' and prediction of years-long success indicates a clear rave recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show, highlighting its humor, direction, and performances, with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:49:14.472Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

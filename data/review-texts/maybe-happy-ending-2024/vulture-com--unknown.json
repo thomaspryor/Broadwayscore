@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"Michael Arden’s slick production... might feel like 2064 on the surface, but in its nostalgic, rechargeable heart, the show parties like it’s 1999... Shen and Criss are the ones who make it work. Shen especially is a delight to watch, with an open, emotive face full of quicksilver expressions and a tartness that can turn explosive when she needs it to.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shen and Criss are the ones who make it work",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Shen especially is a delight to watch",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Michael Arden's slick production",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the production as 'slick' and celebrates the lead performances, particularly Shen, as delightful and effective, suggesting a positive recommendation despite the brief excerpt. | GPT-4o-mini: The review highlights strong performances, particularly by Shen, and praises the production's slickness, indicating a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:06:20.266Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "\"...a hodgepodge of many other shows that came before it.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 30,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 30,
+    "confidence": "low",
+    "range": {
+      "low": 15,
+      "high": 45
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a hodgepodge of many other shows that came before it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "...a hodgepodge of many other shows that came before it.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic's description of the show as a 'hodgepodge' suggests it's derivative and poorly constructed, indicating a negative assessment, but the extremely brief excerpt limits confidence. | GPT-4o-mini: The review indicates a strong negative sentiment by describing the show as a 'hodgepodge', suggesting a lack of originality and coherence. | Note: Models differed by 20 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:21:18.915Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 20,
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 20 points (Claude: 40, OpenAI: 20)"
+    ]
+  }
 }

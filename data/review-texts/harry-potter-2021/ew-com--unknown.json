@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 89,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harry Potter and the Cursed Child is a theatrical marvel, for so many reasons",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's a technical achievement that redefines the possibilities of theatre",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "We're better off to live and luxuriate in this electric moment for Broadway, where there is real magic to do",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging script limitations and accessibility concerns for non-Potter fans, the critic calls it a 'theatrical marvel' and 'technical achievement' with extraordinary magic effects and strong performances, concluding it's an 'electric moment for Broadway' worth experiencing. | GPT-4o-mini: The review expresses strong enthusiasm for the production's technical achievements and performances, indicating it is a must-see for fans of the franchise.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:59:33.380Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

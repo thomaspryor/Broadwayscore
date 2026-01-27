@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 41,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": 58,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stranger Things: The First Shadow is strictly for fans of Stranger Things",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Those who don't know the series get…smoke and mirrors. Admittedly, they're spectacular smoke and mirrors",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Since the core of The First Shadow is more hollow",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges impressive technical elements and some strong performances but fundamentally criticizes the show as hollow, overly reliant on franchise knowledge, and more spectacle than substance. | GPT-4o-mini: The review highlights significant confusion and hollowness in the story, with only minor praise for performances, leading to a strong negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:18:22.706Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

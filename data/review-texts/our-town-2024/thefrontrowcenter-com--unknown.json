@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241211112835",
-  "archiveOrgUrl": "http://web.archive.org/web/20241211112835/https://thefrontrowcenter.com/2024/10/our-town/"
+  "archiveOrgUrl": "http://web.archive.org/web/20241211112835/https://thefrontrowcenter.com/2024/10/our-town/",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 73,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "Very few works in the English language can credibly be described as timeless, but none is more deserving of the term than Thornton Wilder's 1938 lesson on life, Our Town",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the ultimate irony of this production is that it feels rushed. Hurrying to get three acts into 105 minutes, Leon's pacing is often breathless and time, despite what Wilder tries to teach us, zooms past in a flurry",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The design team is on point with the masterful scenic designer Beowulf Boritt teaming with lighting designer Allen Lee Hughes to create a stunning cloud of floating, softly glowing lanterns",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer deeply admires Wilder's timeless play and praises many elements (design, several performances, staging concepts) but has significant reservations about the rushed pacing and some casting choices, resulting in qualified appreciation rather than strong endorsement. | GPT-4o-mini: The review expresses appreciation for the timeless quality of the play and its themes but notes significant pacing issues and a lack of emotional depth in performances, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:14:14.975Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

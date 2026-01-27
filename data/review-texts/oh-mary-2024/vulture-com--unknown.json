@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260112134856",
-  "archiveOrgUrl": "http://web.archive.org/web/20260112134856/https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20260112134856/https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": null,
+      "performances": 88,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a work of deranged beauty: a version of Mary Todd Lincoln told (as the press release teases it) 'through the lens of an idiot,' played with all the verve and severity of Bette Davis on bath salts",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Escola is a world-class mugger, able to time a double take with nanosecond precision, telegraphing that a punch line may be coming and therefore delivering it with twice the force you expect",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I was too busy laughing",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoyed the show immensely, praising Escola's performance as 'world-class,' calling the work 'deranged beauty,' and ending with infectious enthusiasm about being 'too busy laughing.' | GPT-4o-mini: The review expresses strong enthusiasm for the humor and performances, indicating a clear recommendation to see the show despite some minor caveats about character development.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:12:40.541Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "A big, splashy effort, slickly professional in nearly every aspect, that has no idea what to make of its heroine. It's a star vehicle with a giant question mark at its center, and its nonjudgmental gaze ultimately leaves one feeling surprisingly neutral.\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 51,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 51,
+    "confidence": "high",
+    "range": {
+      "low": 45,
+      "high": 57
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "slickly professional in nearly every aspect",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "has no idea what to make of its heroine",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "ultimately leaves one feeling surprisingly neutral",
+        "sentiment": "neutral",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises technical proficiency but criticizes fundamental problems with the protagonist and notes the show leaves audiences feeling 'neutral,' indicating a mixed reception without clear recommendation. | GPT-4o-mini: The review expresses a mix of professionalism and confusion about the central character, leading to a neutral overall sentiment and a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:14:27.780Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 50,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

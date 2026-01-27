@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "MJ The Musical is a slick, highly entertaining and expertly crafted celebration of the music and moves of the King of Pop that should satisfy both fans and theater lovers alike.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "slick, highly entertaining and expertly crafted",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "should satisfy both fans and theater lovers alike",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "slick, highly entertaining and expertly crafted celebration",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Consistently positive language with strong descriptors like 'slick,' 'highly entertaining,' and 'expertly crafted,' plus clear recommendation that it will satisfy both target audiences. | GPT-4o-mini: The review expresses strong enthusiasm for the production's quality and entertainment value, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:06:43.330Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

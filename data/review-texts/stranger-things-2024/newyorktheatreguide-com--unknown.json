@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"It is astonishing simply for its scale, and never boring, if seldom technically or dramatically satisfying.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 62,
+      "music": null,
+      "performances": 89,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "For an evening out, Stranger Things: The First Shadow is an above-average experience on account of its wild scale, deranged theatrics, and impressive thrills",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "never boring, if seldom technically or dramatically satisfying",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "a truly staggering performance from Louis McCartney, who finds the real and painful drama within the Netflix-sanctioned haunted house ride",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review characterizes this as 'above-average' entertainment that succeeds as spectacle with outstanding lead performance, but acknowledges significant dramatic limitations and describes it as more theme park attraction than satisfying theater. | GPT-4o-mini: The review highlights impressive performances and theatrical spectacle while acknowledging weaknesses in the script, leading to a strong but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:18:28.443Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

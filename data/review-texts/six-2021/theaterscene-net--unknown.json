@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "\"Indeed, as the queens take their respective turns in the spotlight, spectacle does overwhelm decorum, as the actors stunningly evoke the vocal stylings and stage presences of Beyoncé, Adele, Rihanna, and a few others I probably didn’t catch.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "spectacle does overwhelm decorum",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the actors stunningly evoke the vocal stylings and stage presences",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "actors stunningly evoke the vocal stylings",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This excerpt praises the performances highly but suggests the spectacle becomes excessive, creating a mixed signal with insufficient context to determine overall recommendation. | GPT-4o-mini: The review highlights strong performances and a captivating spectacle, indicating a positive recommendation despite a lack of detailed critique on other elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:16:17.469Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 75,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

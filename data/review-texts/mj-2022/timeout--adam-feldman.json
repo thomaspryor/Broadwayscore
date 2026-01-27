@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "MJ succeeds most when it focuses on Jackson's artistry and creative process, particularly in the thrilling dance sequences that showcase his revolutionary moves.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 63.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "MJ succeeds most when it focuses on Jackson's artistry and creative process",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "thrilling dance sequences that showcase his revolutionary moves",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "particularly in the thrilling dance sequences",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This excerpt praises specific elements (dance sequences, artistry) but the phrase 'succeeds most when' implies the show doesn't always succeed, suggesting mixed quality with strong highlights. | GPT-4o-mini: The review highlights the strengths of the production, particularly the dance sequences, indicating a clear but measured recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:07:19.973Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 75,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250625084920",
-  "archiveOrgUrl": "http://web.archive.org/web/20250625084920/http://theaterpizzazz.com/harry-potter-and-the-cursed-child-parts-1-and-2/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250625084920/http://theaterpizzazz.com/harry-potter-and-the-cursed-child-parts-1-and-2/",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 71,
+      "direction": 64
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harry Potter Lite. It's understandable. If you're going to spend $68 million, the highest capitalization ever for a non-musical on Broadway, you want to reach a wide audience. Wow them with the familiar. Don't make them think too much.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Watching their friendship develop and grow is one of the play's more enjoyable aspects, although at times it's a little too sticky-sweet.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Director John Tiffany keeps things moving but can't impose much substance on the drama.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production competent but criticizes it as 'Harry Potter Lite' with constrained imagination and lack of substance, while praising specific performances and technical elements. | GPT-4o-mini: The review presents a mixed view, highlighting some enjoyable performances while criticizing the script and overall substance, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:00:36.807Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

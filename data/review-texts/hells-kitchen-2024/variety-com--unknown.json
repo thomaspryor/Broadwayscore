@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20231212034525",
-  "archiveOrgUrl": "http://web.archive.org/web/20231212034525/https://variety.com/2023/legit/reviews/hells-kitchen-review-alicia-keys-musical-1235795883/"
+  "archiveOrgUrl": "http://web.archive.org/web/20231212034525/https://variety.com/2023/legit/reviews/hells-kitchen-review-alicia-keys-musical-1235795883/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 88,
+      "performances": 90,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's difficult to unlock the experience of being a 17-year-old girl, but under Michael Greif's direction, 'Hell's Kitchen' does just that",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "With absolute powerhouse vocals from the cast and songs written by Keys with orchestrations and arrangements by Emmy and Grammy winner Adam Blackstone, 'Hell's Kitchen' moves beyond Ali's teenage experiences",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Since the play runs at a lengthy 2 hours and 30 minutes (including an intermission), these themes are often drawn out and sometimes feel cliché, bordering on corny",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticisms about length and occasional corniness, the reviewer consistently praises the performances, music, and overall achievement in capturing teenage experience, concluding with a glowing description of the show as 'sparkling' and praising its deeper themes. | GPT-4o-mini: The review highlights strong performances and music while acknowledging some thematic clichés, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:04:10.208Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

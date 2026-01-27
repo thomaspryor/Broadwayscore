@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 63,
+      "performances": 81,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "he aces the genre beautifully with his superbly atmospheric mounting",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There are certainly worse ways to spend an evening than with a musical so visually gorgeous and vibrantly performed",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "generic pop lyrics that aren't specific to their situations just don't cut it anymore",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the direction, design, and performances highly but has significant reservations about the book's integration with the pop songs, ultimately giving a qualified recommendation despite structural flaws. | GPT-4o-mini: The review acknowledges strong performances and visual appeal but critiques the integration of music and depth of the book, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:08:12.874Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250502200550",
-  "archiveOrgUrl": "http://web.archive.org/web/20250502200550/https://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250502200550/https://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 85,
+      "direction": 91
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hooray! With 'Harry Potter and the Cursed Child,' the Boy Who Lived has finally come to Broadway, bringing enchantment to a world that could really use a little magic right now.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Visually and aurally, the show presents a panorama of dazzling effects that draw audible gasps from the audience.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "But most of all, we love seeing theater that shows us the true magic of great storytelling.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review opens with enthusiastic exclamation ('Hooray!'), consistently praises the production's technical wizardry and storytelling, and concludes with love for the 'true magic of great storytelling' with no significant reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's visual and storytelling elements, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:01:20.123Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

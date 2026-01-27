@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 88,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yes, Virginia, there's finally some real magic back on Broadway!",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a visit to 'Harry Potter and the Cursed Child' is definitely worth your time!",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the now 3 ½-hour play at the gorgeous Lyric Theatre has the sort of emotional heft missing from too many stage dramas",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review opens with unqualified enthusiasm ('finally some real magic back on Broadway!'), consistently praises performances and production values, and concludes with an explicit recommendation ('definitely worth your time!'). | GPT-4o-mini: The review expresses strong enthusiasm for the production's emotional depth and visual spectacle, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:59:20.207Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

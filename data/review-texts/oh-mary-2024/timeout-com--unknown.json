@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250630215951",
-  "archiveOrgUrl": "http://web.archive.org/web/20250630215951/https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln"
+  "archiveOrgUrl": "http://web.archive.org/web/20250630215951/https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 94,
+      "music": null,
+      "performances": 96,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is dizzyingly, breathtakingly funny, the kind of funny that ambushes your body into uncontained laughter",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This 80-minute show is a fast and wild joy ride",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "everything comes together to create an instant downtown classic",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic gives 5/5 stars with unqualified superlatives like 'dizzyingly, breathtakingly funny' and calls it an 'instant downtown classic' with no meaningful reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the play, highlighting its humor and performances, leading to a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:12:17.300Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

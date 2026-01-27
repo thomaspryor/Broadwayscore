@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Book of Mormon is a celebration of the power of belief, whether in God, in your friends, in yourself, or in the possibility that even the most ridiculous story can find some beauty and truth if you look hard enough.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 68,
+      "music": 70,
+      "performances": 65,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "the freshest and funniest to open in several seasons",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "that it isn't as good as Parker and Stone are capable of isn't merely a missed opportunity—it's a colossal letdown",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "they're what musicals are supposed to be",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite calling it the 'freshest and funniest' musical in seasons and praising its subversive nature, the critic expresses significant disappointment that it falls short of Parker and Stone's potential, resulting in a qualified positive recommendation with substantial reservations. | GPT-4o-mini: The review presents a mix of praise for humor and originality but highlights significant shortcomings in execution and consistency, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:49:32.194Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

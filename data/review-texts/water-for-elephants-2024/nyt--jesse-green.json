@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical 'Water for Elephants,' which opened Thursday at the Imperial Theater, is a show that knows how to please a crowd, even if it doesn't always know why it should.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "knows how to please a crowd",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "doesn't always know why it should",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "a show that knows how to please a crowd",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review presents a fundamental contradiction - praising the show's crowd-pleasing ability while questioning its artistic purpose, suggesting mixed feelings without clear recommendation. | GPT-4o-mini: The review indicates a mixed response, acknowledging crowd-pleasing elements but questioning the show's overall purpose, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:23:58.751Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
