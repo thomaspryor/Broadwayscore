@@ -1,36 +1,36 @@
 {
-  "runDate": "2026-01-27T15:16:49.280Z",
+  "runDate": "2026-01-27T15:19:01.692Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "stranger-things-2024",
+    "showFilter": "the-great-gatsby-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 222,
+    "processed": 221,
     "failed": 146,
     "skipped": 0,
-    "successRate": "60.3%"
+    "successRate": "60.2%"
   },
   "tierBreakdown": {
     "playwright": 30,
-    "scrapingbee": 18,
-    "brightdata": 23,
-    "archive": 151
+    "scrapingbee": 17,
+    "brightdata": 24,
+    "archive": 150
   },
   "statistics": {
     "tier1Attempts": 11,
     "tier1Success": 0,
     "tier2Attempts": 11,
-    "tier2Success": 1,
-    "tier3Attempts": 10,
-    "tier3Success": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 11,
+    "tier3Success": 1,
     "tier4Attempts": 16,
-    "tier4Success": 1,
+    "tier4Success": 0,
     "totalFailed": 10,
     "scrapingBeeCreditsUsed": 40
   },
@@ -255,8 +255,7 @@
     "merrily-we-roll-along-2023/amny-com--unknown.json",
     "merrily-we-roll-along-2023/broadway-news--naveen.json",
     "merrily-we-roll-along-2023/broadwaynews-com--unknown.json",
-    "stranger-things-2024/the-stage--dave-fargnoli.json",
-    "stranger-things-2024/washington-post--naveen-kumar.json"
+    "the-great-gatsby-2024/observer--david-cote.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -395,16 +394,16 @@
     "merrily-we-roll-along-2023/variety-com--unknown.json",
     "merrily-we-roll-along-2023/vult--jackson-mchenry.json",
     "merrily-we-roll-along-2023/vulture--sara.json",
-    "stranger-things-2024/NYDN--chris-jones.json",
-    "stranger-things-2024/WRAP--robert-hofler.json",
-    "stranger-things-2024/ew--emlyn-travis.json",
-    "stranger-things-2024/guardian--arifa-akbar.json",
-    "stranger-things-2024/guardian--michael-billington.json",
-    "stranger-things-2024/interestedbystander-com--unknown.json",
-    "stranger-things-2024/tickertv--cheryl-king.json",
-    "stranger-things-2024/tman--adam-feldman.json",
-    "stranger-things-2024/wsj--charles-isherwood.json",
-    "stranger-things-2024/wsj-com--unknown.json"
+    "the-great-gatsby-2024/variety--aramide-tinubu.json",
+    "the-great-gatsby-2024/NYP--johnny-oleksinski.json",
+    "the-great-gatsby-2024/NYSR--david-finkle.json",
+    "the-great-gatsby-2024/SLANT--dan-rubins.json",
+    "the-great-gatsby-2024/guardian--gloria-oladipo.json",
+    "the-great-gatsby-2024/nydailynews-com--unknown.json",
+    "the-great-gatsby-2024/talkinbway--matthew-murray.json",
+    "the-great-gatsby-2024/tman--adam-feldman.json",
+    "the-great-gatsby-2024/washingtonpost-com--unknown.json",
+    "the-great-gatsby-2024/wsj--terry-teachout.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -456,8 +455,7 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "cabaret-2024/newyorktheater-me--unknown.json",
-      "stranger-things-2024/the-stage--dave-fargnoli.json"
+      "cabaret-2024/newyorktheater-me--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -482,7 +480,8 @@
       "hadestown-2019/towleroad-com--unknown.json",
       "queen-versailles-2025/daily-beast--tim-teeman.json",
       "hamilton-2015/OBSERVER--david-cote.json",
-      "hamilton-2015/wapo--peter-marks.json"
+      "hamilton-2015/wapo--peter-marks.json",
+      "the-great-gatsby-2024/observer--david-cote.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -634,8 +633,7 @@
       "merrily-we-roll-along-2023/nytimes-com--unknown.json",
       "merrily-we-roll-along-2023/vulture-com--unknown.json",
       "merrily-we-roll-along-2023/am-new-york--matt.json",
-      "merrily-we-roll-along-2023/amny-com--unknown.json",
-      "stranger-things-2024/washington-post--naveen-kumar.json"
+      "merrily-we-roll-along-2023/amny-com--unknown.json"
     ]
   }
 }
