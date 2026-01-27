@@ -192,25 +192,103 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
 
 /**
  * Try to find show on Did They Like It
+ * Revival shows often use -bway or -broadway suffixes
  */
 async function searchDTLI(show) {
-  const variations = [
-    show.slug,
-    show.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-    show.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-the-/g, '-'),
-    show.title.toLowerCase().replace(/:/g, '').replace(/[^a-z0-9]+/g, '-')
+  const titleSlug = slugify(show.title);
+  const titleNoArticle = slugify(show.title.replace(/^(the|a|an)\s+/i, ''));
+  const baseSlug = show.slug.replace(/-\d{4}$/, ''); // Remove year suffix
+
+  // Base variations (without suffix)
+  const baseVariations = [
+    baseSlug,
+    titleSlug,
+    titleNoArticle,
+    show.title.toLowerCase().replace(/:/g, '').replace(/[^a-z0-9]+/g, '-'),
+    show.title.toLowerCase().replace(/-the-/g, '-').replace(/[^a-z0-9]+/g, '-'),
   ];
+
+  // PRIORITY: Try -bway suffix FIRST for Broadway shows
+  // This avoids hitting Off-Broadway or prior production pages
+  const allVariations = [];
+
+  // First, try all variations WITH -bway suffix (highest priority for Broadway)
+  for (const base of baseVariations) {
+    allVariations.push(base + '-bway');
+  }
+
+  // Then try -broadway suffix
+  for (const base of baseVariations) {
+    allVariations.push(base + '-broadway');
+  }
+
+  // Then try -revival suffix
+  for (const base of baseVariations) {
+    allVariations.push(base + '-revival');
+  }
+
+  // Finally, try without suffix (lowest priority - may hit wrong production)
+  for (const base of baseVariations) {
+    allVariations.push(base);
+  }
+
+  // Special cases for known patterns (revivals, common name conflicts)
+  const specialCases = {
+    'merrily-we-roll-along': ['merrily-we-roll-along-bway'],
+    'appropriate': ['appropriate-bway'],
+    'an-enemy-of-the-people': ['an-enemy-of-the-people-bway', 'enemy-of-the-people'],
+    'the-outsiders': ['the-outsiders-bway', 'outsiders'],
+    'the-notebook': ['the-notebook-bway', 'notebook'],
+    'water-for-elephants': ['water-for-elephants-bway'],
+    'mother-play': ['mother-play-bway'],
+    'stereophonic': ['stereophonic-bway'],
+    'suffs': ['suffs-bway'],
+    'the-great-gatsby': ['the-great-gatsby-bway', 'great-gatsby'],
+    'the-roommate': ['the-roommate-bway', 'roommate'],
+    'cabaret': ['cabaret-bway', 'cabaret-revival'],
+    'uncle-vanya': ['uncle-vanya-bway'],
+    'prayer-for-the-french-republic': ['prayer-for-the-french-republic-bway'],
+    'illinoise': ['illinoise-bway'],
+    'the-wiz': ['the-wiz-bway', 'wiz'],
+    'lempicka': ['lempicka-bway'],
+    'the-who-s-tommy': ['the-whos-tommy-bway', 'whos-tommy'],
+    'days-of-wine-and-roses': ['days-of-wine-and-roses-bway'],
+    // Shows with subtitles - full title needed
+    'doubt': ['doubt-a-parable', 'doubt-a-parable-bway'],
+    'doubt-a-parable': ['doubt-a-parable'],
+    'just-for-us': ['just-for-us-bway', 'just-for-us-a-very-important-show'],
+    'harmony': ['harmony-bway', 'harmony-a-new-musical'],
+    'purlie-victorious': ['purlie-victorious-bway', 'purlie-victorious-a-non-confederate-romp'],
+    'gutenberg-the-musical': ['gutenberg-the-musical-bway'],
+    'the-thanksgiving-play': ['the-thanksgiving-play-bway'],
+    'titanique': ['titanique-bway'],
+    'the-outsiders': ['the-outsiders-bway'],
+  };
+
+  // Check special cases for baseSlug
+  if (specialCases[baseSlug]) {
+    // Insert special cases at the BEGINNING (highest priority)
+    allVariations.unshift(...specialCases[baseSlug]);
+  }
+
+  // Also check special cases for titleSlug (handles subtitles like "Doubt: A Parable")
+  if (specialCases[titleSlug] && titleSlug !== baseSlug) {
+    allVariations.unshift(...specialCases[titleSlug]);
+  }
 
   console.log('  Searching Did They Like It...');
 
-  for (const slug of [...new Set(variations)]) {
+  // Remove duplicates and empty strings
+  const uniqueVariations = [...new Set(allVariations)].filter(v => v && v.length > 0);
+
+  for (const slug of uniqueVariations) {
     const url = `https://didtheylikeit.com/shows/${slug}/`;
     const result = await searchAggregator('DTLI', url);
-    if (result.found && result.html && result.html.includes('reviews')) {
+    if (result.found && result.html && result.html.includes('review-item')) {
       console.log(`    ✓ Found at: ${url}`);
       return { url, html: result.html };
     }
-    await sleep(500);
+    await sleep(300);
   }
 
   console.log('    ✗ Not found on DTLI');
@@ -650,57 +728,228 @@ function extractShowScoreReviews(html, showId) {
 }
 
 /**
- * Extract reviews from DTLI HTML
+ * Extract reviews from DTLI HTML with individual thumb data
  */
-function extractDTLIReviews(html, showId) {
+function extractDTLIReviews(html, showId, dtliUrl) {
   const reviews = [];
 
-  // Look for review links - DTLI typically has outlet name, critic, and review URL
-  // Pattern: critic name with outlet, sometimes with thumb up/down/meh
+  // Extract summary thumb counts from the numbered hand images
+  // Format: thumbs-up/thumb-N.png, thumbs-meh/thumb-N.png, thumbs-down/thumb-N.png
+  const thumbUpMatch = html.match(/thumbs-up\/thumb-(\d+)\.png/);
+  const thumbMehMatch = html.match(/thumbs-meh\/thumb-(\d+)\.png/);
+  const thumbDownMatch = html.match(/thumbs-down\/thumb-(\d+)\.png/);
 
-  // Simple extraction: find all outlet mentions with URLs
-  const outletPatterns = [
-    { pattern: /New York Times/i, outlet: 'The New York Times', outletId: 'nytimes' },
-    { pattern: /Vulture/i, outlet: 'Vulture', outletId: 'vulture' },
-    { pattern: /Variety/i, outlet: 'Variety', outletId: 'variety' },
-    { pattern: /Hollywood Reporter/i, outlet: 'The Hollywood Reporter', outletId: 'THR' },
-    { pattern: /Time Out/i, outlet: 'Time Out New York', outletId: 'TIMEOUT' },
-    { pattern: /Daily News/i, outlet: 'New York Daily News', outletId: 'NYDN' },
-    { pattern: /New York Post/i, outlet: 'New York Post', outletId: 'NYP' },
-    { pattern: /TheaterMania/i, outlet: 'TheaterMania', outletId: 'TMAN' },
-    { pattern: /Washington Post/i, outlet: 'The Washington Post', outletId: 'WASHPOST' },
-    { pattern: /Deadline/i, outlet: 'Deadline', outletId: 'DEADLINE' },
-    { pattern: /Associated Press|AP News/i, outlet: 'Associated Press', outletId: 'AP' },
-    { pattern: /Guardian/i, outlet: 'The Guardian', outletId: 'GUARDIAN' },
-    { pattern: /Daily Beast/i, outlet: 'The Daily Beast', outletId: 'TDB' },
-    { pattern: /Theatrely/i, outlet: 'Theatrely', outletId: 'THLY' },
-    { pattern: /New York Stage Review/i, outlet: 'New York Stage Review', outletId: 'NYSR' },
-    { pattern: /New York Theatre Guide/i, outlet: 'New York Theatre Guide', outletId: 'NYTG' },
-    { pattern: /Observer/i, outlet: 'Observer', outletId: 'OBSERVER' },
-  ];
+  const summary = {
+    up: thumbUpMatch ? parseInt(thumbUpMatch[1]) : 0,
+    meh: thumbMehMatch ? parseInt(thumbMehMatch[1]) : 0,
+    down: thumbDownMatch ? parseInt(thumbDownMatch[1]) : 0,
+  };
+  console.log(`    Found ${summary.up} UP, ${summary.meh} MEH, ${summary.down} DOWN`);
 
-  // Extract thumb status from page (Up/Meh/Down counts)
-  const thumbMatch = html.match(/(\d+)\s*UP.*?(\d+)\s*MEH.*?(\d+)\s*DOWN/i);
-  if (thumbMatch) {
-    console.log(`    Found ${thumbMatch[1]} UP, ${thumbMatch[2]} MEH, ${thumbMatch[3]} DOWN`);
-  }
+  // Extract individual reviews from <div class="review-item"> blocks
+  // Pattern matches each review item block
+  const reviewItemRegex = /<div class="review-item">([\s\S]*?)(?=<div class="review-item">|<\/section>|<div class="" id="modal-breakdown")/gi;
 
-  // Try to extract individual reviews - this is simplified since DTLI structure varies
-  // In a real implementation, we'd need proper HTML parsing
-  for (const { pattern, outlet, outletId } of outletPatterns) {
-    if (pattern.test(html)) {
-      // Found this outlet mentioned - record it as needing review discovery
+  let match;
+  while ((match = reviewItemRegex.exec(html)) !== null) {
+    const reviewHtml = match[1];
+
+    // Extract outlet from img alt text (class="review-item-attribution")
+    const outletMatch = reviewHtml.match(/class="review-item-attribution"[^>]*alt="([^"]+)"/i) ||
+                        reviewHtml.match(/alt="([^"]+)"[^>]*class="review-item-attribution"/i);
+
+    // Extract thumb from BigThumbs image (BigThumbs_UP, BigThumbs_MEH, BigThumbs_DOWN)
+    const thumbMatch = reviewHtml.match(/BigThumbs_(UP|MEH|DOWN)/i);
+
+    // Extract critic name from review-item-critic-name
+    const criticMatch = reviewHtml.match(/class="review-item-critic-name"[^>]*>(?:<a[^>]*>)?([^<]+)/i);
+
+    // Extract date
+    const dateMatch = reviewHtml.match(/class="review-item-date"[^>]*>([^<]+)/i);
+
+    // Extract excerpt from paragraph
+    const excerptMatch = reviewHtml.match(/<p class="paragraph">([^]*?)<\/p>/i);
+
+    // Extract review URL from button link
+    const urlMatch = reviewHtml.match(/href="(https?:\/\/[^"]+)"[^>]*class="[^"]*button-pink[^"]*review-item-button/i) ||
+                     reviewHtml.match(/class="[^"]*button-pink[^"]*review-item-button[^"]*"[^>]*href="(https?:\/\/[^"]+)"/i) ||
+                     reviewHtml.match(/href="(https?:\/\/[^"]+)"[^>]*>READ THE REVIEW/i);
+
+    if (outletMatch && urlMatch) {
+      const outletName = outletMatch[1].trim();
+      const outletId = slugify(outletName);
+      const thumb = thumbMatch ? thumbMatch[1].toUpperCase() : null;
+      let criticName = criticMatch ? criticMatch[1].replace(/<br\s*\/?>/gi, ' ').trim() : 'Unknown';
+      criticName = criticName.replace(/\s+/g, ' ').trim();
+      const date = dateMatch ? dateMatch[1].trim() : null;
+      let excerpt = excerptMatch ? excerptMatch[1].trim() : null;
+
+      // Clean up excerpt HTML entities
+      if (excerpt) {
+        excerpt = excerpt
+          .replace(/<[^>]+>/g, '')
+          .replace(/&amp;/g, '&')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#8217;/g, "'")
+          .replace(/&#8220;/g, '"')
+          .replace(/&#8221;/g, '"')
+          .replace(/&#8212;/g, '—')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
       reviews.push({
         showId,
         outletId,
-        outlet,
-        source: 'dtli-mention',
-        needsUrl: true
+        outlet: outletName,
+        criticName,
+        url: urlMatch[1],
+        publishDate: date,
+        dtliExcerpt: excerpt,
+        dtliThumb: thumb,
+        source: 'dtli',
+        dtliUrl,
       });
     }
   }
 
+  if (reviews.length > 0) {
+    console.log(`    Extracted ${reviews.length} individual reviews with thumb data`);
+  } else {
+    console.log(`    Warning: Could not extract individual reviews (HTML structure may have changed)`);
+  }
+
   return reviews;
+}
+
+/**
+ * Search BroadwayWorld for Review Roundup article
+ */
+async function searchBWWRoundup(show, year) {
+  console.log('  Searching BroadwayWorld Review Roundups...');
+
+  // Generate title variations for URL
+  const titleVariations = [
+    show.title.toUpperCase().replace(/[^A-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
+    show.title.replace(/[^a-zA-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
+    show.title.replace(/'/g, '').replace(/[^a-zA-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
+  ];
+
+  const searchUrls = [];
+  for (const title of titleVariations) {
+    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${year}`);
+    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${year}`);
+    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-${year}`);
+  }
+
+  for (const url of searchUrls) {
+    const result = await searchAggregator('BWW', url);
+    if (result.found && result.html && result.html.includes('Review Roundup')) {
+      console.log(`    ✓ Found at: ${url}`);
+      return { url, html: result.html };
+    }
+    await sleep(200);
+  }
+
+  console.log('    ✗ Not found on BWW');
+  return null;
+}
+
+/**
+ * Extract reviews from BWW Review Roundup HTML
+ */
+function extractBWWRoundupReviews(html, showId, bwwUrl) {
+  const reviews = [];
+
+  // BWW Review Roundups have reviews in the article body
+  // Pattern: <strong>Critic Name, Outlet:</strong> review excerpt
+  // Or embedded in paragraphs with outlet names in bold
+
+  // Try to extract from JSON-LD articleBody first
+  const jsonLdMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  if (jsonLdMatch) {
+    try {
+      const jsonLd = JSON.parse(jsonLdMatch[1]);
+      const articleBody = jsonLd.articleBody || '';
+
+      // Common critic-outlet patterns
+      const criticPatterns = [
+        { pattern: /Ben Brantley.*?New York Times/i, outlet: 'The New York Times', outletId: 'nytimes' },
+        { pattern: /Jesse Green.*?(?:Vulture|New York Times)/i, outlet: 'Vulture', outletId: 'vulture' },
+        { pattern: /Frank Scheck.*?Hollywood Reporter/i, outlet: 'The Hollywood Reporter', outletId: 'THR' },
+        { pattern: /Marilyn Stasio.*?Variety/i, outlet: 'Variety', outletId: 'variety' },
+        { pattern: /David Cote.*?Time Out/i, outlet: 'Time Out New York', outletId: 'TIMEOUT' },
+        { pattern: /Michael Dale.*?BroadwayWorld/i, outlet: 'BroadwayWorld', outletId: 'BWW' },
+        { pattern: /Mark Kennedy.*?Associated Press/i, outlet: 'Associated Press', outletId: 'AP' },
+        { pattern: /Joe Dziemianowicz.*?Daily News/i, outlet: 'New York Daily News', outletId: 'NYDN' },
+        { pattern: /Elisabeth Vincentelli.*?(?:Post|Variety)/i, outlet: 'New York Post', outletId: 'NYP' },
+        { pattern: /Terry Teachout.*?Wall Street Journal/i, outlet: 'Wall Street Journal', outletId: 'WSJ' },
+        { pattern: /Jeremy Gerard.*?Deadline/i, outlet: 'Deadline', outletId: 'DEADLINE' },
+        { pattern: /Linda Winer.*?Newsday/i, outlet: 'Newsday', outletId: 'NEWSDAY' },
+        { pattern: /Elysa Gardner.*?USA Today/i, outlet: 'USA Today', outletId: 'USAT' },
+        { pattern: /Chris Jones.*?Chicago Tribune/i, outlet: 'Chicago Tribune', outletId: 'CHITRIB' },
+      ];
+
+      for (const { pattern, outlet, outletId } of criticPatterns) {
+        if (pattern.test(articleBody)) {
+          // Extract the critic name from the pattern match
+          const match = articleBody.match(pattern);
+          if (match) {
+            const criticName = match[0].split(',')[0].trim();
+
+            // Check if we already have this outlet
+            if (!reviews.some(r => r.outletId === outletId)) {
+              reviews.push({
+                showId,
+                outletId,
+                outlet,
+                criticName,
+                url: null,
+                bwwRoundupUrl: bwwUrl,
+                source: 'bww-roundup',
+              });
+            }
+          }
+        }
+      }
+    } catch (e) {
+      // Skip JSON parse errors
+    }
+  }
+
+  if (reviews.length > 0) {
+    console.log(`    Extracted ${reviews.length} reviews from BWW roundup`);
+  }
+
+  return reviews;
+}
+
+/**
+ * Archive aggregator page for future reference
+ */
+function archiveAggregatorPage(aggregator, showId, url, html) {
+  const archiveDir = path.join(__dirname, '..', 'data', 'aggregator-archive', aggregator);
+  if (!fs.existsSync(archiveDir)) {
+    fs.mkdirSync(archiveDir, { recursive: true });
+  }
+
+  const archivePath = path.join(archiveDir, `${showId}.html`);
+
+  // Don't overwrite existing archives (preserve historical data)
+  if (fs.existsSync(archivePath)) {
+    return;
+  }
+
+  const header = `<!--
+  Archived: ${new Date().toISOString()}
+  Source: ${url}
+  Status: 200
+-->\n`;
+
+  fs.writeFileSync(archivePath, header + html);
+  console.log(`    Archived to ${aggregator}/${showId}.html`);
 }
 
 /**
@@ -748,11 +997,15 @@ function createReviewFile(showId, reviewData) {
     publishDate: reviewData.publishDate || null,
     fullText: reviewData.excerpt || null,
     isFullReview: false,
-    dtliExcerpt: reviewData.excerpt || null,
+    dtliExcerpt: reviewData.dtliExcerpt || reviewData.excerpt || null,
     originalScore: reviewData.originalRating ? parseRating(reviewData.originalRating) : null,
     assignedScore: null,
     source: reviewData.source || 'gather-reviews',
-    dtliThumb: null,
+    dtliThumb: reviewData.dtliThumb || null,
+    dtliUrl: reviewData.dtliUrl || null,
+    bwwExcerpt: reviewData.bwwExcerpt || null,
+    bwwRoundupUrl: reviewData.bwwRoundupUrl || null,
+    showScoreExcerpt: reviewData.showScoreExcerpt || reviewData.excerpt || null,
     needsScoring: true
   };
 
@@ -812,16 +1065,22 @@ async function gatherReviewsForShow(showId) {
   const foundReviews = [];
   const outlets = loadOutlets();
 
-  // STEP 1: Check aggregators
-  console.log('\n[1/3] Checking aggregators...');
+  // STEP 1: Check ALL THREE aggregators (DTLI, Show Score, BWW Review Roundups)
+  console.log('\n[1/4] Checking aggregators...');
 
+  // 1a. Did They Like It - Has individual thumb ratings (Up/Meh/Down)
+  console.log('\n  === Did They Like It ===');
   const dtliResult = await searchDTLI(show);
   if (dtliResult) {
-    const dtliReviews = extractDTLIReviews(dtliResult.html, showId);
+    const dtliReviews = extractDTLIReviews(dtliResult.html, showId, dtliResult.url);
     foundReviews.push(...dtliReviews);
+    // Archive the page
+    archiveAggregatorPage('dtli', showId, dtliResult.url, dtliResult.html);
   }
   await sleep(DELAY_MS);
 
+  // 1b. Show Score - Has critic reviews with excerpts
+  console.log('\n  === Show Score ===');
   const showScoreResult = await searchShowScore(show);
   if (showScoreResult) {
     // Use pre-extracted reviews from Playwright if available (more complete)
@@ -837,7 +1096,7 @@ async function gatherReviewsForShow(showId) {
           criticName: review.critic || 'Unknown',
           url: review.url,
           publishDate: review.date || null,
-          excerpt: review.excerpt || null,
+          showScoreExcerpt: review.excerpt || null,
           source: 'show-score-playwright'
         });
       }
@@ -846,11 +1105,24 @@ async function gatherReviewsForShow(showId) {
       const showScoreReviews = extractShowScoreReviews(showScoreResult.html, showId);
       foundReviews.push(...showScoreReviews);
     }
+    // Archive the page
+    archiveAggregatorPage('show-score', showId, showScoreResult.url, showScoreResult.html);
   }
   await sleep(DELAY_MS);
 
-  // STEP 2: Search ALL outlets (comprehensive coverage)
-  console.log(`\n[2/3] Searching all ${outlets.length} outlets...`);
+  // 1c. BroadwayWorld Review Roundups - Compiles all reviews in one article
+  console.log('\n  === BroadwayWorld Review Roundups ===');
+  const bwwResult = await searchBWWRoundup(show, year);
+  if (bwwResult) {
+    const bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url);
+    foundReviews.push(...bwwReviews);
+    // Archive the page
+    archiveAggregatorPage('bww-roundups', showId, bwwResult.url, bwwResult.html);
+  }
+  await sleep(DELAY_MS);
+
+  // STEP 2: Search ALL outlets via web search (comprehensive coverage)
+  console.log(`\n[2/4] Searching all ${outlets.length} outlets via web search...`);
 
   // Search ALL tiers - we're a comprehensive site, every review matters
   // Tier 1 outlets first, then Tier 2, then Tier 3
@@ -881,8 +1153,8 @@ async function gatherReviewsForShow(showId) {
     await sleep(DELAY_MS);
   }
 
-  // STEP 3: Create review files
-  console.log('\n[3/3] Creating review files...');
+  // STEP 3: Deduplicate and create review files
+  console.log('\n[3/4] Deduplicating and creating review files...');
 
   let created = 0;
   for (const review of foundReviews) {
