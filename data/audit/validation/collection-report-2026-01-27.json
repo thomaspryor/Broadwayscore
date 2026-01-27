@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T05:57:45.250Z",
+  "runDate": "2026-01-27T05:59:19.865Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "aladdin-2014",
+    "showFilter": "hadestown-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 204,
-    "failed": 136,
+    "processed": 205,
+    "failed": 151,
     "skipped": 0,
-    "successRate": "60.0%"
+    "successRate": "57.6%"
   },
   "tierBreakdown": {
     "playwright": 22,
     "scrapingbee": 17,
     "brightdata": 21,
-    "archive": 144
+    "archive": 145
   },
   "statistics": {
-    "tier1Attempts": 16,
+    "tier1Attempts": 32,
     "tier1Success": 0,
-    "tier2Attempts": 16,
+    "tier2Attempts": 32,
     "tier2Success": 0,
-    "tier3Attempts": 16,
+    "tier3Attempts": 32,
     "tier3Success": 0,
-    "tier4Attempts": 19,
-    "tier4Success": 0,
-    "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 10
+    "tier4Attempts": 37,
+    "tier4Success": 1,
+    "totalFailed": 31,
+    "scrapingBeeCreditsUsed": 90
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -238,7 +238,8 @@
     "cabaret-2024/theaterscene-net--unknown.json",
     "cabaret-2024/wsj-com--unknown.json",
     "maybe-happy-ending-2024/observer--jesse-green.json",
-    "maybe-happy-ending-2024/washington-post--naveen-kumar.json"
+    "maybe-happy-ending-2024/washington-post--naveen-kumar.json",
+    "hadestown-2019/observer-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -361,22 +362,37 @@
     "maybe-happy-ending-2024/tman--david-gordon.json",
     "maybe-happy-ending-2024/washpost--peter-marks.json",
     "maybe-happy-ending-2024/wsj--terry-teachout.json",
-    "aladdin-2014/nyt--ben-brantley.json",
-    "aladdin-2014/vult--jesse-green.json",
-    "aladdin-2014/TDB--tim-teeman.json",
-    "aladdin-2014/ap--mark-kennedy.json",
-    "aladdin-2014/broadway-voice--kristen-balzano.json",
-    "aladdin-2014/deadline--pete-hammond.json",
-    "aladdin-2014/newjerseynewsroom-com--unknown.json",
-    "aladdin-2014/newsday--linda-winer.json",
-    "aladdin-2014/nydn--joe-dziemianowicz.json",
-    "aladdin-2014/nyp--elisabeth-vincentelli.json",
-    "aladdin-2014/talkinbway--matthew-murray.json",
-    "aladdin-2014/the-stage--mark-shenton.json",
-    "aladdin-2014/tman--david-finkle.json",
-    "aladdin-2014/usatoday--elysa-gardner.json",
-    "aladdin-2014/washpost--peter-marks.json",
-    "aladdin-2014/wsj--terry-teachout.json"
+    "hadestown-2019/nyt--ben-brantley.json",
+    "hadestown-2019/thr--david-rooney.json",
+    "hadestown-2019/vult--jesse-green.json",
+    "hadestown-2019/NJCOM--christopher-kelly.json",
+    "hadestown-2019/NYDN--chris-jones.json",
+    "hadestown-2019/NYP--johnny-oleksinski.json",
+    "hadestown-2019/ROLLINGSTONE--will-hermes.json",
+    "hadestown-2019/TDB--tim-teeman.json",
+    "hadestown-2019/WASHPOST--peter-marks.json",
+    "hadestown-2019/WRAP--thom-geier.json",
+    "hadestown-2019/WSJ--terry-teachout.json",
+    "hadestown-2019/broadway-news--unknown.json",
+    "hadestown-2019/chtrib--chris-jones.json",
+    "hadestown-2019/curtainup--elyse-sommer.json",
+    "hadestown-2019/curtainup-com--unknown.json",
+    "hadestown-2019/deadline--pete-hammond.json",
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/ew--kristen-baldwin.json",
+    "hadestown-2019/guardian--jesse-green.json",
+    "hadestown-2019/nj-com--unknown.json",
+    "hadestown-2019/nyp--johnny-oleksinski.json",
+    "hadestown-2019/reviewsoffbroadway--scott-mitchell.json",
+    "hadestown-2019/rollstone--rob-sheffield.json",
+    "hadestown-2019/talkinbway--nancy-grossman.json",
+    "hadestown-2019/theaterreviewsfrommyseat--joe-lombardi.json",
+    "hadestown-2019/tman--jesse-green.json",
+    "hadestown-2019/usatoday--elysa-gardner.json",
+    "hadestown-2019/washpost--peter-marks.json",
+    "hadestown-2019/wnyc--jennifer-vanasco.json",
+    "hadestown-2019/wsj--charles-isherwood.json",
+    "hadestown-2019/wsj-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -589,7 +605,8 @@
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
       "cabaret-2024/wsj-com--unknown.json",
-      "maybe-happy-ending-2024/washington-post--naveen-kumar.json"
+      "maybe-happy-ending-2024/washington-post--naveen-kumar.json",
+      "hadestown-2019/observer-com--unknown.json"
     ]
   }
 }
