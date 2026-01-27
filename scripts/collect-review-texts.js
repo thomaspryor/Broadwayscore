@@ -80,6 +80,8 @@ const CONFIG = {
   showFilter: process.env.SHOW_FILTER || '',
   retryFailed: process.env.RETRY_FAILED === 'true',
   commitEvery: parseInt(process.env.COMMIT_EVERY || '10'), // Git commit after every N reviews
+  outletTier: process.env.OUTLET_TIER || '', // Filter by outlet tier: tier1, tier2, tier3
+  archiveFirst: process.env.ARCHIVE_FIRST === 'true', // Try Archive.org first for older reviews
 
   // API Keys
   scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '',
@@ -92,8 +94,14 @@ const CONFIG = {
   stateDir: 'data/collection-state',
   auditDir: 'data/audit/validation',
 
-  // Tier 1 outlets (highest priority for scoring)
+  // Tier 1 outlets (highest priority for scoring - weight 1.0)
   tier1Outlets: ['nytimes', 'nyt', 'vulture', 'vult', 'variety', 'hollywood-reporter', 'thr', 'newyorker'],
+
+  // Tier 2 outlets (weight 0.70)
+  tier2Outlets: ['theatermania', 'nypost', 'new-york-post', 'time-out', 'timeout', 'wsj', 'wapo', 'washington-post', 'deadline', 'the-wrap', 'thewrap', 'observer', 'daily-beast', 'ew', 'entertainment-weekly', 'guardian'],
+
+  // Tier 3 outlets (weight 0.40 - blogs and smaller sites)
+  tier3Outlets: ['theatrely', 'broadway-news', 'cititour', 'culture-sauce', 'stage-and-cinema', 'forward', 'ny-stage-review', 'new-york-stage-review', 'am-new-york', 'chicago-tribune', 'nj-arts', 'dc-metro-theater-arts', 'talkin-broadway'],
 
   // Paywalled domains and their credential env vars
   paywalledDomains: {
@@ -565,7 +573,21 @@ async function fetchReviewText(review) {
   const isKnownBlocked = CONFIG.knownBlockedSites.some(s => urlLower.includes(s));
   const skipPlaywright = CLI.aggressive && isKnownBlocked;
   const isBrightDataPreferred = CONFIG.brightDataPreferred.some(s => urlLower.includes(s));
-  const isArchiveFirst = CONFIG.archiveFirstSites.some(s => urlLower.includes(s));
+  const isArchiveFirstSite = CONFIG.archiveFirstSites.some(s => urlLower.includes(s));
+
+  // Determine if this is an "old" review (>6 months) - Archive.org often works better for these
+  let isOldReview = false;
+  if (review.publishDate) {
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+    isOldReview = review.publishDate < sixMonthsAgo;
+  }
+
+  // Use archive-first approach if:
+  // 1. ARCHIVE_FIRST env var is set to true, OR
+  // 2. Site is in archiveFirstSites list, OR
+  // 3. Review is older than 6 months (when ARCHIVE_FIRST is enabled)
+  const isArchiveFirst = isArchiveFirstSite || (CONFIG.archiveFirst && isOldReview);
 
   // Force specific tier if requested
   if (CLI.forceTier) {
@@ -1296,9 +1318,32 @@ function findReviewsToProcess() {
         // Determine outlet tier
         const outletId = (data.outletId || '').toLowerCase();
         const isTier1 = CONFIG.tier1Outlets.some(t => outletId.includes(t));
+        const isTier2 = CONFIG.tier2Outlets.some(t => outletId.includes(t));
+        const isTier3 = CONFIG.tier3Outlets.some(t => outletId.includes(t));
+
+        // Determine tier number (1, 2, 3, or 4 for unknown)
+        let tierNum = 4; // Default to unknown tier
+        if (isTier1) tierNum = 1;
+        else if (isTier2) tierNum = 2;
+        else if (isTier3) tierNum = 3;
 
         // Apply priority filter
         if (CONFIG.priority === 'tier1' && !isTier1) continue;
+
+        // Apply outlet tier filter (for parallel matrix strategy)
+        if (CONFIG.outletTier) {
+          if (CONFIG.outletTier === 'tier1' && tierNum !== 1) continue;
+          if (CONFIG.outletTier === 'tier2' && tierNum !== 2) continue;
+          if (CONFIG.outletTier === 'tier3' && (tierNum !== 3 && tierNum !== 4)) continue;
+        }
+
+        // Parse publish date for archive-first logic
+        let publishDate = null;
+        if (data.publishDate) {
+          try {
+            publishDate = new Date(data.publishDate);
+          } catch (e) {}
+        }
 
         reviews.push({
           reviewId,
@@ -1310,7 +1355,9 @@ function findReviewsToProcess() {
           critic: data.criticName,
           url: data.url,
           isTier1,
-          priority: isTier1 ? 1 : 2,
+          tierNum,
+          priority: tierNum,
+          publishDate,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
