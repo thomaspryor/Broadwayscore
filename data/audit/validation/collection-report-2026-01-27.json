@@ -1,67 +1,88 @@
 {
-  "runDate": "2026-01-27T20:35:45.830Z",
+  "runDate": "2026-01-27T20:36:15.379Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "wicked-2003",
+    "showFilter": "the-notebook-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 12,
+    "processed": 15,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "68.2%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 2
+    "brightdata": 1,
+    "archive": 12
   },
   "statistics": {
-    "tier1Attempts": 14,
-    "tier1Success": 0,
-    "tier2Attempts": 14,
+    "tier1Attempts": 17,
+    "tier1Success": 1,
+    "tier2Attempts": 16,
     "tier2Success": 1,
-    "tier3Attempts": 13,
-    "tier3Success": 0,
-    "tier4Attempts": 23,
-    "tier4Success": 2,
-    "totalFailed": 12,
-    "scrapingBeeCreditsUsed": 50
+    "tier3Attempts": 15,
+    "tier3Success": 1,
+    "tier4Attempts": 20,
+    "tier4Success": 12,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 120
   },
   "processed": [
-    "wicked-2003/content-time-com--unknown.json",
-    "wicked-2003/time-out-new-york--david-cote.json",
-    "wicked-2003/wsj--terry-teachout.json"
+    "the-notebook-2024/new-york-magazine-vulture--sara-holdren.json",
+    "the-notebook-2024/nytg--kyle-turner.json",
+    "the-notebook-2024/broadway-news--brittani.json",
+    "the-notebook-2024/deadline--greg.json",
+    "the-notebook-2024/new-york-post--johnny.json",
+    "the-notebook-2024/new-york-theatre-guide--kyle.json",
+    "the-notebook-2024/new-york-times--jesse.json",
+    "the-notebook-2024/the-wrap--robert.json",
+    "the-notebook-2024/theatermania--zachary.json",
+    "the-notebook-2024/theatrely--juan-a.json",
+    "the-notebook-2024/time-out-new-york--adam-feldman.json",
+    "the-notebook-2024/timeout--adam-feldman.json",
+    "the-notebook-2024/wall-street-journal--charles.json",
+    "the-notebook-2024/washington-post--naveen-kumar.json",
+    "the-notebook-2024/wsj--charles-isherwood.json"
   ],
   "failed": [
-    "wicked-2003/THR--frank-scheck.json",
-    "wicked-2003/new-york-magazine-vulture--john-simon.json",
-    "wicked-2003/AP--michael-kuchwara.json",
-    "wicked-2003/NEWSDAY--linda-winer.json",
-    "wicked-2003/apnewsarchive-com--unknown.json",
-    "wicked-2003/curtainup--elyse-sommer.json",
-    "wicked-2003/ew--alice-king.json",
-    "wicked-2003/ew-com--unknown.json",
-    "wicked-2003/guardian--michael-billington.json",
-    "wicked-2003/star-ledger--michael-sommers.json",
-    "wicked-2003/washington-post--peter-marks.json",
-    "wicked-2003/washpost--peter-marks.json"
+    "the-notebook-2024/variety--aramide-tinubu.json",
+    "the-notebook-2024/deadline--pete-hammond.json",
+    "the-notebook-2024/guardian--adrian-horton.json",
+    "the-notebook-2024/guardian--gloria-oladipo.json",
+    "the-notebook-2024/new-york-daily-news--chris.json",
+    "the-notebook-2024/the-new-york-daily-news--chris-jones.json",
+    "the-notebook-2024/thly--andy-lefkowitz.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "scrapingbee": [
-      "wicked-2003/time-out-new-york--david-cote.json"
+    "playwright": [
+      "the-notebook-2024/broadway-news--brittani.json"
     ],
-    "brightdata": [],
+    "scrapingbee": [
+      "the-notebook-2024/theatrely--juan-a.json"
+    ],
+    "brightdata": [
+      "the-notebook-2024/timeout--adam-feldman.json"
+    ],
     "archive": [
-      "wicked-2003/content-time-com--unknown.json",
-      "wicked-2003/wsj--terry-teachout.json"
+      "the-notebook-2024/new-york-magazine-vulture--sara-holdren.json",
+      "the-notebook-2024/nytg--kyle-turner.json",
+      "the-notebook-2024/deadline--greg.json",
+      "the-notebook-2024/new-york-post--johnny.json",
+      "the-notebook-2024/new-york-theatre-guide--kyle.json",
+      "the-notebook-2024/new-york-times--jesse.json",
+      "the-notebook-2024/the-wrap--robert.json",
+      "the-notebook-2024/theatermania--zachary.json",
+      "the-notebook-2024/time-out-new-york--adam-feldman.json",
+      "the-notebook-2024/wall-street-journal--charles.json",
+      "the-notebook-2024/washington-post--naveen-kumar.json",
+      "the-notebook-2024/wsj--charles-isherwood.json"
     ]
   }
 }
