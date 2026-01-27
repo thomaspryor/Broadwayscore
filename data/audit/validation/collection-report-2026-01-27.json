@@ -1,88 +1,81 @@
 {
-  "runDate": "2026-01-27T20:36:15.379Z",
+  "runDate": "2026-01-27T20:36:30.995Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-notebook-2024",
+    "showFilter": "harry-potter-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 15,
-    "failed": 7,
+    "processed": 6,
+    "failed": 18,
     "skipped": 0,
-    "successRate": "68.2%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 1,
-    "archive": 12
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 17,
+    "tier1Attempts": 22,
     "tier1Success": 1,
-    "tier2Attempts": 16,
-    "tier2Success": 1,
-    "tier3Attempts": 15,
+    "tier2Attempts": 21,
+    "tier2Success": 2,
+    "tier3Attempts": 19,
     "tier3Success": 1,
-    "tier4Attempts": 20,
-    "tier4Success": 12,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 120
+    "tier4Attempts": 26,
+    "tier4Success": 2,
+    "totalFailed": 18,
+    "scrapingBeeCreditsUsed": 100
   },
   "processed": [
-    "the-notebook-2024/new-york-magazine-vulture--sara-holdren.json",
-    "the-notebook-2024/nytg--kyle-turner.json",
-    "the-notebook-2024/broadway-news--brittani.json",
-    "the-notebook-2024/deadline--greg.json",
-    "the-notebook-2024/new-york-post--johnny.json",
-    "the-notebook-2024/new-york-theatre-guide--kyle.json",
-    "the-notebook-2024/new-york-times--jesse.json",
-    "the-notebook-2024/the-wrap--robert.json",
-    "the-notebook-2024/theatermania--zachary.json",
-    "the-notebook-2024/theatrely--juan-a.json",
-    "the-notebook-2024/time-out-new-york--adam-feldman.json",
-    "the-notebook-2024/timeout--adam-feldman.json",
-    "the-notebook-2024/wall-street-journal--charles.json",
-    "the-notebook-2024/washington-post--naveen-kumar.json",
-    "the-notebook-2024/wsj--charles-isherwood.json"
+    "harry-potter-2021/new-york-magazine-vulture--sara-holdren.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/financial-times--charles-isherwood.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/time-out-new-york--adam-feldman.json",
+    "harry-potter-2021/wsj--terry-teachout.json"
   ],
   "failed": [
-    "the-notebook-2024/variety--aramide-tinubu.json",
-    "the-notebook-2024/deadline--pete-hammond.json",
-    "the-notebook-2024/guardian--adrian-horton.json",
-    "the-notebook-2024/guardian--gloria-oladipo.json",
-    "the-notebook-2024/new-york-daily-news--chris.json",
-    "the-notebook-2024/the-new-york-daily-news--chris-jones.json",
-    "the-notebook-2024/thly--andy-lefkowitz.json"
+    "harry-potter-2021/NYP--johnny-oleksinski.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/broadway-news--elizabeth-bradley.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/curtainup-com--unknown.json",
+    "harry-potter-2021/deadline--greg-evans.json",
+    "harry-potter-2021/exeunt--kev-berry.json",
+    "harry-potter-2021/front-mezz-junkies--steven-ross.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/medium--christian-lewis.json",
+    "harry-potter-2021/ny1--roma-torre.json",
+    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
+    "harry-potter-2021/theguardian-com--unknown.json",
+    "harry-potter-2021/troy-record--bob-goepfert.json",
+    "harry-potter-2021/wnyc--jennifer-vanasco.json",
+    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-notebook-2024/broadway-news--brittani.json"
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
     ],
     "scrapingbee": [
-      "the-notebook-2024/theatrely--juan-a.json"
+      "harry-potter-2021/financial-times--charles-isherwood.json",
+      "harry-potter-2021/time-out-new-york--adam-feldman.json"
     ],
     "brightdata": [
-      "the-notebook-2024/timeout--adam-feldman.json"
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
     ],
     "archive": [
-      "the-notebook-2024/new-york-magazine-vulture--sara-holdren.json",
-      "the-notebook-2024/nytg--kyle-turner.json",
-      "the-notebook-2024/deadline--greg.json",
-      "the-notebook-2024/new-york-post--johnny.json",
-      "the-notebook-2024/new-york-theatre-guide--kyle.json",
-      "the-notebook-2024/new-york-times--jesse.json",
-      "the-notebook-2024/the-wrap--robert.json",
-      "the-notebook-2024/theatermania--zachary.json",
-      "the-notebook-2024/time-out-new-york--adam-feldman.json",
-      "the-notebook-2024/wall-street-journal--charles.json",
-      "the-notebook-2024/washington-post--naveen-kumar.json",
-      "the-notebook-2024/wsj--charles-isherwood.json"
+      "harry-potter-2021/new-york-magazine-vulture--sara-holdren.json",
+      "harry-potter-2021/wsj--terry-teachout.json"
     ]
   }
 }
