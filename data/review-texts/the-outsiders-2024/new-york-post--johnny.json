@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The song turns out to be representative of the entire shattering-yet-optimistic musical it’s part of. Driven by authenticity, earnestness, youth and ample heart, “The Outsiders” is very much an outsider itself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-outsiders/ -->",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250908214750",
-  "archiveOrgUrl": "http://web.archive.org/web/20250908214750/https://nypost.com/2024/04/11/entertainment/the-outsiders-broadway-review-warring-teens-tug-at-the-heart-in-one-of-the-seasons-best-new-musicals/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250908214750/https://nypost.com/2024/04/11/entertainment/the-outsiders-broadway-review-warring-teens-tug-at-the-heart-in-one-of-the-seasons-best-new-musicals/",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 93,
+      "performances": 89,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "The tender tune, accompanied by an acoustic guitar, is not only the most beautiful in any new musical this season — it's a moment of pure catharsis that's been missing from the past several years of Broadway shows",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Driven by authenticity, earnestness, youth and ample heart, 'The Outsiders' is very much an outsider itself",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "That's a quibble, though. Soon enough, it is powerfully refueled by the violent battle",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises virtually every aspect of the production with superlatives ('most beautiful', 'sublime debut', 'breathtakingly visceral'), calls it cathartic and transformative, with only minor quibbles about staging. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's emotional depth, performances, and overall execution, indicating it as a must-see production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:39.457Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
