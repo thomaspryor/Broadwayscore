@@ -1,89 +1,89 @@
 {
-  "runDate": "2026-01-27T20:30:40.962Z",
+  "runDate": "2026-01-27T20:30:50.487Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "boop-2025",
+    "showFilter": "the-roommate-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 18,
-    "failed": 3,
+    "processed": 16,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "85.7%"
+    "successRate": "72.7%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 5,
     "scrapingbee": 2,
-    "brightdata": 0,
-    "archive": 12
+    "brightdata": 1,
+    "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 4,
+    "tier1Attempts": 17,
+    "tier1Success": 5,
     "tier2Attempts": 12,
     "tier2Success": 2,
     "tier3Attempts": 10,
-    "tier3Success": 0,
+    "tier3Success": 1,
     "tier4Attempts": 15,
-    "tier4Success": 12,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 100
+    "tier4Success": 8,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 110
   },
   "processed": [
-    "boop-2025/new-york-magazine-vulture--jackson-mchenry.json",
-    "boop-2025/nytg--allison-considine.json",
-    "boop-2025/variety--frank.json",
-    "boop-2025/vulture--jackson.json",
-    "boop-2025/am-new-york--matt.json",
-    "boop-2025/broadway-news--brittani.json",
-    "boop-2025/lighting-sound-america--david-barbour.json",
-    "boop-2025/new-york-daily-news--chris.json",
-    "boop-2025/new-york-post--johnny.json",
-    "boop-2025/new-york-stage-review--bob.json",
-    "boop-2025/new-york-stage-review--frank.json",
-    "boop-2025/new-york-theater--jonathan.json",
-    "boop-2025/new-york-theatre-guide--allison.json",
-    "boop-2025/new-york-times--jesse.json",
-    "boop-2025/theatermania--pete.json",
-    "boop-2025/theatrely--juan-a.json",
-    "boop-2025/time-out-new-york--adam-feldman.json",
-    "boop-2025/time-out-new-york--adam.json"
+    "the-roommate-2024/nytg--amelia-merrill.json",
+    "the-roommate-2024/variety--daniel.json",
+    "the-roommate-2024/vulture--sara.json",
+    "the-roommate-2024/broadway-news--brittani.json",
+    "the-roommate-2024/chicago-tribune--chris.json",
+    "the-roommate-2024/lighting-sound-america--david-barbour.json",
+    "the-roommate-2024/new-york-stage-review--frank.json",
+    "the-roommate-2024/new-york-stage-review--melissa-rose.json",
+    "the-roommate-2024/new-york-theatre-guide--amelia.json",
+    "the-roommate-2024/new-york-times--jesse.json",
+    "the-roommate-2024/the-wrap--robert.json",
+    "the-roommate-2024/time-out-new-york--adam-feldman.json",
+    "the-roommate-2024/time-out-new-york--adam.json",
+    "the-roommate-2024/usa-today--patrick.json",
+    "the-roommate-2024/wsj--charles-isherwood.json",
+    "the-roommate-2024/wsj-com--unknown.json"
   ],
   "failed": [
-    "boop-2025/daily-beast--tim-teeman.json",
-    "boop-2025/interestedbystander-com--unknown.json",
-    "boop-2025/the-wrap--robert.json"
+    "the-roommate-2024/thr--angie-han.json",
+    "the-roommate-2024/deadline--greg.json",
+    "the-roommate-2024/nyp--johnny-oleksinski.json",
+    "the-roommate-2024/observer--rex-reed.json",
+    "the-roommate-2024/the-guardian--adrian.json",
+    "the-roommate-2024/theatermania--zachary.json"
   ],
   "tierDetails": {
     "playwright": [
-      "boop-2025/lighting-sound-america--david-barbour.json",
-      "boop-2025/new-york-theater--jonathan.json",
-      "boop-2025/time-out-new-york--adam-feldman.json",
-      "boop-2025/time-out-new-york--adam.json"
+      "the-roommate-2024/nytg--amelia-merrill.json",
+      "the-roommate-2024/broadway-news--brittani.json",
+      "the-roommate-2024/lighting-sound-america--david-barbour.json",
+      "the-roommate-2024/new-york-theatre-guide--amelia.json",
+      "the-roommate-2024/time-out-new-york--adam-feldman.json"
     ],
     "scrapingbee": [
-      "boop-2025/broadway-news--brittani.json",
-      "boop-2025/theatrely--juan-a.json"
+      "the-roommate-2024/chicago-tribune--chris.json",
+      "the-roommate-2024/time-out-new-york--adam.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "the-roommate-2024/usa-today--patrick.json"
+    ],
     "archive": [
-      "boop-2025/new-york-magazine-vulture--jackson-mchenry.json",
-      "boop-2025/nytg--allison-considine.json",
-      "boop-2025/variety--frank.json",
-      "boop-2025/vulture--jackson.json",
-      "boop-2025/am-new-york--matt.json",
-      "boop-2025/new-york-daily-news--chris.json",
-      "boop-2025/new-york-post--johnny.json",
-      "boop-2025/new-york-stage-review--bob.json",
-      "boop-2025/new-york-stage-review--frank.json",
-      "boop-2025/new-york-theatre-guide--allison.json",
-      "boop-2025/new-york-times--jesse.json",
-      "boop-2025/theatermania--pete.json"
+      "the-roommate-2024/variety--daniel.json",
+      "the-roommate-2024/vulture--sara.json",
+      "the-roommate-2024/new-york-stage-review--frank.json",
+      "the-roommate-2024/new-york-stage-review--melissa-rose.json",
+      "the-roommate-2024/new-york-times--jesse.json",
+      "the-roommate-2024/the-wrap--robert.json",
+      "the-roommate-2024/wsj--charles-isherwood.json",
+      "the-roommate-2024/wsj-com--unknown.json"
     ]
   }
 }
