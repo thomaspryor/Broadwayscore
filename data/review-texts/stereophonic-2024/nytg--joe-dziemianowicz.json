@@ -10,7 +10,7 @@
   "showScoreExcerpt": "âThereâs a lot to admire about 'Stereophonic.' The cast gives feel-real performances under the thoughtful direction of Daniel Aukin.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/stereophonic",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 68,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": 75,
+      "performances": 79,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "a worthwhile yet long-winded theatrical reminder",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "There's a lot to admire about Stereophonic",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "In the end, it feels like a song we've heard before",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer acknowledges substantial craft and admirable elements but ultimately finds the work derivative and lacking fresh insights, calling it 'worthwhile yet long-winded' and comparing it unfavorably to familiar material. | GPT-4o-mini: The review highlights strong performances and direction but notes a lack of fresh insights in the script, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:48.558Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

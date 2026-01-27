@@ -10,8 +10,64 @@
   "bwwExcerpt": "Watching this play by David Adjmi made me think of the last (and possibly the only other) play I’ve seen that was set in a recording studio, “Million Dollar Quartet,” not because there were any similarities between the two, but precisely because their differences made me realize how I could be impressed by the writing and acting in “Stereophonic” and still be disappointed by it.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 73,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I could be impressed by the writing and acting in 'Stereophonic'",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "and still be disappointed by it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "impressed by the writing and acting in 'Stereophonic'",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states being 'impressed by the writing and acting' but 'still disappointed,' indicating a mixed response that leans slightly positive due to specific praise for craft elements. | GPT-4o-mini: The review expresses both appreciation for the writing and acting while also conveying disappointment, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:37.098Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

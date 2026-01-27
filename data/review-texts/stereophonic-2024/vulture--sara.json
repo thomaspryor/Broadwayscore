@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But it’s the thing Adjmi conjures up at the end of Act One that makes Stereophonic such a meaningful and exceptional piece of work: In its bones, it’s a love song, bittersweet and wounded and ferociously loyal, to the act of making art — specifically, art that requires that most exhausting, infuriating, transcendent element: collaboration.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -58,5 +58,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251207235733",
-  "archiveOrgUrl": "http://web.archive.org/web/20251207235733/https://www.vulture.com/article/theater-review-stereophonic-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251207235733/https://www.vulture.com/article/theater-review-stereophonic-broadway.html",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 93,
+      "music": 92,
+      "performances": 94,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the most exhilarating moments I've experienced in a theater in recent memory",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a stunning feat of scoring by Adjmi",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes Stereophonic such a meaningful and exceptional piece of work",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rave with superlative language throughout, praising every element from performances to design, calling it 'exceptional' and describing 'exhilarating' theatrical moments. | GPT-4o-mini: The review is filled with unqualified praise for the production, performances, and direction, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:45:30.167Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
