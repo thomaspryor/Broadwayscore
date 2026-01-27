@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Do you need to see I Need That? Not really. But you’ll have a nice time if you do, even if it does leave you hungry for something a little more substantial.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/i-need-that/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251207181839",
-  "archiveOrgUrl": "http://web.archive.org/web/20251207181839/https://www.theatermania.com/news/review-danny-devito-plays-a-foul-mouthed-hoarder-in-new-broadway-comedy-i-need-that_1719735/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251207181839/https://www.theatermania.com/news/review-danny-devito-plays-a-foul-mouthed-hoarder-in-new-broadway-comedy-i-need-that_1719735/",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": null,
+      "performances": 77,
+      "direction": 76
+    },
+    "keyPhrases": [
+      {
+        "quote": "Do you need to see I Need That? Not really. But you'll have a nice time if you do",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "it's lesser Rebeck, a sweet-nothing of a play that's content with the superficial",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's charming and sweet and ultimately very touching, but the complete lack of depth means it goes in one ear and out the other",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states 'Do you need to see I Need That? Not really' but acknowledges it's pleasant entertainment with strong performances and production values, placing it in mixed territory with a slight lean toward not recommending. | GPT-4o-mini: The review expresses a mix of appreciation for performances and direction but ultimately critiques the play's lack of depth, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:39.696Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

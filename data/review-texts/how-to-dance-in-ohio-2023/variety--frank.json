@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "It’s a big-hearted, earnest musical performed by an eager, confident and appealing cast, playing characters—some more richly drawn than others—who find safety in routines, rules and control but also recognize the need to break free.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "big-hearted, earnest musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "eager, confident and appealing cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "some more richly drawn than others",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Multiple positive descriptors for both the show and cast with only minor qualification about character development suggests clear recommendation despite measured tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:59.577Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

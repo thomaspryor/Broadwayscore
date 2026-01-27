@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This is the brilliance of this play as rendered by Schreck, Neugebauer, and the entire cast: It shows us that while we have no choice but to go on, despite the frightening state of the world and our own inevitable demise, we could, if we took the hint, recognize how lucky we are.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/uncle-vanya-bway/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251121123235",
-  "archiveOrgUrl": "http://web.archive.org/web/20251121123235/https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251121123235/https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 92,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "every moment of this production shimmers with beauty, mirth, and, at least for the audience, hope",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "flawless, fully engaged ensemble cast, the play is as entertaining as it is heartbreaking and profound",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This is the brilliance of this play as rendered by Schreck, Neugebauer, and the entire cast",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review uses consistently glowing language throughout ('shimmers with beauty', 'flawless', 'brilliance') with extensive praise for all production elements and no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:34.584Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

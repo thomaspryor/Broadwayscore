@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The “Purlie Victorious” that opened on Wednesday at the Music Box — unaccountably its first Broadway revival — is every bit as scathingly funny as the 1961 reviews said it was.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/purlie-victorious/",
@@ -35,5 +35,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251027141347",
-  "archiveOrgUrl": "http://web.archive.org/web/20251027141347/https://www.nytimes.com/2023/09/27/theater/purlie-victorious-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251027141347/https://www.nytimes.com/2023/09/27/theater/purlie-victorious-review.html",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "every bit as scathingly funny as the 1961 reviews said it was",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Kenny Leon's thrillingly broad and warp-speed production aims to keep us in both time zones at once",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this necessary revival",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Jesse Green delivers strong praise for performances, direction, and the play's continued relevance, calling it a 'necessary revival' with 'thrillingly broad' production values and outstanding individual performances, particularly from Odom and Young.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:33.007Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

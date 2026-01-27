@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Alas, the show doesn’t deliver much at all. Not only is the low-stakes script dull and pedestrian, but the characters change not at all, despite the premise of three wild men sitting in a boat, waiting not for Godot but sharks and Spielberg.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/the-shark-is-broken/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 15,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show doesn't deliver much at all",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "low-stakes script dull and pedestrian",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the characters change not at all",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers unambiguous criticism with no redeeming qualities mentioned, calling the show dull, pedestrian, and fundamentally failing to deliver. | GPT-4o-mini: The review expresses strong disappointment with the script and character development, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:49.182Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

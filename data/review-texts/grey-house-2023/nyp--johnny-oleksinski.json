@@ -9,8 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a rare Broadway show that actually succeeds in scaring the bejesus out of you. 'Grey House' is a genuinely creepy thriller that will have you jumping out of your seat.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "rare Broadway show that actually succeeds in scaring the bejesus out of you",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "genuinely creepy thriller that will have you jumping out of your seat",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "actually succeeds in scaring the bejesus out of you",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the show's effectiveness as a thriller with emphatic language about its scary impact, indicating clear recommendation despite brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm and excitement about the show's ability to create a thrilling experience, indicating a must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:43.619Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

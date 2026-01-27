@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“This Broadway revival, ‘Spamalot's’ first, feels like a proclamation that the musical's heyday is not dead yet, either...The other strength of ‘Spamalot’ is that it gives every one of its principal cast members a chance to shine. And shine they do. “\n\nRead more",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 89,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Read our four-star review",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Spamalot being a tasting flight of Broadway's past and present hits is one of the best reasons to recommend it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's not to be missed",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Four-star review with explicit recommendation language ('one of the best reasons to recommend it', 'not to be missed') and consistent praise for performances, though acknowledges some dated material. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall enjoyment of the revival, with only minor caveats about some dated humor.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:02.924Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

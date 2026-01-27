@@ -10,8 +10,59 @@
   "bwwExcerpt": "Jaja’s can sometimes veer a little formulaic or presentational: In the single-scene appearance of Jaja herself, Kakoma spends most of her time standing directly downstage center (in, not to spoil anything, an absolute battleship of a wedding gown), facing out and delivering a rousing monologue about her right to call America “my country.” It rings clear and true, though I wonder how the same speech would have felt had White oriented Jaja as much toward her fellow characters as toward us, or what",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "waves of glee roll through the audience on the regular",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "waves of glee roll through the audience",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The vivid description of audience 'waves of glee' suggests strong positive audience response and entertainment value, indicating a clear recommendation despite the very limited excerpt. | GPT-4o-mini: The review indicates a strong positive sentiment with the phrase about audience enjoyment, suggesting a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:39.699Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

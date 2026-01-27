@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Well, McAnuff is back at it with a new revival of “The Who’s Tommy” that opened Thursday at the Nederlander Theatre, and it made me want to see the Russell movie again.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 47,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-whos-tommy/",
@@ -49,5 +49,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250919143956",
-  "archiveOrgUrl": "http://web.archive.org/web/20250919143956/https://www.thewrap.com/the-whos-tommy-broadway-review-pete-townshend-musical/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250919143956/https://www.thewrap.com/the-whos-tommy-broadway-review-pete-townshend-musical/",
+  "llmScore": {
+    "score": 47,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 53.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 58,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "it made me want to see the Russell movie again",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Some tableaux are breathtaking; others are rather pedestrian",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "What gives this production some sense of fun, though, is Ali Louis Bourzgui",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds more problems than strengths, comparing it unfavorably to the film, criticizing the direction and design elements, with only isolated praise for projections and the lead performance. | GPT-4o-mini: The review is predominantly negative, criticizing the direction and design while only offering some praise for the performance of the grown-up Tommy, leading to a low recommendation score.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:50.233Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

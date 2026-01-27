@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "There are two sick people in Mary Jane’s home, we realize, and Herzog has coaxed us into falling in love with both of them. The realization, just like the play, is gutting.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/mary-jane/",
@@ -36,5 +36,63 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 203 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 68,
+    "confidence": "low",
+    "range": {
+      "low": 40.5,
+      "high": 95.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 84,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Amy Herzog's humanistic marvel of a play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "expertly-crafted exploration of allegiance and love",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Theater has the potential to transport us to new worlds, but sometimes the most impactful shows take the time to mirror our own",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review excerpt contains strong praise for Herzog's writing and the play's emotional impact, but appears incomplete and cuts off abruptly, making it difficult to assess the critic's overall recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the play's exploration of deep themes and expertly crafted narrative, indicating a must-see experience. | Note: Models differed by 45 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:27.279Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 90,
+    "scoreDelta": 45,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 45 points (Claude: 45, OpenAI: 90)"
+    ]
+  }
 }

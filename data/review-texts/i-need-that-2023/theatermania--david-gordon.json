@@ -7,7 +7,63 @@
   "publishDate": "November 2, 2023",
   "fullText": "Do you need to see I Need That? Not really. But you’ll have a nice time if you do, even if it does leave you hungry for something a little more substantial.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Do you need to see I Need That? Not really.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "But you'll have a nice time if you do",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "leave you hungry for something a little more substantial",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states you don't need to see it but acknowledges it's pleasant entertainment, suggesting a mild recommendation despite finding it insubstantial. | GPT-4o-mini: The review suggests a conditional recommendation, indicating that while the experience may be enjoyable, it lacks depth, leading to a mixed score.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:31.941Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

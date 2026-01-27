@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 50,
+      "performances": 83,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "They are winning leading men — even as their antics on a bare-bones, brick-backed set rarely surmount to much beyond a SNL sketch",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "The entire show might be better suited for the late-night slot at a comedy club as opposed to Broadway",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Gad and Rannells strike perfect comedic balance",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the performances highly but suggests the material isn't substantial enough for Broadway, landing in mixed territory with qualified appreciation. | GPT-4o-mini: While the performances are praised for their comedic balance, the overall production is seen as lacking depth and better suited for a different venue, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:26.829Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

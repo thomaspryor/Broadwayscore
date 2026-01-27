@@ -7,7 +7,58 @@
   "publishDate": "July 24, 2023",
   "fullText": "But after all the temporizing and flatulating earlier, the last-minute arrival of a point seemed, well, beside the point. Had I laughed more than twice in the play’s previous 119 minutes, I might even have found it funny.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 25,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 15,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Had I laughed more than twice in the play's previous 119 minutes",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "after all the temporizing and flatulating earlier, the last-minute arrival of a point seemed, well, beside the point",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states they only laughed twice in nearly two hours and dismisses the play's attempt at meaning as 'beside the point,' indicating a clear pan of what appears to be a comedy that failed to deliver laughs.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:04.326Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,63 @@
   "publishDate": "July 20, 2023",
   "fullText": "As Imelda, Jacobs plays the ambitious, starry-eyed youth pleasantly enough, and does fine in conveying the latter stages of cynical corruption. But Here Lies Love offers only a half-hearted stab at bridging the two chronological extremes of Imelda’s life, with little attempt at explaining the making of this particular political monster. Perhaps that’s why Here Lies Love, for all its impressive confidence, feels a bit thin in afterthought. Maybe a musical needs a central character who can sing “Why Don’t You Love Me?” without it coming off like an anthem to cluelessness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 63,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Here Lies Love offers only a half-hearted stab at bridging the two chronological extremes of Imelda's life",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "feels a bit thin in afterthought",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "plays the ambitious, starry-eyed youth pleasantly enough, and does fine",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic identifies fundamental structural problems with the musical's book and character development while offering only lukewarm praise for the lead performance, resulting in a qualified negative assessment. | GPT-4o-mini: The review highlights some positive aspects of the performances but ultimately expresses disappointment in the script and overall execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:44.337Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "It’s got major names (Steve Carell is carrying the autumn roses and the gun), a major stage at Lincoln Center’s Vivian Beaumont, and a palpably earnest desire to excavate the story’s humanity. And it is, unhappily, an example of how all these things can fail to cohere into something powerful. Like its luckless hero, it shoots and misses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/uncle-vanya-bway/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": 65,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "And it is, unhappily, an example of how all these things can fail to cohere into something powerful",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Like its luckless hero, it shoots and misses",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's got major names (Steve Carell is carrying the autumn roses and the gun)",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging strong elements (major names, prestigious venue, good intentions), the critic explicitly states the production fails to cohere and 'shoots and misses,' indicating clear disappointment with the overall result.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:17.589Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

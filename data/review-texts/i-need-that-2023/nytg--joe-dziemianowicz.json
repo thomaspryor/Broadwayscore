@@ -10,8 +10,64 @@
   "bwwExcerpt": "The cast, directed by Moritz von Stuelpnagel, hugs the tonal contours skillfully. From the get-go, it’s a safe bet that Sam and his home will transform. Thanks to a late-in-the-game twist, he also gets a shot to step up as a dad. In the end, I Need That is pleasant but leaves you wanting. “Things don’t give your life meaning. People do,” Amelia declares, as if it’s a newsflash. Sorry — it doesn't take a play to know that.        Average Rating: 56.7% {   \"@context\":\"https://schema.org\",   \"@type",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 56,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 56,
+    "confidence": "high",
+    "range": {
+      "low": 50,
+      "high": 62
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 65,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "pleasant but leaves you wanting",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The cast, directed by Moritz von Stuelpnagel, hugs the tonal contours skillfully",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Sorry — it doesn't take a play to know that",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges competent performances and direction but criticizes the play for being obvious and unsatisfying, with 'pleasant but leaves you wanting' capturing the lukewarm mixed verdict. | GPT-4o-mini: The review indicates a mixed experience, with some positive notes on direction but overall dissatisfaction with the script and impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:53.201Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 57,
+    "openaiScore": 55,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

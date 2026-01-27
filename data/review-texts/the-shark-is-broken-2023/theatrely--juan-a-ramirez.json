@@ -7,7 +7,63 @@
   "publishDate": "August 10, 2023",
   "fullText": "Ian Shaw’s The Shark Is Broken, a play with an impossibly successful track record from Edinburgh Fringe to West End hit to, now, Broadway’s Golden Theatre, attempts to pry its mandibles open and serve it two ways: as a father-son memoir and exorcism, and as a look into its notoriously grueling production. It bares its teeth at the former; eats the fat of the latter.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It bares its teeth at the former; eats the fat of the latter",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "impossibly successful track record from Edinburgh Fringe to West End hit to, now, Broadway's Golden Theatre",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "attempts to pry its mandibles open and serve it two ways",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review uses cryptic metaphorical language that suggests the play succeeds at one aspect (production story) but fails at another (father-son memoir), indicating a mixed assessment without clear recommendation signals. | GPT-4o-mini: The review presents a mixed perspective, indicating some intrigue but lacking strong enthusiasm or clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:52.145Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

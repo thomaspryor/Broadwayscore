@@ -10,8 +10,64 @@
   "bwwExcerpt": "“How To Dance in Ohio” is a musical adaptation of a 2015 documentary film of the same name about a group of autistic young adults at a counseling center in Columbus, Ohio, who, as part of their social skills therapy group, spend months preparing for a formal prom-like dance. The production, which opens tonight at Broadway’s Belasco Theater, has some tuneful melodies, some touching moments and, above all, an exhilarated and exhilarating cast, featuring seven performers who are themselves autistic",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has some tuneful melodies, some touching moments",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "an exhilarated and exhilarating cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "featuring seven performers who are themselves autistic",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This appears to be a brief excerpt with modest praise for the music and strong enthusiasm for the cast, but lacks clear recommendation language or comprehensive assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:53.691Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

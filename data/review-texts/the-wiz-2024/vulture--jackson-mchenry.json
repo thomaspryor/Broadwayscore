@@ -7,7 +7,63 @@
   "publishDate": "April 17, 2024",
   "fullText": "But although the talent is all over the stage, it’s also trapped in confused and even ugly packaging. This revival traveled around the country before coming in New York, and indeed it looks like a cheap touring production rather than something that was honed and improved.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 70,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "the talent is all over the stage, it's also trapped in confused and even ugly packaging",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it looks like a cheap touring production rather than something that was honed and improved",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "confused and even ugly packaging",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging strong performances, the critic heavily criticizes the production's 'confused and ugly packaging' and compares it unfavorably to a 'cheap touring production,' indicating significant disappointment with the overall theatrical experience. | GPT-4o-mini: The review expresses significant disappointment with the production quality, indicating a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:19.874Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

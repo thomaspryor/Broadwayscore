@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 47,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250805043845",
-  "archiveOrgUrl": "http://web.archive.org/web/20250805043845/https://observer.com/2023/08/review-does-the-shark-is-broken-have-much-bite-on-broadway/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250805043845/https://observer.com/2023/08/review-does-the-shark-is-broken-have-much-bite-on-broadway/",
+  "llmScore": {
+    "score": 47,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 53.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": 66,
+      "direction": 57
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Shark Is Broken sinks from memory not long after you exit the Golden Theatre",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "this behind-the-scenes buddy drama is a handful of chum in a very big sea",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "an hour of Hollywood bitching and gossip is plenty, and the last thirty minutes drag",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances, especially Brightman's impersonation, but finds the script weak, the concept thin, and the show forgettable with structural problems. | GPT-4o-mini: The review expresses significant disappointment in the script and overall experience, indicating a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:51.380Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

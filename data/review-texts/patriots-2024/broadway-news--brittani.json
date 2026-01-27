@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "“Patriots” shines when it releases its need to peacock as a Shakespearean-level epic and gets into some Shakespearean-like complexity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/patriots/",
@@ -36,5 +36,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 167 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 65,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "You can practically feel how drunk with excitement Morgan is over this type of brutish representation of historymakers",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "cartoonish versions of the red-blooded Russian oligarch Boris Berezovsky and his political puppet, Vladimir Putin",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The show blurs historical facts, figures and legitimate research with Morgan's indulgent imaginings",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic is clearly negative about the writing and concept, criticizing Morgan's 'indulgent imaginings' and 'cartoonish' characterizations, with only implicit acknowledgment of the performances through naming the actors.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:52.280Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

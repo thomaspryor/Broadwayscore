@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Despite its caveats, Harmony is a powerful musical that, by its conclusion, makes one's heart break for the Comedian Harmonists and all those who were lost to time because of hatred and cruelty, the echoes of which are still ringing out to this day. Its overall message of peace — \"despite our squabbles, we found harmony\" — feels more resonant than ever.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -36,5 +36,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250721183348/https://ew.com/theater/theater-reviews/harmony-review-broadway-barry-manilow-musical/",
   "scoreSource": "extracted-grade",
   "scoreConfidence": "medium",
-  "extractedGrade": "B"
+  "extractedGrade": "B",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 78,
+      "performances": 82,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harmony is a powerful musical that, by its conclusion, makes one's heart break for the Comedian Harmonists",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the show doesn't truly begin to sing until its second act",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Grade: B–",
+        "sentiment": "neutral",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The B- grade and mixed praise (powerful emotional impact, strong performances and music, but significant structural problems in Act 1 and underdeveloped characters) indicates a qualified positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:43.021Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"a captivating portrait of an artist's life and loves\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250815094044",
-  "archiveOrgUrl": "http://web.archive.org/web/20250815094044/https://www.newyorktheatreguide.com/reviews/lempicka-broadway-review"
+  "archiveOrgUrl": "http://web.archive.org/web/20250815094044/https://www.newyorktheatreguide.com/reviews/lempicka-broadway-review",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 45,
+      "music": 85,
+      "performances": 88,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ultimately, Lempicka is ravishing — and one of the best new musicals this season",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "An uneven, exposition-heavy book by Carson Kreitzer and Matt Gould",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "superb lighting design by Bradley King, an eclectic and electric score, and captivating performances are the pulsating flesh and blood",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging significant book problems, the critic explicitly calls it 'ravishing' and 'one of the best new musicals this season,' praising the score, performances, and design elements that overcome structural flaws.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:38.538Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

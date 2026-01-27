@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "The great news is that what precedes and follows this moment also stirs and tickles the senses. That’s the way this rock opera rolls, as it spins the story of a boy so deeply damaged by life – first by his parents and later by his abusive uncle and creepy cousin – that he nearly shuts down completely.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-whos-tommy/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The great news is that what precedes and follows this moment also stirs and tickles the senses",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "That's the way this rock opera rolls",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "a boy so deeply damaged by life – first by his parents and later by his abusive uncle and creepy cousin – that he nearly shuts down completely",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This excerpt is too brief and appears to be from the middle of a review describing plot content rather than offering clear evaluation, making confident scoring impossible.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:35.826Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

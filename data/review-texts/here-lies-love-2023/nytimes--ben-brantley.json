@@ -10,8 +10,64 @@
   "bwwExcerpt": "It is also ingeniously devised to reflect the interior life of Imelda R. Marcos, a provincial teenage beauty queen, who in this show continues to treat life as one long pageant, with an emphasis on the evening gown and talent sections. During the heyday of her husband's protracted rule, from 1965 to 1986, she was also a disco queen, hitting the floors at gilded international night spots, which, thanks to her, included the roof of the palace she occupied in Manila. Mr. Byrne has said he thought t",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HERE-LIES-LOVE-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "ingeniously devised to reflect the interior life of Imelda R. Marcos",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "continues to treat life as one long pageant",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "she was also a disco queen",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review highlights clever elements of the show but lacks a clear recommendation, suggesting a mixed-positive sentiment overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:05.882Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 70,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 89,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jessica Lange is unforgettable in Paula Vogel's unforgiving portrait",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Mother Play is not as great as plays Paula Vogel has written in the past",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it is a mesmerizing production, albeit not always easy to watch",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances highly, especially Lange's 'unforgettable' work, and calls it a 'mesmerizing production,' but explicitly states the play isn't as great as Vogel's previous work, creating a qualified positive recommendation. | GPT-4o-mini: The review praises the performances and direction highly while acknowledging some shortcomings in the script, leading to a clear but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:59.538Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Starring a magnificent Leslie Odom, Jr., in the title role, and featuring equally fine performances by an enchanting Kara Young, Billy Eugene Jones, Vanessa Bell Calloway and more, Purlie Victorious – full title (and one of the few signifiers of its 1961-era creation): Purlie Victorious: A Non-Confederate Romp Through the Cotton Patch – has been given an urgent – and, oh yes, very, very funny – revival by Leon and his top-notch creative team.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/purlie-victorious/",
@@ -51,5 +51,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20231219220704",
-  "archiveOrgUrl": "http://web.archive.org/web/20231219220704/https://deadline.com/2023/09/purlie-victorious-broadway-review-1235555904/"
+  "archiveOrgUrl": "http://web.archive.org/web/20231219220704/https://deadline.com/2023/09/purlie-victorious-broadway-review-1235555904/",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 92,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels as current and bracing as a folding chair",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "has been given an urgent – and, oh yes, very, very funny – revival by Leon and his top-notch creative team",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Young all but steals the show in her transformation scenes",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Enthusiastic praise throughout for performances ('magnificent', 'master class'), direction ('top-notch'), and contemporary relevance, with only minor acknowledgment of the play's age.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:06.348Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

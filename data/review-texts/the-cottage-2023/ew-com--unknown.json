@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 93,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -45,5 +45,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-grade",
   "scoreConfidence": "medium",
-  "extractedGrade": "A"
+  "extractedGrade": "A",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 85.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 89,
+      "music": null,
+      "performances": 94,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Cottage is a fresh and fiercely fun play that's firing on all cylinders",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "sensational, feminist twist on a classic British period drama that features knockout performances",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Grade: A",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The reviewer gives an explicit 'A' grade and uses consistently enthusiastic language ('sensational,' 'knockout,' 'firing on all cylinders') with detailed praise for all elements and no significant criticisms. | GPT-4o-mini: The review is overwhelmingly positive, highlighting strong performances, direction, and an engaging script, with no significant reservations noted.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:02.317Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 95,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Despite some narrative clunkiness, ’Jaja’ offers plenty to celebrate...It's a passionate portrayal of Black womanhood in Harlem and all the diverse experiences that encompasses. And it's a love letter to the artistry of hair braiding, a millennia-old form of artistry that allows its participants to express themselves even as they transform themselves. Much like theatre.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 85,
+      "direction": 74
+    },
+    "keyPhrases": [
+      {
+        "quote": "Read our four-star review",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The cast turns in uniformly vibrant performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "despite some narrative clunkiness, Jaja offers plenty to celebrate",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Four-star review with clear praise for performances and cultural significance, acknowledging structural flaws but maintaining overall positive recommendation. | GPT-4o-mini: The review highlights strong performances and a meaningful story, despite some narrative issues, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:40.976Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "I’m not exactly sure how this creative team conjured up so much charm (perhaps, a fairy godmother really was involved) but the result is a thoroughly enjoyable, relentlessly watchable and genuinely funny good time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
@@ -36,5 +36,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 202 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 82,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "hits all the right notes of zaniness, creativity and unbridled joy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Jennifer Simard, already gunning for her third Tony nomination with this deliciously vampy performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Liberation sits at the foundation of our favorite pop songs",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Opens with strong positive language about the show hitting 'all the right notes' and praises specific performances, particularly highlighting Tony-worthy work, indicating clear recommendation despite being an incomplete excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's creativity and performances, indicating a clear recommendation despite not focusing on the plot.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:24.854Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

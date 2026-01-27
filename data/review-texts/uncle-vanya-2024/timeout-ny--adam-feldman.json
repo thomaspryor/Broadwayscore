@@ -7,7 +7,58 @@
   "publishDate": "April 24, 2024",
   "fullText": "There is logic, then, to the decision to dispense with fidelity to Chekhov’s period and update the play to a contemporary setting for Lincoln Center Theater's new production, adapted by Heidi Schreck and directed by Lila Neugebauer. To some extent, the gambit succeeds: Many of the production’s most pleasurable moments are connected to this modernization. But it’s also, I think, where the production falls short.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": null,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "To some extent, the gambit succeeds: Many of the production's most pleasurable moments are connected to this modernization",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "But it's also, I think, where the production falls short",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic presents a balanced view acknowledging both successes and failures in the modernization approach, with no clear recommendation either way.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:06.682Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
