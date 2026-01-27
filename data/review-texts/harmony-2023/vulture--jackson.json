@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show — basically a fable — doesn’t meet the moment as much as the moment crashes over it. It’s hard to see the thing itself amid the currents of extra-theatrical context, but there’s no use in ignoring that context, which happens to be the point of Harmony. You may want to perform your little ditties and step to the side, but history will find you.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251224013457",
-  "archiveOrgUrl": "http://web.archive.org/web/20251224013457/https://www.vulture.com/2023/11/theater-review-harmony-broadway-barry-manilow.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251224013457/https://www.vulture.com/2023/11/theater-review-harmony-broadway-barry-manilow.html",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 68,
+      "performances": 75,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical is good at pulling off the goofy, even if it comes at the expense of its other elements",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "By Act Two, that sensibility runs up against the increasingly grim history, and the results are intriguing but not so successful",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the discomfort sticks with you",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer finds the show effective in its comedic elements and performances but criticizes its failure to successfully integrate serious historical content, resulting in a qualified mixed assessment with both appreciation and significant reservations. | GPT-4o-mini: The review presents a mixed view, praising performances and some musical elements while critiquing the book and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:40.362Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
