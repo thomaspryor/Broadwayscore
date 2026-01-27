@@ -5,7 +5,7 @@
   "criticName": "Unknown",
   "url": "https://www.wsj.com/articles/redwood-review-idina-menzel-climbs-back-to-broadway-f8998fae",
   "publishDate": null,
-  "fullText": "\"They wrap the show in visually alluring wallpaper. \"\n\nRead more",
+  "fullText": "https://www.wsj.com/articles/redwood-review-idina-menzel-climbs-back-to-broadway-f8998fae\n\nIdina Menzel Matthew Murphy and Evan ZimmermanNew York\n\nIdina Menzel is defying gravity again on Broadway in the new musical “Redwood.” On this occasion she gets an assist from a more substantial piece of wood than the spindly broomstick that sent her skyward in her Tony-winning turn in “Wicked.” Portraying a woman in flight from grief who finds herself entranced by the majestic beauty of an ancient forest in California, Ms. Menzel is rigged up to a massive facsimile of a redwood tree, and proceeds to leap, twirl and deploy her steel-belted powerhouse of a voice from a dozen feet above the stage.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8",
   "isFullReview": false,
   "dtliExcerpt": "\"They wrap the show in visually alluring wallpaper. \"\n\nRead more",
   "originalScore": null,
@@ -63,5 +63,43 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textStatus": "partial",
+  "textWordCount": 115,
+  "archivePath": "data/archives/reviews/redwood-2025/wsj-com--unknown_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T04:36:44.931Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20251119171401",
+  "archiveOrgUrl": "http://web.archive.org/web/20251119171401/https://www.wsj.com/articles/redwood-review-idina-menzel-climbs-back-to-broadway-f8998fae",
+  "textIssues": [
+    "Word count too low: 115 (min: 300)"
+  ]
 }
