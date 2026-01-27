@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251216100023",
-  "archiveOrgUrl": "http://web.archive.org/web/20251216100023/https://www.theatermania.com/news/review-lempicka-on-broadway-pays-tribute-to-a-great-but-unknown-artist_1737182/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251216100023/https://www.theatermania.com/news/review-lempicka-on-broadway-pays-tribute-to-a-great-but-unknown-artist_1737182/",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 65,
+      "performances": 85,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "the performances from Espinosa and the other principals are so exceptional that they more than make up for it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Lempicka is an undeniably compelling and original piece of art",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's hard not to feel disappointed by her latest creation, which lacks her signature touches",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant production and design criticisms, the critic praises the exceptional performances, compelling story, and originality, ultimately calling it 'compelling' art that's 'perfect for our turbulent times.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:05.214Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

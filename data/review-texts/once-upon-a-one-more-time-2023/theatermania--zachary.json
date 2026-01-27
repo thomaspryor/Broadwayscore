@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Once Upon a One More Time emerges as a worthwhile concept thwarted by poor execution. It is certainly preferable to a Britney Spears biomusical, which would have been a sad affair for a 41-year-old artist with more yet to offer.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250418092447",
-  "archiveOrgUrl": "http://web.archive.org/web/20250418092447/https://www.theatermania.com/news/review-once-upon-a-one-more-time-broadways-awkwardly-arranged-marriage-of-britney-spears-and-feminism_1706165/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250418092447/https://www.theatermania.com/news/review-once-upon-a-one-more-time-broadways-awkwardly-arranged-marriage-of-britney-spears-and-feminism_1706165/",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 63,
+      "music": 48,
+      "performances": 74,
+      "direction": 51
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a One More Time emerges as a worthwhile concept thwarted by poor execution",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It is certainly preferable to a Britney Spears biomusical",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "it did leave me with one surprise: a newfound respect for the art of the jukebox musical",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds merit in the concept and performances but is consistently critical of execution, particularly the awkward lyric adaptations and ornamental staging, resulting in a mixed review that leans slightly positive due to some bright spots. | GPT-4o-mini: The review expresses a mix of appreciation for the performances but significant disappointment in the execution of the concept and music, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:51.797Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

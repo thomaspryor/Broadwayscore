@@ -7,7 +7,63 @@
   "publishDate": "April 24, 2024",
   "fullText": "It’s got major names (Steve Carell is carrying the autumn roses and the gun), a major stage at Lincoln Center’s Vivian Beaumont, and a palpably earnest desire to excavate the story’s humanity. And it is, unhappily, an example of how all these things can fail to cohere into something powerful. Like its luckless hero, it shoots and misses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "an example of how all these things can fail to cohere into something powerful",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Like its luckless hero, it shoots and misses",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It is, unhappily",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging major talent and earnest intentions, the critic clearly states the production fails to cohere and 'shoots and misses,' indicating disappointment with the overall execution. | GPT-4o-mini: The review expresses significant disappointment in the production's failure to deliver a cohesive and powerful experience, indicating a clear negative sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:03.176Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

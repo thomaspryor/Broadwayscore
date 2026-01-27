@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ultimately, McAdams gets her big theatrical moment, but much of the play’s power comes from Herzog’s scheme to withhold that moment. We expect Mary Jane to break down, explode, get pissed off long before she does. What sets her off is unexpected. It’s worth the wait.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/mary-jane/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251011140433",
-  "archiveOrgUrl": "http://web.archive.org/web/20251011140433/https://www.thewrap.com/mary-jane-broadway-review-rachel-mcadams/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251011140433/https://www.thewrap.com/mary-jane-broadway-review-rachel-mcadams/",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 74,
+      "music": null,
+      "performances": 73,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mary Jane is not only a hero. She is a saint.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Ultimately, McAdams gets her big theatrical moment, but much of the play's power comes from Herzog's scheme to withhold that moment.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "McAdams' performance doesn't really take shape until Mary Jane sets up residence in the hospital.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises Herzog's writing and the play's emotional power while noting significant pacing and performance issues in the first half, suggesting qualified recommendation despite clear problems. | GPT-4o-mini: The review expresses mixed feelings about the pacing and direction but highlights strong performances, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:48.247Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

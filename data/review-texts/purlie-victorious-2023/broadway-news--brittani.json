@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Leon is doing exceptional work here, corralling Davis’ penchant for long-winded metaphor and fast-paced metre, while also extracting hilarious performances from the entire ensemble, particularly Kara Young and Billy Eugene Jones. It’s a feat to be seen, felt, and enthralled by.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 5,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/purlie-victorious/",
@@ -39,5 +39,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 5,
+    "confidence": "medium",
+    "range": {
+      "low": 0,
+      "high": 10
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Broadway Review: 'Purlie Victorious' delivers a masterful sermon on satire",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "killingly funny and perceptive 1961 play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "as close to Biblical scripture as Black theater gets",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The provided text appears to be mostly website navigation and header content rather than an actual review, making it impossible to determine the critic's recommendation with any confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:51.006Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 5,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

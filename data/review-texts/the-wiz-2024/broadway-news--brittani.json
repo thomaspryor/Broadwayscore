@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Still, these missteps can’t smudge out a defining truth: “The Wiz” is a certifiable, soulful great time. And thankfully, it’s back home.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-wiz-bway/",
@@ -37,5 +37,61 @@
   "textIssues": [
     "Word count too low: 220 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 75,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "directorially untethered but reliably good time",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "the show's extravagant display of Black magical realism and its persistent humor blaze over the technical challenges",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "maintains its timeless charm even as it lurches (rather than eases) us through Dorothy's fantastical journey",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges significant directorial and pacing issues while emphasizing that the show's cultural importance and inherent charm overcome these technical problems, suggesting a qualified recommendation. | GPT-4o-mini: The review expresses a clear recommendation with positive remarks about the show's charm and entertainment value, despite some pacing issues.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:27.807Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

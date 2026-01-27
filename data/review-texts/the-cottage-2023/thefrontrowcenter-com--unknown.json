@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240527161523",
-  "archiveOrgUrl": "http://web.archive.org/web/20240527161523/https://thefrontrowcenter.com/2023/09/the-cottage/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240527161523/https://thefrontrowcenter.com/2023/09/the-cottage/",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 87,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "delightful romp",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "They are having fun with it and you will as well",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's always nice to leave the theatre with a good feeling of being both immensely entertained",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Enthusiastic praise throughout with specific compliments for cast, direction, and entertainment value, plus clear recommendation that audiences will enjoy it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:47.192Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

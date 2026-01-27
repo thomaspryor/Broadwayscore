@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "As history lesson, Patriots is more than worthy. As drama, well, it’s a history lesson.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 12,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/patriots/",
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250723084520/https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 12,
+    "confidence": "medium",
+    "range": {
+      "low": 7,
+      "high": 17
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is not a review but a compilation page listing upcoming Broadway shows",
+        "sentiment": "neutral",
+        "strength": 1
+      },
+      {
+        "quote": "Check this page to see Deadline's takes",
+        "sentiment": "neutral",
+        "strength": 1
+      },
+      {
+        "quote": "Below is a compendium of our reviews. Keep checking back as the list is updated",
+        "sentiment": "neutral",
+        "strength": 1
+      }
+    ],
+    "reasoning": "Claude: This is not actually a review of any specific show but rather an index page listing Broadway openings and brief excerpts from multiple different show reviews.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:21.208Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 12,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

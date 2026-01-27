@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“One of the things ‘How To Dance In Ohio’ gets so splendidly right is the easy comfort with diversity these young people with autism are graced, as if they’ve long ago made peace with the very concept of outsiderdom.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -53,5 +53,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250722180434/https://deadline.com/2023/12/how-to-dance-in-ohio-review-broadway-1235658895/",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 60,
+      "performances": 79,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "That it doesn't is a disappointment softened only by the experience of seeing a group of Broadway newcomers get so thrillingly close to something like flight",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "their charming performances seal the deal: We want this show to soar",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "How To Dance In Ohio is all the more frustrating for its failure to hit the cathartic high notes of emotion promised throughout but never delivered",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the cast's performances and heart but is deeply disappointed by the show's failure to reach its emotional potential, calling it frustrating and predictable while acknowledging its good intentions. | GPT-4o-mini: The review expresses a mix of admiration for the performances and the concept while highlighting significant shortcomings in the book and emotional impact, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:06.648Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

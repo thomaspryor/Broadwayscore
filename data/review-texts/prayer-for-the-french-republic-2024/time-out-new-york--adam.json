@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "As a theatergoing experience, however, the three-hour Prayer for the French Republic is less effectively timed. The play premiered in early 2022 at Manhattan Theatre Club; Dravid Cromer’s production has now moved to MTC’s Broadway venue, the Samuel J. Friedman Theatre. But in the gap between these two mountings, New York got a 10-month run of Tom Stoppard’s Leopoldstadt, which approached the same core issues—the persistence of antisemitism, and the debates about fitting in that surround it—with more gravity, scope and finesse. By comparison, flaws that were already noticeable Off Broadway seem more pronounced.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/prayer-for-the-french-republic-broadway/",
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 75,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "flaws that were already noticeable Off Broadway seem more pronounced",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There is perceptiveness and humor in Prayer for the French Republic",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "as Harmon weighs out the issues, you can sense his thumb on the scale; by the denouement, it feels more like his whole hand, pressing for amens",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds valuable insights and strong performances but criticizes the writing as heavy-handed and schematic, with the play suffering in comparison to Leopoldstadt, resulting in a qualified mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:00.974Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

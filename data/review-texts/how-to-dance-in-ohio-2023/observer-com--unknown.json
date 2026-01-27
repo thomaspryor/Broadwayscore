@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Generically staged by Sammi Cannold, ‘How to Dance in Ohio’ was clearly made with love and will touch some hearts—on the spectrum or not—but feels synthetic and patchy when not outright tacky.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250805225216",
-  "archiveOrgUrl": "http://web.archive.org/web/20250805225216/https://observer.com/2023/12/review-how-to-dance-in-ohio-welcomes-autistic-youth-under-the-disco-ball/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250805225216/https://observer.com/2023/12/review-how-to-dance-in-ohio-welcomes-autistic-youth-under-the-disco-ball/",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 40,
+      "performances": 75,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "How to Dance falls, I'm afraid, at the latter end of the range",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "feels synthetic and patchy when not outright tacky",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the actors all perform with tremendous charm and skill",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising the performances, the critic finds the show fundamentally flawed with a scattered focus, bland score, and synthetic feel, placing it at the negative end compared to successful adaptations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:06.755Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

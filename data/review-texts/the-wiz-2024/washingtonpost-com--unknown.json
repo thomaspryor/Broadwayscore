@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "\"The new Broadway revival is charming, but at the cost of a broader artistic vision\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textIssues": [
     "Word count too low: 87 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The latest revival of 'The Wiz' just wants to be fun. And that's a problem.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Songs like 'Home' and the funky 'Ease on Down the Road' are etched into the American songbook.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "just wants to be fun. And that’s a problem.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic frames the revival's approach as fundamentally flawed ('just wants to be fun. And that's a problem') while praising only the original material, suggesting disappointment with this production. | GPT-4o-mini: The review expresses disappointment in the revival's lack of depth compared to the original, indicating a clear negative sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:41.184Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 45,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

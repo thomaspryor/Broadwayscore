@@ -7,7 +7,63 @@
   "publishDate": "June 22, 2023",
   "fullText": "What do you get by crossing “Six” with “& Juliet”? No, “Bad Cinderella” was last season. Today, that mash-up of two similar musicals gives you the slightly better Cinderella show, which has been tortuously titled “Once Upon a One More Time.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gives you the slightly better Cinderella show",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "tortuously titled",
+        "sentiment": "negative",
+        "strength": 2
+      },
+      {
+        "quote": "No, \"Bad Cinderella\" was last season",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This brief excerpt shows mild preference for this show over previous Cinderella productions but uses negative language about the title and makes dismissive comparisons, suggesting lukewarm reception.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:58.594Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

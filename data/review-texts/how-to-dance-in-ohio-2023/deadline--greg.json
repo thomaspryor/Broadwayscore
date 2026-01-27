@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "When they slip into their characters seconds later, their charming performances seal the deal: We want this show to soar. That it doesn’t is a disappointment softened only by the experience of seeing a group of Broadway newcomers get so thrillingly close to something like flight, and suspecting that this won’t be the last time they’ll have the opportunity.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
@@ -54,5 +54,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250722180434/https://deadline.com/2023/12/how-to-dance-in-ohio-review-broadway-1235658895/",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 60,
+      "performances": 77,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "That it doesn't is a disappointment softened only by the experience of seeing a group of Broadway newcomers get so thrillingly close to something like flight",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "With so much going for it, How To Dance In Ohio is all the more frustrating for its failure to hit the cathartic high notes of emotion promised throughout but never delivered",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "their enthusiasm has our hearts... their charming performances seal the deal: We want this show to soar",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic is clearly moved by the performances and concept but deeply disappointed by execution, particularly the predictable book and failure to deliver emotional catharsis - a classic mixed review that acknowledges merit while expressing significant frustration. | GPT-4o-mini: The review expresses admiration for the performances and the concept but highlights significant shortcomings in the book and emotional impact, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:59.601Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -16,5 +16,61 @@
   "needsScoring": true,
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "standing ovation"
+  "extractedPhrase": "standing ovation",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 88,
+      "performances": 87,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Radcliffe's \"Franklin Shepard, Inc.\" is an absolute marvel",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "don't be surprised to see a standing ovation after that high-speed train of a song",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "he impresses more in each appearance",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for Radcliffe's performance with superlatives like 'absolute marvel' and 'emotional bombshell' suggests high recommendation, but incomplete excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:27.679Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

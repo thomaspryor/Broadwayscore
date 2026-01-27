@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 48,
+      "performances": 58,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is the weakest of the five as a stage musical",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "For those who want a Broadway musical with something new to say they will be sorely disappointed",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "This may be intended entirely for Britney Spears fans who are legion",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls it 'the weakest' of similar shows and warns general theatergoers will be 'sorely disappointed,' reserving qualified recommendation only for dedicated Britney Spears fans. | GPT-4o-mini: The review expresses significant disappointment in the musical's execution, particularly in its book and overall coherence, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:21.677Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

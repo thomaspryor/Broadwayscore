@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Steve Carell fits seamlessly into a stellar ensemble in a gorgeous broadway revival\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251121123235",
-  "archiveOrgUrl": "http://web.archive.org/web/20251121123235/https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251121123235/https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 90,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "every moment of this production shimmers with beauty, mirth, and, at least for the audience, hope",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "with Heidi Schreck's gorgeous, colloquial translation, and a flawless, fully engaged ensemble cast, the play is as entertaining as it is heartbreaking and profound",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This is the brilliance of this play as rendered by Schreck, Neugebauer, and the entire cast",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses consistently superlative language ('shimmers with beauty,' 'flawless,' 'brilliance') with extensive praise for all production elements and no meaningful reservations, indicating strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:48.844Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250603075448",
-  "archiveOrgUrl": "http://web.archive.org/web/20250603075448/https://www.talkinbroadway.com/page/world/INeedThat.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250603075448/https://www.talkinbroadway.com/page/world/INeedThat.html",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 71,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play itself, which treads lightly upon some serious subject matter, never manages to find its footing as it meanders from issue to issue",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the whole fails to satisfy beyond the comedic stylings of Danny DeVito",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Danny DeVito, a master of comedic technique and timing",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: While praising Danny DeVito's performance skills, the critic finds fundamental flaws in the play's structure, character development, and thematic execution, concluding it fails to satisfy beyond the star's comedic presence. | GPT-4o-mini: The review highlights the performances, particularly Danny DeVito's, but criticizes the script and overall coherence of the play, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:49.381Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

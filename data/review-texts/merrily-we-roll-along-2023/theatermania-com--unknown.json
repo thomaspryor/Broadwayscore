@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260120182051",
-  "archiveOrgUrl": "http://web.archive.org/web/20260120182051/https://www.theatermania.com/news/review-its-a-hit-daniel-radcliffe-jonathan-groff-and-lindsay-mendez-bring-heavenly-merrily-we-roll-along-to-broadway_1717001/"
+  "archiveOrgUrl": "http://web.archive.org/web/20260120182051/https://www.theatermania.com/news/review-its-a-hit-daniel-radcliffe-jonathan-groff-and-lindsay-mendez-bring-heavenly-merrily-we-roll-along-to-broadway_1717001/",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 90,
+      "performances": 95,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "this Merrily is one of those transcendent productions I'll look back on fondly forever",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Friedman's production is a theatrical miracle",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "They're giving career-best performances",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language like 'transcendent,' 'theatrical miracle,' and 'career-best performances' while praising every aspect of the production with unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising the direction and performances as exceptional, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:17.200Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,63 @@
   "publishDate": "October 3, 2023",
   "fullText": "After years of analyzing plays for their achievements and blunders, it’s rare for me to walk out of a theater with a single thought in my mind: I loved it. And yet those three words floated in my brain after Jocelyn Bioh’s new Broadway comedy Jaja’s African Hair Braiding at Manhattan Theatre Club’s Friedman Theatre.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's rare for me to walk out of a theater with a single thought in my mind: I loved it",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "those three words floated in my brain after Jocelyn Bioh's new Broadway comedy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I loved it.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states their rarity in loving a show and emphasizes the lasting impact with 'I loved it' floating in their mind, indicating strong enthusiasm despite the excerpt's brevity. | GPT-4o-mini: The critic expresses unqualified enthusiasm and a strong emotional reaction, indicating a must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:58.082Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

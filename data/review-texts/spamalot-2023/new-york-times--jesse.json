@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Throughout, Rhodes has encouraged the cast to personalize the material and, in many cases, enhance it. Taran Killam, expert as Lancelot and several of the quirkiest supporting characters, gives the French taunter not only the requisite outrageous accent but also a raspberry aria worthy of Mozart.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/spamalot/",
@@ -38,5 +38,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250815140904/https://www.nytimes.com/2023/11/16/theater/spamalot-review-broadway.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "This one, directed and choreographed by Josh Rhodes, gives the \"ni\"-sayers what they want. As far as I can tell, the best original bits are all preserved verbatim.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Rhodes has encouraged the cast to personalize the material and, in many cases, enhance it.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "And even this mostly excellent production betrays a faint odor of mothballs, especially in the projection-heavy scenic design",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Green clearly recommends this 'mostly excellent production' while acknowledging minor design flaws, praising the performances and direction's fresh approach to classic material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:45.191Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The only major criticism to level at “Days of Wine and Roses” is that it took Guettel so long to write his third musical, which can easily take its place as one of the few great musicals of this century.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/days-of-wine-and-roses/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250515041934",
-  "archiveOrgUrl": "http://web.archive.org/web/20250515041934/https://www.thewrap.com/days-of-wine-and-roses-broadway-review-kelli-ohara-brian-darcy-james/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250515041934/https://www.thewrap.com/days-of-wine-and-roses-broadway-review-kelli-ohara-brian-darcy-james/",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 90,
+      "performances": 92,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "The only major criticism to level at 'Days of Wine and Roses' is that it took Guettel so long to write his third musical, which can easily take its place as one of the few great musicals of this century.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Most important, Greif obtains truly awesome performances from O'Hara and d'Arcy James.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Guettel makes those two chronic alcoholics sing for their life in the new stage production",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic concludes by calling it 'one of the few great musicals of this century' with only minor criticisms, praising the score, performances, and direction while celebrating the artistic achievement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:01.919Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

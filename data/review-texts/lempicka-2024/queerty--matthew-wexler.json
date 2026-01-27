@@ -10,8 +10,64 @@
   "bwwExcerpt": "“Why were they voguing?” my companion asks at intermission, referring to a dance sequence early in the show. “Ah, that makes sense,” she responds with a slightly perplexed look after I explain the Madonna connection. Herein lies Lempicka’s challenge: the musical wants to capitalize on Madonna and other pop stars’ notoriety along with sense of agency uncommon to female artists of the era, but its creators have stretched the canvas so thin that the brush strokes crack.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical wants to capitalize on Madonna and other pop stars' notoriety",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "its creators have stretched the canvas so thin that the brush strokes crack",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "with a slightly perplexed look",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic uses a vivid metaphor about cracking brush strokes to suggest fundamental structural problems, indicating the show fails to achieve its ambitious goals. | GPT-4o-mini: The review expresses significant concerns about the musical's execution and coherence, indicating a clear negative sentiment without strong recommendations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:23.934Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
