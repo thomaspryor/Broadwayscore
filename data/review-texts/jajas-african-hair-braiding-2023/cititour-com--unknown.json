@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -37,5 +37,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": null,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "now being given an extraordinary production at Manhattan Theatre Club's Samuel J. Friedman Theatre",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "is richer, often funnier, and – above all, decidedly more political than Robert Harling's play – and should hopefully find itself produced just as often in years to come",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "such a superlative creative team",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses consistently strong praise for the production, performances, and creative team, with only minor reservations about one speech feeling slightly out of tone, indicating a clear positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and the political depth of the play, with only minor caveats about the script's tone.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:08.683Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 95,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "5/5"
+  "extractedStars": "5/5",
+  "llmScore": {
+    "score": 95,
+    "confidence": "medium",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 92,
+      "performances": 95,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "★★★★★ this first Broadway revival of the 1981 Stephen Sondheim-George Furth musical might be the finest Broadway revival of any Sondheim musical thus far",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "here and now, Merrily is a five-star hit, and no doubt about it",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Merrily We Roll Along is finally and inarguably revealed to be a wonderfully thrilling Broadway hit",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Five-star review with unqualified superlatives calling it potentially the finest Sondheim revival ever, repeatedly emphasizing it's a thrilling hit with exceptional performances.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:48.541Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

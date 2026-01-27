@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "“Harmony” ultimately packs a punch because the history of that period continues to shock no matter how many times this story is told. What remains open to question, under Warren Carlyle’s splashy direction, is the appeal of the real Comedian Harmonists.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "ultimately packs a punch because the history of that period continues to shock",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "What remains open to question, under Warren Carlyle's splashy direction, is the appeal of the real Comedian Harmonists",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the history of that period continues to shock no matter how many times this story is told",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges the show's emotional impact from its historical subject matter but questions the fundamental appeal of the characters and implies directorial issues, resulting in a mixed assessment without clear recommendation. | GPT-4o-mini: The review acknowledges the impactful historical context but questions the overall appeal of the production, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:43.965Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

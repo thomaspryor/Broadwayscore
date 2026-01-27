@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Rhodes’s cast of show-tune pros is highly capable, and the show’s laughter now seems more like it’s coming from inside the Broadway house. It’s a true ensemble effort...In this company of men, however, it is a woman who really dazzles: Leslie Rodriguez Kritzer as the sword-bestowing Lady of the Lake...It’s in the Lady of the Lake’s spotlight moments, the show’s biggest departure from the nearly all-male Grail, that Spamalot comes into its own most effectively and takes flight—not as an African swallow, capable of carrying significant weight, or merely as a parrot, possibly dead, but as what it is: a lark.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -56,5 +56,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "time-out-stars",
   "scoreConfidence": "medium",
-  "originalRating": "5/5 stars"
+  "originalRating": "5/5 stars",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 70,
+      "performances": 85,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "My reaction to its new and updated—if still slightly dated—Broadway revival, directed and choreographed with flair by Josh Rhodes, is more affectionate",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it is a woman who really dazzles: Leslie Rodriguez Kritzer as the sword-bestowing Lady of the Lake... she grabs it by the throat in a full-tilt comedic and vocal tour de force",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Spamalot's comedic reproductions inevitably have the somewhat diminished quality of an echo",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic gives 4/5 stars with clear praise for the performances (especially Kritzer), direction, and production values, while acknowledging some limitations with the source material's age and familiarity. | GPT-4o-mini: The review expresses a clear recommendation with strong praise for performances, particularly highlighting Leslie Rodriguez Kritzer, while acknowledging some limitations compared to previous productions.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:42.008Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": 75,
+      "performances": 78,
+      "direction": 74
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is a show that successfully completes the task at hand",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Harmony is dampened by its formulaic adherence to melancholic moments",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Director-choreographer Warren Carlyle's top-notch ensemble bops and croons in all the right places",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises performances and production values while criticizing the formulaic approach and shallow historical treatment, ultimately concluding the show 'successfully completes the task at hand' despite significant reservations. | GPT-4o-mini: The review acknowledges both strengths in performances and direction but highlights significant weaknesses in the script and overall execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:36.222Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 68,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

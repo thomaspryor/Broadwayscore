@@ -10,8 +10,64 @@
   "bwwExcerpt": "While the musical respects the film’s structure and setting (though the location is moved from San Francisco to New York City) and recycles much of the original dialogue, it proves to be one of the relatively few theatrical adaptations that expands upon its cinematic source material, as seen in how the score (which is grounded in mid-century jazz) artfully captures the characters’ circumstances (including the high-flying, euphoric rush of endless cocktails) and subsequent breakdowns and melancho",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 80,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the relatively few theatrical adaptations that expands upon its cinematic source material",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the score (which is grounded in mid-century jazz) artfully captures the characters' circumstances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the musical respects the film’s structure and setting",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review excerpt shows clear appreciation for the adaptation's expansion of source material and praises the jazz score, but the text cuts off mid-sentence limiting confidence in the overall assessment. | GPT-4o-mini: The review highlights the musical's respect for the original film while noting its successful expansion of the source material, indicating a clear recommendation despite the lack of specific praise for performances or direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:19.417Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“it is a welcome change that the seven autistic characters in ‘How to Dance in Ohio’ are presented, without condescension, as young adults a lot like most others, albeit with unusual gifts and challenges. That they are also played by autistic performers makes the feel-good show, which opened on Sunday at the Belasco Theater, more than a first: It’s a milestone.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251208200831",
-  "archiveOrgUrl": "http://web.archive.org/web/20251208200831/https://www.nytimes.com/2023/12/10/theater/how-to-dance-in-ohio-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251208200831/https://www.nytimes.com/2023/12/10/theater/how-to-dance-in-ohio-review.html",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 75,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a milestone",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the production is otherwise very conventional, sometimes dispiritingly so",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the uplift comes at the expense of the depth and complexity the show might have achieved",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the groundbreaking representation and authentic performances but criticizes the conventional approach and lack of depth, resulting in qualified appreciation rather than enthusiastic recommendation. | GPT-4o-mini: The review acknowledges significant positive aspects regarding representation but critiques the conventional execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:26.168Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

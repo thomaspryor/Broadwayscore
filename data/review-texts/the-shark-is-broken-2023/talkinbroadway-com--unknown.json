@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 55,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Shark Is Broken flounders to the end, with neither an engaging hook nor a line of compelling dialog to keep it afloat",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "if you were to remove the identities of the movie actors, what you would have is just three men on a boat, stuck together by virtue of the situation and basically just killing time",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Ian Shaw portrays Robert Shaw as a man who is always on stage, exaggerating his brusqueness and bullying, and emoting his lines as if he were in a production of King Lear",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is fundamentally critical of the play's concept and execution, describing it as essentially 'three men killing time' with a punning conclusion that it 'flounders,' indicating a clear negative recommendation despite some praise for individual performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:12.978Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

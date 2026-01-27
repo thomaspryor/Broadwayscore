@@ -10,8 +10,64 @@
   "bwwExcerpt": "What's astonishing about this show, though — aside from the central performances, which are superb, and Guettel’s anxious, spiky, sumptuous score, which grabs hold of us and doesn’t let go — is the way its devastating chic snuggles right up to catastrophic self-destruction.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": 92,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "central performances, which are superb",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Guettel's anxious, spiky, sumptuous score, which grabs hold of us and doesn't let go",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "What's astonishing about this show",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses strong positive language ('superb', 'astonishing', 'sumptuous') and vivid imagery to praise key elements, with no negative caveats present in this excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:14.442Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

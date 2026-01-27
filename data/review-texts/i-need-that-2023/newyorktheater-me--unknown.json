@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 78,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Theresa Rebeck's play about a hoarder is the slightest of comedies. Its plot is paltry. Its insights are pat. It promises more laughs than it delivers.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I Need That does deliver Danny DeVito, and for some, that will be enough.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "DeVito makes it work... The way DeVito pronounces 'Cleveland' – oddly, stretching out the word, investing it with distaste – is a lesson in comedy.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic harshly criticizes the script as 'paltry' and 'pat' but praises DeVito's performance throughout, suggesting the show is worth seeing primarily for his star turn despite significant flaws in the material.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:30.562Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

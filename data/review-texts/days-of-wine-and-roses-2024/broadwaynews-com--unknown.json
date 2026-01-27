@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 48,
+      "performances": 63,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "this musical — a passion-lacking passion project from collaborators Adam Guettel and Craig Lucas — doesn't go down easy",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "while you may exit Studio 54 shaken by the work, you won't be stirred",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "an entire production cannot rest on the laurels of chemistry alone. Like a good drink, there's got to be some depth",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a largely negative assessment calling the musical 'shallow' and 'passion-lacking' with fundamental flaws in character development and pacing, despite acknowledging some performer chemistry. | GPT-4o-mini: The review expresses significant disappointment in the script and overall execution, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:54.132Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

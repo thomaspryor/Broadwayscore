@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Depressing and harrowing as it is, it’s not the kind of show we often get around these parts. Its success would signal that there is indeed still an audience for weird art amid the singing lions and flying witches. That would be the most hopeful takeaway of all.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/days-of-wine-and-roses/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250814135045",
-  "archiveOrgUrl": "http://web.archive.org/web/20250814135045/https://www.theatermania.com/news/review-kelli-ohara-and-brian-darcy-james-tear-our-hearts-out-in-days-of-wine-and-roses_1727508/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250814135045/https://www.theatermania.com/news/review-kelli-ohara-and-brian-darcy-james-tear-our-hearts-out-in-days-of-wine-and-roses_1727508/",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 74.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 87,
+      "performances": 93,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "They'll rip your heart out, show it to you, and you'll beg for more. They were the best they've ever been last summer, and they're even more virtuosic now.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I hope it does. Depressing and harrowing as it is, it's not the kind of show we often get around these parts.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I still think the book lacks a few additional moments of revelation, so we don't just move on from the tentpole plot points",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic offers clear enthusiasm for the performances and music while acknowledging structural weaknesses, ultimately expressing hope for the show's success and valuing its artistic merit. | GPT-4o-mini: The review expresses strong praise for the performances and music while noting some weaknesses in the book, leading to a solid positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:14.948Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 80,
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

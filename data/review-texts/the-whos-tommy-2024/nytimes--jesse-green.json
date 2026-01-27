@@ -7,7 +7,63 @@
   "publishDate": "March 28, 2024",
   "fullText": "This parade of odd plot points and narrational perplexities passes quite swiftly — perhaps, at little more than two hours, too swiftly, as the story is hard to follow and harder to swallow.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "parade of odd plot points and narrational perplexities",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the story is hard to follow and harder to swallow",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "passes quite swiftly — perhaps, at little more than two hours, too swiftly",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental problems with the story's coherence and believability, describing it as confusing and implausible, which are serious structural criticisms that make recommendation difficult. | GPT-4o-mini: The review expresses significant criticism of the plot's coherence and quality, indicating a clear negative sentiment overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:51.706Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

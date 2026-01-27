@@ -7,7 +7,63 @@
   "publishDate": "June 22, 2023",
   "fullText": "How do you not get “Baby One More Time” right? That is the first mystery—and the first warning that all may not be well—with Once Upon a One More Time, the musical filled with Britney Spears’ music that opened on Broadway Thursday evening (Marquis Theatre, booking to Nov 19). Truly, if you’re doing this magnificent banger, don’t kick off your big Broadway jukebox musical with it feeling as messy as this musical does.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 25,
+      "performances": null,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "the first warning that all may not be well",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "don't kick off your big Broadway jukebox musical with it feeling as messy as this musical does",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "How do you not get \"Baby One More Time\" right?",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses fundamental disappointment that the show fails to execute even its most famous song well, calling the production 'messy' and warning audiences that 'all may not be well.' | GPT-4o-mini: The review expresses significant disappointment and criticism, indicating a clear lack of recommendation for the musical.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:25.718Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

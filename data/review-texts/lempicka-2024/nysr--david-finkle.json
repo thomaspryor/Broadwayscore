@@ -10,8 +10,64 @@
   "bwwExcerpt": "Attempting to lend Lempicka a canvas broader than Lempicka’s voluptuous canvases, Kreitzer and Gould arrange a stylized look at the Russian Revolution — and its eventually sending Tamara and Tadeusz, penniless and unprepared to work for a living, to Paris. They bookend that theatrical documentation with a fascist-foreboding routine, highlighted by symbolic figure Marinetti (the hyper-active George Abud) conjuring Hitler’s rise. (Choreographer Kelly, always at the ready, has his indefatigable con",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 60,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Attempting to lend Lempicka a canvas broader than Lempicka's voluptuous canvases",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "penniless and unprepared to work for a living",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the hyper-active George Abud",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The excerpt appears critical of the show's ambitious but potentially overwrought structure, with mixed signals about performances and an incomplete assessment due to the truncated review. | GPT-4o-mini: The review presents a mixed perspective, highlighting some stylistic elements while also indicating significant issues with the narrative and thematic execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:23.128Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -53,5 +53,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250909000540/https://www.theatermania.com/news/review-how-to-dance-in-ohio-is-a-game-changer-for-accessibility-on-broadway_1723629/",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "waste of time"
+  "extractedPhrase": "waste of time",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 45,
+      "performances": 85,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "How to Dance in Ohio being on Broadway at all is a radical act, centering autistic experiences in a way that has never been done before",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "How to Dance in Ohio is hurt by a generic, bland score by Jacob Yandura, with otherwise forgettable lyrics",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "How to Dance in Ohio is a vital step in the right direction, helping Broadway change for the better",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic strongly praises the groundbreaking representation and performances while acknowledging significant weaknesses in the score and some elements, ultimately viewing it as an important and worthwhile production despite its flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:10.310Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

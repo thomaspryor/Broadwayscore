@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 56,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,5 +28,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 56,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 68,
+      "performances": 83,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the musical falls short of the documentary it has adapted in ways that make the translation to the stage feel like less than an ideal fit for Broadway.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Pearce and the other cast members exhibit such palpable talent that the fact of their autism comes to seem irrelevant.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Without the struggle, what is the story; where is the drama?",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances highly and finds individual moments touching, but fundamentally questions whether the material works as a Broadway musical, citing structural problems and lack of dramatic tension compared to the documentary source. | GPT-4o-mini: The review acknowledges strong performances and some positive elements but ultimately highlights significant shortcomings in the adaptation, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:28.465Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 60,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

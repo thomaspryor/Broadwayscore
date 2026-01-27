@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“There is perceptiveness and humor in ‘Prayer for the French Republic,’ and Cromer’s direction does its best to keep things honest. But as Harmon weighs out the issues, you can sense his thumb on the scale; by the denouement, it feels more like his whole hand, pressing for amens.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -41,5 +41,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "time-out-stars",
   "scoreConfidence": "medium",
-  "originalRating": "5/5 stars"
+  "originalRating": "5/5 stars",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 74,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "flaws that were already noticeable Off Broadway seem more pronounced",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There is perceptiveness and humor in Prayer for the French Republic, and Cromer's direction does its best to keep things honest",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "his writing seems heavier: schematic and sometimes self-consciously polemical",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: 3/5 stars with mixed assessment - praises performances and some elements but criticizes the heavy-handed writing and finds it less effective than comparable works like Leopoldstadt. | GPT-4o-mini: The review presents a balanced view with both praise for performances and direction, but significant criticism of the script and pacing, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:06.396Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

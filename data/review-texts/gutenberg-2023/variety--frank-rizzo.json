@@ -10,8 +10,64 @@
   "bwwExcerpt": "In the end, it’s not “Gutenberg” the show but rather this odd coupling of comedic pals, both on stage and off, that delights. Hats off to them.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "delights",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Hats off to them",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's not 'Gutenberg' the show but rather this odd coupling",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly praises the performers' chemistry and work while suggesting the material itself is less strong, resulting in a clear positive recommendation focused on the performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:37.116Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250917212942",
-  "archiveOrgUrl": "http://web.archive.org/web/20250917212942/https://www.thewrap.com/once-upon-a-one-more-time-broadway-review-britney-spears-musical/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250917212942/https://www.thewrap.com/once-upon-a-one-more-time-broadway-review-britney-spears-musical/",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": 65,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hartmere's book fails to give the girls much to do once they've gone on strike",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Jennifer Simard counters the mindless frenzy around her by consistently giving a droll reading",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Among all the dross of Hartmere's book, there is a flicker of real gold",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Review is predominantly critical of the book, costumes, and direction while acknowledging some strong individual performances, particularly from Jennifer Simard and Justin Guarini.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:13.237Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

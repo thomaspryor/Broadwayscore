@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Shark” was a big hit at the Edinburgh Fringe Festival in 2019, and I’m sure it’s a show that would benefit from that kind of scrappiness and intimacy. Sometimes you need a smaller boat.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-shark-is-broken/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230923095219",
-  "archiveOrgUrl": "http://web.archive.org/web/20230923095219/https://nypost.com/2023/08/10/the-shark-is-broken-review-jaws-play-swallowed-by-broadway/"
+  "archiveOrgUrl": "http://web.archive.org/web/20230923095219/https://nypost.com/2023/08/10/the-shark-is-broken-review-jaws-play-swallowed-by-broadway/",
+  "llmScore": {
+    "score": 48,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 70,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "struggles to be either as it depicts actors Robert Shaw (Ian Shaw), Roy Scheider (Colin Donnell) and Richard Dreyfuss (Alex Brightman) going at each other's throats off-camera",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The effect of their macho antics, however, is much the same as listening to your drunken friends argue about capitalism at 2 a.m. They keep on yapping and are not getting anywhere, so you zone out",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "on Broadway, the little play gets swallowed up like a doomed teen in Amity",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the concept fun but execution problematic, with repetitive dialogue, thin characters, and jokes that fall flat, though acknowledging strong performances and chemistry among the cast. | GPT-4o-mini: The review presents a mixed view of the production, praising the performances but criticizing the script and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:35.801Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

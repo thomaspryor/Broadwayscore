@@ -7,7 +7,63 @@
   "publishDate": "June 22, 2023",
   "fullText": "Given that Once Upon a One More Time follows those shows in this mini-genre (not to mention their sparkly, belty, much better fairy godmother Six), you might have reason to hope that it refines and improves upon the tropes. Instead, it’s reductive and pandering, hitting all the expected marks without any unique spark.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 34,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 34,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 43
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's reductive and pandering",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "hitting all the expected marks without any unique spark",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "you might have reason to hope that it refines and improves upon the tropes. Instead",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly criticizes the show as 'reductive and pandering' with no unique elements, suggesting clear disappointment and inability to recommend despite acknowledging the established genre. | GPT-4o-mini: The review expresses strong disappointment with the show, describing it as unoriginal and lacking in creativity, leading to a clear recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:25.007Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 30,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
