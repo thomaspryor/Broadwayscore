@@ -1,51 +1,59 @@
 {
   "processed": [
-    "hamilton-2015/new-york-magazine-vulture--jesse-green.json",
-    "hamilton-2015/thr--frank-scheck.json",
-    "hamilton-2015/vulture--jesse.json",
-    "hamilton-2015/OBSERVER--david-cote.json",
-    "hamilton-2015/new-york-times--ben.json",
-    "hamilton-2015/theatermania--zachary.json",
-    "hamilton-2015/time-out-new-york--david-cote.json",
-    "hamilton-2015/wapo--peter-marks.json",
-    "hamilton-2015/wsj--terry-teachout.json"
+    "hadestown-2019/new-york-magazine-vulture--jesse-green.json",
+    "hadestown-2019/am-new-york--matt-windman.json",
+    "hadestown-2019/bwaynews--charles-isherwood.json",
+    "hadestown-2019/deadline--jeremy-gerard.json",
+    "hadestown-2019/lighting-sound-america--david-barbour.json",
+    "hadestown-2019/observer--david-cote.json",
+    "hadestown-2019/time-out-new-york--jenna-scherer.json",
+    "hadestown-2019/wsj-com--unknown.json"
   ],
   "failed": [
-    "hamilton-2015/THR--david-rooney.json",
-    "hamilton-2015/hollywood-reporter--frank.json",
-    "hamilton-2015/thr--david-rooney.json",
-    "hamilton-2015/CHTRIB--chris-jones.json",
-    "hamilton-2015/NYP--elisabeth-vincentelli.json",
-    "hamilton-2015/WRAP--robert-hofler.json",
-    "hamilton-2015/amny--matt-windman.json",
-    "hamilton-2015/ap--mark-kennedy.json",
-    "hamilton-2015/backstage-barbie--backstage-barbie.json",
-    "hamilton-2015/chtrib--chris-jones.json",
-    "hamilton-2015/clyde-fitch-report--david-finkle.json",
-    "hamilton-2015/newsday--linda-winer.json",
-    "hamilton-2015/nyp--johnny-oleksinski.json",
-    "hamilton-2015/talkinbway--matthew-murray.json",
-    "hamilton-2015/usatoday--elysa-gardner.json"
+    "hadestown-2019/thr--david-rooney.json",
+    "hadestown-2019/thr--frank-scheck.json",
+    "hadestown-2019/NJCOM--christopher-kelly.json",
+    "hadestown-2019/NYP--johnny-oleksinski.json",
+    "hadestown-2019/ROLLINGSTONE--will-hermes.json",
+    "hadestown-2019/TDB--tim-teeman.json",
+    "hadestown-2019/WASHPOST--peter-marks.json",
+    "hadestown-2019/WRAP--thom-geier.json",
+    "hadestown-2019/WSJ--terry-teachout.json",
+    "hadestown-2019/broadway-news--unknown.json",
+    "hadestown-2019/chtrib--chris-jones.json",
+    "hadestown-2019/curtainup--elyse-sommer.json",
+    "hadestown-2019/curtainup-com--unknown.json",
+    "hadestown-2019/deadline--pete-hammond.json",
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/ew--kristen-baldwin.json",
+    "hadestown-2019/nyp--johnny-oleksinski.json",
+    "hadestown-2019/reviewsoffbroadway--scott-mitchell.json",
+    "hadestown-2019/rollstone--rob-sheffield.json",
+    "hadestown-2019/talkinbway--nancy-grossman.json",
+    "hadestown-2019/theaterreviewsfrommyseat--joe-lombardi.json",
+    "hadestown-2019/usatoday--elysa-gardner.json",
+    "hadestown-2019/washpost--peter-marks.json",
+    "hadestown-2019/wnyc--jennifer-vanasco.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "hadestown-2019/bwaynews--charles-isherwood.json",
+      "hadestown-2019/lighting-sound-america--david-barbour.json"
+    ],
     "scrapingbee": [
-      "hamilton-2015/time-out-new-york--david-cote.json"
+      "hadestown-2019/time-out-new-york--jenna-scherer.json"
     ],
     "brightdata": [
-      "hamilton-2015/OBSERVER--david-cote.json"
+      "hadestown-2019/observer--david-cote.json"
     ],
     "archive": [
-      "hamilton-2015/new-york-magazine-vulture--jesse-green.json",
-      "hamilton-2015/thr--frank-scheck.json",
-      "hamilton-2015/vulture--jesse.json",
-      "hamilton-2015/new-york-times--ben.json",
-      "hamilton-2015/theatermania--zachary.json",
-      "hamilton-2015/wapo--peter-marks.json",
-      "hamilton-2015/wsj--terry-teachout.json"
+      "hadestown-2019/new-york-magazine-vulture--jesse-green.json",
+      "hadestown-2019/am-new-york--matt-windman.json",
+      "hadestown-2019/deadline--jeremy-gerard.json",
+      "hadestown-2019/wsj-com--unknown.json"
     ]
   },
-  "startTime": "2026-01-27T20:21:19.296Z",
-  "lastProcessed": "hamilton-2015/wsj--terry-teachout.json"
+  "startTime": "2026-01-27T20:20:43.983Z",
+  "lastProcessed": "hadestown-2019/wsj-com--unknown.json"
 }
