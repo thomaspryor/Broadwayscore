@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "8/13"
+  "extractedRating": "8/13",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 68.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 80,
+      "performances": 81,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "the 90-minute show is consistently great for the eye, but its considerable substance... is too often overwhelmed or obliterated by the design elements",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the entire cast of 23 Filipino performers is to be highly commended for their unceasing commitment and energy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "'Here Lies Love' will go down as a show for the history books, in more ways than one",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's spectacular design and strong performances while noting that the spectacle often overwhelms the substance, resulting in a qualified recommendation that appreciates the achievement but identifies significant flaws. | GPT-4o-mini: The review expresses strong praise for the performances and visual elements while noting some issues with substance, leading to a solid but not overwhelming recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:36.714Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

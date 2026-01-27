@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "While the musical has its charms and talented performers, it never quite reaches the fairy-tale heights it aspires to achieve.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 0,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -43,5 +43,61 @@
   "sourceMethod": "brightdata",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "standing ovation"
+  "extractedPhrase": "standing ovation",
+  "llmScore": {
+    "score": 0,
+    "confidence": "medium",
+    "range": {
+      "low": 0,
+      "high": 5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Please excuse me while I pick my chin up off the floor.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Is there any sanity left in this state?",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The kinds of guns that are quite capable of killing people of any age.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review expresses strong disapproval of the proposed legislation and does not recommend attending the event, indicating a clear rejection of the subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:00.895Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 0,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

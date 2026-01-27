@@ -10,8 +10,64 @@
   "bwwExcerpt": "Sam (Danny DeVito), the collector extraordinaire in question, wakes up one day to a reminder from his daughter Amelia (Lucy DeVito) that, unless he complies with a months-old government notice to clear up the overstuffed property, he will be evicted. Foster (Ray Anthony Thomas), his friendly neighbor, agrees he should start throwing out the obvious trash. So do we. And that’s about it in terms of movement in the work, which is less a play than a 100-minute cycle of scenes in which Amelia or Fost",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": 23
+    },
+    "keyPhrases": [
+      {
+        "quote": "dramatically inert play",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "hands-thrown-up direction",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "not much...inspired a need to lean in for closer inspection",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic describes the play as 'dramatically inert' and criticizes the direction as 'hands-thrown-up,' indicating fundamental problems with both script and staging that fail to engage audiences. | GPT-4o-mini: The review expresses strong dissatisfaction with both the play and the direction, indicating a clear rejection of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:28.468Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

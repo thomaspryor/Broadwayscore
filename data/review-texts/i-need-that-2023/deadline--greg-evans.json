@@ -10,8 +10,64 @@
   "bwwExcerpt": "Given the play’s underdeveloped feel, it’s no wonder the cast seems to flounder. Granted, the reviewed performance was early in the string of shows available to critics, and the actors’ tenuous grasp of the script – jumping lines, circling back, apparent improvisational word-grabs – might well have already tightened up (along with a tech issue that had the revolving set stubbornly refusing to move; other tech credits were fine despite some weird, Twilight Zone-ish sounds meant to signify that TV",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 37.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 55,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "works mightily and with increasing futility to stuff with laughs and meaning",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Danny DeVito works mightily",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "works mightily and with increasing futility",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the play's fundamental failure despite acknowledging DeVito's effort, with 'increasing futility' signaling the production's inability to succeed at its basic goals. | GPT-4o-mini: The review indicates a struggle to find laughs and meaning, suggesting a mixed recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:58.098Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

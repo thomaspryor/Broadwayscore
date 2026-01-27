@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -35,5 +35,61 @@
   "designation": "Recommended",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "1/2"
+  "extractedRating": "1/2",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 75,
+      "performances": 80,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's no question that, in the vibrant staging of Tony-winning director choreographer Warren Carlyle (The Music Man), it's often powerful and enthralling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Harmony continues to fall a bit short of the comedic, musical, or emotional heights it needs to qualify as great, rather than merely good, or even very good, theatre",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Harmony looked Broadway bound from the start; it had to overcome many obstacles and, while still saddled with imperfections, unquestionably deserves to be there",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The 3.5/4 star rating and language like 'often powerful and enthralling' and 'unquestionably deserves to be there' indicate a qualified recommendation despite acknowledged flaws in the book and emotional impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:58.351Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

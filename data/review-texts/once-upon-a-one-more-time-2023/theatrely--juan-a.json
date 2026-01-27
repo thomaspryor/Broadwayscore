@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But Once Upon a One More Time pays its truest homage to Britney, not by wringing its hands over how to make pop serious, but through its bouncy understanding of fierce fun with laser-sharp choreography. Don’t overthink it, just intoxicate yourself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
@@ -35,5 +35,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 88,
+      "performances": 89,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "Don't overthink it, just intoxicate yourself",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "pays its truest homage to Britney, not by wringing its hands over how to make pop serious, but through its bouncy understanding of fierce fun with laser-sharp choreography",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Simard here is doing Simard par excellence—even by those formidable standards",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoys the show's unapologetic embrace of pop fun and praises multiple performances, with only minor structural criticisms about character development. | GPT-4o-mini: The review expresses strong enthusiasm for the show's fun and performances, with only minor reservations about the book.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:44.067Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

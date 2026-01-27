@@ -10,8 +10,64 @@
   "bwwExcerpt": "DeVito gets more mileage out of Sam than you’d expect from the page, performing with a loose, raffish panache. When Foster tells Sam he’s planning to move to Ohio to be with his son’s family, Sam reacts with visceral incredulity. “Cleveland?!” he repeats, elongating the first syllable with a gargling glottal stop slathered in phlegm and contempt. Funny pronunciation. Silly faces. Kooky obsessives behaving irrationally. It’s been the stuff of sitcoms for decades and popular for a reason. Still, w",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "DeVito gets more mileage out of Sam than you'd expect from the page, performing with a loose, raffish panache",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's been the stuff of sitcoms for decades and popular for a reason",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Still, w",
+        "sentiment": "neutral",
+        "strength": 1
+      }
+    ],
+    "reasoning": "Claude: Review praises DeVito's performance but appears cut off mid-sentence with 'Still, w' suggesting a counterpoint was coming, making full assessment impossible.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:30.778Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

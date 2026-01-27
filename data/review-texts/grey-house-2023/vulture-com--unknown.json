@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Once you get to huge Broadway houses, claustrophobia is harder to maintain... But it was also fun to see the production swing so hard at genre tropiness. If it doesn’t fully succeed on its own terms, it’s at least a solid reminder that terror is as worthy of drama as any other kind of spectacle.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -54,5 +54,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20241220080322/https://www.vulture.com/2023/06/theater-review-grey-house-with-laurie-metcalf.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 74,
+      "direction": 69
+    },
+    "keyPhrases": [
+      {
+        "quote": "If it doesn't fully succeed on its own terms, it's at least a solid reminder that terror is as worthy of drama as any other kind of spectacle",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "The production makes a good case for more full-on spookiness onstage, even if it's a less convincing one for this play in particular",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Mantello gets good naturalistic performances from the adults",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the concept and performances but finds significant flaws in the script's clarity and execution, landing in qualified mixed territory without a clear recommendation. | GPT-4o-mini: The review presents a mixed perspective, praising the performances and some elements of direction while noting significant issues with the script and clarity of the play's message.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:15.603Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 63,
+    "openaiScore": 65,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

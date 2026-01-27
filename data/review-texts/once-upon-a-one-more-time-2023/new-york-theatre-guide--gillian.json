@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Once Upon a One More Time is certainly not the first piece of media interested in putting a modern, empowering spin on fairytales — even the notion of the \"strong independent princess\" has become a tale as old as time. But it certainly is the most fun. Spears's hits and impeccable dancing from director/choreographers Keone and Mari Madrid make Once Upon a One More Time an irresistible party. And quite frankly, that's what I want from a Britney Spears musical more than anything else.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a One More Time an irresistible party",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "But it certainly is the most fun",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "that's what I want from a Britney Spears musical more than anything else",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoys the show despite acknowledging its familiar premise, praising it as 'the most fun' and 'an irresistible party' while expressing that it delivers exactly what they wanted from this type of musical. | GPT-4o-mini: The review expresses strong enthusiasm for the fun and energetic aspects of the musical, indicating a clear recommendation despite not addressing the book directly.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:26.967Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

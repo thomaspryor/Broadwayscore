@@ -10,8 +10,64 @@
   "bwwExcerpt": "To match the living circumstances of its lead character, the play feels a deflating mess, with puzzling performances and staging as if no one involved quite knows what it is—comedy, whimsy, or low-key tragedy? Of course, a play can be all those things, but I Need That jerks uneasily around many registers, never finding its heart, or dramatic or thematic purpose. The play is as muddled as Sam’s home, with characters not really speaking to each other. It grouches along, just as Sam and Foster mull",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bluntly, sadly, no.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "some welcome razzle-dazzle for the New York fall and winter, perhaps?",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "some welcome razzle-dazzle for the New York fall and winter, perhaps? Bluntly, sadly, no.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic's blunt rejection ('Bluntly, sadly, no') to the prospect of DeVito providing 'welcome razzle-dazzle' signals clear disappointment, though this excerpt may not contain the full critical assessment. | GPT-4o-mini: The review expresses a clear disappointment in the production, indicating it does not meet expectations and lacks appeal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:53.080Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
