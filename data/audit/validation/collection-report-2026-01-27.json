@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:51:04.884Z",
+  "runDate": "2026-01-27T04:51:27.270Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "operation-mincemeat-2025",
+    "showFilter": "chicago-1996",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 206,
-    "failed": 111,
+    "processed": 196,
+    "failed": 113,
     "skipped": 0,
-    "successRate": "65.0%"
+    "successRate": "63.4%"
   },
   "tierBreakdown": {
-    "playwright": 20,
-    "scrapingbee": 18,
-    "brightdata": 22,
-    "archive": 146
+    "playwright": 17,
+    "scrapingbee": 16,
+    "brightdata": 20,
+    "archive": 143
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 3,
-    "tier2Attempts": 13,
-    "tier2Success": 2,
-    "tier3Attempts": 11,
-    "tier3Success": 2,
-    "tier4Attempts": 10,
-    "tier4Success": 6,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 70
+    "tier1Attempts": 8,
+    "tier1Success": 0,
+    "tier2Attempts": 8,
+    "tier2Success": 0,
+    "tier3Attempts": 8,
+    "tier3Success": 0,
+    "tier4Attempts": 8,
+    "tier4Success": 3,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,19 +228,9 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "operation-mincemeat-2025/broadway-news--brittani-samuel.json",
-    "operation-mincemeat-2025/daily-beast--tim-teeman.json",
-    "operation-mincemeat-2025/ew-com--unknown.json",
-    "operation-mincemeat-2025/nypost--johnny-oleksinki.json",
-    "operation-mincemeat-2025/observer--david-cote.json",
-    "operation-mincemeat-2025/observer-com--unknown.json",
-    "operation-mincemeat-2025/pagesonstages-com--unknown.json",
-    "operation-mincemeat-2025/talkinbroadway-com--unknown.json",
-    "operation-mincemeat-2025/theatermania--david-gordon.json",
-    "operation-mincemeat-2025/theaterscene-net--unknown.json",
-    "operation-mincemeat-2025/theatrereviews-com--unknown.json",
-    "operation-mincemeat-2025/thewrap--robert-hofler.json",
-    "operation-mincemeat-2025/wsj-com--unknown.json"
+    "chicago-1996/variety-com--unknown.json",
+    "chicago-1996/hellobeautiful-com--unknown.json",
+    "chicago-1996/theatermania-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -351,9 +341,11 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "operation-mincemeat-2025/ew--shania-russell.json",
-    "operation-mincemeat-2025/nypost--johnny-oleksinski.json",
-    "operation-mincemeat-2025/wsj--charles-isherwood.json"
+    "chicago-1996/nyt--ben-brantley.json",
+    "chicago-1996/nytimes-com--unknown.json",
+    "chicago-1996/curtainup-com--unknown.json",
+    "chicago-1996/oocities-org--unknown.json",
+    "chicago-1996/talkinbroadway-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -373,10 +365,7 @@
       "hadestown-2019/bwaynews--charles-isherwood.json",
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
-      "hadestown-2019/showshowdown-blogspot-com--unknown.json",
-      "operation-mincemeat-2025/pagesonstages-com--unknown.json",
-      "operation-mincemeat-2025/theaterscene-net--unknown.json",
-      "operation-mincemeat-2025/theatrereviews-com--unknown.json"
+      "hadestown-2019/showshowdown-blogspot-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -394,9 +383,7 @@
       "death-becomes-her-2024/ew--dalton-ross.json",
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
-      "hadestown-2019/timeout--adam-feldman.json",
-      "operation-mincemeat-2025/broadway-news--brittani-samuel.json",
-      "operation-mincemeat-2025/ew-com--unknown.json"
+      "hadestown-2019/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -418,9 +405,7 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json",
-      "operation-mincemeat-2025/daily-beast--tim-teeman.json",
-      "operation-mincemeat-2025/observer--david-cote.json"
+      "hadestown-2019/towleroad-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -563,12 +548,9 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "operation-mincemeat-2025/nypost--johnny-oleksinki.json",
-      "operation-mincemeat-2025/observer-com--unknown.json",
-      "operation-mincemeat-2025/talkinbroadway-com--unknown.json",
-      "operation-mincemeat-2025/theatermania--david-gordon.json",
-      "operation-mincemeat-2025/thewrap--robert-hofler.json",
-      "operation-mincemeat-2025/wsj-com--unknown.json"
+      "chicago-1996/variety-com--unknown.json",
+      "chicago-1996/hellobeautiful-com--unknown.json",
+      "chicago-1996/theatermania-com--unknown.json"
     ]
   }
 }
