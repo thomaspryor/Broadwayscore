@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:58:31.458Z",
+  "runDate": "2026-01-27T05:03:37.211Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "stranger-things-2024",
+    "showFilter": "queen-versailles-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 196,
-    "failed": 119,
+    "processed": 203,
+    "failed": 112,
     "skipped": 0,
-    "successRate": "62.2%"
+    "successRate": "64.4%"
   },
   "tierBreakdown": {
-    "playwright": 17,
-    "scrapingbee": 17,
-    "brightdata": 21,
-    "archive": 141
+    "playwright": 21,
+    "scrapingbee": 18,
+    "brightdata": 22,
+    "archive": 142
   },
   "statistics": {
     "tier1Attempts": 14,
-    "tier1Success": 0,
-    "tier2Attempts": 14,
-    "tier2Success": 1,
-    "tier3Attempts": 13,
-    "tier3Success": 1,
-    "tier4Attempts": 14,
-    "tier4Success": 1,
-    "totalFailed": 11,
-    "scrapingBeeCreditsUsed": 70
+    "tier1Success": 4,
+    "tier2Attempts": 10,
+    "tier2Success": 2,
+    "tier3Attempts": 8,
+    "tier3Success": 2,
+    "tier4Attempts": 6,
+    "tier4Success": 2,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 80
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,9 +228,16 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "stranger-things-2024/the-stage--dave-fargnoli.json",
-    "stranger-things-2024/theatermania--pete-hempstead.json",
-    "stranger-things-2024/washington-post--naveen-kumar.json"
+    "queen-versailles-2025/daily-beast--tim-teeman.json",
+    "queen-versailles-2025/ew--dalton-ross.json",
+    "queen-versailles-2025/lightingandsoundamerica-com--unknown.json",
+    "queen-versailles-2025/newyorktheatreguide-com--unknown.json",
+    "queen-versailles-2025/nypost--johnny-oleksinski.json",
+    "queen-versailles-2025/pagesonstages-com--unknown.json",
+    "queen-versailles-2025/talkinbroadway-com--unknown.json",
+    "queen-versailles-2025/theatermania--zachary-stewart.json",
+    "queen-versailles-2025/theaterscene-net--unknown.json",
+    "queen-versailles-2025/timeout-ny--adam-feldman.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -341,17 +348,10 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "stranger-things-2024/NYDN--chris-jones.json",
-    "stranger-things-2024/WRAP--robert-hofler.json",
-    "stranger-things-2024/ew--emlyn-travis.json",
-    "stranger-things-2024/guardian--arifa-akbar.json",
-    "stranger-things-2024/guardian--michael-billington.json",
-    "stranger-things-2024/interestedbystander-com--unknown.json",
-    "stranger-things-2024/the-standard--nick-curtis.json",
-    "stranger-things-2024/tickertv--cheryl-king.json",
-    "stranger-things-2024/tman--adam-feldman.json",
-    "stranger-things-2024/wsj--charles-isherwood.json",
-    "stranger-things-2024/wsj-com--unknown.json"
+    "queen-versailles-2025/1-minute-critic--matthew-wexler.json",
+    "queen-versailles-2025/interestedbystander-com--unknown.json",
+    "queen-versailles-2025/nydailynews-com--unknown.json",
+    "queen-versailles-2025/washington-post--naveen-kumar.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -371,7 +371,11 @@
       "hadestown-2019/bwaynews--charles-isherwood.json",
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
-      "hadestown-2019/showshowdown-blogspot-com--unknown.json"
+      "hadestown-2019/showshowdown-blogspot-com--unknown.json",
+      "queen-versailles-2025/ew--dalton-ross.json",
+      "queen-versailles-2025/lightingandsoundamerica-com--unknown.json",
+      "queen-versailles-2025/newyorktheatreguide-com--unknown.json",
+      "queen-versailles-2025/pagesonstages-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -390,7 +394,8 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "stranger-things-2024/the-stage--dave-fargnoli.json"
+      "queen-versailles-2025/theaterscene-net--unknown.json",
+      "queen-versailles-2025/timeout-ny--adam-feldman.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -413,7 +418,8 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "stranger-things-2024/washington-post--naveen-kumar.json"
+      "queen-versailles-2025/daily-beast--tim-teeman.json",
+      "queen-versailles-2025/talkinbroadway-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -556,7 +562,8 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "stranger-things-2024/theatermania--pete-hempstead.json"
+      "queen-versailles-2025/nypost--johnny-oleksinski.json",
+      "queen-versailles-2025/theatermania--zachary-stewart.json"
     ]
   }
 }
