@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T05:22:29.290Z",
+  "runDate": "2026-01-27T05:24:09.616Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-great-gatsby-2024",
+    "showFilter": "death-of-a-salesman-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 205,
-    "failed": 120,
+    "processed": 203,
+    "failed": 111,
     "skipped": 0,
-    "successRate": "63.1%"
+    "successRate": "64.6%"
   },
   "tierBreakdown": {
     "playwright": 22,
     "scrapingbee": 17,
-    "brightdata": 22,
+    "brightdata": 20,
     "archive": 144
   },
   "statistics": {
-    "tier1Attempts": 13,
+    "tier1Attempts": 2,
     "tier1Success": 0,
-    "tier2Attempts": 13,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 13,
-    "tier3Success": 2,
-    "tier4Attempts": 14,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier4Attempts": 2,
     "tier4Success": 1,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 40
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 0
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -237,9 +237,7 @@
     "cabaret-2024/talkinbroadway-com--unknown.json",
     "cabaret-2024/theaterscene-net--unknown.json",
     "cabaret-2024/wsj-com--unknown.json",
-    "the-great-gatsby-2024/observer--david-cote.json",
-    "the-great-gatsby-2024/talkinbroadway-com--unknown.json",
-    "the-great-gatsby-2024/theaterscene-com--unknown.json"
+    "death-of-a-salesman-2026/ew-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -352,16 +350,7 @@
     "hadestown-2019/washpost--peter-marks.json",
     "cabaret-2024/interestedbystander-com--unknown.json",
     "cabaret-2024/tman--jesse-green.json",
-    "the-great-gatsby-2024/variety--aramide-tinubu.json",
-    "the-great-gatsby-2024/NYP--johnny-oleksinski.json",
-    "the-great-gatsby-2024/NYSR--david-finkle.json",
-    "the-great-gatsby-2024/SLANT--dan-rubins.json",
-    "the-great-gatsby-2024/guardian--gloria-oladipo.json",
-    "the-great-gatsby-2024/nydailynews-com--unknown.json",
-    "the-great-gatsby-2024/talkinbway--matthew-murray.json",
-    "the-great-gatsby-2024/tman--adam-feldman.json",
-    "the-great-gatsby-2024/washingtonpost-com--unknown.json",
-    "the-great-gatsby-2024/wsj--terry-teachout.json"
+    "death-of-a-salesman-2026/wsj-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -427,9 +416,7 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json",
-      "the-great-gatsby-2024/observer--david-cote.json",
-      "the-great-gatsby-2024/talkinbroadway-com--unknown.json"
+      "hadestown-2019/towleroad-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -575,7 +562,7 @@
       "cabaret-2024/nytimes-com--unknown.json",
       "cabaret-2024/talkinbroadway-com--unknown.json",
       "cabaret-2024/wsj-com--unknown.json",
-      "the-great-gatsby-2024/theaterscene-com--unknown.json"
+      "death-of-a-salesman-2026/ew-com--unknown.json"
     ]
   }
 }
