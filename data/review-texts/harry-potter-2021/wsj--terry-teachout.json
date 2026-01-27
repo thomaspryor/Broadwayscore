@@ -5,15 +5,15 @@
   "criticName": "Terry Teachout",
   "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-bringing-the-magic-to-life-1524677142",
   "publishDate": "April 25, 2018",
-  "fullText": null,
+  "fullText": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-bringing-the-magic-to-life-1524677142\n\nShareResizeThe company of ‘Harry Potter and the Cursed Child’ Matthew MurphyNew York\n\nRarely has a show been less in need of good reviews, from me or anyone else, than “Harry Potter and the Cursed Child,” the latest line extension of J.K. Rowling’s franchise of novels, films and theme parks, which has come to New York after a stupendously successful 2016 opening in London. This two-part, five-hour extravaganza is the most expensive nonmusical production ever to open on Broadway, and every dollar of the $68.5 million ponied up by the producers is visible. The special effects are sensational, especially if you like theatrical “black magic,” and each one was dutifully applauded by the audiences at the previews I saw.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\n‘The Queen of Versailles’ Review: Kristin Chenoweth’s Musical of Gilded Dreams",
   "isFullReview": false,
   "showScoreExcerpt": "\"The special effects are sensational, especially if you like theatrical 'black magic'...Plays like a musical - most of the show is underscored and all of the putative song cues are self-evident - and might have been slightly more fun had it been one...To those who have never read a Potter novel or seen a Potter film, 'The Cursed Child' will make no sense at all. Everyone else should find the plot trite, though there's always something cool to see onstage, which helps a bit.\"",
   "originalScore": null,
   "assignedScore": 54,
   "source": "show-score",
-  "textStatus": "excerpt-only",
-  "textQuality": "missing",
-  "sourceMethod": "showscore",
+  "textStatus": "partial",
+  "textQuality": "partial",
+  "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -71,5 +71,40 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 141,
+  "archivePath": "data/archives/reviews/harry-potter-2021/wsj--terry-teachout_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T02:11:27.257Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "archiveOrgTimestamp": "20251114113637",
+  "archiveOrgUrl": "http://web.archive.org/web/20251114113637/https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-bringing-the-magic-to-life-1524677142",
+  "textIssues": [
+    "Word count too low: 141 (min: 300)"
+  ]
 }

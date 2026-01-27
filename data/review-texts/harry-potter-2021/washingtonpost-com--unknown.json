@@ -5,12 +5,42 @@
   "criticName": "Unknown",
   "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-charms-of-harry-potter-work-on-broadway--but-read-the-books-first/2018/04/20/817f793a-44a9-11e8-baaf-8b3c5a3da888_story.html",
   "publishDate": null,
-  "fullText": null,
+  "fullText": "Democracy Dies in DarknessReview by  Peter MarksNEW YORK — “Interveno ticketmasterus!”\n\nI’m wondering if the wizarding world could come up with a charm that might give desperate Muggles a leg up on performance availability. Because an incantation may be the only way to scare up tickets to “Harry Potter and the Cursed Child,” now that it has officially opened on Broadway and Potterholics are going to be hitting the ticket-buying website refresh button so often they’ll be in danger of breaking keyboards and fingers.",
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": null,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "textStatus": "partial",
+  "textWordCount": 84,
+  "archivePath": "data/archives/reviews/harry-potter-2021/washingtonpost-com--unknown_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T02:06:15.310Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 84 (min: 300)"
+  ]
 }
