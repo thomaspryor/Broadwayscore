@@ -60,6 +60,20 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   'TMAN': { tier: 2, name: 'TheaterMania', scoreFormat: 'text_bucket' },
   'THLY': { tier: 2, name: 'Theatrely', scoreFormat: 'text_bucket' },
 
+  // Tier 2 - Additional national/regional outlets
+  'NEWSDAY': { tier: 2, name: 'Newsday', scoreFormat: 'text_bucket' },
+  'TIME': { tier: 2, name: 'TIME', scoreFormat: 'text_bucket' },
+  'ROLLSTONE': { tier: 2, name: 'Rolling Stone', scoreFormat: 'text_bucket' },
+  'BLOOMBERG': { tier: 2, name: 'Bloomberg', scoreFormat: 'text_bucket' },
+  'VOX': { tier: 2, name: 'Vox', scoreFormat: 'text_bucket' },
+  'SLATE': { tier: 2, name: 'Slate', scoreFormat: 'text_bucket' },
+  'PEOPLE': { tier: 2, name: 'People', scoreFormat: 'text_bucket' },
+  'PARADE': { tier: 2, name: 'Parade', scoreFormat: 'text_bucket' },
+  'BILLBOARD': { tier: 2, name: 'Billboard', scoreFormat: 'text_bucket' },
+  'HUFFPOST': { tier: 2, name: 'HuffPost', scoreFormat: 'text_bucket' },
+  'BACKSTAGE': { tier: 2, name: 'Backstage', scoreFormat: 'text_bucket' },
+  'VILLAGEVOICE': { tier: 2, name: 'The Village Voice', scoreFormat: 'text_bucket' },
+
   // Tier 3: Smaller outlets, blogs, niche sites
   'AMNY': { tier: 3, name: 'amNewYork', scoreFormat: 'text_bucket' },
   'CITI': { tier: 3, name: 'Cititour', scoreFormat: 'text_bucket' },
@@ -68,6 +82,21 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   'THERECS': { tier: 3, name: 'The Recs', scoreFormat: 'text_bucket' },
   'OMC': { tier: 3, name: 'One Minute Critic', scoreFormat: 'stars', maxScale: 5 },
   'BWW': { tier: 3, name: 'BroadwayWorld', scoreFormat: 'text_bucket' },
+  'STGCNMA': { tier: 3, name: 'Stage and Cinema', scoreFormat: 'text_bucket' },
+  'TALKINBWAY': { tier: 3, name: "Talkin' Broadway", scoreFormat: 'text_bucket' },
+  'NY1': { tier: 3, name: 'NY1', scoreFormat: 'text_bucket' },
+  'CURTAINUP': { tier: 3, name: 'CurtainUp', scoreFormat: 'text_bucket' },
+  'THEATERSCENE': { tier: 3, name: 'TheaterScene', scoreFormat: 'text_bucket' },
+  'NJCOM': { tier: 3, name: 'NJ.com', scoreFormat: 'text_bucket' },
+  'STAGEZINE': { tier: 3, name: 'StageZine', scoreFormat: 'text_bucket' },
+  'MASHABLE': { tier: 3, name: 'Mashable', scoreFormat: 'text_bucket' },
+  'WNYC': { tier: 3, name: 'WNYC', scoreFormat: 'text_bucket' },
+  'QUEERTY': { tier: 3, name: 'Queerty', scoreFormat: 'text_bucket' },
+  'MEDIUM': { tier: 3, name: 'Medium', scoreFormat: 'text_bucket' },
+  'EXEUNT': { tier: 3, name: 'Exeunt Magazine', scoreFormat: 'text_bucket' },
+  'TOWLEROAD': { tier: 3, name: 'Towleroad', scoreFormat: 'text_bucket' },
+  'NORTHJERSEY': { tier: 3, name: 'NorthJersey.com', scoreFormat: 'text_bucket' },
+  'NBC': { tier: 3, name: 'NBC New York', scoreFormat: 'text_bucket' },
 };
 
 // ===========================================
