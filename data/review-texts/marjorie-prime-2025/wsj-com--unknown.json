@@ -5,7 +5,7 @@
   "criticName": "Unknown",
   "url": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the-ai-future-fb508e75",
   "publishDate": null,
-  "fullText": "\"People without people’s problems, humor or original insights—which is to say, hardly human at all.\"\n\nRead more",
+  "fullText": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the-ai-future-fb508e75\n\nJune Squibb and Cynthia Nixon Joan MarcusNew York\n\n“I sound like whoever I talk to.”\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nHow American Nightlife Went Honky-Tonk\n\nElise Stefanik to Quit New York Governor Race, Won’t Run for Re-Election to House\n\nDreaming of a Black-and-White Christmas With Lee Friedlander\n\nHow L.A.’s Richest Man Went From Billions to Bust\n\nThe Studio Museum in Harlem’s Somber New Home",
   "isFullReview": false,
   "dtliExcerpt": "\"People without people’s problems, humor or original insights—which is to say, hardly human at all.\"\n\nRead more",
   "originalScore": null,
@@ -68,5 +68,43 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textStatus": "partial",
+  "textWordCount": 71,
+  "archivePath": "data/archives/reviews/marjorie-prime-2025/wsj-com--unknown_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T04:37:04.931Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20251231014115",
+  "archiveOrgUrl": "http://web.archive.org/web/20251231014115/https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the-ai-future-fb508e75",
+  "textIssues": [
+    "Word count too low: 71 (min: 300)"
+  ]
 }
