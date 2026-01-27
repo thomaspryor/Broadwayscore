@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The mustiness now is downright allergy-inducing. One visual reference to “Man of La Mancha” delivered not a laugh at the preview I attended, but then, it has been a while since TCM aired the movie version.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/spamalot/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250710013938",
-  "archiveOrgUrl": "http://web.archive.org/web/20250710013938/https://www.thewrap.com/spamalot-broadway-review-monty-python-revival/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250710013938/https://www.thewrap.com/spamalot-broadway-review-monty-python-revival/",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 35,
+      "performances": 63,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "The mustiness now is downright allergy-inducing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Long stretches of this 'Spamalot' appear run by an automatic pilot who'd overdosed on speed. A manic quality often substitutes for anything resembling wit",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "However, the comedy often comes to life whenever a handful of performers grab the spotlight",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the revival dated and witless with poor direction and derivative music, but praises several individual performances - the negative critiques far outweigh the positive elements. | GPT-4o-mini: The review expresses significant disappointment with the revival's script and overall execution, while acknowledging some strong performances, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:28.916Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

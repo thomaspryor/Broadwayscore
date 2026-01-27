@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "In this new staging, director-choreographer Josh Rhodes squeezes every drop of talent out of his all-star cast of comedy heavy hitters.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/spamalot/",
@@ -32,5 +32,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "standing ovation"
+  "extractedPhrase": "standing ovation",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "You'll be too busy stumbling out of the St. James — jaw aching, mind spinning as if you've been shot out of a cannon",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "director-choreographer Josh Rhodes squeezes every drop of talent out of his all-star cast of comedy heavy hitters",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Shows that are as proud of their inanity as 'Spamalot' make great entry points for people who have not been exposed to musical theater",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer clearly enjoys the show with vivid positive imagery of audience enjoyment, praises the cast and direction extensively, and recommends it as accessible entertainment despite acknowledging its frivolous nature. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall enjoyment of the production, despite some criticisms of the design.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:29.825Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
