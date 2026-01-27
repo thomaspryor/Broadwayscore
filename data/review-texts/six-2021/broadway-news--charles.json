@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Theatergoers thirsty for something festive, fresh and funny — which is to say, just about all lovers of theater who have endured the drought of the past 18 months — will find much to delight in at the Brooks Atkinson Theatre, where the musical “Six” has opened.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/six/",
@@ -37,5 +37,61 @@
   "textIssues": [
     "Word count too low: 175 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "will find much to delight in",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A wave of pure joy rippled across the theater as soon as the first notes of the show were struck",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "festive, fresh and funny",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language about audience delight and joy, with vivid description of theater's joyful response, though this appears to be an excerpt from a longer review. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical 'Six', highlighting its festive and joyful nature, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:34.476Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

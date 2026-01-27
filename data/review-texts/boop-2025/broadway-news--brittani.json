@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "In “Boop! The Musical,” the canonical cartoon recounts stints as a lion tamer, judge and hula dancer — professions lifted straight from her shorts. But evidently, Betty Boop missed a credit: magician. Because by the end of this new musical, she left us all boop-boop-a-bewitched.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -39,5 +39,63 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 63,
+    "confidence": "low",
+    "range": {
+      "low": 40.5,
+      "high": 85.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "big Broadway joy bomb",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "isn't original",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "glittering stagecraft and a knockout star",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Review praises performances and production values but explicitly states the show 'isn't original,' creating mixed signals that lean slightly negative despite enthusiastic language. | GPT-4o-mini: The review expresses strong enthusiasm for the production's excitement and stagecraft, indicating a clear recommendation despite noting a lack of originality. | Note: Models differed by 35 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:34.202Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 80,
+    "scoreDelta": 35,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 35 points (Claude: 45, OpenAI: 80)"
+    ]
+  }
 }

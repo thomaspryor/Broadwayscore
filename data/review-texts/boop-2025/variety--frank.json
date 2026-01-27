@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The alternating worlds are meant to be playful, but Toontown especially gets exhausting quickly, with characters mugging, clowning and amplifying every limp punchline. But the real world is not much subtler, limiting the emotional weight the show might have.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251105102026",
-  "archiveOrgUrl": "http://web.archive.org/web/20251105102026/https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251105102026/https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 73,
+      "performances": 77,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sometimes that's enough, at least for live mainstream entertainment with girl-empowerment themes, aimed at family-centric markets and with great merchandizing potential. Other times it just feels like a knockoff.",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "One's interest in any of these answers depends on a tolerance for corn and patience until the musical numbers.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "cartoon makeovers may be an enticing novelty, but to really succeed it first needs to be well drawn",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the performances, choreography, and music while significantly criticizing the book and overall concept execution, landing in qualified mixed territory with conditional appeal. | GPT-4o-mini: The review presents a mixed view, praising the performances and music while criticizing the book and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:45:12.188Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

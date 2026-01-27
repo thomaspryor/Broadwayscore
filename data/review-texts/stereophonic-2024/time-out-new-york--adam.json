@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Some fans of the play have wondered if it could work as well on a larger stage, but that question has a happy answer: Daniel Aukin’s superb production navigates the change without missing a beat. The jam has been preserved.",
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 91,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -42,5 +42,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "5/5"
+  "extractedRating": "5/5",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 92,
+      "performances": 90,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "Daniel Aukin's superb production navigates the change without missing a beat. The jam has been preserved.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "There's nary a false note.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The result is richly satisfying multitrack production.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: 5/5 star review with consistent praise throughout ('superb production', 'nary a false note', 'richly satisfying') and no significant reservations about the Broadway transfer. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising its direction, music, and overall execution, leading to a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:45:15.224Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 87,
+    "openaiScore": 95,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

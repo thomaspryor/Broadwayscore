@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Directed and choreographed by Jerry Mitchell, this is an old-fashioned candy shop of a show, where tasty confections are sold in bulk. When Boop! is corny, it’s candy corn. Gorge on the multicolor gumdrops of its high-energy production numbers; chew the jelly beans of its gentle social-mindedness; let the caramel creams of its love story melt slightly oversweetly in your mouth. And above all, savor this show’s red-hot cinnamon heart: Jasmine Amy Rogers, making a sensational Broadway debut as the 1930s animated-short icon Betty Boop.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 78,
+      "performances": 88,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "This musical will not change your brain in any way, but it delivers what it promises: a big Broadway production that leaves you grinning",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "savor this show's red-hot cinnamon heart: Jasmine Amy Rogers, making a sensational Broadway debut",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "What happens next is the plot, and it doesn't matter much",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Clear positive recommendation with enthusiastic praise for lead performance and production values, despite acknowledging weak plot and derivative elements. | GPT-4o-mini: The review expresses strong enthusiasm for the production, particularly praising the performances and overall enjoyment, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:45:06.297Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

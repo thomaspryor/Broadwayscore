@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Adjmi captures that claustrophobia and inability to communicate, making his “Stereophonic” one of the very best plays to open last year Off Broadway and now this season on Broadway.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251011095845",
-  "archiveOrgUrl": "http://web.archive.org/web/20251011095845/https://www.thewrap.com/stereophonic-broadway-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251011095845/https://www.thewrap.com/stereophonic-broadway-review/",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": 75,
+      "performances": 88,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "making his 'Stereophonic' one of the very best plays to open last year Off Broadway and now this season on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The actors clearly relish these splashy scenes, but they are more impressive in far quieter moments",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there are occasional lapses. Adjmi is a playwright, after all, and occasionally he pushes his dialogue to make declarations that telegraph what his characters are thinking",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic calls it 'one of the very best plays' of the season with strong praise for performances, direction, and overall execution, despite some minor script criticisms. | GPT-4o-mini: The review expresses strong praise for the play's execution and performances while acknowledging some minor issues with the script, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:22.735Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

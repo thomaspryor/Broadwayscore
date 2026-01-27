@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Marshaled by director-choreographer Jerry Mitchell, talent is everywhere you look, and decent songs are everywhere you listen. Yet all this effort is in service of one of the most maladroit storylines Broadway has encountered in years, with cardboard characters that serve plot purposes only, a book that doesn’t listen to the lyrics and dialogue that doesn’t listen to itself. To quote the King of Siam, who had a really good libretto backing him up: Is a puzzlement.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 67,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -34,5 +34,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250720184038/https://nystagereview.com/2025/04/07/boop-betty-brightens-broadway-but/",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "4/5"
+  "extractedStars": "4/5",
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": 70,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the most maladroit storylines Broadway has encountered in years, with cardboard characters that serve plot purposes only",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Jasmine Amy Rogers is the real deal, a triple threat as actor, singer, and dancer with irresistible warmth",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "as a respite from present-day realities and woes, and you know the ones I mean, Boop! could just be the tonic the doctor ordered",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic savages the book and plot while praising performances and production values, ultimately suggesting the show works as escapist entertainment despite major structural flaws. | GPT-4o-mini: The review highlights strong performances and enjoyable music but criticizes the weak storyline, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:25.356Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

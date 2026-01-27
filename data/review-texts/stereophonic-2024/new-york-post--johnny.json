@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Still, “Stereophonic,” directed by Daniel Aukin, is undeniably transportive, and it’s a pleasure to be immersed in this creatively robust decade for a while.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250717204959",
-  "archiveOrgUrl": "http://web.archive.org/web/20250717204959/https://nypost.com/2024/04/20/entertainment/stereophonic-review-broadway-play-goes-behind-the-music/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250717204959/https://nypost.com/2024/04/20/entertainment/stereophonic-review-broadway-play-goes-behind-the-music/",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": 85,
+      "performances": 80,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "Adjmi's play is long — too long — because he's attempting to accurately capture, documentary style, the often banal artistic process",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "'Stereophonic,' directed by Daniel Aukin, is undeniably transportive, and it's a pleasure to be immersed in this creatively robust decade for a while",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "while not itself perfect, has a keen understanding of what determined artists will do in pursuit of perfection",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the music, performances, and immersive production while clearly identifying significant flaws in pacing and length, resulting in a qualified positive recommendation. | GPT-4o-mini: While the review highlights strong performances and engaging music, it also notes significant issues with pacing and indulgent scenes, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:08.944Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

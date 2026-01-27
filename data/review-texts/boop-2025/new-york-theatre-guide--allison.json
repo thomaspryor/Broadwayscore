@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The big, dazzling musical showcases the best of Broadway, with sparkling costumes, transformative sets, and tap dancing.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250512154533/https://www.newyorktheatreguide.com/reviews/boop-the-musical-broadway-review",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 63,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "BOOP! The Musical proves that bringing Betty Boop to life on stage is a worthy endeavor, even if only for the spectacle of it all",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "While the songs are toe-tapping, they're often unmemorable",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The show's book is much like the storylines of the Fleischer Studio Betty Boop cartoons: full of romance, slapstick, and science fiction. It is also a bit silly and far-fetched at times, with unengaging subplots",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the spectacle, performances, and production values highly while acknowledging significant weaknesses in the book and songs, ultimately concluding it's a 'worthy endeavor' worth seeing for the spectacle. | GPT-4o-mini: The review highlights strong performances and vibrant production elements while noting some weaknesses in the book and music, leading to a solid positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:51.591Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

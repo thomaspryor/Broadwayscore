@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "A fly-on-the-wall study of how people both need and viciously destroy each other, “Stereophonic” is a fiery family drama, as electrifying as any since “Who’s Afraid of Virginia Woolf?”",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 95,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -39,5 +39,61 @@
   "designation": "Must_See",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "must-see"
+  "extractedPhrase": "must-see",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": 89,
+      "performances": 94,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play is a staggering achievement, and already feels like a must-see American classic.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a fiery family drama, as electrifying as any since 'Who's Afraid of Virginia Woolf?'",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it's possible to imagine misty-eyed fans of this production...reflecting on the experience as if it were a once-in-a-lifetime stadium tour",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Critic calls it a 'staggering achievement' and 'must-see American classic' with sustained superlative praise throughout, comparing it favorably to theatrical masterworks. | GPT-4o-mini: The review expresses unqualified enthusiasm and highlights the play's achievements, making it a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:23.396Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

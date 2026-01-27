@@ -9,9 +9,67 @@
   "isFullReview": false,
   "dtliExcerpt": "The&nbsp;lush bacchanal&nbsp;of the theater’s dressing seeps into every aspect of this production, from&nbsp;Julia Cheng’s sensual, prurient choreography to&nbsp;Eddie Redmayne’s eerie performance as the Emcee.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 65,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 90
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "lush bacchanal of the theater's dressing seeps into every aspect of this production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Eddie Redmayne's eerie performance as the Emcee",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "Julia Cheng's sensual, prurient choreography",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt shows appreciation for production elements and choreography but uses 'eerie' to describe the lead performance, which could be neutral/appropriate for the role or subtly critical, with no clear recommendation signal. | GPT-4o-mini: The review highlights strong performances and choreography, indicating a clear recommendation despite the lack of detail on the overall production quality. | Note: Models differed by 40 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:03.728Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 85,
+    "scoreDelta": 40,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 40 points (Claude: 45, OpenAI: 85)"
+    ]
+  }
 }

@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "It’s difficult to say what’s more embarrassing: the people in Disney outfits out on the street or the chorus at the Broadhurst in costumes that look just as seedy and smelly. Pooph, anyone?",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 18,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 18,
+    "confidence": "medium",
+    "range": {
+      "low": 5.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's difficult to say what's more embarrassing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "costumes that look just as seedy and smelly",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Pooph, anyone?",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is entirely negative, focusing on embarrassing and poor-quality production elements with disgusted tone throughout. | GPT-4o-mini: The review is overwhelmingly negative, highlighting embarrassment and dissatisfaction with the production's visual aspects. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:39.085Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 10,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
