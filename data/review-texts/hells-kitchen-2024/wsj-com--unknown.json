@@ -5,12 +5,55 @@
   "criticName": "Unknown",
   "url": "https://www.wsj.com/articles/hells-kitchen-review-alicia-keys-musical-public-theater-2e68ac00",
   "publishDate": null,
-  "fullText": null,
+  "fullText": "https://www.wsj.com/articles/hells-kitchen-review-alicia-keys-musical-public-theater-2e68ac00\n\nUpdated April 22, 2024 4:20 pm ET\n\nChris Lee and Maleah Joi Moon Photo: Joan MarcusNew York\n\nNote: “Hell’s Kitchen,” reviewed here in November 2023 during its run at the Public Theater, opened on Broadway on April 20.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": null,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "textWordCount": 66,
+  "archivePath": "data/archives/reviews/hells-kitchen-2024/wsj-com--unknown_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T05:13:56.134Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20240805090816",
+  "archiveOrgUrl": "http://web.archive.org/web/20240805090816/https://www.wsj.com/articles/hells-kitchen-review-alicia-keys-musical-public-theater-2e68ac00",
+  "textIssues": [
+    "Word count too low: 66 (min: 300)"
+  ]
 }
