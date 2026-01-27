@@ -1,94 +1,83 @@
 {
-  "runDate": "2026-01-27T20:43:10.808Z",
+  "runDate": "2026-01-27T20:43:23.366Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "stereophonic-2024",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 16,
-    "failed": 12,
+    "processed": 9,
+    "failed": 15,
     "skipped": 0,
-    "successRate": "57.1%"
+    "successRate": "37.5%"
   },
   "tierBreakdown": {
-    "playwright": 4,
-    "scrapingbee": 3,
-    "brightdata": 0,
-    "archive": 9
+    "playwright": 0,
+    "scrapingbee": 1,
+    "brightdata": 1,
+    "archive": 7
   },
   "statistics": {
-    "tier1Attempts": 26,
-    "tier1Success": 4,
-    "tier2Attempts": 22,
-    "tier2Success": 3,
+    "tier1Attempts": 20,
+    "tier1Success": 0,
+    "tier2Attempts": 20,
+    "tier2Success": 1,
     "tier3Attempts": 19,
-    "tier3Success": 0,
-    "tier4Attempts": 31,
-    "tier4Success": 9,
-    "totalFailed": 12,
-    "scrapingBeeCreditsUsed": 130
+    "tier3Success": 1,
+    "tier4Attempts": 25,
+    "tier4Success": 7,
+    "totalFailed": 15,
+    "scrapingBeeCreditsUsed": 80
   },
   "processed": [
-    "stereophonic-2024/new-york-magazine-vulture--jackson-mchenry.json",
-    "stereophonic-2024/nytg--joe-dziemianowicz.json",
-    "stereophonic-2024/vulture--sara.json",
-    "stereophonic-2024/broadway-news--brittani.json",
-    "stereophonic-2024/entertainment-weekly--dalton.json",
-    "stereophonic-2024/lighting-sound-america--david-barbour.json",
-    "stereophonic-2024/new-york-daily-news--chris.json",
-    "stereophonic-2024/new-york-post--johnny.json",
-    "stereophonic-2024/new-york-theatre-guide--allison.json",
-    "stereophonic-2024/new-york-times--naveen.json",
-    "stereophonic-2024/observer--david-cote.json",
-    "stereophonic-2024/talkin-broadway--marc-miller.json",
-    "stereophonic-2024/the-wrap--robert.json",
-    "stereophonic-2024/theatermania--david.json",
-    "stereophonic-2024/theatrely--joey.json",
-    "stereophonic-2024/time-out-new-york--adam.json"
+    "hamilton-2015/new-york-magazine-vulture--jesse-green.json",
+    "hamilton-2015/thr--frank-scheck.json",
+    "hamilton-2015/vulture--jesse.json",
+    "hamilton-2015/OBSERVER--david-cote.json",
+    "hamilton-2015/new-york-times--ben.json",
+    "hamilton-2015/theatermania--zachary.json",
+    "hamilton-2015/time-out-new-york--david-cote.json",
+    "hamilton-2015/wapo--peter-marks.json",
+    "hamilton-2015/wsj--terry-teachout.json"
   ],
   "failed": [
-    "stereophonic-2024/hollywood-reporter--david.json",
-    "stereophonic-2024/thr--angie-han.json",
-    "stereophonic-2024/variety--frank.json",
-    "stereophonic-2024/vult--helen-shaw.json",
-    "stereophonic-2024/ap--mark-kennedy.json",
-    "stereophonic-2024/deadline--greg.json",
-    "stereophonic-2024/ew--dalton-ross.json",
-    "stereophonic-2024/guardian--adrian-horton.json",
-    "stereophonic-2024/interestedbystander-com--unknown.json",
-    "stereophonic-2024/tman--jesse-green.json",
-    "stereophonic-2024/washpost--peter-marks.json",
-    "stereophonic-2024/wsj--charles-isherwood.json"
+    "hamilton-2015/THR--david-rooney.json",
+    "hamilton-2015/hollywood-reporter--frank.json",
+    "hamilton-2015/thr--david-rooney.json",
+    "hamilton-2015/CHTRIB--chris-jones.json",
+    "hamilton-2015/NYP--elisabeth-vincentelli.json",
+    "hamilton-2015/WRAP--robert-hofler.json",
+    "hamilton-2015/amny--matt-windman.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/backstage-barbie--backstage-barbie.json",
+    "hamilton-2015/chtrib--chris-jones.json",
+    "hamilton-2015/clyde-fitch-report--david-finkle.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/nyp--johnny-oleksinski.json",
+    "hamilton-2015/talkinbway--matthew-murray.json",
+    "hamilton-2015/usatoday--elysa-gardner.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "stereophonic-2024/nytg--joe-dziemianowicz.json",
-      "stereophonic-2024/broadway-news--brittani.json",
-      "stereophonic-2024/lighting-sound-america--david-barbour.json",
-      "stereophonic-2024/new-york-theatre-guide--allison.json"
-    ],
+    "playwright": [],
     "scrapingbee": [
-      "stereophonic-2024/entertainment-weekly--dalton.json",
-      "stereophonic-2024/theatrely--joey.json",
-      "stereophonic-2024/time-out-new-york--adam.json"
+      "hamilton-2015/time-out-new-york--david-cote.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "hamilton-2015/OBSERVER--david-cote.json"
+    ],
     "archive": [
-      "stereophonic-2024/new-york-magazine-vulture--jackson-mchenry.json",
-      "stereophonic-2024/vulture--sara.json",
-      "stereophonic-2024/new-york-daily-news--chris.json",
-      "stereophonic-2024/new-york-post--johnny.json",
-      "stereophonic-2024/new-york-times--naveen.json",
-      "stereophonic-2024/observer--david-cote.json",
-      "stereophonic-2024/talkin-broadway--marc-miller.json",
-      "stereophonic-2024/the-wrap--robert.json",
-      "stereophonic-2024/theatermania--david.json"
+      "hamilton-2015/new-york-magazine-vulture--jesse-green.json",
+      "hamilton-2015/thr--frank-scheck.json",
+      "hamilton-2015/vulture--jesse.json",
+      "hamilton-2015/new-york-times--ben.json",
+      "hamilton-2015/theatermania--zachary.json",
+      "hamilton-2015/wapo--peter-marks.json",
+      "hamilton-2015/wsj--terry-teachout.json"
     ]
   }
 }
