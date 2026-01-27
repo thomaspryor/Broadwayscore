@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The rotten apples don’t fall very far from the dead tree in Branden Jacobs-Jenkins’s great family comedy “Appropriate.” First seen in 2014, the play receives its belated but totally riveting first Broadway production, which opened Monday at Second Stage’s Helen Hayes Theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/appropriate/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251210200028",
-  "archiveOrgUrl": "http://web.archive.org/web/20251210200028/https://www.thewrap.com/appropriate-broadway-review-sarah-paulson-elle-fanning/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251210200028/https://www.thewrap.com/appropriate-broadway-review-sarah-paulson-elle-fanning/",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "totally riveting first Broadway production",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The incisiveness of Lila Neugebauer's marvelous direction",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "extraordinary ensemble",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the production with strong positive language ('totally riveting,' 'marvelous direction,' 'extraordinary ensemble') and detailed appreciation for performances and direction, with only minor criticism of one character being clichéd.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:34.707Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
