@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -57,5 +57,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230927113454/https://content.time.com/time/magazine/article/0,9171,1006179,00.html",
   "textIssues": [
     "Word count too low: 158 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "shrewd and enjoyable retelling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "they get something better: understanding",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "shrewd and enjoyable retelling of the Wizard of Oz story",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic describes the show as 'shrewd and enjoyable' and praises the concept, but this appears to be only the opening paragraph of a longer review that was cut off. | GPT-4o-mini: The review indicates a positive sentiment towards the musical's retelling and character dynamics, suggesting a clear recommendation despite the lack of detailed critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:19.616Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
