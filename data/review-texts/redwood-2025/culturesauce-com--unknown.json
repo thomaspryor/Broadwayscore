@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -42,5 +42,61 @@
   "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 261 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 40,
+      "performances": 75,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "★★☆☆☆",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The thin, repetitive story and composer/co-lyricist Kate Diaz's score keep bringing the show back down to earth",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there's an exhausting sameyness to these melisma-heavy pop ballads",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: 2/5 star rating with significant criticism of the book and score despite praise for Menzel's performance and production design places this clearly in negative territory. | GPT-4o-mini: The review highlights significant flaws in the story and music while acknowledging Menzel's strong performance, leading to a clear negative recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:35:46.563Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 42,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": 88,
+      "performances": 85,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Infectiously whimsical and sentimental",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the score for Two Strangers (Carry a Cake Across New York) accomplishes something rare on Broadway these days: respecting the audience's attention. None of the songs are filler",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "does encourage a rewarding lift: to appreciate passion in the present",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the musical's emotional authenticity, score quality, and performances while noting its meaningful themes, with only minor reservations about some obvious metaphoric elements. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's charm, music, and emotional depth, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:42:46.415Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

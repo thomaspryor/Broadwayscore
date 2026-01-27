@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 30,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 40
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 18,
+      "music": 25,
+      "performances": 68,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "the creative team responsible for Redwood never takes Jesse as seriously as her suffering, instead relying on Menzel's soaring vocals to defy gravity despite the burden of a leaden score and book",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The book, from the show's director Tina Landau, is a litany of unwieldy exposition, silly contrivances, and self-help bromides",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Menzel's fearless ability to sing in a harness remains unmatched",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review systematically demolishes nearly every aspect of the production except Menzel's vocal performance, calling the book a 'litany' of problems, the score 'leaden,' and the plot filled with 'silly contrivances.' | GPT-4o-mini: The review is predominantly negative, criticizing the book and music while acknowledging strong performances, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:36:43.114Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 35,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
   "textIssues": [
     "Word count too low: 278 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": 83,
+      "performances": 78,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Six: The Musical is a fun concept and a fun experience. But if you are in town and have never seen a Broadway show, this is not a true Broadway theatre experience.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The vocal performances are moving, but there's not really any acting or dramatic structure.",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "It was a phenomenal concert, but not really a play.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the vocal performances and music while fundamentally questioning whether this qualifies as legitimate theater, resulting in a qualified mixed recommendation that acknowledges entertainment value but warns about theatrical limitations. | GPT-4o-mini: The review highlights strong vocal performances and a fun concept but ultimately critiques the lack of dramatic structure and depth, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:37:02.015Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

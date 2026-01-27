@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": null,
+      "performances": 95,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "Oedipus may be the best play of the decade, and also the most contemporary",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "stands as one of the memorable nights of theater you are ever likely to experience",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Ickes and his cast have achieved something truly remarkable, producing a classic that doesn't feel like a revival at all",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rave with 5/5 stars, superlative language throughout ('best play of the decade', 'truly remarkable', 'memorable nights'), and comprehensive praise for all elements with no significant caveats. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising its contemporary relevance, direction, and performances, leading to a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:33:02.340Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 38,
+      "performances": 63,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "disappointingly, they've succumbed to creatively mature reimaginers who misinterpreted the fundamental lesson of the Greasers' story",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "it's been dramaturgically constrained by Adam Rapp and Justin Levine's book, which sacrifices poetry for explanation",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Grant and Lakota-Lynch remarkably still manage to sweetly convey this point of view, despite being in a production that doesn't share it",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a thoughtful but fundamentally negative assessment, arguing that the musical misunderstands its source material and sacrifices poetry for exposition, with only the performances providing some redemption. | GPT-4o-mini: The review expresses significant disappointment in the book and score while acknowledging some strong performances, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:41:02.513Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": 89,
+      "performances": 84,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "I loved everything about this show, from the beautiful orchestrations to the vocal performances. The Gestalt of this production was a well oiled machine",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "made for a really fabulous night at the theatre with some serious things to think about",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The sound designer in me was disappointed in Brian Ronan's choices",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant sound mixing criticisms, the reviewer expresses overwhelming love for the production, calling it a 'fabulous night' and praising virtually every other element from design to performances to book. | GPT-4o-mini: The review expresses strong admiration for the visual and musical elements of the show while acknowledging some sound issues, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:38:28.018Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 31,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "partial",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 31,
+    "confidence": "high",
+    "range": {
+      "low": 25,
+      "high": 37
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": null,
+      "performances": 55,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's simply one of those 'what were they thinking?' sort of evenings",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The insurmountable problem with The Queen of Versailles is that we are given no reason to care one way or the other about this spendthrift family",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It's just not all that interesting",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic calls it an 'insurmountable problem' and questions 'what were they thinking,' indicating fundamental flaws that make the show hard to recommend despite some praise for individual performances. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the script and overall engagement, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:34:31.148Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": 30,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

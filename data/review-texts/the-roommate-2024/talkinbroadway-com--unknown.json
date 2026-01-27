@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": null,
+      "performances": 73,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "Farrow embodies the role to perfection, using her own time-honored skills in portraying women who are vulnerable, ethereal, intelligent, introspective, and offbeat, yet with surprising touches of inner strength",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The play is not greatly assisted by its increasingly implausible plot turns, which reshape a somewhat realistic situation into an oddball version of Thelma & Louise",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there is not a lot of substance to what amounts to a 100-minute character study",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review that praises Farrow's performance highly but criticizes the implausible plot, lack of substance, and unbalanced performances, with no clear recommendation to see or skip. | GPT-4o-mini: The review highlights strong performances, especially from Farrow, but notes significant issues with the script and direction, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:41:50.402Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

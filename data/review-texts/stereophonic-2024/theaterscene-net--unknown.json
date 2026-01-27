@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 78,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "takes some patience to absorb, but the end result is a worthwhile evening of theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The incredible talent of all the members of this ensemble, fine singers, musicians and splendid actors",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Adjmi's ear-on-the-wall intimacy with the Seventies' Rock & Roll scene is mind-boggling",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic provides detailed praise for performances, direction, and period authenticity, explicitly calling it 'a worthwhile evening of theater' despite noting it requires patience, indicating a clear positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some pacing issues, leading to a solid recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:37:31.290Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

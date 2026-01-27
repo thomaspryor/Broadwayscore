@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 76,
+      "music": null,
+      "performances": 87,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "For whatever reason -- the passage of time, a slightly more acute production, the pull of recent events -- one can more easily appreciate the delicately layered structure of laughter and pain that Harrison has constructed.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I can't quite explain why Anne Kauffman's production feels superior to the original",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "An unusually gentle piece, it nevertheless sends a chill up one's spine.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds this production superior to the original with exceptional praise for performances (especially Squibb) and appreciates the play's newfound relevance, despite some design reservations. | GPT-4o-mini: The review expresses a clear recommendation for the performances and production, despite some reservations about the script and design.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:30:24.786Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 82,
+      "performances": null,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "definitely worth a visit for a couple of hours",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "While it was beautiful, it wasn't powerful",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "it's the kind of show I'm not sure I'd see a second time",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer explicitly recommends the show as 'definitely worth a visit' and praises the production elements extensively, but acknowledges it's not particularly deep or powerful, placing it in qualified recommendation territory. | GPT-4o-mini: The review expresses clear enjoyment and appreciation for the production's aesthetic and music, while acknowledging its simplicity and lack of depth, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:39:55.039Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

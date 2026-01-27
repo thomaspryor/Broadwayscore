@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": 88,
+      "performances": 92,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is the most complete, and completely satisfying, new musical I've come across in a long time",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "you have a thoroughly enchanting experience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "***½ out of four",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic gives 3.5/4 stars and calls it 'the most complete and completely satisfying new musical' they've encountered 'in a long time,' with enthusiastic praise for all elements and describing it as 'thoroughly enchanting.' | GPT-4o-mini: The review expresses strong enthusiasm for the musical's quality, performances, and overall experience, indicating a must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:44:45.678Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

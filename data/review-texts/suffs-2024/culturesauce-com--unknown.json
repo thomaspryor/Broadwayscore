@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 78.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 86,
+      "performances": 88,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shaina Taub's triumphant new musical Suffs",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a remarkable musical that educates and entertains",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the show sometimes has the feel of a big-budget school pageant",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses strong positive language ('triumphant', 'remarkable') and praises multiple elements while acknowledging some production limitations, indicating a clear recommendation with minor reservations. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's themes, music, and performances, indicating it is a must-see production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:37:39.434Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

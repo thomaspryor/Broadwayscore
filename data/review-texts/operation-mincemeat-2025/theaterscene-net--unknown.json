@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": 63,
+      "performances": 75,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Those who love Monty Python will have a great time; those who don't may find the two hour and 30 minute show heavy going",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Whether its humor is for you, only you can decide. If you are a devotee of Monty Python, Benny Hill, The Goon Show, and others of this ilk, you will have a ball. It not, this is probably not your cup of tea",
+        "sentiment": "neutral",
+        "strength": 5
+      },
+      {
+        "quote": "The hard-working cast is impressive playing many roles each",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is thoroughly mixed, repeatedly emphasizing that enjoyment depends entirely on personal taste for British comedy styles, with clear praise for performances but significant caveats about accessibility. | GPT-4o-mini: The review indicates a mixed experience, praising the performances while noting that the humor may not resonate with all audiences, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:34:10.270Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

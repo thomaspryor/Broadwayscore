@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 55.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": 79,
+      "performances": 73,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chess is back, bigger than life and twice as noisy... remains an infectious score in search of a plausible, involving story",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "At least two of the three leads manage to score, anyway... these two keep Chess watchable, making the most of the score's attractions",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Based on box office reports, these elements are proving to be more than enough, the silly, soapy book notwithstanding. The next move is yours.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critic acknowledges fundamental flaws in the book but praises the score, strong lead performances, and production values, ultimately suggesting audiences can decide for themselves despite clear reservations. | GPT-4o-mini: The review indicates a mix of strong performances and an appealing score, but significant issues with the book and overall coherence lead to a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:27:02.541Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 60,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

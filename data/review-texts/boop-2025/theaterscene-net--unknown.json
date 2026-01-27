@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 60,
+      "music": 65,
+      "performances": 79,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "doesn't exactly disappoint, at least not that frequently",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "the musical's unmitigated highlight is the Broadway newcomer Rogers as Betty Boop",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Pulling the same double duty he did for the megahit musical Kinky Boots, director/choreographer Jerry Mitchell once again is remarkably inventive when arranging bodies of all types in lovely motion",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic offers qualified praise for performances and direction while expressing reservations about the book and concept, landing in mixed territory with a slight positive lean due to strong individual elements. | GPT-4o-mini: The review presents a mix of praise for performances and direction while expressing reservations about the book and overall execution, leading to a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:25:38.040Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

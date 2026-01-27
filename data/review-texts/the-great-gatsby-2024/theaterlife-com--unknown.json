@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 33,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 33,
+    "confidence": "high",
+    "range": {
+      "low": 25.5,
+      "high": 40.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 28,
+      "performances": 43,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "at intermission, director Marc Bruni's production had me wondering, why is this even being done?",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Songs that seem to be waiting for their cues, like Gatsby's 'For Her,' rather than emerging naturally from conversations",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Sara Chase, giving one of the best performances",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic fundamentally questions why this adaptation exists, systematically criticizes the music, book, and direction while offering only scattered praise for individual performances. | GPT-4o-mini: The review is overwhelmingly critical, highlighting significant flaws in the adaptation, music, and overall execution, leading to a strong recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:38:43.176Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

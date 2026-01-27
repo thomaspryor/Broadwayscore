@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 93,
+      "music": null,
+      "performances": 95,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "Marjorie Prime ranks among the finest productions of the season. It's a must-see",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Harrison has written a play that asks enduring questions about memory, loss, and love with genuine philosophical rigor",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "At 96, June Squibb delivers a performance of remarkable depth and nuance",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly calls this a 'must-see' and 'among the finest productions of the season' with unqualified praise for the writing, performances, and direction throughout. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its emotional depth and the quality of performances, making it a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:30:52.813Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

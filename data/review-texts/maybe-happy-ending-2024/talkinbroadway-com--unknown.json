@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250327172119",
-  "archiveOrgUrl": "http://web.archive.org/web/20250327172119/https://www.talkinbroadway.com/page/world/MaybeHappyEnding.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250327172119/https://www.talkinbroadway.com/page/world/MaybeHappyEnding.html",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 58,
+      "performances": 79,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "the quirky/charming futuristic musical opening today at the Belasco Theatre, is the theatrical equivalent of what can be thought of as a delightful little graphic novel",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "with the exception of a couple of agreeable little waltzes, the rest of the songs that are tied to the storyline are rather nebulous",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "this string of simple moments manages to sneak up on us and begins to add up to a delicate little love story",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show charming and well-executed with strong performances and design, but notes significant weaknesses in the music and some story elements, resulting in a qualified positive recommendation. | GPT-4o-mini: The review expresses clear appreciation for the performances and direction, while noting some weaknesses in the music, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:31:42.376Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

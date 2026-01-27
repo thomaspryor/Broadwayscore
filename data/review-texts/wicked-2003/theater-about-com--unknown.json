@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20160611085643",
-  "archiveOrgUrl": "http://web.archive.org/web/20160611085643/http://theater.about.com/od/reviewsandrecommendations/tp/Reviews-The-Book-of-Mormon-Matilda-and-Wicked.htm"
+  "archiveOrgUrl": "http://web.archive.org/web/20160611085643/http://theater.about.com/od/reviewsandrecommendations/tp/Reviews-The-Book-of-Mormon-Matilda-and-Wicked.htm",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": 83,
+      "performances": 76,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The essential hilarity of the piece itself makes The Book of Mormon well worth a visit, or a revisit",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Matilda is a far superior show to Kinky Boots",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I love Wicked. Stephen Schwartz's score is both tuneful and smart",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly recommends all three shows with explicit positive language ('well worth a visit', 'love', 'superior show') despite noting some cast and production issues. | GPT-4o-mini: The review expresses strong positive sentiments about all three shows, with some minor reservations, leading to a solid recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:44:39.063Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

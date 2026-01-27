@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 84,
+      "performances": 88,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "has fashioned a theater work that deftly balances history and entertainment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The transfer to Broadway has brilliantly expanded the show",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Watching how this jumble of ideals and goals coalesced into a flawed, but important step in America's mixed-bag history of civil rights is exciting",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the musical's craft, performances, and Broadway transfer improvements, describing it as 'exuberant,' 'spiffier and more potent,' and 'brilliantly expanded' with strong performances and effective direction. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's script, performances, and production quality, indicating it as a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:38:06.403Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

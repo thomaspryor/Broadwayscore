@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250731090845",
-  "archiveOrgUrl": "http://web.archive.org/web/20250731090845/https://www.nytimes.com/2025/04/27/theater/real-women-have-curves-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250731090845/https://www.nytimes.com/2025/04/27/theater/real-women-have-curves-review.html",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 63.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 73,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "substance yields to banalities, leaving the show feeling somewhat empty",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "What buoys it is an extremely likable cast, riding the waves of a hummable score",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "much tighter than the 2023 version audiences saw in its world premiere",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic praises strong performances and production values but criticizes the show's shift from substantive drama to feel-good banalities, resulting in a qualified mixed recommendation. | GPT-4o-mini: The review expresses clear praise for the performances and likability of the cast, while noting some weaknesses in the book and overall substance, leading to a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:35:31.971Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 75,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

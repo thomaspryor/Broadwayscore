@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Much of the strength of the production, which has moved intact from its Off-Broadway run earlier this year, resides in the ensemble acting, theater regulars portraying everyday women with grace and good humor.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It is a testament to both the writing and the acting that her situation is no joke, but we wind up laughing with her.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The answer is unexpected, but smart and witty, and, in its own way, liberating – just like the play.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the ensemble performances, writing quality, and production design with specific examples, showing clear appreciation for the show's intelligence and emotional resonance despite no explicit recommendation language. | GPT-4o-mini: The review highlights strong performances and a clever script, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:29:38.829Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

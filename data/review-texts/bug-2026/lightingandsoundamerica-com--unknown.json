@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,5 +30,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 81,
+      "direction": 74
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bug has never seemed more relevant",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "his handling of the first act is a bit slack",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Carrie Coon's Agnes --- taut, whippet-thin, getting by a diet of vodka and Coke plus the odd puff -- is on point throughout",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises Letts' prescient writing and its contemporary relevance, gives strong marks to most performances (especially Coon), and lauds the design work, while noting some first-act pacing issues and initial casting concerns that resolve in Act II. | GPT-4o-mini: The review expresses strong praise for the relevance and performances while noting some issues with pacing and direction, leading to a positive overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:25:58.127Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

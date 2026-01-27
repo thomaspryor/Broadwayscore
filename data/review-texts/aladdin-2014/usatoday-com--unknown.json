@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 83,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's genie-us! 'Aladdin' rubs you the right way",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "delivers a rush that may surprise folks who attend either as chaperones or to relive their own youths",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Even the most jaded observers will, again, share in his enthusiasm",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The 3.5/4 star rating combined with enthusiastic praise for performances, direction, and overall entertainment value indicates a strong positive recommendation despite some acknowledgment that it doesn't sustain the highest peaks throughout. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, particularly praising the lead's energy and the cleverness of the book, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:24:28.223Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

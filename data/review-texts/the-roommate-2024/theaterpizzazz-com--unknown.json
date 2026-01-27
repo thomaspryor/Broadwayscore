@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250430082717",
-  "archiveOrgUrl": "http://web.archive.org/web/20250430082717/https://theaterpizzazz.com/the-roommate/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250430082717/https://theaterpizzazz.com/the-roommate/",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 83,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "a mildly diverting two-hander made palatable chiefly by the presence of its stellar cast",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "their pitch-perfect timing, subtextual nuances, and emotional intelligence are worth the price of admission",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it would have been much greater had it been in something of real substance",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the stellar performances by Farrow and LuPone as 'worth the price of admission' but criticizes the script as having 'implausible plot devices' and lacking 'real substance,' making it a qualified recommendation based primarily on the stars. | GPT-4o-mini: The review highlights strong performances by the lead actors but criticizes the play's script and overall substance, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:41:56.642Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

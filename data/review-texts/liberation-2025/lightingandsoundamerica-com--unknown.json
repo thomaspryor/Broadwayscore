@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 94,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "The good news: Liberation -- to my mind, the best new American play of last season -- has transferred to Broadway in tiptop shape.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Liberation is a potent exercise in time travel to the era of Betty Friedan and Ms. Magazine, George McGovern and Richard Nixon (the latter included in a showstopping revelation), all presented without a whiff of nostalgia or condescension.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "In this company of equals, the effortless standout is Betsy Aidem as Margie, a middle-aged housewife whose marriage has become a form of jail.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic calls this 'the best new American play of last season' and consistently praises the writing, performances, and production throughout with no significant reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the play's writing, performances, and direction, indicating it as a must-see production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:29:31.291Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

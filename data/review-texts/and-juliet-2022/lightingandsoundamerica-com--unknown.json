@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 50,
+      "performances": 65,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a classic example of a just-good-enough musical, a fast, sometimes funny evening",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Audiences looking to rock out to these vintage hits are likely to go with the book's cheerful, breezily inclusive tone",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "when every song is pitched at finale level, a certain numbness inevitably sets in",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer acknowledges the show as 'just-good-enough' entertainment that will likely succeed with its target audience, but criticizes its reliance on jukebox hits over original songwriting and finds the humor hit-or-miss. | GPT-4o-mini: The review presents a mixed perspective, acknowledging some enjoyable elements while highlighting significant flaws, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:24:41.457Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

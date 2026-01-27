@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 45,
+      "music": 60,
+      "performances": 38,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "its leering invitation to sin has become a mechanical bump and grind and its thrills have lost much of their tinselly, tacky allure",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I'd call them miscast except they are so clearly giving their director exactly what she requested",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Bebe Neuwirth, raising a fist in fury against a cruel fate she will ultimately accommodate, is nothing less than monumental",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers harsh criticism of direction, leads' performances, and overall concept while praising only supporting performances and isolated moments, indicating significant problems that outweigh strengths. | GPT-4o-mini: The review is predominantly negative, highlighting significant issues with direction and performances, particularly criticizing the lead actors and the overall execution of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:26:30.654Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "an 85-year-old woman splendidly played by a vigorous 96-year-old June Squibb",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Cynthia Nixon, terrific) and Tess's husband Jon (Danny Burstein, ditto)",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "smartly directed then as now by Anne Kauffman",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic offers consistent praise for the performances ('splendidly played', 'terrific', 'ditto'), direction ('smartly directed'), and the play's thematic relevance, with thoughtful analysis but no significant criticisms. | GPT-4o-mini: The review highlights strong performances and direction while presenting a thoughtful exploration of themes, leading to a clear recommendation despite some minor reservations.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:30:39.654Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

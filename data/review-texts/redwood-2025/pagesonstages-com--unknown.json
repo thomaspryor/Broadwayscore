@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 86,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Redwood is a show with a lot of heart, unique in its desire to show a story of calmness and healing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I see very real potential for a ripple effect if others, like me, left the theatre reminded how much a little kindness can do",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "at the beginning I felt less anchored to the show and a little let down by this choice",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer praises the design work extensively, highlights strong performances, and finds meaningful emotional impact despite some technical concerns early in the show. | GPT-4o-mini: The review expresses strong praise for the performances and design, with only minor reservations about the sound at the beginning, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:36:20.374Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

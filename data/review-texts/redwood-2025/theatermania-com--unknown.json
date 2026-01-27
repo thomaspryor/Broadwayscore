@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250527024131",
-  "archiveOrgUrl": "http://web.archive.org/web/20250527024131/https://www.theatermania.com/news/review-idina-menzel-climbs-a-tree-on-broadway-in-new-musical-redwood_1763672/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250527024131/https://www.theatermania.com/news/review-idina-menzel-climbs-a-tree-on-broadway-in-new-musical-redwood_1763672/",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 60,
+      "performances": 73,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show itself hangs from a story that's as thin as a reed, making for a sometimes-lumbering musical that tends to sag under the weight of its nearly two-hour runtime",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There are a few musical gems, as well as eye-popping visual effects and even some supporting performances that rival Menzel's",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Maybe that's worth the climb",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges strong visual design and some standout performances but criticizes the thin story and runtime issues, ending with a tepid, qualified recommendation. | GPT-4o-mini: The review highlights strong performances and visual elements but criticizes the thin story, leading to a mixed recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:36:35.421Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

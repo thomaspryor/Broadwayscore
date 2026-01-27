@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 85,
+      "performances": 92,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rebecca Frecknall's production reinvents this 1966 show so that you may feel that you have never seen it before",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "making this one of the glories of the 2023-2024 season",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Director Rebecca Frecknall's staging (with her British production team) is imaginative and innovative, quite unlike any Cabaret you have seen before",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic declares this 'one of the glories of the 2023-2024 season' with extensive praise for the innovative direction, strong performances, and complete reinvention of the classic musical. | GPT-4o-mini: The review is overwhelmingly positive, highlighting innovative direction, strong performances, and a fresh take on the classic musical, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:26:57.051Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 95,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

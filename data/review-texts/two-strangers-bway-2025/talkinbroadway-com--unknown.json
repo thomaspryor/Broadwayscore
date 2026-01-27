@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "partial",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 79,
+      "performances": 89,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "make this a real treat as we enter into the holiday season",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Tutty and Pitts do just that and make Two Strangers a terrific feel-good addition to this theater season",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The songs are far better than the typical pop scores we have been fed in heavy doses elsewhere",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently positive review that praises performances as 'sweet, committed, funny, and tender,' calls the show 'a real treat' and 'terrific feel-good addition,' with only minor design quibbles. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall production, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:42:33.892Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

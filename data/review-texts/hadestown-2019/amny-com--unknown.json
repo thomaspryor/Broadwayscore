@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240606191259",
-  "archiveOrgUrl": "http://web.archive.org/web/20240606191259/https://www.amny.com/entertainment/hadestown-review-1.29924932/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240606191259/https://www.amny.com/entertainment/hadestown-review-1.29924932/",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 83,
+      "performances": 80,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "stunning musical romance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "exciting, compelling and beautiful",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "may very well become the next risk-taking, genre-defying new musical to catch on with a larger audience and achieve major commercial success",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the production's visual design, music, and performances with prediction of commercial success, despite minor pacing issues in Act Two. | GPT-4o-mini: The review expresses strong praise for the production's design and music while acknowledging some pacing issues, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:27:48.811Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

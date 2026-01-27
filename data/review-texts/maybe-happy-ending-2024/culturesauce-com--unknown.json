@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 88,
+      "performances": 83,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once in a blue moon, a new show comes along that takes Broadway utterly by surprise and shakes up how we view the whole Musical Theater genre",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Maybe Happy Ending is a beguiling show whose power sneaks up on you unawares",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You will probably see where the plot is heading long before the characters do, and there's a cartoonish quaintness to the story that threatens to sink into twee",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite some criticisms of predictable plotting and twee elements, the critic praises this as a genre-shaking original with exceptional design, strong performances, and sophisticated music that creates a 'beguiling' experience. | GPT-4o-mini: The review expresses strong enthusiasm for the production's originality, performances, and technical achievements, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:31:02.508Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

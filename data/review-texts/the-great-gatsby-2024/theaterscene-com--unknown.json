@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241006155448",
-  "archiveOrgUrl": "http://web.archive.org/web/20241006155448/https://theaterscene.com/Gatsby-BWY-DD.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241006155448/https://theaterscene.com/Gatsby-BWY-DD.html",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 50,
+      "music": 78,
+      "performances": 85,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Great Gatsby arrives with a flawed book on the Great White Way. But theatergoers who hunger to see a live musical staging of Fitzgerald's 1925 masterpiece with an eye-popping set, exquisite period costumes, and a first-rate cast who can sing, this is your golden opportunity.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the book by Kait Kerrigan doesn't have the connective tissue that would allow the audience to know just who is telling the story throughout",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "It's a visually stunning production, a veritable feast for the eyes",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticism of the book's structure and storytelling, the reviewer explicitly calls it a 'golden opportunity' for audiences and praises virtually every other aspect of the production with superlatives. | GPT-4o-mini: The review highlights strong performances and impressive production values but notes significant flaws in the book, leading to a clear recommendation with some reservations.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:38:50.557Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

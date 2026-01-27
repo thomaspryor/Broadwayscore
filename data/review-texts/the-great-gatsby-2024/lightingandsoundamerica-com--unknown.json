@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 15,
+      "music": 30,
+      "performances": 43,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you pass by the Broadway Theatre, keep moving; nothing to see here.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The Great Gatsby is a real puzzler, a show that can't make up its mind about what it wants to be.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Like its hero, this Great Gatsby bets it all on entertainment, wooing the audience by any means necessary. It's a wager on which Lady Luck doesn't look too kindly.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly tells readers to keep walking and delivers sustained criticism of the musical's identity crisis, poor storytelling choices, and fundamental adaptation problems, with only scattered praise for technical elements. | GPT-4o-mini: The review is overwhelmingly negative, highlighting significant flaws in the adaptation and recommending against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:38:20.720Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 69,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 81,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "You will no doubt see where the tea-towel-thin plot is going long before the characters do",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "in the hands of pros like Farrow and LuPone, they manage to glisten just a little bit brighter than the script demands",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The laughs come sporadically but consistently, but the chief draw of this two-person one-act is the stunt casting",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the star performances and finds consistent laughs, but clearly considers the plot thin and predictable, suggesting a mixed experience elevated by the casting. | GPT-4o-mini: The review highlights strong performances, particularly from LuPone and Farrow, but indicates that the script lacks depth, leading to a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:41:09.610Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

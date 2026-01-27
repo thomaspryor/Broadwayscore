@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 80,
+      "performances": 89,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Groff is simply sensational in both his roles, charming as himself and astonishing in his revelatory Darin",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "works hard to avoid mere jukebox status by presenting a rounded, fully human character whose foibles give him color and humor",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Underneath it all, Just in Time is still a beautifully rendered jukebox musical",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises Jonathan Groff's 'sensational' performance and calls it a 'beautifully rendered jukebox musical' with strong production values, despite acknowledging it remains fundamentally a jukebox musical. | GPT-4o-mini: The review expresses strong praise for the performances, particularly Jonathan Groff, and highlights the effective direction and production, leading to a clear recommendation despite some acknowledgment of its jukebox musical nature.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:29:12.931Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

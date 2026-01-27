@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 78,
+      "performances": 78,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "vivid, terrifically sung, but hard to love revival",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "this Chess may belt to the rafters and flatter the senses, but its stumbling book and cut-out characters keep it from delivering a real checkmate",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "leaving you admiring the music more than caring who captures the king",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges strong musical performances and production values but finds fundamental flaws in the book and character development that prevent genuine emotional investment, resulting in a qualified mixed review. | GPT-4o-mini: The review highlights strong musical performances but criticizes the book and character development, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:27:32.210Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

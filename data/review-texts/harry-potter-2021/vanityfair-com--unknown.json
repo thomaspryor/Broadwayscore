@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230324091048",
-  "archiveOrgUrl": "http://web.archive.org/web/20230324091048/https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review"
+  "archiveOrgUrl": "http://web.archive.org/web/20230324091048/https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": 73,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "I've no doubt that many people will be transported by The Cursed Child, a strange son of Rowling's lucrative universe that ought not disappoint its creators",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Though the script is tinny in parts, and the production often feels rushed despite its luxurious length, those problems are dimmed by the giddy magnificence of its design",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Cursed Child could be tricky for them, despite the reasonably thorough primer provided in the program... It's an awfully expensive supplement",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant flaws in the script and accessibility issues but ultimately concludes many will be 'transported' by the production's spectacular design and stagecraft, indicating a qualified recommendation. | GPT-4o-mini: The review expresses a clear appreciation for the production's stagecraft and performances while noting significant issues with the script and accessibility for non-fans, leading to a positive but cautious recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:28:18.774Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

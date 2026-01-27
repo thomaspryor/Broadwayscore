@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 83,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "this comedy drama, a cross between a female version of The Odd Couple and Breaking Bad is both predictable and razor thin",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "these are the kind of performers that hold your attention at all times, making you afraid to look away and miss anything",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Both actresses have the kind of perfect timing that gets laughs out of lines that aren't necessarily funny but in their hands become hilarious",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the star performances extensively while acknowledging significant script weaknesses, resulting in a qualified recommendation based primarily on the acting talent. | GPT-4o-mini: The review highlights strong performances from LuPone and Farrow while noting significant weaknesses in the script, leading to a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:42:02.919Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

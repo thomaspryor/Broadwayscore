@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250814152227",
-  "archiveOrgUrl": "http://web.archive.org/web/20250814152227/https://theaterscene.org/2024/09/the-roommate/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250814152227/https://theaterscene.org/2024/09/the-roommate/",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": null,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "this Broadway incarnation succeeds as a thoughtfully entertaining star vehicle",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "charming two-character quaint comedy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "we're in for a good time because of them",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Clear positive recommendation with praise for performances, direction, and production values, concluding the show 'succeeds as thoughtfully entertaining.' | GPT-4o-mini: The review expresses strong praise for the performances and direction, highlighting the play's charm and effectiveness, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:42:08.266Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

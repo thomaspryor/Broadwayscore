@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,5 +30,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 88,
+      "performances": 89,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's an evening of extraordinary performances and stunning choreography",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The lithe actor not only bears an uncanny resemblance to the real Jackson but might be an even better dancer–he has perfected the moonwalk and other trademark moves. Frost owns the show",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "MJ the Musical provides an untarnished portrait of one of the most talented composers and recording artists of the modern era",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances, choreography, and production values with only minor quibbles about blocking and acknowledgment of the show's deliberate avoidance of controversy - overall a clear positive recommendation. | GPT-4o-mini: The review highlights extraordinary performances and choreography while acknowledging some narrative limitations, leading to a strong overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:32:06.805Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

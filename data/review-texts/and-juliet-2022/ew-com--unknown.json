@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 86,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grade: B+",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Courtney...is a tiny dynamo, her singing voice scraping the rafters on showstopper anthems",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There's something a little relentless about & Juliet's dogged eagerness to entertain, but nakedly joyful too",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: B+ grade with consistent praise for performances and energy, some reservations about choreography and pacing, but overall positive recommendation. | GPT-4o-mini: The review conveys strong enthusiasm for the show's energy, performances, and music, with only minor reservations about its relentless entertainment style.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:24:34.464Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

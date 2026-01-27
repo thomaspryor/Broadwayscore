@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 85,
+      "performances": 90,
+      "direction": 86
+    },
+    "keyPhrases": [
+      {
+        "quote": "& Juliet is a refreshingly clever and entertaining show offering eye-filling scenes and ear-catching songs. The cast seems to be having a ball and you will too.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "is a delightful and witty reimagining of Shakespeare's Romeo and Juliet told from a revisionist and feminist point of view",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "is actually more fun than all of those shows",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the show as 'delightful,' 'witty,' 'clever,' and 'entertaining,' explicitly states audiences 'will have a ball,' and offers no significant criticisms despite detailed analysis. | GPT-4o-mini: The review expresses strong enthusiasm for the show's cleverness, performances, and overall entertainment value, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:25:12.460Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

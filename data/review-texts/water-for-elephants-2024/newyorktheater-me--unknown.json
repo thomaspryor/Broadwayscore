@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": 70,
+      "performances": 78,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "what's most awe-inspiring about this musical adaptation... It's the Big Top-like entertainment, especially the heart-stopping acrobatics, which are not just athletically spectacular but often visually beautiful and emotionally expressive",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Much else in 'Water for Elephants' has its pleasures – the score, the singing, the puppetry, the acting, even the love story — but nothing else matches the circus artistry for its originality, variety and consistency",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Pigpen is less distinctive in its Broadway-style ballads... Even their most appealing melodies rarely have lyrics that advance the story",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic is clearly impressed by the circus artistry and production elements while finding the book and music more conventional, resulting in qualified praise that recommends the show for its spectacle despite narrative weaknesses. | GPT-4o-mini: The review expresses clear appreciation for the circus artistry and performances while noting some weaknesses in the music and book, leading to a positive overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:43:48.534Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 78.5,
+      "high": 97.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 88,
+      "performances": 92,
+      "direction": 86
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jimenez is an absolute revelation as Pancha–a sarcastic, wise, compelling show-stealer with commanding vocal prowess",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it delivers profound depth beneath its exuberant surface. The show pulses with a distinctly chingona spirit–it is bold and defiantly optimistic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "While this musical adaptation may seem to streamline some of the complexities of Josefina López's original script",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review is overwhelmingly positive with detailed praise for performances, music, design, and cultural significance, with only minor concerns about adaptation streamlining the original's complexity. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical's themes, performances, and production quality, indicating it is a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:35:38.937Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 92,
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
