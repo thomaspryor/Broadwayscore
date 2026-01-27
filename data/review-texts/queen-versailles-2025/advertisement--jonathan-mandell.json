@@ -7,7 +7,63 @@
   "publishDate": "November 9, 2025",
   "fullText": "The production is impressively designed and wonderfully acted; the show has a pleasant enough new score by a high-profile composer who’s on a roll (his 1976 musical “The Baker’s Wife” is opening later this week Off-Broadway, and “Wicked: For Good” is being released later this month.) But it doesn’t adequately answer for me Sondheim’s essential question: Why should this be a musical?",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 68,
+      "performances": 79,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "impressively designed and wonderfully acted",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "pleasant enough new score",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "doesn't adequately answer for me Sondheim's essential question: Why should this be a musical?",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising design, performances, and calling the score 'pleasant enough,' the critic's fundamental question about whether this material justifies being a musical creates significant doubt about recommendation. | GPT-4o-mini: While the production has strong performances and design, the critic expresses a significant concern about the musical's purpose, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:04.289Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

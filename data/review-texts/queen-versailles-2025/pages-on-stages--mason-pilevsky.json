@@ -10,7 +10,7 @@
   "showScoreExcerpt": "The frivolous first act and the stirring second act deliciously dance together.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-queen-of-versailles-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -29,5 +29,61 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 88,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kristin Chenoweth is vivacious, and her character is augmented by beautiful, thoughtful design and direction",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The frivolous first act and the stirring second act deliciously dance together as they hold space for multiple truths",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "By showing a world that is utterly fake The Queen of Versailles leaves us wanting to examine what is real",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This is a sophisticated, positive review that praises the performances, design, and thematic depth while acknowledging the show's structural complexity and social critique without any major reservations. | GPT-4o-mini: The review expresses strong praise for the performances and direction, highlighting the show's thematic depth and emotional impact, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:37.833Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

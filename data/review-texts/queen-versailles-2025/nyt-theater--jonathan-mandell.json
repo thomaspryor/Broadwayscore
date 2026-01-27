@@ -10,8 +10,64 @@
   "bwwExcerpt": "“The Queen of Versailles” nevertheless largely comes off as the Broadway equivalent of a Reality TV show. The societal insights are either too brief, not deep or not new, and indeed the effort can feel too calculated, even disingenuous. (It doesn’t help that Jackie Siegel herself is an investor in the show.)",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "comes off as the Broadway equivalent of a Reality TV show",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The societal insights are either too brief, not deep or not new",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the effort can feel too calculated, even disingenuous",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is consistently critical of the show's depth, authenticity, and overall quality, comparing it unfavorably to reality TV with multiple negative assessments. | GPT-4o-mini: The review expresses significant criticism of the show's depth and authenticity, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:19.917Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

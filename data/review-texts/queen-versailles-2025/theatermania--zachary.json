@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This A-list team has been able to create some genuinely arresting moments, but they are fleeting in a busy show that still doesn’t quite know what story it wants to tell. It’s like a house that continues to expand, the plaster seams of each new addition hideously apparent.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251205121855",
-  "archiveOrgUrl": "http://web.archive.org/web/20251205121855/https://www.theatermania.com/news/review-the-queen-of-versailles-kristin-chenoweth-in-the-big-house_1811208/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251205121855/https://www.theatermania.com/news/review-the-queen-of-versailles-kristin-chenoweth-in-the-big-house_1811208/",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": 48,
+      "performances": 70,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "a white elephant of a musical",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "a busy show that still doesn't quite know what story it wants to tell",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Chenoweth fully embodies her can-do spirit and refusal to be humiliated",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review calls the show a 'white elephant' and criticizes fundamental structural problems with the book and score, though it praises Chenoweth's performance and some production elements. | GPT-4o-mini: The review expresses significant concerns about the book and score while acknowledging some strong performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:52.205Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

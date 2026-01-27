@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "I hoped the tag-team of Chenoweth and Arden would have magic to do. No such luck. The actress is a theatrical force, as everybody knows, but Simone Biles can’t do a back handspring on a toothpick, either. With skin-deep material to work with, Chenoweth transparently leans into broad yuks like she’s serving donuts for dinner. If only her long-anticipated return could be returned.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 13,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": null,
@@ -49,5 +49,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251214132558",
-  "archiveOrgUrl": "http://web.archive.org/web/20251214132558/https://nypost.com/2025/11/09/entertainment/queen-of-versailles-review-kristin-chenoweth-returns-to-broadway-in-a-dire-musical-that-needs-a-wrecking-ball/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251214132558/https://nypost.com/2025/11/09/entertainment/queen-of-versailles-review-kristin-chenoweth-returns-to-broadway-in-a-dire-musical-that-needs-a-wrecking-ball/",
+  "llmScore": {
+    "score": 13,
+    "confidence": "high",
+    "range": {
+      "low": 5.5,
+      "high": 20.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 13,
+      "music": 13,
+      "performances": 28,
+      "direction": 18
+    },
+    "keyPhrases": [
+      {
+        "quote": "a wrecking ball to good taste",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The Broadway musical about it? Scheduled for demolition.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "the worst score of Schwartz's long career",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified pan that systematically demolishes every aspect of the production, ending with a metaphor about demolition and comparing it to a 'wrecking ball to good taste.' | GPT-4o-mini: The review is overwhelmingly negative, criticizing the script, music, and overall execution, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:14.946Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 15,
+    "openaiScore": 10,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

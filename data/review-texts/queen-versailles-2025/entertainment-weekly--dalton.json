@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Much like the ill-fated Tammy Faye from last year, Versailles (directed by Michael Arden) toggles between different modus operandi — in this case, campy comedic sendup, surface level social commentary on income inequality, dark family drama, and French historical farce — and does none of them particularly well. The result often feels like tonal whiplash as the production attempts to scratch several itches without truly satisfying any.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 29,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": null,
@@ -46,5 +46,61 @@
   "sourceMethod": "scrapingbee",
   "scoreSource": "extracted-grade",
   "scoreConfidence": "medium",
-  "extractedGrade": "C"
+  "extractedGrade": "C",
+  "llmScore": {
+    "score": 29,
+    "confidence": "high",
+    "range": {
+      "low": 23,
+      "high": 35
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 20,
+      "performances": 43,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "a Broadway musical so undeserving of her talents",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "how a show so big could also say so little. Grade: C–",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The songs packing so little punch throughout, and ranging from merely generic and forgettable to slightly embarrassing",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is consistently negative throughout with harsh criticism of the book, music, and direction, awarding a C- grade and describing the show as 'undeserving' of its star's talents. | GPT-4o-mini: The review is overwhelmingly negative, highlighting significant flaws in the script, music, and overall execution, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:21.171Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 28,
+    "openaiScore": 30,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

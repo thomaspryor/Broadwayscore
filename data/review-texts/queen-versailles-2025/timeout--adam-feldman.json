@@ -10,8 +10,64 @@
   "bwwExcerpt": "Like the rest of the show, however, the score doesn’t quite cohere; it feels like less than the sum of its parts. Arden’s direction provides good small moments but can’t provide an overall attitude the material lacks, and the production’s look is inconsistent: Christian Cowan’s costumes are great fun, but Laffrey’s TV-set design relies too heavily on a large mobile screen, and the finally marble staircase looks a mess at the bottom. The Yiddish word for The Queen of Versailles is ongepotchket: t",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 35,
+      "performances": null,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "the score doesn't quite cohere; it feels like less than the sum of its parts",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Arden's direction provides good small moments but can't provide an overall attitude the material lacks",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The Yiddish word for The Queen of Versailles is ongepotchket",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review systematically criticizes core elements (music doesn't cohere, direction lacks overall vision, design is inconsistent) and concludes with a Yiddish term meaning 'overly ornate/cluttered mess,' signaling clear negative recommendation despite some isolated positive notes. | GPT-4o-mini: The review expresses significant criticism of the score, direction, and overall production quality, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:45:31.945Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

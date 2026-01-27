@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Chenoweth, who was born to be in a spangly dress and center stage on Broadway, is perfect for the role, an always-welcome jolt of in-on-it theatricality, but is let down by dialogue that’s not as funny as it could be and with a character too unfocused. Despite an out-of-town tryout in Boston, “The Queen of Versailles” still needs the stage filled with construction workers hammering in yellow vests. It’s not quite completed.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 46,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251228114204/https://apnews.com/article/queen-versailles-kristin-chenoweth-broadway-review-cc38e073bf90fadab2851e17c1f14c9f",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 48,
+      "performances": 68,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's an unfinished feel, like some spackling and sanding is desperately needed",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Despite an out-of-town tryout in Boston, 'The Queen of Versailles' still needs the stage filled with construction workers hammering in yellow vests. It's not quite completed",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Chenoweth, who was born to be in a spangly dress and center stage on Broadway, is perfect for the role",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is predominantly critical of the musical's structure, script, and direction while praising Chenoweth's performance, but concludes it feels unfinished and incomplete despite an out-of-town tryout. | GPT-4o-mini: The review expresses significant concerns about the script and overall execution while acknowledging strong performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:12.563Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

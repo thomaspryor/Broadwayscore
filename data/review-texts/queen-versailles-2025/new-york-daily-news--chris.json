@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Never mind Glinda. Here, Chenoweth drives the new musical from Stephen Schwartz and Lindsey Ferrentino with a singular combo of raw determination and a beguilingly empathetic commitment to veracity. Chenoweth, with the help of the director Michael Arden, gets Jackie Siegel exactly right. The star refuses the temptation to ironically detach herself from the pile-driving, poor-born woman who watches “Lifestyles of the Rich and Famous,” marries rich and old, and then tries to build Versailles in Central Florida, only to find in the end that it’s no fun alone. Instead, Chenoweth just plays her as a complex human. Like the rest of us.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chenoweth drives the new musical from Stephen Schwartz and Lindsey Ferrentino with a singular combo of raw determination and a beguilingly empathetic commitment to veracity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Chenoweth, with the help of the director Michael Arden, gets Jackie Siegel exactly right",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Instead, Chenoweth just plays her as a complex human. Like the rest of us.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is overwhelmingly positive about Chenoweth's performance and Arden's direction, praising the authenticity and complexity of the portrayal with strong, specific language throughout. | GPT-4o-mini: The review highlights strong performances, particularly by Chenoweth, and conveys a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:51.905Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

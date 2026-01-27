@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Significantly, there’s nothing wrong with the cast Chenoweth heads like Lady Liberty raising her lamp. Though Abraham disappears for such long periods of time he’s often all but forgotten, he’s his imposing self when present. Others contributing strongly (many members taking on multiple roles) include Melody Butiu as a steadfast Siegel household staffer, Cassondra James as a regal Marie Antoinette, and Stephen DeRosa and Isabel Keating as Jackie’s concerned parents.",
   "originalScore": null,
-  "assignedScore": 40,
+  "assignedScore": 42,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -38,5 +38,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "2/5"
+  "extractedStars": "2/5",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 43,
+      "performances": 68,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "what's on view will likely only excite Chenoweth fans completely happy to watch their fave-rave performer",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "By the act-ending moment when Chenoweth is downstage center declaring with 'This is Not the Way' that the 2008 financial crash that bankrupted David won't stop her, only boredom has set in",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "For approximately ten minutes The Queen of Versailles is so powerful that no No-Queens-Day protest need be organized",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Two-star review that finds the show bloated, boring through most of its runtime, and only worth seeing for Chenoweth superfans, despite acknowledging strong performances and a powerful final ten minutes. | GPT-4o-mini: The review expresses significant disappointment in the overall production, highlighting issues with the script and pacing, while only mildly praising the performances, particularly Chenoweth's.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:31.165Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 42,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

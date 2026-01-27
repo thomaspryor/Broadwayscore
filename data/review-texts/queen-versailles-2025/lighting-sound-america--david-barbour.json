@@ -10,7 +10,7 @@
   "showScoreExcerpt": "A big, splashy effort, slickly professional in nearly every aspect, that has no idea what to make of its heroine. It's a star vehicle with a giant question mark at its center, and its nonjudgmental gaze ultimately leaves one feeling surprisingly neutral.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-queen-of-versailles-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": 45,
+      "performances": 68,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is an odd one, a big, splashy effort, slickly professional in nearly every aspect, that has no idea what to make of its heroine",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The Queen of Versailles tries all these approaches, and they end up canceling each other out",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the arguably unfixable problem of The Queen of Versailles is a heroine who gives away her secrets in the first scene, leaving her insufficiently interesting to carry a two-act musical",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic identifies fundamental structural problems with the show - unclear protagonist purpose, conflicting approaches that cancel each other out, and an 'arguably unfixable' core issue - while acknowledging professional execution and some strong performances. | GPT-4o-mini: The review presents a mixed perspective, highlighting strong performances but criticizing the book and overall coherence of the show, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:46.251Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

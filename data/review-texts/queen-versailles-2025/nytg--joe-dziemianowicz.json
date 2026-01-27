@@ -10,8 +10,64 @@
   "bwwExcerpt": "Make no mistake, diminutive Tony-winning dynamo Chenoweth works overtime. In short skirts and plunging tops, she showcases her comic chops while fully deploying her voice: big belt, soaring soprano, and warm, mellow middle tones. Like a timeshare broker, she’s up there selling her character and the show. (It's a contrast from the documentary, where the real Jackie appears more low-key, not exaggerated or overtly performing.)",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 63.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 79,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "diminutive Tony-winning dynamo Chenoweth works overtime",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Like a timeshare broker, she's up there selling her character and the show",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "she showcases her comic chops while fully deploying her voice",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: While praising Chenoweth's considerable vocal and comic talents, the timeshare broker comparison suggests she's working too hard to compensate for weak material, creating mixed signals about the show's quality. | GPT-4o-mini: The review highlights strong performances, particularly by Chenoweth, suggesting a positive recommendation despite not addressing the overall quality of the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:25.730Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 75,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

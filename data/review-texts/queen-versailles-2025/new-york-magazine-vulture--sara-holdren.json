@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"The Queen of Versailles swerves and overcorrects like a drunk driver. Tonally, itâs all over the map...It is the confused, contorted product of a set of absolutely incompatible impulses\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-queen-of-versailles-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 28,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260116140220",
-  "archiveOrgUrl": "http://web.archive.org/web/20260116140220/https://www.vulture.com/article/theater-review-the-queen-of-versailles-broadway-burning-cauldron-fiery-fire.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20260116140220/https://www.vulture.com/article/theater-review-the-queen-of-versailles-broadway-burning-cauldron-fiery-fire.html",
+  "llmScore": {
+    "score": 28,
+    "confidence": "high",
+    "range": {
+      "low": 20.5,
+      "high": 35.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": 33,
+      "performances": 58,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is a two-hour-and-40-minute luxury-car crash happening at the St. James Theatre",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Or you could save the money and have someone slap you back and forth with a large salmon",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Ultimately spineless, it ends up wedged in the middle, its highs shiny and hollow",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses extremely harsh metaphors (car crash, salmon slapping) and fundamentally condemns the show's ethical confusion and creative failures, with only modest praise for Chenoweth's performance unable to salvage the overall pan. | GPT-4o-mini: The review is overwhelmingly critical of the show's execution, themes, and direction, leading to a clear recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:00.218Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

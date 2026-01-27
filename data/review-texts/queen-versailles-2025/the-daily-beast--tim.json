@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But The Queen of Versailles isn’t camp. It’s cheap tat, queasy spectacle, grubby glitz. It doesn’t burrow beneath its surface wealth to ask anything of substance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": null,
@@ -41,5 +41,61 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 15,
+      "music": 18,
+      "performances": 35,
+      "direction": 20
+    },
+    "keyPhrases": [
+      {
+        "quote": "nearly three hours of grimly ugly musical theater",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It's cheap tat, queasy spectacle, grubby glitz",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Chenoweth fans will rightly appreciate that she sings loud and proud; she absolutely gives it, belts it, her all",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This is a comprehensive pan that systematically dismantles nearly every aspect of the production while calling it 'grimly ugly musical theater' and 'cheap tat,' with only isolated praise for Chenoweth's vocal commitment. | GPT-4o-mini: The review is overwhelmingly critical, describing the show as a 'nauseatingly tone-deaf thump' with shallow characters and poor execution, leading to a clear pan recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:44:45.234Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

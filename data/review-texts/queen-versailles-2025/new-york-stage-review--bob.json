@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Director Michael Arden, who has tightened things up considerably since a 2024 Boston tryout, controls the pacing and focus with his usual confidence such that audiences may not even register the material’s ambivalence. Me, I was content to revel in Schwartz’s score, perhaps the most heartfelt, varied and robust of his career; in the variety and inventiveness of the production’s scenography; and above all in seeing a genuine Broadway star at the peak of her powers. Chenoweth embraces all her character’s contradictions as if they didn’t exist, translating her own belief in herself into Jackie’s. Unforgettable, the both of ‘em.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -38,5 +38,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-unicode-stars",
   "scoreConfidence": "medium",
-  "extractedStars": "4/5"
+  "extractedStars": "4/5",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 88,
+      "performances": 94,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "This lavishly overstuffed, irresistibly entertaining confection is impossible to imagine without her",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the powerhouse performance of Kristin Chenoweth, triumphantly reunited with Wicked composer-lyricist Stephen Schwartz",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the show seems to want to have it both ways may bother some",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The 4/5 star rating combined with superlative praise for Chenoweth's performance and Schwartz's score, plus phrases like 'irresistibly entertaining' and 'triumphantly reunited,' indicate a clear positive recommendation despite noted structural issues with the material's ambivalence. | GPT-4o-mini: The review praises the performances, particularly Chenoweth's, and the music, while acknowledging some narrative ambivalence, leading to a strong overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:23.154Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

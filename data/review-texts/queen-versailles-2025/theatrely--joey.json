@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Saddled with an unmemorable score by Stephen Schwartz (Wicked, Pippin) and a confused book by Lindsey Ferrentino (Amy and the Orphans), Versailles glides by as bland bio-musical for much of its excessive runtime, the show’s perspective on Siegel meandering confusedly between misplaced sympathy and perverse fascination. That is until both the text and director Michael Arden’s staging (crisp up to this point, if sleepy) jolt suddenly to life in the story’s final section, as the overall tone shifts abruptly into bitter rage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -35,5 +35,61 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 37.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 50,
+      "performances": 75,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "this mostly dull work traces Siegel's journey from rags to riches",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Chenoweth herself is excellent throughout, finding pathos in Siegel's journey without ever sentimentalizing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "that intriguing late turn hardly redeems the plodding narrative that has preceded it",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the musical 'mostly dull' and 'plodding' with structural problems and a 'forgettable score,' praising only Chenoweth's performance and an interesting but insufficient finale. | GPT-4o-mini: The review highlights significant weaknesses in the book and overall execution, but notes strong performances, leading to a mixed recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:45:11.797Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

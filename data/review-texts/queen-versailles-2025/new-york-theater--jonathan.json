@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The production is impressively designed and wonderfully acted; the show has a pleasant enough new score by a high-profile composer who’s on a roll (his 1976 musical “The Baker’s Wife” is opening later this week Off-Broadway, and “Wicked: For Good” is being released later this month.) But it doesn’t adequately answer for me Sondheim’s essential question: Why should this be a musical?",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -29,5 +29,61 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 55,
+      "performances": 75,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production is impressively designed and wonderfully acted",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "But it doesn't adequately answer for me Sondheim's essential question: Why should this be a musical?",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "'The Queen of Versailles' nevertheless largely comes off as the Broadway equivalent of a Reality TV show",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises performances and production values but fundamentally questions the musical's purpose and finds it superficial, comparing it to reality TV rather than meaningful theater. | GPT-4o-mini: The review presents a mixed view, praising the performances and design while criticizing the depth of the material and overall impact, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:39.125Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
