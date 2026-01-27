@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T15:05:57.125Z",
+  "runDate": "2026-01-27T15:07:14.872Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "spamalot-2023",
+    "showFilter": "the-lion-king-1997",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 244,
-    "failed": 137,
+    "processed": 220,
+    "failed": 148,
     "skipped": 0,
-    "successRate": "64.0%"
+    "successRate": "59.8%"
   },
   "tierBreakdown": {
-    "playwright": 38,
-    "scrapingbee": 21,
-    "brightdata": 25,
-    "archive": 160
+    "playwright": 30,
+    "scrapingbee": 17,
+    "brightdata": 23,
+    "archive": 150
   },
   "statistics": {
-    "tier1Attempts": 32,
-    "tier1Success": 10,
-    "tier2Attempts": 22,
-    "tier2Success": 4,
-    "tier3Attempts": 18,
-    "tier3Success": 2,
-    "tier4Attempts": 23,
-    "tier4Success": 14,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 180
+    "tier1Attempts": 12,
+    "tier1Success": 0,
+    "tier2Attempts": 12,
+    "tier2Success": 0,
+    "tier3Attempts": 12,
+    "tier3Success": 0,
+    "tier4Attempts": 17,
+    "tier4Success": 0,
+    "totalFailed": 12,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -249,36 +249,12 @@
     "queen-versailles-2025/timeout-ny--adam-feldman.json",
     "hamilton-2015/OBSERVER--david-cote.json",
     "hamilton-2015/wapo--peter-marks.json",
-    "spamalot-2023/vulture-com--unknown.json",
-    "spamalot-2023/amny-com--unknown.json",
-    "spamalot-2023/broadway-news--brittani.json",
-    "spamalot-2023/broadwaynews-com--unknown.json",
-    "spamalot-2023/cititour-com--unknown.json",
-    "spamalot-2023/culturesauce-com--unknown.json",
-    "spamalot-2023/deadline--greg.json",
-    "spamalot-2023/deadline-com--unknown.json",
-    "spamalot-2023/ew-com--unknown.json",
-    "spamalot-2023/lightingandsoundamerica-com--unknown.json",
-    "spamalot-2023/new-york-times--jesse.json",
-    "spamalot-2023/newyorktheater-me--unknown.json",
-    "spamalot-2023/newyorktheatreguide-com--unknown.json",
-    "spamalot-2023/nypost-com--unknown.json",
-    "spamalot-2023/nystagereview-com--unknown.json",
-    "spamalot-2023/pagesonstages-wordpress-com--unknown.json",
-    "spamalot-2023/slashfilm-com--unknown.json",
-    "spamalot-2023/stagebuddy-com--unknown.json",
-    "spamalot-2023/the-daily-beast--tim.json",
-    "spamalot-2023/the-wrap--robert.json",
-    "spamalot-2023/theaterlife-com--unknown.json",
-    "spamalot-2023/theatermania--zachary.json",
-    "spamalot-2023/theatermania-com--unknown.json",
-    "spamalot-2023/theaterpizzazz-com--unknown.json",
-    "spamalot-2023/theaterscene-net--unknown.json",
-    "spamalot-2023/theatrely--juan-a.json",
-    "spamalot-2023/time-out-new-york--adam.json",
-    "spamalot-2023/timeout--adam-feldman.json",
-    "spamalot-2023/timeout-com--unknown.json",
-    "spamalot-2023/washingtonpost-com--unknown.json"
+    "merrily-we-roll-along-2023/nytimes-com--unknown.json",
+    "merrily-we-roll-along-2023/vulture-com--unknown.json",
+    "merrily-we-roll-along-2023/am-new-york--matt.json",
+    "merrily-we-roll-along-2023/amny-com--unknown.json",
+    "merrily-we-roll-along-2023/broadway-news--naveen.json",
+    "merrily-we-roll-along-2023/broadwaynews-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -413,11 +389,22 @@
     "hamilton-2015/usatoday--elysa-gardner.json",
     "hamilton-2015/washpost--peter-marks.json",
     "hamilton-2015/wsj--terry-teachout.json",
-    "spamalot-2023/nytimes-com--unknown.json",
-    "spamalot-2023/variety-com--unknown.json",
-    "spamalot-2023/temptalkinbroadway-com--unknown.json",
-    "spamalot-2023/tman--adam-feldman.json",
-    "spamalot-2023/wsj-com--unknown.json"
+    "merrily-we-roll-along-2023/variety--aramide-tinubu.json",
+    "merrily-we-roll-along-2023/variety-com--unknown.json",
+    "merrily-we-roll-along-2023/vult--jackson-mchenry.json",
+    "merrily-we-roll-along-2023/vulture--sara.json",
+    "the-lion-king-1997/nyt--ben-brantley.json",
+    "the-lion-king-1997/nytimes-com--unknown.json",
+    "the-lion-king-1997/variety--matt-wolf.json",
+    "the-lion-king-1997/AP--michael-kuchwara.json",
+    "the-lion-king-1997/NEWSDAY--linda-winer.json",
+    "the-lion-king-1997/NYP--clive-barnes.json",
+    "the-lion-king-1997/TIME--richard-zoglin.json",
+    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
+    "the-lion-king-1997/jasonraize-net--unknown.json",
+    "the-lion-king-1997/njcom--michael-sommers.json",
+    "the-lion-king-1997/streetdirectory-com--unknown.json",
+    "the-lion-king-1997/talkinbway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -449,16 +436,8 @@
       "queen-versailles-2025/pagesonstages-com--unknown.json",
       "queen-versailles-2025/theaterscene-net--unknown.json",
       "queen-versailles-2025/timeout-ny--adam-feldman.json",
-      "spamalot-2023/broadway-news--brittani.json",
-      "spamalot-2023/broadwaynews-com--unknown.json",
-      "spamalot-2023/culturesauce-com--unknown.json",
-      "spamalot-2023/lightingandsoundamerica-com--unknown.json",
-      "spamalot-2023/newyorktheatreguide-com--unknown.json",
-      "spamalot-2023/nystagereview-com--unknown.json",
-      "spamalot-2023/pagesonstages-wordpress-com--unknown.json",
-      "spamalot-2023/slashfilm-com--unknown.json",
-      "spamalot-2023/theaterlife-com--unknown.json",
-      "spamalot-2023/theaterscene-net--unknown.json"
+      "merrily-we-roll-along-2023/broadway-news--naveen.json",
+      "merrily-we-roll-along-2023/broadwaynews-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -477,11 +456,7 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "cabaret-2024/newyorktheater-me--unknown.json",
-      "spamalot-2023/cititour-com--unknown.json",
-      "spamalot-2023/ew-com--unknown.json",
-      "spamalot-2023/newyorktheater-me--unknown.json",
-      "spamalot-2023/theatrely--juan-a.json"
+      "cabaret-2024/newyorktheater-me--unknown.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -506,9 +481,7 @@
       "hadestown-2019/towleroad-com--unknown.json",
       "queen-versailles-2025/daily-beast--tim-teeman.json",
       "hamilton-2015/OBSERVER--david-cote.json",
-      "hamilton-2015/wapo--peter-marks.json",
-      "spamalot-2023/the-daily-beast--tim.json",
-      "spamalot-2023/timeout--adam-feldman.json"
+      "hamilton-2015/wapo--peter-marks.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -657,20 +630,10 @@
       "queen-versailles-2025/nydailynews-com--unknown.json",
       "queen-versailles-2025/nypost--johnny-oleksinski.json",
       "queen-versailles-2025/theatermania--zachary-stewart.json",
-      "spamalot-2023/vulture-com--unknown.json",
-      "spamalot-2023/amny-com--unknown.json",
-      "spamalot-2023/deadline--greg.json",
-      "spamalot-2023/deadline-com--unknown.json",
-      "spamalot-2023/new-york-times--jesse.json",
-      "spamalot-2023/nypost-com--unknown.json",
-      "spamalot-2023/stagebuddy-com--unknown.json",
-      "spamalot-2023/the-wrap--robert.json",
-      "spamalot-2023/theatermania--zachary.json",
-      "spamalot-2023/theatermania-com--unknown.json",
-      "spamalot-2023/theaterpizzazz-com--unknown.json",
-      "spamalot-2023/time-out-new-york--adam.json",
-      "spamalot-2023/timeout-com--unknown.json",
-      "spamalot-2023/washingtonpost-com--unknown.json"
+      "merrily-we-roll-along-2023/nytimes-com--unknown.json",
+      "merrily-we-roll-along-2023/vulture-com--unknown.json",
+      "merrily-we-roll-along-2023/am-new-york--matt.json",
+      "merrily-we-roll-along-2023/amny-com--unknown.json"
     ]
   }
 }
