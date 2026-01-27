@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:26:51.535Z",
+  "runDate": "2026-01-27T04:28:57.605Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "hadestown-2019",
+    "showFilter": "bug-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 194,
+    "processed": 199,
     "failed": 110,
     "skipped": 0,
-    "successRate": "63.8%"
+    "successRate": "64.4%"
   },
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 22,
     "scrapingbee": 16,
-    "brightdata": 20,
-    "archive": 141
+    "brightdata": 21,
+    "archive": 140
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 0,
+    "tier1Attempts": 8,
+    "tier1Success": 5,
     "tier2Attempts": 3,
     "tier2Success": 0,
     "tier3Attempts": 3,
-    "tier3Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
+    "tier3Success": 1,
+    "tier4Attempts": 2,
+    "tier4Success": 0,
     "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 10
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,7 +228,12 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "hadestown-2019/wsj-com--unknown.json"
+    "bug-2026/culturesauce-com--unknown.json",
+    "bug-2026/lightingandsoundamerica-com--unknown.json",
+    "bug-2026/pagesonstages-com--unknown.json",
+    "bug-2026/talkinbroadway-com--unknown.json",
+    "bug-2026/theaterscene-net--unknown.json",
+    "bug-2026/theatrereviews-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -339,8 +344,8 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "hadestown-2019/wnyc--jennifer-vanasco.json",
-    "hadestown-2019/wsj--charles-isherwood.json"
+    "bug-2026/interestedbystander-com--unknown.json",
+    "bug-2026/theaterscene-org--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -360,7 +365,12 @@
       "hadestown-2019/bwaynews--charles-isherwood.json",
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
-      "hadestown-2019/showshowdown-blogspot-com--unknown.json"
+      "hadestown-2019/showshowdown-blogspot-com--unknown.json",
+      "bug-2026/culturesauce-com--unknown.json",
+      "bug-2026/lightingandsoundamerica-com--unknown.json",
+      "bug-2026/pagesonstages-com--unknown.json",
+      "bug-2026/theaterscene-net--unknown.json",
+      "bug-2026/theatrereviews-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -400,7 +410,8 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json"
+      "hadestown-2019/towleroad-com--unknown.json",
+      "bug-2026/talkinbroadway-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -542,8 +553,7 @@
       "hadestown-2019/thefrontrowcenter-com--unknown.json",
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
-      "hadestown-2019/washingtonpost-com--unknown.json",
-      "hadestown-2019/wsj-com--unknown.json"
+      "hadestown-2019/washingtonpost-com--unknown.json"
     ]
   }
 }
