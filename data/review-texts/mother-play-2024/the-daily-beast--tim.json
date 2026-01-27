@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But mostly, Mother Play feels a cold, airless, and puzzling tundra to orienteer—despite the can-this-be-happening electricity of watching Jessica Lange perform on stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/mother-play/",
@@ -41,5 +41,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": null,
+      "performances": 88,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is mesmerizing, a delicious treat, a little surreal, and utterly thrilling to watch Jessica Lange act on stage",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Mother Play feels a cold, airless, and puzzling tundra to orienteer—despite the can-this-be-happening electricity of watching Jessica Lange perform on stage",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it's hard to connect with the characters, and hard to care about them too",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic is clearly captivated by Jessica Lange's performance but finds the play itself fundamentally flawed with weak characterization and structure, creating a mixed recommendation that leans slightly positive due to the star power. | GPT-4o-mini: While the performances, particularly by Jessica Lange, are highly praised, the play itself is critiqued for its coldness and lack of depth, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:27.279Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
