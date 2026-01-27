@@ -1,37 +1,37 @@
 {
-  "runDate": "2026-01-27T04:28:57.605Z",
+  "runDate": "2026-01-27T04:32:44.395Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "bug-2026",
+    "showFilter": "two-strangers-bway-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 199,
-    "failed": 110,
+    "processed": 203,
+    "failed": 111,
     "skipped": 0,
-    "successRate": "64.4%"
+    "successRate": "64.6%"
   },
   "tierBreakdown": {
-    "playwright": 22,
+    "playwright": 23,
     "scrapingbee": 16,
     "brightdata": 21,
-    "archive": 140
+    "archive": 143
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 5,
-    "tier2Attempts": 3,
+    "tier1Attempts": 13,
+    "tier1Success": 6,
+    "tier2Attempts": 7,
     "tier2Success": 0,
-    "tier3Attempts": 3,
+    "tier3Attempts": 7,
     "tier3Success": 1,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 2,
+    "tier4Attempts": 8,
+    "tier4Success": 3,
+    "totalFailed": 3,
     "scrapingBeeCreditsUsed": 20
   },
   "processed": [
@@ -228,12 +228,16 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "bug-2026/culturesauce-com--unknown.json",
-    "bug-2026/lightingandsoundamerica-com--unknown.json",
-    "bug-2026/pagesonstages-com--unknown.json",
-    "bug-2026/talkinbroadway-com--unknown.json",
-    "bug-2026/theaterscene-net--unknown.json",
-    "bug-2026/theatrereviews-com--unknown.json"
+    "two-strangers-bway-2025/lightingandsoundamerica-com--unknown.json",
+    "two-strangers-bway-2025/nypost--johnny-oleksinki.json",
+    "two-strangers-bway-2025/nypost--johnny-oleksinski.json",
+    "two-strangers-bway-2025/pagesonstages-com--unknown.json",
+    "two-strangers-bway-2025/talkinbroadway-com--unknown.json",
+    "two-strangers-bway-2025/the-recs--randall-david-cook.json",
+    "two-strangers-bway-2025/theaterlife-com--unknown.json",
+    "two-strangers-bway-2025/theaterscene-net--unknown.json",
+    "two-strangers-bway-2025/theatrereviews-com--unknown.json",
+    "two-strangers-bway-2025/twi-ny-com--unknown.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -344,8 +348,9 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "bug-2026/interestedbystander-com--unknown.json",
-    "bug-2026/theaterscene-org--unknown.json"
+    "two-strangers-bway-2025/NYSR--david-finkle.json",
+    "two-strangers-bway-2025/WRAP--robert-hofler.json",
+    "two-strangers-bway-2025/interestedbystander-com--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -366,11 +371,12 @@
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
       "hadestown-2019/showshowdown-blogspot-com--unknown.json",
-      "bug-2026/culturesauce-com--unknown.json",
-      "bug-2026/lightingandsoundamerica-com--unknown.json",
-      "bug-2026/pagesonstages-com--unknown.json",
-      "bug-2026/theaterscene-net--unknown.json",
-      "bug-2026/theatrereviews-com--unknown.json"
+      "two-strangers-bway-2025/lightingandsoundamerica-com--unknown.json",
+      "two-strangers-bway-2025/pagesonstages-com--unknown.json",
+      "two-strangers-bway-2025/theaterlife-com--unknown.json",
+      "two-strangers-bway-2025/theaterscene-net--unknown.json",
+      "two-strangers-bway-2025/theatrereviews-com--unknown.json",
+      "two-strangers-bway-2025/twi-ny-com--unknown.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -411,7 +417,7 @@
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
       "hadestown-2019/towleroad-com--unknown.json",
-      "bug-2026/talkinbroadway-com--unknown.json"
+      "two-strangers-bway-2025/talkinbroadway-com--unknown.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -553,7 +559,10 @@
       "hadestown-2019/thefrontrowcenter-com--unknown.json",
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
-      "hadestown-2019/washingtonpost-com--unknown.json"
+      "hadestown-2019/washingtonpost-com--unknown.json",
+      "two-strangers-bway-2025/nypost--johnny-oleksinki.json",
+      "two-strangers-bway-2025/nypost--johnny-oleksinski.json",
+      "two-strangers-bway-2025/the-recs--randall-david-cook.json"
     ]
   }
 }
