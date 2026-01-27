@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"A triumph of theatrical magic...Combines grand storytelling with stagecraft on a scale heretofore unimagined...It is often suspenseful and sometimes downright frightening. Yet amid the cinematic tumult and dazzle of the densely action-packed plot, Thorne and Tiffany carve out quiet scenes of intimacy and tenderness. Great care has gone into creating each moment of this state-of-the-art adventure. It leaves its audience awestruck, spellbound, and deeply satisfied.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/harry-potter-and-the-cursed-child",
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 92,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -42,5 +42,61 @@
   "designation": "Recommended",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "5/5"
+  "extractedRating": "5/5",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 86,
+      "music": null,
+      "performances": 90,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "5 out of 5 stars",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it is a triumph of theatrical magic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It leaves its audience awestruck, spellbound and deeply satisfied",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The 5/5 star rating combined with superlative language like 'triumph of theatrical magic' and 'awestruck, spellbound and deeply satisfied' indicates strong enthusiasm despite some minor structural criticisms of the revised version. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its magical elements and strong performances, leading to a high recommendation score.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:42:58.855Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
