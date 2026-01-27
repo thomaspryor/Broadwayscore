@@ -10,8 +10,64 @@
   "bwwExcerpt": "There is perceptiveness and humor in Prayer for the French Republic, and Cromer’s direction does its best to keep things honest. But as Harmon weighs out the issues, you can sense his thumb on the scale; by the denouement, it feels more like his whole hand, pressing for amens.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": 72
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is perceptiveness and humor in Prayer for the French Republic",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Cromer's direction does its best to keep things honest",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "by the denouement, it feels more like his whole hand, pressing for amens",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges positive elements like humor and honest direction but criticizes the playwright's heavy-handed approach, particularly in the ending, suggesting a mixed experience that leans slightly negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:46.554Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

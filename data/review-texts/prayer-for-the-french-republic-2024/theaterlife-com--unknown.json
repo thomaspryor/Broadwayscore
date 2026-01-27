@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "1/2"
+  "extractedRating": "1/2",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 63.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 78,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "Prayer for the French Republic is a worthwhile, even necessary play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A tighter structure and a shorter run time would help greatly",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "audiences will find much here to appreciate and from which to learn",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the play 'worthwhile' and 'necessary' with strong themes and performances, but criticizes its length, structure, and lack of French atmosphere, resulting in qualified appreciation rather than enthusiasm. | GPT-4o-mini: The review expresses a clear recommendation with some reservations about structure and pacing, indicating a positive overall impression of the production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:08.006Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 75,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
