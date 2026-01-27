@@ -3,14 +3,75 @@
   "outletId": "CHTRIB",
   "outlet": "Chicago Tribune",
   "criticName": "Chris Jones",
-  "url": "https://www.chicagotribune.com/entertainment/theater/ct-hamilton-broadway-review-20150806-column.html",
-  "publishDate": "August 6, 2015",
-  "fullText": "This is a musical that is making the case for theater as a sophisticated, relevant art form that speaks to America in 2015. Hamilton is nothing short of a masterpiece.",
+  "url": "https://www.chicagotribune.com/2015/08/06/hamilton-broadway-review/",
+  "publishDate": "2015-08-06",
+  "fullText": null,
   "isFullReview": false,
-  "dtliExcerpt": "This is a musical that is making the case for theater as a sophisticated, relevant art form that speaks to America in 2015. Hamilton is nothing short of a masterpiece.",
+  "bwwExcerpt": "thrilling...I still wonder, too, if the manic staging by director Thomas Kail and choreographer Andy Blankenbuehler, fun as it is, may sometimes get in the way of the action instead of enhancing it. Chris Jones, Chicago Tribune : For the Founding Father never had a friend so loyal and true as Lin-Manuel Miranda, whose audaciously ambitious and supremely executed new musical is surely the most entertaining, provocative and moving civics lesson in Broadway history...it's true that the language and nomenclature of \"Hamilton\" feel wildly fresh and distinctive...But what makes Miranda such a uniquely potent Broadway figure is that he also is steeped in the craft and tradition of the American musical and can forge melody and lyrics that hold up to the work of the old masters...Thomas Kail, the immensely skilled director of \"Hamilton,\" not only unleashes all of this excitement with abandon, but he also forges a wholly consistent world, aided by the best work of choreographer Andy Blankenbueh",
   "originalScore": null,
-  "assignedScore": null,
-  "source": "web-search",
-  "dtliThumb": null,
-  "needsScoring": true
+  "assignedScore": 88,
+  "source": "bww-roundup",
+  "needsFullText": false,
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-20150806",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": null,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "audaciously ambitious and supremely executed new musical is surely the most entertaining, provocative and moving civics lesson in Broadway history",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "can forge melody and lyrics that hold up to the work of the old masters",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I still wonder, too, if the manic staging...may sometimes get in the way of the action instead of enhancing it",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Overwhelmingly positive review with superlative language praising Miranda's achievement and calling it historically significant, with only minor staging reservations. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's execution and impact, with only minor reservations about the staging, leading to a high recommendation score.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:19:23.328Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

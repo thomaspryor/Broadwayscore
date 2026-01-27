@@ -3,14 +3,75 @@
   "outletId": "WASHPOST",
   "outlet": "The Washington Post",
   "criticName": "Peter Marks",
-  "url": "https://www.washingtonpost.com/entertainment/theater_dance/moulin-rouge-the-musical-is-all-spectacle-no-soul/2019/07/25/8b0c5a7e-aef7-11e9-bc5c-e73b603e7f38_story.html",
-  "publishDate": "July 25, 2019",
-  "fullText": "The show is all spectacle, no soul — a glittering confection that substitutes dazzle for depth at every turn.",
+  "url": "https://www.washingtonpost.com/entertainment/theater/moulin-rouge-broadway-review/",
+  "publishDate": "2019-07-25",
+  "fullText": null,
   "isFullReview": false,
-  "dtliExcerpt": "The show is all spectacle, no soul — a glittering confection that substitutes dazzle for depth at every turn.",
+  "bwwExcerpt": "pectacularly overstuffed Moulin Rouge! The Musical . Directed with opulent showmanship by Alex Timbers, this adaptation of Baz Luhrmann's 2001 movie may be costume jewelry, but its shine is dazzling. Peter Marks, Washington Post : The antic unconventionality of director Baz Luhrmann's 2001 pop phenomenon \"Moulin Rouge!\" has been transformed into an eye-and-ear-pleasing - and altogether conventional - Broadway musical. With a glorious set by Derek McLane, more than 70 pop songs, and dynamic lead performances from Karen Olivo and Aaron Tveit, the show is engineered for an evening of easily digested diversions. Marilyn Stasio, Variety : If they didn't do \"Lady Marmalade,\" I was going to storm the stage. Happily, director Alex Timbers and writer John Logan were savvy enough to open their Broadway adaptation of \"Moulin Rouge!\" with that crowd-pleasing tune, written by Kenny Noland and Robert Crewe and immortalized by the great Patti LaBelle. But does that mean this stunning live version blo",
   "originalScore": null,
-  "assignedScore": null,
-  "source": "web-search",
-  "dtliThumb": null,
-  "needsScoring": true
+  "assignedScore": 79,
+  "source": "bww-roundup",
+  "needsFullText": false,
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "its shine is dazzling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "With a glorious set by Derek McLane, more than 70 pop songs, and dynamic lead performances from Karen Olivo and Aaron Tveit, the show is engineered for an evening of easily digested diversions",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "may be costume jewelry, but",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Multiple critics praise the spectacle, performances, and production values with terms like 'dazzling,' 'glorious,' and 'dynamic,' though the 'costume jewelry' metaphor suggests high-quality entertainment without deep substance. | GPT-4o-mini: The review expresses strong praise for the performances and production design, indicating a clear recommendation despite some conventionality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:39:26.203Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

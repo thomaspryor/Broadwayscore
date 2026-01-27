@@ -3,14 +3,75 @@
   "outletId": "NYP",
   "outlet": "New York Post",
   "criticName": "Johnny Oleksinski",
-  "url": "https://nypost.com/2019/07/25/moulin-rouge-the-musical-review-a-spectacular-spectacular/",
-  "publishDate": "July 25, 2019",
-  "fullText": "This show is pure joy — a sugar rush of singing, dancing and eye-popping costumes that will leave you grinning like an idiot. It's the most fun you can have at a Broadway theater.",
+  "url": "https://nypost.com/2019/07/25/moulin-rouge-broadway-review/",
+  "publishDate": "2019-07-25",
+  "fullText": null,
   "isFullReview": false,
-  "dtliExcerpt": "This show is pure joy — a sugar rush of singing, dancing and eye-popping costumes that will leave you grinning like an idiot. It's the most fun you can have at a Broadway theater.",
+  "bwwExcerpt": "tic with near non-stop dancing courtesy Sonya Tayeh's exhilarating choreography, it's also emotionally engaging, which says quite a lot for a show that doesn't seem to take itself all that seriously. Johnny Oleksinski, The New York Post : Director Alex Timbers' smartest move is not trying to replicate Luhrmann's quick-cut sense of humor, which would crash and burn onstage. Instead, he focuses on grandiose emotions, sensuality and the storybook sensation of first love, for which Tveit's puppy-dog innocence is ideal. Robert Hofler, TheWrap : Under the direction of Alex Timbers, a veteran of movie-to-stage musicals like \"Rocky\" and \"Beetlejuice,\" \"Moulin Rouge!\" re-creates that pre-show pandemonium only twice during the show itself and once again at the curtain call. Too often the stage musical gets bogged down in John Logan's uninspired book, which poorly mimics Baz Luhrmann's 2001 film about the consumptive cabaret courtesan Satine (Karen Olivo), who makes the mistake of falling in love",
   "originalScore": null,
-  "assignedScore": null,
-  "source": "web-search",
-  "dtliThumb": null,
-  "needsScoring": true
+  "assignedScore": 69,
+  "source": "bww-roundup",
+  "needsFullText": false,
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 75,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "exhilarating choreography, it's also emotionally engaging",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Too often the stage musical gets bogged down in John Logan's uninspired book",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Tveit's puppy-dog innocence is ideal",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review shows mixed-positive sentiment with strong praise for choreography, performances, and direction, but significant criticism of the book that 'bogs down' the production. | GPT-4o-mini: The review presents a mixed perspective, highlighting strong performances and direction while criticizing the book, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:38:31.497Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
