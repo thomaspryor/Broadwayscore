@@ -5,7 +5,7 @@
   "criticName": "Naveen Kumar",
   "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/14/the-notebook-review-broadway-musical/",
   "publishDate": null,
-  "fullText": null,
+  "fullText": "Democracy Dies in DarknessReview by  Naveen KumarWeepies by Nicholas Sparks are so reliably engineered to produce puddles that “The Notebook,” which opened at the Schoenfeld Theater on Broadway on Thursday night, sells tissues at the merch counter.\n\nSentiment is the North Star of this page-to-stage adaptation, and those searching for an excuse to shed tears — who couldn’t use one, nowadays? — will find the musical delivers. But its creators, including singer-songwriter Ingrid Michaelson and “This Is Us” writer and producer Bekah Brunstetter, target feeling at the expense of character, specificity or surprise.",
   "isFullReview": false,
   "bwwExcerpt": "Instead, Brunstetter’s book, which spreads thin as it flits back and forth through a half-century, resists delineating the central pair with much of any identifying detail. Allie still likes to paint and Noah is good with lumber, but an effort to maximize their relatability winds up sacrificing their flesh and blood. The roles can be played by different actors because there’s nothing very particular about either character. The result is anodyne — and lacks the erotic charge of an attraction with distinct flavor set against a recognizable world.",
   "originalScore": null,
@@ -13,9 +13,9 @@
   "source": "bww-roundup",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.washingtonpost.com/entertainment/theater/2024/03/14/the-notebook-review-broadway-musical/",
-  "textStatus": "missing",
-  "textQuality": "missing",
-  "sourceMethod": "bww-roundup",
+  "textStatus": "partial",
+  "textQuality": "partial",
+  "sourceMethod": "brightdata",
   "llmScore": {
     "score": 33,
     "confidence": "high",
@@ -73,5 +73,32 @@
     "needsReviewReasons": [
       "Score (33 → Down) conflicts with aggregator thumbs (Flat)"
     ]
-  }
+  },
+  "textWordCount": 93,
+  "archivePath": "data/archives/reviews/the-notebook-2024/washington-post--naveen-kumar_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T04:45:25.021Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textIssues": [
+    "Word count too low: 93 (min: 300)"
+  ]
 }
