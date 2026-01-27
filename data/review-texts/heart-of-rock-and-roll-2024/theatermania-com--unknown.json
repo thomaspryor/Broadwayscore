@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...I came out feeling buzzed, entertained…and slightly ashamed\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251231220454",
-  "archiveOrgUrl": "http://web.archive.org/web/20251231220454/https://www.theatermania.com/news/review-the-heart-of-rock-and-roll-beats-us-into-submission-with-high-spirits_1737943/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251231220454/https://www.theatermania.com/news/review-the-heart-of-rock-and-roll-beats-us-into-submission-with-high-spirits_1737943/",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 45,
+      "music": 75,
+      "performances": 78,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "I walked into the James Earl Jones Theatre in a cynical frame of mind, so imagine my surprise when I came out feeling buzzed, entertained…and slightly ashamed at how easily I swallowed this package.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Like the best junk food, you won't remember much about The Heart of Rock and Roll afterward, but at least you'll have felt you had a fun time.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "an object demonstration of how much sheer gusto and a modicum of wit can steamroll over intellectual objections",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite criticizing the generic story and problematic themes, the critic acknowledges being entertained and buzzed, praising the performances, direction, and production values while describing it as fun escapist entertainment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:57.963Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
