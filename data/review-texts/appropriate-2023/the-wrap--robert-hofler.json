@@ -10,8 +10,66 @@
   "bwwExcerpt": "Paulson’s performance begins loud and bitter, but ends soft and wounded. Neugebauer’s direction delivers the absolute reversal of that progression with Corey Stoll’s portrayal of the “successful” beta brother from New York City, Bo. Stoll remains quiet and extraordinarily reasonable, even when Toni takes the bait of his wife to deliver a slur on her Jewish heritage. And even when Rachel is freaking out over her two children (Alyssa Emily Marvin and Everett Sobers) having seen some racist artifac",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 68,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "Paulson's performance begins loud and bitter, but ends soft and wounded",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Neugebauer's direction delivers the absolute reversal of that progression",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Rachel is freaking out over her two children",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows appreciation for the performances and direction but cuts off mid-sentence, making it impossible to determine the critic's overall recommendation or see potential negative content that may follow. | GPT-4o-mini: The review highlights strong performances but lacks a clear overall recommendation, indicating a mixed experience. | Note: Models differed by 20 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:20.419Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 20 points (Claude: 45, OpenAI: 65)"
+    ]
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It’s the applause — including my own — I find troubling.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/here-lies-love-bway/",
@@ -56,5 +56,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251012042425/https://www.nytimes.com/2023/07/20/theater/here-lies-love-review-david-byrne.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 77,
+      "performances": 71,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's plenty to praise in 'Here Lies Love'... The infernally catchy songs by David Byrne and Fatboy Slim, performed by a tireless and inspired all-Filipino cast, will have you clapping whether you want to or not",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a musical not centered on feelings is a strange thing... it's hard to wring anything from them except a cringe",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Finally, it's OK to applaud",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Green acknowledges significant strengths in the production design, music, and performances, but finds fundamental flaws in the material's emotional core and moral positioning, resulting in a qualified, intellectually conflicted response. | GPT-4o-mini: The review presents a mix of praise for the music and choreography while expressing significant reservations about the emotional depth and narrative coherence, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:50.710Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

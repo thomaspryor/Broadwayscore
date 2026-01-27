@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "There is a legendary anecdote, perhaps apocryphal but probably not, that after a performance of “The Addams Family” on Broadway, Elaine Stritch visited Nathan Lane backstage and told the star, “They’re not paying you enough.” That goes double for the musical “Gutenberg!,” which opened Thursday at the James Earl Jones Theatre. It manages to waste the talent of not one but two very talented performers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/gutenberg/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 43,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It manages to waste the talent of not one but two very talented performers",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "They're not paying you enough",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "manages to waste the talent of not one but two very talented performers.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the show 'wastes the talent' of its performers and uses the Stritch anecdote to emphasize how the material is beneath the quality of the actors, indicating a clear negative assessment despite acknowledging the performers' talent. | GPT-4o-mini: The review expresses strong disappointment in the production, indicating it fails to utilize the talents of its performers effectively.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:38.173Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

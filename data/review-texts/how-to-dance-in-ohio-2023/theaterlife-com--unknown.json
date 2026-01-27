@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 38,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "1/2"
+  "extractedRating": "1/2",
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 35,
+      "performances": 55,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "the disappointing result is more heartbreaking than heartwarming",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Regrettably, I wasn't surprised at the result. I wish I felt better about what is billed as a feel good show",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "These and multiple other inflationary embellishments puff the running time to nearly two and a half hours, an unnecessary hour longer than the film",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the musical a disappointing adaptation that fails to capture the documentary's essence, with overlong runtime, unnecessary subplots, and fundamental casting issues, despite acknowledging the performers' talents.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:43.043Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

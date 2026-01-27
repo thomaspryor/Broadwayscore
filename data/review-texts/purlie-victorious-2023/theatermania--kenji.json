@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But there’s nothing at all musty or reverential about this production. Instead, it makes a convincing case for Davis’s satirical play as a living, breathing work of art, one that, for all its dated elements, still has much to offer to contemporary audiences.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/purlie-victorious/",
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250425211834",
-  "archiveOrgUrl": "http://web.archive.org/web/20250425211834/https://www.theatermania.com/news/review-purlie-victorious-makes-a-triumphant-return-to-the-broadway-stage_1716129/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250425211834/https://www.theatermania.com/news/review-purlie-victorious-makes-a-triumphant-return-to-the-broadway-stage_1716129/",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 78.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 92,
+      "direction": 86
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes a convincing case for Davis's satirical play as a living, breathing work of art",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "she is arguably the best reason to catch this excellent production",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Director Kenny Leon is up to the task of bringing such a multifaceted vision to vibrant life onstage",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises all elements of the production with strong positive language ('excellent production', 'vibrant life', 'convincing case') and explicit recommendation ('best reason to catch this'), indicating clear enthusiasm for the revival. | GPT-4o-mini: The review expresses strong enthusiasm for the performances, direction, and the relevance of the play, indicating a must-see production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:25.250Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

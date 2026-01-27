@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Like any play transferring to Broadway from an Off Broadway success, this ‘Prayer’ is a counterproposal to its earlier, smaller, and more intimate iteration.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251124015431",
-  "archiveOrgUrl": "http://web.archive.org/web/20251124015431/https://www.newyorker.com/magazine/2024/01/22/prayer-for-the-french-republic-theatre-review"
+  "archiveOrgUrl": "http://web.archive.org/web/20251124015431/https://www.newyorker.com/magazine/2024/01/22/prayer-for-the-french-republic-theatre-review",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": null,
+      "performances": 70,
+      "direction": 62
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harmon too often fails to make his characters into anything other than animated position papers",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the show, when it hits its stride, captures both the galvanizing and the infuriating aspects of incessant intellectual combat",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Only in scenes with the incredible Robinette, who gives the self-deluding, hopeful Irma a dozen delicate gradations, does Harmon's work create a beautifully rendered illusion of reality",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the play's intellectual ambitions and some performances but finds significant flaws in character development and consistency, resulting in a qualified, mixed assessment without clear recommendation. | GPT-4o-mini: The review presents a mix of praise for the themes and performances but highlights significant issues with character development and production consistency, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:23.435Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

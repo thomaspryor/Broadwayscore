@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20241014075841/https://observer.com/2024/01/review-prayer-for-the-french-republic-is-one-of-broadways-best-new-plays/",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 85,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Second only to Appropriate as Broadway's best new play (so far this season), Prayer's three hours pass fleetly due to a strong cast under David Cromer's keen, incisive direction",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the writing is undeniably witty and supple, and the arguments about identity, homeland, and antisemitism painfully relevant",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Is the play a little neat... Does the counterpointing of time periods shortchange characters... Yes to all",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic calls it Broadway's second-best new play of the season with praise for performances, direction, and relevance, despite acknowledging structural flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:30.231Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

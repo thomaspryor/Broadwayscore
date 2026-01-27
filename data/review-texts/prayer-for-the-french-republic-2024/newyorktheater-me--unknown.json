@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -37,5 +37,61 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 78,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "it feels even more stirring, enhanced by some strong performers",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "there is too much going on; too much the playwright is trying to do",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "This is the core story, and it's a compelling one. But it's crisscrossed with scenes and subplots",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the performances strong and the core story compelling, but criticizes the play's structure as overstuffed and unfocused, with unnecessary Holocaust scenes that don't serve the narrative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:37.840Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

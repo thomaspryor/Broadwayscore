@@ -7,7 +7,58 @@
   "publishDate": "July 24, 2023",
   "fullText": "There are few things more pleasant on a steamy New York afternoon or evening than to sit down in a cool theater, turn off your brain, and laugh for two hours straight. The Cottage more than fits that bill.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There are few things more pleasant on a steamy New York afternoon or evening than to sit down in a cool theater, turn off your brain, and laugh for two hours straight",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Cottage more than fits that bill",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly recommends the show as a pleasant, entertaining experience that delivers consistent laughs and fulfills its entertainment purpose.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:12.754Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

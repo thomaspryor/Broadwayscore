@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250717222652",
-  "archiveOrgUrl": "http://web.archive.org/web/20250717222652/https://www.amny.com/entertainment/gutenberg-review-andrew-rannells-josh-gad-musical/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250717222652/https://www.amny.com/entertainment/gutenberg-review-andrew-rannells-josh-gad-musical/",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 75,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Frankly, it worked a lot better before it landed on Broadway",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "On Broadway, it feels both overdone... and undercooked (a slight, overextended, and rudimentary comic routine)",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Rannells and Gad once again make a terrific pair of unlikely pals and earn many laughs",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly states the show worked better before Broadway and describes it as both overdone and undercooked, praising only the performances while criticizing the overall production concept and execution. | GPT-4o-mini: The review indicates some strong performances but criticizes the production's execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:58.665Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "For Here Lies Love, the storied Broadway Theatre has transformed into Club Millennium, a bright, pulsating discotheque sans orchestra seats. A disc jockey (Moses Villarama) pumps up the incoming crowd as energetic ushers, clad in pink jumpsuits, play air traffic control for patrons on the dance floor. A fitting setting for a musical about the rise of a dictatorship, no?",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/here-lies-love-bway/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 65.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "the storied Broadway Theatre has transformed into Club Millennium, a bright, pulsating discotheque sans orchestra seats",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "A fitting setting for a musical about the rise of a dictatorship, no?",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the storied Broadway Theatre has transformed into Club Millennium, a bright, pulsating discotheque",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt describes the production design positively but ends with pointed irony questioning whether a disco setting is appropriate for a dictatorship story, suggesting thematic concerns. | GPT-4o-mini: The review describes an interesting transformation of the venue but lacks a clear recommendation or detailed critique of the show's elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:01:44.227Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 60,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

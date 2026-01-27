@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The real riches are in the cast’s connection to each other, and to the material. Its young leads, as well as their more experienced counterparts, are having the time of their lives and making the most of their roles, singing with an infectious joy typically missing from oft-retread properties. The road to success might have a few bricks missing, but it’s a golden one nonetheless.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-wiz-bway/",
@@ -38,5 +38,61 @@
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 75,
+      "performances": 88,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "this iteration of The Wiz is pretty terrific",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "What this staging of the beloved 1974 musical has in spades are some of the liveliest performances in New York right now",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The road to success might have a few bricks missing, but it's a golden one nonetheless",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging production limitations and some individual weaknesses, the critic consistently praises the performances as among the liveliest in New York and calls the overall production 'pretty terrific,' concluding with a positive metaphor about the 'golden' road to success. | GPT-4o-mini: The review expresses strong praise for the performances and overall enjoyment of the production, despite some minor reservations about specific elements.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:32.993Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

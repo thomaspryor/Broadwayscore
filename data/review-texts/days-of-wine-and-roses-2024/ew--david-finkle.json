@@ -10,8 +10,64 @@
   "bwwExcerpt": "One strength of the 90-minute intermissionless piece is its refusal to offer any easy explanation of addiction’s origins, on the assumption that explanations don’t carry much meaning when the alcoholic’s throes are what need to be immediately addressed. When Kirsten and Joe first spend time together at a waterfront, she tells him that she prefers to watch the water farther out. The water immediately below her, she insists, is too dirty. That’s all the rationale needed to set the parameters for t",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "One strength of the 90-minute intermissionless piece is its refusal to offer any easy explanation of addiction's origins",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "explanations don't carry much meaning when the alcoholic's throes are what need to be immediately addressed",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "its refusal to offer any easy explanation of addiction’s origins",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows measured appreciation for the play's thematic approach but is too fragmentary to determine overall recommendation strength. | GPT-4o-mini: The review highlights a thoughtful approach to the subject matter but lacks strong enthusiasm or clear recommendations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:11.172Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

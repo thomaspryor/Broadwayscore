@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -52,5 +52,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250712002614",
-  "archiveOrgUrl": "http://web.archive.org/web/20250712002614/https://www.amny.com/entertainment/broadway/merrily-broadway-revival-is-a-triumph/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250712002614/https://www.amny.com/entertainment/broadway/merrily-broadway-revival-is-a-triumph/",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 85,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "this production is not just a triumph but a homecoming and a vindication",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "probably the most convincing, coherent, and compelling rendition of 'Merrily' to date",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I am not saying that 'Merrily' is faultless. The songs written after the Broadway premiere lack the vitality of the rest of the score, and much of the dialogue is awkward and heavy-handed",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging flaws in dialogue and some songs, the critic calls this production a 'triumph' and the best version to date, with outstanding performances and direction, clearly recommending it to theater fans.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:26.138Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

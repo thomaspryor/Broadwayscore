@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But the secret sauce here is Amber Ruffin, who’s credited with “additional material for this production.” No way did William F. Brown’s book for the original 1974 Broadway production of “The Wiz” offer this many inspired one-liners.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-wiz-bway/",
@@ -54,5 +54,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251116085102/https://www.thewrap.com/the-wiz-broadway-review-funniest-lion-scarecrow-tin-man/",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "the actors and dancers in this 'Wiz' carry the show magnificently",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This kind of ensemble doesn't come out of nowhere and credit must go to director Schele Williams",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Williams' direction of her songs, however, pushes Lewis to be far too grand",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the imaginative production design, outstanding ensemble performances, and effective direction while noting only minor issues with the lead's vocal direction, creating a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:35.541Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

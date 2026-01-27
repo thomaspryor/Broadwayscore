@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 58,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 75,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "So does the slow burn pay off for an intermission-free 100 minutes? Unfortunately, 'The Grey House' misses two mechanics vital to its revelations",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "For a live experience, it might not impress but it sustains itself through its atmosphere and cast",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Even if you're dissatisfied or frustrated with this particular Broadway vision of 'The Grey House,' the show is a curious meal",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds significant structural flaws in the script and pacing while praising the atmospheric production and cast, ultimately suggesting it's worth experiencing despite its disappointments.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:47.606Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

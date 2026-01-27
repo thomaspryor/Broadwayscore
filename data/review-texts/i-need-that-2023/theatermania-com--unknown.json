@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251207181839",
-  "archiveOrgUrl": "http://web.archive.org/web/20251207181839/https://www.theatermania.com/news/review-danny-devito-plays-a-foul-mouthed-hoarder-in-new-broadway-comedy-i-need-that_1719735/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251207181839/https://www.theatermania.com/news/review-danny-devito-plays-a-foul-mouthed-hoarder-in-new-broadway-comedy-i-need-that_1719735/",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 78,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Do you need to see I Need That? Not really. But you'll have a nice time if you do, even if it does leave you hungry for something a little more substantial.",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "It's charming and sweet and ultimately very touching, but the complete lack of depth means it goes in one ear and out the other.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "In the moment, we share their sense of enjoyment — how can you not when you have Danny DeVito screaming to a Sorry! game piece that it should go fuck itself — but it's hardly a life changer.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the show isn't necessary to see but acknowledges it's enjoyable, praising performances and production while criticizing the script's lack of depth.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:54.073Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

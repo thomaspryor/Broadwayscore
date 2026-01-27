@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"The Heart of Rock and Roll is the funniest new musical of the season\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 68,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -36,5 +36,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250723070718/https://www.vulture.com/article/heart-of-rock-and-roll-broadway-theater-review.html",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "extractedPhrase": "avoid"
+  "extractedPhrase": "avoid",
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 63,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 75,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "I had fun",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The Heart of Rock and Roll is the funniest new musical of the season",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there ends up being little room left in The Heart of Rock and Roll for any emotional weight",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly had fun and praises the humor and performances, but raises significant concerns about lack of emotional depth, problematic themes, and shallow execution that prevent a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:57.920Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "“The Heart of Rock and Roll” is not going to be the subject of think pieces and graduate theses, but its easygoing good spirits are bolstered by solid craftsmanship, and it’d be silly to turn up our noses at that. “Have a good time,” Huey Lewis once sang, wisely quoting Curtis Mayfield. “’Cause it’s all right.”      Jackson McHenry, Vulture: To its credit, The Heart of Rock and Roll tries to get out before the buzz wears off. The second act lags and then accelerates around the point where Bobby’",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "dtli",
   "dtliThumb": "Up",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "easygoing good spirits are bolstered by solid craftsmanship",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it'd be silly to turn up our noses at that",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "not going to be the subject of think pieces and graduate theses",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's limitations but ultimately defends its value with praise for its craftsmanship and good spirits, suggesting a qualified recommendation. | GPT-4o-mini: The review expresses a generally positive sentiment about the show's craftsmanship and spirit, but lacks strong enthusiasm or a compelling reason to recommend it highly.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:44.266Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

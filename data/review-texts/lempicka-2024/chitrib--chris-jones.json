@@ -10,8 +10,64 @@
   "bwwExcerpt": "Indeed, a perceived need to glob on enough sexy-modern Broadway pizzazz to appeal to a broader public might well be what torpedoed “Lempicka,” now at the Longacre Theatre. This potentially appealing show would have sat more easily as a feminist, non-musical drama in a less pressured space, where the director, Rachel Chavkin, and the performers, all too aware of their need to liven up this clunky bio-musical, did not have to push so darn hard.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 45,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "what torpedoed \"Lempicka\"",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "clunky bio-musical",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "This potentially appealing show would have sat more easily as a feminist, non-musical drama",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses harsh language like 'torpedoed' and 'clunky bio-musical' while suggesting the show fundamentally doesn't work as a Broadway musical, indicating clear disappointment despite acknowledging some potential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:13.051Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

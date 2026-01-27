@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Sitting comfortably in the Hudson Theatre, this Merrily is one of those transcendent productions I’ll look back on fondly forever.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/merrily-we-roll-along-bway/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "transcendent productions",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I'll look back on fondly forever",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Sitting comfortably in the Hudson Theatre",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic describes this as a 'transcendent production' they'll remember forever - language that signals an exceptional, must-see theatrical experience deserving a rave score. | GPT-4o-mini: The review expresses unqualified enthusiasm and a lasting positive impression, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:03.595Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

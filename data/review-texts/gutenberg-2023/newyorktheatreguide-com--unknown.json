@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“The show is a roughly 2-hour sketch – one that’s clever and filled with laughs but too long and overstuffed to ward off diminishing returns. Still, the production provides a prime showcase for the talents of Josh Gad and Andrew Rannells”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   "sourceMethod": "playwright",
   "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
-  "scoreConfidence": "low"
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 69,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 63,
+      "music": 68,
+      "performances": 83,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a roughly 2-hour sketch – one that's clever and filled with laughs but too long and overstuffed to ward off diminishing returns",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Still, the production provides a prime showcase for the talents of Josh Gad and Andrew Rannells",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the best sketches leave you wanting more",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the star performances and has fun moments but clearly states the show is 'too long and overstuffed' with 'diminishing returns,' indicating a qualified, mixed recommendation. | GPT-4o-mini: The review highlights strong performances and clever moments but notes issues with pacing and overstuffing, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:46.190Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

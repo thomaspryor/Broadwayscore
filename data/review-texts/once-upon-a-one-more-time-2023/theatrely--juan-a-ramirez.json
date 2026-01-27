@@ -7,7 +7,63 @@
   "publishDate": "June 22, 2023",
   "fullText": "But Once Upon a One More Time pays its truest homage to Britney, not by wringing its hands over how to make pop serious, but through its bouncy understanding of fierce fun with laser-sharp choreography. Don’t overthink it, just intoxicate yourself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "laser-sharp choreography",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Don't overthink it, just intoxicate yourself",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "bouncy understanding of fierce fun",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic gives clear praise for the choreography and production approach with an explicit recommendation to see it, despite suggesting the show shouldn't be analyzed too deeply.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:36.244Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

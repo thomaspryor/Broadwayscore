@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
     "ends_with_ellipsis"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 72,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "enjoyable enough, and has enough color, but needs a bit more depth, substance and style to become a knockout",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "you leave a bit unsatisfied, wanting a little more to make the meal complete",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The comedy and situations are fast paced and executed with skill and perfect timing to provide the utmost humor",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer acknowledges the production's strengths in performances, direction, and design while expressing significant reservations about the script's structure and thematic development, landing in qualified mixed territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:11.649Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

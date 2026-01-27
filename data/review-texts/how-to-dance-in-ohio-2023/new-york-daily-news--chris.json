@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "All that said, “How to Dance in Ohio,” which features a book and lyrics by Rebekah Greer Melocik and music by Jacob Yandura, doesn’t always live up to its own aims. In particular, it tends to moralize and preach, to tell rather than show, when its real abilityto improve the world is in its specifics.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "doesn't always live up to its own aims",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it tends to moralize and preach, to tell rather than show",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "its real ability to improve the world is in its specifics",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows a critic acknowledging the show's positive potential but criticizing its execution for being preachy and heavy-handed, suggesting mixed feelings without a clear recommendation. | GPT-4o-mini: The review indicates significant flaws in the script's execution while not completely dismissing its potential, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:02:31.091Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

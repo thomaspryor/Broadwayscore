@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 84,
+    "confidence": "medium",
+    "range": {
+      "low": 79,
+      "high": 89
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 88,
+      "performances": 90,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Friedman's grounded approach hits the right notes with Sondheim's chromatic lyricism, singing a tune that feels universal on many wavelengths",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The chemistry between Groff, Radcliffe, and Mendez is easy wind in the sails",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "not one second in this musical registers as a cynical exercise",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the performances, direction, and emotional impact while acknowledging minor script limitations, with enthusiastic language about the production's success and universal appeal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:49.437Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 84,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -40,5 +40,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 83,
+      "direction": 86
+    },
+    "keyPhrases": [
+      {
+        "quote": "a production that is sharp as a tack and blessed with a wonderful cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You will not soon forget these characters or the difficult decision they face",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it never flags or overwhelms, thanks to its carefully crafted script, direction, and committed performances",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for script, direction, and performances with only minor criticism about the ending, plus memorable characters and sophisticated handling of complex themes. | GPT-4o-mini: The review expresses strong praise for the script, direction, and performances, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:53.477Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

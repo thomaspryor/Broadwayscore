@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Steve Carell makes a solid Broadway debut in a fine, if not overly inspired, new revival of Chekhov’s Uncle Vanya. Smoothly adapted by What The Constitution Means To Me playwright Heidi Schreck and elegantly directed by Lila Neugebauer (demonstrating once again, after this season’s excellent Appropriate, a kinetic crossing-guard facility for keeping large-ish casts moving on spacious sets), this Lincoln Center Theater production places Chekhov’s tale of wasted lives and tenuous optimism amidst a contemporary setting.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 68,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/uncle-vanya-bway/",
@@ -55,5 +55,63 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250723084520/https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
-  "extractedPhrase": "raves"
+  "extractedPhrase": "raves",
+  "llmScore": {
+    "score": 68,
+    "confidence": "low",
+    "range": {
+      "low": 50.5,
+      "high": 85.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Whether you use this page as a guide or as an invitation to argue, drop by often for the latest on Broadway's offerings",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "So crowded are the final weeks of the 2023-24 theater season that three days each will see the openings of two shows, a Broadway rarity",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "Check this page to see Deadline's takes",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This appears to be an overview/preview article introducing Deadline's Broadway coverage rather than a specific show review, making it impossible to assess any particular production's recommendation strength. | GPT-4o-mini: The review expresses strong enthusiasm for the production's energy and performances, indicating a clear recommendation despite some minor reservations. | Note: Models differed by 25 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:30.508Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 80,
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 55, OpenAI: 80)"
+    ]
+  }
 }

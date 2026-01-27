@@ -7,7 +7,63 @@
   "publishDate": "January 10, 2024",
   "fullText": "“Prayer for the French Republic” is a formidable feat — it lives up to its gargantuan, time-leaping ambitions and is a sturdy theatrical vehicle for a large cast of actors to delve deep into character work.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 82,
+      "direction": 76
+    },
+    "keyPhrases": [
+      {
+        "quote": "formidable feat",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "lives up to its gargantuan, time-leaping ambitions",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sturdy theatrical vehicle for a large cast of actors to delve deep into character work",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review uses strong positive language praising the play's ambitious scope and execution, with particular emphasis on the acting opportunities, indicating a clear positive recommendation. | GPT-4o-mini: The review expresses strong admiration for the play's ambition and execution, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:33.646Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

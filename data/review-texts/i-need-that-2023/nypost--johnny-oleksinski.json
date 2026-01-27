@@ -7,7 +7,63 @@
   "publishDate": "November 2, 2023",
   "fullText": "Theresa Rebeck’s new play, which opened Thursday night on Broadway in a production starring Danny DeVito, is not like “that show” either. Not at all. It’s nowhere near as compelling, focused or human.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "not like \"that show\" either. Not at all.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's nowhere near as compelling, focused or human",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "not at all",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the play is 'nowhere near as compelling, focused or human' as another work, indicating clear disappointment and negative assessment. | GPT-4o-mini: The review expresses strong dissatisfaction with the play, indicating it lacks compelling qualities and is not worth seeing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:02.607Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

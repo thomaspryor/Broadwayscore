@@ -7,7 +7,63 @@
   "publishDate": "June 22, 2023",
   "fullText": "I didn’t wanna go, but I admit that a piece of me had a lot of fun at Once Upon a One More Time, a bubblegum-feminist Cinderella story constructed around the pop hits of Britney Spears. For a fan of more substantial musicals, with original scores, it’s a masochistic pleasure.  Fine, Broadway, gimme more! Hit me, Broadway, one more time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a piece of me had a lot of fun",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "it's a masochistic pleasure",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Fine, Broadway, gimme more! Hit me, Broadway, one more time.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite initial reluctance and acknowledging it's not substantial theater, the critic admits to having fun and uses Britney lyrics to express wanting more, indicating a qualified positive recommendation. | GPT-4o-mini: The review expresses enjoyment despite reservations about the show's substance, indicating a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:47.753Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

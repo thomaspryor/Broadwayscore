@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,5 +30,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Patriots is political drama at its most urgent, as relevant as today's headlines, with a psychological complexity and a dark humor that make it crackling entertainment",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Stuhlbarg and Keen offer a remarkable contrast in the physical presentation of unbridled power",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Morgan's script has a Shakespearean sweep, presenting Berezovsky and Putin as dueling dark heroes",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic provides sustained praise for the performances, script, and production values, culminating in describing it as 'crackling entertainment' and 'political drama at its most urgent' with only minor criticisms about pacing in Act 2.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:06.726Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

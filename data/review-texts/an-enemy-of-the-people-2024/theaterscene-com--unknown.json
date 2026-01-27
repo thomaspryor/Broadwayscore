@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241006171613",
-  "archiveOrgUrl": "http://web.archive.org/web/20241006171613/https://theaterscene.com/EnemyPeopleDD.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241006171613/https://theaterscene.com/EnemyPeopleDD.html",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": null,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "The acting is terrific! Succession's star Jeremy Strong delivers a top-notch performance",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "under Gold's brilliant direction, and a star turn by Strong, this drama still has its sharp socio-political bite",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "comes to raw and explosive life at Circle in the Square",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the performances as 'terrific' with 'no weak links,' calls the direction 'brilliant,' and emphasizes the production's contemporary relevance and power.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:26.104Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

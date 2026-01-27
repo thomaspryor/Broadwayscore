@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -35,5 +35,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 245 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 67,
+      "music": null,
+      "performances": null,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "the comedy relies on nostalgia and fandom",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "marvelously recreated here by Duncan Henderson",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "captive-at-sea backstage comedy",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This appears to be an incomplete excerpt that describes the premise and praises the production design but lacks clear evaluative language or recommendation signals. | GPT-4o-mini: The review highlights strong production elements but suggests that the script may not fully engage, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:00:31.521Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
