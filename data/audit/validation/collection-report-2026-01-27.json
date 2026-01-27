@@ -1,75 +1,67 @@
 {
-  "runDate": "2026-01-27T20:34:36.740Z",
+  "runDate": "2026-01-27T20:35:45.830Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "harmony-2023",
+    "showFilter": "wicked-2003",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
+    "processed": 3,
     "failed": 12,
     "skipped": 0,
-    "successRate": "36.8%"
+    "successRate": "20.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
-    "scrapingbee": 0,
+    "playwright": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 6
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 15,
-    "tier1Success": 1,
+    "tier1Attempts": 14,
+    "tier1Success": 0,
     "tier2Attempts": 14,
-    "tier2Success": 0,
-    "tier3Attempts": 14,
+    "tier2Success": 1,
+    "tier3Attempts": 13,
     "tier3Success": 0,
     "tier4Attempts": 23,
-    "tier4Success": 6,
+    "tier4Success": 2,
     "totalFailed": 12,
-    "scrapingBeeCreditsUsed": 30
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
-    "harmony-2023/deadline-com--unknown.json",
-    "harmony-2023/entertainment-weekly--emlyn.json",
-    "harmony-2023/new-york-theatre-guide--amelia.json",
-    "harmony-2023/new-york-times--jesse.json",
-    "harmony-2023/theatermania--david.json",
-    "harmony-2023/wall-street-journal--charles.json",
-    "harmony-2023/wsj-com--unknown.json"
+    "wicked-2003/content-time-com--unknown.json",
+    "wicked-2003/time-out-new-york--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json"
   ],
   "failed": [
-    "harmony-2023/nyt--jesse-green.json",
-    "harmony-2023/thr--david-rooney.json",
-    "harmony-2023/variety--peter-marks.json",
-    "harmony-2023/variety-com--unknown.json",
-    "harmony-2023/vult--helen-shaw.json",
-    "harmony-2023/deadline--greg.json",
-    "harmony-2023/guardian--adrian-horton.json",
-    "harmony-2023/nyp--johnny-oleksinski.json",
-    "harmony-2023/temptalkinbroadway-com--unknown.json",
-    "harmony-2023/the-wrap--robert.json",
-    "harmony-2023/thly--michael-appler.json",
-    "harmony-2023/wsj--charles-isherwood.json"
+    "wicked-2003/THR--frank-scheck.json",
+    "wicked-2003/new-york-magazine-vulture--john-simon.json",
+    "wicked-2003/AP--michael-kuchwara.json",
+    "wicked-2003/NEWSDAY--linda-winer.json",
+    "wicked-2003/apnewsarchive-com--unknown.json",
+    "wicked-2003/curtainup--elyse-sommer.json",
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/ew-com--unknown.json",
+    "wicked-2003/guardian--michael-billington.json",
+    "wicked-2003/star-ledger--michael-sommers.json",
+    "wicked-2003/washington-post--peter-marks.json",
+    "wicked-2003/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "harmony-2023/new-york-theatre-guide--amelia.json"
+    "playwright": [],
+    "scrapingbee": [
+      "wicked-2003/time-out-new-york--david-cote.json"
     ],
-    "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "harmony-2023/deadline-com--unknown.json",
-      "harmony-2023/entertainment-weekly--emlyn.json",
-      "harmony-2023/new-york-times--jesse.json",
-      "harmony-2023/theatermania--david.json",
-      "harmony-2023/wall-street-journal--charles.json",
-      "harmony-2023/wsj-com--unknown.json"
+      "wicked-2003/content-time-com--unknown.json",
+      "wicked-2003/wsj--terry-teachout.json"
     ]
   }
 }
