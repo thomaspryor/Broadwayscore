@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Gold’s 'An Enemy of the People'... feels pointedly modern\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -41,5 +41,61 @@
   "designation": "Critics_Choice",
   "scoreSource": "time-out-stars",
   "scoreConfidence": "medium",
-  "originalRating": "5/5 stars"
+  "originalRating": "5/5 stars",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 84,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "4 out of 5 stars",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this engrossing new production",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "none that focused so intently and mournfully on the underlying issue of contamination, both of the environment and of public discourse",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: A 4/5 star review with consistent praise for the production's contemporary relevance, Strong's performance, and Gold's direction, despite some minor reservations about character development. | GPT-4o-mini: The review praises the performances and direction while indicating a strong recommendation, despite some minor reservations about the adaptation's effectiveness compared to previous productions.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:45.950Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

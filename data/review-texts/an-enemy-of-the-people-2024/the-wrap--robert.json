@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Best of all is Jeremy Strong’s Dr. Thomas Stockmann, who vividly recalls Dr. Anthony Fauci, especially when this good Norwegian doctor is warning a town about the dangers of an impending epidemic. The only problem with making “Enemy” a blow-by-blow retelling of Trump and Fauci’s battles is that what we all endured in real life a few years ago was so much more dramatic than what’s being offered onstage under the direction of Sam Gold.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -49,5 +49,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250918201449",
-  "archiveOrgUrl": "http://web.archive.org/web/20250918201449/https://www.thewrap.com/an-enemy-of-the-people-broadway-review-jeremy-strong/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250918201449/https://www.thewrap.com/an-enemy-of-the-people-broadway-review-jeremy-strong/",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 83,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "Best of all is Jeremy Strong's Dr. Thomas Stockmann",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "what we all endured in real life a few years ago was so much more dramatic than what's being offered onstage",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Has there ever been a more pure hero and a more abused victim on stage than Strong's wonderful doctor?",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises Strong's performance enthusiastically and appreciates the production's approach, but finds the material less compelling than real-life events it mirrors, resulting in a qualified positive recommendation. | GPT-4o-mini: The review presents a mixed view, praising the performances while expressing concerns about the direction and adaptation, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:39.470Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
