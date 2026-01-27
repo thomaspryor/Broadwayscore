@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Link from 'next/link';
 import ScrollToTop from '@/components/ScrollToTop';
+import HeaderSearch from '@/components/HeaderSearch';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
+import { getAllShows } from '@/lib/data';
 import { Analytics } from '@vercel/analytics/react';
 
 // Static OG image (API routes don't work with static export)
@@ -49,11 +51,26 @@ export const metadata: Metadata = {
 };
 
 
+// Get shows data for header search
+const getSearchShows = () => {
+  const shows = getAllShows();
+  return shows.map(show => ({
+    id: show.id,
+    title: show.title,
+    slug: show.slug,
+    status: show.status,
+    venue: show.venue,
+    images: show.images ? { thumbnail: show.images.thumbnail } : undefined,
+  }));
+};
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const searchShows = getSearchShows();
+
   return (
     <html lang="en">
       <head>
@@ -111,22 +128,25 @@ export default function RootLayout({
                 <span className="text-4xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway</span>
                 <span className="text-4xl sm:text-3xl font-extrabold text-gradient tracking-tight">Scorecard</span>
               </Link>
-              <div className="hidden sm:flex items-center gap-1">
-                <Link href="/" className="nav-link nav-link-active">
-                  Shows
-                </Link>
-                <Link href="/rankings" className="nav-link">
-                  Rankings
-                </Link>
-                <Link href="/methodology" className="nav-link">
-                  How It Works
-                </Link>
-                <Link href="/submit-review" className="nav-link">
-                  Submit Review
-                </Link>
-                <Link href="/feedback" className="nav-link">
-                  Feedback
-                </Link>
+              <div className="flex items-center gap-2">
+                <div className="hidden sm:flex items-center gap-1">
+                  <Link href="/" className="nav-link nav-link-active">
+                    Shows
+                  </Link>
+                  <Link href="/rankings" className="nav-link">
+                    Rankings
+                  </Link>
+                  <Link href="/methodology" className="nav-link">
+                    How It Works
+                  </Link>
+                  <Link href="/submit-review" className="nav-link">
+                    Submit Review
+                  </Link>
+                  <Link href="/feedback" className="nav-link">
+                    Feedback
+                  </Link>
+                </div>
+                <HeaderSearch shows={searchShows} />
               </div>
             </div>
           </nav>
