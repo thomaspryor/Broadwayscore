@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250811114308",
-  "archiveOrgUrl": "http://web.archive.org/web/20250811114308/https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-mind-at-the-public/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250811114308/https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-mind-at-the-public/",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 81,
+      "performances": 87,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hell's Kitchen is slick and aggressively commercial; Keys, also the producer, has made no secret of her desire to transfer uptown",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "struggles to justify its songs by the second act... the story drags out its family angst as long as it can",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "He stages a ridiculously talented cast, topped with a star-making turn by Moon",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances highly and finds the music appealing, but notes structural problems with the book and pacing, ultimately positioning it as Broadway-bound entertainment worth seeing despite flaws. | GPT-4o-mini: The review expresses a clear recommendation with praise for performances and music, despite some reservations about the book and pacing.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:29:08.256Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

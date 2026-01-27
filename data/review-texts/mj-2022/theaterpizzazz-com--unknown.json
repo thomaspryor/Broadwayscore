@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20231128185321/https://www.theaterpizzazz.com/mj-the-michael-jackson-musical/",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": 85,
+      "performances": 91,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "The most remarkable performance came from Myles Frost, yet another absolute newcomer. Where did they find him?! Not only had the DC native never graced a Broadway stage, he'd never even performed in New York, yet he was as smooth as the most seasoned veteran.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "His duet (shared with older Michael) with mother Katherine, played by Broadway first-timer Ayana George who sings so perfectly and crisply she should be given her own show, is a touching tear-jerker worth the price of admission alone.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Despite this being on the minds of many audience members, these issues are never addressed directly, merely alluded to.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant concerns about the book's handling of controversial subject matter, the critic is genuinely enthusiastic about the performances, music, and production values, with multiple statements indicating the show is worth seeing. | GPT-4o-mini: The review expresses clear praise for the performances and music, but raises concerns about the handling of sensitive subject matter, leading to a positive but cautious recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:33:23.016Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

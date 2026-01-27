@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250328124033",
-  "archiveOrgUrl": "http://web.archive.org/web/20250328124033/https://theaterpizzazz.com/hells-kitchen/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250328124033/https://theaterpizzazz.com/hells-kitchen/",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 90,
+      "performances": 90,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hell's Kitchen, Alicia Keys's vibrant new bio-musical now playing at the Public Theater, is red-hot and ready for Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It belongs on Broadway, and hopefully soon",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "An electrifying two and half hours",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive review with enthusiastic praise for performances, direction, and overall production quality, plus explicit statement that it 'belongs on Broadway'. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show, highlighting its vibrant music, strong performances, and compelling story, indicating it is a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:29:27.021Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

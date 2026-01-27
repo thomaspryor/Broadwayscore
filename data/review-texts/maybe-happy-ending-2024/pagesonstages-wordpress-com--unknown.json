@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 67.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 75,
+      "performances": 80,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "Maybe Happy Ending held space for many beautiful moments, as well as some painful ones. The most beautiful scene by far was the scene where Claire and Oliver get to see the lighting bugs... Visually stunning, this moment epitomizes the good in the world",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Technologically brilliant with beautiful design elements, Maybe Happy Ending served as a poignant reminder that humanity is short",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I really only had one structural critique of this play... The ending felt like many ending attempts displayed in sequence... it became difficult to feel catharsis",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer finds the production 'technologically brilliant with beautiful design elements' and praises the performances and thematic depth, but notes structural issues with the ending that affect emotional impact. | GPT-4o-mini: The review expresses strong praise for the performances and thematic depth while noting a structural critique, leading to a solid recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:32:10.687Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 85,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

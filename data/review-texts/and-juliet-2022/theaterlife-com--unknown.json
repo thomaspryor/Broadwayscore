@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 63,
+      "performances": 78,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "I didn't love & Juliet. You might say I liked it well enough, if only because of its production values and the enthusiasm it stimulated in theatregoers",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "& Juliet is a visual and musical fest whose technical expertise deserves appreciation, even if you sometimes find it banal, monotonous, and unfunny",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "There's definitely an audience for this burlesque, but I'll stick with Romeo and Juliet, where both lovers die (and stay that way)",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges strong production values and performances but finds the material banal and unfunny, explicitly stating they 'didn't love' it while recognizing it has an audience. | GPT-4o-mini: The review expresses appreciation for the production values and performances but ultimately conveys a lack of personal enjoyment, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:25:33.811Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250327182803",
-  "archiveOrgUrl": "http://web.archive.org/web/20250327182803/https://www.talkinbroadway.com/page/world/TheNotebook.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250327182803/https://www.talkinbroadway.com/page/world/TheNotebook.html",
+  "llmScore": {
+    "score": 84,
+    "confidence": "medium",
+    "range": {
+      "low": 74.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 76,
+      "music": 84,
+      "performances": 88,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes The Notebook work so well on stage, and truthfully it does, is all due to the total commitment of everyone involved",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Notebook works because everyone works together to make the magic happen",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "resistance is quite futile. Save your cynicism for the merchandising",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly states the show 'works so well on stage' and praises the unified commitment of cast and creative team, with only minor reservations about plotting complexity and occasional overkill. | GPT-4o-mini: The review expresses strong enthusiasm for the production, praising the performances, music, and emotional impact while maintaining a cohesive narrative.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:40:26.118Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 88,
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

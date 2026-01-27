@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 89,
+      "music": null,
+      "performances": 95,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play transcends mere fact-based documentary theatre and moves into the realm of an ingenious work of art through its acute humanity and joyous inventiveness",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "There is not a wrong note in the staging or in the casting",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This is one of those rare productions in which each performer has become so entwined with the character that all future iterations will most assuredly be a pale imitation",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rave with superlative language throughout, praising the writing as 'ingenious work of art,' direction as flawless, and performances as exceptional and definitive. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising its script, performances, and direction, indicating it is a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:30:33.940Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

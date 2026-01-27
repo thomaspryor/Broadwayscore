@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": 88,
+      "performances": 95,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ultimately, deBessonet's revival is a triumph, proving Ragtime to be as resonant and necessary as ever",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This is a magnificent, emotionally charged production that not only honors its source material but thrillingly reaffirms the musical's place as a defining and urgent American epic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The need to compress so much of Doctorow's complex story sometimes leads to abrupt developments, sacrificing the novel's richness for dramatic efficiency",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Five-star review with superlative language ('triumph', 'magnificent', 'thrillingly') and exceptional praise for performances, despite minor structural criticisms. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the production's triumph, emotional impact, and outstanding performances, with only minor caveats.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:36:00.848Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

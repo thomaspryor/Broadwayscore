@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,5 +50,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250803025521/https://www.amny.com/entertainment/theater/review-mj-is-a-sanitized-michael-jackson-tribute/",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 68,
+      "performances": 68,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is entirely possible to accept 'MJ' for what it is and have a decent enough time",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "what's the point of spending money to attend 'MJ' when one can easily watch Jackson's greatest music videos on YouTube",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "a by-the-numbers bio-jukebox musical (really not so different from all the others out there)",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges some entertainment value but fundamentally questions the show's worth and necessity, delivering more criticism than praise while offering only lukewarm endorsement. | GPT-4o-mini: The review presents a mixed view, acknowledging some entertainment value but ultimately questioning the show's purpose and execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:32:40.770Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

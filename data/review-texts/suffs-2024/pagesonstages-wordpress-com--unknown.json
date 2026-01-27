@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 94,
+      "performances": 89,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shaina Taub's mastery of the stage as a writer, performer, historian, and creator, is absolutely awe inspiring",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The movement and momentum and pacing of this show had me captured from the very first downbeat",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This makes Suffs an important show for our time",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: While the reviewer grapples with complex political themes and personal feelings, they express profound admiration for Taub's artistry, describe being emotionally moved throughout, and conclude the show is 'important for our time' with powerful relevance. | GPT-4o-mini: The review expresses strong admiration for the show's music and emotional impact, highlighting its relevance and inspiring qualities, leading to a high recommendation score.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:38:35.010Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

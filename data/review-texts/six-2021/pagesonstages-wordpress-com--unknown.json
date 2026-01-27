@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
   "textIssues": [
     "Word count too low: 278 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": 83,
+      "performances": 78,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "Six: The Musical is a fun concept and a fun experience. But if you are in town and have never seen a Broadway show, this is not a true Broadway theatre experience.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It was a phenomenal concert, but not really a play.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The vocal performances are moving...incredible songs that are very relevant",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the music and performances but fundamentally questions whether this qualifies as legitimate theater, suggesting it's better experienced as a recording than live. | GPT-4o-mini: The review acknowledges strong vocal performances and a fun concept but ultimately critiques the lack of dramatic structure and theatricality, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:37:52.122Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

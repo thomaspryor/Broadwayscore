@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240606191259",
-  "archiveOrgUrl": "http://web.archive.org/web/20240606191259/https://www.amny.com/entertainment/hadestown-review-1.29924932/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240606191259/https://www.amny.com/entertainment/hadestown-review-1.29924932/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 83,
+      "performances": 83,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "stunning visual design evoking both a New Orleans barroom scene and a smoldering mechanical underworld, complemented by the motion of turntables, a rollicking band, bold performances and expressive dance choreography",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "more often than not, 'Hadestown' is exciting, compelling and beautiful",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "may very well become the next risk-taking, genre-defying new musical to catch on with a larger audience and achieve major commercial success",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the production's visual design, music, and overall impact with phrases like 'stunning,' 'exciting, compelling and beautiful,' and predicts commercial success, despite noting some pacing issues in Act Two. | GPT-4o-mini: The review expresses strong praise for the production's design, performances, and music, with minor caveats about pacing, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:28:24.610Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

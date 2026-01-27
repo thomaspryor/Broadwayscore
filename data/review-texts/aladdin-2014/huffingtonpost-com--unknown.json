@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 73,
+      "performances": 83,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Score Aladdin a considerable win for Disney, likely to fill the New Amsterdam with happy crowds for seasons to come",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Better than Little Mermaid, Aida and Tarzan, though not exactly a knockout",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "It is one of the most delirious things of its kind in years",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite numerous criticisms of the book, music, and some performances, the critic explicitly calls it 'a considerable win for Disney' and predicts commercial success, with particular praise for Iglehart's star-making performance. | GPT-4o-mini: The review expresses clear praise for the performances and standout moments, but also notes significant flaws in the book and some aspects of the direction.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:24:31.486Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

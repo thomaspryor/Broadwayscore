@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,5 +33,61 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 70,
+      "performances": 84,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Maybe Happy Ending dazzles with its love story and astounds with its visual accomplishments",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There's nothing robotic about this production: it wears its heart on its sleeve and on charm alone, succeeds. Grade: B",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The melodies may not linger when the curtain falls, but the sentiment certainly does",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review gives the show a B grade and concludes it 'succeeds' with clear praise for performances, direction, and visual elements, despite noting some weaknesses in the score and pacing. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some weaknesses in the story and music, leading to a solid positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:31:46.660Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

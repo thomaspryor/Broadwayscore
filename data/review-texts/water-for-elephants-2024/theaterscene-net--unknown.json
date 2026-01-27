@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 86,
+    "confidence": "high",
+    "range": {
+      "low": 79,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 86,
+      "performances": 84,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "he may just have written the best stage musical about circuses",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The most remarkable part of the show are the animals, puppets...that are so alive you would think that they are actually breathing",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The musical version of Water for Elephants is one of the few film-to-stage adaptations in many years to be as successful as the cinema version",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This is a consistently positive review with superlative praise for the direction, puppetry, and adaptation, calling it 'the best stage musical about circuses' and praising the production's innovative solutions to staging challenges. | GPT-4o-mini: The review expresses strong praise for the music, direction, and overall production quality, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:43:58.929Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 84,
+    "openaiScore": 88,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 28,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,5 +30,61 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 28,
+    "confidence": "high",
+    "range": {
+      "low": 20.5,
+      "high": 35.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": 58,
+      "direction": 18
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cromer's fundamental misreading—treating the play as conspiracy culture commentary rather than folie à deux tragedy—squanders that opportunity",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "this should have been the definitive production of a psychological horror masterpiece",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "'Bug' deserves better than being reduced to timely metaphor. It deserves to devastate us",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic systematically demolishes every major aspect of the production while praising the source material, calling the direction a 'fundamental misreading' that 'squanders' the play's power and 'betrays the text.' | GPT-4o-mini: The review is overwhelmingly critical of the production's direction and its failure to convey the play's intended emotional impact, resulting in a clear rejection of the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:26:57.740Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

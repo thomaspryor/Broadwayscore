@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 43,
+      "performances": 68,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "disappointingly, they've succumbed to creatively mature reimaginers who misinterpreted the fundamental lesson of the Greasers' story",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "book, which sacrifices poetry for explanation. That unfortunate choice is abetted by a score... that is far too Rodgers and Hammerstein, when it should have aimed for Rodgers and Hart",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Grant and Lakota-Lynch remarkably still manage to sweetly convey this point of view, despite being in a production that doesn't share it",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic fundamentally disagrees with the creative choices, finding the adaptation misinterprets the source material and reduces its poetry to exposition, though acknowledging some strong individual performances. | GPT-4o-mini: The review expresses significant concerns about the book and score, while acknowledging strong performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:41:29.682Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20130106193901",
-  "archiveOrgUrl": "http://web.archive.org/web/20130106193901/http://www.independent.co.uk:80/arts-entertainment/theatre-dance/features/nothings-sacred-for-the-supersatirists-2261218.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20130106193901/http://www.independent.co.uk:80/arts-entertainment/theatre-dance/features/nothings-sacred-for-the-supersatirists-2261218.html",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "near-rapturous response from New York's notoriously hard-to-please theatre critics with the New York Times's acerbic Ben Brantley comparing Parker and Stone to Rodgers and Hammerstein",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Parker and Stone's show comes across as a genuine breath of fresh air",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Not everyone has been so convinced, however, with posts on the New York Times' website querying the treatment of the African characters",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review celebrates critical acclaim and compares the creators to legendary Broadway composers, while acknowledging some controversy and concerns about longevity, resulting in a clear positive recommendation. | GPT-4o-mini: The review expresses strong praise for the show's fresh approach and character support, despite some reservations about its treatment of sensitive topics.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:25:58.217Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

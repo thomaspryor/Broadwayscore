@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20181112132037",
-  "archiveOrgUrl": "http://web.archive.org/web/20181112132037/http://flyingthenest.tv:80/the-lion-king-musical-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20181112132037/http://flyingthenest.tv:80/the-lion-king-musical-review/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 88,
+      "performances": 86,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you are a Disney fan or theatre fan it is hard not to recommend going to see the show",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You know the performances were great when you started to forget that the cast were humans playing animals",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The only downside to this is that you know it all – including the beats, the pauses and the twists – there are no surprises",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Clear positive recommendation with praise for performances, production values, and emotional impact, despite minor criticism about predictability from knowing the source material. | GPT-4o-mini: The review expresses strong enjoyment of the production, particularly praising the performances and music while acknowledging a lack of surprises in the story.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:40:03.273Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

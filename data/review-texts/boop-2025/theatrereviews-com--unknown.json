@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 84,
+      "performances": 90,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is absolutely no reason why you would not thoroughly enjoy",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This is a big, family friendly musical that is pure joy. The fun is contagious",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "one of those old fashioned, heartfelt, feel-good musicals that helps shed just a bit more radiance on an already brightly lit Great White Way",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic offers unqualified enthusiasm with phrases like 'absolutely no reason why you would not thoroughly enjoy' and 'pure joy,' praising all aspects of the production with only minor acknowledgment that the book is 'quite simple.' | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its joyfulness, strong performances, and creative elements, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:26:17.730Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 80.5,
+      "high": 97.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 89,
+      "music": 85,
+      "performances": 93,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "Utterly charming and winsomely quirky, this show evokes laughter and joy in equal measures",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "I enjoyed lingering in the world it created, and I genuinely wanted to stay there",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Two Strangers (Carry a Cake Across New York) has very high entertainment value",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer expresses genuine enthusiasm throughout with phrases like 'utterly charming,' 'very high entertainment value,' and 'genuinely wanted to stay there,' indicating strong recommendation despite the absence of superlatives like 'masterpiece.' | GPT-4o-mini: The review expresses unqualified enthusiasm for the show's charm, performances, and overall experience, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:42:48.709Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 92,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

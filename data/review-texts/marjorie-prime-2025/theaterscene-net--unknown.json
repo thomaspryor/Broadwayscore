@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 89,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Marjorie Prime has its own well-deserved chance at immortality, as a melancholic meditation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "allowing Squibb, Nixon, and Burstein's gut-wrenching efforts to take center stage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's a graceful note through which Squibb perfectly defines Marjorie's deepest and most heartbreaking desire",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the play's philosophical depth, calls it deserving of 'immortality,' and consistently lauds the 'gut-wrenching' performances, particularly Squibb's work, with only minor technical reservations. | GPT-4o-mini: The review expresses strong praise for the performances and thematic depth of the play, indicating a clear recommendation despite some minor reservations about the script's familiarity.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:31:27.641Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20190820015359",
-  "archiveOrgUrl": "http://web.archive.org/web/20190820015359/https://www.nbcnewyork.com/entertainment/the-scene/Review-Aladdin-Will-Leave-You-Dreaming-Of-Genie-251268981.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20190820015359/https://www.nbcnewyork.com/entertainment/the-scene/Review-Aladdin-Will-Leave-You-Dreaming-Of-Genie-251268981.html",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 81,
+      "performances": 85,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Iglehart is so outstanding as Genie that his take on 'Friend Like Me' stopped the performance I attended with thunderous applause and a standing ovation",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "this is a musical comedy, and in that sense, 'Aladdin' is exactly what you wish for",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "their chemistry during their iconic romantic magic carpet ride in 'A Whole New World' is lost in the darkness",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review is enthusiastic about performances (especially Iglehart), direction, and music, with specific praise for production values and clear statement that it delivers what audiences want from a musical comedy, despite some noted weaknesses in romantic leads and pacing. | GPT-4o-mini: The review highlights strong performances, particularly from the Genie, and effective direction, while noting some weaknesses in the leads and pacing, leading to a solid positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:24:38.100Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

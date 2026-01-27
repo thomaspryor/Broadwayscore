@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 30,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 40
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": 25,
+      "performances": 68,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "unfortunately the creative team responsible for Redwood never takes Jesse as seriously as her suffering, instead relying on Menzel's soaring vocals to defy gravity despite the burden of a leaden score and book",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The book, from the show's director Tina Landau, is a litany of unwieldy exposition, silly contrivances, and self-help bromides",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "agony and art don't necessarily always combine to soothe our pangs, especially when the former doesn't endow the latter with enough truth",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging Menzel's vocal prowess, the critic systematically dismantles every other aspect of the production with harsh language like 'leaden score,' 'litany of unwieldy exposition,' and 'silly contrivances,' offering no recommendation to see the show. | GPT-4o-mini: The review is predominantly negative, criticizing the book and music while acknowledging Menzel's strong performance, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:37:31.156Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 35,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 97
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": 88,
+      "performances": 90,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "& Juliet is a refreshingly clever and entertaining show offering eye-filling scenes and ear-catching songs. The cast seems to be having a ball and you will too.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "is a delightful and witty reimagining of Shakespeare's Romeo and Juliet told from a revisionist and feminist point of view",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "is actually more fun than all of those shows",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly recommends the show with consistent praise for performances, music integration, and entertainment value, concluding that audiences 'will have a ball' despite some minor structural observations. | GPT-4o-mini: The review expresses strong enthusiasm for the show's cleverness, performances, and overall entertainment value, indicating a must-see experience. | Note: Models differed by 14 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:25:45.717Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 92,
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

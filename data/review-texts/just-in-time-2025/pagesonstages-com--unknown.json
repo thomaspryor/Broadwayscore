@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 95,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "Just In Time is at the upper echelon of performances that the audience wants to linger a little longer in",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "For me, Just in Time is a moment worth holding on to",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Direction and choreography are a bit of a challenge in this space",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer expresses overwhelming enthusiasm for Groff's performance and the overall production, calling it 'upper echelon' and 'a moment worth holding on to,' with only minor technical critiques about staging constraints. | GPT-4o-mini: The review expresses strong enthusiasm for the performance and its emotional impact, highlighting the versatility of Jonathan Groff and the overall experience of the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:29:44.494Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

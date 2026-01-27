@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 84,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": 84,
+      "performances": 86,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Taub has taken this weighty subject, one full of passion, sadness and personal sacrifice, and has fashioned a theater work that deftly balances history and entertainment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The transfer to Broadway has brilliantly expanded the show",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Suffs can be compared to another 'historical musical,' 1776. Both shows are rousing, if slightly distorted, history in colorful packages, balancing theater with truth, both mostly succeeding and both quite engaging",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the Broadway transfer as an improvement, celebrates multiple performances and creative elements, and makes a favorable comparison to the beloved 1776, indicating clear recommendation despite minor reservations. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's script, performances, and overall production quality, indicating it as a must-see experience. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:38:49.324Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20160604100250",
-  "archiveOrgUrl": "http://web.archive.org/web/20160604100250/http://hellobeautiful.com/2015/06/02/brandy-in-chicago-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20160604100250/http://hellobeautiful.com/2015/06/02/brandy-in-chicago-review/",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 93,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "taking that ride with Brandy was one of the most enjoyable Broadway experiences I've had in a long time",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Her acting was spot-on and her voice was the cherry on top",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you'd better get your hands on some tickets!",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong enthusiastic recommendation with superlative praise for Brandy's performance and explicit urging to buy tickets, indicating clear positive endorsement despite being primarily performance-focused rather than show-focused. | GPT-4o-mini: The review expresses strong enthusiasm for Brandy's performance and the overall experience of the show, indicating it as a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:28:18.921Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

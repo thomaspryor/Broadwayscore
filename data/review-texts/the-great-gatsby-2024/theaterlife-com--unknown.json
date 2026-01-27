@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 34,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 34,
+    "confidence": "high",
+    "range": {
+      "low": 27.5,
+      "high": 40.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": 28,
+      "performances": 48,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "at intermission, director Marc Bruni's production had me wondering, why is this even being done?",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Songs that seem to be waiting for their cues, like Gatsby's 'For Her,' rather than emerging naturally from conversations",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "And thus, with two bangs followed by a whimper, ends The Great Gatsby, Broadway's latest attempt to transfer a famous novel to the musical stage",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer fundamentally questions the show's existence, criticizes most creative elements including generic music and unnatural songs, and concludes with dismissive language despite acknowledging some strong voices and production values. | GPT-4o-mini: The review is predominantly negative, criticizing the musical's execution and questioning its purpose, leading to a clear recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:39:22.470Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

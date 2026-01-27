@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250327204330",
-  "archiveOrgUrl": "http://web.archive.org/web/20250327204330/https://www.talkinbroadway.com/page/world/Cabaret2024.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250327204330/https://www.talkinbroadway.com/page/world/Cabaret2024.html",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 94,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "Listen up. Time to put down the knitting, the book, and the broom and hie on over to the imaginatively staged, directed, and performed multiple Olivier Award-winning revival",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Rankin's is an extraordinary performance that raises the production to new heights. And that's saying a lot for what amounts to one hell of a revival",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "All the performances are spot on... the deceptively simple staging of the production is often thrilling",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic opens with an enthusiastic directive to see the show, consistently praises performances and direction throughout, and concludes by calling it 'one hell of a revival' with 'extraordinary' performances that raise it to 'new heights.' | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, particularly praising the performances and direction, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:27:26.815Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

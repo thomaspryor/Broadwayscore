@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 68,
+      "performances": 77,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "Taken in terms of such an intent, Redwood succeeds. However, for those of us who are coming in cold to this story, the problem is the lack of context, with too much 'tell' and not enough 'show.'",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Despite any sympathy we might have for Jesse, she is not all that interesting a character.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The result is the most impressive aerial work while singing since Andrea Martin's 2013 Tony-winning turn on a trapeze as Berthe in Pippin.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges technical successes and impressive performances but finds fundamental flaws in character development and storytelling that prevent full engagement, resulting in qualified appreciation rather than recommendation. | GPT-4o-mini: While the production has impressive elements, the lack of character depth and context leads to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:37:14.942Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

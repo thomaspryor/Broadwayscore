@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260103115711",
-  "archiveOrgUrl": "http://web.archive.org/web/20260103115711/https://nypost.com/2014/03/20/aladdin-musical-doesnt-quite-seem-like-a-disney-hit/"
+  "archiveOrgUrl": "http://web.archive.org/web/20260103115711/https://nypost.com/2014/03/20/aladdin-musical-doesnt-quite-seem-like-a-disney-hit/",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 68,
+      "performances": 78,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "Disney's new 'Aladdin' doesn't quite catch lightning in a bottle — but it lets a pretty nifty genie out of a lamp",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Every time this Genie's on stage, it's as if 'Aladdin' were mainlining Red Bull",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "And then there's the rest of the show",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises Iglehart's performance enthusiastically but consistently criticizes the rest of the production, from weak characterization to cheap-looking design, creating a mixed but slightly positive overall assessment. | GPT-4o-mini: The review indicates a mix of strong performances, particularly from the Genie, but also highlights significant shortcomings in the overall production, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:24:49.463Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -47,5 +47,61 @@
   "textQuality": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250221075959",
-  "archiveOrgUrl": "http://web.archive.org/web/20250221075959/https://www.slantmagazine.com/theater/hells-kitchen-review-alicia-keys/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250221075959/https://www.slantmagazine.com/theater/hells-kitchen-review-alicia-keys/",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 50.5,
+      "high": 67.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": 78,
+      "performances": 84,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hell's Kitchen is, dramatically speaking, something of a damp squib",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Isolate any 30 seconds of Hell's Kitchen's musical numbers and you're probably looking at—and, more importantly, listening to—something marvelous",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Don't expect Hell's Kitchen to wither at the Public Theater either, despite its structural flimsiness",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the stellar performances and magnificent music while severely criticizing the weak book and dramatic structure, resulting in a mixed but leaning positive assessment that acknowledges the show's appeal despite its flaws. | GPT-4o-mini: While the performances and music are praised, the weak book and structural issues lead to a mixed recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:29:15.206Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

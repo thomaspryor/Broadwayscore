@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -39,5 +39,61 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 88,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "an 85-year-old woman splendidly played by a vigorous 96-year-old June Squibb",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Cynthia Nixon, terrific) and Tess's husband Jon (Danny Burstein, ditto)",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "smartly directed then as now by Anne Kauffman",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Consistent praise for performances ('splendidly', 'terrific', 'ditto') and direction ('smartly directed'), with thoughtful analysis of the play's contemporary relevance and thematic depth, indicating clear recommendation despite lack of superlatives. | GPT-4o-mini: The review highlights strong performances and direction, with a clear recommendation to see the play, despite not explicitly stating 'must-see'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:31:20.358Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

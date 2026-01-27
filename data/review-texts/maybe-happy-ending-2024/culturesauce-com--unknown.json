@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 89,
+      "performances": 85,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once in a blue moon, a new show comes along that takes Broadway utterly by surprise and shakes up how we view the whole Musical Theater genre",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Maybe Happy Ending is a beguiling show whose power sneaks up on you unawares",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You will probably see where the plot is heading long before the characters do, and there's a cartoonish quaintness to the story that threatens to sink into twee",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite some criticisms of the predictable plot and twee elements, the reviewer expresses genuine enthusiasm for this 'sui generis original' that 'takes Broadway utterly by surprise,' praising the exceptional design, sophisticated score, and chemistry between leads. | GPT-4o-mini: The review expresses strong enthusiasm for the show's originality, performances, and technical achievements, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:31:40.099Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

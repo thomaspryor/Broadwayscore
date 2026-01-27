@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -42,5 +42,61 @@
   "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 122 (min: 300)"
-  ]
+  ],
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "looks patched together. In a good way",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The performers form a tightknit skilled ensemble",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's only fitting, then, that the puppets representing the menagerie appear stitched from well-worn pieces, the company is made of disparate but complementary moving parts",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses the show's deliberate scrappy aesthetic as a positive metaphor throughout, praising the ensemble and finding the production's rough-hewn quality appropriately thematic rather than flawed. | GPT-4o-mini: The review indicates a mixed-positive sentiment, highlighting the ensemble's skill while also noting some weariness and a lack of polish in the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:44:12.181Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

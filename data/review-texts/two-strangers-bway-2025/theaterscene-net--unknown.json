@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,5 +27,61 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 86,
+      "performances": 83,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "Infectiously whimsical and sentimental",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the score for Two Strangers accomplishes something rare on Broadway these days: respecting the audience's attention. None of the songs are filler",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "does encourage a rewarding lift",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises the score as exceptional, appreciates the performances and production values, and finds the show emotionally rewarding despite some predictable elements. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's whimsical nature and well-crafted score, indicating a clear recommendation despite minor caveats.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T05:43:10.743Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
