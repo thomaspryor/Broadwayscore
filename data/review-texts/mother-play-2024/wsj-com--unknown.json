@@ -5,12 +5,55 @@
   "criticName": "Unknown",
   "url": "https://www.wsj.com/articles/mother-play-review-jessica-langes-tortured-vision-of-parenthood-2850835f",
   "publishDate": null,
-  "fullText": "\"...a funny and affecting but slight and fragmentary drama depicting Ms. Lange’s Phyllis\"\n\nRead more",
+  "fullText": "https://www.wsj.com/articles/mother-play-review-jessica-langes-tortured-vision-of-parenthood-2850835f\n\nJim Parsons, Jessica Lange and Celia Keenan-Bolger in ‘Mother Play.’ Photo: Joan MarcusNew York\n\nJessica Lange plays a hapless, helpless and hopelessly bad single mother in Paula Vogel’s bluntly titled “Mother Play,” a funny and affecting but slight and fragmentary drama depicting Ms. Lange’s Phyllis and her tortured relationship with her son and daughter across several decades.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "isFullReview": false,
   "dtliExcerpt": "\"...a funny and affecting but slight and fragmentary drama depicting Ms. Lange’s Phyllis\"\n\nRead more",
   "originalScore": null,
   "assignedScore": null,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "textWordCount": 85,
+  "archivePath": "data/archives/reviews/mother-play-2024/wsj-com--unknown_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T14:40:15.894Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20240816022117",
+  "archiveOrgUrl": "http://web.archive.org/web/20240816022117/https://www.wsj.com/articles/mother-play-review-jessica-langes-tortured-vision-of-parenthood-2850835f",
+  "textIssues": [
+    "Word count too low: 85 (min: 300)"
+  ]
 }
