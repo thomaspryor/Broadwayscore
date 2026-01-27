@@ -76,20 +76,14 @@
   },
   "textWordCount": 98,
   "archivePath": "data/archives/reviews/hamilton-2015/observer--david-cote_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T05:06:05.827Z",
+  "textFetchedAt": "2026-01-27T05:31:28.925Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "404 - Page not found"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
-      "success": false,
-      "error": "No archive snapshot available"
+      "error": "CAPTCHA or access blocked"
     },
     {
       "tier": 2,
