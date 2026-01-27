@@ -5,12 +5,55 @@
   "criticName": "Unknown",
   "url": "https://www.wsj.com/articles/lempicka-review-broadway-musical-eden-espinosa-rachel-chavkin-519b3aca",
   "publishDate": null,
-  "fullText": "\"Visually, the show is a hodgepodge.\"\n\nRead more",
+  "fullText": "https://www.wsj.com/articles/lempicka-review-broadway-musical-eden-espinosa-rachel-chavkin-519b3aca\n\nEden Espinosa Photo: Matthew MurphyNew York\n\n“Never let them see your brushstrokes,” admonishes the title character, the painter Tamara de Lempicka, in the Broadway musical based on her life. Unhappily, “Lempicka” often seems to be all visible brushstrokes, a neatly constructed but surprisingly conventional show that turns the wild, imperious and wayward woman into a fairly standard-issue heroine, enduring trauma and searching for lasting love while also trying to assert her identity as an artist.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "isFullReview": false,
   "dtliExcerpt": "\"Visually, the show is a hodgepodge.\"\n\nRead more",
   "originalScore": null,
   "assignedScore": null,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "textWordCount": 103,
+  "archivePath": "data/archives/reviews/lempicka-2024/wsj-com--unknown_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T14:42:54.242Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20240705012343",
+  "archiveOrgUrl": "http://web.archive.org/web/20240705012343/https://www.wsj.com/articles/lempicka-review-broadway-musical-eden-espinosa-rachel-chavkin-519b3aca",
+  "textIssues": [
+    "Word count too low: 103 (min: 300)"
+  ]
 }
