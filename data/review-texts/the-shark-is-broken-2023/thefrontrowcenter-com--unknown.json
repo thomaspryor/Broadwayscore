@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240619201308",
-  "archiveOrgUrl": "http://web.archive.org/web/20240619201308/https://thefrontrowcenter.com/2023/08/the-shark-is-broken/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240619201308/https://thefrontrowcenter.com/2023/08/the-shark-is-broken/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "you have a real treat in store for you",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you're going to love this play",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The Shark Is Broken is a comedy with great storytelling",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer consistently praises the show with enthusiastic language, explicitly tells readers they'll 'love this play' if they're Jaws fans, and describes it as having 'great storytelling' and being 'a real treat.' | GPT-4o-mini: The review expresses strong enthusiasm for the production, particularly praising the performances and storytelling, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:15:14.933Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
