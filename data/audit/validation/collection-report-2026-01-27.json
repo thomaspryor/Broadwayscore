@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-27T04:54:28.480Z",
+  "runDate": "2026-01-27T04:55:45.201Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "cabaret-2024",
+    "showFilter": "stereophonic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 202,
-    "failed": 110,
+    "processed": 204,
+    "failed": 121,
     "skipped": 0,
-    "successRate": "64.7%"
+    "successRate": "62.8%"
   },
   "tierBreakdown": {
     "playwright": 22,
-    "scrapingbee": 17,
-    "brightdata": 20,
+    "scrapingbee": 18,
+    "brightdata": 21,
     "archive": 143
   },
   "statistics": {
-    "tier1Attempts": 11,
+    "tier1Attempts": 24,
     "tier1Success": 5,
-    "tier2Attempts": 6,
-    "tier2Success": 1,
-    "tier3Attempts": 5,
-    "tier3Success": 0,
-    "tier4Attempts": 5,
+    "tier2Attempts": 19,
+    "tier2Success": 2,
+    "tier3Attempts": 17,
+    "tier3Success": 1,
+    "tier4Attempts": 20,
     "tier4Success": 3,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 40
+    "totalFailed": 13,
+    "scrapingBeeCreditsUsed": 90
   },
   "processed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -228,15 +228,17 @@
     "hadestown-2019/towleroad-com--unknown.json",
     "hadestown-2019/vox--constance-grady.json",
     "hadestown-2019/washingtonpost-com--unknown.json",
-    "cabaret-2024/nytimes-com--unknown.json",
-    "cabaret-2024/ew-com--unknown.json",
-    "cabaret-2024/lightingandsoundamerica-com--unknown.json",
-    "cabaret-2024/newyorktheater-me--unknown.json",
-    "cabaret-2024/newyorktheatreguide-com--unknown.json",
-    "cabaret-2024/pagesonstages-wordpress-com--unknown.json",
-    "cabaret-2024/talkinbroadway-com--unknown.json",
-    "cabaret-2024/theaterscene-net--unknown.json",
-    "cabaret-2024/wsj-com--unknown.json"
+    "stereophonic-2024/deadline--greg-evans.json",
+    "stereophonic-2024/ew-com--unknown.json",
+    "stereophonic-2024/newyorktheatreguide-com--unknown.json",
+    "stereophonic-2024/nypost--johnny-oleksinski.json",
+    "stereophonic-2024/pagesonstages-wordpress-com--unknown.json",
+    "stereophonic-2024/theaterlife-com--unknown.json",
+    "stereophonic-2024/theaterscene-net--unknown.json",
+    "stereophonic-2024/theatrely--joey-sims.json",
+    "stereophonic-2024/thewrap--robert-hofler.json",
+    "stereophonic-2024/timeout--adam-feldman.json",
+    "stereophonic-2024/timeout-ny--adam-feldman.json"
   ],
   "failed": [
     "and-juliet-2022/THR--frank-scheck.json",
@@ -347,8 +349,19 @@
     "hadestown-2019/tman--jesse-green.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "cabaret-2024/interestedbystander-com--unknown.json",
-    "cabaret-2024/tman--jesse-green.json"
+    "stereophonic-2024/thr--angie-han.json",
+    "stereophonic-2024/variety--jesse-green.json",
+    "stereophonic-2024/vult--helen-shaw.json",
+    "stereophonic-2024/ap--mark-kennedy.json",
+    "stereophonic-2024/ew--dalton-ross.json",
+    "stereophonic-2024/guardian--adrian-horton.json",
+    "stereophonic-2024/interestedbystander-com--unknown.json",
+    "stereophonic-2024/ny-daily-news--chris-jones.json",
+    "stereophonic-2024/nyp--johnny-oleksinski.json",
+    "stereophonic-2024/talkinbway--matthew-murray.json",
+    "stereophonic-2024/tman--jesse-green.json",
+    "stereophonic-2024/washpost--peter-marks.json",
+    "stereophonic-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -369,11 +382,11 @@
       "hadestown-2019/lightingandsoundamerica-com--unknown.json",
       "hadestown-2019/nystagereview-com--unknown.json",
       "hadestown-2019/showshowdown-blogspot-com--unknown.json",
-      "cabaret-2024/ew-com--unknown.json",
-      "cabaret-2024/lightingandsoundamerica-com--unknown.json",
-      "cabaret-2024/newyorktheatreguide-com--unknown.json",
-      "cabaret-2024/pagesonstages-wordpress-com--unknown.json",
-      "cabaret-2024/theaterscene-net--unknown.json"
+      "stereophonic-2024/newyorktheatreguide-com--unknown.json",
+      "stereophonic-2024/pagesonstages-wordpress-com--unknown.json",
+      "stereophonic-2024/theaterlife-com--unknown.json",
+      "stereophonic-2024/theaterscene-net--unknown.json",
+      "stereophonic-2024/timeout-ny--adam-feldman.json"
     ],
     "scrapingbee": [
       "aladdin-2014/NBCNY--dave-quinn.json",
@@ -392,7 +405,8 @@
       "wicked-2003/village-voice--michael-feingold.json",
       "hadestown-2019/ew-com--unknown.json",
       "hadestown-2019/timeout--adam-feldman.json",
-      "cabaret-2024/newyorktheater-me--unknown.json"
+      "stereophonic-2024/ew-com--unknown.json",
+      "stereophonic-2024/theatrely--joey-sims.json"
     ],
     "brightdata": [
       "aladdin-2014/talkin-broadway--matthew-murray.json",
@@ -414,7 +428,8 @@
       "hadestown-2019/observer--david-cote.json",
       "hadestown-2019/observer--jesse-green.json",
       "hadestown-2019/thedailybeast-com--unknown.json",
-      "hadestown-2019/towleroad-com--unknown.json"
+      "hadestown-2019/towleroad-com--unknown.json",
+      "stereophonic-2024/timeout--adam-feldman.json"
     ],
     "archive": [
       "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -557,9 +572,9 @@
       "hadestown-2019/thewrap-com--unknown.json",
       "hadestown-2019/vox--constance-grady.json",
       "hadestown-2019/washingtonpost-com--unknown.json",
-      "cabaret-2024/nytimes-com--unknown.json",
-      "cabaret-2024/talkinbroadway-com--unknown.json",
-      "cabaret-2024/wsj-com--unknown.json"
+      "stereophonic-2024/deadline--greg-evans.json",
+      "stereophonic-2024/nypost--johnny-oleksinski.json",
+      "stereophonic-2024/thewrap--robert-hofler.json"
     ]
   }
 }
