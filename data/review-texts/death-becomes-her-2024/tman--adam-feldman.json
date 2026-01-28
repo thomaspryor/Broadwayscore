@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Death Becomes Her is a show that knows what it is: a campy, effects-heavy spectacle built around two powerhouse performances from Megan Hilty and Jennifer Simard.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Death Becomes Her is a show that knows what it is: a campy, effects-heavy spectacle built around two powerhouse performances from Megan Hilty and Jennifer Simard.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "knows what it is: a campy, effects-heavy spectacle",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "two powerhouse performances from Megan Hilty and Jennifer Simard",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a campy, effects-heavy spectacle",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges strong performances and clear artistic identity but describes it as 'campy spectacle,' suggesting qualified appreciation rather than unqualified praise. | GPT-4o-mini: The review highlights strong performances and a clear understanding of the show's campy nature, indicating a positive recommendation despite lacking detailed critique of other elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:08.633Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
