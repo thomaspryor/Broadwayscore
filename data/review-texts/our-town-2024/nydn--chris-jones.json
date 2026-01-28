@@ -10,9 +10,65 @@
   "bwwExcerpt": "Revival of Thornton Wilder’s ‘Our Town’ is moving, emotionally stirring production. Kenny Leon’s emotionally charged revival at the Ethel Barrymore Theatre has opened with an engaging if stylistically varied cast and a swift pacing that boils a three-act play down to an intermission-less 105 minutes.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "moving, emotionally stirring production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "emotionally charged revival",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "engaging if stylistically varied cast",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive language about the production being 'moving' and 'emotionally stirring' with praise for direction and pacing, though 'stylistically varied cast' suggests minor reservations about performance consistency. | GPT-4o-mini: The review expresses strong positive sentiments about the emotional impact and pacing of the production, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:00.452Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
