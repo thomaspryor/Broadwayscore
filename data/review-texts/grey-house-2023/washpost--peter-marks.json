@@ -9,12 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "The supernatural thriller 'Grey House' succeeds in creating an atmosphere of dread, but the payoff doesn't quite match the buildup of suspense.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The supernatural thriller 'Grey House' succeeds in creating an atmosphere of dread, but the payoff doesn't quite match the buildup of suspense.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "succeeds in creating an atmosphere of dread",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the payoff doesn't quite match the buildup of suspense",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges successful atmospheric creation but criticizes the resolution, indicating a mixed experience that leans slightly positive due to effective production elements. | GPT-4o-mini: The review indicates a mix of effective atmosphere but a disappointing conclusion, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:54.594Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

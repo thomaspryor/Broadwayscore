@@ -11,8 +11,67 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "low",
+    "range": {
+      "low": 40.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "deluxe production filled with A-list actors",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Holloway sure won the lottery; audiences wh",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Holloway sure won the lottery",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review cuts off mid-sentence but suggests the playwright got lucky with great production values and casting while implying audiences may not be so fortunate. | GPT-4o-mini: The review highlights the strong production and performances but lacks a clear recommendation or enthusiasm for the overall experience. | Note: Models differed by 25 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:06.183Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 70,
+    "scoreDelta": 25,
+    "thumbsMatch": false,
+    "expectedThumb": "Down",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 45, OpenAI: 70)",
+      "Score (58 → Flat) conflicts with aggregator thumbs (Down)"
+    ]
+  }
 }
