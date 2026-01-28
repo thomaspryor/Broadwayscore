@@ -19,6 +19,9 @@ Commercial data changes infrequently but meaningfully: a show recouping its inve
 | Estimated recoupment % | **Store as new field + display**, clearly marked as rough estimate |
 | Estimate display convention | **~ prefix** on all estimated commercial figures (e.g., `~65% recouped`, `~$1.0M weekly cost`) |
 | Recoupment tracker UI | **Yes** -- simple progress bar on show pages, driven by `estimatedRecoupmentPct` |
+| Touring productions | **"Tour Stop" designation** -- systematic policy for tours, return engagements; separate from original productions |
+| Miracle reclassifications | **Harry Potter → Miracle now**; Hadestown/Oh Mary stay Windfall; Mamma Mia → Tour Stop |
+| Shadow classifier timeline | **8-12 weeks** before promoting heuristic rules to live |
 
 ## Primary Data Source
 
@@ -189,7 +192,12 @@ Each weekly run appends an entry with: date, sources consulted, changes made, sh
 ### Live rules (conservative)
 
 ```
-NEVER CHANGE: Miracle, Nonprofit (stable categories)
+NEVER CHANGE: Miracle, Nonprofit, Tour Stop (stable categories)
+
+IF productionType == "tour-stop" OR "return-engagement":
+  Set designation -> "Tour Stop"
+  Do NOT apply Miracle/Windfall/Fizzle/Flop rules
+  Track grosses for the Broadway engagement only
 
 IF recouped announced (official source):
   Set recouped=true, recoupedDate, recoupedWeeks
@@ -222,6 +230,7 @@ Compute heuristic designations using gross/cap ratio + recoupment speed. Log dis
 | Trickle | Broke even or modest profit |
 | Fizzle | Closed without recouping (~30%+ recovered) |
 | Flop | Closed without recouping (~<30% recovered) |
+| Tour Stop | National tour engagement on Broadway -- not rated as original production |
 
 Replace current "Profit > Nx" language which we can't actually compute.
 
@@ -241,7 +250,7 @@ Keep TBD as single category. Add visible `estimatedRecoupmentPct` field:
 | Hamilton | Miracle | 91x | Correct |
 | Lion King | Miracle | 86x | Correct |
 | Book of Mormon | Miracle | 77x | Correct |
-| **Mamma Mia** | **Windfall** | **67x** | **Shadow classifier: Miracle** |
+| **Mamma Mia** | **Windfall** | **67x** | **→ Tour Stop** (touring production; original 2001 run → separate Miracle entry) |
 | Aladdin | Miracle | 54x | Correct |
 | **Hadestown** | **Windfall** | **22x** | **Shadow classifier: Miracle** |
 | **Oh Mary** | **Windfall** | **20x** | **Shadow classifier: Miracle** |
@@ -249,7 +258,7 @@ Keep TBD as single category. Add visible `estimatedRecoupmentPct` field:
 | And Juliet | Windfall | 10x | Correct |
 | Stereophonic | Windfall | 7x | Correct |
 | **Outsiders** | **TBD** | **6.4x** | **Needs update: recouped $22M** |
-| **Harry Potter** | **Windfall** | **4.9x** | **Shadow classifier: Miracle** (5+ years profitable, $2.1M/wk at 96% capacity) |
+| **Harry Potter** | **Windfall** | **4.9x** | **→ Miracle** (5+ years profitable, $2.1M/wk at 96% capacity, most expensive play ever to recoup) |
 
 ### Data issues to fix
 - **Moulin Rouge:** grosses.json shows $72M (should be ~$194M+)
@@ -257,11 +266,73 @@ Keep TBD as single category. Add visible `estimatedRecoupmentPct` field:
 - **Six:** no grosses data at all
 - **Outsiders:** cap listed as $19M, should be $22M per announcement
 
-## Remaining Open Questions
+## Touring Productions Policy
 
-1. **Miracle reclassifications:** Should Mamma Mia, Harry Potter, Oh Mary, Hadestown be manually upgraded now, or wait for shadow classifier validation? Mamma Mia at 67x is the clearest case.
+Broadway increasingly hosts touring productions, return engagements, and limited-run revivals from national tours. Recent examples: Mamma Mia (25th Anniversary Tour, Aug 2025 - Feb 2026), Beetlejuice (returned after national tour), The Wiz (2024 revival/tour stop). These need systematic handling because they are fundamentally different from original productions.
 
-2. **Shadow classifier promotion timeline:** How many weeks of data before promoting heuristic rules to live? Suggestion: 8-12 weeks.
+### The problem
+
+A touring production's Broadway stop is one engagement in a larger tour. Its capitalization, recoupment, and gross/cap ratio are not comparable to an original production that opened on Broadway. Mamma Mia's current entry mixes the original 2001 production's $10M capitalization with the 2025 tour stop's grosses -- the 67x gross/cap ratio is meaningless.
+
+### Rules
+
+1. **Add `productionType` field** to each show in `commercial.json`:
+   - `"original"` -- Standard Broadway production (default, most shows)
+   - `"tour-stop"` -- National tour stopping on Broadway for a limited engagement
+   - `"return-engagement"` -- Show returning to Broadway after closing (e.g., post-tour return)
+
+2. **Tour stops get their own commercial entry** scoped to the Broadway engagement only:
+   - Capitalization: the Broadway engagement's cost (if known), NOT the original production's
+   - Grosses: only from the current Broadway run
+   - Designation: `"Tour Stop"` -- a display-only label, not a performance judgment
+   - Notes: link to the original production's entry if one exists (e.g., "See also: mamma-mia-2001")
+
+3. **Original production entries are preserved separately** if they exist:
+   - Mamma Mia's original 2001 run should be its own entry (`mamma-mia-2001`) with the Miracle designation it deserves
+   - The current `mamma-mia` entry becomes the 2025 tour stop
+
+4. **Display treatment:**
+   - Tour stops show as `"Tour Stop"` in the designation badge (neutral color, like TBD)
+   - No gross/cap ratio comparison on tour stops
+   - Notes field explains the relationship: "25th Anniversary Tour -- Broadway engagement only"
+
+5. **Automation:**
+   - The weekly script checks `shows.json` for `limitedRun: true` + keywords in title/notes ("tour", "anniversary", "return engagement") to suggest `productionType: "tour-stop"`
+   - New tour stops flagged in the GitHub issue for confirmation
+   - Tour stop entries are never auto-designated beyond "Tour Stop"
+
+### New designation
+
+| Designation | Description |
+|-------------|-------------|
+| Tour Stop | National tour engagement on Broadway -- not rated as an original production |
+
+This is added to the designation system alongside Miracle, Windfall, etc. It is not a performance judgment -- it simply indicates the commercial data is scoped to a limited Broadway engagement.
+
+### Data model addition
+
+```json
+{
+  "productionType": "tour-stop",
+  "originalProductionId": "mamma-mia-2001"
+}
+```
+
+- `productionType` -- `"original"` (default), `"tour-stop"`, or `"return-engagement"`
+- `originalProductionId` -- links to the original production's entry in `commercial.json` (if applicable)
+
+## Resolved Questions
+
+### Miracle reclassifications (RESOLVED)
+
+- **Harry Potter → Miracle** (upgrade now). 5+ years profitable, $2.1M/wk at 96% capacity, $35.5M cap recouped Dec 2022. Most expensive play ever to recoup. This is a clear Miracle.
+- **Hadestown → stays Windfall.** Strong show but let the shadow classifier track it. If it continues performing well, it will be flagged for upgrade.
+- **Oh Mary → stays Windfall.** Too new to be sure -- opened 2024, strong early returns but needs more runway.
+- **Mamma Mia → Tour Stop.** Handled by touring productions policy above. The original 2001 production deserves a separate entry as Miracle.
+
+### Shadow classifier promotion timeline (RESOLVED)
+
+8-12 weeks of data collection before considering promoting shadow classifier heuristics to live designation rules. The classifier needs enough cases to validate against (shows where we have real profit estimates from the Reddit analyst).
 
 ## Schedule, Secrets, Cost
 
