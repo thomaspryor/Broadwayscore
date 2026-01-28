@@ -167,6 +167,7 @@ data/
   shows.json                      # Show metadata with full details
   reviews.json                    # Critic reviews with scores and original ratings
   grosses.json                    # Box office data (weekly + all-time stats)
+  grosses-history.json            # 55+ weeks of historical grosses for WoW/YoY comparisons
   new-shows-pending.json          # Auto-generated: new shows awaiting review data
   historical-shows-pending.json   # Auto-generated: historical shows awaiting metadata
   show-score.json                 # Show Score aggregator data (audience scores + critic reviews)
@@ -218,10 +219,10 @@ data/
         grossYoY: number | null,
         capacity: number | null,
         capacityPrevWeek: number | null,
-        capacityYoY: number | null,      // Not available from BWW
+        capacityYoY: number | null,      // Enriched from grosses-history.json (~52 weeks ago)
         atp: number | null,              // Average Ticket Price
-        atpPrevWeek: number | null,      // Not available from BWW
-        atpYoY: number | null,           // Not available from BWW
+        atpPrevWeek: number | null,      // Enriched from grosses-history.json (prev week)
+        atpYoY: number | null,           // Enriched from grosses-history.json (~52 weeks ago)
         attendance: number | null,
         performances: number | null
       },
@@ -239,10 +240,50 @@ data/
 **Data availability from BroadwayWorld:**
 - ✅ Gross: current, prev week, YoY
 - ✅ Capacity: current, prev week
-- ❌ Capacity YoY: not provided
 - ✅ ATP: current only
-- ❌ ATP prev week/YoY: not provided
 - ✅ All-time stats: gross, performances, attendance (all shows)
+
+**Self-computed from grosses-history.json (not available from BWW):**
+- ✅ Capacity YoY: current capacity vs ~52 weeks ago
+- ✅ ATP prev week (WoW): current ATP vs previous week
+- ✅ ATP YoY: current ATP vs ~52 weeks ago
+
+### Grosses History System
+
+`grosses-history.json` stores weekly snapshots of box office data to enable WoW and YoY comparisons for fields BWW doesn't provide (capacity YoY, ATP WoW, ATP YoY).
+
+**How it works:**
+1. `scrape-grosses.ts` runs weekly (Tuesday) and scrapes BWW for current data
+2. After scraping, it looks up `grosses-history.json` for previous week and ~52-week-ago data
+3. Enriches `grosses.json` with `atpPrevWeek`, `capacityYoY`, `atpYoY` from history
+4. Saves the current week's snapshot into `grosses-history.json` for future lookups
+
+**History data schema:**
+```typescript
+{
+  _meta: { description: string, lastUpdated: string },
+  weeks: {
+    "YYYY-MM-DD": {  // Week ending date (Sunday)
+      [showSlug: string]: {
+        gross: number | null,
+        capacity: number | null,
+        atp: number | null,
+        attendance: number | null,
+        performances: number | null
+      }
+    }
+  }
+}
+```
+
+**Backfill:** Historical data was backfilled from Playbill (`playbill.com/grosses?week=YYYY-MM-DD`) using `scripts/backfill-grosses-history.ts`. The backfill workflow uses `domcontentloaded` (not `networkidle` - Playbill's tracking scripts cause timeouts) with 3 retries per week.
+
+**Key files:**
+- `data/grosses-history.json` - 55+ weeks of snapshots (Jan 2025 - present)
+- `scripts/scrape-grosses.ts` - Weekly scraper + history enrichment logic
+- `scripts/backfill-grosses-history.ts` - One-time Playbill backfill script
+- `.github/workflows/backfill-grosses.yml` - Manual trigger for backfill
+- `src/components/BoxOfficeStats.tsx` - Displays WoW/YoY arrows (auto-shows when data is non-null)
 
 ### Audience Buzz Schema (audience-buzz.json)
 ```typescript
@@ -297,8 +338,9 @@ This gives more weight to sources with larger sample sizes.
 - `scripts/discover-new-shows.js` - Discovers new/upcoming shows from Broadway.org (runs daily)
 - `scripts/discover-historical-shows.js` - Discovers closed shows from past seasons (manual trigger)
 - `scripts/lib/deduplication.js` - **Centralized show deduplication** (prevents duplicate show entries)
-- `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses scraper (Playwright)
+- `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses scraper (Playwright) + history enrichment for WoW/YoY
 - `scripts/scrape-alltime.ts` - BroadwayWorld all-time stats scraper (Playwright)
+- `scripts/backfill-grosses-history.ts` - Playbill historical grosses backfill (Playwright)
 - `scripts/scrape-reddit-sentiment.js` - Reddit r/Broadway sentiment scraper (ScrapingBee + Claude Opus)
 - `scripts/collect-review-texts-v2.js` - Enhanced review text scraper with stealth mode, ScrapingBee fallback, Archive.org fallback
 - `scripts/audit-scores.js` - Validates all review scores, flags wrong conversions, sentiment placeholders, duplicates
@@ -471,9 +513,19 @@ All automation runs via GitHub Actions - no local commands needed.
 ### `.github/workflows/update-grosses.yml`
 - **Runs:** Every Tuesday & Wednesday at 3pm UTC (10am ET)
 - **Does:** Scrapes BroadwayWorld for weekly box office data and all-time stats
+- **Also:** Enriches `grosses.json` with WoW/YoY data from `grosses-history.json`, saves current week to history
 - **Data source:** BroadwayWorld (grosses.cfm for weekly, grossescumulative.cfm for all-time)
 - **Note:** Data is typically released Monday/Tuesday after the week ends on Sunday
 - **Skips:** If data for the current week already exists (unless force=true)
+
+### `.github/workflows/backfill-grosses.yml`
+- **Runs:** Manual trigger only (workflow_dispatch)
+- **Does:** Scrapes Playbill for historical weekly grosses data to populate `grosses-history.json`
+- **Source:** `playbill.com/grosses?week=YYYY-MM-DD` (requires JS rendering via Playwright)
+- **Options:** `weeks` (default 55), `start_from` (YYYY-MM-DD)
+- **Reliability:** Uses `domcontentloaded` (not `networkidle`), 3 retries per week, `if: always()` commit, push retry with rebase
+- **Script:** `scripts/backfill-grosses-history.ts`
+- **Note:** Only needed for initial setup or extending history range. Weekly updates happen automatically via `update-grosses.yml`
 
 ### `.github/workflows/discover-historical-shows.yml`
 - **Runs:** Manual trigger only (workflow_dispatch)
