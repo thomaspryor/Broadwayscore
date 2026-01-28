@@ -5,6 +5,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { getAllShows, ComputedShow, getDataStats, getUpcomingShows, getAudienceBuzz } from '@/lib/data';
 import { getOptimizedImageUrl } from '@/lib/images';
+import ShowImage from '@/components/ShowImage';
 import ScoreTooltip from '@/components/ScoreTooltip';
 
 // URL parameter values
@@ -288,26 +289,27 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
     >
       {/* Thumbnail - larger square image */}
       <div className="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-surface-overlay">
-        {show.images?.thumbnail ? (
-          <img
-            src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
-            alt=""
-            aria-hidden="true"
-            loading={index < 4 ? "eager" : "lazy"}
-            fetchPriority={index < 4 ? "high" : "auto"}
-            width={112}
-            height={112}
-            decoding="async"
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 will-change-transform"
-          />
-        ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 px-2" aria-hidden="true">
-            <div className="text-2xl mb-0.5">🎭</div>
-            {show.status === 'previews' && (
-              <div className="text-[9px] text-gray-500 text-center font-medium leading-tight">Images<br/>soon</div>
-            )}
-          </div>
-        )}
+        <ShowImage
+          sources={[
+            show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,
+          ]}
+          alt=""
+          ariaHidden
+          priority={index < 4}
+          loading={index < 4 ? "eager" : "lazy"}
+          width={112}
+          height={112}
+          decoding="async"
+          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 will-change-transform"
+          fallback={
+            <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 px-2" aria-hidden="true">
+              <div className="text-2xl mb-0.5">🎭</div>
+              {show.status === 'previews' && (
+                <div className="text-[9px] text-gray-500 text-center font-medium leading-tight">Images<br/>soon</div>
+              )}
+            </div>
+          }
+        />
       </div>
 
       {/* Info */}
@@ -400,23 +402,25 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
     >
       {/* Poster container - 2:3 aspect ratio matches standard Broadway poster dimensions */}
       <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3] mb-1.5">
-        {show.images?.poster || show.images?.thumbnail ? (
-          <img
-            src={getOptimizedImageUrl(show.images.poster || show.images.thumbnail, 'card')}
-            alt=""
-            aria-hidden="true"
-            loading={priority ? "eager" : "lazy"}
-            fetchPriority={priority ? "high" : "auto"}
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-          />
-        ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 px-2" aria-hidden="true">
-            <div className="text-2xl mb-1">🎭</div>
-            {show.status === 'previews' && (
-              <div className="text-[10px] text-gray-500 text-center font-medium">Images<br/>coming soon</div>
-            )}
-          </div>
-        )}
+        <ShowImage
+          sources={[
+            show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'card') : null,
+            show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'card') : null,
+          ]}
+          alt=""
+          ariaHidden
+          priority={priority}
+          loading={priority ? "eager" : "lazy"}
+          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+          fallback={
+            <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 px-2" aria-hidden="true">
+              <div className="text-2xl mb-1">🎭</div>
+              {show.status === 'previews' && (
+                <div className="text-[10px] text-gray-500 text-center font-medium">Images<br/>coming soon</div>
+              )}
+            </div>
+          }
+        />
         {/* Score overlay */}
         <div className="absolute bottom-1.5 right-1.5">
           <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${

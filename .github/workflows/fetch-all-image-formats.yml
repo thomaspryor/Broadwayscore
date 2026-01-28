@@ -48,15 +48,21 @@ jobs:
           fi
           node scripts/fetch-show-images-auto.js $ARGS
 
+      - name: Archive images locally
+        run: |
+          echo "Downloading CDN images to local storage..."
+          node scripts/archive-show-images.js
+
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet data/; then
+          if git diff --quiet data/ && [ -z "$(git ls-files --others --exclude-standard public/images/shows/)" ]; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
             echo "Changes detected:"
             git diff --stat data/
+            git ls-files --others --exclude-standard public/images/shows/ | head -20
           fi
 
       - name: Commit and push if changed
@@ -64,12 +70,12 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/
+          git add data/ public/images/shows/
 
-          git commit -m "chore: Auto-fetch show images
+          git commit -m "chore: Auto-fetch and archive show images
 
-          Fetched: square (thumbnail), portrait (poster), landscape (hero)
-          Used auto-discovery to find TodayTix IDs
+          Fetched from TodayTix CDN and archived locally as WebP.
+          Local images served directly — no external CDN dependency.
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
