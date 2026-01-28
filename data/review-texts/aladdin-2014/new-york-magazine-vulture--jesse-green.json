@@ -10,64 +10,8 @@
   "showScoreExcerpt": "\"So why is Aladdin a bit of a chore? Even the best of what the writers offer doesn’t seem to stick very long; if it weren’t for Nicholaw’s merciless flogging, you feel the story would simply evaporate in the desert heat.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": null,
-  "assignedScore": 39,
+  "assignedScore": null,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true,
-  "llmScore": {
-    "score": 39,
-    "confidence": "high",
-    "range": {
-      "low": 33,
-      "high": 45
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": 28,
-      "music": null,
-      "performances": null,
-      "direction": 53
-    },
-    "keyPhrases": [
-      {
-        "quote": "So why is Aladdin a bit of a chore?",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Even the best of what the writers offer doesn't seem to stick very long",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "you feel the story would simply evaporate in the desert heat",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic frames the show as 'a chore' and suggests the material is so weak it would 'evaporate' without the director's aggressive efforts, indicating a clear negative assessment despite acknowledging the director's work. | GPT-4o-mini: The review expresses significant dissatisfaction with the story and overall experience, indicating a clear negative recommendation.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:40.002Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 40,
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
-  }
+  "needsScoring": true
 }

@@ -10,64 +10,8 @@
   "showScoreExcerpt": "\"You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-lion-king",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": null,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true,
-  "llmScore": {
-    "score": 85,
-    "confidence": "high",
-    "range": {
-      "low": 80,
-      "high": 90
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 85
-    },
-    "keyPhrases": [
-      {
-        "quote": "most beautiful and spectacular sights theater can offer",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "You will be bombarded",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "some of the most beautiful and spectacular sights theater can offer",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic uses superlative language about visual spectacle ('most beautiful and spectacular sights theater can offer'), suggesting strong enthusiasm for the production design and staging. | GPT-4o-mini: The review highlights the stunning visual aspects of the production, suggesting a strong recommendation despite lacking detail on other components.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:33.593Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
-  }
+  "needsScoring": true
 }

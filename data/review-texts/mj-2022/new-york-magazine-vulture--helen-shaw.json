@@ -10,64 +10,8 @@
   "showScoreExcerpt": "\"If there is a scientific experiment to discover whether or not a jukebox musical ruins even our greatest playwrights, this is it. Perhaps it would have been better just to let her go free. MJ wants to be a concert so much â freed from narrative, it could just be bop after banger after blockbuster, the Beatlemania of our time, animated by Myles Frostâs uncanny portrait. Every moment when people are speaking instead of singing feels wrong. As a concert, it could simply elide all those inconvenient and tragic elements of the Michael Jackson legacy. So why isnât it one?\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mj",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": null,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true,
-  "llmScore": {
-    "score": 42,
-    "confidence": "medium",
-    "range": {
-      "low": 30.5,
-      "high": 53.5
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": 25,
-      "music": 80,
-      "performances": 85,
-      "direction": 35
-    },
-    "keyPhrases": [
-      {
-        "quote": "Every moment when people are speaking instead of singing feels wrong",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Myles Frost's uncanny portrait",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "MJ wants to be a concert so much",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic praises Frost's performance and the music but fundamentally questions the show's concept as a jukebox musical, suggesting it would work better as a concert than a theatrical narrative. | GPT-4o-mini: The review expresses strong criticism of the show's narrative structure and overall concept, indicating a clear negative sentiment. | Note: Models differed by 13 points.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:47.274Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 35,
-    "scoreDelta": 13,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
-  }
+  "needsScoring": true
 }

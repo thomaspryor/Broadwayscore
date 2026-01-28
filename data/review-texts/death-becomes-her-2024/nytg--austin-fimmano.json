@@ -10,64 +10,8 @@
   "showScoreExcerpt": "\"There is love and fandom in every element of this show, like recreations of the movie's outfits and iconic lines\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/death-becomes-her-broadway",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": null,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true,
-  "llmScore": {
-    "score": 74,
-    "confidence": "medium",
-    "range": {
-      "low": 65,
-      "high": 83
-    },
-    "bucket": "Mixed",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 78
-    },
-    "keyPhrases": [
-      {
-        "quote": "There is love and fandom in every element of this show",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "recreations of the movie's outfits and iconic lines",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "love and fandom in every element of this show",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The excerpt expresses clear appreciation for the production's attention to detail and faithful adaptation, suggesting a positive recommendation despite limited context. | GPT-4o-mini: The review expresses positive sentiment about the show's elements but lacks a strong overall recommendation.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:55.305Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 70,
-    "scoreDelta": 8,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
-  }
+  "needsScoring": true
 }

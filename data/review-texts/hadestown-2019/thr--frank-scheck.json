@@ -10,64 +10,8 @@
   "showScoreExcerpt": "“The material has been given an enthralling environmental staging...Energetically sung by the powerful-voiced ensemble, the music is terrific: endlessly inventive and eclectic, as melodic as it is funky and folksy...The lyrics aren't as scintillating as the music, and the action feels overly busy at times. The dialogue can be wince-inducing...It hardly matters, thanks to the music's relentless energy and inventiveness as delivered by the crack band and terrific ensemble.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/hadestown-broadway",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": null,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true,
-  "llmScore": {
-    "score": 77,
-    "confidence": "high",
-    "range": {
-      "low": 70.5,
-      "high": 83.5
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": 48,
-      "music": 87,
-      "performances": 85,
-      "direction": 82
-    },
-    "keyPhrases": [
-      {
-        "quote": "the music is terrific: endlessly inventive and eclectic, as melodic as it is funky and folksy",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The dialogue can be wince-inducing",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It hardly matters, thanks to the music's relentless energy and inventiveness",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Despite significant script weaknesses, the critic ultimately dismisses these flaws because the music and performances are so strong, indicating a clear positive recommendation. | GPT-4o-mini: The review highlights strong music and energy but notes issues with the lyrics and dialogue, leading to a clear recommendation with some reservations.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:15.967Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 75,
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
-  }
+  "needsScoring": true
 }

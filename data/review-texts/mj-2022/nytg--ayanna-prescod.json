@@ -10,64 +10,8 @@
   "showScoreExcerpt": "\"Paul Tazewellâs magnificent costume design carries the cast through the MJ timeline seamlessly. A killer set by Derek McLane, amplified by gorgeous lighting by Natasha Katz, gives the show a visual beauty that makes it hard to look away.\n\nWhile Jackson's story is flawed, itâs too complicated for anyone who hasnât danced in his shoes. MJ The Musical, however, is the perfect salutation to the life of an imperfect but gifted icon.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mj",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": null,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true,
-  "llmScore": {
-    "score": 79,
-    "confidence": "high",
-    "range": {
-      "low": 73,
-      "high": 85
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": 58,
-      "music": null,
-      "performances": null,
-      "direction": 85
-    },
-    "keyPhrases": [
-      {
-        "quote": "magnificent costume design carries the cast through the MJ timeline seamlessly",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the perfect salutation to the life of an imperfect but gifted icon",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Jackson's story is flawed, itâs too complicated",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Despite acknowledging story flaws, the review emphasizes magnificent design elements and concludes it's 'the perfect salutation' to Jackson's legacy, indicating a clear positive recommendation. | GPT-4o-mini: The review highlights strong visual elements and a positive overall sentiment towards the show, despite acknowledging flaws in Jackson's story.",
-    "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:54.627Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
-  }
+  "needsScoring": true
 }

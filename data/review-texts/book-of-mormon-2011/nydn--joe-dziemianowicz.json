@@ -10,65 +10,8 @@
   "showScoreExcerpt": "\"Oh boy, it's a real winner.The show is blissfully original, irreverent, outspoken and hilarious. And all that's tucked inside good -- no, great -- old-fashioned musical. It's a show where you catch yourself laughing one minute, mouth agape the next, eventually wiping away tears, and, finally, cheering.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-book-of-mormon",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": null,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true,
-  "llmScore": {
-    "score": 94,
-    "confidence": "high",
-    "range": {
-      "low": 87.5,
-      "high": 100
-    },
-    "bucket": "Rave",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": 90,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Oh boy, it's a real winner",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "blissfully original, irreverent, outspoken and hilarious",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "great -- old-fashioned musical",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic uses unqualified superlatives like 'real winner' and 'great' while describing an emotional journey from laughter to tears to cheering, indicating strong enthusiasm without reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm and highlights multiple emotional responses, indicating a strong recommendation.",
-    "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:53.408Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
-  },
-  "bwwExcerpt": ": It's a show where you catch yourself laughing one minute, mouth agape the next, eventually wiping away tears, and, finally, cheering. Stone and Parker are famous for their take-no-prisoners, nothing-is-sacred approach to humor. And Lopez knows about thumbing his nose at contemporary conventions. They all share credit for the book, music and lyrics. Silly, soulful and (no surprise with these guys) seriously rude, the score is consistently chipper and clever and keeps the pages in this \"Book\" tu"
+  "needsScoring": true
 }
