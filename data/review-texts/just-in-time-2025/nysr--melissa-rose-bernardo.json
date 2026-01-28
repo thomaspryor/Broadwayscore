@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 86,
+    "confidence": "high",
+    "range": {
+      "low": 78.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 89,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "his renditions of Darin's standards...are thrilling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The show is a testament to one man's pure, unabashed love of performing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Make that two men",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for Groff's thrilling performance and the show's celebration of performance craft, with enthusiastic language like 'thrilling' and 'testament,' indicating clear recommendation despite being a brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the performances, particularly highlighting the thrilling renditions and the overall love of performing, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:18.189Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 88,
+    "scoreDelta": 5,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
