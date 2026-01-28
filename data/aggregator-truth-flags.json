@@ -1,8 +1,8 @@
 {
   "_meta": {
-    "generatedAt": "2026-01-28T18:53:20.673Z",
+    "generatedAt": "2026-01-28T18:59:31.484Z",
     "description": "Flagged shows with potential anomalies",
-    "totalFlagged": 49
+    "totalFlagged": 48
   },
   "shows": {
     "two-strangers-bway-2025": {
@@ -86,16 +86,6 @@
         {
           "type": "check-bww-url",
           "message": "BWW has 0 reviews but we have 28 local",
-          "severity": "warning"
-        }
-      ]
-    },
-    "hadestown-2019": {
-      "title": "Hadestown",
-      "flags": [
-        {
-          "type": "likely-duplicates",
-          "message": "localCount (75) > maxAggregator (19) * 1.5",
           "severity": "warning"
         }
       ]

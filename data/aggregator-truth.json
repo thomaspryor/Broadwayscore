@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-01-28T18:53:20.177Z",
+    "generatedAt": "2026-01-28T18:59:30.972Z",
     "description": "Expected review counts from all three aggregators compared to local counts",
     "sources": {
       "showScore": "show-score.com",
@@ -361,8 +361,9 @@
     },
     "hadestown-2019": {
       "showScore": {
-        "reviewCount": null,
-        "hasArchive": false
+        "reviewCount": 51,
+        "hasArchive": true,
+        "method": "heading"
       },
       "dtli": {
         "reviewCount": 5,
@@ -379,9 +380,9 @@
         "hasArchive": true,
         "method": "article-body"
       },
-      "maxAggregator": 19,
+      "maxAggregator": 51,
       "localCount": 75,
-      "ratio": 3.95
+      "ratio": 1.47
     },
     "mj-2022": {
       "showScore": {
