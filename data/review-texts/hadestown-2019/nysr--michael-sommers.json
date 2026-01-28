@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": 73,
+      "performances": null,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "looks and sounds terrific",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it lacks something vital",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "reminds me of a handsome ancient statue that is missing its head",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic praises the production values and sound but delivers a devastating critique of the show's fundamental essence, comparing it to a 'headless statue' - beautiful but missing something crucial. | GPT-4o-mini: While the musical has strong visual and auditory elements, it ultimately feels incomplete, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:07.037Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

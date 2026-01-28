@@ -9,12 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, inspired by Alicia Keys's coming-of-age in Manhattan Plaza, has an appealing authenticity and emotional honesty that help compensate for a familiar story structure.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, inspired by Alicia Keys's coming-of-age in Manhattan Plaza, has an appealing authenticity and emotional honesty that help compensate for a familiar story structure.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "appealing authenticity and emotional honesty",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "help compensate for a familiar story structure",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges positive qualities but frames them as compensation for structural weaknesses, suggesting a qualified, lukewarm recommendation. | GPT-4o-mini: The review highlights emotional strengths but notes a familiar story structure, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:13.218Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
