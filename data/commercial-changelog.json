@@ -1,7 +1,298 @@
-{
-  "_meta": {
-    "description": "Automated commercial data update log",
-    "lastUpdated": null
-  },
-  "entries": []
-}
+[
+  {
+    "date": "2026-01-28",
+    "timestamp": "2026-01-28T16:30:04.061Z",
+    "changesApplied": 29,
+    "changesFlagged": 1,
+    "changesSkipped": 0,
+    "newEntries": 3,
+    "shadowDisagreements": 9,
+    "applied": [
+      {
+        "slug": "the-outsiders",
+        "field": "recoupedWeeks",
+        "oldValue": null,
+        "newValue": 744,
+        "confidence": "high",
+        "source": "Section C: Reddit Grosses Analysis - 'Finally recouped their initial $22 million investment after 744 performances'"
+      },
+      {
+        "slug": "the-outsiders",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 725000,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - shows weekly cost of $725k"
+      },
+      {
+        "slug": "the-outsiders",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis post"
+      },
+      {
+        "slug": "hells-kitchen",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 775000,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - shows weekly cost of $775k"
+      },
+      {
+        "slug": "hells-kitchen",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis post"
+      },
+      {
+        "slug": "the-great-gatsby",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          10,
+          30
+        ],
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - recoup listed as 10-30%"
+      },
+      {
+        "slug": "the-great-gatsby",
+        "field": "weeklyRunningCost",
+        "oldValue": 900000,
+        "newValue": 850000,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - shows weekly cost of $850k"
+      },
+      {
+        "slug": "maybe-happy-ending",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          10,
+          30
+        ],
+        "newValue": [
+          20,
+          40
+        ],
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - recoup listed as 20-40%"
+      },
+      {
+        "slug": "maybe-happy-ending",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 765000,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - shows weekly cost of $765k"
+      },
+      {
+        "slug": "maybe-happy-ending",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis post"
+      },
+      {
+        "slug": "death-becomes-her",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          60,
+          80
+        ],
+        "newValue": [
+          10,
+          30
+        ],
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - recoup listed as 10-30%"
+      },
+      {
+        "slug": "death-becomes-her",
+        "field": "weeklyRunningCost",
+        "oldValue": 1100000,
+        "newValue": 900000,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - shows weekly cost of $900k"
+      },
+      {
+        "slug": "operation-mincemeat",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          20
+        ],
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - recoup listed as 0-20%"
+      },
+      {
+        "slug": "operation-mincemeat",
+        "field": "weeklyRunningCost",
+        "oldValue": 950000,
+        "newValue": 500000,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - shows weekly cost of $500k"
+      },
+      {
+        "slug": "buena-vista-social-club",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          10,
+          30
+        ],
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - recoup listed as 10-30%"
+      },
+      {
+        "slug": "buena-vista-social-club",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 700000,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - shows weekly cost of $700k"
+      },
+      {
+        "slug": "buena-vista-social-club",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis post"
+      },
+      {
+        "slug": "just-in-time",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 600000,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - shows weekly cost of $600k"
+      },
+      {
+        "slug": "just-in-time",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis post"
+      },
+      {
+        "slug": "ragtime",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 850000,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - shows weekly cost of $850k"
+      },
+      {
+        "slug": "ragtime",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis post"
+      },
+      {
+        "slug": "chess",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          10,
+          20
+        ],
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - recoup listed as 10-20%"
+      },
+      {
+        "slug": "chess",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 900000,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - shows weekly cost of $900k"
+      },
+      {
+        "slug": "chess",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis post"
+      },
+      {
+        "slug": "two-strangers",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          0
+        ],
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - recoup listed as 0-0%"
+      },
+      {
+        "slug": "two-strangers",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 480000,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - shows weekly cost of $480k"
+      },
+      {
+        "slug": "two-strangers",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis post"
+      },
+      {
+        "slug": "mamma-mia",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 750000,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis - shows weekly cost of $750k"
+      },
+      {
+        "slug": "mamma-mia",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis post"
+      }
+    ],
+    "flagged": [
+      {
+        "slug": "liberation",
+        "field": "designation",
+        "newValue": "Flop",
+        "flagReason": "Designation upgrade between non-TBD categories requires manual review"
+      }
+    ]
+  }
+]
