@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of the 1992 film is a flashy spectacle that captures the movie's dark comedy while adding its own theatrical flair.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of the 1992 film is a flashy spectacle that captures the movie's dark comedy while adding its own theatrical flair.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "flashy spectacle",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "captures the movie's dark comedy",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "adding its own theatrical flair",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Brief review with mild positive language about spectacle and faithfulness to source material, but lacks clear recommendation or enthusiasm that would indicate strong endorsement. | GPT-4o-mini: The review expresses a clear positive sentiment about the production's visual and thematic elements, suggesting a recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:09:00.157Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 75,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
