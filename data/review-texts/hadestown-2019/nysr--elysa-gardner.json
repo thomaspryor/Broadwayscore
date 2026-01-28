@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 76,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mitchell is a gifted tunesmith, and lyricist, who approaches musical theater with a clear, infectious sense of wonder",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "melodic savvy, if not entirely consistent over a run time of nearly two and a half hours",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "mined a beautiful and theatrically resonant tale from their source",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt shows clear appreciation for the creative team's talents and the source material adaptation, with only minor reservations about consistency and runtime, suggesting a positive recommendation despite being incomplete. | GPT-4o-mini: The review expresses strong praise for the music and the storytelling, indicating a clear recommendation despite some minor reservations about consistency.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:14:59.097Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

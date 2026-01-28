@@ -10,9 +10,67 @@
   "bwwExcerpt": "The show has nonetheless arrived at the Shubert Theatre, with its excellent principal cast (lovingly directed by Michael Greif) and its buoyant book and score intact — and, for the most part, the transition feels seamless. The company is led by the bubbly Maleah Joi Moon, who made her professional debut in the Public staging as 17-year-old Ali, a character brd on the young Ms. Keys, though there are striking differences: At Ali’s age, Ms. Keys had already graduated the Professional Performing Ar",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HELLS-KITCHEN-Opens-on-Broadway-20240420",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Meh"
+  "bwwThumb": "Meh",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 78,
+      "performances": 84,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "excellent principal cast (lovingly directed by Michael Greif)",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "buoyant book and score intact",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the transition feels seamless",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Multiple clear positive signals about cast, direction, book and score with no negative elements mentioned in this excerpt, suggesting a positive recommendation despite the fragment being incomplete. | GPT-4o-mini: The review highlights strong performances and a seamless transition, indicating a positive recommendation despite lacking detailed critiques of the book and music.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:33.597Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "scoreDelta": 5,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (78 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

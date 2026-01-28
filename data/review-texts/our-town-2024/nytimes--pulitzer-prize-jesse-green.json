@@ -10,8 +10,64 @@
   "bwwExcerpt": "And though some of the effectiveness of the revival is clearly the result of Kenny Leon’s swift and unsentimental direction, and of a fine cast led by the mercilessly acute Jim Parsons as the Stage Manager, we must begin with wonder and admiration for the play itself. In its portrait of “the life of a village against the life of the stars,” as Wilder described it, the monumental is always expressed in the miniature, and the miniature is always crushed by the monument.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 88,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "we must begin with wonder and admiration for the play itself",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Kenny Leon's swift and unsentimental direction, and of a fine cast led by the mercilessly acute Jim Parsons",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "some of the effectiveness of the revival",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the play itself with 'wonder and admiration,' positive assessment of direction and cast including standout performance by Parsons, with no significant criticisms expressed. | GPT-4o-mini: The review expresses strong admiration for the play and its direction, particularly praising the performances, indicating a solid recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:43.150Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

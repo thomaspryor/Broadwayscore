@@ -11,10 +11,66 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "\"...it’s unbearable: in its beauty, yes, but more so in its refusal to offer beauty as a cure when it is only, at best, a comfort.\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/our-town-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/our-town-broadway",
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": null,
+      "performances": 88,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "we must begin with wonder and admiration for the play itself",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it's unbearable: in its beauty, yes, but more so in its refusal to offer beauty as a cure",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Kenny Leon's swift and unsentimental direction, and of a fine cast led by the mercilessly acute Jim Parsons",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses profound admiration for both the play and production with sophisticated praise, describing the work as having overwhelming beauty and emotional power. | GPT-4o-mini: The review expresses strong admiration for the play and performances, particularly highlighting the direction and the lead actor, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:38.184Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
