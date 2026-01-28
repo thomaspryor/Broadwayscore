@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 93,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "so talented, so appealing, so utterly adorable, that if you're not thoroughly enchanted by her you need to check your pulse",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "She's single-handedly responsible for that fourth star you see in the box above this review",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "making a Broadway debut that rivals Peggy Sawyer's in 42nd Street",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states this is a 4-star review and uses superlative language about the lead performance, but the excerpt focuses entirely on one performer rather than the overall show quality. | GPT-4o-mini: The review strongly praises the lead performance, indicating a clear recommendation despite lacking details on other aspects of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:33.528Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
