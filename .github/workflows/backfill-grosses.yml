@@ -1,5 +1,6 @@
 name: Backfill Grosses History
 
+# Backfills historical grosses data from Playbill for WoW/YoY comparisons
 on:
   workflow_dispatch:
     inputs:
