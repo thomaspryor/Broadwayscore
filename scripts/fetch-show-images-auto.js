@@ -25,6 +25,7 @@ const path = require('path');
 
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
+const PLAYBILL_URLS_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.json');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 function sleep(ms) {
@@ -211,34 +212,155 @@ function extractAllImageFormats(html) {
   };
 }
 
-// Fallback: try Playbill
-async function fetchFromPlaybill(show) {
-  const showSlug = show.slug || show.id.replace(/-\d{4}$/, '');
-  const playbillUrl = `https://playbill.com/production/${showSlug}`;
-  console.log(`   Fallback - Playbill: ${playbillUrl}`);
-
+// Load or create Playbill URL cache
+function loadPlaybillUrls() {
   try {
-    const html = await fetchViaScrapingBee(playbillUrl);
+    return JSON.parse(fs.readFileSync(PLAYBILL_URLS_PATH, 'utf8'));
+  } catch {
+    return { shows: {}, lastUpdated: null };
+  }
+}
 
-    // Playbill uses different image patterns
-    const imgMatch = html.match(/https:\/\/bsp-static\.playbill\.com\/[^"'\s]+\.(jpg|jpeg|png|webp)/i) ||
-                     html.match(/<meta[^>]*property=["']og:image["'][^>]*content=["']([^"']+)["']/i);
+function savePlaybillUrls(data) {
+  data.lastUpdated = new Date().toISOString();
+  fs.writeFileSync(PLAYBILL_URLS_PATH, JSON.stringify(data, null, 2) + '\n');
+}
 
-    if (imgMatch) {
-      const imageUrl = imgMatch[1] || imgMatch[0];
-      console.log(`   ✓ Found via Playbill: ${imageUrl.substring(0, 60)}...`);
+// Global cache for Playbill URLs (loaded at start)
+let playbillUrlCache = null;
 
-      // Return same format - use single image for all formats
-      return {
-        hero: imageUrl,
-        thumbnail: imageUrl,
-        poster: imageUrl,
-      };
+function slugify(str) {
+  return str.toLowerCase()
+    .replace(/['']/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+// Extract og:image from HTML
+function extractOgImage(html) {
+  const patterns = [
+    /<meta[^>]*property=["']og:image["'][^>]*content=["']([^"']+)["']/i,
+    /<meta[^>]*content=["']([^"']+)["'][^>]*property=["']og:image["']/i,
+    /https:\/\/assets\.playbill\.com\/playbill-covers\/[^"'\s]+/i,
+    /https:\/\/bsp-static\.playbill\.com\/[^"'\s]+\.(jpg|jpeg|png|webp)/i,
+  ];
+
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match) {
+      return match[1] || match[0];
     }
-  } catch (err) {
-    console.log(`   ⚠ Playbill failed: ${err.message}`);
+  }
+  return null;
+}
+
+// Generate potential Playbill URL patterns for a show
+function generatePlaybillUrlPatterns(show) {
+  const year = (show.openingDate || '').split('-')[0];
+  const titleSlug = slugify(show.title);
+  const venueSlug = show.venue ? slugify(show.venue) : '';
+
+  const patterns = [];
+
+  // Pattern 1: title-broadway-year (most common)
+  if (year) {
+    patterns.push(`${titleSlug}-broadway-${year}`);
   }
 
+  // Pattern 2: title-broadway-venue-year
+  if (venueSlug && year) {
+    patterns.push(`${titleSlug}-broadway-${venueSlug}-${year}`);
+  }
+
+  // Pattern 3: title without "the" prefix
+  if (titleSlug.startsWith('the-')) {
+    const noThe = titleSlug.substring(4);
+    if (year) {
+      patterns.push(`${noThe}-broadway-${year}`);
+      if (venueSlug) {
+        patterns.push(`${noThe}-broadway-${venueSlug}-${year}`);
+      }
+    }
+  }
+
+  // Pattern 4: Just the slug
+  patterns.push(titleSlug);
+
+  return patterns;
+}
+
+// Fallback: try Playbill with multiple URL patterns
+async function fetchFromPlaybill(show) {
+  if (!playbillUrlCache) {
+    playbillUrlCache = loadPlaybillUrls();
+  }
+
+  const cachedUrl = playbillUrlCache.shows[show.id];
+  if (cachedUrl) {
+    console.log(`   Trying cached Playbill URL: ${cachedUrl}`);
+    try {
+      const html = await fetchViaScrapingBee(cachedUrl);
+      const imageUrl = extractOgImage(html);
+      if (imageUrl) {
+        console.log(`   ✓ Found via cached Playbill: ${imageUrl.substring(0, 60)}...`);
+        return { hero: imageUrl, thumbnail: imageUrl, poster: imageUrl };
+      }
+    } catch (err) {
+      console.log(`   ⚠ Cached URL failed: ${err.message}`);
+    }
+  }
+
+  const patterns = generatePlaybillUrlPatterns(show);
+
+  for (const pattern of patterns) {
+    const playbillUrl = `https://playbill.com/production/${pattern}`;
+    console.log(`   Trying Playbill: ${playbillUrl}`);
+
+    try {
+      const html = await fetchViaScrapingBee(playbillUrl);
+      const imageUrl = extractOgImage(html);
+
+      if (imageUrl) {
+        console.log(`   ✓ Found via Playbill: ${imageUrl.substring(0, 60)}...`);
+        playbillUrlCache.shows[show.id] = playbillUrl;
+        savePlaybillUrls(playbillUrlCache);
+        return { hero: imageUrl, thumbnail: imageUrl, poster: imageUrl };
+      }
+    } catch (err) {
+      continue;
+    }
+
+    await sleep(1000);
+  }
+
+  // Last resort: Google search
+  console.log(`   Trying Google search for Playbill page...`);
+  const searchUrl = `https://www.google.com/search?q=site:playbill.com/production+"${encodeURIComponent(show.title)}"+broadway`;
+
+  try {
+    const searchHtml = await fetchViaScrapingBee(searchUrl);
+    const urlMatch = searchHtml.match(/https:\/\/playbill\.com\/production\/[a-z0-9-]+-broadway[a-z0-9-]*/i);
+
+    if (urlMatch) {
+      const discoveredUrl = urlMatch[0];
+      console.log(`   Found via Google: ${discoveredUrl}`);
+
+      await sleep(2000);
+      const html = await fetchViaScrapingBee(discoveredUrl);
+      const imageUrl = extractOgImage(html);
+
+      if (imageUrl) {
+        console.log(`   ✓ Found image: ${imageUrl.substring(0, 60)}...`);
+        playbillUrlCache.shows[show.id] = discoveredUrl;
+        savePlaybillUrls(playbillUrlCache);
+        return { hero: imageUrl, thumbnail: imageUrl, poster: imageUrl };
+      }
+    }
+  } catch (err) {
+    console.log(`   ⚠ Google search failed: ${err.message}`);
+  }
+
+  console.log(`   ✗ No image found via Playbill`);
   return null;
 }
 
