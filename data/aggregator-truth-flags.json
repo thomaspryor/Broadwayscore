@@ -1,8 +1,8 @@
 {
   "_meta": {
-    "generatedAt": "2026-01-28T19:28:29.246Z",
+    "generatedAt": "2026-01-28T21:35:00.800Z",
     "description": "Flagged shows with potential anomalies",
-    "totalFlagged": 48
+    "totalFlagged": 46
   },
   "shows": {
     "two-strangers-bway-2025": {
@@ -65,7 +65,7 @@
       "flags": [
         {
           "type": "likely-duplicates",
-          "message": "localCount (31) > maxAggregator (18) * 1.5",
+          "message": "localCount (30) > maxAggregator (18) * 1.5",
           "severity": "warning"
         }
       ]
@@ -75,7 +75,7 @@
       "flags": [
         {
           "type": "check-bww-url",
-          "message": "BWW has 0 reviews but we have 27 local",
+          "message": "BWW has 0 reviews but we have 26 local",
           "severity": "warning"
         }
       ]
@@ -85,8 +85,18 @@
       "flags": [
         {
           "type": "check-bww-url",
-          "message": "BWW has 0 reviews but we have 28 local",
+          "message": "BWW has 0 reviews but we have 27 local",
           "severity": "warning"
+        }
+      ]
+    },
+    "chicago-1996": {
+      "title": "Chicago",
+      "flags": [
+        {
+          "type": "possibly-missing",
+          "message": "localCount (7) < maxAggregator (10) * 0.8 - missing ~3 reviews",
+          "severity": "info"
         }
       ]
     },
@@ -95,7 +105,7 @@
       "flags": [
         {
           "type": "likely-duplicates",
-          "message": "localCount (43) > maxAggregator (23) * 1.5",
+          "message": "localCount (42) > maxAggregator (23) * 1.5",
           "severity": "warning"
         }
       ]
@@ -105,17 +115,7 @@
       "flags": [
         {
           "type": "likely-duplicates",
-          "message": "localCount (31) > maxAggregator (19) * 1.5",
-          "severity": "warning"
-        }
-      ]
-    },
-    "mamma-mia-2025": {
-      "title": "Mamma Mia!",
-      "flags": [
-        {
-          "type": "likely-duplicates",
-          "message": "localCount (28) > maxAggregator (18) * 1.5",
+          "message": "localCount (30) > maxAggregator (19) * 1.5",
           "severity": "warning"
         }
       ]
@@ -125,7 +125,7 @@
       "flags": [
         {
           "type": "likely-duplicates",
-          "message": "localCount (32) > maxAggregator (17) * 1.5",
+          "message": "localCount (26) > maxAggregator (17) * 1.5",
           "severity": "warning"
         }
       ]
@@ -135,7 +135,7 @@
       "flags": [
         {
           "type": "likely-duplicates",
-          "message": "localCount (50) > maxAggregator (16) * 1.5",
+          "message": "localCount (49) > maxAggregator (16) * 1.5",
           "severity": "warning"
         }
       ]
@@ -144,8 +144,8 @@
       "title": "Suffs",
       "flags": [
         {
-          "type": "likely-duplicates",
-          "message": "localCount (40) > maxAggregator (17) * 1.5",
+          "type": "check-dtli-url",
+          "message": "DTLI has 0 reviews but we have 24 local",
           "severity": "warning"
         }
       ]
@@ -155,27 +155,7 @@
       "flags": [
         {
           "type": "likely-duplicates",
-          "message": "localCount (40) > maxAggregator (20) * 1.5",
-          "severity": "warning"
-        }
-      ]
-    },
-    "marjorie-prime-2025": {
-      "title": "Marjorie Prime",
-      "flags": [
-        {
-          "type": "likely-duplicates",
-          "message": "localCount (29) > maxAggregator (17) * 1.5",
-          "severity": "warning"
-        }
-      ]
-    },
-    "queen-versailles-2025": {
-      "title": "The Queen of Versailles",
-      "flags": [
-        {
-          "type": "likely-duplicates",
-          "message": "localCount (31) > maxAggregator (20) * 1.5",
+          "message": "localCount (39) > maxAggregator (20) * 1.5",
           "severity": "warning"
         }
       ]
@@ -195,7 +175,7 @@
       "flags": [
         {
           "type": "check-bww-url",
-          "message": "BWW has 0 reviews but we have 24 local",
+          "message": "BWW has 0 reviews but we have 21 local",
           "severity": "warning"
         }
       ]
@@ -224,8 +204,8 @@
       "title": "Our Town",
       "flags": [
         {
-          "type": "likely-duplicates",
-          "message": "localCount (29) > maxAggregator (19) * 1.5",
+          "type": "check-dtli-url",
+          "message": "DTLI has 0 reviews but we have 28 local",
           "severity": "warning"
         }
       ]
@@ -435,17 +415,7 @@
       "flags": [
         {
           "type": "likely-duplicates",
-          "message": "localCount (32) > maxAggregator (20) * 1.5",
-          "severity": "warning"
-        }
-      ]
-    },
-    "the-whos-tommy-2024": {
-      "title": "The Who's Tommy",
-      "flags": [
-        {
-          "type": "likely-duplicates",
-          "message": "localCount (23) > maxAggregator (14) * 1.5",
+          "message": "localCount (31) > maxAggregator (20) * 1.5",
           "severity": "warning"
         }
       ]
@@ -455,8 +425,18 @@
       "flags": [
         {
           "type": "check-bww-url",
-          "message": "BWW has 0 reviews but we have 15 local",
+          "message": "BWW has 0 reviews but we have 14 local",
           "severity": "warning"
+        }
+      ]
+    },
+    "i-need-that-2023": {
+      "title": "I Need That",
+      "flags": [
+        {
+          "type": "possibly-missing",
+          "message": "localCount (21) < maxAggregator (27) * 0.8 - missing ~6 reviews",
+          "severity": "info"
         }
       ]
     },
@@ -465,7 +445,7 @@
       "flags": [
         {
           "type": "possibly-missing",
-          "message": "localCount (20) < maxAggregator (26) * 0.8 - missing ~6 reviews",
+          "message": "localCount (19) < maxAggregator (26) * 0.8 - missing ~7 reviews",
           "severity": "info"
         }
       ]
@@ -515,7 +495,7 @@
       "flags": [
         {
           "type": "likely-duplicates",
-          "message": "localCount (41) > maxAggregator (19) * 1.5",
+          "message": "localCount (39) > maxAggregator (19) * 1.5",
           "severity": "warning"
         }
       ]
