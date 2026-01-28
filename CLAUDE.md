@@ -354,11 +354,15 @@ This gives more weight to sources with larger sample sizes.
 - `scripts/archive-show-images.js` - Archives CDN images locally to `public/images/shows/` as WebP
 - `src/components/ShowImage.tsx` - Image component with cascading source fallback and onError handling
 - `scripts/validate-data.js` - **Run before pushing** - validates shows.json for duplicates, missing fields, etc.
-- `scripts/update-commercial-data.js` - Weekly commercial data automation (Reddit + trade press + Claude analysis)
+- `scripts/update-commercial-data.js` - Weekly commercial data automation (Reddit + trade press + SEC + Claude analysis)
 - `scripts/lib/parse-grosses.js` - Reddit Grosses Analysis post parser (exported for unit testing)
+- `scripts/lib/trade-press-scraper.js` - **Trade press article scraper** with site-specific CSS selectors, Archive.org fallback, paywall login support
+- `scripts/lib/sec-edgar-scraper.js` - **SEC EDGAR Form D scraper** with rate limiting, XML parsing, known Broadway LLC CIK mappings
+- `scripts/lib/source-validator.js` - **Multi-source validation framework** with source weights, corroboration detection, confidence adjustment
+- `scripts/test-commercial-integration.js` - Integration test for commercial data modules
 - `scripts/process-commercial-tip.js` - Processes user-submitted commercial data tips from GitHub issues
 - `data/commercial-changelog.json` - Changelog of automated commercial data updates
-- `tests/unit/` - Unit tests (parse-grosses, commercial filtering, shadow classifier)
+- `tests/unit/` - Unit tests (parse-grosses, commercial filtering, shadow classifier, source-validator, trade-press-scraper, sec-edgar-scraper)
 - `tests/e2e/` - Playwright E2E tests for homepage, show pages, and biz-buzz
 - `playwright.config.ts` - Playwright test configuration
 
@@ -723,17 +727,32 @@ All automation runs via GitHub Actions - no local commands needed.
 - **Does:**
   - Scrapes Reddit for u/Boring_Waltz_9545's weekly Grosses Analysis posts
   - Searches trade press (Deadline, Variety, Broadway Journal, etc.) for financial news
+  - Enhanced full-text extraction from trade press using `trade-press-scraper.js`
+  - Optional SEC EDGAR Form D filing search for capitalization data
   - Uses Claude Sonnet to analyze gathered data and propose commercial.json updates
-  - Applies high/medium confidence changes automatically, flags low confidence for review
+  - **Multi-source validation:** Cross-references proposed changes against all gathered sources
+  - Applies high/medium confidence changes automatically, flags low/conflicting confidence for review
   - Runs shadow classifier to detect designation disagreements
-  - Creates GitHub issue summarizing all changes
+  - Creates GitHub issue summarizing all changes with validation details
   - Writes to `data/commercial-changelog.json`
+  - **On failure:** Automatically creates a GitHub issue alerting maintainers
 - **Manual trigger options:**
   - `dry_run`: Don't save changes (default: false)
   - `gather_only`: Stop after gathering data, don't run AI analysis (default: false)
+- **CLI flags (in script):**
+  - `--gather-sec`: Enable SEC EDGAR Form D filing search
+  - `--gather-trade-full`: Use enhanced trade press scraper with full-text extraction
+  - `--skip-validation`: Bypass multi-source validation pipeline
+  - `--gather-reddit`, `--gather-trade`, `--gather-all`: Control data sources
 - **Script:** `scripts/update-commercial-data.js`
-- **Parser module:** `scripts/lib/parse-grosses.js` (exported for unit testing)
+- **Supporting modules:**
+  - `scripts/lib/parse-grosses.js` - Reddit Grosses Analysis post parser
+  - `scripts/lib/trade-press-scraper.js` - Trade press article scraper with site-specific extraction
+  - `scripts/lib/sec-edgar-scraper.js` - SEC EDGAR Form D filing search and parsing
+  - `scripts/lib/source-validator.js` - Multi-source validation framework
+- **Integration test:** `scripts/test-commercial-integration.js`
 - **Requires:** ANTHROPIC_API_KEY, SCRAPINGBEE_API_KEY secrets
+- **Optional:** NYT_EMAIL, NYTIMES_PASSWORD, VULTURE_EMAIL, VULTURE_PASSWORD (for paywalled trade press)
 
 ### `.github/workflows/process-commercial-tip.yml`
 - **Runs:** When a GitHub issue is created/edited with the `commercial-tip` label

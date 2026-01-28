@@ -45,13 +45,22 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Subscription credentials for paywalled trade press sites
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYTIMES_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
         run: |
-          ARGS="--gather-all"
+          ARGS="--gather-all --gather-trade-full"
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
           if [ "${{ github.event.inputs.gather_only }}" = "true" ]; then
             ARGS="$ARGS --gather-only"
+          fi
+          # Add SEC gathering if enabled and credentials available
+          if [ -n "$SEC_EDGAR_ENABLED" ] && [ "$SEC_EDGAR_ENABLED" != "false" ]; then
+            ARGS="$ARGS --gather-sec"
           fi
           node scripts/update-commercial-data.js $ARGS
 
@@ -101,3 +110,46 @@ jobs:
             ENTRIES=$(node -e "try{const d=require('./data/commercial-changelog.json');console.log(d.entries.length)}catch(e){console.log(0)}")
             echo "Total changelog entries: $ENTRIES" >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: Create issue on failure
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = 'Commercial Data Update Failed';
+            const body = `## Commercial Data Update Failed
+
+            The weekly commercial data update encountered an error.
+
+            **Run:** [${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+            **Time:** ${new Date().toISOString()}
+
+            Please check the workflow logs for details.
+
+            ### Common Issues
+            - ScrapingBee API rate limit or key issue
+            - Reddit posts not found (u/Boring_Waltz_9545 may have skipped a week)
+            - Claude API error
+            - Data validation failure
+
+            ---
+            *This issue was automatically created by the commercial data workflow.*`;
+
+            // Check if similar issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'automated,bug'
+            });
+
+            const existingIssue = issues.data.find(i => i.title === title);
+            if (!existingIssue) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['automated', 'bug', 'commercial']
+              });
+            }
