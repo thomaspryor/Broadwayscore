@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The show, with music by Barry Manilow and book and lyrics by Bruce Sussman, tells the story of the Comedian Harmonists, a German vocal group that was torn apart by the rise of the Nazis.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show, with music by Barry Manilow and book and lyrics by Bruce Sussman, tells the story of the Comedian Harmonists, a German vocal group that was torn apart by the rise of the Nazis.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "high",
+    "range": {
+      "low": 45,
+      "high": 55
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "tells the story of the Comedian Harmonists, a German vocal group that was torn apart by the rise of the Nazis",
+        "sentiment": "neutral",
+        "strength": 1
+      },
+      {
+        "quote": "the story of the Comedian Harmonists",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "torn apart by the rise of the Nazis",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This appears to be a plot summary rather than a review, providing no evaluative content or recommendation signals. | GPT-4o-mini: The review provides basic information about the show without any clear recommendation or critique, leading to a neutral score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:08:52.073Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 50,
+    "openaiScore": 50,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
