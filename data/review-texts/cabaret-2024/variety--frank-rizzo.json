@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Eddie Redmayne brings a mesmerizing vulnerability to the Emcee, while Gayle Rankin's Sally Bowles is both magnetic and heartbreaking in this immersive Broadway revival.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Eddie Redmayne brings a mesmerizing vulnerability to the Emcee, while Gayle Rankin's Sally Bowles is both magnetic and heartbreaking in this immersive Broadway revival.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "mesmerizing vulnerability",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "magnetic and heartbreaking",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "immersive Broadway revival",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for both lead performances with evocative language, but this excerpt appears to focus only on the stars without addressing the overall production quality or providing explicit recommendation. | GPT-4o-mini: The review highlights strong performances by the lead actors, indicating a clear recommendation despite not discussing other elements of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:08:07.980Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

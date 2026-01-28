@@ -9,12 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of the 1992 dark comedy starring Meryl Streep and Goldie Hawn has been transformed into a glitzy, effects-heavy spectacle that prioritizes visual dazzle over narrative coherence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of the 1992 dark comedy starring Meryl Streep and Goldie Hawn has been transformed into a glitzy, effects-heavy spectacle that prioritizes visual dazzle over narrative coherence.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 39,
+    "confidence": "medium",
+    "range": {
+      "low": 30.5,
+      "high": 47.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": null,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "prioritizes visual dazzle over narrative coherence",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "glitzy, effects-heavy spectacle",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic emphasizes that spectacle comes at the expense of storytelling fundamentals, suggesting a production that fails in its primary theatrical mission despite technical polish. | GPT-4o-mini: The review criticizes the adaptation for sacrificing narrative coherence for visual effects, indicating a clear negative stance on the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:08:53.390Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 35,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

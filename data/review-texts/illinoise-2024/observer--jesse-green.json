@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The show succeeds in translating Sufjan Stevens's beloved 2005 concept album into a moving theatrical experience that honors both the source material and the medium of dance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show succeeds in translating Sufjan Stevens's beloved 2005 concept album into a moving theatrical experience that honors both the source material and the medium of dance.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "succeeds in translating",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "moving theatrical experience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "honors both the source material and the medium of dance",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review uses clear positive language about the show's success in adaptation and emotional impact, but the excerpt is too brief to determine the full scope of the critic's recommendation. | GPT-4o-mini: The review expresses a strong appreciation for the show's ability to honor the source material and translate it effectively into a theatrical format, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:08:58.316Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

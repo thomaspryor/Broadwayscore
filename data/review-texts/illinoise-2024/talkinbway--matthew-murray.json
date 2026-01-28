@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Illinoise is a triumph of theatrical artistry that transforms Sufjan Stevens's concept album into a deeply moving meditation on love, loss, and the search for meaning in the American heartland.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Illinoise is a triumph of theatrical artistry that transforms Sufjan Stevens's concept album into a deeply moving meditation on love, loss, and the search for meaning in the American heartland.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": null,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "triumph of theatrical artistry",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "deeply moving meditation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "transforms Sufjan Stevens's concept album",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The use of 'triumph' combined with praise for the artistic transformation and emotional impact indicates unqualified enthusiasm worthy of a rave score. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong emotional impact, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:09:03.397Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

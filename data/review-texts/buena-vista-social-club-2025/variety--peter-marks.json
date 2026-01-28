@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of the beloved documentary captures the spirit of Cuban music with infectious energy, though the book struggles to find its narrative footing amid the spectacular performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of the beloved documentary captures the spirit of Cuban music with infectious energy, though the book struggles to find its narrative footing amid the spectacular performances.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 85,
+      "performances": 84,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "captures the spirit of Cuban music with infectious energy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the book struggles to find its narrative footing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "spectacular performances",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed review praising the music and performances highly but criticizing the book's narrative weakness, resulting in a qualified recommendation. | GPT-4o-mini: The review highlights strong performances and energy but notes significant issues with the book, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:09:11.058Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
