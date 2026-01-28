@@ -11,10 +11,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": null,
   "source": "bww-roundup",
   "dtliThumb": "UP",
   "needsScoring": true,
+  "dtliExcerpt": "This history reads like pretty dry stuff, but right from that beginning chorus, “Suffs” is anything but. This sung-through musical is rousing entertainment for all of its nearly “three hours straight,” and much of the delight comes from seeing how Taub manipulates the material to make it fun.",
+  "sources": [
+    "bww-roundup",
+    "dtli"
+  ],
   "llmScore": {
     "score": 65,
     "confidence": "low",
@@ -73,13 +78,5 @@
       "Models disagree by 20 points (Claude: 55, OpenAI: 75)",
       "Score (65 → Flat) conflicts with aggregator thumbs (Up)"
     ]
-  },
-  "dtliExcerpt": "This history reads like pretty dry stuff, but right from that beginning chorus, “Suffs” is anything but. This sung-through musical is rousing entertainment for all of its nearly “three hours straight,” and much of the delight comes from seeing how Taub manipulates the material to make it fun.",
-  "sources": [
-    "bww-roundup",
-    "dtli"
-  ],
-  "wrongProduction": true,
-  "wrongProductionReason": "Date/URL year mismatch: 2022, Public Theater, Publish date shows year 2022, expected 2024 (or 2023 for previews)",
-  "wrongProductionConfidence": "high"
+  }
 }

@@ -1,0 +1,76 @@
+{
+  "showId": "queen-versailles-2025",
+  "outletId": "latimes",
+  "outlet": "Los Angeles Times",
+  "criticName": "CharlesMcNulty",
+  "url": "https://www.latimes.com/entertainment-arts/story/2025-11-09/kristin-chenoweth-pulls-out-all-the-stops-to-rescue-the-queen-of-versailles-from-broadway-foreclosure",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "No one could possibly be working harder right now on Broadway than Kristin Chenoweth, who is bearing the weight of a McMansion musical on her diminutive frame and making it seem like she’s hoisting nothing heavier than a few overstuffed Hermes, Prada and Chanel shopping bags.",
+  "bwwRoundupUrl": null,
+  "bwwThumb": "Down",
+  "originalScore": null,
+  "assignedScore": null,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": 70,
+      "performances": 83,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "No one could possibly be working harder right now on Broadway than Kristin Chenoweth, who is bearing the weight of a McMansion musical on her diminutive frame",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Queen of Versailles has grown tighter since its tryout last summer at Boston's Emerson Colonial Theatre, but it's still an unwieldy operation despite the impeccable showmanship",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "If only Chenoweth's dazzling star power didn't have to do so much of the heavy lifting",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: McNulty praises Chenoweth's star performance and acknowledges the production's ambition and improvements, but criticizes the musical's structural problems, tonal inconsistencies, and over-reliance on its lead performer to carry an unwieldy show. | GPT-4o-mini: The review highlights strong performances, particularly from Chenoweth, but expresses concerns about the book and overall execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:44:45.763Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Down",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (67 → Flat) conflicts with aggregator thumbs (Down)"
+    ]
+  }
+}

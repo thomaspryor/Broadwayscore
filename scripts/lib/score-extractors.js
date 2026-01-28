@@ -200,20 +200,33 @@ function extractGuardianScore(html, text) {
 /**
  * Extract score from NY Post review
  * Format: Sometimes letter grades, sometimes stars
+ * NOTE: NY Post doesn't consistently publish explicit grades, so we need
+ * to be careful to only extract grades with clear context to avoid false positives.
  */
 function extractNYPostScore(html, text) {
-  // Try letter grade
-  const gradeMatch = text.match(/(?:^|\s)([A-F][+-]?)(?:\s|$)/);
-  if (gradeMatch && LETTER_GRADES[gradeMatch[1].toUpperCase()]) {
-    return {
-      originalScore: gradeMatch[1].toUpperCase(),
-      normalizedScore: LETTER_GRADES[gradeMatch[1].toUpperCase()],
-      source: 'letter-grade'
-    };
+  // Only extract letter grade if there's clear grade context
+  // Patterns like "Grade: A" or "rating: B+" or at the very start/end
+  const gradePatterns = [
+    /(?:grade|rating)\s*:?\s*([A-F][+-]?)\b/i,
+    /\bgrade\s+([A-F][+-]?)\b/i,
+    /\b([A-F][+-]?)\s+(?:grade|rating)\b/i,
+    // At very beginning of text (like a header)
+    /^([A-F][+-]?)\s*$/m
+  ];
+
+  for (const pattern of gradePatterns) {
+    const match = text.match(pattern);
+    if (match && LETTER_GRADES[match[1].toUpperCase()]) {
+      return {
+        originalScore: match[1].toUpperCase(),
+        normalizedScore: LETTER_GRADES[match[1].toUpperCase()],
+        source: 'letter-grade'
+      };
+    }
   }
 
-  // Try star rating
-  const starMatch = text.match(/(\d)\s*stars?/i);
+  // Try star rating with clear context
+  const starMatch = text.match(/(\d)\s*stars?\s*(?:out\s*of\s*5)?/i);
   if (starMatch) {
     const rating = parseInt(starMatch[1]);
     if (rating >= 1 && rating <= 5) {

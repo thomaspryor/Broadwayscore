@@ -11,10 +11,13 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 40,
+  "assignedScore": null,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
+  "sources": [
+    "bww-roundup"
+  ],
   "llmScore": {
     "score": 40,
     "confidence": "high",
@@ -72,8 +75,5 @@
     "needsReviewReasons": [
       "Score (40 → Down) conflicts with aggregator thumbs (Flat)"
     ]
-  },
-  "sources": [
-    "bww-roundup"
-  ]
+  }
 }

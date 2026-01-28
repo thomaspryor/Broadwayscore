@@ -211,6 +211,10 @@ const OUTLET_ALIASES = {
   'dctheatrescene': [
     'dctheatrescene', 'dc theatre scene', 'dc-theatre-scene', 'dc theater scene'
   ],
+  'dcmetro': [
+    'dcmetro', 'dc metro', 'dc-metro', 'd-c-metro', 'dc metro theater arts',
+    'dc metro theatre arts', 'dc-metro-theater-arts', 'dc-metro-theatre-arts'
+  ],
   'nbcny': [
     'nbcny', 'nbc new york', 'nbc-ny', 'nbc ny', 'nbc-new-york'
   ],

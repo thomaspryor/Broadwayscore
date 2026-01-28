@@ -11,10 +11,14 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": null,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
+  "sources": [
+    "bww-roundup",
+    "web-search"
+  ],
   "llmScore": {
     "score": 60,
     "confidence": "medium",
@@ -70,9 +74,5 @@
     "expectedThumb": "Flat",
     "needsReview": false,
     "needsReviewReasons": []
-  },
-  "sources": [
-    "bww-roundup",
-    "web-search"
-  ]
+  }
 }
