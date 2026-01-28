@@ -10,8 +10,64 @@
   "bwwExcerpt": "Just For One Day is yet another jukebox musical, with all the boons and pitfalls such a work might imply. Its tracklist, studded with songs by everyone from Queen to Bryan Adams, is nearly as rousing as Live Aid itself, and Matthew Brind’s new arrangements lift the anthems of the 1980s to new heights. Indeed, the music of Just For One Day is close to flawless, impeccably sung by its rock-solid cast and impressively steered by musical director Patrick Hurley (even though Gareth Owen’s sound desig",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JUST-FOR-US-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 89,
+      "performances": 81,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "yet another jukebox musical, with all the boons and pitfalls such a work might imply",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "the music of Just For One Day is close to flawless, impeccably sung by its rock-solid cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Its tracklist... is nearly as rousing as Live Aid itself",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for music and performances but the excerpt is incomplete and opens with a neutral-to-wary tone about jukebox musicals, suggesting mixed elements not yet revealed. | GPT-4o-mini: The review highlights the exceptional quality of the music and performances, leading to a strong overall recommendation despite the typical jukebox musical caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:46.584Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

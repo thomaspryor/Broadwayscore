@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "a play has endured for nearly 2,500 years, it can withstand an extreme home makeover",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Icke has retained the characters’ names and the core of Sophocles’ Oedipus Rex",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Even the merch is up-to-the-minute",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review indicates a positive view of the direction and adaptation, suggesting a recommendation to see the show, albeit with some uncertainty about the overall execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:48.250Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
