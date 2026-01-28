@@ -314,8 +314,11 @@ async function main() {
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
   const todayTixIds = loadTodayTixIds();
 
-  // Filter shows
-  let shows = showsData.shows.filter(s => s.status === 'open' || s.status === 'previews');
+  // Filter shows - include all statuses when fetching missing or specific shows
+  let shows = showsData.shows;
+  if (!onlyMissing && !showFilter) {
+    shows = shows.filter(s => s.status === 'open' || s.status === 'previews');
+  }
 
   if (showFilter) {
     shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
