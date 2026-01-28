@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"In a way, this production of Our Town is a triumph over that feeling of hopelessness — live theatre returned and continues to thrive — but it also has an important message, asking us to experience every day of our lives to the fullest.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/our-town-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this production of Our Town is a triumph",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "has an important message",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "a triumph over that feeling of hopelessness",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic calls the production 'a triumph' and praises its important message, indicating clear positive recommendation despite limited excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the production's message and the return of live theater, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:27.670Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

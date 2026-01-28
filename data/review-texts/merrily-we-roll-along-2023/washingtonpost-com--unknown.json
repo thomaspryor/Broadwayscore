@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Ideally, this Broadway incarnation will be both a hit and a reflection of the higher aspirations of musical theater. It’s even tighter, funnier and more touching than what Friedman staged off-Broadway. So much ingenuity. So much joyful creativity. So much for audiences to savor.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,5 +48,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20231110175930",
-  "archiveOrgUrl": "http://web.archive.org/web/20231110175930/https://www.washingtonpost.com/entertainment/theater/2023/10/10/merrily-sondheim-radcliffe-groff-broadway/"
+  "archiveOrgUrl": "http://web.archive.org/web/20231110175930/https://www.washingtonpost.com/entertainment/theater/2023/10/10/merrily-sondheim-radcliffe-groff-broadway/",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 95,
+      "performances": 93,
+      "direction": 94
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like precision code-breakers, the team responsible for the revival of 'Merrily We Roll Along' has cracked it",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Friedman's poignant Broadway revival, officially opening Tuesday night at the Hudson Theatre, is a marvelous marriage of Sondheim's stupendously satisfying music and lyrics with Friedman's seminal insights",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "So much ingenuity. So much joyful creativity. So much for audiences to savor",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: This is an unqualified rave review with superlative language throughout ('marvelous marriage,' 'stupendously satisfying,' 'spiritual'), no meaningful criticisms, and effusive praise for all elements of the production. | GPT-4o-mini: The review expresses overwhelming enthusiasm for the production, highlighting its emotional depth, strong performances, and masterful direction, indicating it is a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:24.661Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

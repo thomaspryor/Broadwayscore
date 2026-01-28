@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "one might feel a bit disconnected from the characters and plot",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "fans of the books and films were having a blast",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "that might just be the result of my unfamiliarity with the play's backstory",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges personal disconnection and production issues but notes fan enthusiasm, creating an ambivalent assessment that suggests the show works for its target audience but may not for newcomers. | GPT-4o-mini: The review expresses mixed feelings, noting disconnection and hollowness while acknowledging that fans seemed to enjoy the experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:23.906Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

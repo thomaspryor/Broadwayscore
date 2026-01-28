@@ -7,9 +7,60 @@
   "publishDate": "July 20, 2023",
   "fullText": "It’s the applause — including my own — I find troubling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "dtliThumb": "Meh",
   "source": "dtli",
   "showScoreExcerpt": "“ ‘Here Lies Love’ bets that glamour can make up for narrative — or, rather, that in a show about the dangers of political demagogy, glamour itself is the narrative. It’s a case of form follows function into the fire. We are drawn to cultural and political excitement in much the same, often dangerous way.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/here-lies-love-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/here-lies-love-broadway",
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 25.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's the applause — including my own — I find troubling.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It’s the applause — including my own — I find troubling.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic expresses moral discomfort with their own positive reaction, suggesting deep reservations about recommending the show despite its apparent entertainment value. | GPT-4o-mini: The critic expresses discomfort with the applause, indicating a strong negative sentiment towards the overall experience. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:42.141Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 30,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

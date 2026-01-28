@@ -10,8 +10,64 @@
   "showScoreExcerpt": "âEven if the musical doesnât have a discernible heartbeat, Hilty and Simard ensure Death Becomes Her stays fun and fabulous.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/death-becomes-her-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 45,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical doesn't have a discernible heartbeat",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Hilty and Simard ensure Death Becomes Her stays fun and fabulous",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "doesn’t have a discernible heartbeat",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review presents mixed signals with strong praise for lead performances offsetting significant criticism of the musical's core issues, suggesting a qualified, performance-dependent recommendation. | GPT-4o-mini: While the performances are highlighted as enjoyable, the lack of a strong narrative detracts from a full recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:45.880Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Death Becomes Her is a musical that knows exactly what it is: a splashy, campy celebration of vanity and rivalry that doesn't pretend to be anything deeper than pure entertainment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Death Becomes Her is a musical that knows exactly what it is: a splashy, campy celebration of vanity and rivalry that doesn't pretend to be anything deeper than pure entertainment.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "knows exactly what it is",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "splashy, campy celebration",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "pure entertainment",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the show's self-awareness and entertainment value with generally positive descriptors, but the brief excerpt and lack of explicit recommendation makes scoring uncertain. | GPT-4o-mini: The review expresses a clear enjoyment of the show's entertainment value without significant reservations, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:12.927Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

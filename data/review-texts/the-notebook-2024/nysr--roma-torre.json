@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "romantic (if rather schmaltzy) stunner",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "There is naturally a built-in audience for this musical, clamoring to know if it's as good as the movie",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "does it still resonate at all?",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This appears to be an incomplete excerpt that poses questions about the adaptation's quality without providing any actual evaluation or recommendation. | GPT-4o-mini: The review indicates a mixed sentiment, noting the built-in audience and romantic appeal but also acknowledging a potentially schmaltzy quality, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:25.669Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 50,
+    "openaiScore": 60,
+    "scoreDelta": 10,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

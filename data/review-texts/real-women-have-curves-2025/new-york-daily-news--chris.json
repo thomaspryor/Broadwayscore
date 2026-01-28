@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Trujillo, an old pro, understands his material and his lively choreography is both created for the bonafide dancers in the cast and designed to make everyone else look and feel good. So they do.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/real-women-have-curves/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "understands his material and his lively choreography",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "designed to make everyone else look and feel good. So they do.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Trujillo, an old pro, understands his material",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Clear praise for choreography and its effectiveness with the cast suggests strong positive sentiment, but extremely brief excerpt limits confidence in overall show assessment. | GPT-4o-mini: The review highlights strong choreography and a positive understanding of the material, indicating a clear recommendation despite lacking detail on other components.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:34.870Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
