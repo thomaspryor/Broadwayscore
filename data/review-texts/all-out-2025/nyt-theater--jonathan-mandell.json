@@ -10,8 +10,64 @@
   "showScoreExcerpt": "If you know what to expect, the show is sufficiently entertaining [but it is] not ambitious theater, nor is it even really about ambition. Although some of Simon Rich’s individual stories are inherently theatrical, the selection overall feels random.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/all-out-comedy-about-ambition-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "sufficiently entertaining",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "not ambitious theater",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the selection overall feels random",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critic finds the show adequately entertaining but criticizes its lack of ambition and random story selection, suggesting a qualified, lukewarm experience. | GPT-4o-mini: The review indicates a lack of ambition and coherence in the show, leading to a mixed recommendation despite some entertainment value.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:22:12.889Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
