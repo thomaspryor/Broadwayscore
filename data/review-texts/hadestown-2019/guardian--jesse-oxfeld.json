@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Hadestown is a triumph of theatrical storytelling, a show that manages to be both intimate and epic, ancient and urgently contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hadestown is a triumph of theatrical storytelling, a show that manages to be both intimate and epic, ancient and urgently contemporary.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hadestown is a triumph of theatrical storytelling",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "manages to be both intimate and epic, ancient and urgently contemporary",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a triumph of theatrical storytelling",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong positive language with 'triumph' and sophisticated praise for the show's ability to balance contrasting qualities, indicating clear recommendation despite brevity. | GPT-4o-mini: The review expresses unqualified enthusiasm for 'Hadestown', describing it as a triumph and highlighting its dual nature, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:14:43.245Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
