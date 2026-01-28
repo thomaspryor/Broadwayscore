@@ -34,6 +34,21 @@ const https = require('https');
 
 const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
 
+// Sprint 4: Import new modules
+let tradePressScraper;
+try {
+  tradePressScraper = require('./lib/trade-press-scraper');
+} catch (e) {
+  console.warn('Warning: trade-press-scraper module not available');
+}
+
+let sourceValidator;
+try {
+  sourceValidator = require('./lib/source-validator');
+} catch (e) {
+  console.warn('Warning: source-validator module not available');
+}
+
 // ---------------------------------------------------------------------------
 // CLI Arguments
 // ---------------------------------------------------------------------------
@@ -43,6 +58,20 @@ const GATHER_REDDIT = args.includes('--gather-reddit');
 const GATHER_TRADE = args.includes('--gather-trade');
 const GATHER_ALL = args.includes('--gather-all') || (!GATHER_REDDIT && !GATHER_TRADE);
 const GATHER_ONLY = args.includes('--gather-only');
+
+// Sprint 4 new flags
+const GATHER_SEC = args.includes('--gather-sec');           // Enable SEC EDGAR gathering
+const GATHER_TRADE_FULL = args.includes('--gather-trade-full'); // Use enhanced trade press scraper
+const SKIP_VALIDATION = args.includes('--skip-validation');  // Bypass source validation
+
+// Feature flag for SEC EDGAR (gracefully disabled if module not available)
+let SEC_EDGAR_ENABLED = false;
+try {
+  require('./lib/sec-edgar-scraper');
+  SEC_EDGAR_ENABLED = true;
+} catch (e) {
+  // SEC EDGAR module not available
+}
 
 // ---------------------------------------------------------------------------
 // Environment Variables
@@ -703,58 +732,72 @@ function matchShowToSlug(showName, allSlugs, allShows) {
 // ---------------------------------------------------------------------------
 
 /**
- * Search r/Broadway for financial discussion threads (past 7 days).
+ * Search r/Broadway and r/musicals for financial discussion threads (past 7 days).
  *
- * Runs 4 search queries with 2s delay between each, deduplicates,
+ * Runs 8+ search queries with 2s delay between each, deduplicates,
  * and fetches top 5 comments per unique post.
+ *
+ * Sprint 4.6: Expanded to include r/musicals subreddit
  *
  * @param {string|null} grossesPostPermalink - Permalink to exclude (the main GA post)
  * @returns {Promise<Object[]>} Financial discussion posts
  */
 async function searchRedditFinancial(grossesPostPermalink) {
-  console.log('Searching r/Broadway for financial discussion threads...');
+  console.log('Searching r/Broadway and r/musicals for financial discussion threads...');
 
   const queries = [
+    // Original queries
     'recouped OR recoupment',
     'capitalization OR investment Broadway',
     'closing OR "final performance"',
-    '"running costs" OR "weekly nut"'
+    '"running costs" OR "weekly nut"',
+    // Sprint 4.6: New financial-specific queries
+    '"break even" OR "breaking even"',
+    '"SEC filing" OR "Form D"',
+    'flair:News recoup',
+    'investors profit Broadway'
   ];
+
+  // Sprint 4.6: Search both r/Broadway and r/musicals
+  const subreddits = ['Broadway', 'musicals'];
 
   const seenIds = new Set();
   const posts = [];
 
-  for (const query of queries) {
-    const encoded = encodeURIComponent(query);
-    const url = `https://www.reddit.com/r/Broadway/search.json?q=${encoded}&restrict_sr=1&sort=new&t=week&limit=10`;
+  for (const subreddit of subreddits) {
+    for (const query of queries) {
+      const encoded = encodeURIComponent(query);
+      const url = `https://www.reddit.com/r/${subreddit}/search.json?q=${encoded}&restrict_sr=1&sort=new&t=week&limit=10`;
 
-    try {
-      const response = await fetchViaScrapingBee(url);
-      if (response?.data?.children) {
-        for (const child of response.data.children) {
-          const post = child.data;
+      try {
+        const response = await fetchViaScrapingBee(url);
+        if (response?.data?.children) {
+          for (const child of response.data.children) {
+            const post = child.data;
 
-          // Skip duplicates and the Grosses Analysis post
-          if (seenIds.has(post.id)) continue;
-          if (grossesPostPermalink && post.permalink === grossesPostPermalink) continue;
+            // Skip duplicates and the Grosses Analysis post
+            if (seenIds.has(post.id)) continue;
+            if (grossesPostPermalink && post.permalink === grossesPostPermalink) continue;
 
-          seenIds.add(post.id);
-          posts.push({
-            title: post.title || '',
-            selftext: (post.selftext || '').slice(0, 2000),
-            score: post.score || 0,
-            url: `https://www.reddit.com${post.permalink}`,
-            permalink: post.permalink,
-            createdUtc: post.created_utc,
-            comments: []
-          });
+            seenIds.add(post.id);
+            posts.push({
+              title: post.title || '',
+              selftext: (post.selftext || '').slice(0, 2000),
+              score: post.score || 0,
+              url: `https://www.reddit.com${post.permalink}`,
+              permalink: post.permalink,
+              subreddit: subreddit,  // Track source subreddit
+              createdUtc: post.created_utc,
+              comments: []
+            });
+          }
         }
+      } catch (e) {
+        console.error(`  Search query "${query}" in r/${subreddit} failed: ${e.message}`);
       }
-    } catch (e) {
-      console.error(`  Search query "${query}" failed: ${e.message}`);
-    }
 
-    await sleep(2000);
+      await sleep(2000);
+    }
   }
 
   console.log(`  Found ${posts.length} unique financial threads`);
@@ -800,10 +843,18 @@ async function searchTradePress() {
   }
 
   const queries = [
+    // Original queries
     'Broadway show recouped investment 2026',
     'Broadway musical closing capitalization 2026',
     'Broadway box office recoupment weekly gross 2026',
-    'Broadway production budget investors profit 2026'
+    'Broadway production budget investors profit 2026',
+    // Sprint 4.4: New financial-specific queries
+    '"recouped its" Broadway',
+    '"capitalized at" Broadway musical',
+    '"break even" Broadway show',
+    '"Form D" Broadway theatrical',
+    '"investors" Broadway musical profit',
+    'Broadway "running costs" weekly nut'
   ];
 
   const sites = 'site:deadline.com OR site:variety.com OR site:broadwayjournal.com OR site:playbill.com OR site:nytimes.com OR site:forbes.com';
@@ -855,13 +906,35 @@ async function searchTradePress() {
 
 /**
  * Scrape the text of a trade press article with fallback.
+ * Uses trade-press-scraper module if available (GATHER_TRADE_FULL flag),
+ * otherwise falls back to simple ScrapingBee fetch.
  *
  * @param {string} url - Article URL
  * @param {string} fallbackSnippet - Snippet to return if scraping fails
- * @returns {Promise<string>} Article text (truncated to 3000 chars)
+ * @returns {Promise<string>} Article text (no longer truncated when using enhanced scraper)
  */
 async function scrapeArticle(url, fallbackSnippet) {
-  // Try ScrapingBee with JS rendering
+  // Use enhanced trade press scraper if available and flag is set
+  if (GATHER_TRADE_FULL && tradePressScraper) {
+    try {
+      const result = await tradePressScraper.scrapeTradeArticle(url, {
+        snippet: fallbackSnippet,
+        skipAuth: false  // Use credentials if available
+      });
+
+      if (result.fullText && result.fullText.length > 200) {
+        // Enhanced scraper returns more complete text - don't truncate
+        return result.fullText;
+      }
+
+      // Fall through to legacy method if enhanced scraper didn't get enough text
+      console.log(`  Enhanced scraper returned ${result.fullText?.length || 0} chars, trying legacy method`);
+    } catch (e) {
+      console.log(`  Enhanced trade scraper failed: ${e.message}, trying legacy method`);
+    }
+  }
+
+  // Legacy method: Try ScrapingBee with JS rendering
   try {
     const result = await fetchViaScrapingBee(url, { renderJs: true, premiumProxy: true });
     if (typeof result === 'string' && result.length > 200) {
