@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a crowd-pleaser that delivers spectacular effects and infectious energy, even if it doesn't quite reach the emotional heights of its source material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a crowd-pleaser that delivers spectacular effects and infectious energy, even if it doesn't quite reach the emotional heights of its source material.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "crowd-pleaser that delivers spectacular effects and infectious energy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "doesn't quite reach the emotional heights of its source material",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "crowd-pleaser that delivers spectacular effects",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review offers qualified praise for the show's entertainment value and production elements while noting it falls short emotionally, suggesting a positive but not enthusiastic recommendation. | GPT-4o-mini: The review highlights strong entertainment value and energy while acknowledging some emotional shortcomings, leading to a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:17.645Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,63 @@
   "publishDate": "April 27, 2025",
   "fullText": "In a time when immigrants are being actively dehumanized throughout the United States, Real Women Have Curves provides a vital counterpoint—partly by depicting the dreams and fears of immigrant workers in specific terms, but mostly just by being lovable. This show is a bona fide crowd pleaser: a warm hug that pulls you into its generous bosom. With a little luck, it could turn out to be a sleeper hit. Go now and get ahead of the curve.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show is a bona fide crowd pleaser: a warm hug that pulls you into its generous bosom",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "With a little luck, it could turn out to be a sleeper hit",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Go now and get ahead of the curve",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong positive recommendation with clear call to action ('Go now'), enthusiastic praise ('bona fide crowd pleaser'), and prediction of success ('sleeper hit').",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:15.667Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
