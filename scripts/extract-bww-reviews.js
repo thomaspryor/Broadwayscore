@@ -7,73 +7,19 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName } = require('./lib/review-normalization');
 
 const bwwDir = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 
-// Outlet name normalization and tier mapping
-const outletNormalization = {
-  'the new york times': { name: 'The New York Times', outletId: 'nytimes', tier: 1 },
-  'new york times': { name: 'The New York Times', outletId: 'nytimes', tier: 1 },
-  'nytimes': { name: 'The New York Times', outletId: 'nytimes', tier: 1 },
-  'broadwayworld': { name: 'BroadwayWorld', outletId: 'broadwayworld', tier: 2 },
-  'variety': { name: 'Variety', outletId: 'variety', tier: 1 },
-  'the hollywood reporter': { name: 'The Hollywood Reporter', outletId: 'hollywood-reporter', tier: 1 },
-  'hollywood reporter': { name: 'The Hollywood Reporter', outletId: 'hollywood-reporter', tier: 1 },
-  'vulture': { name: 'Vulture', outletId: 'vulture', tier: 1 },
-  'time out new york': { name: 'Time Out New York', outletId: 'timeout-ny', tier: 1 },
-  'time out ny': { name: 'Time Out New York', outletId: 'timeout-ny', tier: 1 },
-  'timeout': { name: 'Time Out New York', outletId: 'timeout-ny', tier: 1 },
-  'deadline': { name: 'Deadline', outletId: 'deadline', tier: 1 },
-  'the wall street journal': { name: 'The Wall Street Journal', outletId: 'wsj', tier: 1 },
-  'wall street journal': { name: 'The Wall Street Journal', outletId: 'wsj', tier: 1 },
-  'wsj': { name: 'The Wall Street Journal', outletId: 'wsj', tier: 1 },
-  'new york post': { name: 'New York Post', outletId: 'nypost', tier: 2 },
-  'ny post': { name: 'New York Post', outletId: 'nypost', tier: 2 },
-  'the new york post': { name: 'New York Post', outletId: 'nypost', tier: 2 },
-  'newsday': { name: 'Newsday', outletId: 'newsday', tier: 2 },
-  'usa today': { name: 'USA Today', outletId: 'usa-today', tier: 2 },
-  'associated press': { name: 'Associated Press', outletId: 'ap', tier: 1 },
-  'ap': { name: 'Associated Press', outletId: 'ap', tier: 1 },
-  'entertainment weekly': { name: 'Entertainment Weekly', outletId: 'ew', tier: 2 },
-  'ew': { name: 'Entertainment Weekly', outletId: 'ew', tier: 2 },
-  'the guardian': { name: 'The Guardian', outletId: 'guardian', tier: 1 },
-  'guardian': { name: 'The Guardian', outletId: 'guardian', tier: 1 },
-  'the telegraph': { name: 'The Telegraph', outletId: 'telegraph', tier: 2 },
-  'telegraph': { name: 'The Telegraph', outletId: 'telegraph', tier: 2 },
-  'theatermania': { name: 'TheaterMania', outletId: 'theatermania', tier: 2 },
-  'new york daily news': { name: 'New York Daily News', outletId: 'ny-daily-news', tier: 2 },
-  'daily news': { name: 'New York Daily News', outletId: 'ny-daily-news', tier: 2 },
-  'the ny daily news': { name: 'New York Daily News', outletId: 'ny-daily-news', tier: 2 },
-  'am new york': { name: 'amNewYork', outletId: 'amny', tier: 3 },
-  'amnewyork': { name: 'amNewYork', outletId: 'amny', tier: 3 },
-  'amny': { name: 'amNewYork', outletId: 'amny', tier: 3 },
-  'the observer': { name: 'The Observer', outletId: 'observer', tier: 2 },
-  'observer': { name: 'The Observer', outletId: 'observer', tier: 2 },
-  'the wrap': { name: 'TheWrap', outletId: 'thewrap', tier: 2 },
-  'thewrap': { name: 'TheWrap', outletId: 'thewrap', tier: 2 },
-  'rolling stone': { name: 'Rolling Stone', outletId: 'rolling-stone', tier: 2 },
-  'daily beast': { name: 'The Daily Beast', outletId: 'daily-beast', tier: 2 },
-  'the daily beast': { name: 'The Daily Beast', outletId: 'daily-beast', tier: 2 },
-  'new york stage review': { name: 'New York Stage Review', outletId: 'ny-stage-review', tier: 3 },
-  'chicago tribune': { name: 'Chicago Tribune', outletId: 'chicago-tribune', tier: 2 },
-  'nbc new york': { name: 'NBC New York', outletId: 'nbc-ny', tier: 3 },
-  'huffington post': { name: 'HuffPost', outletId: 'huffpost', tier: 3 },
-  'huffpost': { name: 'HuffPost', outletId: 'huffpost', tier: 3 },
-  'dc theatre scene': { name: 'DC Theatre Scene', outletId: 'dc-theatre-scene', tier: 3 },
-  'nj.com': { name: 'NJ.com', outletId: 'nj-com', tier: 3 },
-  'the stage': { name: 'The Stage', outletId: 'the-stage', tier: 2 },
-  'financial times': { name: 'Financial Times', outletId: 'financial-times', tier: 1 },
-  'the new yorker': { name: 'The New Yorker', outletId: 'new-yorker', tier: 1 },
-  'new yorker': { name: 'The New Yorker', outletId: 'new-yorker', tier: 1 },
-};
-
+/**
+ * Normalize outlet using the canonical module.
+ * Returns { name, outletId } structure expected by this script.
+ * Note: Tier info is no longer returned; use scoring config for tier lookups.
+ */
 function normalizeOutlet(outlet) {
-  const key = outlet.toLowerCase().trim();
-  return outletNormalization[key] || {
-    name: outlet.trim(),
-    outletId: outlet.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-    tier: 3
-  };
+  const outletId = canonicalNormalizeOutlet(outlet);
+  const name = getOutletDisplayName(outletId);
+  return { name, outletId };
 }
 
 function extractFromArticleBody(articleBody, showId, publishDate) {

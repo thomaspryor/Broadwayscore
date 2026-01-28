@@ -9,6 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify } = require('./lib/review-normalization');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -63,76 +64,14 @@ function extractDTLIUrl(content) {
   return urlMatch ? urlMatch[1].trim() : null;
 }
 
-// Outlet normalization
-const outletNormalization = {
-  'new york times': { name: 'The New York Times', outletId: 'nytimes' },
-  'vulture': { name: 'Vulture', outletId: 'vulture' },
-  'variety': { name: 'Variety', outletId: 'variety' },
-  'hollywood reporter': { name: 'The Hollywood Reporter', outletId: 'hollywood-reporter' },
-  'the hollywood reporter': { name: 'The Hollywood Reporter', outletId: 'hollywood-reporter' },
-  'theatermania': { name: 'TheaterMania', outletId: 'theatermania' },
-  'deadline': { name: 'Deadline', outletId: 'deadline' },
-  'new york post': { name: 'New York Post', outletId: 'nypost' },
-  'ny post': { name: 'New York Post', outletId: 'nypost' },
-  'entertainment weekly': { name: 'Entertainment Weekly', outletId: 'ew' },
-  'time out new york': { name: 'Time Out New York', outletId: 'timeout-ny' },
-  'time out': { name: 'Time Out New York', outletId: 'timeout-ny' },
-  'the guardian': { name: 'The Guardian', outletId: 'guardian' },
-  'guardian': { name: 'The Guardian', outletId: 'guardian' },
-  'wall street journal': { name: 'The Wall Street Journal', outletId: 'wsj' },
-  'the wall street journal': { name: 'The Wall Street Journal', outletId: 'wsj' },
-  'daily beast': { name: 'The Daily Beast', outletId: 'daily-beast' },
-  'the daily beast': { name: 'The Daily Beast', outletId: 'daily-beast' },
-  'the wrap': { name: 'TheWrap', outletId: 'thewrap' },
-  'thewrap': { name: 'TheWrap', outletId: 'thewrap' },
-  'associated press': { name: 'Associated Press', outletId: 'ap' },
-  'ap': { name: 'Associated Press', outletId: 'ap' },
-  'new yorker': { name: 'The New Yorker', outletId: 'new-yorker' },
-  'the new yorker': { name: 'The New Yorker', outletId: 'new-yorker' },
-  'observer': { name: 'The Observer', outletId: 'observer' },
-  'the observer': { name: 'The Observer', outletId: 'observer' },
-  'chicago tribune': { name: 'Chicago Tribune', outletId: 'chicago-tribune' },
-  'usa today': { name: 'USA Today', outletId: 'usa-today' },
-  'newsday': { name: 'Newsday', outletId: 'newsday' },
-  'amnewyork': { name: 'amNewYork', outletId: 'amny' },
-  'am new york': { name: 'amNewYork', outletId: 'amny' },
-  'ny daily news': { name: 'New York Daily News', outletId: 'ny-daily-news' },
-  'new york daily news': { name: 'New York Daily News', outletId: 'ny-daily-news' },
-  'daily news': { name: 'New York Daily News', outletId: 'ny-daily-news' },
-  'nbc new york': { name: 'NBC New York', outletId: 'nbc-ny' },
-  'npr': { name: 'NPR', outletId: 'npr' },
-  'ny stage review': { name: 'New York Stage Review', outletId: 'ny-stage-review' },
-  'new york stage review': { name: 'New York Stage Review', outletId: 'ny-stage-review' },
-  'rolling stone': { name: 'Rolling Stone', outletId: 'rolling-stone' },
-  'financial times': { name: 'Financial Times', outletId: 'financial-times' },
-  'the stage': { name: 'The Stage', outletId: 'the-stage' },
-  'stage': { name: 'The Stage', outletId: 'the-stage' },
-  'the telegraph': { name: 'The Telegraph', outletId: 'telegraph' },
-  'telegraph': { name: 'The Telegraph', outletId: 'telegraph' },
-  'london theatre': { name: 'London Theatre', outletId: 'london-theatre' },
-  'whats on stage': { name: "What's On Stage", outletId: 'whats-on-stage' },
-  "what's on stage": { name: "What's On Stage", outletId: 'whats-on-stage' },
-  'broadwayworld': { name: 'BroadwayWorld', outletId: 'broadwayworld' },
-  'broadway world': { name: 'BroadwayWorld', outletId: 'broadwayworld' },
-  'vogue': { name: 'Vogue', outletId: 'vogue' },
-  'town & country': { name: 'Town & Country', outletId: 'town-country' },
-  'vanity fair': { name: 'Vanity Fair', outletId: 'vanity-fair' },
-  'the arts desk': { name: 'The Arts Desk', outletId: 'arts-desk' },
-};
-
+/**
+ * Normalize outlet using the canonical module.
+ * Returns { name, outletId } structure expected by this script.
+ */
 function normalizeOutlet(outlet) {
-  const key = outlet.toLowerCase().trim();
-  return outletNormalization[key] || {
-    name: outlet.trim(),
-    outletId: outlet.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
-  };
-}
-
-function slugify(str) {
-  return (str || 'unknown')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+  const outletId = canonicalNormalizeOutlet(outlet);
+  const name = getOutletDisplayName(outletId);
+  return { name, outletId };
 }
 
 function parseThumb(thumbAlt) {
