@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "MJ has spectacular dancing and a magnetic lead performance by Myles Frost, but the show struggles with how to present its complicated subject.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "MJ has spectacular dancing and a magnetic lead performance by Myles Frost, but the show struggles with how to present its complicated subject.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 83,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "spectacular dancing and a magnetic lead performance by Myles Frost",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the show struggles with how to present its complicated subject",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "spectacular dancing",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed review that praises performances and dancing but identifies fundamental problems with how the show handles its subject matter. | GPT-4o-mini: The review highlights strong performances and dancing but indicates significant issues with the show's presentation, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:26.108Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
