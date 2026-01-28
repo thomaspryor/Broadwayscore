@@ -1,0 +1,72 @@
+{
+  "showId": "lempicka-2024",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Jackson McHenry",
+  "url": "https://www.vulture.com/article/lempicka-broadway-review.html",
+  "publishDate": "May 1, 2024",
+  "fullText": "The show has the bones of something good, but it never quite finds its footing between operatic grandeur and intimate character study.",
+  "isFullReview": false,
+  "dtliExcerpt": "The show has the bones of something good, but it never quite finds its footing between operatic grandeur and intimate character study.",
+  "originalScore": null,
+  "assignedScore": 50,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "has the bones of something good",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "never quite finds its footing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the bones of something good",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges potential but emphasizes fundamental execution problems, suggesting the show fails to achieve its ambitions despite having good raw material. | GPT-4o-mini: The review indicates potential but ultimately expresses disappointment in execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:47.476Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

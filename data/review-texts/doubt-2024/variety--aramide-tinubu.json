@@ -2,51 +2,51 @@
   "showId": "doubt-2024",
   "outletId": "variety",
   "outlet": "Variety",
-  "criticName": "Aramide Tinubu",
+  "criticName": "Aramide Timubu",
   "url": "https://variety.com/2024/legit/reviews/doubt-review-broadway-liev-schreiber-amy-ryan-1235929589/",
   "publishDate": "March 8th, 2024",
   "fullText": null,
   "isFullReview": false,
-  "showScoreExcerpt": "\"Liev Schreiber’s performance cuts through a somber and confining single act\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/doubt-a-parable",
+  "bwwExcerpt": "Amid David Rockwell’s beautifully built rotating set depicting the church’s windows, a garden and the principal’s office, what’s exceedingly interesting about “Doubt,” aside from Schreiber’s standout performance, has nothing to do with Sister Aloysius’ indication or righteousness or if Father Flynn is or isn’t a pedophile. Instead, the play highlights how easy it is for influential people to prey on the vulnerable and how the systems we revere are complicit in demonizing those with the most to l",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": 63,
-  "source": "show-score",
+  "assignedScore": 74,
+  "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 63,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 50.5,
-      "high": 75.5
+      "low": 67.5,
+      "high": 80.5
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 75,
       "music": null,
-      "performances": 78,
-      "direction": 40
+      "performances": 84,
+      "direction": 77
     },
     "keyPhrases": [
       {
-        "quote": "Liev Schreiber's performance cuts through",
+        "quote": "Schreiber's standout performance",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "somber and confining single act",
-        "sentiment": "negative",
+        "quote": "David Rockwell's beautifully built rotating set",
+        "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "Liev Schreiber’s performance cuts through",
+        "quote": "what's exceedingly interesting about 'Doubt'",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review praises Schreiber's strong performance but criticizes the production as 'somber and confining,' suggesting mixed results where the lead actor elevates limited material. | GPT-4o-mini: The review highlights a strong performance but suggests limitations in the overall production, leading to a mixed-positive recommendation. | Note: Models differed by 15 points.",
+    "reasoning": "Claude: The review praises key production elements and finds the play intellectually engaging, but the excerpt cuts off mid-sentence making full assessment impossible. | GPT-4o-mini: The review highlights strong performances and production design while providing a thoughtful commentary on the play's themes, indicating a clear recommendation despite some ambiguity in the overall narrative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -56,18 +56,24 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:17.370Z",
+    "scoredAt": "2026-01-27T22:37:12.306Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 55,
-    "openaiScore": 70,
-    "scoreDelta": 15,
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "bwwThumb": "Up",
+  "showScoreExcerpt": "\"Liev Schreiber’s performance cuts through a somber and confining single act\"",
+  "sources": [
+    "bww-roundup",
+    "show-score"
+  ]
 }

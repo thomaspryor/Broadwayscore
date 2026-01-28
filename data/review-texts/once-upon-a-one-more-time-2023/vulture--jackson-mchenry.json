@@ -4,66 +4,74 @@
   "outlet": "Vulture",
   "criticName": "Jackson McHenry",
   "url": "https://www.vulture.com/2023/06/theater-review-once-upon-a-one-more-time.html",
-  "publishDate": "June 22, 2023",
+  "publishDate": "June 22nd, 2023",
   "fullText": "Given that Once Upon a One More Time follows those shows in this mini-genre (not to mention their sparkly, belty, much better fairy godmother Six), you might have reason to hope that it refines and improves upon the tropes. Instead, it’s reductive and pandering, hitting all the expected marks without any unique spark.",
+  "isFullReview": false,
+  "showScoreExcerpt": "“It’s a fun enough concert, though not worth sitting through two hours and 30 minutes of a dull musical to get there.”",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/once-upon-a-one-more-time-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
+  "source": "show-score",
   "dtliThumb": "Down",
-  "source": "dtli",
+  "needsScoring": true,
   "llmScore": {
-    "score": 34,
-    "confidence": "medium",
+    "score": 38,
+    "confidence": "high",
     "range": {
-      "low": 25,
-      "high": 43
+      "low": 30.5,
+      "high": 45.5
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 28,
-      "music": null,
+      "book": 25,
+      "music": 65,
       "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "it's reductive and pandering",
+        "quote": "not worth sitting through two hours and 30 minutes of a dull musical",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "hitting all the expected marks without any unique spark",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "It's a fun enough concert",
+        "sentiment": "positive",
+        "strength": 2
       },
       {
-        "quote": "you might have reason to hope that it refines and improves upon the tropes. Instead",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "It’s a fun enough concert",
+        "sentiment": "positive",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic clearly pans the show as formulaic and disappointing, using harsh terms like 'reductive and pandering' with no redeeming qualities mentioned. | GPT-4o-mini: The review is predominantly negative, criticizing the show for being unoriginal and lacking spark, indicating a clear rejection of the production.",
+    "reasoning": "Claude: The critic explicitly states the show is 'not worth' seeing despite some enjoyable musical moments, indicating a clear negative recommendation. | GPT-4o-mini: The review indicates that while there are some enjoyable aspects, the overall experience is deemed not worth the time investment, leading to a clear negative recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:16:13.396Z",
+    "scoredAt": "2026-01-28T01:19:57.039Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 30,
-    "scoreDelta": 8,
+    "claudeScore": 40,
+    "openaiScore": 35,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "sources": [
+    "show-score",
+    "dtli"
+  ]
 }

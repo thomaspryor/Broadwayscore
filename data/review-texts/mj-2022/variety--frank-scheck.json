@@ -1,0 +1,76 @@
+{
+  "showId": "mj-2022",
+  "outletId": "variety",
+  "outlet": "Variety",
+  "criticName": "Frank Rizzo",
+  "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-michael-jackson-1235181983/",
+  "publishDate": "February 2, 2022",
+  "fullText": "The show is at its best when it focuses on Jackson's creative process and his perfectionism in the recording studio, but it stumbles when trying to address the controversies that shadowed his later years.",
+  "isFullReview": false,
+  "dtliExcerpt": "The show is at its best when it focuses on Jackson's creative process and his perfectionism in the recording studio, but it stumbles when trying to address the controversies that shadowed his later years.",
+  "originalScore": null,
+  "assignedScore": 62,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The show is at its best when it focuses on Jackson's creative process and his perfectionism in the recording studio, but it stumbles when trying to address the controversies that shadowed his later years.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "at its best when it focuses on Jackson's creative process and his perfectionism",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "stumbles when trying to address the controversies",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the show is at its best when it focuses on Jackson's creative process",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review presents a clear mixed assessment with both strengths (creative process focus) and significant weaknesses (handling of controversies), suggesting a show that works partially but has notable problems. | GPT-4o-mini: The review indicates a mixed experience, praising certain aspects while highlighting significant shortcomings, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:36.586Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

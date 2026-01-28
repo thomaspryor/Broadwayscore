@@ -2,22 +2,24 @@
   "showId": "redwood-2025",
   "outletId": "nytimes",
   "outlet": "The New York Times",
-  "criticName": "Jesse Green",
+  "criticName": "Jesse",
   "url": "https://www.nytimes.com/2025/02/13/theater/review-idina-menzel-climbs-to-new-broadway-heights-in-redwood.html",
   "publishDate": "February 13, 2025",
   "fullText": "The musical &#8216;Redwood' features two great stars. One is an awe-inspiring force of nature. The other is a tree.",
+  "isFullReview": false,
+  "dtliExcerpt": "The musical &#8216;Redwood' features two great stars. One is an awe-inspiring force of nature. The other is a tree.",
   "originalScore": null,
-  "assignedScore": null,
-  "dtliThumb": "Up",
+  "assignedScore": 28,
   "source": "dtli",
-  "showScoreExcerpt": "\"the tree...onstage is among the most beautiful and wondrous theatrical creations\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/redwood/",
+  "needsScoring": true,
   "llmScore": {
-    "score": 23,
-    "confidence": "high",
+    "score": 28,
+    "confidence": "medium",
     "range": {
       "low": 15.5,
-      "high": 30.5
+      "high": 40.5
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -29,14 +31,14 @@
     },
     "keyPhrases": [
       {
-        "quote": "The musical 'Redwood' features two great stars. One is an awe-inspiring force of nature. The other is a tree.",
-        "sentiment": "negative",
+        "quote": "two great stars",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "features two great stars",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "The other is a tree",
+        "sentiment": "negative",
+        "strength": 5
       },
       {
         "quote": "awe-inspiring force of nature",
@@ -44,7 +46,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review uses witty sarcasm to suggest the tree is more compelling than the human performers, indicating fundamental problems with the show despite acknowledging star power. | GPT-4o-mini: The review humorously highlights a lack of substance in the production, suggesting a clear rejection of its overall quality.",
+    "reasoning": "Claude: The review uses clever wordplay to suggest that a literal tree upstages the human performer, which is a devastating critique disguised as wit. | GPT-4o-mini: The review is primarily a humorous critique that implies a lack of substance in the show, leading to a clear rejection. | Note: Models differed by 15 points.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -54,18 +56,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:51.367Z",
+    "scoredAt": "2026-01-28T01:15:36.446Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 25,
+    "claudeScore": 35,
     "openaiScore": 20,
-    "scoreDelta": 5,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "showScoreExcerpt": "\"the tree...onstage is among the most beautiful and wondrous theatrical creations\"",
+  "sources": [
+    "dtli"
+  ]
 }

@@ -1,0 +1,76 @@
+{
+  "showId": "mother-play-2024",
+  "outletId": "talkinbroadway",
+  "outlet": "Talkin' Broadway",
+  "criticName": "Howard Miller",
+  "url": "https://www.talkinbroadway.com/page/world/MotherPlay.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "With their underwritten parts, Parsons gives us flamboyance and occasional anger, while Keenan-Bolger mostly serves as our quiet and patient guide. But it is Lange who stands at the center, giving a performance that throughout is full of nuance as she portrays this complicated mess of a woman. At one point, we are even allowed to hope for a genuine change in Phyllis's deeply embedded homophobia. But she is who she is, and even with whatever magical thinking Vogel has applied to her portrait, the",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
+  "originalScore": null,
+  "assignedScore": 55,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 73,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With their underwritten parts",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "giving a performance that throughout is full of nuance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this complicated mess of a woman",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt criticizes underwritten material while praising Lange's nuanced performance, suggesting strong acting undermined by weak writing, but the incomplete text makes definitive assessment difficult. | GPT-4o-mini: The review highlights strong performances, particularly by Lange, but notes significant issues with the script, leading to a mixed recommendation. | Note: Models differed by 20 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:59.839Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 20 points (Claude: 45, OpenAI: 65)"
+    ]
+  },
+  "bwwThumb": "Up"
+}

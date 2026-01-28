@@ -1,20 +1,25 @@
 {
   "showId": "the-shark-is-broken-2023",
   "outletId": "thewrap",
-  "outlet": "TheWrap",
+  "outlet": "The Wrap",
   "criticName": "Robert Hofler",
   "url": "https://www.thewrap.com/the-shark-is-broken-jaws-broadway-golden-theatre-bruce-shaw/",
   "publishDate": "August 10, 2023",
   "fullText": "Fun summer movies are being turned into dreary summer theater this August. The tone-deaf “Back to the Future” musical is now followed by “The Shark Is Broken,” written by Ian Shaw and Joseph Nixon, which tells the behind-the-scenes story of the making of “Jaws.”",
+  "isFullReview": false,
+  "bwwExcerpt": "Robert Shaw’s portrayal of Quint in “Jaws” remains one of the most grating performances ever put on celluloid. Ian Shaw imitates his father’s every grimace and vocal mannerism, delivering one of the most grating performances ever put on stage. Meanwhile, Brightman and Donnell don’t appear to be playing Dreyfuss and Scheider, but rather the characters Hooper and Brody as portrayed by those actors in the film. “Shark” is written so that each actor gets his solo moment to unload on Dad, blow up in ",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
+  "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
-  "dtliThumb": "Down",
-  "source": "dtli",
+  "assignedScore": 18,
+  "source": "bww-roundup",
+  "dtliThumb": "DOWN",
+  "needsScoring": true,
   "llmScore": {
-    "score": 23,
-    "confidence": "high",
+    "score": 18,
+    "confidence": "medium",
     "range": {
-      "low": 15.5,
+      "low": 5.5,
       "high": 30.5
     },
     "bucket": "Pan",
@@ -22,48 +27,53 @@
     "components": {
       "book": null,
       "music": null,
-      "performances": null,
+      "performances": 13,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "dreary summer theater",
+        "quote": "one of the most grating performances ever put on stage",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Robert Shaw's portrayal of Quint in 'Jaws' remains one of the most grating performances ever put on celluloid",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Ian Shaw imitates his father's every grimace and vocal mannerism",
         "sentiment": "negative",
         "strength": 4
-      },
-      {
-        "quote": "tone-deaf",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Fun summer movies are being turned into dreary summer theater",
-        "sentiment": "negative",
-        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic uses strongly negative descriptors like 'tone-deaf' and 'dreary' but this appears to be only an excerpt from a longer review. | GPT-4o-mini: The review expresses strong disapproval of the adaptation and the overall quality, indicating a clear recommendation against seeing the show.",
+    "reasoning": "Claude: The critic uses extremely harsh language calling the lead performance 'one of the most grating performances ever put on stage' and criticizes other actors for mere imitation rather than original interpretation. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the performances and suggesting a lack of authenticity, leading to a strong recommendation against seeing the show. | Note: Models differed by 15 points.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:15:28.261Z",
+    "scoredAt": "2026-01-28T01:16:05.696Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 25,
-    "openaiScore": 20,
-    "scoreDelta": 5,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "openaiScore": 10,
+    "scoreDelta": 15,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "dtliExcerpt": "Fun summer movies are being turned into dreary summer theater this August. The tone-deaf “Back to the Future” musical is now followed by “The Shark Is Broken,” written by Ian Shaw and Joseph Nixon, which tells the behind-the-scenes story of the making of “Jaws.”",
+  "sources": [
+    "bww-roundup",
+    "dtli"
+  ]
 }

@@ -2,28 +2,32 @@
   "showId": "purlie-victorious-2023",
   "outletId": "variety",
   "outlet": "Variety",
-  "criticName": "Aramide Tinubu",
+  "criticName": "Aramide Timubu",
   "url": "https://variety.com/2023/legit/reviews/purlie-victorious-review-broadway-1235734487/",
   "publishDate": "September 27, 2023",
   "fullText": "Directed by Kenny Leon, the beauty of the Black vernacular is embedded in the “Purlie Victorious” script. Specificities of Black American life are infused within the jokes as Odom and the cast deftly switch from comedy to drama on a dime.",
+  "isFullReview": false,
+  "bwwExcerpt": "Directed by Kenny Leon, the beauty of the Black vernacular is embedded in the “Purlie Victorious” script. Specificities of Black American life are infused within the jokes as Odom and the cast deftly switch from comedy to drama on a dime. The rapid pacing of the 100-minute show, running without an intermission, means that portions of the audience erupt in laughter at the sharp jokes. In contrast, others sit silently, the countless one-liners soaring above their heads. It presents a stunning cont",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
+  "source": "bww-roundup",
   "dtliThumb": "Up",
-  "source": "dtli",
+  "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 67.5,
+      "high": 80.5
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": 75,
       "music": null,
-      "performances": 81,
-      "direction": 78
+      "performances": 79,
+      "direction": 74
     },
     "keyPhrases": [
       {
@@ -37,12 +41,12 @@
         "strength": 4
       },
       {
-        "quote": "Specificities of Black American life are infused within the jokes",
-        "sentiment": "positive",
+        "quote": "portions of the audience erupt in laughter at the sharp jokes. In contrast, others sit silently, the countless one-liners soaring above their heads",
+        "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: This excerpt contains only positive observations about the script, performances, and direction with appreciative language about the production's qualities, but lacks explicit recommendation language or star rating to confirm the strength of endorsement. | GPT-4o-mini: The review highlights the strengths of the script and performances, indicating a strong recommendation despite lacking explicit endorsement.",
+    "reasoning": "Claude: Review praises script quality, performances, and direction but notes audience disconnect with some humor, suggesting a qualified positive recommendation that may depend on audience background. | GPT-4o-mini: The review highlights strong performances and direction while indicating some audience disconnect, leading to a positive but cautious recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -52,18 +56,24 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:07.132Z",
+    "scoredAt": "2026-01-27T22:10:59.549Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "bwwThumb": "Up",
+  "sources": [
+    "bww-roundup",
+    "dtli"
+  ],
+  "dtliExcerpt": "Directed by Kenny Leon, the beauty of the Black vernacular is embedded in the “Purlie Victorious” script. Specificities of Black American life are infused within the jokes as Odom and the cast deftly switch from comedy to drama on a dime."
 }

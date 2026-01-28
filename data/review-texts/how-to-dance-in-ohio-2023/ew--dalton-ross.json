@@ -1,25 +1,25 @@
 {
   "showId": "how-to-dance-in-ohio-2023",
-  "outletId": "EW",
+  "outletId": "ew",
   "outlet": "Entertainment Weekly",
-  "criticName": "Dalton Ross",
+  "criticName": "Dalton",
   "url": "https://ew.com/how-to-dance-in-ohio-review-broadway-musical-hbo-documentary-8413917",
-  "publishDate": null,
+  "publishDate": "December 10, 2023",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "How to Dance in Ohio — which features sparse staging and hardly any costume changes until the big dance itself — often misses by trying to cover too much ground from too many different angles and perspectives. And the music as a whole is only okay. But the moments that do hit — when we see these young adults confronting trepidation and unfamiliarity, and just generally celebrating life — hit hard, and will resonate with both the neurotypical and neurodivergent alike. Just ask all the folks in my",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
+  "dtliExcerpt": "How to Dance in Ohio — which features sparse staging and hardly any costume changes until the big dance itself — often misses by trying to cover too much ground from too many different angles and perspectives. And the music as a whole is only okay. But the moments that do hit — when we see these young adults confronting trepidation and unfamiliarity, and just generally celebrating life — hit hard, and will resonate with both the neurotypical and neurodivergent alike.",
   "originalScore": null,
-  "assignedScore": 61,
-  "source": "bww-roundup",
-  "dtliThumb": null,
+  "assignedScore": 64,
+  "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
   "needsScoring": true,
   "llmScore": {
-    "score": 61,
+    "score": 64,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 67
+      "low": 57.5,
+      "high": 70.5
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -36,17 +36,17 @@
         "strength": 4
       },
       {
-        "quote": "the moments that do hit — when we see these young adults confronting trepidation and unfamiliarity, and just generally celebrating life — hit hard",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
         "quote": "the music as a whole is only okay",
         "sentiment": "negative",
         "strength": 3
+      },
+      {
+        "quote": "the moments that do hit — when we see these young adults confronting trepidation and unfamiliarity, and just generally celebrating life — hit hard, and will resonate with both the neurotypical and neurodivergent alike",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Mixed review that acknowledges significant structural problems and mediocre music but finds genuine emotional resonance in key moments, suggesting qualified interest rather than clear recommendation. | GPT-4o-mini: The review presents a mixed view, highlighting some impactful moments but also significant weaknesses in music and execution, leading to a conditional recommendation.",
+    "reasoning": "Claude: The review acknowledges significant structural and musical flaws but finds genuine emotional impact in specific moments, creating a balanced mixed response that leans slightly positive due to the meaningful connection described. | GPT-4o-mini: The review acknowledges both strong emotional moments and significant shortcomings, leading to a mixed-positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,19 +56,24 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:13:57.230Z",
+    "scoredAt": "2026-01-27T22:13:52.049Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 60,
-    "scoreDelta": 2,
+    "openaiScore": 65,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "bwwThumb": "Up"
+  "bwwExcerpt": "How to Dance in Ohio — which features sparse staging and hardly any costume changes until the big dance itself — often misses by trying to cover too much ground from too many different angles and perspectives. And the music as a whole is only okay. But the moments that do hit — when we see these young adults confronting trepidation and unfamiliarity, and just generally celebrating life — hit hard, and will resonate with both the neurotypical and neurodivergent alike. Just ask all the folks in my",
+  "bwwThumb": "Up",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
 }

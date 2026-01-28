@@ -1,103 +1,78 @@
 {
   "showId": "back-to-the-future-2023",
-  "outletId": "TIMEOUT",
+  "outletId": "timeout",
   "outlet": "Time Out New York",
   "criticName": "Adam Feldman",
-  "url": "https://www.timeout.com/newyork/theater/back-to-the-future-the-musical-review",
-  "publishDate": "August 4, 2023",
+  "url": "https://www.timeout.com/newyork/theater/back-to-the-future-the-musical",
+  "publishDate": "August 4th, 2023",
   "fullText": "Thanks for subscribing! Look out for your first newsletter in your inbox soon!\n\nThe best of New York straight to your inbox\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nThanks for subscribing! Look out for your first newsletter in your inbox soon!\n\nDéjà vu! We already have this email. Try another?\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nThanks for subscribing! Look out for your first newsletter in your inbox soon!\n\nOur newsletter hand-delivers the best bits to your inbox. Sign up to unlock our digital magazines and also receive the latest news, events, offers and partner promotions.\n\nDéjà vu! We already have this email. Try another?\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nThanks for subscribing! Look out for your first newsletter in your inbox soon!\n\ntiktokfacebooktwitteryoutubeAbout us",
   "isFullReview": false,
-  "dtliExcerpt": "The show is an efficient crowd-pleaser that hits its marks without transcending them. It's a solid, if unsurprising, adaptation that will satisfy fans of the film trilogy.",
+  "showScoreExcerpt": "“What makes ’Back to the Future’ so confusing, aside from the general ineptness, is how little it seems to understand its own relationship to the material it is trying to exploit...A similar fate befalls too many shows that try to cash in on cinematic IP, and the Broadway musical, as an art form, can’t keep getting lost on these roads. If this is the future, please send it back.”",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/back-to-the-future-the-musical-broadway",
   "originalScore": 60,
-  "assignedScore": 64,
-  "source": "web-search",
+  "assignedScore": 20,
+  "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 64,
-    "confidence": "high",
+    "score": 20,
+    "confidence": "medium",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 10,
+      "high": 30
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Pan",
+    "thumb": "Down",
     "components": {
-      "book": 63,
+      "book": 20,
       "music": null,
       "performances": null,
-      "direction": 65
+      "direction": 25
     },
     "keyPhrases": [
       {
-        "quote": "efficient crowd-pleaser that hits its marks without transcending them",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "general ineptness",
+        "sentiment": "negative",
+        "strength": 5
       },
       {
-        "quote": "solid, if unsurprising, adaptation",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "If this is the future, please send it back",
+        "sentiment": "negative",
+        "strength": 5
       },
       {
-        "quote": "will satisfy fans of the film trilogy",
-        "sentiment": "positive",
-        "strength": 2
+        "quote": "try to cash in on cinematic IP",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review uses notably lukewarm language like 'efficient' and 'solid, if unsurprising' that suggests competent but uninspiring theater, placing it in mixed territory with a slight positive lean. | GPT-4o-mini: The review indicates a generally favorable but unremarkable experience, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: The critic delivers a scathing review with phrases like 'general ineptness' and 'send it back,' clearly warning audiences away from what they see as a cynical cash grab. | GPT-4o-mini: The review expresses strong disapproval of the production, highlighting its ineptness and lack of understanding of the source material, leading to a clear rejection of the show.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T22:19:16.183Z",
+    "scoredAt": "2026-01-28T01:12:56.577Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "scoreDelta": 3,
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textStatus": "partial",
-  "textWordCount": 228,
-  "archivePath": "data/archives/reviews/back-to-the-future-2023/timeout--adam-feldman_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T22:46:03.965Z",
-  "fetchMethod": "brightdata",
-  "fetchAttempts": [
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (404): Request failed with status code 404"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": true
-    }
-  ],
-  "fetchTier": 3,
-  "textQuality": "partial",
-  "sourceMethod": "brightdata",
-  "textIssues": [
-    "Word count too low: 228 (min: 300)",
-    "Show title not found in text"
+  "dtliExcerpt": "The show is an efficient crowd-pleaser that hits its marks without transcending them. It's a solid, if unsurprising, adaptation that will satisfy fans of the film trilogy.",
+  "sources": [
+    "show-score",
+    "web-search"
   ]
 }

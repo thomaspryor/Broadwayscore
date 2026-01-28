@@ -1,21 +1,25 @@
 {
   "showId": "harmony-2023",
   "outletId": "thewrap",
-  "outlet": "TheWrap",
-  "criticName": "Robert Hofler",
+  "outlet": "The Wrap",
+  "criticName": "Robert",
   "url": "https://www.thewrap.com/harmony-broadway-review-barry-manilow-delivers-his-cabaret/",
   "publishDate": "November 13, 2023",
   "fullText": "“Harmony” ultimately packs a punch because the history of that period continues to shock no matter how many times this story is told. What remains open to question, under Warren Carlyle’s splashy direction, is the appeal of the real Comedian Harmonists.",
+  "isFullReview": false,
+  "dtliExcerpt": "“Harmony” ultimately packs a punch because the history of that period continues to shock no matter how many times this story is told. What remains open to question, under Warren Carlyle’s splashy direction, is the appeal of the real Comedian Harmonists.",
   "originalScore": null,
-  "assignedScore": null,
-  "dtliThumb": "Meh",
+  "assignedScore": 59,
   "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
+  "needsScoring": true,
   "llmScore": {
-    "score": 65,
-    "confidence": "medium",
+    "score": 59,
+    "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 53,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -23,21 +27,26 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 45
+      "direction": 55
     },
     "keyPhrases": [
       {
-        "quote": "ultimately packs a punch because the history of that period continues to shock",
+        "quote": "packs a punch because the history of that period continues to shock",
         "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "What remains open to question... is the appeal of the real Comedian Harmonists",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "What remains open to question, under Warren Carlyle's splashy direction, is the appeal of the real Comedian Harmonists",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "under Warren Carlyle's splashy direction",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The review acknowledges the show's emotional impact through its historical subject matter but questions the fundamental appeal of the musical's protagonists and critiques the direction as merely 'splashy'.",
+    "reasoning": "Claude: The review acknowledges the show's emotional impact from its historical subject matter but fundamentally questions whether the actual musical group portrayed has appeal, suggesting the production doesn't successfully make its case. | GPT-4o-mini: The review acknowledges the impactful history presented but questions the overall appeal, leading to a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,18 +56,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:15:43.739Z",
+    "scoredAt": "2026-01-27T22:13:51.826Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "sources": [
+    "dtli"
+  ]
 }

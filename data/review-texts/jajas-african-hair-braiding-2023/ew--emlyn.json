@@ -1,0 +1,73 @@
+{
+  "showId": "jajas-african-hair-braiding-2023",
+  "outletId": "ew",
+  "outlet": "Entertainment Weekly",
+  "criticName": "Emlyn",
+  "url": "https://ew.com/theater/theater-reviews/jajas-african-hair-braiding-review-broadway/",
+  "publishDate": "October 3, 2023",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "Bioh breathes both joy and grief into these women within her stellar script, giving them each their own distinct personalities and lived-in experiences.",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/jajas-african-hair-braiding/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 86,
+      "music": null,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "stellar script",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "breathes both joy and grief into these women",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "distinct personalities and lived-in experiences",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the script quality and character development suggests positive recommendation, but excerpt is too brief to assess full show experience or provide explicit recommendation. | GPT-4o-mini: The review highlights the quality of the script and character development, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:04.846Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

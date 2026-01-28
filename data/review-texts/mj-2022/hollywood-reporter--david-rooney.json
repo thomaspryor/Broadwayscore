@@ -1,0 +1,76 @@
+{
+  "showId": "mj-2022",
+  "outletId": "hollywood-reporter",
+  "outlet": "The Hollywood Reporter",
+  "criticName": "David Rooney",
+  "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235088875/",
+  "publishDate": "February 2, 2022",
+  "fullText": "The show is a slick piece of entertainment that will satisfy fans hungry for Jackson's music, even if it sidesteps the more troubling aspects of his legacy.",
+  "isFullReview": false,
+  "dtliExcerpt": "The show is a slick piece of entertainment that will satisfy fans hungry for Jackson's music, even if it sidesteps the more troubling aspects of his legacy.",
+  "originalScore": null,
+  "assignedScore": 71,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The show is a slick piece of entertainment that will satisfy fans hungry for Jackson's music, even if it sidesteps the more troubling aspects of his legacy.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "slick piece of entertainment that will satisfy fans",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "hungry for Jackson's music",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "sidesteps the more troubling aspects of his legacy",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review gives qualified praise calling it satisfying entertainment for fans, but notes significant limitations in avoiding controversial material, suggesting a decent but not exceptional show. | GPT-4o-mini: The review indicates a generally positive experience for fans, but acknowledges significant shortcomings related to the subject matter, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:08:12.973Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

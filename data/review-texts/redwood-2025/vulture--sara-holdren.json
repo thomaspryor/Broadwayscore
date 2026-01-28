@@ -1,0 +1,73 @@
+{
+  "showId": "redwood-2025",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Sara Holdren",
+  "url": "https://www.vulture.com/article/theater-review-idina-menzel-in-redwood.html",
+  "publishDate": "February 14th, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "\"for all its soaring vocals and vertical movement, Redwood leaves us stubbornly grounded.\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
+  "originalScore": null,
+  "assignedScore": 46,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 65,
+      "performances": 70,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "soaring vocals and vertical movement",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "leaves us stubbornly grounded",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "soaring vocals",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging positive elements like vocals and staging, the critic's central metaphor of being 'stubbornly grounded' despite the show's aspirations suggests fundamental disappointment with the overall impact. | GPT-4o-mini: The review suggests a mixed experience, highlighting some positive aspects but ultimately indicating a lack of overall impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:04.633Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

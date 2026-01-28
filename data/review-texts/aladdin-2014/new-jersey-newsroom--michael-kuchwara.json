@@ -1,0 +1,76 @@
+{
+  "showId": "aladdin-2014",
+  "outletId": "new-jersey-newsroom",
+  "outlet": "new-jersey-newsroom",
+  "criticName": "Michael Sommers",
+  "url": "http://www.newjerseynewsroom.com/movies/aladdin-broadway-review-a-smooth-ride-for-the-family-crowd",
+  "publishDate": "2014-03-20T20:56:08-04:00",
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "The cartoonish musical is modelled after snappy 1960s Broadway musical comedies, complete with passing scenes staged \"in-one\" in front of a curtain to cover changes in décor. Sure, that's retro, but it suits the light-hearted material as well as a Disney crowd who probably prefers familiar formats. Casey Nicholaw, an ace director-choreographer, maintains a slightly tongue-in-cheek quality throughout the fast-moving show, especially in his frisky dances that, with their sinuous arm gestures, synchronized moves and general acrobatics, often suggest Bollywood production numbers. A lively and good-looking ensemble expertly undulates through the sometimes zany choreography.",
+  "originalScore": null,
+  "assignedScore": 74,
+  "source": "bww-roundup",
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "Casey Nicholaw, an ace director-choreographer, maintains a slightly tongue-in-cheek quality throughout the fast-moving show",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A lively and good-looking ensemble expertly undulates through the sometimes zany choreography",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it suits the light-hearted material as well as a Disney crowd who probably prefers familiar formats",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review praises the direction, choreography, and ensemble performances with terms like 'ace,' 'expertly,' and 'lively,' but focuses primarily on technical execution rather than overall artistic merit, suggesting qualified approval. | GPT-4o-mini: The review expresses clear praise for the direction and choreography while maintaining a positive tone overall, indicating a strong recommendation for audiences who enjoy light-hearted musicals.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:58:21.857Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "showId": "our-town-2024",
+  "outletId": "chicagotribune",
+  "outlet": "chicagotribune",
+  "criticName": "Chris Jones",
+  "url": "https://www.chicagotribune.com/2024/10/10/our-town-broadway-review-jim-parsons-zoey-deutch/",
+  "publishDate": "October 10, 2024",
+  "fullText": "This new Broadway revival of Thornton Wilder's 'Our Town,' starring Jim Parsons and Zoey Deutch, is a gorgeous, deeply moving production that finds fresh relevance in this American classic.",
+  "isFullReview": false,
+  "dtliExcerpt": "This new Broadway revival of Thornton Wilder's 'Our Town,' starring Jim Parsons and Zoey Deutch, is a gorgeous, deeply moving production that finds fresh relevance in this American classic.",
+  "originalScore": null,
+  "assignedScore": 86,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "gorgeous, deeply moving production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "finds fresh relevance in this American classic",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language ('gorgeous', 'deeply moving') combined with praise for finding 'fresh relevance' indicates clear recommendation, though the brief excerpt limits confidence in the full critical assessment. | GPT-4o-mini: The review expresses strong enthusiasm and highlights the production's emotional impact and relevance, indicating a must-see status.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T22:20:20.339Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

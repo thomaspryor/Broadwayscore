@@ -1,0 +1,80 @@
+{
+  "showId": "six-2021",
+  "outletId": "thewrap",
+  "outlet": "The Wrap",
+  "criticName": "Robert Hofler",
+  "url": "https://www.thewrap.com/six-broadway-review/",
+  "publishDate": "2021-10-03",
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "ion-less minutes and with low costs, an existent YouTube fame, a gently progressive sensibility and a youthful target demographic, is as well-suited to this moment as any piece of live entertainment. Robert Hofler, The Wrap : Toby Marlow and Lucy Moss score is immediately hummable in the way that only derivative disco music can be. The often witty book, built around a competition among the six wives of Henry VIII, borrows a lot from \"RuPaul s Drag Race\" while offering yet another #MeToo story. Those theatrical commonplaces aside, \"Six\" is a needed antidote to \"Anastasia,\" \"Frozen,\" \"Jagged Little Pill,\" \"Wicked\" and other pompous shows of female empowerment. Ruth Kinane, Entertainment Weekly : Sitting in a theater packed with fellow fully-vaccinated, mask-wearing Broadway lovers brings a sense of solidarity and camaraderie to the atmosphere, a vibe mirrored on-stage by the cast s girl-group dynamic. Add to that the joy that s always been the DNA of this production, and Six truly is the",
+  "originalScore": null,
+  "assignedScore": 76,
+  "source": "bww-roundup",
+  "needsFullText": false,
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211004",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 78,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Six is a needed antidote to other pompous shows of female empowerment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "immediately hummable in the way that only derivative disco music can be",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Six truly is the",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review offers qualified praise, calling Six a 'needed antidote' to other shows while noting its derivative elements and theatrical commonplaces, suggesting a mixed-positive recommendation that's cut off mid-sentence. | GPT-4o-mini: The review expresses strong positive sentiments about the show's wit and relevance, indicating a clear recommendation despite some reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:48:55.658Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "sources": [
+    "bww-roundup"
+  ]
+}

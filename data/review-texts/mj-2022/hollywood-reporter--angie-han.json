@@ -1,0 +1,76 @@
+{
+  "showId": "mj-2022",
+  "outletId": "hollywood-reporter",
+  "outlet": "The Hollywood Reporter",
+  "criticName": "Angie Han",
+  "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235088037/",
+  "publishDate": "February 2, 2022",
+  "fullText": "The show is at its strongest when it focuses on Jackson's artistry and creative process, offering glimpses into how he crafted his iconic moves and sounds.",
+  "isFullReview": false,
+  "dtliExcerpt": "The show is at its strongest when it focuses on Jackson's artistry and creative process, offering glimpses into how he crafted his iconic moves and sounds.",
+  "originalScore": null,
+  "assignedScore": 68,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The show is at its strongest when it focuses on Jackson's artistry and creative process, offering glimpses into how he crafted his iconic moves and sounds.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is at its strongest when it focuses on Jackson's artistry and creative process",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "at its strongest when",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "the show is at its strongest when it focuses on Jackson's artistry",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This brief excerpt offers qualified praise for specific elements but implies weakness in other areas, suggesting a mixed reception with no clear recommendation. | GPT-4o-mini: The review highlights strengths in the show's focus on artistry but lacks a strong overall recommendation or critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:15.516Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

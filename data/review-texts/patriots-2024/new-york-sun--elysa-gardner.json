@@ -1,0 +1,73 @@
+{
+  "showId": "patriots-2024",
+  "outletId": "new-york-sun",
+  "outlet": "new-york-sun",
+  "criticName": "Elysa",
+  "url": "https://www.nysun.com/article/for-those-who-cant-get-enough-political-intrigue-patriots-offers-some-of-the-best-youll-see-on-stage",
+  "publishDate": "April 22, 2024",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "I would advise them all to rush to the Ethel Barrymore Theatre, where Peter Morgan’s “Patriots” is offering one of the most absorbing accounts of political intrigue I’ve ever seen on a Broadway stage.",
+  "originalScore": null,
+  "assignedScore": 94,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/patriots/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I would advise them all to rush to the Ethel Barrymore Theatre",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "one of the most absorbing accounts of political intrigue I've ever seen on a Broadway stage",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "one of the most absorbing accounts of political intrigue",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong superlative language ('most absorbing...I've ever seen') combined with explicit urgent recommendation ('rush to') indicates unqualified enthusiasm despite brief excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:05.061Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

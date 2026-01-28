@@ -1,0 +1,75 @@
+{
+  "showId": "our-town-2024",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Alvin",
+  "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9503E5DA163CF936A1575BC0A9649C8B63&amp;fta=y",
+  "publishDate": "June 28, 2011",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "MORE than any American play of the last century, ”Our Town” stands for simple truths and eternal connections. After last year’s terrorist attacks, the search for coherence and humanity turned into an essential mission for survival. Please note: To view this review you may need to log in to a free New York Times account.",
+  "originalScore": null,
+  "assignedScore": 60,
+  "source": "dtli",
+  "dtliThumb": "DOWN",
+  "dtliUrl": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "low",
+    "range": {
+      "low": 30,
+      "high": 90
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "MORE than any American play of the last century, \"Our Town\" stands for simple truths and eternal connections",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "After last year's terrorist attacks, the search for coherence and humanity turned into an essential mission for survival",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "stands for simple truths and eternal connections",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This appears to be only the opening paragraph of a review that emphasizes the play's thematic relevance without evaluating this specific production's quality or providing any recommendation. | GPT-4o-mini: The review highlights the enduring significance of 'Our Town' and its relevance in contemporary times, indicating a strong recommendation despite the lack of specific critiques. | Note: Models differed by 50 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:14:50.642Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 85,
+    "scoreDelta": 50,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 50 points (Claude: 35, OpenAI: 85)"
+    ]
+  }
+}

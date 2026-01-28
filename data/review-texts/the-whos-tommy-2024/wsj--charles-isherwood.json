@@ -2,51 +2,51 @@
   "showId": "the-whos-tommy-2024",
   "outletId": "wsj",
   "outlet": "The Wall Street Journal",
-  "criticName": "Charles Isherwood",
+  "criticName": "Charles",
   "url": "https://www.wsj.com/articles/the-whos-tommy-review-broadway-des-mcanuff-pete-townshend-ali-louis-bourzgui-5a35a465",
-  "publishDate": "March 28th, 2024",
+  "publishDate": "March 28, 2024",
   "fullText": null,
   "isFullReview": false,
-  "showScoreExcerpt": "\"...brings an intoxicating energy to the story of a boy who survives trauma\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
+  "dtliExcerpt": "A big blast of boomer pleasure has arrived on Broadway at the Nederlander Theatre, where the thunderous and thoroughly intoxicating revival of “The Who’s Tommy” has opened, giving a seismic jolt to the mostly lusterless musical season.",
   "originalScore": null,
-  "assignedScore": 75,
-  "source": "show-score",
-  "dtliThumb": null,
+  "assignedScore": 88,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/the-whos-tommy/",
   "needsScoring": true,
   "llmScore": {
-    "score": 75,
-    "confidence": "high",
+    "score": 88,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 83,
+      "high": 93
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": null,
+      "music": 90,
       "performances": null,
-      "direction": null
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "intoxicating energy",
+        "quote": "thunderous and thoroughly intoxicating revival",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "giving a seismic jolt to the mostly lusterless musical season",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "survives trauma",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "brings an intoxicating energy to the story of a boy who survives trauma",
+        "quote": "big blast of boomer pleasure",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The phrase 'intoxicating energy' is strongly positive language suggesting the critic found the production engaging and dynamic, but this extremely brief excerpt provides insufficient context for a confident assessment. | GPT-4o-mini: The phrase 'intoxicating energy' suggests a strong positive sentiment, indicating a clear recommendation despite limited context.",
+    "reasoning": "Claude: Strong positive language with superlatives like 'thunderous,' 'thoroughly intoxicating,' and 'seismic jolt' indicates clear enthusiasm and recommendation despite being just an opening excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,18 +56,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:57.477Z",
+    "scoredAt": "2026-01-27T22:10:24.443Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 75,
+    "claudeScore": 88,
+    "openaiScore": null,
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "showScoreExcerpt": "\"...brings an intoxicating energy to the story of a boy who survives trauma\"",
+  "sources": [
+    "dtli",
+    "show-score"
+  ]
 }

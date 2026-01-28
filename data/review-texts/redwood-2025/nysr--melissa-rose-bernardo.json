@@ -1,0 +1,73 @@
+{
+  "showId": "redwood-2025",
+  "outletId": "nysr",
+  "outlet": "New York Stage Review",
+  "criticName": "Melissa Rose",
+  "url": "https://nystagereview.com/2025/02/13/redwood-she-talks-to-the-trees-no-really/",
+  "publishDate": "February 13, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "Menzel does get to do some gravity-defying climbing—the Bay Area–based troupe Bandaloop provided the show’s “vertical choreography”—and show off her impressive, rangey voice. But all the vocal pyrotechnics on Broadway can’t help this Redwood grow.",
+  "originalScore": null,
+  "assignedScore": 42,
+  "source": "dtli",
+  "dtliThumb": "DOWN",
+  "dtliUrl": "https://didtheylikeit.com/shows/redwood/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 65,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "show off her impressive, rangey voice",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "all the vocal pyrotechnics on Broadway can't help this Redwood grow",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "all the vocal pyrotechnics on Broadway can’t help this Redwood grow",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite praising Menzel's vocals and physical performance, the critic's final verdict that even her talents 'can't help this Redwood grow' signals fundamental problems with the show that outweigh individual strengths. | GPT-4o-mini: The review highlights some positive aspects of the performance but ultimately conveys a strong sense of disappointment with the overall production, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:20.365Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

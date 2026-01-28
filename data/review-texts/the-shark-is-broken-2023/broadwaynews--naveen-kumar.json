@@ -1,0 +1,73 @@
+{
+  "showId": "the-shark-is-broken-2023",
+  "outletId": "broadwaynews",
+  "outlet": "Broadway News",
+  "criticName": "Naveen Kumar",
+  "url": "https://www.broadwaynews.com/review-the-shark-is-broken-offers-fan-service-without-teeth/",
+  "publishDate": "August 10, 2023",
+  "fullText": "Transferring from London’s West End, the comedy relies on nostalgia and fandom. Three men scramble around a rickety boat, hellbent on an impossible mission: to survive a deliriously expensive game of make-believe and emerge as Hollywood legends. The most savage foe in “The Shark Is Broken” — a new play about the plagued filming of “Jaws” — is not the torso-snapping maw of a Great White, but the delusion of ego. As written by Ian Shaw and Joseph Nixon, “Jaws” director Steven Spielberg is the first to blame. Fans of the 1975 blockbuster that forever ruined ocean swimming may be familiar with horror stories from the film set, which devoured as much time and money as flailing wet limbs. If shooting the movie on the open waters was the director’s Moby Dick, the actors portrayed in this captive-at-sea backstage comedy are hoping to survive with their stomachs and reputations intact. Bonus if the picture also happens to make them famous. The trio of soon-to-be stars — Richard Dreyfuss, Robert Shaw and Roy Scheider — are piled into the cramped interior of a wooden vessel, toiling around a card table as the movie’s chaotic production drags on offstage. (The boat, recognizable from the film’s final deadly chase, is marvelously recreated here by Duncan Henderson, who also designed the costumes, while Nina Dunn’s video design and Jon Clark’s lighting vividly maroon the actors at sea.) Already have an account? Sign in Already have an account? Log in",
+  "originalScore": null,
+  "assignedScore": null,
+  "dtliThumb": "Meh",
+  "source": "dtli",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "amounts to little more than a companion text",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "dutiful piece of fan service without its own narrative engine",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "much exceed what one could read on Wikipedia",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic dismisses the play as superficial fan service that lacks narrative substance and offers nothing beyond basic information available elsewhere. | GPT-4o-mini: The review is predominantly negative, criticizing the play for lacking originality and depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:58.707Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "dtliExcerpt": "But neither these glimpses at their private lives — nor the play’s treatment of the film’s troubled production — much exceed what one could read on Wikipedia. The play amounts to little more than a companion text, a dutiful piece of fan service without its own narrative engine.",
+  "sources": [
+    "dtli"
+  ]
+}

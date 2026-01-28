@@ -1,0 +1,80 @@
+{
+  "showId": "doubt-2024",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Chris",
+  "url": "https://www.nydailynews.com/2024/03/07/broadway-review-doubt-revival-leaves-no-doubt-a-parable-shanley-amy-ryan/",
+  "publishDate": "March 7, 2024",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "Twenty years later, all reasonable doubt has been removed from Shanley’s parable. This taut drama, back in a gripping new Broadway production from the Roundabout Theatre Company and director Scott Ellis, plays like a cautionary tale, an ode to those who found the courage to stand up to abusers and side with the young and the vulnerable.",
+  "originalScore": null,
+  "assignedScore": 84,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/doubt-a-parable/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "gripping new Broadway production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This taut drama",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "all reasonable doubt has been removed from Shanley's parable",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review uses strong positive language ('gripping', 'taut drama') and frames the production as both artistically successful and thematically relevant, indicating a clear recommendation despite being a brief excerpt. | GPT-4o-mini: The review expresses strong praise for the production's gripping nature and its thematic relevance, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:07.848Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "bwwExcerpt": "Ryan, whose performance is tart, vulnerable, and unstinting, shows us a character slowly realizing that her unswerving belief in the hierarchy she serves — heck, the way she has ordered her entire life — is incompatible with her moral and practical quest. The similarly excellent Kazan, whose teaching nun has the assets and drawbacks of youth, can only stare horrified at a future that she now understands is coming for her, too. It’s just a matter of time.     Melissa Rose Bernardo, New York Stage",
+  "showScoreExcerpt": "\"...a timely and now seemingly timeless piece of art that shed light\"",
+  "bwwThumb": "Up",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
+}

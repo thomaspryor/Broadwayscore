@@ -1,0 +1,68 @@
+{
+  "showId": "the-cottage-2023",
+  "outletId": "broadwaynews",
+  "outlet": "Broadway News",
+  "criticName": "Brittani Samuel",
+  "url": "https://www.broadwaynews.com/review-spending-an-eventful-but-hackneyed-evening-at-the-cottage/",
+  "publishDate": "July 24, 2023",
+  "fullText": "Audience members seemed eager to yield to Rustin’s shticks and howl along, but in reality there’s more delight in looking at “The Cottage” than laughing along to it.",
+  "originalScore": null,
+  "assignedScore": null,
+  "dtliThumb": "Down",
+  "source": "dtli",
+  "llmScore": {
+    "score": 48,
+    "confidence": "medium",
+    "range": {
+      "low": 43,
+      "high": 53
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 65,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's more delight in looking at 'The Cottage' than laughing along to it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Audience members seemed eager to yield to Rustin's shticks and howl along",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic suggests the visual elements are stronger than the comedic content, implying the show fails at its primary purpose of being funny.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:06.203Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "dtliExcerpt": "Audience members seemed eager to yield to Rustin’s shticks and howl along, but in reality there’s more delight in looking at “The Cottage” than laughing along to it.",
+  "sources": [
+    "dtli"
+  ]
+}

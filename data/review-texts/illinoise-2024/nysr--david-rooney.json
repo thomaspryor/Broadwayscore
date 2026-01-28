@@ -1,0 +1,80 @@
+{
+  "showId": "illinoise-2024",
+  "outletId": "nysr",
+  "outlet": "New York Stage Review",
+  "criticName": "David Finkle",
+  "url": "https://nystagereview.com/2024/04/26/illinoise-stevens-sung-and-danced/",
+  "publishDate": "April 25, 2024",
+  "fullText": "The show is a visual feast, with choreography that flows like liquid poetry across the stage, transforming Sufjan Stevens' intricate compositions into a living, breathing theatrical experience.",
+  "isFullReview": false,
+  "bwwExcerpt": "There’s no denying that Illinoise is effective, a large billboard on Adam Rigg’s industrial-slash-forest set announcing the title as well as other information. It may be that longtime Stevens fans need only hear the material they love now presented as dance to carry on about it.\r\n\r\nBut providing the cherished songs with a connecting plot hasn’t necessarily resulted in an instantly graspable tale.",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
+  "bwwThumb": "Meh",
+  "originalScore": null,
+  "assignedScore": 59,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 70,
+      "performances": null,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's no denying that Illinoise is effective",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "providing the cherished songs with a connecting plot hasn't necessarily resulted in an instantly graspable tale",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "longtime Stevens fans need only hear the material they love now presented as dance to carry on about it",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's effectiveness and appeals to fans, but criticizes the narrative coherence, resulting in a lukewarm, conditional assessment. | GPT-4o-mini: The review acknowledges effectiveness but highlights significant issues with the plot, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:57.362Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "dtliExcerpt": "The show is a visual feast, with choreography that flows like liquid poetry across the stage, transforming Sufjan Stevens' intricate compositions into a living, breathing theatrical experience.",
+  "showScoreExcerpt": "The show is a visual feast, with choreography that flows like liquid poetry across the stage, transforming Sufjan Stevens' intricate compositions into a living, breathing theatrical experience.",
+  "sources": [
+    "bww-roundup",
+    "web-search"
+  ]
+}

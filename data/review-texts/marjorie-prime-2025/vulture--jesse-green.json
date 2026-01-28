@@ -1,0 +1,73 @@
+{
+  "showId": "marjorie-prime-2025",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Jesse Green",
+  "url": "http://www.vulture.com/2015/12/theater-review-marjorie-prime.html#",
+  "publishDate": "December 14th, 2015",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "\"A startling and profound new drama...It’s true that 'Marjorie Prime' is fundamentally a realistic work, and a brilliant one at that...That in this production they are rendered natural as well, despite the amusing technological frame through which Harrison explores them, is the result of the superior ensemble acting of the cast, under Anne Kauffman’s beautifully balanced direction.\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/marjorie-prime-broadway",
+  "originalScore": null,
+  "assignedScore": 87,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 89,
+      "music": null,
+      "performances": 88,
+      "direction": 86
+    },
+    "keyPhrases": [
+      {
+        "quote": "A startling and profound new drama",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a brilliant one at that",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "superior ensemble acting of the cast, under Anne Kauffman's beautifully balanced direction",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses superlative language like 'startling and profound' and 'brilliant' with consistent praise for all elements including the script, performances, and direction, indicating strong recommendation despite being an excerpt. | GPT-4o-mini: The review expresses strong praise for the script and performances, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:14:32.318Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 88,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

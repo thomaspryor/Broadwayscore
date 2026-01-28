@@ -1,0 +1,67 @@
+{
+  "showId": "mary-jane-2024",
+  "outletId": "talkinbroadway",
+  "outlet": "Talkin' Broadway",
+  "criticName": "Matthew Murray",
+  "url": "https://talkinbroadway.com/mary-jane-review/",
+  "publishDate": "May 2, 2024",
+  "fullText": "Rachel McAdams delivers a powerhouse performance as Mary Jane, a mother navigating the complexities of caring for her chronically ill son with remarkable grace and authenticity.",
+  "isFullReview": false,
+  "dtliExcerpt": "Rachel McAdams delivers a powerhouse performance as Mary Jane, a mother navigating the complexities of caring for her chronically ill son with remarkable grace and authenticity.",
+  "originalScore": null,
+  "assignedScore": 75,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "powerhouse performance",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "remarkable grace and authenticity",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for McAdams' performance suggests positive recommendation, but excerpt focuses only on one element without overall show assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:38.555Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

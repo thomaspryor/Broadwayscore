@@ -1,0 +1,67 @@
+{
+  "showId": "mary-jane-2024",
+  "outletId": "nypost",
+  "outlet": "New York Post",
+  "criticName": "Johnny Oleksinski",
+  "url": "https://nypost.com/2024/07/31/entertainment/mary-jane-review-rachel-mcadams-shines-in-grueling-broadway-drama/",
+  "publishDate": "July 31, 2024",
+  "fullText": "Rachel McAdams shines in this grueling Broadway drama about a mother caring for her severely disabled son.",
+  "isFullReview": false,
+  "dtliExcerpt": "Rachel McAdams shines in this grueling Broadway drama about a mother caring for her severely disabled son.",
+  "originalScore": null,
+  "assignedScore": 74,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 83,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rachel McAdams shines",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "grueling Broadway drama",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise for lead performance ('shines') suggests quality, but extremely brief review with no other production elements mentioned limits confidence in overall recommendation. | GPT-4o-mini: The review highlights Rachel McAdams' strong performance but lacks detail on other aspects of the production, leading to a positive but cautious recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:28.607Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

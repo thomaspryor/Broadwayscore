@@ -1,0 +1,80 @@
+{
+  "showId": "days-of-wine-and-roses-2024",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Chris",
+  "url": "https://www.nydailynews.com/2024/01/28/broadway-review-cheers-to-days-of-wine-and-roses-a-beautifully-executed-musical/",
+  "publishDate": "January 28, 2024",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "The show is caught in the middle, but it’s still a beautifully directed, acted, written and composed piece about, yes, alcohol but also about our responsibility to the very few people in our lives who depend on us absolutely for their own happiness and survival. We all have them. This show might help with that.",
+  "originalScore": null,
+  "assignedScore": 77,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/days-of-wine-and-roses/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": 80,
+      "performances": 85,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "beautifully directed, acted, written and composed piece",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The show is caught in the middle",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "This show might help with that",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite noting the show is 'caught in the middle,' the critic praises all creative elements as 'beautiful' and suggests the show has meaningful impact, indicating a clear positive recommendation. | GPT-4o-mini: The review expresses a clear positive sentiment about the direction and overall quality of the show, despite noting it feels somewhat caught in the middle.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:09.181Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "bwwExcerpt": "The twin lead performances are musically exquisite and courageous to boot; the target audience for this melancholy musical will be Guettel’s many fans as well as admirers of stars willing to head to a tough place with only each other for company. Watching O’Hara in particular is to be drawn as ever to her voice but also to watch her explore self-destruction in a way few of her fans ever will have experienced.",
+  "showScoreExcerpt": "\" ‘Days of Wine and Roses,’ a ‘beautifully’ executed musical\"",
+  "bwwThumb": "Meh",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
+}

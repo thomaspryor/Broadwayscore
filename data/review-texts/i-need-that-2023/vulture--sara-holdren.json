@@ -4,71 +4,76 @@
   "outlet": "Vulture",
   "criticName": "Sara Holdren",
   "url": "https://www.vulture.com/2023/11/theater-review-i-need-that-danny-lucy-devito.html",
-  "publishDate": null,
+  "publishDate": "November 2nd, 2023",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "In Theresa Rebeck’s I Need That — which makes its 100-minute run time feel as stretched out as the waistband of an old pair of sweatpants — Danny DeVito is Character B, or Sam. His daughter, Lucy DeVito, is also his daughter onstage, a.k.a. Character A, or Amelia. Sam, a big fan of old sweatpants, isn’t quite a hoarder, but he’s close. He doesn’t go outside, his house is bursting with heaps and heaps of “junk” (according to Amelia) or “treasure” (according to him), and it’s bad enough that the n",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
+  "showScoreExcerpt": "“There’s a certain kind of numbness that sets in when you’re stuck in a theater and you realize that the characters up onstage are going to keep playing the same scene, over and over again, for the rest of the evening.”",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/i-need-that-broadway",
   "originalScore": null,
-  "assignedScore": 33,
-  "source": "bww-roundup",
+  "assignedScore": 23,
+  "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 33,
-    "confidence": "medium",
+    "score": 23,
+    "confidence": "high",
     "range": {
-      "low": 20.5,
-      "high": 45.5
+      "low": 15.5,
+      "high": 30.5
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": 20,
       "music": null,
-      "performances": 50,
-      "direction": null
+      "performances": null,
+      "direction": 25
     },
     "keyPhrases": [
       {
-        "quote": "makes its 100-minute run time feel as stretched out as the waistband of an old pair of sweatpants",
+        "quote": "There's a certain kind of numbness that sets in when you're stuck in a theater",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "characters up onstage are going to keep playing the same scene, over and over again",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "100-minute run time feel as stretched out",
+        "quote": "numbness that sets in when you’re stuck in a theater",
         "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "his house is bursting with heaps and heaps of 'junk'",
-        "sentiment": "neutral",
-        "strength": 3
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic uses vivid negative imagery comparing the show's pacing to stretched sweatpants, suggesting significant tedium and structural problems. | GPT-4o-mini: The review expresses significant dissatisfaction with the pacing and overall experience, indicating a negative recommendation. | Note: Models differed by 15 points.",
+    "reasoning": "Claude: The critic describes a deeply negative theater experience characterized by repetitiveness, audience numbness, and feeling 'stuck,' indicating a clear pan of the production. | GPT-4o-mini: The review expresses a strong sense of dissatisfaction and boredom with the repetitive nature of the performance, indicating a clear negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:18:58.283Z",
+    "scoredAt": "2026-01-28T01:21:43.104Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 25,
-    "openaiScore": 40,
-    "scoreDelta": 15,
+    "openaiScore": 20,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "bwwThumb": "Meh"
+  "bwwExcerpt": "In Theresa Rebeck’s I Need That — which makes its 100-minute run time feel as stretched out as the waistband of an old pair of sweatpants — Danny DeVito is Character B, or Sam. His daughter, Lucy DeVito, is also his daughter onstage, a.k.a. Character A, or Amelia. Sam, a big fan of old sweatpants, isn’t quite a hoarder, but he’s close. He doesn’t go outside, his house is bursting with heaps and heaps of “junk” (according to Amelia) or “treasure” (according to him), and it’s bad enough that the n",
+  "bwwThumb": "Meh",
+  "sources": [
+    "show-score",
+    "bww-roundup"
+  ]
 }

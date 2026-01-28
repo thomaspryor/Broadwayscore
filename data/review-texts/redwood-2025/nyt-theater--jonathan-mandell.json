@@ -1,0 +1,73 @@
+{
+  "showId": "redwood-2025",
+  "outletId": "nyt-theater",
+  "outlet": "New York Theater",
+  "criticName": "Jonathan",
+  "url": "https://newyorktheater.me/2025/02/13/redwood-broadway-review-idina-menzel-hugs-an-imax-of-a-tree/",
+  "publishDate": "February 13, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "“Redwood” is not a wholly satisfying Broadway musical, despite those striking visuals, as well some unusual vertical choreography and the glorious voices of the five talented cast members, who make the most of Broadway newcomer Kate Diaz’s 19 mostly serviceable musical numbers.",
+  "originalScore": null,
+  "assignedScore": 57,
+  "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/redwood/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 63,
+      "performances": 75,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "not a wholly satisfying Broadway musical",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "glorious voices of the five talented cast members",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "19 mostly serviceable musical numbers",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review opens with a clear statement that the show is 'not wholly satisfying' despite praising specific elements like performances and visuals, indicating a mixed experience that falls short of recommendation. | GPT-4o-mini: The review acknowledges some strengths in performances and visuals but ultimately suggests a lack of overall satisfaction, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:25.374Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "showId": "how-to-dance-in-ohio-2023",
+  "outletId": "variety",
+  "outlet": "Variety",
+  "criticName": "Frank Rizzo",
+  "url": "https://variety.com/2023/legit/reviews/how-to-dance-in-ohio-review-broadway-musical-1235832602/",
+  "publishDate": "December 10, 2023",
+  "fullText": "It’s a big-hearted, earnest musical performed by an eager, confident and appealing cast, playing characters—some more richly drawn than others—who find safety in routines, rules and control but also recognize the need to break free.",
+  "originalScore": null,
+  "assignedScore": null,
+  "dtliThumb": "Up",
+  "source": "dtli",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 79,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "big-hearted, earnest musical performed by an eager, confident and appealing cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "some more richly drawn than others",
+        "sentiment": "negative",
+        "strength": 2
+      },
+      {
+        "quote": "find safety in routines, rules and control but also recognize the need to break free",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Warm praise for cast and overall tone with minor reservation about character development suggests qualified positive recommendation. | GPT-4o-mini: The review expresses a clear positive sentiment towards the cast and the overall musical, indicating a recommendation with some minor reservations about character depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:19:20.435Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "showScoreExcerpt": "“Under director Sammi Cannold’s staging, the actors perform with verve, commitment and authenticity — and, in a few cases, show some real star power.”",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/how-to-dance-in-ohio-broadway",
+  "dtliExcerpt": "It’s a big-hearted, earnest musical performed by an eager, confident and appealing cast, playing characters—some more richly drawn than others—who find safety in routines, rules and control but also recognize the need to break free.",
+  "sources": [
+    "dtli"
+  ]
+}

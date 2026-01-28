@@ -1,0 +1,78 @@
+{
+  "showId": "how-to-dance-in-ohio-2023",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Jackson McHenry",
+  "url": "https://www.vulture.com/2023/12/theater-review-how-to-dance-in-ohio.html",
+  "publishDate": "December 10th, 2023",
+  "fullText": "The musical manages to be both specific to its characters' experiences and universal in its themes of connection and acceptance, creating something genuinely moving without falling into condescension.",
+  "isFullReview": false,
+  "showScoreExcerpt": "“It’s a credit to ‘How to Dance in Ohio’s’ cast that they deliver compelling performances, even when their material gets rote and didactic...If we’re here to meet these characters who aren’t going to be stand-ins for generalized traits, let’s really spend the time to get to know them all.”",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/how-to-dance-in-ohio-broadway",
+  "originalScore": null,
+  "assignedScore": 64,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a credit to 'How to Dance in Ohio's' cast that they deliver compelling performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "even when their material gets rote and didactic",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "let's really spend the time to get to know them all",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the performances but criticizes the material as 'rote and didactic' and suggests the show fails to fully develop its characters, indicating a mixed-positive assessment that leans toward disappointment. | GPT-4o-mini: The review highlights strong performances but criticizes the script for being repetitive and didactic, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:43.442Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "dtliExcerpt": "The musical manages to be both specific to its characters' experiences and universal in its themes of connection and acceptance, creating something genuinely moving without falling into condescension.",
+  "sources": [
+    "show-score",
+    "web-search"
+  ]
+}

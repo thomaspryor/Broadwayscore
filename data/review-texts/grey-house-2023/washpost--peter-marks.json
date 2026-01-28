@@ -1,71 +1,82 @@
 {
   "showId": "grey-house-2023",
-  "outletId": "WASHPOST",
+  "outletId": "washpost",
   "outlet": "The Washington Post",
   "criticName": "Peter Marks",
-  "url": "https://www.washingtonpost.com/theater-dance/2023/06/01/grey-house-broadway-review/",
+  "url": "https://www.washingtonpost.com/theater-dance/2023/06/01/grey-house-metcalf-mantello-broadway/",
   "publishDate": "June 1, 2023",
   "fullText": "The supernatural thriller 'Grey House' succeeds in creating an atmosphere of dread, but the payoff doesn't quite match the buildup of suspense.",
   "isFullReview": false,
-  "dtliExcerpt": "The supernatural thriller 'Grey House' succeeds in creating an atmosphere of dread, but the payoff doesn't quite match the buildup of suspense.",
+  "bwwExcerpt": "But apart from Laurie Metcalf’s enjoyable portrayal of an inscrutable mountain woman, and a set by Scott Pask out of the Grimms’ grimmest fairy tale, the play itself exists in a sort of gray zone — neither particularly terrifying nor profound. It belongs in that lesser rank of thrillers that whip up suspense by withholding vital information, the kind that requires gullible characters to take the bait and audiences to wait for clarification before the final bows.",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
+  "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 59,
-  "source": "web-search",
+  "assignedScore": 41,
+  "source": "bww-roundup",
   "dtliThumb": null,
-  "dtliUrl": null,
-  "bwwExcerpt": null,
-  "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The supernatural thriller 'Grey House' succeeds in creating an atmosphere of dread, but the payoff doesn't quite match the buildup of suspense.",
   "needsScoring": true,
   "llmScore": {
-    "score": 59,
+    "score": 41,
     "confidence": "high",
     "range": {
-      "low": 53,
-      "high": 65
+      "low": 35,
+      "high": 47
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 45,
+      "book": 30,
       "music": null,
-      "performances": null,
-      "direction": 65
+      "performances": 73,
+      "direction": 55
     },
     "keyPhrases": [
       {
-        "quote": "succeeds in creating an atmosphere of dread",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the payoff doesn't quite match the buildup of suspense",
+        "quote": "the play itself exists in a sort of gray zone — neither particularly terrifying nor profound",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "It belongs in that lesser rank of thrillers that whip up suspense by withholding vital information",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Laurie Metcalf's enjoyable portrayal",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review acknowledges successful atmospheric creation but criticizes the resolution, indicating a mixed experience that leans slightly positive due to effective production elements. | GPT-4o-mini: The review indicates a mix of effective atmosphere but a disappointing conclusion, leading to a conditional recommendation.",
+    "reasoning": "Claude: While praising Metcalf's performance and the set design, the critic fundamentally dismisses the play as belonging to a 'lesser rank' of thrillers that manipulates rather than genuinely thrills. | GPT-4o-mini: The review highlights significant weaknesses in the play while acknowledging a strong performance, leading to a clear negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:54.594Z",
+    "scoredAt": "2026-01-28T01:18:54.809Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 60,
+    "claudeScore": 42,
+    "openaiScore": 40,
     "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
-  }
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (41 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  },
+  "dtliExcerpt": "The supernatural thriller 'Grey House' succeeds in creating an atmosphere of dread, but the payoff doesn't quite match the buildup of suspense.",
+  "showScoreExcerpt": "The supernatural thriller 'Grey House' succeeds in creating an atmosphere of dread, but the payoff doesn't quite match the buildup of suspense.",
+  "sources": [
+    "bww-roundup",
+    "web-search"
+  ]
 }

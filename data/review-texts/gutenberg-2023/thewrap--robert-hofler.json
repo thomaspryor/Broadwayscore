@@ -1,15 +1,19 @@
 {
   "showId": "gutenberg-2023",
   "outletId": "thewrap",
-  "outlet": "TheWrap",
+  "outlet": "The Wrap",
   "criticName": "Robert Hofler",
   "url": "https://www.thewrap.com/gutenberg-the-musical-broadway-review-josh-gad-andrew-rannells/",
   "publishDate": "October 12, 2023",
   "fullText": "There is a legendary anecdote, perhaps apocryphal but probably not, that after a performance of “The Addams Family” on Broadway, Elaine Stritch visited Nathan Lane backstage and told the star, “They’re not paying you enough.”\r\n\r\nThat goes double for the musical “Gutenberg!,” which opened Thursday at the James Earl Jones Theatre. It manages to waste the talent of not one but two very talented performers.",
+  "isFullReview": false,
+  "bwwExcerpt": "Josh Gad and Andrew Rannells bring a great Oscar-and-Felix chemistry to the stage. They also work tirelessly and exert their considerable charm, but in the end, they’re asking us to be entertained by a two-hander staging of an absolutely dreadful musical. Yes, the songs and the book for this parody of a musical within a musical that is “Gutenberg!” are witless and relentlessly repetitive, which is to be expected from the team of Scott Brown and Anthony King, who gave us one of the worst Broadway",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": null,
-  "dtliThumb": "Down",
-  "source": "dtli",
+  "assignedScore": 25,
+  "source": "bww-roundup",
+  "dtliThumb": "DOWN",
+  "needsScoring": true,
   "llmScore": {
     "score": 25,
     "confidence": "high",
@@ -20,39 +24,39 @@
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 33,
+      "book": 13,
+      "music": 15,
+      "performances": 73,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "It manages to waste the talent of not one but two very talented performers",
+        "quote": "absolutely dreadful musical",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "They're not paying you enough",
+        "quote": "witless and relentlessly repetitive",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "it manages to waste the talent of not one but two very talented performers.",
-        "sentiment": "negative",
-        "strength": 5
+        "quote": "They also work tirelessly and exert their considerable charm",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review uses harsh language about wasting talented performers and opens with an anecdote suggesting actors deserve hazard pay for being in bad shows, clearly indicating a negative assessment. | GPT-4o-mini: The review expresses strong disappointment in the production, indicating that it fails to utilize its talented cast effectively.",
+    "reasoning": "Claude: Despite praising the lead performances, the critic clearly condemns the musical itself as 'absolutely dreadful' with 'witless' songs and book, indicating the strong performances cannot save a fundamentally flawed show. | GPT-4o-mini: The review strongly criticizes the musical's book and songs while only mildly praising the performances, leading to a clear pan recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:06.275Z",
+    "scoredAt": "2026-01-27T22:08:24.764Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -65,5 +69,11 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "bwwThumb": "Down",
+  "dtliExcerpt": "There is a legendary anecdote, perhaps apocryphal but probably not, that after a performance of “The Addams Family” on Broadway, Elaine Stritch visited Nathan Lane backstage and told the star, “They’re not paying you enough.” That goes double for the musical “Gutenberg!,” which opened Thursday at the James Earl Jones Theatre. It manages to waste the talent of not one but two very talented performers.",
+  "sources": [
+    "bww-roundup",
+    "dtli"
+  ]
 }

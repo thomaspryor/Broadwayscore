@@ -1,0 +1,116 @@
+{
+  "showId": "the-great-gatsby-2024",
+  "outletId": "observer",
+  "outlet": "Observer",
+  "criticName": "David Cote",
+  "url": "https://observer.com/2024/04/the-great-gatsby-broadway-review/",
+  "publishDate": "2024-04-25",
+  "fullText": "We noticed you're using an ad blocker.\n\t\t\tWe get it: you like to have control of your own internet experience. But advertising revenue helps support our journalism. To read our full stories, please turn off your ad blocker.We'd really appreciate it.\n\nBelow are steps you can take in order to whitelist Observer.com on your browser:\n\nClick the AdBlock button on your browser and select Don't run on pages on this domain.\n\nClick the AdBlock Plus button on your browser and select Enabled on this site.\n\nClick the AdBlock Plus button on your browser and select Disable on Observer.com.",
+  "isFullReview": false,
+  "bwwExcerpt": "p dancers. That not-since-“Carrie” spectacle sums up what goes wrong with the new musical “The Great Gatsby,” with book by Kati Kerrigan and score by composer Jason Howland and lyricist Nathan Tysen. David Cote, Observer: Don’t misunderstand me: The Great Gatsby is not a smart, tasteful musical that can’t compete with tackier ones. It simply fails to be tacky enough. The jazz-based score by composer Jason Howland and lyricist Nathan Tysen (Paradise Square) ventures into funk, Disney princess ballad, and a touch of Britpop. Despite the eclecticism of the musical palette, none of the songs stick in the ear, despite strenuous vocalizing by Jeremy Jordan (Newsies) and Eva Noblezada (Hadestown). Average Rating: 47.6% REVIEW ROUNDUP REAL-TIME ALERTS To read more reviews, click here ! Discuss the show on the BroadwayWorld Forum Buy Tickets to The Great Gatsby Opening Night Coverage Photos: The Cast of THE GREAT GATSBY Takes Opening Night Bows Photos: Jeremy Jordan, Eva Noblezada & the Company",
+  "originalScore": null,
+  "assignedScore": 36,
+  "source": "bww-roundup",
+  "needsFullText": false,
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
+  "textStatus": "truncated",
+  "textQuality": "truncated",
+  "sourceMethod": "brightdata",
+  "scoreSource": "sentiment-mixed-positive",
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 36,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": 30,
+      "performances": 48,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It simply fails to be tacky enough",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "none of the songs stick in the ear, despite strenuous vocalizing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Average Rating: 47.6%",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental flaws with both the concept and execution, stating it 'simply fails' and that songs don't stick despite good performers, with an aggregate rating of 47.6% reinforcing the negative assessment. | GPT-4o-mini: The review is predominantly negative, criticizing the music and overall execution, leading to a clear pan recommendation. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:53:45.817Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 30,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "textWordCount": 98,
+  "archivePath": "data/archives/reviews/the-great-gatsby-2024/observer--david-cote_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T15:13:31.436Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (404): Request failed with status code 404"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textIssues": [
+    "Word count too low: 98 (min: 300)",
+    "Show title not found in text"
+  ],
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
+  "bwwThumb": "Meh"
+}

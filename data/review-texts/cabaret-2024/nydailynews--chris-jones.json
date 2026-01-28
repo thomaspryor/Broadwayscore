@@ -1,0 +1,79 @@
+{
+  "showId": "cabaret-2024",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Chris",
+  "url": "https://www.nydailynews.com/2024/04/21/broadway-review-interactive-cabaret-revival-is-a-money-grabbing-misfire/",
+  "publishDate": "April 21, 2024",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "None of this would matter, arguably, if the production within this naked attempt to offer a value-added experience to increase revenue was worth seeing. Alas, outside of&nbsp;Bebe Neuwirth’s and Steven Skybell’s Fraulein Schneider and Herr Schultz, it’s not.",
+  "originalScore": null,
+  "assignedScore": 30,
+  "source": "dtli",
+  "dtliThumb": "DOWN",
+  "dtliUrl": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 40
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 68,
+      "direction": 20
+    },
+    "keyPhrases": [
+      {
+        "quote": "naked attempt to offer a value-added experience to increase revenue",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it's not [worth seeing]",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "outside of Bebe Neuwirth's and Steven Skybell's Fraulein Schneider and Herr Schultz",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the production is not worth seeing, with only two performances as exceptions to an otherwise commercially cynical and unsuccessful show. | GPT-4o-mini: The review indicates a clear disappointment in the production overall, with only specific performances receiving praise, leading to a strong negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T21:43:28.623Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 35,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "bwwExcerpt": "You may look at all this differently. But I have to say that selling a dinner “upgrade” to the “Pineapple Room” offends me. That fruit is what Herr Schultz offers to his love, prior to being shipped off to a concentration camp, or so the show strongly implies, given that he is already in the Nazis’ sights. In this show, fruit is a symbol of generosity and love in a world of horrors. It’s not a flavor of costly cocktail nor a high-end status symbol. How gross.",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ],
+  "bwwThumb": "Down"
+}

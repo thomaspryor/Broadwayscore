@@ -1,0 +1,74 @@
+{
+  "showId": "merrily-we-roll-along-2023",
+  "outletId": "whatsonstage",
+  "outlet": "whatsonstage",
+  "criticName": "David Gordon",
+  "url": "https://www.whatsonstage.com/news/merrily-we-roll-along-with-daniel-radcliffe-jonathan-groff-and-lindsay-mendez-review_1535303/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "Friedman’s production is a theatrical miracle, finding the heart at the center of this story of dreams, regrets, and good things going, going, gone. Somewhere, its creators are bursting with pride to see their vision fully realised, at long last.",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
+  "originalScore": null,
+  "assignedScore": 92,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "theatrical miracle",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "finding the heart at the center of this story",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "their vision fully realised, at long last",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses extremely positive language like 'theatrical miracle' and suggests the production fully realizes the creators' vision, indicating strong recommendation despite being brief. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting it as a 'theatrical miracle' with a strong emotional core.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:29.610Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

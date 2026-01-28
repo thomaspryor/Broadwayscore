@@ -1,0 +1,73 @@
+{
+  "showId": "spamalot-2023",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Sara Holdren",
+  "url": "https://www.vulture.com/2023/11/theater-review-spamalot-broadway-revival.html",
+  "publishDate": "November 16th, 2023",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "“It’s true that there’s a sugar-high quality to ‘Spamalot’: By the end, your teeth are buzzing from the sheer multitude of sparkles and crescendos. But there’s also an embrace of its form’s inherent absurdity that feels almost existential, and thereby true to Python.”",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway",
+  "originalScore": null,
+  "assignedScore": 74,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's a sugar-high quality to 'Spamalot': By the end, your teeth are buzzing from the sheer multitude of sparkles and crescendos",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "there's also an embrace of its form's inherent absurdity that feels almost existential, and thereby true to Python",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sugar-high quality to ‘Spamalot’",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges both overwhelming sensory excess and authentic Python spirit, suggesting a qualified positive experience with reservations about the production's intensity. | GPT-4o-mini: The review expresses a clear positive sentiment towards the show's energy and absurdity, indicating a recommendation to see it despite not being overwhelmingly enthusiastic.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:48.940Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

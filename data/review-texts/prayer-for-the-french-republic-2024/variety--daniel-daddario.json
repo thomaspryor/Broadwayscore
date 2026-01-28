@@ -1,0 +1,76 @@
+{
+  "showId": "prayer-for-the-french-republic-2024",
+  "outletId": "variety",
+  "outlet": "Variety",
+  "criticName": "Daniel D'Addario",
+  "url": "https://variety.com/2024/legit/reviews/prayer-for-the-french-republic-review-broadway-1235865240/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "That’s not to say that “Prayer for the French Republic” should have been about something other than the story it tells. But it doesn’t tell it in a compelling or nuanced manner — despite Harmon having set himself up to succeed with a flashback story that could, but does not, provide real context and present-day interlocutors who could, but do not, push the Benhamous beyond platitudes. The debates the Benhamous are having are ones that are happening in our own republic — at dinner tables and in g",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
+  "bwwThumb": "Up",
+  "originalScore": null,
+  "assignedScore": 41,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 41,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "But it doesn't tell it in a compelling or nuanced manner",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "despite Harmon having set himself up to succeed with a flashback story that could, but does not, provide real context",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "push the Benhamous beyond platitudes",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic consistently criticizes the play's execution, noting it fails to be compelling or nuanced despite having the structural elements that could have made it successful. | GPT-4o-mini: The review expresses significant disappointment in the storytelling and its lack of depth, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:42.601Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (41 → Down) conflicts with aggregator thumbs (Up)"
+    ]
+  }
+}

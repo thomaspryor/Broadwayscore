@@ -2,51 +2,51 @@
   "showId": "heart-of-rock-and-roll-2024",
   "outletId": "nytg",
   "outlet": "New York Theatre Guide",
-  "criticName": "Gillian Russo",
+  "criticName": "Gillian",
   "url": "https://www.newyorktheatreguide.com/reviews/the-heart-of-rock-and-roll-broadway-review-huey-lewis",
-  "publishDate": null,
+  "publishDate": "April 22, 2024",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "Then again, I didn't attend The Heart of Rock and Roll for its politics and I'd wager most people aren't, either. Nor does the show want you to. Your willingness to overlook this and the show's many plot contrivances will likely be proportional to your interest in either or both of the crowd-pleasers named at the start of this review. But I must say, your level of fun likely won’t. I am neither an ‘80s kid nor a person with any outsized interest in Cott’s rugged good looks, but I had a good, old",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
+  "dtliExcerpt": "I am neither an ‘80s kid nor a person with any outsized interest in Cott’s rugged good looks, but I had a good, old-fashioned great time for 2.5 hours.",
   "originalScore": null,
-  "assignedScore": 50,
-  "source": "bww-roundup",
-  "dtliThumb": null,
+  "assignedScore": 77,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/the-heart-of-rock-and-roll/",
   "needsScoring": true,
   "llmScore": {
-    "score": 50,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 70.5,
+      "high": 83.5
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "the show's many plot contrivances",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "had a good, old-fashioned great time for 2.5 hours",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "I had a good, old",
-        "sentiment": "positive",
+        "quote": "I am neither an '80s kid nor a person with any outsized interest in Cott's rugged good looks",
+        "sentiment": "neutral",
         "strength": 2
       },
       {
-        "quote": "Your willingness to overlook this",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "I had a good, old-fashioned great time for 2.5 hours.",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Review acknowledges significant flaws ('plot contrivances') that require overlooking, but the truncated ending suggesting 'good, old' time creates uncertainty about final verdict. | GPT-4o-mini: The review indicates a mixed experience, acknowledging some enjoyment but also significant reservations about the show's plot and overall appeal.",
+    "reasoning": "Claude: Clear positive experience with enthusiastic language about having a 'great time' for the full duration, indicating solid recommendation despite being outside the target demographic. | GPT-4o-mini: The review expresses enjoyment of the experience without strong reservations, indicating a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,21 +56,25 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:35.128Z",
+    "scoredAt": "2026-01-27T22:09:02.225Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 55,
-    "scoreDelta": 10,
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "bwwThumb": "Up",
+  "bwwExcerpt": "Then again, I didn't attend The Heart of Rock and Roll for its politics and I'd wager most people aren't, either. Nor does the show want you to. Your willingness to overlook this and the show's many plot contrivances will likely be proportional to your interest in either or both of the crowd-pleasers named at the start of this review. But I must say, your level of fun likely won’t. I am neither an ‘80s kid nor a person with any outsized interest in Cott’s rugged good looks, but I had a good, old",
   "showScoreExcerpt": "\"Director Gordon Greenberg’s production is eager to sweep you up in its bright lights\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway"
+  "bwwThumb": "Up",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
 }

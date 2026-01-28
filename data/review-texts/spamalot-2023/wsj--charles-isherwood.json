@@ -1,22 +1,19 @@
 {
   "showId": "spamalot-2023",
   "outletId": "wsj",
-  "outlet": "Wall Street Journal",
-  "criticName": "Charles Isherwood",
+  "outlet": "The Wall Street Journal",
+  "criticName": "Charles",
   "url": "https://www.wsj.com/articles/spamalot-review-king-arthur-monty-python-broadway-eric-idle-james-monroe-iglehart-ethan-slater-musical-comedy-42160743",
-  "publishDate": null,
+  "publishDate": "November 16, 2023",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "The thought caromed around my mind in between heady bouts of pure glee as I watched the new Broadway revival of the musical, directed and choreographed by Josh Rhodes, a rising star now fully risen. In prospect the notion of a revival struck me as premature. “Spamalot” again, already? The show closed on Broadway in 2009 after a run of almost four years. But within just a few blissful minutes any reservations were vanquished. In fact the arrival of this production, blazing like a burst of summer ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
-  "bwwThumb": "Up",
+  "dtliExcerpt": "But within just a few blissful minutes any reservations were vanquished. In fact the arrival of this production, blazing like a burst of summer sunshine as winter draws near, seems perfectly timed.",
   "originalScore": null,
   "assignedScore": 89,
-  "source": "bww-roundup",
-  "dtliThumb": null,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/spamalot/",
   "needsScoring": true,
-  "showScoreExcerpt": "“The production is so richly stocked with prime talent that there isn’t a smidgen of a lull in the proceedings.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway",
   "llmScore": {
     "score": 89,
     "confidence": "high",
@@ -29,37 +26,37 @@
     "components": {
       "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 92
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "heady bouts of pure glee",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "within just a few blissful minutes any reservations were vanquished",
+        "quote": "any reservations were vanquished",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "so richly stocked with prime talent that there isn't a smidgen of a lull in the proceedings",
+        "quote": "blazing like a burst of summer sunshine",
         "sentiment": "positive",
         "strength": 5
+      },
+      {
+        "quote": "seems perfectly timed",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong enthusiasm with superlative language ('pure glee', 'blazing', 'prime talent') and complete conversion from initial skepticism indicates clear positive recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the revival, highlighting the talent and the joy it brings, indicating a strong recommendation.",
+    "reasoning": "Claude: The vivid metaphor 'blazing like a burst of summer sunshine' and the phrase 'reservations were vanquished' suggest strong enthusiasm, but the brief excerpt limits confidence in the full recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong imagery, indicating a must-see production.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:40.420Z",
+    "scoredAt": "2026-01-27T22:16:57.495Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -68,9 +65,16 @@
     "claudeScore": 88,
     "openaiScore": 90,
     "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "bwwExcerpt": "The thought caromed around my mind in between heady bouts of pure glee as I watched the new Broadway revival of the musical, directed and choreographed by Josh Rhodes, a rising star now fully risen. In prospect the notion of a revival struck me as premature. “Spamalot” again, already? The show closed on Broadway in 2009 after a run of almost four years. But within just a few blissful minutes any reservations were vanquished. In fact the arrival of this production, blazing like a burst of summer ",
+  "showScoreExcerpt": "“The production is so richly stocked with prime talent that there isn’t a smidgen of a lull in the proceedings.”",
+  "bwwThumb": "Up",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
 }

@@ -1,0 +1,74 @@
+{
+  "showId": "mj-2022",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Joe Dziemianowicz",
+  "url": "https://www.nydailynews.com/2022/02/01/mj-the-musical-review-broadway-michael-jackson/",
+  "publishDate": "February 1, 2022",
+  "fullText": "The show is at its best when it lets Jackson's music do the talking, with electrifying performances of hits like 'Billie Jean' and 'Beat It' that showcase the King of Pop's undeniable artistry.",
+  "isFullReview": false,
+  "dtliExcerpt": "The show is at its best when it lets Jackson's music do the talking, with electrifying performances of hits like 'Billie Jean' and 'Beat It' that showcase the King of Pop's undeniable artistry.",
+  "originalScore": 60,
+  "assignedScore": 66,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 66,
+    "confidence": "low",
+    "range": {
+      "low": 47,
+      "high": 85
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 83,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "at its best when it lets Jackson's music do the talking",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "electrifying performances of hits like 'Billie Jean' and 'Beat It'",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "at its best when",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The phrase 'at its best when' implies the show has significant weaknesses elsewhere, making this praise for music and performances feel like identifying bright spots in an otherwise problematic production. | GPT-4o-mini: The review highlights strong performances and the effective use of Jackson's music, suggesting a clear recommendation despite the lack of detail on other aspects. | Note: Models differed by 28 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:07:02.383Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 80,
+    "scoreDelta": 28,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 28 points (Claude: 52, OpenAI: 80)"
+    ]
+  }
+}

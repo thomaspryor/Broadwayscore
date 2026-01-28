@@ -1,0 +1,72 @@
+{
+  "showId": "merrily-we-roll-along-2023",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Jackson McHenry",
+  "url": "https://www.vulture.com/2023/12/theater-review-merrily-we-roll-along-broadway.html",
+  "publishDate": "December 12, 2023",
+  "fullText": "The show's backwards structure, which begins at a bitter end and works toward a hopeful beginning, feels less like a gimmick and more like the only way this story could be told.",
+  "isFullReview": false,
+  "dtliExcerpt": "The show's backwards structure, which begins at a bitter end and works toward a hopeful beginning, feels less like a gimmick and more like the only way this story could be told.",
+  "originalScore": null,
+  "assignedScore": 75,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels less like a gimmick and more like the only way this story could be told",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "backwards structure, which begins at a bitter end and works toward a hopeful beginning",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "the show's backwards structure... feels less like a gimmick and more like the only way this story could be told",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the show's structural choice as narratively justified rather than gimmicky, suggesting thoughtful storytelling, but this brief excerpt provides limited context for a definitive recommendation. | GPT-4o-mini: The review highlights a unique storytelling approach positively, indicating a clear recommendation despite lacking extensive detail.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:11:59.385Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

@@ -2,20 +2,24 @@
   "showId": "the-wiz-2024",
   "outletId": "nypost",
   "outlet": "New York Post",
-  "criticName": "Johnny Oleksinski",
+  "criticName": "Johnny",
   "url": "https://nypost.com/2024/04/17/entertainment/the-wiz-broadway-review-were-off-to-see-the-cheap-natl-tour/",
   "publishDate": "April 17, 2024",
   "fullText": "Because I must unfortunately report that the new revival of that musical, which opened Wednesday night at the Marquis Theatre, is not the dazzler that fans have waited so long for. Quite the contrary.\r\n\r\nAnd that’s bad news, indeed.",
+  "isFullReview": false,
+  "dtliExcerpt": "Because I must unfortunately report that the new revival of that musical, which opened Wednesday night at the Marquis Theatre, is not the dazzler that fans have waited so long for. Quite the contrary. And that’s bad news, indeed.",
   "originalScore": null,
-  "assignedScore": null,
-  "dtliThumb": "Meh",
+  "assignedScore": 23,
   "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/the-wiz-bway/",
+  "needsScoring": true,
   "llmScore": {
-    "score": 25,
-    "confidence": "medium",
+    "score": 23,
+    "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 15.5,
+      "high": 30.5
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -27,7 +31,7 @@
     },
     "keyPhrases": [
       {
-        "quote": "is not the dazzler that fans have waited so long for",
+        "quote": "not the dazzler that fans have waited so long for",
         "sentiment": "negative",
         "strength": 4
       },
@@ -37,12 +41,12 @@
         "strength": 4
       },
       {
-        "quote": "And that's bad news, indeed",
+        "quote": "that's bad news, indeed",
         "sentiment": "negative",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic explicitly states this revival is disappointing and emphasizes it's 'bad news,' indicating a clear negative recommendation despite the excerpt's brevity.",
+    "reasoning": "Claude: The critic explicitly states this revival is 'not the dazzler' fans wanted and calls it 'bad news,' indicating clear disappointment and negative recommendation. | GPT-4o-mini: The review expresses strong disappointment and indicates that the revival fails to meet expectations, leading to a clear negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,18 +56,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:13.911Z",
+    "scoredAt": "2026-01-27T22:09:10.180Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 25,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "openaiScore": 20,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "showScoreExcerpt": "\"...the new revival...is not the dazzler that fans have waited so long for.\"",
+  "sources": [
+    "dtli",
+    "show-score"
+  ]
 }

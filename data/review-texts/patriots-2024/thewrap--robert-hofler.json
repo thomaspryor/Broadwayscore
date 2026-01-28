@@ -1,26 +1,30 @@
 {
   "showId": "patriots-2024",
   "outletId": "thewrap",
-  "outlet": "TheWrap",
-  "criticName": "Robert Hofler",
+  "outlet": "The Wrap",
+  "criticName": "Robert",
   "url": "https://www.thewrap.com/patriots-broadway-review-peter-morgan-putin-play/",
   "publishDate": "April 22, 2024",
   "fullText": "Ultimately, the first-rate comedy of the first act turns into the second-rate melodrama of the second act.",
+  "isFullReview": false,
+  "dtliExcerpt": "Ultimately, the first-rate comedy of the first act turns into the second-rate melodrama of the second act.",
   "originalScore": null,
-  "assignedScore": null,
-  "dtliThumb": "Meh",
+  "assignedScore": 49,
   "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/patriots/",
+  "needsScoring": true,
   "llmScore": {
-    "score": 47,
-    "confidence": "high",
+    "score": 49,
+    "confidence": "medium",
     "range": {
       "low": 40.5,
-      "high": 53.5
+      "high": 57.5
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 40,
+      "book": 45,
       "music": null,
       "performances": null,
       "direction": null
@@ -37,7 +41,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review describes a show that starts strong but deteriorates significantly in the second half, suggesting more problems than strengths overall. | GPT-4o-mini: The review indicates a significant decline in quality from the first act to the second, leading to a negative overall impression.",
+    "reasoning": "Claude: The review presents a clear structural problem where strong first act comedy deteriorates into weak second act melodrama, suggesting mixed quality that makes recommendation difficult. | GPT-4o-mini: The review indicates a significant decline in quality from the first act to the second, leading to a clear negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,18 +51,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:13:21.337Z",
+    "scoredAt": "2026-01-27T22:12:20.547Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 48,
+    "claudeScore": 52,
     "openaiScore": 45,
-    "scoreDelta": 3,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "sources": [
+    "dtli"
+  ]
 }

@@ -1,0 +1,80 @@
+{
+  "showId": "six-2021",
+  "outletId": "chicagotribune",
+  "outlet": "chicagotribune",
+  "criticName": "Chris Jones",
+  "url": "https://www.chicagotribune.com/2021/10/03/six-broadway-review/",
+  "publishDate": "2021-10-03",
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "he Brooks Atkinson Theatre, where the musical marked its official opening Sunday, fits ideally in your itinerary. At times, the vibe becomes so contagious that it may float you out of your very seat. Chris Jones, Chicago Tribune : All shows open in a temporal context they can t always control. \"Six,\" especially at just 80 intermission-less minutes and with low costs, an existent YouTube fame, a gently progressive sensibility and a youthful target demographic, is as well-suited to this moment as any piece of live entertainment. Robert Hofler, The Wrap : Toby Marlow and Lucy Moss score is immediately hummable in the way that only derivative disco music can be. The often witty book, built around a competition among the six wives of Henry VIII, borrows a lot from \"RuPaul s Drag Race\" while offering yet another #MeToo story. Those theatrical commonplaces aside, \"Six\" is a needed antidote to \"Anastasia,\" \"Frozen,\" \"Jagged Little Pill,\" \"Wicked\" and other pompous shows of female empowerment.",
+  "originalScore": null,
+  "assignedScore": 76,
+  "source": "bww-roundup",
+  "needsFullText": false,
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211004",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": 75,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At times, the vibe becomes so contagious that it may float you out of your very seat",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "as well-suited to this moment as any piece of live entertainment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Six is a needed antidote to Anastasia, Frozen, Jagged Little Pill, Wicked and other pompous shows of female empowerment",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critics praise the show's infectious energy and timeliness while acknowledging it's derivative, suggesting a qualified but clear recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the show's energy and wit, indicating a clear recommendation despite some minor reservations about its derivative elements.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:48:19.831Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "sources": [
+    "bww-roundup"
+  ]
+}

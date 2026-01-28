@@ -4,45 +4,49 @@
   "outlet": "Vulture",
   "criticName": "Jackson McHenry",
   "url": "https://www.vulture.com/2023/07/theater-review-here-lies-love-marcos-byrne-fatboy-slim-broadway.html",
-  "publishDate": "July 20, 2023",
+  "publishDate": "July 20th, 2023",
   "fullText": "The point, as elsewhere in the show, is to get the audience grooving with the synthy messaging of dictatorship, with enough moral dissonance to make your stomach churn as your feet keep moving—a that’s how they get you parable.",
+  "isFullReview": false,
+  "showScoreExcerpt": "“...the crowd itself is ‘Here Lies Love’s’ main character, this mass of people looking to be appeased by a good performance, no matter who’s singing the political karaoke. The show ends with democracy, but it has a wary relationship with the masses. The thought may be that, lured by a beat good enough, they’ll dance along to anything.”",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/here-lies-love-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 56,
+  "source": "show-score",
   "dtliThumb": "Up",
-  "source": "dtli",
+  "needsScoring": true,
   "llmScore": {
-    "score": 70,
+    "score": 56,
     "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 80
+      "low": 45,
+      "high": 67
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 75,
+      "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "get the audience grooving with the synthy messaging",
-        "sentiment": "positive",
+        "quote": "the crowd itself is 'Here Lies Love's' main character",
+        "sentiment": "neutral",
         "strength": 3
       },
       {
-        "quote": "moral dissonance to make your stomach churn as your feet keep moving",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "The show ends with democracy, but it has a wary relationship with the masses",
+        "sentiment": "neutral",
+        "strength": 3
       },
       {
-        "quote": "that's how they get you parable",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "lured by a beat good enough, they'll dance along to anything",
+        "sentiment": "negative",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic appreciates the show's deliberate moral complexity and its ability to make audiences complicit in its messaging while maintaining entertainment value, suggesting effective theatrical craft. | GPT-4o-mini: The review suggests an interesting concept but implies discomfort with the execution, leading to a mixed recommendation.",
+    "reasoning": "Claude: This appears to be an excerpt focused on thematic analysis rather than recommendation, with neutral-to-critical commentary on the show's political messaging but no clear evaluative judgment. | GPT-4o-mini: The review presents a mixed view, acknowledging the crowd's role but expressing skepticism about the show's engagement with its audience. | Note: Models differed by 12 points.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,18 +56,24 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:34:45.422Z",
+    "scoredAt": "2026-01-28T01:19:28.665Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 65,
-    "scoreDelta": 10,
+    "claudeScore": 62,
+    "openaiScore": 50,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "dtliExcerpt": "Here Lies Love is a show that asks its audience to dance, and in doing so, it creates something genuinely new on Broadway — a musical that feels like a party, even when it's telling the story of a dictator's wife.",
+  "sources": [
+    "show-score",
+    "dtli",
+    "web-search"
+  ]
 }

@@ -2,72 +2,95 @@
   "showId": "an-enemy-of-the-people-2024",
   "outletId": "nytimes",
   "outlet": "The New York Times",
-  "criticName": "Jesse Green",
+  "criticName": "Jesse",
   "url": "https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html?searchResultPosition=1",
   "publishDate": "March 18, 2024",
-  "fullText": "It’s too weak to say that this conspiracy of inaction makes “An Enemy of the People” relevant; its issues and ours are not similar but identical. And not just its issues. Its characters, too, are contemporary: doppelgängers of our own vicious demagogues, cowed editors, greasy both-sides-ists and defanged idealists.",
+  "fullText": "Dissent is necessary to democracy, sure. But how much does it cost?\n\nThat’s the fundamental question posed by Henrik Ibsen’s “An Enemy of the People” — and, in highly dramatic fashion, by the preview I attended of its latest Broadway revival.\n\nAt that performance, on Thursday, just as the play reached its climax in a raucous town meeting — and as Jeremy Strong, as the town’s crusading doctor, was trying to warn his community about an environmental disaster — members of a climate protest group secreted in the audience at Circle in the Square interrupted the action with dissent of their own.\n\nWhat exactly were they dissenting from?\n\nSurely not the Ibsen, which aligns closely with their views and is a distant source of them. (The play was first performed, as “En Folkefiende,” in 1883.) Nor does it make sense that they would object to Sam Gold’s crackling and persuasive production, which drove those views home despite having to regroup once the protesters were ejected.\n\nAfter all, “An Enemy of the People,” adapted and sharpened by the playwright Amy Herzog, and starring Strong as Dr. Thomas Stockmann, is a protest already: a bitter satire of local politics that soon reveals itself as a slow-boil tragedy of human complacency.\n\nHow the satire becomes the tragedy is central to the power of Ibsen’s dramatic construction, overriding its occasional plot contrivances. To emphasize the transition, Gold begins with the warmth of gaslight and candlelight camaraderie. (The superb and varied lighting is by Isabella Byrd.) Dr. Stockmann’s home (by the design collective called dots) looks like a low-walled barge on smooth water, decorated with Norwegian blue-plate patterns. Before anyone speaks, a folk song is sung and a maid sleeps at her sewing.\n\nWith modesty and steadiness as the givens of this world, the doctor naturally does not expect to be heralded as a hero when he determines that the water supply to the town’s new spa is polluted with potentially fatal pathogens. But he does expect to be heeded.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
+  "dtliExcerpt": "It’s too weak to say that this conspiracy of inaction makes “An Enemy of the People” relevant; its issues and ours are not similar but identical. And not just its issues. Its characters, too, are contemporary: doppelgängers of our own vicious demagogues, cowed editors, greasy both-sides-ists and defanged idealists.",
   "originalScore": null,
-  "assignedScore": null,
-  "dtliThumb": "Up",
+  "assignedScore": 80,
   "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
+  "needsScoring": true,
+  "textWordCount": 359,
+  "archivePath": "data/archives/reviews/an-enemy-of-the-people-2024/new-york-times--jesse_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T20:30:46.416Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250217001028",
+  "archiveOrgUrl": "http://web.archive.org/web/20250217001028/https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html?searchResultPosition=1",
   "llmScore": {
-    "score": 67,
-    "confidence": "low",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 50.5,
-      "high": 83.5
+      "low": 75,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": 82,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 78,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "its issues and ours are not similar but identical",
+        "quote": "Sam Gold's crackling and persuasive production",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "doppelgängers of our own vicious demagogues, cowed editors, greasy both-sides-ists and defanged idealists",
+        "quote": "central to the power of Ibsen's dramatic construction",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "conspiracy of inaction makes 'An Enemy of the People' relevant",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "The superb and varied lighting",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic strongly praises the play's contemporary relevance and character authenticity, suggesting it powerfully mirrors current political dynamics without explicit recommendation language. | GPT-4o-mini: The review indicates a mixed sentiment, acknowledging relevance but lacking strong enthusiasm or clear recommendation. | Note: Models differed by 23 points.",
+    "reasoning": "Claude: Review is clearly positive with praise for Gold's direction ('crackling and persuasive'), design elements ('superb lighting'), and Ibsen's construction, but article is cut off preventing full assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:13:37.778Z",
+    "scoredAt": "2026-01-27T22:11:42.407Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 55,
-    "scoreDelta": 23,
+    "claudeScore": 80,
+    "openaiScore": null,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 23 points (Claude: 78, OpenAI: 55)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": []
   },
-  "showScoreExcerpt": "\"...a bitter satire of local politics that soon reveals itself as a slow-boil tragedy\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway"
+  "sources": [
+    "dtli",
+    "web-search"
+  ],
+  "showScoreExcerpt": "\"...a bitter satire of local politics that soon reveals itself as a slow-boil tragedy\""
 }

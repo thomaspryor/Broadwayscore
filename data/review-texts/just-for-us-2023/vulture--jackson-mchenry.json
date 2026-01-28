@@ -1,0 +1,73 @@
+{
+  "showId": "just-for-us-2023",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Jackson McHenry",
+  "url": "https://www.vulture.com/2023/06/theater-reviews-just-for-us-and-one-woman-show.html",
+  "publishDate": "June 26th, 2023",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "“Like the stools, Edelman’s sometimes shaggy material is laid out intentionally. He’s a people-pleaser as a comedian, and he admits in the show that he’s holding back potentially alienating aspects of himself in order to win us over. To a much more extreme degree, he was also performing to ingratiate himself among the white nationalists.”",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
+  "originalScore": null,
+  "assignedScore": 53,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 53,
+    "confidence": "high",
+    "range": {
+      "low": 45.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 60,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Edelman's sometimes shaggy material is laid out intentionally",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "He's a people-pleaser as a comedian",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "he's holding back potentially alienating aspects of himself in order to win us over",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt provides analytical commentary about the performer's approach but lacks clear evaluative language or recommendation signals, making it difficult to determine the critic's overall verdict. | GPT-4o-mini: The review presents a mixed perspective, highlighting the comedian's self-awareness but also suggesting discomfort with his material and intent, leading to a neutral recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:04.964Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

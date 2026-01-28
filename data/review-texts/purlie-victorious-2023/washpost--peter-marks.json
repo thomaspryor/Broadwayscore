@@ -1,0 +1,74 @@
+{
+  "showId": "purlie-victorious-2023",
+  "outletId": "washpost",
+  "outlet": "The Washington Post",
+  "criticName": "Peter Marks",
+  "url": "https://www.washingtonpost.com/entertainment/theater/2023/09/27/purlie-victorious-leslie-odom-broadway/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "A godawful White character prowls “Purlie Victorious” — the extremely funny anti-racist farce receiving its first Broadway revival — and Jay O. Sanders is having the time of his life playing him. In fact, everyone in director Kenny Leon’s zanily vivacious production — including Leslie Odom Jr. as a dashing preacher, scheming for the money to found his own integrated Georgia church — seems rhapsodically absorbed in the mechanics of Ossie Davis’s wise 1961 comedy.",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
+  "originalScore": null,
+  "assignedScore": 84,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 89,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "extremely funny anti-racist farce",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "zanily vivacious production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "seems rhapsodically absorbed in the mechanics of Ossie Davis's wise 1961 comedy",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the comedy's effectiveness, performances, and direction with vivid positive language like 'extremely funny,' 'zanily vivacious,' and 'rhapsodically absorbed' suggests clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:34.904Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

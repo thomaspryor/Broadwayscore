@@ -1,0 +1,73 @@
+{
+  "showId": "mother-play-2024",
+  "outletId": "ew",
+  "outlet": "Entertainment Weekly",
+  "criticName": "Christian",
+  "url": "https://ew.com/mother-play-review-jim-parsons-jessica-lange-broadway-8639191",
+  "publishDate": "April 25, 2024",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "First of all, it feels like we could’ve taken another crack at this title. A play about a mother and her relationship to her children, and it’s just called Mother Play? There’s minimalism, and then there’s calling Moby-Dick “Whale Book.” This complaint isn’t incidental, but indicative of how the new work by esteemed playwright Paula Vogel excels in some aspects, but feels incomplete in other regards.",
+  "originalScore": null,
+  "assignedScore": 57,
+  "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/mother-play/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "excels in some aspects, but feels incomplete in other regards",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "This complaint isn't incidental, but indicative",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "esteemed playwright Paula Vogel",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review expresses mixed feelings with both praise for the playwright's reputation and criticism of the work feeling incomplete, but this appears to be only an excerpt from a longer review. | GPT-4o-mini: The review indicates a mixed response, highlighting both strengths and significant shortcomings, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:08:09.246Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

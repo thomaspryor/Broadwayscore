@@ -1,57 +1,54 @@
 {
   "showId": "the-shark-is-broken-2023",
   "outletId": "wsj",
-  "outlet": "Wall Street Journal",
-  "criticName": "Charles Isherwood",
-  "url": "https://www.wsj.com/articles/the-shark-is-broken-review-in-the-jaws-of-a-blockbuster-8fb22c26?utm_source=dlvr.it&utm_medium=twitter",
-  "publishDate": null,
+  "outlet": "The Wall Street Journal",
+  "criticName": "Charles",
+  "url": "https://www.wsj.com/articles/the-shark-is-broken-review-in-the-jaws-of-a-blockbuster-8fb22c26",
+  "publishDate": "August 10, 2023",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "Slender though it may be, at a crisp 95 minutes it holds one’s attention in no small part because the actors playing their more famous counterparts are so superb, giving performances that perfectly capture the personas, mannerisms and idiosyncrasies of Shaw, Dreyfuss and Scheider, at least as documented in various books and movies about the making of “Jaws.” Yet none of the actors is indulging in mere comic mimicry. All give fully rounded, nuanced performances that give the play a layer of veris",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
-  "bwwThumb": "Up",
+  "dtliExcerpt": "Slender though it may be, at a crisp 95 minutes it holds one’s attention in no small part because the actors playing their more famous counterparts are so superb, giving performances that perfectly capture the personas, mannerisms and idiosyncrasies of Shaw, Dreyfuss and Scheider, at least as documented in various books and movies about the making of “Jaws.”",
   "originalScore": null,
-  "assignedScore": 71,
-  "source": "bww-roundup",
-  "dtliThumb": null,
+  "assignedScore": 76,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/the-shark-is-broken/",
   "needsScoring": true,
-  "showScoreExcerpt": "“ ‘The Shark Is Broken’ is not a play for the ages, or even for those who have never seen ‘Jaws,’ but it’s a frisky and continuously amusing diversion—perfect late-summer entertainment if you want to stay away from the ocean.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-shark-is-broken-broadway",
   "llmScore": {
-    "score": 71,
-    "confidence": "high",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 67,
+      "high": 85
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 63,
+      "book": 60,
       "music": null,
       "performances": 85,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "the actors playing their more famous counterparts are so superb, giving performances that perfectly capture the personas, mannerisms and idiosyncrasies",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "'The Shark Is Broken' is not a play for the ages",
+        "quote": "Slender though it may be",
         "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "it's a frisky and continuously amusing diversion—perfect late-summer entertainment",
+        "quote": "holds one's attention",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the actors playing their more famous counterparts are so superb",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic praises the performances highly while acknowledging the play's limitations, ultimately recommending it as entertaining summer diversion despite not being groundbreaking theater. | GPT-4o-mini: The review highlights strong performances but indicates the play lacks depth and is not essential viewing, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: The critic acknowledges the material is thin but praises the performances highly and notes the show holds attention, suggesting a qualified positive recommendation. | GPT-4o-mini: The review highlights the superb performances of the actors, indicating a strong recommendation despite not discussing other elements of the production.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
@@ -59,18 +56,25 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:40.536Z",
+    "scoredAt": "2026-01-28T01:16:35.208Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "bwwExcerpt": "Slender though it may be, at a crisp 95 minutes it holds one’s attention in no small part because the actors playing their more famous counterparts are so superb, giving performances that perfectly capture the personas, mannerisms and idiosyncrasies of Shaw, Dreyfuss and Scheider, at least as documented in various books and movies about the making of “Jaws.” Yet none of the actors is indulging in mere comic mimicry. All give fully rounded, nuanced performances that give the play a layer of veris",
+  "showScoreExcerpt": "“ ‘The Shark Is Broken’ is not a play for the ages, or even for those who have never seen ‘Jaws,’ but it’s a frisky and continuously amusing diversion—perfect late-summer entertainment if you want to stay away from the ocean.”",
+  "bwwThumb": "Up",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
 }

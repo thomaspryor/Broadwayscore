@@ -1,0 +1,76 @@
+{
+  "showId": "aladdin-2014",
+  "outletId": "broadway-voice",
+  "outlet": "broadway-voice",
+  "criticName": "Kristen Balzano",
+  "url": "http://bwayvoice.com/aladdin/",
+  "publishDate": "August 15, 2014",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "\"Enchanting but not extreme, magical without unnecessary fireworks, jaw-dropping without having to fly over the audience.\"",
+  "originalScore": null,
+  "assignedScore": 74,
+  "source": "show-score",
+  "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "showscore",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Enchanting but not extreme",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "magical without unnecessary fireworks",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "jaw-dropping",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review uses consistently positive descriptors like 'enchanting,' 'magical,' and 'jaw-dropping' while praising the production's restraint and effectiveness, suggesting a clear positive recommendation despite the brief excerpt. | GPT-4o-mini: The review expresses positive sentiments about the show's enchanting qualities but lacks strong enthusiasm, indicating a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T04:57:24.038Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

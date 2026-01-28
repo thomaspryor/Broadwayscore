@@ -1,0 +1,74 @@
+{
+  "showId": "purlie-victorious-2023",
+  "outletId": "guardian",
+  "outlet": "The Guardian",
+  "criticName": "Jesse Hassenger",
+  "url": "https://www.theguardian.com/stage/2023/sep/27/purlie-victorious-review-broadway-play?utm_source=dlvr.it&utm_medium=twitter",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "The production, directed by Kenny Leon, never turns as grim as its undercurrents – or, for that matter, as its ruefully stated grievances. For one thing, it’s too fleet: the three-act original has been condensed into a 105-minute sprint sans intermission. Moreover, the cast is a joy to watch, seamlessly blending righteous passion and practical laughs, even as the play’s torrents of dialogue threaten to overwhelm them. Though Odom is the top-billed star attraction here, it takes Young all of abou",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
+  "originalScore": null,
+  "assignedScore": 68,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 79,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "the cast is a joy to watch, seamlessly blending righteous passion and practical laughs",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the play's torrents of dialogue threaten to overwhelm them",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "too fleet: the three-act original has been condensed into a 105-minute sprint sans intermission",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed signals with strong praise for cast performances but concerns about pacing and structural changes, plus review is incomplete making assessment difficult. | GPT-4o-mini: The review highlights strong performances and direction but indicates that the dialogue may be overwhelming, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:50.723Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "bwwThumb": "Up"
+}

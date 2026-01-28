@@ -1,0 +1,63 @@
+{
+  "showId": "an-enemy-of-the-people-2024",
+  "outletId": "washpost",
+  "outlet": "The Washington Post",
+  "criticName": "Naveen Kumar",
+  "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/18/jeremy-strong-enemy-of-the-people-broadway-review-climate-activists/",
+  "publishDate": "March 18th, 2024",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "\"Climate activists disrupting Jeremy Strong was the best part of the play\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
+  "originalScore": null,
+  "assignedScore": 18,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 18,
+    "confidence": "medium",
+    "range": {
+      "low": 5.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Climate activists disrupting Jeremy Strong was the best part of the play",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states that an audience disruption was better than the actual play, which is a devastating indictment of the production's quality. | GPT-4o-mini: The review indicates that the only notable aspect of the play was an external disruption, suggesting a complete failure of the production itself. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:10:13.745Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 10,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

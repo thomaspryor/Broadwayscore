@@ -2,76 +2,22 @@
   "showId": "cabaret-2024",
   "outletId": "wsj",
   "outlet": "The Wall Street Journal",
-  "criticName": "Charles Isherwood",
-  "url": "https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neuwirth-broadway-revival-7905c413",
-  "publishDate": "2024-04-21T21:27:37-04:00",
+  "criticName": "Charles",
+  "url": "https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neuwirth-broadway-revival-7905c413?st=wikrnywktjrlnl7&amp;mod=googlenewsfeed",
+  "publishDate": "April 21, 2024",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "Among Ms. Frecknall’s innovations is an emphasis on dance, with Julia Cheng’s choreography making inventive use of the stage space as the club performers romp, stomp and shimmy around Mr. Redmayne, engaging in ribald movement that at one point includes such unlikely sexually tinged props as a whisk and a toilet plunger. Their thickly applied makeup, skimpy costumes—a green macramé bikini?—and multicolored hair are suggestive more of “RuPaul’s Drag Race” than a seedy European club of the period, but they undoubtedly add to the show’s arresting visual allure.",
+  "dtliExcerpt": "",
   "originalScore": null,
-  "assignedScore": 69,
-  "source": "bww-roundup",
-  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421",
-  "textStatus": "missing",
-  "textQuality": "missing",
-  "sourceMethod": "bww-roundup",
-  "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium",
-  "llmScore": {
-    "score": 69,
-    "confidence": "medium",
-    "range": {
-      "low": 57.5,
-      "high": 80.5
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 70
-    },
-    "keyPhrases": [
-      {
-        "quote": "making inventive use of the stage space",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "undoubtedly add to the show's arresting visual allure",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "suggestive more of 'RuPaul's Drag Race' than a seedy European club of the period",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: This excerpt focuses on production elements with mixed signals—praising visual innovation and choreography while criticizing anachronistic design choices that undermine the show's period authenticity. | GPT-4o-mini: The review highlights inventive choreography and visual appeal, indicating a clear recommendation despite some unconventional elements. | Note: Models differed by 13 points.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:13:14.407Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 75,
-    "scoreDelta": 13,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
-  },
-  "bwwThumb": "Meh"
+  "assignedScore": null,
+  "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": null,
+  "needsScoring": true,
+  "bwwExcerpt": "Among Ms. Frecknall’s innovations is an emphasis on dance, with Julia Cheng’s choreography making inventive use of the stage space as the club performers romp, stomp and shimmy around Mr. Redmayne, engaging in ribald movement that at one point includes such unlikely sexually tinged props as a whisk and a toilet plunger. Their thickly applied makeup, skimpy costumes—a green macramé bikini?—and multicolored hair are suggestive more of “RuPaul’s Drag Race” than a seedy European club of the period, but they undoubtedly add to the show’s arresting visual allure.",
+  "bwwThumb": "Meh",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
 }

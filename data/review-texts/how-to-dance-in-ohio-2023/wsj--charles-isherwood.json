@@ -1,23 +1,19 @@
 {
   "showId": "how-to-dance-in-ohio-2023",
-  "outletId": "WSJ",
+  "outletId": "wsj",
   "outlet": "The Wall Street Journal",
-  "criticName": "Charles Isherwood",
-  "url": "https://www.wsj.com/arts-culture/theater/how-to-dance-in-ohio-review-an-autistic-coming-of-age-musical-b5c8a0d6",
-  "publishDate": "December 11, 2023",
+  "criticName": "Charles",
+  "url": "https://www.wsj.com/articles/how-to-dance-in-ohio-review-a-compassionate-coming-of-age-musical-4a42287f",
+  "publishDate": "December 20, 2023",
   "fullText": "The musical treats its characters with genuine warmth and respect, avoiding both condescension and sentimentality in its portrayal of young people on the autism spectrum preparing for a formal dance.",
   "isFullReview": false,
-  "dtliExcerpt": "The musical treats its characters with genuine warmth and respect, avoiding both condescension and sentimentality in its portrayal of young people on the autism spectrum preparing for a formal dance.",
+  "dtliExcerpt": "Her production of “Evita” (most recently seen in Washington), a musical originally directed by Prince, has earned plaudits, and here she makes a confident Broadway debut, marshaling a superb cast including autistic actors playing the seven primary characters.",
   "originalScore": null,
   "assignedScore": 79,
-  "source": "web-search",
-  "dtliThumb": null,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
   "needsScoring": true,
-  "scoreSource": "extracted-strong-negative",
-  "scoreConfidence": "medium",
-  "extractedPhrase": "avoid",
-  "showScoreExcerpt": "“ ‘How to Dance in Ohio’ is certainly less raw and dispassionately observed than the movie. But this is not a documentary but a Broadway musical comedy, and as such engineered to meet the requirements of most popular entries in the genre today: uplift, sweetness, rainbow endings for all.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/how-to-dance-in-ohio-broadway",
   "llmScore": {
     "score": 79,
     "confidence": "high",
@@ -28,39 +24,39 @@
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 84,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "treats its characters with genuine warmth and respect",
+        "quote": "has earned plaudits",
         "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "avoiding both condescension and sentimentality",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "portrayal of young people on the autism spectrum",
-        "sentiment": "neutral",
         "strength": 3
+      },
+      {
+        "quote": "makes a confident Broadway debut",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "marshaling a superb cast",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review praises the musical's respectful treatment of sensitive subject matter and avoidance of common pitfalls, indicating approval, but lacks explicit recommendation language or broader production commentary. | GPT-4o-mini: The review highlights the respectful and warm treatment of characters, indicating a strong recommendation despite not addressing specific aspects like performances or music.",
+    "reasoning": "Claude: This brief excerpt contains consistent praise for the director's work and cast quality, but lacks the depth and explicit recommendation language needed for higher confidence scoring. | GPT-4o-mini: The review highlights strong performances and a confident direction, indicating a positive recommendation overall.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:21:21.659Z",
+    "scoredAt": "2026-01-28T01:21:12.865Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -73,5 +69,10 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "showScoreExcerpt": "“ ‘How to Dance in Ohio’ is certainly less raw and dispassionately observed than the movie. But this is not a documentary but a Broadway musical comedy, and as such engineered to meet the requirements of most popular entries in the genre today: uplift, sweetness, rainbow endings for all.”",
+  "sources": [
+    "dtli",
+    "web-search"
+  ]
 }

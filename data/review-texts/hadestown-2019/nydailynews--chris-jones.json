@@ -1,0 +1,74 @@
+{
+  "showId": "hadestown-2019",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Chris Jones",
+  "url": "https://www.nydailynews.com/entertainment/broadway/ny-jones-review-hadestown-broadway-20190418-24muagsknrcxxdft7hwt3w7lue-story.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": ": America's on the road to hell - better jump right off, my children. Too dangerous to look back. Instead, try and find the cracks in that famous wall we're building. That's pretty much the message of \"Hadestown,\" the thrillingly alarmist new Broadway musical with the score that feels like it comes from somewhere deep in the American gut. Now an eye-popping, mythological blend of steampunk, \"Westworld\" and Bourbon St. anarchy, this dystopian tuner has its origins in a 2010 concept album, a folk ",
+  "bwwRoundupUrl": null,
+  "bwwThumb": null,
+  "originalScore": null,
+  "assignedScore": 85,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 88,
+      "performances": null,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "thrillingly alarmist new Broadway musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "score that feels like it comes from somewhere deep in the American gut",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "eye-popping, mythological blend",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language like 'thrillingly alarmist' and 'eye-popping' combined with praise for the score and production design indicates clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's themes and score, indicating a clear recommendation despite lacking specific details on performances or direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:46.677Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

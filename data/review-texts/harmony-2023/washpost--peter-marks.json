@@ -1,31 +1,29 @@
 {
   "showId": "harmony-2023",
-  "outletId": "WASHPOST",
+  "outletId": "washpost",
   "outlet": "The Washington Post",
   "criticName": "Peter Marks",
-  "url": "https://www.washingtonpost.com/theater-dance/2023/11/14/harmony-broadway-review/",
+  "url": "https://www.washingtonpost.com/entertainment/theater/2023/11/13/barry-manilow-comedian-harmonists-harmony/",
   "publishDate": "November 14, 2023",
   "fullText": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German singing group that was torn apart by the rise of the Nazis, is a work of undeniable sincerity and craft.",
   "isFullReview": false,
-  "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German singing group that was torn apart by the rise of the Nazis, is a work of undeniable sincerity and craft.",
+  "bwwExcerpt": "Barry Manilow and Bruce Sussman had been striving for years to acquaint Broadway patrons with this group’s true story. Their stick-to-itiveness finally paid off with “Harmony,” the efficient if formulaic “new” musical that marked its official opening Monday night at the Ethel Barrymore Theatre.",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
+  "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 74,
-  "source": "web-search",
+  "assignedScore": 61,
+  "source": "bww-roundup",
   "dtliThumb": null,
-  "dtliUrl": null,
-  "bwwExcerpt": null,
-  "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German singing group that was torn apart by the rise of the Nazis, is a work of undeniable sincerity and craft.",
   "needsScoring": true,
   "llmScore": {
-    "score": 74,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 55,
+      "high": 67
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -34,22 +32,22 @@
     },
     "keyPhrases": [
       {
-        "quote": "undeniable sincerity and craft",
+        "quote": "Their stick-to-itiveness finally paid off",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "work of undeniable sincerity and craft",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "efficient if formulaic",
+        "sentiment": "neutral",
+        "strength": 2
       },
       {
-        "quote": "a work of undeniable sincerity and craft",
+        "quote": "stick-to-itiveness finally paid off",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The excerpt acknowledges quality ('sincerity and craft') but uses measured language that suggests respect rather than enthusiasm, with no clear recommendation signal. | GPT-4o-mini: The review highlights the sincerity and craftsmanship of the musical, suggesting a clear recommendation despite the lack of detailed praise.",
+    "reasoning": "Claude: The review acknowledges the creators' perseverance paying off but describes the show as merely 'efficient if formulaic,' suggesting competent but unremarkable theater. | GPT-4o-mini: The review indicates a mixed sentiment, acknowledging effort but describing the musical as formulaic, leading to a conditional recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,18 +57,24 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:47:11.269Z",
+    "scoredAt": "2026-01-28T01:23:19.968Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German singing group that was torn apart by the rise of the Nazis, is a work of undeniable sincerity and craft.",
+  "showScoreExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German singing group that was torn apart by the rise of the Nazis, is a work of undeniable sincerity and craft.",
+  "sources": [
+    "bww-roundup",
+    "web-search"
+  ]
 }

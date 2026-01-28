@@ -1,76 +1,80 @@
 {
   "showId": "doubt-2024",
-  "outletId": "WSJ",
-  "outlet": "Wall Street Journal",
-  "criticName": "Charles Isherwood",
+  "outletId": "wsj",
+  "outlet": "The Wall Street Journal",
+  "criticName": "Charles",
   "url": "https://www.wsj.com/articles/doubt-review-broadway-revivial-roundabout-amy-ryan-liev-schreiber-zoe-kazan-quincy-tyler-bernstine-ae927a88",
-  "publishDate": null,
+  "publishDate": "March 7, 2024",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "In the two decades since John Patrick Shanley’s “Doubt” premiered—winning a best play Tony and a Pulitzer Prize—the mystery at its core, whether a priest has molested a child, has hardly grown less grave. But cultural changes now cast their own shadows over Mr. Shanley’s taut, gripping drama. The excellent Broadway revival, directed by Scott Ellis for the Roundabout Theatre Company, starring Amy Ryan and Liev Schreiber, presents the play without any intentional new slant on its ideas, but it giv",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
+  "dtliExcerpt": "The excellent Broadway revival, directed by Scott Ellis for the Roundabout Theatre Company, starring Amy Ryan and Liev Schreiber, presents the play without any intentional new slant on its ideas, but it gives audiences a chance to consider them in an altered context.",
   "originalScore": null,
-  "assignedScore": 78,
-  "source": "bww-roundup",
-  "dtliThumb": null,
+  "assignedScore": 73,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/doubt-a-parable/",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
+    "score": 73,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 85.5
+      "low": 65.5,
+      "high": 80.5
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": 82,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 79
+      "performances": 80,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "excellent Broadway revival",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "taut, gripping drama",
+        "quote": "The excellent Broadway revival",
         "sentiment": "positive",
         "strength": 4
       },
       {
         "quote": "starring Amy Ryan and Liev Schreiber",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "gives audiences a chance to consider them in an altered context",
         "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic calls it an 'excellent Broadway revival' of a 'taut, gripping drama' with strong lead performances, though the excerpt cuts off before revealing any significant criticisms or reservations. | GPT-4o-mini: The review praises the revival and its performances while noting the lack of new interpretations, suggesting a solid but not groundbreaking production.",
+    "reasoning": "Claude: The critic calls it an 'excellent Broadway revival' with strong stars and competent direction, indicating clear positive recommendation despite the excerpt's brevity. | GPT-4o-mini: The review highlights the revival's excellence and the opportunity for audiences to engage with the material, but lacks strong enthusiasm or a clear recommendation to see it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:37:52.322Z",
+    "scoredAt": "2026-01-27T22:37:39.702Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 75,
-    "openaiScore": 80,
+    "openaiScore": 70,
     "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "bwwThumb": "Up",
+  "bwwExcerpt": "In the two decades since John Patrick Shanley’s “Doubt” premiered—winning a best play Tony and a Pulitzer Prize—the mystery at its core, whether a priest has molested a child, has hardly grown less grave. But cultural changes now cast their own shadows over Mr. Shanley’s taut, gripping drama. The excellent Broadway revival, directed by Scott Ellis for the Roundabout Theatre Company, starring Amy Ryan and Liev Schreiber, presents the play without any intentional new slant on its ideas, but it giv",
   "showScoreExcerpt": "\"...Ryan and Schreiber, presents the play without any intentional new slant on its ideas\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/doubt-a-parable"
+  "bwwThumb": "Up",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
 }

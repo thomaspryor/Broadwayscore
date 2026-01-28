@@ -1,0 +1,76 @@
+{
+  "showId": "the-roommate-2024",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Jackson McHenry",
+  "url": "https://www.vulture.com/article/the-roommate-broadway-review-patti-lupone-mia-farrow.html",
+  "publishDate": "September 13, 2024",
+  "fullText": "The Roommate is a two-hander about unlikely friendship, featuring Patti LuPone and Mia Farrow as mismatched women who find common ground in their shared loneliness.",
+  "isFullReview": false,
+  "dtliExcerpt": "The Roommate is a two-hander about unlikely friendship, featuring Patti LuPone and Mia Farrow as mismatched women who find common ground in their shared loneliness.",
+  "originalScore": null,
+  "assignedScore": 58,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The Roommate is a two-hander about unlikely friendship, featuring Patti LuPone and Mia Farrow as mismatched women who find common ground in their shared loneliness.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 65.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "unlikely friendship",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "mismatched women who find common ground",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "mismatched women",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This is purely descriptive content without any evaluative language or recommendation signals, making it impossible to determine the critic's actual opinion of the show. | GPT-4o-mini: The review provides a neutral description of the premise without strong enthusiasm or criticism, indicating a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:12.247Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 60,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

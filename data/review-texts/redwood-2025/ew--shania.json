@@ -1,0 +1,73 @@
+{
+  "showId": "redwood-2025",
+  "outletId": "ew",
+  "outlet": "Entertainment Weekly",
+  "criticName": "Shania",
+  "url": "https://ew.com/redwood-review-idina-menzel-broadway-return-11679026",
+  "publishDate": "February 13, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "The stagecraft, performances, and the visuals will last and no doubt offer a roadmap for future projection-heavy productions. It's a dazzling vehicle for Menzel, a staunch reminder of how powerful her voice is (even when she's dangling from a harness), as well as a memorable feature for the rest of its five-person cast, especially since they manage to make an impression with a powerhouse like Menzel standing inches away.",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/redwood/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a dazzling vehicle for Menzel",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The stagecraft, performances, and the visuals will last and no doubt offer a roadmap for future projection-heavy productions",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a staunch reminder of how powerful her voice is",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently positive language praising performances, stagecraft, and technical elements with strong descriptors like 'dazzling' and 'powerful' indicates clear recommendation despite no explicit directive. | GPT-4o-mini: The review highlights strong performances and impressive stagecraft, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:14:55.047Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

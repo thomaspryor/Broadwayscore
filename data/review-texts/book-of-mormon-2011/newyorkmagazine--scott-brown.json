@@ -1,0 +1,76 @@
+{
+  "showId": "book-of-mormon-2011",
+  "outletId": "newyorkmagazine",
+  "outlet": "newyorkmagazine",
+  "criticName": "Scott Brown",
+  "url": "http://nymag.com/arts/theater/reviews/the-book-of-mormon-brown-review-2011-4/",
+  "publishDate": "2011-03-25T13:49:16-04:00",
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "The Book of Mormon, arriving after months of hype, somehow delivers even more than its ridiculously felicitous advance buzz promised: It's an often uproarious, spiritually up-tempo satire not just of Mormonism, and not just religion in general, but of (no kidding) Occidental civilization itself, in all its well-intentioned, self-mythologizing, autoerotically entitled glory.",
+  "originalScore": null,
+  "assignedScore": 94,
+  "source": "bww-roundup",
+  "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-mixed-positive",
+  "scoreConfidence": "low",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "delivers even more than its ridiculously felicitous advance buzz promised",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "often uproarious, spiritually up-tempo satire",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "somehow delivers even more than its ridiculously felicitous advance buzz promised",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic expresses unqualified enthusiasm, saying the show exceeds extremely high expectations with superlative language like 'uproarious' and 'delivers even more than promised.' | GPT-4o-mini: The review expresses unqualified enthusiasm and highlights the show's exceptional quality, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:06:32.712Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

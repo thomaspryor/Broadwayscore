@@ -1,0 +1,72 @@
+{
+  "showId": "an-enemy-of-the-people-2024",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Helen Shaw",
+  "url": "https://www.vulture.com/article/an-enemy-of-the-people-broadway-review.html",
+  "publishDate": "March 18, 2024",
+  "fullText": "Jeremy Strong gives a performance of such volcanic intensity that it threatens to blow up the Circle in the Square Theatre. His Dr. Stockmann is a man possessed, and Strong plays him with the kind of full-body commitment that makes you worry for the actor's well-being.",
+  "isFullReview": false,
+  "dtliExcerpt": "Jeremy Strong gives a performance of such volcanic intensity that it threatens to blow up the Circle in the Square Theatre. His Dr. Stockmann is a man possessed, and Strong plays him with the kind of full-body commitment that makes you worry for the actor's well-being.",
+  "originalScore": null,
+  "assignedScore": 88,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 95,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gives a performance of such volcanic intensity that it threatens to blow up the Circle in the Square Theatre",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Strong plays him with the kind of full-body commitment that makes you worry for the actor's well-being",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Jeremy Strong gives a performance of such volcanic intensity",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review expresses extraordinary enthusiasm for Jeremy Strong's performance using superlative language like 'volcanic intensity' and 'full-body commitment,' indicating a strong positive recommendation despite being an excerpt focused solely on the lead performance. | GPT-4o-mini: The review highlights Jeremy Strong's extraordinary performance with intense praise, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:34:37.328Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

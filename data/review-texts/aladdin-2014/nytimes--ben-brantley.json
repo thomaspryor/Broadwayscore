@@ -1,0 +1,72 @@
+{
+  "showId": "aladdin-2014",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Ben Brantley",
+  "url": "https://www.nytimes.com/2014/03/21/theater/reviews/aladdin-on-broadway-will-chase-and-adam-jacobs.html",
+  "publishDate": "March 20, 2014",
+  "fullText": "This is a world in which more is more, and then some, and the impulse is to shield your eyes from the exuberant vulgarity of it all. But wait — let the gaudy spectacle wash over you, and you may find, to your surprise, that you're actually enjoying yourself.",
+  "isFullReview": false,
+  "dtliExcerpt": "This is a world in which more is more, and then some, and the impulse is to shield your eyes from the exuberant vulgarity of it all. But wait — let the gaudy spectacle wash over you, and you may find, to your surprise, that you're actually enjoying yourself.",
+  "originalScore": null,
+  "assignedScore": 71,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "the impulse is to shield your eyes from the exuberant vulgarity of it all",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "let the gaudy spectacle wash over you, and you may find, to your surprise, that you're actually enjoying yourself",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "let the gaudy spectacle wash over you",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges initial off-putting elements but ultimately suggests audiences will enjoy themselves if they embrace the spectacle, indicating a qualified positive recommendation. | GPT-4o-mini: The review suggests a surprising enjoyment despite initial reservations about the show's excess, indicating a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:47:05.807Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

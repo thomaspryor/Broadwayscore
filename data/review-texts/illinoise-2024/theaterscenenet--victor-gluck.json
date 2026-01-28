@@ -1,0 +1,68 @@
+{
+  "showId": "illinoise-2024",
+  "outletId": "theaterscenenet",
+  "outlet": "theaterscenenet",
+  "criticName": "Victor Gluck",
+  "url": "http://www.theaterscene.net/plays/offbway-plays/illinoise/victor-gluck/",
+  "publishDate": "March 21st, 2024",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "\"Justin Peck’s evening length ballet...has the energy of Jerome Robbins’ 'Fancy Free'\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
+  "originalScore": null,
+  "assignedScore": 74,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "has the energy of Jerome Robbins' 'Fancy Free'",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "has the energy of Jerome Robbins’ 'Fancy Free'",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The comparison to Jerome Robbins' celebrated 'Fancy Free' is clearly positive praise for the ballet's energy and vitality, suggesting strong recommendation despite the excerpt's brevity. | GPT-4o-mini: The review suggests a positive sentiment by comparing the ballet to a well-regarded work, but lacks detailed praise or strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:11.031Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

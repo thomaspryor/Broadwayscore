@@ -1,34 +1,32 @@
 {
   "showId": "book-of-mormon-2011",
   "outletId": "amny",
-  "outlet": "amNewYork",
+  "outlet": "amny",
   "criticName": "Matt Windman",
-  "url": null,
+  "url": "http://www.amny.com/urbanite-1.812039/theater-review-the-book-of-mormon-4-stars-1.2780979",
   "publishDate": "2011-03-25T13:49:16-04:00",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "As you'd probably expect, the show's potty-mouth creators do not refrain from using explicit language. But in spite of the curse words, \"The Book of Mormon\" is an upbeat, even sentimental musical that combines Rodgers & Hammerstein, \"Les Miz\"-style powerhouse ballads and tap dancing.",
+  "bwwExcerpt": ": As you'd probably expect, the show's potty-mouth creators do not refrain from using explicit language. But in spite of the curse words, \"The Book of Mormon\" is an upbeat, even sentimental musical that combines Rodgers &amp; Hammerstein, \"Les Miz\"-style powerhouse ballads and tap dancing.",
+  "bwwRoundupUrl": null,
+  "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 77,
   "source": "bww-roundup",
-  "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
-  "textStatus": "missing",
-  "textQuality": "missing",
-  "sourceMethod": "bww-roundup",
-  "scoreSource": "sentiment-pan",
-  "scoreConfidence": "medium",
+  "dtliThumb": null,
+  "needsScoring": true,
   "llmScore": {
-    "score": 74,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 70.5,
+      "high": 83.5
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 75,
+      "music": 80,
       "performances": null,
       "direction": null
     },
@@ -36,22 +34,22 @@
       {
         "quote": "upbeat, even sentimental musical",
         "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "combines Rodgers & Hammerstein, \"Les Miz\"-style powerhouse ballads and tap dancing",
+        "sentiment": "positive",
         "strength": 3
       },
       {
         "quote": "combines Rodgers & Hammerstein, 'Les Miz'-style powerhouse ballads and tap dancing",
         "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the show's potty-mouth creators do not refrain from using explicit language",
-        "sentiment": "neutral",
-        "strength": 3
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The review describes the show in positive terms ('upbeat, sentimental') and favorably compares it to classic musicals, but this appears to be a brief excerpt without a clear recommendation or comprehensive assessment. | GPT-4o-mini: The review expresses a clear positive sentiment towards the show's upbeat nature and musical qualities, despite mentioning explicit language.",
+    "reasoning": "Claude: The review excerpt describes the show in clearly positive terms ('upbeat, even sentimental') and favorably compares it to classic musicals, suggesting appreciation for the production despite noting explicit language. | GPT-4o-mini: The review expresses a positive sentiment about the musical's upbeat nature and its combination of styles, indicating a recommendation to see it despite the mention of explicit language.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
@@ -59,18 +57,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:05:17.845Z",
+    "scoredAt": "2026-01-28T01:13:17.470Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 78,
     "openaiScore": 75,
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "sources": [
+    "bww-roundup"
+  ]
 }

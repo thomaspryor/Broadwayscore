@@ -1,22 +1,20 @@
 {
   "showId": "hamilton-2015",
   "outletId": "huffpost",
-  "outlet": "HuffPost",
+  "outlet": "huffpost",
   "criticName": "Steven Suskin",
-  "url": null,
+  "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-smiling-man-on_b_7952484.html",
   "publishDate": "2015-08-06T19:44:31-04:00",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "There's talk in Washington of displacing A. Ham. from the $10 greenback; even so, the man seems to have a considerably wider smile this morning. As for Miranda, I don't recall anyone writing music, lyrics & book and starring in a hit musical since George M. Cohan last gave his regards to Herald Square. Miranda's demonstration of talent, skill and savvy earn him a well-deserved gold star, and a goldmine too.  Photo Credit: Joan Marcus",
+  "bwwExcerpt": ": There's talk in Washington of displacing A. Ham. from the $10 greenback; even so, the man seems to have a considerably wider smile this morning. As for Miranda, I don't recall anyone writing music, lyrics &amp; book and starring in a hit musical since George M. Cohan last gave his regards to Herald Square. Miranda's demonstration of talent, skill and savvy earn him a well-deserved gold star, and a goldmine too.",
+  "bwwRoundupUrl": null,
+  "bwwThumb": null,
   "originalScore": null,
   "assignedScore": 91,
   "source": "bww-roundup",
-  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-Updating-LIVE-20150806",
-  "textStatus": "missing",
-  "textQuality": "missing",
-  "sourceMethod": "bww-roundup",
-  "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium",
+  "dtliThumb": null,
+  "needsScoring": true,
   "llmScore": {
     "score": 91,
     "confidence": "high",
@@ -29,7 +27,7 @@
     "components": {
       "book": 90,
       "music": 90,
-      "performances": 85,
+      "performances": 88,
       "direction": null
     },
     "keyPhrases": [
@@ -49,9 +47,9 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The review celebrates Miranda's unprecedented achievement with superlative praise ('gold star', 'goldmine'), comparing him favorably to theatrical legend George M. Cohan and suggesting Hamilton's massive success. | GPT-4o-mini: The review expresses strong admiration for Miranda's multifaceted talents, indicating a high recommendation for the show.",
+    "reasoning": "Claude: The review celebrates Miranda's exceptional achievement in multiple theatrical disciplines with superlative language and historical comparison to George M. Cohan, indicating unqualified praise for Hamilton. | GPT-4o-mini: The review expresses strong admiration for Miranda's talents and contributions, indicating a must-see experience.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
@@ -59,7 +57,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:21:16.272Z",
+    "scoredAt": "2026-01-28T01:21:08.536Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -72,5 +70,8 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "sources": [
+    "bww-roundup"
+  ]
 }

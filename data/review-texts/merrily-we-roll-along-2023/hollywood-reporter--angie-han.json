@@ -1,0 +1,76 @@
+{
+  "showId": "merrily-we-roll-along-2023",
+  "outletId": "hollywood-reporter",
+  "outlet": "The Hollywood Reporter",
+  "criticName": "Angie Han",
+  "url": "https://www.hollywoodreporter.com/lifestyle/arts/merrily-we-roll-along-broadway-review-1235673986/",
+  "publishDate": "December 19, 2023",
+  "fullText": "The production feels loose and lived-in, as if we're watching old friends reminisce rather than actors performing a script.",
+  "isFullReview": false,
+  "dtliExcerpt": "The production feels loose and lived-in, as if we're watching old friends reminisce rather than actors performing a script.",
+  "originalScore": null,
+  "assignedScore": 74,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The production feels loose and lived-in, as if we're watching old friends reminisce rather than actors performing a script.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 78,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels loose and lived-in",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "watching old friends reminisce rather than actors performing a script",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The production feels loose and lived-in",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the naturalistic quality and authenticity of the production, suggesting it achieves a desirable theatrical intimacy, though the brief excerpt limits confidence in the overall assessment. | GPT-4o-mini: The review suggests a warm, engaging atmosphere but lacks strong enthusiasm or clear recommendations, indicating a mixed-positive sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:45.166Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

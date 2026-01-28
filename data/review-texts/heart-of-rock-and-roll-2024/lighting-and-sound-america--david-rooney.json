@@ -1,0 +1,73 @@
+{
+  "showId": "heart-of-rock-and-roll-2024",
+  "outletId": "lighting-and-sound-america",
+  "outlet": "lighting-and-sound-america",
+  "criticName": "David Barbour",
+  "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-M9DJHC",
+  "publishDate": "May 9th, 2024",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "Stop the presses! The headline news of the day is The Heart of Rock and Roll is...not bad.",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway",
+  "originalScore": null,
+  "assignedScore": 60,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stop the presses! The headline news of the day is The Heart of Rock and Roll is...not bad.",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "The Heart of Rock and Roll is...not bad.",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Stop the presses!",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic uses dramatic language ('Stop the presses!') to set up what turns out to be faint praise ('not bad'), suggesting modest surprise at the show's competence rather than enthusiasm. | GPT-4o-mini: The review indicates a lukewarm response, suggesting the show is acceptable but not particularly strong or compelling.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:24:25.885Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

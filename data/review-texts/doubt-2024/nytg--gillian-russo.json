@@ -2,75 +2,83 @@
   "showId": "doubt-2024",
   "outletId": "nytg",
   "outlet": "New York Theatre Guide",
-  "criticName": "Gillian Russo",
+  "criticName": "Gillian",
   "url": "https://www.newyorktheatreguide.com/reviews/doubt-broadway-review-amy-ryan-liev-schreiber",
-  "publishDate": null,
+  "publishDate": "March 7, 2024",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "In the church of American theatre, it's practically dogma that John Patrick Shanley's Doubt is excellent. The Pulitzer Prize- and Tony Award-winning play tackles thorny issues of morality, abuse, gender inequality, and progressivism in just over the length of a Catholic Mass. That may seem like too much for one 90-minute show to unpack, but that's the point: As with religion itself, you're meant to come away with more mysteries than answers.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
+  "dtliExcerpt": "Doubt&#8216;s many complexities continue to swirl in my mind days after I attended the show. One thing of which I have no doubt, though, is that Doubt delivers a riveting, well-acted, and utterly unmissable night at the theatre.",
   "originalScore": null,
-  "assignedScore": 85,
-  "source": "bww-roundup",
-  "dtliThumb": null,
+  "assignedScore": 93,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/doubt-a-parable/",
   "needsScoring": true,
+  "designation": "Must_See",
+  "scoreSource": "extracted-strong-positive",
+  "scoreConfidence": "medium",
+  "extractedPhrase": "unmissable",
   "llmScore": {
-    "score": 85,
+    "score": 93,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 85.5,
+      "high": 100
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
+      "book": 85,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 92,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "it's practically dogma that John Patrick Shanley's Doubt is excellent",
+        "quote": "utterly unmissable night at the theatre",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "riveting, well-acted",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "The Pulitzer Prize- and Tony Award-winning play tackles thorny issues",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "that's the point: As with religion itself, you're meant to come away with more mysteries than answers",
+        "quote": "One thing of which I have no doubt",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic presents Doubt as canonically excellent theater that successfully handles complex themes with artistic intention, using reverent language throughout. | GPT-4o-mini: The review conveys strong praise for the play's thematic depth and significance, indicating a clear recommendation to see it.",
+    "reasoning": "Claude: The critic uses unqualified superlatives like 'utterly unmissable' and 'riveting' with no reservations, making this a clear rave recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong recommendation, indicating it is a must-see production.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:36:01.651Z",
+    "scoredAt": "2026-01-27T22:35:19.438Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 90,
+    "openaiScore": 95,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "bwwThumb": "Up",
+  "bwwExcerpt": "In the church of American theatre, it's practically dogma that John Patrick Shanley's Doubt is excellent. The Pulitzer Prize- and Tony Award-winning play tackles thorny issues of morality, abuse, gender inequality, and progressivism in just over the length of a Catholic Mass. That may seem like too much for one 90-minute show to unpack, but that's the point: As with religion itself, you're meant to come away with more mysteries than answers.",
   "showScoreExcerpt": "\"Those sensitive to issues of sexual and child abuse may have some difficulty with Doubt.\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/doubt-a-parable"
+  "bwwThumb": "Up",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
 }

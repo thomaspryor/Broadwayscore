@@ -1,0 +1,80 @@
+{
+  "showId": "boop-2025",
+  "outletId": "washpost",
+  "outlet": "The Washington Post",
+  "criticName": "Naveen Kumar",
+  "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/",
+  "publishDate": "2025-04-07T20:56:19-04:00",
+  "fullText": null,
+  "originalScore": null,
+  "assignedScore": 89,
+  "source": "reviews-json-stub",
+  "needsFullText": true,
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "stub",
+  "scoreStatus": "TO_BE_CALCULATED",
+  "scoreSource": null,
+  "bwwExcerpt": "Fortunately, the new musicals built around their legacies are, first and foremost, splendid showcases for powerhouse performers. As the cartoon vixen sprung to life in “Boop!,” Jasmine Amy Rogers gives the most sensational star-making Broadway turn in years — funny, captivating, a total knockout. It...",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 95,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "splendid showcases for powerhouse performers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "gives the most sensational star-making Broadway turn in years",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "funny, captivating, a total knockout",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Extremely enthusiastic praise for the lead performance with superlatives like 'most sensational' and 'total knockout' suggests strong positive recommendation despite incomplete excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performance, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:08:58.596Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "bwwThumb": "Up",
+  "sources": [
+    "reviews-json-stub",
+    "bww-roundup"
+  ]
+}

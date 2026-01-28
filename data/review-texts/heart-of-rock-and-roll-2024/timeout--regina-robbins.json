@@ -1,9 +1,9 @@
 {
   "showId": "heart-of-rock-and-roll-2024",
-  "outletId": "TIMEOUT",
+  "outletId": "timeout",
   "outlet": "Time Out New York",
   "criticName": "Regina Robbins",
-  "url": null,
+  "url": "https://www.timeout.com/newyork/theater/the-heart-of-rock-and-roll-broadway-musical-review-huey-lewis",
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
@@ -25,14 +25,14 @@
     "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 70,
-      "performances": 75,
+      "music": 72,
+      "performances": 77,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "The saving grace of The Heart of Rock and Roll—aside from Lewis and company's appealing songs",
-        "sentiment": "positive",
+        "quote": "The saving grace of The Heart of Rock and Roll",
+        "sentiment": "negative",
         "strength": 3
       },
       {
@@ -43,10 +43,10 @@
       {
         "quote": "For some members of Generation X, what this show offers will be more than enough",
         "sentiment": "neutral",
-        "strength": 2
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review highlights strong performances and appealing music as 'saving graces,' but the conditional recommendation only for Gen X audiences and the implication that the show needs saving suggests mixed feelings overall. | GPT-4o-mini: While the performances are praised and there are some laughs, the review indicates significant shortcomings in the material, leading to a mixed recommendation.",
+    "reasoning": "Claude: The review frames the cast as a 'saving grace,' implying the show needs saving, but praises performances and songs while offering a qualified recommendation for a specific demographic. | GPT-4o-mini: The review highlights strong performances and humor but lacks enthusiasm for the overall production, suggesting a mixed-positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:12:54.030Z",
+    "scoredAt": "2026-01-27T22:12:47.077Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -69,5 +69,11 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "bwwThumb": "Meh",
+  "showScoreExcerpt": "\"Squeeze your memories into spandex and get ready to turn back the clock.\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway",
+  "sources": [
+    "bww-roundup"
+  ]
 }

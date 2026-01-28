@@ -1,0 +1,76 @@
+{
+  "showId": "illinoise-2024",
+  "outletId": "theatermania",
+  "outlet": "TheaterMania",
+  "criticName": "Jesse Green",
+  "url": "https://www.theatermania.com/broadway/reviews/illinoise_97847.html",
+  "publishDate": "April 25, 2024",
+  "fullText": "Justin Peck's choreographic adaptation of Sufjan Stevens' concept album creates a moving meditation on place, memory, and the stories we tell ourselves about home.",
+  "isFullReview": false,
+  "dtliExcerpt": "Justin Peck's choreographic adaptation of Sufjan Stevens' concept album creates a moving meditation on place, memory, and the stories we tell ourselves about home.",
+  "originalScore": null,
+  "assignedScore": 80,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Justin Peck's choreographic adaptation of Sufjan Stevens' concept album creates a moving meditation on place, memory, and the stories we tell ourselves about home.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 78,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "creates a moving meditation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "choreographic adaptation",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "moving meditation on place, memory, and the stories we tell ourselves about home",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The phrase 'moving meditation' suggests strong artistic merit and emotional impact, indicating a positive recommendation despite the brief excerpt. | GPT-4o-mini: The review expresses strong appreciation for the choreographic adaptation and its thematic depth, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:09:12.982Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 85,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

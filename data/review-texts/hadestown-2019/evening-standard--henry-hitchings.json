@@ -1,0 +1,74 @@
+{
+  "showId": "hadestown-2019",
+  "outletId": "evening-standard",
+  "outlet": "evening-standard",
+  "criticName": "Henry Hitchings",
+  "url": null,
+  "publishDate": "November 2018",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "Defiantly original. With its emphasis on mood rather than action, this is the sort of show that risks being labelled portentous. But it's tightly choreographed and genuinely inventive. Sometimes operatic and sometimes bluesy, it manages to sound seductively hushed one moment and rollicking the next. Musically it's a feast - full of folksy melancholy and heartache, yet also packed with gospel, dirty funk and New Orleans jazz.",
+  "originalScore": "4 stars",
+  "assignedScore": 79,
+  "source": "web-search",
+  "note": "London National Theatre production review (pre-Broadway)",
+  "textStatus": "excerpt_only",
+  "textQuality": "missing",
+  "sourceMethod": "web-search",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "Defiantly original",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "tightly choreographed and genuinely inventive",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Musically it's a feast",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review is consistently positive with strong praise for the show's originality, musical quality, and production values, despite acknowledging it risks being seen as pretentious. | GPT-4o-mini: The review expresses strong praise for the originality and musical quality, indicating a clear recommendation despite some caution about its mood-driven nature.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:16:49.030Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

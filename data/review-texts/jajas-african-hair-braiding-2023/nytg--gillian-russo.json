@@ -2,51 +2,51 @@
   "showId": "jajas-african-hair-braiding-2023",
   "outletId": "nytg",
   "outlet": "New York Theatre Guide",
-  "criticName": "Gillian Russo",
+  "criticName": "Gillian",
   "url": "https://www.newyorktheatreguide.com/reviews/jajas-african-hair-braiding-broadway-review",
-  "publishDate": null,
+  "publishDate": "October 3, 2023",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "And at the end of the day, despite some narrative clunkiness, Jaja offers plenty to celebrate. It's the Broadway debut of Bioh as a writer, White as a director, and six of the eight cast members. It's a passionate portrayal of Black womanhood in Harlem and all the diverse experiences that encompasses. And it's a love letter to the artistry of hair braiding, a millennia-old form of artistry that allows its participants to express themselves even as they transform themselves. Much like theatre.   ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
+  "dtliExcerpt": "And at the end of the day, despite some narrative clunkiness, Jaja offers plenty to celebrate.",
   "originalScore": null,
-  "assignedScore": 74,
-  "source": "bww-roundup",
-  "dtliThumb": null,
+  "assignedScore": 69,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/jajas-african-hair-braiding/",
   "needsScoring": true,
   "llmScore": {
-    "score": 74,
+    "score": 69,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 63,
+      "high": 75
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
-      "book": 65,
+      "book": 53,
       "music": null,
       "performances": null,
-      "direction": 78
+      "direction": null
     },
     "keyPhrases": [
-      {
-        "quote": "despite some narrative clunkiness, Jaja offers plenty to celebrate",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's a passionate portrayal of Black womanhood in Harlem",
-        "sentiment": "positive",
-        "strength": 4
-      },
       {
         "quote": "narrative clunkiness",
         "sentiment": "negative",
         "strength": 3
+      },
+      {
+        "quote": "offers plenty to celebrate",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "despite some narrative clunkiness",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic acknowledges narrative problems but emphasizes multiple celebrating elements including cultural significance, debuts, and thematic depth, suggesting a qualified positive recommendation. | GPT-4o-mini: The review highlights strong thematic elements and a positive portrayal of culture, despite acknowledging some narrative issues, leading to a clear recommendation.",
+    "reasoning": "Claude: The review acknowledges significant flaws ('narrative clunkiness') but concludes with qualified optimism ('plenty to celebrate'), suggesting a mixed-positive recommendation despite structural problems. | GPT-4o-mini: The review acknowledges narrative issues but highlights positive aspects, leading to a mixed-positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,21 +56,25 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:16:28.953Z",
+    "scoredAt": "2026-01-27T22:15:18.027Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 68,
+    "openaiScore": 70,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "bwwThumb": "Up",
+  "bwwExcerpt": "And at the end of the day, despite some narrative clunkiness, Jaja offers plenty to celebrate. It's the Broadway debut of Bioh as a writer, White as a director, and six of the eight cast members. It's a passionate portrayal of Black womanhood in Harlem and all the diverse experiences that encompasses. And it's a love letter to the artistry of hair braiding, a millennia-old form of artistry that allows its participants to express themselves even as they transform themselves. Much like theatre.   ",
   "showScoreExcerpt": "“Despite some narrative clunkiness, ’Jaja’ offers plenty to celebrate...It's a passionate portrayal of Black womanhood in Harlem and all the diverse experiences that encompasses. And it's a love letter to the artistry of hair braiding, a millennia-old form of artistry that allows its participants to express themselves even as they transform themselves. Much like theatre.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/jaja-s-african-hair-braiding-broadway"
+  "bwwThumb": "Up",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
 }

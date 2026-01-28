@@ -1,0 +1,76 @@
+{
+  "showId": "hamilton-2015",
+  "outletId": "ew",
+  "outlet": "Entertainment Weekly",
+  "criticName": "Tim Stack",
+  "url": "https://ew.com/article/2015/08/06/hamilton-review/",
+  "publishDate": "August 6, 2015",
+  "fullText": "Hamilton is a remarkable achievement that manages to be both historically educational and thoroughly entertaining, with Miranda's brilliant lyrics and performances that crackle with energy.",
+  "isFullReview": false,
+  "dtliExcerpt": "Hamilton is a remarkable achievement that manages to be both historically educational and thoroughly entertaining, with Miranda's brilliant lyrics and performances that crackle with energy.",
+  "originalScore": 95,
+  "assignedScore": 90,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Hamilton is a remarkable achievement that manages to be both historically educational and thoroughly entertaining, with Miranda's brilliant lyrics and performances that crackle with energy.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 88,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "remarkable achievement",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Miranda's brilliant lyrics",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "performances that crackle with energy",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise with superlatives like 'remarkable achievement' and 'brilliant lyrics' indicates clear positive recommendation despite brief format. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show, highlighting its educational value and entertainment quality, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:58.197Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 95,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "showId": "and-juliet-2022",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Chris Jones",
+  "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-ny-broadway-and-juliet-review-20221118-mtb3hrq7jrci5hprgdilaqpop4-story.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "Enter &quot;&amp; Juliet,&quot; a savvy if stunningly unsubtle mashup of a musical from London that aims to redress that balance for Broadway fun and profit. This nonstop party-empowerment show gets its theme of feminist revisionist British history from &quot;Six,&quot; its Shakespearean humor from &quot;Something Rotten,&quot; its nonbinary savvy from &quot;Head Over Heels,&quot; and its collage-like spectacle from &quot;Moulin Rouge.&quot;",
+  "bwwRoundupUrl": null,
+  "bwwThumb": null,
+  "originalScore": null,
+  "assignedScore": 68,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "savvy if stunningly unsubtle",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "nonstop party-empowerment show",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "for Broadway fun and profit",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic describes the show in neutral terms as derivative entertainment that borrows heavily from other musicals, suggesting competent but unoriginal commercial theater without clear enthusiasm or condemnation. | GPT-4o-mini: The review indicates a mix of positive and neutral sentiments, suggesting a conditional recommendation rather than unqualified enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:10:29.863Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

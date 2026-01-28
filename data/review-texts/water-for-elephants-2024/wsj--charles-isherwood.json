@@ -1,76 +1,105 @@
 {
   "showId": "water-for-elephants-2024",
   "outletId": "wsj",
-  "outlet": "Wall Street Journal",
-  "criticName": "Charles Isherwood",
+  "outlet": "The Wall Street Journal",
+  "criticName": "Charles",
   "url": "https://www.wsj.com/articles/water-for-elephants-review-broadway-musical-pigpen-jessica-stone-sara-gruen-5eaefa7c",
-  "publishDate": null,
-  "fullText": null,
+  "publishDate": "March 21, 2024",
+  "fullText": "https://www.wsj.com/articles/water-for-elephants-review-broadway-musical-pigpen-jessica-stone-sara-gruen-5eaefa7c\n\nThe cast of ‘Water for Elephants’ Photo: Matthew MurphyNew York\n\nTime was, when a dreamy kid felt oppressed, the allure of running away to join the circus would fire the imagination. An American myth, or sentimental lore, probably. But in the new musical “Water for Elephants,” ostensibly set in a seedy, second-rate circus, running off to join the crew would seem to be little more rebellious than joining an unusually boisterous Boy Scout troop.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nBuy Side from WSJExpert recommendations on products and services, independent from The Wall Street Journal newsroom.\n\nThe Best Crossbody Purses for Your Busy Life\n\nI Bonds: Are They Still a Good Deal?\n\nMortgage Rates Are Just Below 7%. Here’s How to Find the Best Offer\n\nThe 21 Best Deals to Shop Online Right Now\n\nEquip Your Kitchen With Great Jones’s Collection Made for Functionality and Style\n\nThe Best Travel Outfits for More Comfortable Trips\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "isFullReview": false,
-  "bwwExcerpt": "Still, the largely pasteurized manner in which the musical depicts the often-sordid lives of circus folk of the period lends “Water for Elephants” an anodyne weightlessness, at least until the denouement. I’m not sure if a more faithful adaptation of the book would make for a better musical—although John Kander and Fred Ebb, in their heyday, might have taken a good crack at it—but it certainly would have made for a more provocative and adventurous one.",
-  "bwwRoundupUrl": null,
+  "dtliExcerpt": "Time was, when a dreamy kid felt oppressed, the allure of running away to join the circus would fire the imagination. An American myth, or sentimental lore, probably. But in the new musical “Water for Elephants,” ostensibly set in a seedy, second-rate circus, running off to join the crew would seem to be little more rebellious than joining an unusually boisterous Boy Scout troop.",
   "originalScore": null,
-  "assignedScore": 52,
-  "source": "bww-roundup",
-  "dtliThumb": null,
+  "assignedScore": 33,
+  "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": null,
   "needsScoring": true,
+  "textWordCount": 176,
+  "archivePath": "data/archives/reviews/water-for-elephants-2024/wall-street-journal--charles_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T20:42:42.092Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20240617025317",
+  "archiveOrgUrl": "http://web.archive.org/web/20240617025317/https://www.wsj.com/articles/water-for-elephants-review-broadway-musical-pigpen-jessica-stone-sara-gruen-5eaefa7c",
+  "textIssues": [
+    "Word count too low: 176 (min: 300)"
+  ],
   "llmScore": {
-    "score": 52,
-    "confidence": "medium",
+    "score": 33,
+    "confidence": "high",
     "range": {
-      "low": 43.5,
-      "high": 60.5
+      "low": 25.5,
+      "high": 40.5
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Pan",
+    "thumb": "Down",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 60
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "largely pasteurized manner in which the musical depicts the often-sordid lives of circus folk",
+        "quote": "running off to join the crew would seem to be little more rebellious than joining an unusually boisterous Boy Scout troop",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "lends \"Water for Elephants\" an anodyne weightlessness",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "it certainly would have made for a more provocative and adventurous one",
+        "quote": "ostensibly set in a seedy, second-rate circus",
         "sentiment": "negative",
         "strength": 3
+      },
+      {
+        "quote": "running off to join the crew would seem to be little more rebellious than joining an unusually boisterous Boy Scout troop.",
+        "sentiment": "negative",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic finds the musical sanitized and lacking weight, suggesting it plays it too safe and misses opportunities for more compelling storytelling. | GPT-4o-mini: The review expresses significant concerns about the adaptation's lack of depth and provocation, leading to a mixed recommendation.",
+    "reasoning": "Claude: The critic uses dismissive language comparing the show unfavorably to a 'Boy Scout troop' and describes it as 'second-rate,' suggesting disappointment with the production's lack of edge or authenticity. | GPT-4o-mini: The review conveys a strong sense of disappointment and criticism, indicating that the production lacks the excitement and allure typically associated with circus themes.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:45:39.800Z",
+    "scoredAt": "2026-01-27T21:45:29.335Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 55,
-    "scoreDelta": 7,
+    "claudeScore": 35,
+    "openaiScore": 30,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "bwwThumb": "Down",
+  "bwwExcerpt": "Still, the largely pasteurized manner in which the musical depicts the often-sordid lives of circus folk of the period lends “Water for Elephants” an anodyne weightlessness, at least until the denouement. I’m not sure if a more faithful adaptation of the book would make for a better musical—although John Kander and Fred Ebb, in their heyday, might have taken a good crack at it—but it certainly would have made for a more provocative and adventurous one.",
   "showScoreExcerpt": "\"this musical adaptation of the hit novel loses much of its sourceâs pungency and grit.\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/water-for-elephants-broadway"
+  "bwwThumb": "Down",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
 }

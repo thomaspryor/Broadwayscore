@@ -4,71 +4,77 @@
   "outlet": "Vulture",
   "criticName": "Jesse Green",
   "url": "http://www.vulture.com/2014/03/theater-review-aladdin.html",
-  "publishDate": null,
-  "fullText": null,
+  "publishDate": "March 20th, 2014",
+  "fullText": "The show is gorgeous to look at, but it's also exhausting — like being trapped in a very expensive, very loud toy store.",
   "isFullReview": false,
-  "bwwExcerpt": ": For Aladdin, Disney's team builds on the take-no-chances, take-no-prisoners lessons of its six Broadway predecessors to all but guarantee a quality hit: if not a Lion King, at least not a Tarzan. They wrote the book on this sort of thing, and now, Walt be praised, they're going to heave it at you. This is not as unpleasant an experience as it sounds; if you're up for a meaningless fling, it might as well be with a pro... If the whole enterprise is arranged to prevent us from taking anything se",
-  "bwwRoundupUrl": null,
-  "bwwThumb": null,
+  "showScoreExcerpt": "\"So why is Aladdin a bit of a chore? Even the best of what the writers offer doesn’t seem to stick very long; if it weren’t for Nicholaw’s merciless flogging, you feel the story would simply evaporate in the desert heat.\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": null,
-  "assignedScore": 59,
-  "source": "bww-roundup",
+  "assignedScore": 40,
+  "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 59,
-    "confidence": "medium",
+    "score": 40,
+    "confidence": "high",
     "range": {
-      "low": 50.5,
-      "high": 67.5
+      "low": 35,
+      "high": 45
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 33,
       "music": null,
       "performances": null,
-      "direction": 65
+      "direction": 48
     },
     "keyPhrases": [
       {
-        "quote": "all but guarantee a quality hit",
-        "sentiment": "positive",
+        "quote": "So why is Aladdin a bit of a chore?",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Even the best of what the writers offer doesn't seem to stick very long",
+        "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "if you're up for a meaningless fling, it might as well be with a pro",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "This is not as unpleasant an experience as it sounds",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "you feel the story would simply evaporate in the desert heat",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic acknowledges Disney's professional competence and calls it a 'quality hit' but frames the show as a 'meaningless fling' - qualified praise that suggests conditional recommendation. | GPT-4o-mini: The review presents a mixed view, acknowledging some entertainment value while also suggesting a lack of depth and originality.",
+    "reasoning": "Claude: The critic explicitly calls the show 'a chore' and suggests the story lacks substance, indicating clear problems that outweigh any positives. | GPT-4o-mini: The review expresses significant frustration with the story and writing, indicating a clear negative sentiment overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:08:39.928Z",
+    "scoredAt": "2026-01-28T01:08:18.075Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 55,
-    "scoreDelta": 7,
+    "claudeScore": 40,
+    "openaiScore": 40,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "dtliExcerpt": "The show is gorgeous to look at, but it's also exhausting — like being trapped in a very expensive, very loud toy store.",
+  "sources": [
+    "show-score",
+    "bww-roundup",
+    "web-search"
+  ],
+  "bwwExcerpt": ": For Aladdin, Disney's team builds on the take-no-chances, take-no-prisoners lessons of its six Broadway predecessors to all but guarantee a quality hit: if not a Lion King, at least not a Tarzan. They wrote the book on this sort of thing, and now, Walt be praised, they're going to heave it at you. This is not as unpleasant an experience as it sounds; if you're up for a meaningless fling, it might as well be with a pro... If the whole enterprise is arranged to prevent us from taking anything se"
 }

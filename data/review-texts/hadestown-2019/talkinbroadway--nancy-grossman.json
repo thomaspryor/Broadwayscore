@@ -1,0 +1,74 @@
+{
+  "showId": "hadestown-2019",
+  "outletId": "talkinbroadway",
+  "outlet": "Talkin' Broadway",
+  "criticName": "Nancy Grossman",
+  "url": "http://talkinbroadway.com/page/regional/boston/bos618.html",
+  "publishDate": "June 15, 2019",
+  "fullText": "Hadestown is a haunting, beautiful, and ultimately heartbreaking retelling of the ancient Greek myth of Orpheus and Eurydice, set against the backdrop of an industrial wasteland that could be anywhere in America.",
+  "isFullReview": false,
+  "dtliExcerpt": "Hadestown is a haunting, beautiful, and ultimately heartbreaking retelling of the ancient Greek myth of Orpheus and Eurydice, set against the backdrop of an industrial wasteland that could be anywhere in America.",
+  "originalScore": null,
+  "assignedScore": 68,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "low",
+    "range": {
+      "low": 40.5,
+      "high": 95.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "haunting, beautiful, and ultimately heartbreaking",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "retelling of the ancient Greek myth",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "retelling of the ancient Greek myth of Orpheus and Eurydice",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This appears to be a brief description rather than a full review, with positive descriptive language but no clear recommendation or critical assessment of the production's quality. | GPT-4o-mini: The review expresses strong admiration for the production's emotional depth and aesthetic, indicating a must-see experience. | Note: Models differed by 45 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:54:57.708Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 90,
+    "scoreDelta": 45,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 45 points (Claude: 45, OpenAI: 90)"
+    ]
+  }
+}

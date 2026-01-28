@@ -1,0 +1,72 @@
+{
+  "showId": "uncle-vanya-2024",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Helen Shaw",
+  "url": "https://www.vulture.com/article/uncle-vanya-broadway-review.html",
+  "publishDate": "February 13, 2024",
+  "fullText": "This Uncle Vanya is a triumph of restraint and emotional precision, with Steve Carell delivering a performance of surprising depth and vulnerability that anchors Chekhov's meditation on wasted lives.",
+  "isFullReview": false,
+  "dtliExcerpt": "This Uncle Vanya is a triumph of restraint and emotional precision, with Steve Carell delivering a performance of surprising depth and vulnerability that anchors Chekhov's meditation on wasted lives.",
+  "originalScore": null,
+  "assignedScore": 89,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 93,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "triumph of restraint and emotional precision",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "performance of surprising depth and vulnerability",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "anchors Chekhov's meditation",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise with 'triumph' and emphasis on both lead performance and overall production quality suggests clear positive recommendation in the 85-90 range. | GPT-4o-mini: The review expresses strong praise for the production and performance, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:55.793Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

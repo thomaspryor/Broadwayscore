@@ -4,50 +4,47 @@
   "outlet": "New York Theater",
   "criticName": "Jonathan Mandell",
   "url": "https://newyorktheater.me/2025/10/28/liberation-broadway-review/",
-  "publishDate": null,
+  "publishDate": "2025-10-28T22:07:39-04:00",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "Much of the strength of the production, which has moved intact from its Off-Broadway run earlier this year, resides in the ensemble acting, theater regulars portraying everyday women with grace and good humor.",
-  "bwwRoundupUrl": null,
+  "bwwExcerpt": "Much of the strength of the production, which has moved intact from its Off-Broadway run earlier this year, resides in the ensemble acting, theater regulars portraying everyday women with grace and good humor.     Melissa",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 74,
   "source": "bww-roundup",
-  "dtliThumb": null,
-  "needsScoring": true,
-  "bwwThumb": "Up",
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
   "llmScore": {
-    "score": 75,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 67.5,
+      "high": 80.5
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 80,
+      "performances": 79,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Much of the strength of the production",
+        "quote": "Much of the strength of the production... resides in the ensemble acting",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "theater regulars portraying everyday women with grace and good humor",
         "sentiment": "positive",
         "strength": 3
-      },
-      {
-        "quote": "ensemble acting... portraying everyday women with grace and good humor",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "strength of the production resides in the ensemble acting",
-        "sentiment": "positive",
-        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review praises the ensemble performances and production strength, but this excerpt is too brief to determine the critic's full recommendation or identify any reservations. | GPT-4o-mini: The review highlights strong ensemble performances and overall positive sentiment, suggesting a clear recommendation despite lacking details on other aspects.",
+    "reasoning": "Claude: The excerpt shows clear appreciation for the ensemble performances and production transfer, but the fragment is too incomplete to determine the critic's overall recommendation strength. | GPT-4o-mini: The review highlights the strength of the ensemble acting positively, suggesting a clear recommendation despite the lack of detail on other aspects.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -57,18 +54,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:03.613Z",
+    "scoredAt": "2026-01-26T05:33:49.380Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 75,
+    "claudeScore": 72,
     "openaiScore": 75,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "bwwThumb": "Up",
+  "sources": [
+    "bww-roundup"
+  ]
 }

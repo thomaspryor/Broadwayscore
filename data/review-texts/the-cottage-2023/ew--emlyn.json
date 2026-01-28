@@ -1,0 +1,73 @@
+{
+  "showId": "the-cottage-2023",
+  "outletId": "ew",
+  "outlet": "Entertainment Weekly",
+  "criticName": "Emlyn",
+  "url": "https://ew.com/theater/theater-reviews/the-cottage-review-broadway-jason-alexander/",
+  "publishDate": "July 24, 2023",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "The play is a sensational, feminist twist on a classic British period drama that features knockout performances, melodramatic reveals, and some seriously outrageous one-liners. If home is where the heart is, then The Cottage is where the mind's deepest, darkest, and most salacious secrets go to fight and frolic in the fresh air.",
+  "originalScore": null,
+  "assignedScore": 89,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/the-cottage/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 94,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "sensational, feminist twist on a classic British period drama",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "knockout performances",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "seriously outrageous one-liners",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong enthusiasm with superlatives like 'sensational' and 'knockout performances' indicates clear recommendation despite no explicit directive. | GPT-4o-mini: The review expresses strong enthusiasm and praise for the performances and the overall concept, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:12:58.534Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

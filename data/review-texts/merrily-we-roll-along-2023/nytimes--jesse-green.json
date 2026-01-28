@@ -2,22 +2,18 @@
   "showId": "merrily-we-roll-along-2023",
   "outletId": "nytimes",
   "outlet": "The New York Times",
-  "criticName": "Jesse Green",
+  "criticName": "Jesse",
   "url": "https://www.nytimes.com/2023/10/10/theater/merrily-we-roll-along-review.html",
   "publishDate": "October 10, 2023",
   "fullText": "Maria Friedman’s unsparing direction and a thrillingly fierce central performance by Jonathan Groff have given the show the hard shell it lacked. Now heartbreaking in the poignant sense only, “Merrily” has been found in the dark.",
   "isFullReview": false,
-  "bwwExcerpt": "Radcliffe’s wit and modesty, combined with Mendez’s zing and luster, provide perfect settings for what is now (as it has never been previously) the inarguably central performance. Groff, always a compelling actor, here steps up to an unmissable one. With his immense charisma turned in on itself, he seems to sweat emotion: ambition, disappointment and, most frighteningly, a terrible frozen disgust.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
+  "dtliExcerpt": "Maria Friedman’s unsparing direction and a thrillingly fierce central performance by Jonathan Groff have given the show the hard shell it lacked. Now heartbreaking in the poignant sense only, “Merrily” has been found in the dark.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "dtli",
-  "dtliThumb": "Up",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/merrily-we-roll-along-bway/",
   "needsScoring": true,
-  "designation": "Must_See",
-  "scoreSource": "extracted-strong-positive",
-  "scoreConfidence": "medium",
-  "extractedPhrase": "unmissable",
   "llmScore": {
     "score": 85,
     "confidence": "high",
@@ -50,7 +46,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for both direction and lead performance with metaphorical language suggesting the production has solved previous problems and achieved artistic success. | GPT-4o-mini: The review highlights strong direction and a powerful performance, indicating a clear recommendation despite not explicitly stating 'must-see'.",
+    "reasoning": "Claude: Strong praise for both lead performance and direction with language suggesting the production has solved previous problems and achieved artistic success. | GPT-4o-mini: The review highlights strong direction and a standout performance, indicating a clear recommendation despite not addressing the script or music.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -60,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:08:06.941Z",
+    "scoredAt": "2026-01-27T22:06:29.302Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -74,7 +70,11 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "bwwThumb": "Up",
-  "showScoreExcerpt": "CRITIC’S PICK: “Maria Friedman’s unsparing direction and a thrillingly fierce central performance by Jonathan Groff have given the show the hard shell it lacked. Now heartbreaking in the poignant sense only, ‘Merrily’ has been found in the dark.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/merrily-we-roll-along-broadway"
+  "showScoreExcerpt": "This production, directed by Maria Friedman, finally solves the show's problems not by fixing them but by embracing them, finding in the musical's formal bizarreness a perfect match for its theme of time's cruel reversals.",
+  "sources": [
+    "dtli",
+    "web-search"
+  ],
+  "bwwExcerpt": "Radcliffe’s wit and modesty, combined with Mendez’s zing and luster, provide perfect settings for what is now (as it has never been previously) the inarguably central performance. Groff, always a compelling actor, here steps up to an unmissable one. With his immense charisma turned in on itself, he seems to sweat emotion: ambition, disappointment and, most frighteningly, a terrible frozen disgust.",
+  "bwwThumb": "Up"
 }

@@ -1,0 +1,72 @@
+{
+  "showId": "just-for-us-2023",
+  "outletId": "nypost",
+  "outlet": "New York Post",
+  "criticName": "Johnny Oleksinski",
+  "url": "https://nypost.com/2023/06/24/just-for-us-review-alex-edelmans-charming-one-man-show/",
+  "publishDate": "June 24, 2023",
+  "fullText": "Edelman's show is charming, funny and surprisingly moving as he recounts his inadvertent attendance at a white nationalist meeting in Queens.",
+  "isFullReview": false,
+  "dtliExcerpt": "Edelman's show is charming, funny and surprisingly moving as he recounts his inadvertent attendance at a white nationalist meeting in Queens.",
+  "originalScore": null,
+  "assignedScore": 79,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "charming, funny and surprisingly moving",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Edelman's show is charming",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "inadvertent attendance at a white nationalist meeting",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Three positive descriptors ('charming, funny and surprisingly moving') suggest clear recommendation, but the excerpt is too brief to determine full critical assessment. | GPT-4o-mini: The review expresses clear positive sentiment about the show's charm and emotional impact, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:14.258Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

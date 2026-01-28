@@ -1,0 +1,72 @@
+{
+  "showId": "hells-kitchen-2024",
+  "outletId": "hollywood-reporter",
+  "outlet": "The Hollywood Reporter",
+  "criticName": "Angie Han",
+  "url": "https://www.hollywoodreporter.com/lifestyle/arts/hells-kitchen-broadway-review-1235863272/",
+  "publishDate": "April 21, 2024",
+  "fullText": "Hell's Kitchen succeeds most when it leans into Keys' personal story rather than trying to force universal themes, finding its strongest moments in the specificity of Ali's experience as a mixed-race teenager navigating questions of identity and belonging.",
+  "isFullReview": false,
+  "dtliExcerpt": "Hell's Kitchen succeeds most when it leans into Keys' personal story rather than trying to force universal themes, finding its strongest moments in the specificity of Ali's experience as a mixed-race teenager navigating questions of identity and belonging.",
+  "originalScore": null,
+  "assignedScore": 70,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hell's Kitchen succeeds most when it leans into Keys' personal story",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "rather than trying to force universal themes",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "finding its strongest moments in the specificity of Ali's experience",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review suggests the show works in specific areas but struggles with broader execution, indicating a qualified, mixed assessment without clear recommendation. | GPT-4o-mini: The review highlights the strengths of the show while indicating some limitations, leading to a clear but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T03:04:01.455Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 75,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

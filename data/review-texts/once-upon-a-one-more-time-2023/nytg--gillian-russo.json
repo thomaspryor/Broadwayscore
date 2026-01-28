@@ -2,51 +2,51 @@
   "showId": "once-upon-a-one-more-time-2023",
   "outletId": "nytg",
   "outlet": "New York Theatre Guide",
-  "criticName": "Gillian Russo",
+  "criticName": "Gillian",
   "url": "https://www.newyorktheatreguide.com/reviews/once-upon-a-one-more-time-broadway-review-britney-spears",
-  "publishDate": "June 23rd, 2023",
+  "publishDate": "June 22, 2023",
   "fullText": null,
   "isFullReview": false,
-  "showScoreExcerpt": "“The dance is truly what makes ‘Once Upon a One More Time’ worth the price of admission...also ultimately urges us not only to be willing to change the stories we tell and be open to new ideas, but also that sometimes, we must pass the pen to new writers to tell their stories themselves. That message has continued relevance — if anything, it's continually stronger than yesterday.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/once-upon-a-one-more-time-broadway",
+  "dtliExcerpt": "Once Upon a One More Time is certainly not the first piece of media interested in putting a modern, empowering spin on fairytales — even the notion of the \"strong independent princess\" has become a tale as old as time. But it certainly is the most fun. Spears's hits and impeccable dancing from director/choreographers Keone and Mari Madrid make Once Upon a One More Time an irresistible party. And quite frankly, that's what I want from a Britney Spears musical more than anything else.",
   "originalScore": null,
-  "assignedScore": 76,
-  "source": "show-score",
-  "dtliThumb": null,
+  "assignedScore": 84,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
   "needsScoring": true,
   "llmScore": {
-    "score": 76,
+    "score": 84,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 82
+      "low": 77.5,
+      "high": 90.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": null,
+      "music": 85,
       "performances": null,
-      "direction": 78
+      "direction": 87
     },
     "keyPhrases": [
       {
-        "quote": "The dance is truly what makes 'Once Upon a One More Time' worth the price of admission",
+        "quote": "makes Once Upon a One More Time an irresistible party",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "But it certainly is the most fun",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "worth the price of admission",
+        "quote": "that's what I want from a Britney Spears musical more than anything else",
         "sentiment": "positive",
         "strength": 4
-      },
-      {
-        "quote": "That message has continued relevance — if anything, it's continually stronger than yesterday",
-        "sentiment": "positive",
-        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic explicitly states the show is 'worth the price of admission' and praises both the dance and the thematic relevance, indicating a clear positive recommendation despite limited scope of the excerpt. | GPT-4o-mini: The review highlights the dance as a standout element and conveys a positive message about the show's themes, suggesting a clear recommendation despite not detailing other aspects.",
+    "reasoning": "Claude: The critic clearly recommends the show despite acknowledging the familiar premise, emphasizing the exceptional fun factor and entertainment value as exactly what they wanted from this production. | GPT-4o-mini: The review expresses strong enthusiasm for the production's fun and energetic qualities, leading to a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -56,18 +56,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:05.962Z",
+    "scoredAt": "2026-01-27T22:10:50.258Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 77,
-    "openaiScore": 75,
-    "scoreDelta": 2,
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "showScoreExcerpt": "“The dance is truly what makes ‘Once Upon a One More Time’ worth the price of admission...also ultimately urges us not only to be willing to change the stories we tell and be open to new ideas, but also that sometimes, we must pass the pen to new writers to tell their stories themselves. That message has continued relevance — if anything, it's continually stronger than yesterday.”",
+  "sources": [
+    "dtli",
+    "show-score"
+  ]
 }

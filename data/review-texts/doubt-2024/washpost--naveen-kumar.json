@@ -1,0 +1,74 @@
+{
+  "showId": "doubt-2024",
+  "outletId": "washpost",
+  "outlet": "The Washington Post",
+  "criticName": "Naveen Kumar",
+  "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/07/doubt-broadway-review-the-hunt/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "But the lead performances are miscalibrated. Schreiber’s gruff, salt-of-the-earth Flynn lacks a threatening underside, like a rock without worms squirming beneath. Ryan, a last-minute replacement for Tyne Daly, who withdrew from the production for health reasons, wields Aloysius’s iron-fisted quips like daggers. But she seems to throw them for the sake of it, with an absence of fear or disgust that what she believes might actually be true.",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
+  "originalScore": null,
+  "assignedScore": 39,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 38,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the lead performances are miscalibrated",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "lacks a threatening underside, like a rock without worms squirming beneath",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "she seems to throw them for the sake of it, with an absence of fear or disgust",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic harshly criticizes both lead performances as fundamentally flawed and miscalibrated, with vivid negative metaphors suggesting core deficiencies in the actors' interpretations. | GPT-4o-mini: The review predominantly critiques the lead performances as miscalibrated, indicating a lack of recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:37:46.072Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "bwwThumb": "Up"
+}

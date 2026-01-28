@@ -1,0 +1,77 @@
+{
+  "showId": "back-to-the-future-2023",
+  "outletId": "dailybeast",
+  "outlet": "The Daily Beast",
+  "criticName": "Tim Teeman",
+  "url": "https://www.thedailybeast.com/review-back-to-the-future-the-musical-is-perfect-for-the-movies-fans",
+  "publishDate": "August 3, 2023",
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "Sometimes a Broadway show just does what it needs to do, going big on songs, silliness, corn, and heart. And together those things work, even while some things frustratingly don’t work around them. The leviathan kicks into life, the audience jumps on and rides shotgun. Through the barrage of special effects, jokes, dramatic set-pieces, the stage-filling dancing and singing of the unsung heroes of the company—through all of it—the audience is visibly and audibly locked in, seduced, happy. And so,",
+  "bwwRoundupUrl": null,
+  "bwwThumb": "Up",
+  "originalScore": null,
+  "assignedScore": 77,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": 82,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "the audience is visibly and audibly locked in, seduced, happy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "going big on songs, silliness, corn, and heart. And together those things work",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "even while some things frustratingly don't work around them",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges flaws but emphasizes the show's overall effectiveness in entertaining audiences and achieving its theatrical goals. | GPT-4o-mini: The review expresses a clear positive sentiment about the audience's engagement and enjoyment, despite acknowledging some flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:12:05.365Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "sources": [
+    "bww-roundup"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "showId": "liberation-2025",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Chris Jones",
+  "url": "https://www.nydailynews.com/2025/10/28/broadway-review-liberation-bess-wohl/",
+  "publishDate": "October 28th, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "\"Make no mistake, this is a sophisticated piece of writing that goes far beyond the usual 90 minutes on Broadway and is cleverly self-protected too\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/liberation-broadway",
+  "originalScore": null,
+  "assignedScore": 79,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 81,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "sophisticated piece of writing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "goes far beyond the usual 90 minutes on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "cleverly self-protected too",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows clear appreciation for the writing quality and sophistication, but lacks explicit recommendation language or broader production elements to confirm strong endorsement. | GPT-4o-mini: The review indicates a strong appreciation for the writing, suggesting a positive recommendation, though it lacks explicit enthusiasm or mention of performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:49.427Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

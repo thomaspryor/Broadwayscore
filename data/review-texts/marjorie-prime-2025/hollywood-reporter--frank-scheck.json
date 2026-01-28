@@ -1,0 +1,73 @@
+{
+  "showId": "marjorie-prime-2025",
+  "outletId": "hollywood-reporter",
+  "outlet": "The Hollywood Reporter",
+  "criticName": "Frank Scheck",
+  "url": "http://www.hollywoodreporter.com/review/lois-smith-marjorie-prime-theater-848279?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Freviews%2Ftheater+%28The+Hollywood+Reporter+-+Theater+Reviews%29",
+  "publishDate": "December 14th, 2015",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "\"'Marjorie Prime' is sometimes frustratingly slow and schematic; it's the sort of play that is probably more satisfying to ponder over afterward than to watch. But it resonates with deep feeling, philosophical intelligence and empathy not only for its human characters, but also for its artificial ones. Staged in measured, understated fashion by Anne Kauffman, the piece is wonderfully acted by the ensemble.\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/marjorie-prime-broadway",
+  "originalScore": null,
+  "assignedScore": 68,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": 81,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "sometimes frustratingly slow and schematic",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "resonates with deep feeling, philosophical intelligence and empathy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "wonderfully acted by the ensemble",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Mixed review that acknowledges significant structural flaws but praises the performances, direction, and thematic depth, landing in qualified recommendation territory. | GPT-4o-mini: The review acknowledges both strengths in performances and direction but highlights significant pacing issues, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:50.638Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

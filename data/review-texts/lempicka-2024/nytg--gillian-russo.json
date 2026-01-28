@@ -2,53 +2,53 @@
   "showId": "lempicka-2024",
   "outletId": "nytg",
   "outlet": "New York Theatre Guide",
-  "criticName": "Gillian Russo",
+  "criticName": "Gillian",
   "url": "https://www.newyorktheatreguide.com/reviews/lempicka-broadway-review",
-  "publishDate": null,
+  "publishDate": "April 14, 2024",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "It’s fitting that the musical named for her wages a similar battle as it unfolds at the Longacre Theatre. An uneven, exposition-heavy book by Carson Kreitzer and Matt Gould, and an industrial set by Riccardo Fernandez, are the show's more mechanical elements. But superb lighting design by Bradley King, an eclectic and electric score, and captivating performances are the pulsating flesh and blood that ultimately render Lempicka’s flaws like stray paint specks on canvas: keeping the work from “per",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
+  "dtliExcerpt": "It’s fitting that the musical named for her wages a similar battle as it unfolds at the Longacre Theatre. An uneven, exposition-heavy book by Carson Kreitzer and Matt Gould, and an industrial set by Riccardo Fernandez, are the show's more mechanical elements. But superb lighting design by Bradley King, an eclectic and electric score, and captivating performances are the pulsating flesh and blood that ultimately render Lempicka’s flaws like stray paint specks on canvas: keeping the work from “perfection,” maybe, but not ruining it. Ultimately, Lempicka is ravishing — and one of the best new musicals this season.",
   "originalScore": null,
-  "assignedScore": 70,
-  "source": "bww-roundup",
-  "dtliThumb": null,
+  "assignedScore": 82,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/lempicka/",
   "needsScoring": true,
   "llmScore": {
-    "score": 70,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 75
+      "low": 73.5,
+      "high": 90.5
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 45,
-      "music": 80,
-      "performances": 85,
-      "direction": 68
+      "book": 53,
+      "music": 86,
+      "performances": 88,
+      "direction": 74
     },
     "keyPhrases": [
       {
-        "quote": "An uneven, exposition-heavy book by Carson Kreitzer and Matt Gould, and an industrial set by Riccardo Fernandez, are the show's more mechanical elements",
+        "quote": "Ultimately, Lempicka is ravishing — and one of the best new musicals this season",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "An uneven, exposition-heavy book by Carson Kreitzer and Matt Gould",
         "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "superb lighting design by Bradley King, an eclectic and electric score, and captivating performances are the pulsating flesh and blood",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "ultimately render Lempicka's flaws like stray paint specks on canvas",
-        "sentiment": "positive",
         "strength": 3
+      },
+      {
+        "quote": "superb lighting design by Bradley King, an eclectic and electric score, and captivating performances",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review acknowledges significant flaws in the book and set design but suggests that strong performances, lighting, and score ultimately overcome these weaknesses, indicating a qualified recommendation. | GPT-4o-mini: The review highlights strong performances and music but criticizes the book and direction, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: Despite criticizing the book as 'uneven' and 'exposition-heavy,' the critic's final verdict is unambiguously positive, calling it 'ravishing' and 'one of the best new musicals this season.' | GPT-4o-mini: The review expresses strong enthusiasm for the musical's performances and music while acknowledging some flaws in the book, leading to a solid recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
@@ -56,21 +56,25 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:07:50.970Z",
+    "scoredAt": "2026-01-27T22:05:56.258Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 70,
-    "openaiScore": 70,
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "bwwThumb": "Up",
+  "bwwExcerpt": "It’s fitting that the musical named for her wages a similar battle as it unfolds at the Longacre Theatre. An uneven, exposition-heavy book by Carson Kreitzer and Matt Gould, and an industrial set by Riccardo Fernandez, are the show's more mechanical elements. But superb lighting design by Bradley King, an eclectic and electric score, and captivating performances are the pulsating flesh and blood that ultimately render Lempicka’s flaws like stray paint specks on canvas: keeping the work from “per",
   "showScoreExcerpt": "\"a captivating portrait of an artist's life and loves\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/lempicka-broadway"
+  "bwwThumb": "Up",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
 }

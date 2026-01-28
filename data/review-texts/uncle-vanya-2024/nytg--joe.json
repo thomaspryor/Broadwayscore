@@ -1,0 +1,73 @@
+{
+  "showId": "uncle-vanya-2024",
+  "outletId": "nytg",
+  "outlet": "New York Theatre Guide",
+  "criticName": "Joe",
+  "url": "https://www.newyorktheatreguide.com/reviews/uncle-vanya-broadway-review-steve-carell",
+  "publishDate": "April 24, 2024",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "By the time the play reaches its conclusion, and thwarted dreamers and would-be romantics surrender to more of the same-old same-old, you can typically expect to feel a twinge of sadness. Or empathy. Or… something. Broadway’s 11th Uncle Vanya left me wanting.",
+  "originalScore": null,
+  "assignedScore": 39,
+  "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/uncle-vanya-bway/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway's 11th Uncle Vanya left me wanting",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "you can typically expect to feel a twinge of sadness. Or empathy. Or… something",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "left me wanting",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the production 'left me wanting' and contrasts it with what one should 'typically expect to feel,' indicating this revival failed to deliver the emotional impact that Uncle Vanya should provide. | GPT-4o-mini: The review expresses disappointment and a lack of emotional engagement, indicating a clear negative sentiment towards the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:05:29.729Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

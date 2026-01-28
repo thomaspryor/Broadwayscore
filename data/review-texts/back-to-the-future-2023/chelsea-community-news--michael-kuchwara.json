@@ -1,0 +1,76 @@
+{
+  "showId": "back-to-the-future-2023",
+  "outletId": "chelsea-community-news",
+  "outlet": "chelsea-community-news",
+  "criticName": "Michael Musto",
+  "url": "https://chelseacommunitynews.com/2023/08/03/review-back-to-the-future-the-musical-makes-the-past-sing/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "The show is lavish and, as directed by John Rando (Urinetown, Mr. Saturday Night), never slows down, at times coming off like something that might belong at Madison Square Garden. The whole thing is basically a big, flashy, speeding car, but it’s apt for today’s Broadway, since it combines a familiar title, a sampling of hit songs, and some slick special effects, while vaguely touching on the fantasy of changing eras in order to work things out and patch things up.",
+  "bwwRoundupUrl": null,
+  "bwwThumb": "Up",
+  "originalScore": null,
+  "assignedScore": 66,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is lavish and, as directed by John Rando (Urinetown, Mr. Saturday Night), never slows down",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The whole thing is basically a big, flashy, speeding car, but it's apt for today's Broadway",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "it combines a familiar title, a sampling of hit songs, and some slick special effects, while vaguely touching on the fantasy",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges positive production elements like lavish staging and John Rando's energetic direction, but the tone suggests formulaic commercial theater rather than genuine artistic merit, with phrases like 'big, flashy, speeding car' and 'apt for today's Broadway' carrying subtle skepticism about substance over spectacle. | GPT-4o-mini: The review highlights strong direction and a flashy production but lacks a clear recommendation, suggesting a mixed-positive sentiment overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:11:52.509Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (66 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
+}

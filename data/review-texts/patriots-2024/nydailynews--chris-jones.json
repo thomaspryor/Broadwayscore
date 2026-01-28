@@ -1,0 +1,78 @@
+{
+  "showId": "patriots-2024",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Chris",
+  "url": "https://www.nydailynews.com/2024/04/22/broadway-review-patriots/",
+  "publishDate": "April 22, 2024",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "“Patriots,” a gripping, juicy drama replete with a terrifying performance from Will Keen as a Richard III-like you-know-who, offers up a potted history of Russia from the 1990s, the era of bumbling Boris Yeltsin, to the present. Its central dramatic question? How did Putin happen?",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/patriots/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gripping, juicy drama",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "terrifying performance from Will Keen",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Its central dramatic question? How did Putin happen?",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the drama's grip and lead performance, with 'terrifying' used positively to describe Keen's compelling portrayal, suggesting a solid theatrical experience worth seeing. | GPT-4o-mini: The review highlights a strong performance and engaging drama, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:39.086Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "showScoreExcerpt": "\"'Patriots,' a gripping, juicy drama replete with a terrifying performance\"",
+  "sources": [
+    "dtli",
+    "show-score"
+  ]
+}

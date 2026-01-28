@@ -2,51 +2,51 @@
   "showId": "here-lies-love-2023",
   "outletId": "wsj",
   "outlet": "The Wall Street Journal",
-  "criticName": "Charles Isherwood",
+  "criticName": "Charles",
   "url": "https://www.wsj.com/articles/here-lies-love-review-david-byrnes-dictator-disco-party-a84cc46d",
-  "publishDate": "July 20th, 2023",
+  "publishDate": "July 20, 2023",
   "fullText": null,
   "isFullReview": false,
-  "showScoreExcerpt": "“What may be most remarkable about ‘Here Lies Love’ is how deftly it pivots from the celebratory and even sentimental presentation of Imelda’s rise to the inevitably condemnatory”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/here-lies-love-broadway",
+  "dtliExcerpt": "What may be most remarkable about “Here Lies Love” is how deftly it pivots from the celebratory and even sentimental presentation of Imelda’s rise to the inevitably condemnatory, as we witness the assassination of Aquino at the airport upon his return from exile.",
   "originalScore": null,
-  "assignedScore": 70,
-  "source": "show-score",
-  "dtliThumb": null,
+  "assignedScore": 74,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/here-lies-love-bway/",
   "needsScoring": true,
   "llmScore": {
-    "score": 70,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 80
+      "low": 67.5,
+      "high": 80.5
     },
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 75,
       "music": null,
       "performances": null,
-      "direction": 70
+      "direction": 78
     },
     "keyPhrases": [
       {
-        "quote": "What may be most remarkable about 'Here Lies Love' is how deftly it pivots",
+        "quote": "What may be most remarkable about \"Here Lies Love\" is how deftly it pivots",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "deftly it pivots from the celebratory and even sentimental presentation",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "celebratory and even sentimental presentation",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
         "quote": "inevitably condemnatory",
         "sentiment": "neutral",
-        "strength": 2
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: This incomplete excerpt praises the show's structural deftness in handling tonal shifts but provides insufficient context to determine overall recommendation strength. | GPT-4o-mini: The review highlights a notable strength in the show's ability to shift tone, indicating a positive recommendation despite not providing extensive praise.",
+    "reasoning": "Claude: The excerpt praises the show's skillful handling of complex material and tonal shifts, suggesting admiration for the production's craft, but lacks context for a definitive recommendation. | GPT-4o-mini: The review highlights a notable strength in the show's ability to shift tones effectively, indicating a clear recommendation despite a lack of explicit enthusiasm.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,18 +56,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:11.524Z",
+    "scoredAt": "2026-01-27T22:35:00.981Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 65,
+    "claudeScore": 72,
     "openaiScore": 75,
-    "scoreDelta": 10,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "showScoreExcerpt": "“What may be most remarkable about ‘Here Lies Love’ is how deftly it pivots from the celebratory and even sentimental presentation of Imelda’s rise to the inevitably condemnatory”",
+  "sources": [
+    "dtli",
+    "show-score"
+  ]
 }

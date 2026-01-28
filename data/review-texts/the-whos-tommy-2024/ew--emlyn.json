@@ -1,0 +1,73 @@
+{
+  "showId": "the-whos-tommy-2024",
+  "outletId": "ew",
+  "outlet": "Entertainment Weekly",
+  "criticName": "Emlyn",
+  "url": "https://ew.com/the-who-tommy-review-broadway-8620278?taid=6606134992b73300016e75fd",
+  "publishDate": "March 28, 2024",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "In 1975,Tommy was adapted into a deliciously delirious film that featured the tagline, “Your senses will never be the same.” Now, The Who's Tommy carries that torch forward in its own radical, one-of-a-kind adventure that truly has to be seen to be believed. See it, feel it — you won't forget it.",
+  "originalScore": null,
+  "assignedScore": 89,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/the-whos-tommy/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "truly has to be seen to be believed",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "deliciously delirious",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "See it, feel it — you won't forget it",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong enthusiastic language with explicit recommendation to see the show, emphasizing its unique and unforgettable nature. | GPT-4o-mini: The review expresses strong enthusiasm and a clear recommendation to see the show, indicating a highly positive experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:04:59.858Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

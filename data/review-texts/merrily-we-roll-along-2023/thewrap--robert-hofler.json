@@ -1,69 +1,79 @@
 {
   "showId": "merrily-we-roll-along-2023",
   "outletId": "thewrap",
-  "outlet": "TheWrap",
+  "outlet": "The Wrap",
   "criticName": "Robert Hofler",
   "url": "https://www.thewrap.com/merrily-we-roll-along-broadway-review-daniel-radcliffe-jonathan-groff-lindsay-mendez/",
   "publishDate": "October 10, 2023",
   "fullText": "I’ve seen a few of those revivals, and while each has been an improvement on the original, this Broadway revival directed by Maria Friedman and based on her Mernier Chocolate Factory production in London, is the first that not only works completely but is downright wonderful — with just a very few caveats.",
+  "isFullReview": false,
+  "bwwExcerpt": "Watching the show on Broadway, I found myself concentrating less on Mendez and Radcliffe’s back-to-back screeds and drawn more to Groff, who almost singlehandedly, and in a very quiet way, makes this revival drive forward while going backward on all eight cylinders. He plays off the over-the-top performances of his two costars — who bring a sly Oliver-and-Hardy chemistry to the stage, Radcliffe being Stan to Mendez’s Ollie. Mendez entertains us with her nasty one-liners and Radcliffe stops the s",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": null,
-  "dtliThumb": "Up",
-  "source": "dtli",
+  "assignedScore": 74,
+  "source": "bww-roundup",
+  "dtliThumb": "UP",
+  "needsScoring": true,
   "llmScore": {
-    "score": 86,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 78.5,
-      "high": 93.5
+      "low": 67.5,
+      "high": 80.5
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": null,
-      "direction": 88
+      "performances": 78,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "is the first that not only works completely but is downright wonderful",
+        "quote": "almost singlehandedly, and in a very quiet way, makes this revival drive forward while going backward on all eight cylinders",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       },
       {
-        "quote": "each has been an improvement on the original",
+        "quote": "bring a sly Oliver-and-Hardy chemistry to the stage",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "with just a very few caveats",
-        "sentiment": "negative",
-        "strength": 2
+        "quote": "Mendez entertains us with her nasty one-liners",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong enthusiasm ('downright wonderful', 'works completely') with only minor reservations ('very few caveats') indicates a clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the revival, indicating it is a significant improvement and 'downright wonderful', with only minor reservations.",
+    "reasoning": "Claude: The excerpt focuses primarily on praising individual performances with specific positive details about chemistry and entertainment value, but the incomplete nature and lack of overall verdict limits confidence in scoring. | GPT-4o-mini: The review highlights strong performances, particularly from Groff, while maintaining a positive tone overall, suggesting a recommendation despite not explicitly stating it.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:44.677Z",
+    "scoredAt": "2026-01-27T22:09:32.421Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 83,
-    "openaiScore": 88,
-    "scoreDelta": 5,
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "bwwThumb": "Up",
+  "dtliExcerpt": "I’ve seen a few of those revivals, and while each has been an improvement on the original, this Broadway revival directed by Maria Friedman and based on her Mernier Chocolate Factory production in London, is the first that not only works completely but is downright wonderful — with just a very few caveats.",
+  "sources": [
+    "bww-roundup",
+    "dtli"
+  ]
 }

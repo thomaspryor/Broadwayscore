@@ -2,64 +2,77 @@
   "showId": "redwood-2025",
   "outletId": "nytg",
   "outlet": "New York Theatre Guide",
-  "criticName": "Gillian Russo",
+  "criticName": "Gillian",
   "url": "https://www.newyorktheatreguide.com/reviews/redwood-broadway-review-idina-menzel",
-  "publishDate": "February 13th, 2025",
+  "publishDate": "February 13, 2025",
   "fullText": null,
   "isFullReview": false,
-  "showScoreExcerpt": "\"Redwood...like the redwood tree, as we learn, its roots remain shallow.\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
+  "dtliExcerpt": "Redwood broaches many potentially compelling topics, but, like the redwood tree, as we learn, its roots remain shallow",
   "originalScore": null,
-  "assignedScore": 38,
-  "source": "show-score",
-  "dtliThumb": null,
+  "assignedScore": 42,
+  "source": "dtli",
+  "dtliThumb": "DOWN",
+  "dtliUrl": "https://didtheylikeit.com/shows/redwood/",
   "needsScoring": true,
   "llmScore": {
-    "score": 38,
-    "confidence": "low",
+    "score": 42,
+    "confidence": "medium",
     "range": {
-      "low": 20.5,
-      "high": 55.5
+      "low": 33.5,
+      "high": 50.5
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": 38,
       "music": null,
       "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
+        "quote": "broaches many potentially compelling topics",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
         "quote": "its roots remain shallow",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "Redwood broaches many potentially compelling topics",
+        "sentiment": "neutral",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The metaphor comparing the show to a redwood tree with shallow roots suggests fundamental structural weakness and lack of depth. | GPT-4o-mini: The review provides a vague and neutral statement without clear recommendations or strong sentiments. | Note: Models differed by 25 points.",
+    "reasoning": "Claude: The critic uses a clever metaphor to criticize the show's fundamental weakness - having interesting topics but failing to develop them meaningfully, suggesting a production with promise but poor execution. | GPT-4o-mini: The review indicates a lack of depth in the material, suggesting significant shortcomings in the script.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:44.908Z",
+    "scoredAt": "2026-01-28T01:15:30.150Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 50,
-    "scoreDelta": 25,
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 25 points (Claude: 25, OpenAI: 50)"
-    ]
-  }
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "showScoreExcerpt": "\"Redwood...like the redwood tree, as we learn, its roots remain shallow.\"",
+  "sources": [
+    "dtli",
+    "show-score"
+  ]
 }

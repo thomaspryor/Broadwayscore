@@ -4,70 +4,76 @@
   "outlet": "New York Theatre Guide",
   "criticName": "Austin Fimmano",
   "url": "https://www.newyorktheatreguide.com/reviews/chess-broadway-review-aaron-tveit-lea-michele-nicholas-christopher",
-  "publishDate": "November 16th, 2025",
-  "fullText": null,
-  "isFullReview": false,
+  "publishDate": "November 16, 2025",
+  "fullText": "Chess is a bit of a platypus of a show, made up of disparate parts that seem too good to be true. It's the brainchild of Tim Rice, who's collaborated on musicals like Evita, Jesus Christ Superstar, Aladdin, and The Lion King, with music by Benny Andersson and Björn Ulvaeus of the Swedish pop group ABBA. And yet, despite this killer résumé, the success of Chess has been elusive since its Broadway debut flopped in 1988.\n\nIt's with a laser focus that the first Broadway revival, now at the Imperial Theatre, attempts to change that, armed with a new book by Danny Strong and direction by Tony Award winner Michael Mayer. Some of their updates don't work (the heavy-handed presence of the CIA and KGB cheapens the show's original metaphor for U.S.-Russia tensions), but some do (snappy dialogue and a new narrator character make the plot much sleeker). However, the biggest draw regardless are the three leads, who may just be the most powerful voices on Broadway right now: Aaron Tveit, Lea Michele, and Nicholas Christopher.\n\nMichele, the Funny Girl star and Glee alum, plays a somewhat rigid chess second Florence Vassy. But when the chords of \"Nobody's Side\" strike up, she is in her element. Flanking her are Christopher as Anatoly Sergievsky and Tveit as Freddie Trumper, both chess champions. Together and apart, the three of them had my audience cheering and whooping after nearly every song.\n\nChristopher proves the vocal heart of the show, with sonorous pipes that bring the house down in the climactic song \"Endgame.\" Meanwhile, certified Broadway heartthrob Tveit shows off his range between the catchy \"One Night in Bangkok\" (featuring an impressive costume change that must be seen to be believed) and the soulful \"Pity the Child,\" in which rough-around-the-edges Freddie reflects on his childhood.\n\nThe set is relatively minimalist, as are the costumes: severe gray '80s pantsuits for the ensemble and monochromatic neutrals for the main cast. However, the lighting design (by Kevin Adams) adds an extra punch of dynamism, heightening tension or signifying softness.\n\nChess might not be for everyone: Diehard fans may bemoan the modern updates, while newcomers may get lost in the 2-hour-and-40-minute back-and-forth of plot that covers, essentially, two chess matches. But for those who go to Broadway musicals hoping to hear actors perform songs so powerfully you get goosebumps, you'll find that three times over.",
+  "isFullReview": true,
   "showScoreExcerpt": "\"For those who go to Broadway musicals hoping to hear actors perform songs so powerfully you get goosebumps, youâll find that three times over.\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/chess-broadway",
   "originalScore": null,
-  "assignedScore": 88,
-  "source": "show-score",
-  "dtliThumb": null,
-  "needsScoring": true,
+  "assignedScore": 77,
+  "source": "playwright-scraped",
+  "dtliThumb": "Up",
+  "scrapedAt": "2026-01-23T05:10:00.000Z",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 68.5,
+      "high": 85.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 60,
       "music": 85,
       "performances": 90,
-      "direction": null
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "perform songs so powerfully you get goosebumps",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "youâll find that three times over",
+        "quote": "But for those who go to Broadway musicals hoping to hear actors perform songs so powerfully you get goosebumps, you'll find that three times over",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "you’ll find that three times over",
+        "quote": "Chess might not be for everyone: Diehard fans may bemoan the modern updates, while newcomers may get lost in the 2-hour-and-40-minute back-and-forth of plot",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Together and apart, the three of them had my audience cheering and whooping after nearly every song",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review promises multiple goosebump-inducing performances, which is extremely high praise for musical theater, indicating strong recommendation despite the brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the performances, indicating a must-see experience.",
+    "reasoning": "Claude: The critic clearly recommends the show for musical theater fans who prioritize vocal performances, despite acknowledging significant flaws in the book and mixed success of updates. | GPT-4o-mini: The review praises the performances and music highly while acknowledging some shortcomings in the book and updates, leading to a strong recommendation overall.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:27.453Z",
-    "promptVersion": "3.0.0",
+    "scoredAt": "2026-01-24T04:59:49.477Z",
+    "promptVersion": "2.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 90,
-    "scoreDelta": 5,
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textStatus": "complete",
+  "textQuality": "full",
+  "sourceMethod": "playwright",
+  "sources": [
+    "playwright-scraped",
+    "show-score"
+  ]
 }

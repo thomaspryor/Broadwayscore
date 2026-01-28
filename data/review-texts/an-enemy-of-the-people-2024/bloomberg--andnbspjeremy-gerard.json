@@ -1,0 +1,74 @@
+{
+  "showId": "an-enemy-of-the-people-2024",
+  "outletId": "bloomberg",
+  "outlet": "bloomberg",
+  "criticName": "&nbsp;Jeremy Gerard",
+  "url": "http://www.businessweek.com/news/2012-09-27/richard-thomas-yells-sneers-in-enemy-jeremy-gerard",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": ": Richard Thomas does everything but twirl his mustache as the bogeyman in the Broadway revival of &ldquo;An Enemy of the People.&rdquo;&nbsp;That&rsquo;s because he doesn&rsquo;t have a mustache to twirl. The other accouterments of villainy -- black top hat and bowtie framing a lip-curling sneer, cape and cane wielded with menacing flourishes -- are all accounted for in Doug Hughes&rsquo;s clipped vaudeville of a production.",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
+  "bwwThumb": null,
+  "originalScore": null,
+  "assignedScore": 43,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 35,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "Richard Thomas does everything but twirl his mustache as the bogeyman",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "clipped vaudeville of a production",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Doug Hughes’s clipped vaudeville of a production",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses mocking language to criticize both Thomas's over-the-top performance and Hughes's direction as cartoonish and shallow, suggesting a production that misses the mark. | GPT-4o-mini: The review focuses on the negative aspects of the production's direction and characterization, indicating a lack of overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:09:12.628Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 45,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

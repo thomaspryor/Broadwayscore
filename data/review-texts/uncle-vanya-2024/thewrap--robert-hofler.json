@@ -1,15 +1,19 @@
 {
   "showId": "uncle-vanya-2024",
   "outletId": "thewrap",
-  "outlet": "TheWrap",
-  "criticName": "Robert Hofler",
+  "outlet": "The Wrap",
+  "criticName": "Robert",
   "url": "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/",
   "publishDate": "April 24, 2024",
   "fullText": "Lila Neugebauer directs a very punchy revival of “Uncle Vanya,” which opened Wednesday at LCT’s Vivian Beaumont Theatre. Anton Chekhov’s characters suffer from ennui, but not so much in this production.",
+  "isFullReview": false,
+  "dtliExcerpt": "Lila Neugebauer directs a very punchy revival of “Uncle Vanya,” which opened Wednesday at LCT’s Vivian Beaumont Theatre. Anton Chekhov’s characters suffer from ennui, but not so much in this production.",
   "originalScore": null,
-  "assignedScore": null,
-  "dtliThumb": "Meh",
+  "assignedScore": 74,
   "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/uncle-vanya-bway/",
+  "needsScoring": true,
   "llmScore": {
     "score": 74,
     "confidence": "medium",
@@ -23,7 +27,7 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 77
+      "direction": 78
     },
     "keyPhrases": [
       {
@@ -42,7 +46,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic praises the director's 'very punchy' approach and notes the production avoids the ennui typically associated with Chekhov, suggesting a successful, energetic interpretation. | GPT-4o-mini: The review indicates a generally positive view of the direction but lacks strong enthusiasm for the overall experience, suggesting a mixed-positive recommendation.",
+    "reasoning": "Claude: The critic praises the director's work as 'very punchy' and suggests the production successfully avoids the typical sluggishness associated with Chekhov, indicating a clear positive recommendation despite the brief excerpt. | GPT-4o-mini: The review indicates a positive direction and a lively production but lacks strong enthusiasm for the overall experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:08:19.883Z",
+    "scoredAt": "2026-01-27T22:07:17.440Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -65,5 +69,8 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "sources": [
+    "dtli"
+  ]
 }

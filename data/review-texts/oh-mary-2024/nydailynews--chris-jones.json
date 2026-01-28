@@ -1,0 +1,79 @@
+{
+  "showId": "oh-mary-2024",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Chris Jones",
+  "url": "https://www.nydailynews.com/2024/07/11/oh-mary-broadway-review/",
+  "publishDate": "2024-07-11",
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "playwright might describe it as stupid, but any comedy that liberates audiences from the despair of the current political climate with 80 minutes of almost uninterrupted laughter is a work of genius. Chris Jones, The New York Daily News: Second, the director Sam Pinkerton moves the show at such a lightning pace that we’re all on to the next laugh before you start to wonder about the merits of the one before or even dare to question the whole tawdry enterprise. Blackouts come so hard upon the lines of dialogue that the actors have to rush to get their gags out, which makes them all the funnier because it both raises the stakes and keys into one of the key ingredients of great farce: the mutual experience of the chaotic. David Cote, Observer: Escola’s splendidly nasty queer romp has hiked up its petticoats and staggered uptown from a sold-out run at the Lucille Lortel Theatre, goosing a sleepy Broadway summer. I’m happy to report that although director Sam Pinkleton leveled up the produc",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "bww-roundup",
+  "needsFullText": false,
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "any comedy that liberates audiences from the despair of the current political climate with 80 minutes of almost uninterrupted laughter is a work of genius",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Escola's splendidly nasty queer romp has hiked up its petticoats and staggered uptown from a sold-out run at the Lucille Lortel Theatre, goosing a sleepy Broadway summer",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "director Sam Pinkerton moves the show at such a lightning pace that we're all on to the next laugh before you start to wonder about the merits",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Multiple critics praise the show's consistent comedic success and skilled direction, with particularly strong endorsement of its entertainment value despite acknowledging its lowbrow nature. | GPT-4o-mini: The review expresses strong enthusiasm for the comedy's ability to entertain and the director's effective pacing, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:41:26.931Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
+  "bwwThumb": "Up"
+}

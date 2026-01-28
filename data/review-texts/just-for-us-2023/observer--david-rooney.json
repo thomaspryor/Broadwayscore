@@ -1,0 +1,73 @@
+{
+  "showId": "just-for-us-2023",
+  "outletId": "observer",
+  "outlet": "Observer",
+  "criticName": "David Cote",
+  "url": "https://observer.com/2023/06/review-alex-edelman-noshes-with-the-enemy-in-the-hilarious-just-for-us/",
+  "publishDate": "June 26th, 2023",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "“...the production, directed by the late Adam Brace, is exceptionally tight, the material tweaked and buffed to gleaming perfection, with the 34-year-old comedian bopping around the stage using a trio of stools to conjure up multiple locations and figures”",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "exceptionally tight",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "tweaked and buffed to gleaming perfection",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the production... is exceptionally tight",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for direction and production quality with superlative language like 'gleaming perfection' and 'exceptionally tight' suggests clear positive recommendation, though excerpt is too brief for full confidence. | GPT-4o-mini: The review highlights the production's exceptional direction and tight execution, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:36.551Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

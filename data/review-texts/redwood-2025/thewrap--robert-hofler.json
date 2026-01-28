@@ -1,13 +1,71 @@
 {
   "showId": "redwood-2025",
   "outletId": "thewrap",
-  "outlet": "TheWrap",
-  "criticName": "Robert Hofler",
+  "outlet": "The Wrap",
+  "criticName": "Robert",
   "url": "https://www.thewrap.com/redwood-broadway-review-idina-menzel/",
   "publishDate": "February 13, 2025",
   "fullText": "Beyond the word “adventurous,” one might also throw out “indulgent” to describe “Redwood.”",
+  "isFullReview": false,
+  "dtliExcerpt": "Beyond the word “adventurous,” one might also throw out “indulgent” to describe “Redwood.”",
   "originalScore": null,
-  "assignedScore": null,
-  "dtliThumb": "Down",
-  "source": "dtli"
+  "assignedScore": 48,
+  "source": "dtli",
+  "dtliThumb": "DOWN",
+  "dtliUrl": "https://didtheylikeit.com/shows/redwood/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 48,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "adventurous",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "indulgent",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses 'adventurous' positively but 'indulgent' suggests the show is excessive or self-serving, creating a mixed but leaning negative assessment. | GPT-4o-mini: The review presents a mixed sentiment, highlighting both adventurous qualities and indulgent tendencies, leading to a neutral recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:08.775Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "sources": [
+    "dtli"
+  ]
 }

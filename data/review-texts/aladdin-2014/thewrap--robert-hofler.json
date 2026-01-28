@@ -1,33 +1,31 @@
 {
   "showId": "aladdin-2014",
   "outletId": "thewrap",
-  "outlet": "TheWrap",
+  "outlet": "The Wrap",
   "criticName": "Robert Hofler",
-  "url": null,
+  "url": "http://www.thewrap.com/aladdin-theater-review-disney-animation-got-right-first-time-genie-courtney-reed-adam-jacobs",
   "publishDate": "2014-03-20T20:56:08-04:00",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "Suffice to say, \"Aladdin\" bears no resemblance to Nicholaw's previous laugh-filled Broadway effort, \"The Book of Mormon.\"...And neither does Chad Beguelin's book, which is loaded with some clever \"Sesame Street\" word play but finds no magic whatsoever in a story rife with magic lanterns, carpets, genies and sultry Arabian nights. Will children get the humor in send-ups of old tap and soft-shoe numbers? Isn't mocking stage traditions a rather cynical way to introduce children to the theater?",
+  "bwwExcerpt": ": Suffice to say, \"Aladdin\" bears no resemblance to Nicholaw's previous laugh-filled Broadway effort, \"The Book of Mormon.\"...And neither does Chad Beguelin's book, which is loaded with some clever \"Sesame Street\" word play but finds no magic whatsoever in a story rife with magic lanterns, carpets, genies and sultry Arabian nights. Will children get the humor in send-ups of old tap and soft-shoe numbers? Isn't mocking stage traditions a rather cynical way to introduce children to the theater?",
+  "bwwRoundupUrl": null,
+  "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 34,
+  "assignedScore": 37,
   "source": "bww-roundup",
-  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
-  "textStatus": "missing",
-  "textQuality": "missing",
-  "sourceMethod": "bww-roundup",
-  "scoreSource": "sentiment-strong-positive",
-  "scoreConfidence": "medium",
+  "dtliThumb": null,
+  "needsScoring": true,
   "llmScore": {
-    "score": 34,
-    "confidence": "medium",
+    "score": 37,
+    "confidence": "high",
     "range": {
-      "low": 25,
-      "high": 43
+      "low": 30.5,
+      "high": 43.5
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 23,
+      "book": 28,
       "music": null,
       "performances": null,
       "direction": 35
@@ -39,7 +37,7 @@
         "strength": 4
       },
       {
-        "quote": "loaded with some clever 'Sesame Street' word play",
+        "quote": "loaded with some clever \"Sesame Street\" word play",
         "sentiment": "positive",
         "strength": 2
       },
@@ -49,7 +47,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic finds fundamental flaws in the book and direction, calling the approach 'cynical' and saying it 'finds no magic whatsoever,' with only minor praise for wordplay. | GPT-4o-mini: The review expresses significant disappointment in the book and overall experience, indicating a clear rejection of the show.",
+    "reasoning": "Claude: The critic finds fundamental flaws in the book's inability to capture magic and questions the cynical approach to children's theater, with only minor praise for wordplay. | GPT-4o-mini: The review expresses significant disappointment in the script and overall experience, leading to a clear negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,18 +57,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T04:59:51.758Z",
+    "scoredAt": "2026-01-28T01:08:29.954Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 38,
-    "openaiScore": 30,
-    "scoreDelta": 8,
+    "openaiScore": 35,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "sources": [
+    "bww-roundup"
+  ]
 }

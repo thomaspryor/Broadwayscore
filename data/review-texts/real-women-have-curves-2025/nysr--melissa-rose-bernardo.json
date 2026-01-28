@@ -2,73 +2,83 @@
   "showId": "real-women-have-curves-2025",
   "outletId": "nysr",
   "outlet": "New York Stage Review",
-  "criticName": "Melissa Rose Bernardo",
+  "criticName": "Melissa Rose",
   "url": "https://nystagereview.com/2025/04/27/real-women-have-curves-latina-stories-take-center-stage/",
-  "publishDate": null,
+  "publishDate": "April 27, 2025",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "As for “Adios, Andrés”—a funny but genuinely sincere requiem for “Andrés…que viene cada mes” that pops up when Pancha informs Carmen “You got the menopause”—sure, it could easily be cut. But it’s light and fizzy, and it gives all the sewing factory employees a moment to bond over something other than ruffles and thread. It also hits hard with a large cross section of the audience: 40- and 50-something female theatergoers (we’re the ones fanning ourselves with our Playbills). A number that connec",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
-  "bwwThumb": "Up",
+  "dtliExcerpt": "A number that connects like that is a rarity, and RWHC has two—the other being the triumphant title song celebrating cellulite, stretch marks, loose skin, and the other everyday realities that women are taught to hide. Not surprisingly, it routinely earns a mid-show standing ovation—and not just from the women in the house.",
   "originalScore": null,
-  "assignedScore": 70,
-  "source": "bww-roundup",
-  "dtliThumb": null,
+  "assignedScore": 55,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/real-women-have-curves/",
   "needsScoring": true,
+  "scoreSource": "extracted-strong-positive",
+  "scoreConfidence": "medium",
+  "extractedPhrase": "standing ovation",
   "llmScore": {
-    "score": 70,
-    "confidence": "medium",
+    "score": 55,
+    "confidence": "low",
     "range": {
-      "low": 65,
-      "high": 75
+      "low": 20,
+      "high": 90
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
       "book": null,
-      "music": null,
+      "music": 75,
       "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "a funny but genuinely sincere requiem",
+        "quote": "A number that connects like that is a rarity, and RWHC has two",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "it gives all the sewing factory employees a moment to bond",
+        "quote": "the triumphant title song celebrating cellulite, stretch marks, loose skin",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "sure, it could easily be cut",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "it routinely earns a mid-show standing ovation",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "GPT-4o-mini: The review expresses appreciation for the humor and sincerity of the song while acknowledging it could be cut, indicating a mixed-positive recommendation.",
+    "reasoning": "Claude: This appears to be a brief excerpt highlighting only the strongest musical moments of what seems to be an otherwise weak show, suggesting the critic is identifying rare bright spots in a largely unsuccessful production. | GPT-4o-mini: The review highlights two standout songs and a strong audience reaction, indicating a clear recommendation to see the show. | Note: Models differed by 60 points.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:23.211Z",
+    "scoredAt": "2026-01-28T01:15:40.047Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 70,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
-    "needsReview": false,
-    "needsReviewReasons": []
-  }
+    "claudeScore": 25,
+    "openaiScore": 85,
+    "scoreDelta": 60,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 60 points (Claude: 25, OpenAI: 85)"
+    ]
+  },
+  "bwwExcerpt": "As for “Adios, Andrés”—a funny but genuinely sincere requiem for “Andrés…que viene cada mes” that pops up when Pancha informs Carmen “You got the menopause”—sure, it could easily be cut. But it’s light and fizzy, and it gives all the sewing factory employees a moment to bond over something other than ruffles and thread. It also hits hard with a large cross section of the audience: 40- and 50-something female theatergoers (we’re the ones fanning ourselves with our Playbills). A number that connec",
+  "bwwThumb": "Up",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
 }

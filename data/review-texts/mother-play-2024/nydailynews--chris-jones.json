@@ -1,0 +1,81 @@
+{
+  "showId": "mother-play-2024",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Chris",
+  "url": "https://www.nydailynews.com/2024/04/25/broadway-review-mother-play-paula-vogel/",
+  "publishDate": "April 25, 2024",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "With “Mother Play,” playwright Paula Vogel has created a deeply personal play about life with her late mother, Phyllis Rita. She surely would have been delighted to be portrayed by no less than Jessica Lange, an actress fully capable of turning her into a boozy but sympathetic hybrid of Mama Rose in “Gypsy,” Joan Crawford in “Mommie Dearest” and Tennessee Williams’ Amanda Wingfield.",
+  "originalScore": null,
+  "assignedScore": 60,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/mother-play/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jessica Lange, an actress fully capable of turning her into a boozy but sympathetic hybrid",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "boozy but sympathetic hybrid of Mama Rose in 'Gypsy,' Joan Crawford in 'Mommie Dearest' and Tennessee Williams' Amanda Wingfield",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "deeply personal play about life with her late mother",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt focuses entirely on Jessica Lange's casting and character description without any clear recommendation signal or assessment of the show's overall quality. | GPT-4o-mini: The review highlights the personal nature of the play and praises Jessica Lange's performance, suggesting a clear recommendation despite not detailing other aspects. | Note: Models differed by 30 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:09:30.078Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 75,
+    "scoreDelta": 30,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 30 points (Claude: 45, OpenAI: 75)"
+    ]
+  },
+  "bwwExcerpt": "“Mother Play” has the aura of a valedictorian effort, the completion of a canon by coming home, even a push for a confirmed spot among the greats of this era of American playwriting. Vogel certainly does not shy from her own admiration of Martha. It’s especially apparent in the final scene when she visits and cares for a mother with dementia whom the play has just shown us she has good reason to ignore. Some writers would worry about how that looked, but I suspect Vogel decided that was the trut",
+  "bwwThumb": "Up",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
+}

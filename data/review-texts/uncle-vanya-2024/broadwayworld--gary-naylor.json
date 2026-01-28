@@ -1,0 +1,73 @@
+{
+  "showId": "uncle-vanya-2024",
+  "outletId": "broadwayworld",
+  "outlet": "BroadwayWorld",
+  "criticName": "Gary Naylor",
+  "url": null,
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "Toby Jones is at the heart of it as Vanya, a sour, bitter, tragic version of PG Wodehouse's Lord Emsworth, stuck not so much in his country house as in a mind that is filled with regrets. Jones uses all of his charisma to create a sense of empathy with the audience - in less skilful hands, we might turn against his solipsistic victimhood and consider the peasants outside, whose lot was somewhat less comfortable. But we don't - Vanya does deserve more, his bad choices bad, but the price paid so, ",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-UNCLE-VANYA-2024",
+  "originalScore": null,
+  "assignedScore": 74,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 81,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jones uses all of his charisma to create a sense of empathy with the audience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "in less skilful hands, we might turn against his solipsistic victimhood",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Vanya does deserve more, his bad choices bad, but the price paid so",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise for Toby Jones' performance and skill in making an unsympathetic character empathetic, but this appears to be an incomplete excerpt that cuts off mid-sentence, limiting assessment of overall recommendation. | GPT-4o-mini: The review highlights Toby Jones' strong performance and ability to evoke empathy, indicating a positive recommendation overall despite not addressing other elements of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:03:57.272Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

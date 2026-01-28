@@ -1,0 +1,74 @@
+{
+  "showId": "appropriate-2023",
+  "outletId": "talkinbroadway",
+  "outlet": "Talkin' Broadway",
+  "criticName": "Matthew Murray",
+  "url": "https://talkinbroadway.com/page.php?page=appropriate",
+  "publishDate": "December 19, 2023",
+  "fullText": "Sarah Paulson delivers a powerhouse performance that anchors this revival, bringing both vulnerability and steely determination to Toni Lafayette as she navigates family secrets and moral reckonings.",
+  "isFullReview": false,
+  "dtliExcerpt": "Sarah Paulson delivers a powerhouse performance that anchors this revival, bringing both vulnerability and steely determination to Toni Lafayette as she navigates family secrets and moral reckonings.",
+  "originalScore": null,
+  "assignedScore": 63,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 63,
+    "confidence": "low",
+    "range": {
+      "low": 35.5,
+      "high": 90.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sarah Paulson delivers a powerhouse performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "anchors this revival",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "vulnerability and steely determination",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt only praises Paulson's performance while remaining silent on all other aspects of the production, suggesting the performance may be the sole redeeming element. | GPT-4o-mini: The review highlights a strong performance by Sarah Paulson, suggesting a solid recommendation for the revival. | Note: Models differed by 45 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:14:19.339Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 85,
+    "scoreDelta": 45,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 45 points (Claude: 40, OpenAI: 85)"
+    ]
+  }
+}

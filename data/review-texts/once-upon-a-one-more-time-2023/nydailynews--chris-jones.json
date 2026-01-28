@@ -1,0 +1,73 @@
+{
+  "showId": "once-upon-a-one-more-time-2023",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Chris",
+  "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-britney-spears-jukebox-musical-awful-20230623-pqw63uxcyjbe5dk3r462vmiv5a-story.html",
+  "publishDate": "June 22, 2023",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "The truly awful “Once Upon a One More Time,” which opened on Broadway Thursday night at the Marriott Marquis Theatre under the “creative consultancy” of David Leveaux, is not that musical. Instead, it tries to cash in on the repetitive fashion of the moralistic musical moment and uses Spears’ songs as a way to critique and deconstruct “problematic” fairy tales.",
+  "originalScore": null,
+  "assignedScore": 15,
+  "source": "dtli",
+  "dtliThumb": "DOWN",
+  "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 15,
+    "confidence": "high",
+    "range": {
+      "low": 10,
+      "high": 20
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "truly awful",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "tries to cash in on the repetitive fashion",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The truly awful 'Once Upon a One More Time'",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic opens with 'truly awful' and dismisses the show as a cynical cash grab, indicating an unqualified rejection. | GPT-4o-mini: The review expresses strong disapproval of the musical, indicating it is 'truly awful' and fails to deliver a compelling experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:10:27.262Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 15,
+    "openaiScore": 15,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

@@ -1,21 +1,47 @@
 {
   "showId": "harmony-2023",
-  "outletId": "WSJ",
+  "outletId": "wsj",
   "outlet": "The Wall Street Journal",
-  "criticName": "Charles Isherwood",
-  "url": "https://www.wsj.com/articles/harmony-review-barry-manilow-musical-about-germanys-comedian-harmonists-finally-reaches-broadway-11698181201",
-  "publishDate": "October 24, 2023",
-  "fullText": "The musical, with a book by Bruce Sussman and songs by Mr. Manilow and Mr. Sussman, tells the story of the Comedian Harmonists, a hugely popular German vocal group whose career was cut short by the rise of the Nazis.",
+  "criticName": "Charles",
+  "url": "https://www.wsj.com/articles/harmony-review-barry-manilow-broadway-bruce-sussman-comedian-harmonists-germany-world-war-ii-musical-72163639",
+  "publishDate": "November 13, 2023",
+  "fullText": "https://www.wsj.com/articles/harmony-review-barry-manilow-broadway-bruce-sussman-comedian-harmonists-germany-world-war-ii-musical-72163639\n\nSteven Telsey, Blake Roman, Danny Kornfeld, Chip Zien, Eric Peters, Sean Bell and Zal Owen Photo: Julieta Cervantes\n\nIt’s no secret that the musical “Harmony” has been a longtime passion project for its authors, the famed pop fixture Barry Manilow and his songwriting partner Bruce Sussman. The show made its debut more than a quarter century ago in Southern California at the La Jolla Playhouse, was subsequently produced at other regional theaters, finally made it to off-Broadway last year, and now caps its long journey with an arrival on Broadway.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "isFullReview": false,
-  "dtliExcerpt": "The musical, with a book by Bruce Sussman and songs by Mr. Manilow and Mr. Sussman, tells the story of the Comedian Harmonists, a hugely popular German vocal group whose career was cut short by the rise of the Nazis.",
+  "dtliExcerpt": "Timely it may sadly be, but a theatrical triumph it still isn’t. I reviewed the show back in 1997, and while it is changed and improved, it rarely rises above a level of admirable, hard-working professionalism.",
   "originalScore": null,
   "assignedScore": 50,
-  "source": "web-search",
-  "dtliThumb": null,
+  "source": "dtli",
+  "dtliThumb": "DOWN",
+  "dtliUrl": "https://didtheylikeit.com/shows/harmony/",
   "needsScoring": true,
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/harmony-2023/wall-street-journal--charles_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T20:32:25.178Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20240227000110",
+  "archiveOrgUrl": "http://web.archive.org/web/20240227000110/https://www.wsj.com/articles/harmony-review-barry-manilow-broadway-bruce-sussman-comedian-harmonists-germany-world-war-ii-musical-72163639",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)"
+  ],
   "llmScore": {
     "score": 50,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 45,
       "high": 55
@@ -30,38 +56,38 @@
     },
     "keyPhrases": [
       {
-        "quote": "tells the story of the Comedian Harmonists, a hugely popular German vocal group whose career was cut short by the rise of the Nazis",
-        "sentiment": "neutral",
-        "strength": 1
-      },
-      {
-        "quote": "the story of the Comedian Harmonists",
+        "quote": "the musical 'Harmony' has been a longtime passion project for its authors",
         "sentiment": "neutral",
         "strength": 3
       },
       {
-        "quote": "hugely popular German vocal group",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "finally made it to Broadway",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "made its debut more than a quarter century ago",
+        "sentiment": "neutral",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: This appears to be purely factual description of the musical's plot with no evaluative language or critical assessment whatsoever. | GPT-4o-mini: The review provides a basic overview of the musical's premise without any strong praise or criticism, leading to a mixed recommendation.",
+    "reasoning": "GPT-4o-mini: The review lacks specific positive or negative evaluations of the show, indicating a mixed sentiment overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:13.859Z",
+    "scoredAt": "2026-01-27T22:34:58.278Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 50,
+    "claudeScore": null,
     "openaiScore": 50,
     "scoreDelta": 0,
     "thumbsMatch": null,
@@ -70,8 +96,10 @@
     "needsReviewReasons": []
   },
   "bwwExcerpt": "Timely it may sadly be, but a theatrical triumph it still isn’t. I reviewed the show back in 1997, and while it is changed and improved, it rarely rises above a level of admirable, hard-working professionalism. The score, with music by Mr. Manilow and lyrics by Mr. Sussman, is appealingly various—influences range from Gilbert and Sullivan to cantorial melodies to Kurt Weill to standard contemporary Broadway balladry. (There is even a salsa-flavored song that seems to consciously evoke “Copacaban",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
-  "bwwThumb": "Down",
   "showScoreExcerpt": "“The superabundance of characters, narratives and context combine to make for the show’s Achilles’ heel. What is unfortunately missing from ‘Harmony’ is a lyrical melding of the varied elements that should be smoothly combined to create a captivating, and harmonizing, whole.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/harmony-broadway"
+  "bwwThumb": "Down",
+  "sources": [
+    "dtli",
+    "web-search"
+  ]
 }

@@ -1,0 +1,72 @@
+{
+  "showId": "hadestown-2019",
+  "outletId": "chicagotribune",
+  "outlet": "chicagotribune",
+  "criticName": "Chris Jones",
+  "url": "https://www.chicagotribune.com/entertainment/theater/ct-ent-hadestown-broadway-review-20190418-story.html",
+  "publishDate": "April 18, 2019",
+  "fullText": "This show is a triumph of theatrical imagination, a musical that manages to be both ancient and modern, mythic and immediate.",
+  "isFullReview": false,
+  "dtliExcerpt": "This show is a triumph of theatrical imagination, a musical that manages to be both ancient and modern, mythic and immediate.",
+  "originalScore": null,
+  "assignedScore": 94,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show is a triumph of theatrical imagination",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "manages to be both ancient and modern, mythic and immediate",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a triumph of theatrical imagination",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Uses unqualified superlatives like 'triumph' and sophisticated praise about the show's artistic achievement across multiple dimensions. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong praise for the show's imaginative qualities, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T02:53:23.098Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

@@ -2,27 +2,24 @@
   "showId": "spamalot-2023",
   "outletId": "nytg",
   "outlet": "New York Theatre Guide",
-  "criticName": "Gillian Russo",
+  "criticName": "Gillian",
   "url": "https://www.newyorktheatreguide.com/reviews/spamalot-broadway-review",
-  "publishDate": null,
+  "publishDate": "November 16, 2023",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "The most iconic bits — fisch schlapping, coconuts as horseshoes — are timeless, though your laughter will simply be proportional to how much you enjoy Monty Python's silly sketch-comedy style in general. My personal favorites are the 'so bad they're good' puns, like when Arthur (James Monroe Iglehart) describes the Holy Grail as a 'symbol,' cueing the cymbalist. The other strength of Spamalot is that it gives every one of its principal cast members a chance to shine. And shine they do. Ethan Sla",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
-  "bwwThumb": "Up",
+  "dtliExcerpt": "The other strength of Spamalot is that it gives every one of its principal cast members a chance to shine. And shine they do.",
   "originalScore": null,
-  "assignedScore": 78,
-  "source": "bww-roundup",
-  "dtliThumb": null,
+  "assignedScore": 79,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/spamalot/",
   "needsScoring": true,
-  "showScoreExcerpt": "“This Broadway revival, ‘Spamalot's’ first, feels like a proclamation that the musical's heyday is not dead yet, either...The other strength of ‘Spamalot’ is that it gives every one of its principal cast members a chance to shine. And shine they do. “",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway",
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
       "low": 73,
-      "high": 83
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -34,43 +31,50 @@
     },
     "keyPhrases": [
       {
-        "quote": "feels like a proclamation that the musical's heyday is not dead yet",
+        "quote": "gives every one of its principal cast members a chance to shine",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "gives every one of its principal cast members a chance to shine. And shine they do",
+        "quote": "And shine they do",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "your laughter will simply be proportional to how much you enjoy Monty Python's silly sketch-comedy style in general",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "And shine they do.",
+        "sentiment": "positive",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The review expresses clear enthusiasm for the revival and performances with phrases like 'heyday is not dead yet' and 'shine they do,' though it acknowledges the humor is taste-dependent. | GPT-4o-mini: The review highlights strong performances and a nostalgic revival, leading to a clear recommendation despite some subjective humor preferences.",
+    "reasoning": "Claude: Strong praise for the ensemble performances suggests a positive recommendation, but the excerpt is too brief to assess overall show quality or provide higher confidence. | GPT-4o-mini: The review highlights the strength of the performances, indicating a clear positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:24.761Z",
+    "scoredAt": "2026-01-27T22:12:30.054Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 78,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "bwwExcerpt": "The most iconic bits — fisch schlapping, coconuts as horseshoes — are timeless, though your laughter will simply be proportional to how much you enjoy Monty Python's silly sketch-comedy style in general. My personal favorites are the 'so bad they're good' puns, like when Arthur (James Monroe Iglehart) describes the Holy Grail as a 'symbol,' cueing the cymbalist. The other strength of Spamalot is that it gives every one of its principal cast members a chance to shine. And shine they do. Ethan Sla",
+  "showScoreExcerpt": "“This Broadway revival, ‘Spamalot's’ first, feels like a proclamation that the musical's heyday is not dead yet, either...The other strength of ‘Spamalot’ is that it gives every one of its principal cast members a chance to shine. And shine they do. “",
+  "bwwThumb": "Up",
+  "sources": [
+    "dtli",
+    "bww-roundup"
+  ]
 }

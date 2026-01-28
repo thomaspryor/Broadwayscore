@@ -1,0 +1,73 @@
+{
+  "showId": "just-for-us-2023",
+  "outletId": "timeout",
+  "outlet": "Time Out New York",
+  "criticName": "Raven Snook",
+  "url": "https://www.timeout.com/newyork/theater/just-for-us-broadway-review-alex-edelman",
+  "publishDate": "June 26th, 2023",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "“The laughs are plentiful. Despite the incendiary issues lurking at the edges of his tale, ‘Just for Us’ is more focused on comedy than catharsis. Edelman is a master of callbacks, and his funniest jokes are accented with wonderful bulging eyes.”",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
+  "originalScore": null,
+  "assignedScore": 79,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 82,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The laughs are plentiful",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Edelman is a master of callbacks, and his funniest jokes are accented with wonderful bulging eyes",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "more focused on comedy than catharsis",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Clear positive review emphasizing successful comedy and strong performance craft, though excerpt suggests it's an excerpt from a longer review. | GPT-4o-mini: The review highlights plentiful laughs and strong comedic skill, indicating a clear recommendation despite a lack of deeper emotional impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:59.031Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

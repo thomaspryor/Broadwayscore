@@ -1,76 +1,79 @@
 {
   "showId": "aladdin-2014",
   "outletId": "huffpost",
-  "outlet": "HuffPost",
+  "outlet": "huffpost",
   "criticName": "Steven Suskin",
-  "url": null,
+  "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-brass-lamp-tur_b_5004043.html",
   "publishDate": "2014-03-20T20:56:08-04:00",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": "Director/choreographer Nicholaw (of Book of Mormon) is one of Broadway's top musical comedy guys nowadays, as demonstrated by \"Friend Like Me.\" The rest of his first act, though, seems restrained and merely atmospheric. The scenery by Bob Crowley is effective, but without the extra-special touch he has brought to various projects in the past (including Mary Poppins and this season's Glass Menagerie). The always-expert Natasha Katz creates magical images with her lighting, while Gregg Barnes (of Follies and Kinky Boots) outdoes himself with costumes that bring new meaning to the word resplendent. The sound, though, is so over-amplified that it obscures what are probably first-rate orchestrations by Danny Troob. Score Aladdin a considerable win for Disney, likely to fill the New Amsterdam with happy crowds for seasons to come. Better than Little Mermaid, Aida and Tarzan, though not exactly a knockout.",
+  "bwwExcerpt": ": Director/choreographer Nicholaw (of Book of Mormon) is one of Broadway's top musical comedy guys nowadays, as demonstrated by \"Friend Like Me.\" The rest of his first act, though, seems restrained and merely atmospheric. The scenery by Bob Crowley is effective, but without the extra-special touch he has brought to various projects in the past (including Mary Poppins and this season's Glass Menagerie). The always-expert Natasha Katz creates magical images with her lighting, while Gregg Barnes (o",
+  "bwwRoundupUrl": null,
+  "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 48,
   "source": "bww-roundup",
-  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
-  "textStatus": "missing",
-  "textQuality": "missing",
-  "sourceMethod": "bww-roundup",
-  "scoreSource": "sentiment-rave",
-  "scoreConfidence": "medium",
+  "dtliThumb": null,
+  "needsScoring": true,
   "llmScore": {
-    "score": 71,
-    "confidence": "high",
+    "score": 48,
+    "confidence": "low",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 30.5,
+      "high": 65.5
     },
-    "bucket": "Mixed",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
-      "music": 65,
+      "music": null,
       "performances": null,
-      "direction": 73
+      "direction": 53
     },
     "keyPhrases": [
       {
-        "quote": "Score Aladdin a considerable win for Disney, likely to fill the New Amsterdam with happy crowds for seasons to come",
-        "sentiment": "positive",
+        "quote": "seems restrained and merely atmospheric",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "without the extra-special touch he has brought to various projects in the past",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Better than Little Mermaid, Aida and Tarzan, though not exactly a knockout",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "The rest of his first act, though, seems restrained and merely atmospheric",
-        "sentiment": "negative",
+        "quote": "The always-expert Natasha Katz creates magical images with her lighting",
+        "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic clearly calls it 'a considerable win' and predicts commercial success, but tempers enthusiasm with critiques of pacing and technical issues, landing in qualified recommendation territory. | GPT-4o-mini: The review expresses a generally positive sentiment towards the production, highlighting strong direction and design elements while noting some significant drawbacks, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: The incomplete review fragment suggests disappointment with direction and design elements falling short of past work, with only lighting receiving unqualified praise. | GPT-4o-mini: The review contains both praise for the director's reputation and criticism of the first act's execution, leading to a mixed recommendation. | Note: Models differed by 25 points.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T04:58:10.527Z",
+    "scoredAt": "2026-01-28T01:08:06.783Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 35,
+    "openaiScore": 60,
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
-  }
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 35, OpenAI: 60)"
+    ]
+  },
+  "sources": [
+    "bww-roundup"
+  ]
 }

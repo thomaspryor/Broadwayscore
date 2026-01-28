@@ -4,45 +4,49 @@
   "outlet": "Vulture",
   "criticName": "Jackson McHenry",
   "url": "https://www.vulture.com/article/review-mary-jane-rachel-mcadams.html",
-  "publishDate": "April 23, 2024",
+  "publishDate": "April 23rd, 2024",
   "fullText": "That tonal balance is delicate, and it could tilt in any number of directions: too grim and it might be impossible to watch (I would understand someone not wanting to engage with the premise), too woo-woo and it might become sentimental. It asks a lot, specifically, of the actress playing Mary Jane. Rachel McAdams turns out to be more than up for the task.",
+  "isFullReview": false,
+  "showScoreExcerpt": "\"McAdams works in ways that tend toward the understated, yet precisely observed.\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/mary-jane-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
+  "source": "show-score",
   "dtliThumb": "Up",
-  "source": "dtli",
+  "needsScoring": true,
   "llmScore": {
-    "score": 72,
+    "score": 69,
     "confidence": "medium",
     "range": {
-      "low": 67,
-      "high": 77
+      "low": 60.5,
+      "high": 77.5
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 78,
+      "performances": 73,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Rachel McAdams turns out to be more than up for the task",
+        "quote": "works in ways that tend toward the understated",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       },
       {
-        "quote": "It asks a lot, specifically, of the actress playing Mary Jane",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "precisely observed",
+        "sentiment": "positive",
+        "strength": 3
       },
       {
-        "quote": "too grim and it might be impossible to watch",
-        "sentiment": "negative",
+        "quote": "tend toward the understated",
+        "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: This excerpt praises McAdams' performance strongly but acknowledges the show's tonal challenges and difficulty of the material, suggesting qualified approval.",
+    "reasoning": "Claude: This brief excerpt offers measured praise for McAdams' performance using professional critic language ('understated', 'precisely observed'), suggesting competent work worth seeing but without strong enthusiasm. | GPT-4o-mini: The review indicates a positive sentiment towards the performance style but lacks a strong overall recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -52,18 +56,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:14:41.071Z",
+    "scoredAt": "2026-01-28T01:22:10.699Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "openaiScore": 65,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "sources": [
+    "show-score",
+    "dtli"
+  ]
 }

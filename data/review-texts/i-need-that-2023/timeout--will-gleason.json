@@ -1,30 +1,30 @@
 {
   "showId": "i-need-that-2023",
-  "outletId": "TIMEOUT",
+  "outletId": "timeout",
   "outlet": "Time Out New York",
   "criticName": "Will Gleason",
-  "url": null,
+  "url": "https://www.timeout.com/newyork/theater/i-need-that-broadway-review-danny-devito",
   "publishDate": null,
   "fullText": null,
   "isFullReview": false,
   "bwwExcerpt": "The most interesting moments of this good-natured but threadbare comedy, which Rebeck wrote during the pandemic lockdown, touch on the relationship between physical objects and memory. To Sam, each knickknack is a time machine to a meaningful moment; his inability to let go of the past is a major factor in whether or not, in the end, he can bring himself to take out the garbage. DeVito is a star for a reason: His vulnerable, hilarious performance is a certifiable gem. If only this treasure weren",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 64,
+    "score": 65,
     "confidence": "high",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 50,
+      "book": 53,
       "music": null,
       "performances": 85,
       "direction": null
@@ -43,10 +43,10 @@
       {
         "quote": "If only this treasure weren",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review praises DeVito's performance as a 'certifiable gem' but criticizes the script as 'threadbare,' and the incomplete final sentence suggests disappointment, creating a mixed recommendation leaning slightly positive due to the star performance. | GPT-4o-mini: The review highlights a strong performance by DeVito but indicates that the script lacks depth, leading to a mixed-positive recommendation overall.",
+    "reasoning": "Claude: Review praises DeVito's performance highly but criticizes the script as 'threadbare' and cuts off mid-sentence expressing regret about wasted potential. | GPT-4o-mini: While the performances, particularly by DeVito, are highly praised, the overall script is described as threadbare, leading to a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -56,18 +56,24 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:18:20.071Z",
+    "scoredAt": "2026-01-27T22:18:12.578Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 65,
     "openaiScore": 65,
-    "scoreDelta": 3,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "bwwThumb": "Meh",
+  "showScoreExcerpt": "“DeVito is a star for a reason: His vulnerable, hilarious performance is a certifiable gem. If only this treasure weren’t so often lost in the piles that surround it.”",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/i-need-that-broadway",
+  "sources": [
+    "bww-roundup"
+  ]
 }

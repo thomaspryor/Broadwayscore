@@ -1,0 +1,76 @@
+{
+  "showId": "oh-mary-2024",
+  "outletId": "nyt-theater",
+  "outlet": "New York Theater",
+  "criticName": "Jonathan Mandell",
+  "url": "https://newyorktheater.me/2024/07/11/oh-mary-review/",
+  "publishDate": "July 11, 2024",
+  "fullText": "Cole Escola's drag comedy about Mary Todd Lincoln is a raucous, irreverent romp that mines laughs from history's most tragic presidential marriage.",
+  "isFullReview": false,
+  "dtliExcerpt": "Cole Escola's drag comedy about Mary Todd Lincoln is a raucous, irreverent romp that mines laughs from history's most tragic presidential marriage.",
+  "originalScore": null,
+  "assignedScore": 79,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Cole Escola's drag comedy about Mary Todd Lincoln is a raucous, irreverent romp that mines laughs from history's most tragic presidential marriage.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "raucous, irreverent romp",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "mines laughs",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "mines laughs from history's most tragic presidential marriage",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review uses enthusiastic language ('raucous romp') and confirms the comedy succeeds at its goal ('mines laughs'), suggesting a positive recommendation despite being very brief. | GPT-4o-mini: The review conveys a positive sentiment towards the comedy's humor and irreverence, suggesting a clear recommendation despite lacking detailed critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:05.330Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

@@ -2,72 +2,77 @@
   "showId": "once-upon-a-one-more-time-2023",
   "outletId": "wsj",
   "outlet": "The Wall Street Journal",
-  "criticName": "Charles Isherwood",
-  "url": "https://www.wsj.com/articles/once-upon-a-one-more-time-review-princesses-with-britney-spears-e1e61468",
-  "publishDate": "June 22nd, 2023",
+  "criticName": "Charles",
+  "url": "https://www.wsj.com/articles/once-upon-a-one-more-time-review-princesses-with-britney-spears-e1e61468?mod=opinion_reviews_pos2",
+  "publishDate": "June 22, 2023",
   "fullText": null,
   "isFullReview": false,
-  "showScoreExcerpt": "“The musical’s primary assets are its splendid cast and the silly smartness of the integration of song and story. Which brings to mind the splendid, silly and smart performance of Jennifer Simard in the role of Cinderella’s stepmother...Ms. Simard, is one of Broadway’s unsung, or undersung, treasures, and her performance alone brings sufficient pleasure to make this trip to Britney-land worth a visit.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/once-upon-a-one-more-time-broadway",
+  "dtliExcerpt": "In any case, “Once Upon a One More Time” is a dizzy but enjoyable goof, similar in many ways to “& Juliet.”",
   "originalScore": null,
-  "assignedScore": 76,
-  "source": "show-score",
-  "dtliThumb": null,
+  "assignedScore": 74,
+  "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/once-upon-a-one-more-time/",
   "needsScoring": true,
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 67,
-      "high": 85
+      "low": 67.5,
+      "high": 80.5
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "her performance alone brings sufficient pleasure to make this trip to Britney-land worth a visit",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The musical's primary assets are its splendid cast and the silly smartness of the integration of song and story",
+        "quote": "dizzy but enjoyable goof",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "one of Broadway's unsung, or undersung, treasures",
-        "sentiment": "positive",
+        "quote": "similar in many ways to & Juliet",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "similar in many ways to “& Juliet”",
+        "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic gives a qualified positive recommendation based primarily on Jennifer Simard's performance, suggesting the show is worth seeing for her alone despite implying the material itself may be slight. | GPT-4o-mini: The review highlights the strong performances, particularly by Jennifer Simard, and suggests a clear recommendation to see the show despite not detailing other aspects.",
+    "reasoning": "Claude: Brief excerpt describes the show as 'enjoyable' despite being a 'goof,' suggesting qualified positive sentiment with light entertainment value. | GPT-4o-mini: The review indicates a positive sentiment towards the show, describing it as enjoyable despite its lighthearted nature.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:40.455Z",
+    "scoredAt": "2026-01-27T22:34:46.258Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
+    "openaiScore": 75,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "showScoreExcerpt": "“The musical’s primary assets are its splendid cast and the silly smartness of the integration of song and story. Which brings to mind the splendid, silly and smart performance of Jennifer Simard in the role of Cinderella’s stepmother...Ms. Simard, is one of Broadway’s unsung, or undersung, treasures, and her performance alone brings sufficient pleasure to make this trip to Britney-land worth a visit.”",
+  "sources": [
+    "dtli",
+    "show-score"
+  ]
 }

@@ -1,0 +1,73 @@
+{
+  "showId": "mamma-mia-2025",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Howard Kissel",
+  "url": "http://www.nydailynews.com/archives/nydn-features/hey-abba-musical-diehards-night-woe-mia-capable-cast-article-1.937314",
+  "publishDate": "October 19th, 2001",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "\"If you're an ABBA fan, read no further. Just line up at the box office for \"Mamma Mia!\" Immediately. Since you're already bonded to the material, you will undoubtedly have a wonderful time. If, however, your attachment to ABBA is only tangential or, as in my case, nonexistent, you might want to think twice about it.\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/mamma-mia-broadway",
+  "originalScore": null,
+  "assignedScore": 54,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you're an ABBA fan, read no further. Just line up at the box office",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you will undoubtedly have a wonderful time",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "you might want to think twice about it",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly divides audiences into two camps - ABBA fans (strong recommendation) versus others (caution advised) - creating a conditional mixed recommendation that depends entirely on personal taste. | GPT-4o-mini: The review indicates a clear enjoyment for ABBA fans but suggests caution for those without a strong attachment to the material, resulting in a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:51.367Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

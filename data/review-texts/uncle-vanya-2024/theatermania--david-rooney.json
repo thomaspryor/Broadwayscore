@@ -1,0 +1,73 @@
+{
+  "showId": "uncle-vanya-2024",
+  "outletId": "theatermania",
+  "outlet": "TheaterMania",
+  "criticName": "David Gordon",
+  "url": "https://www.theatermania.com/news/review-steve-carell-leads-an-all-over-the-place-uncle-vanya-at-lincoln-center-theater_1738133/",
+  "publishDate": "April 24, 2024",
+  "fullText": "But this Uncle Vanya is only enjoyable in fits and starts. It’s modern, but not completely; brisk, while still feeling too long.",
+  "originalScore": null,
+  "assignedScore": null,
+  "dtliThumb": "Meh",
+  "source": "dtli",
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "only enjoyable in fits and starts",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "modern, but not completely",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "brisk, while still feeling too long",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review expresses lukewarm sentiment with qualified criticism about inconsistent enjoyment and pacing issues, suggesting a mixed experience that's hard to recommend strongly either way. | GPT-4o-mini: The review indicates a mixed experience with enjoyment only in parts, suggesting a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:07:22.884Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "dtliExcerpt": "But this Uncle Vanya is only enjoyable in fits and starts. It’s modern, but not completely; brisk, while still feeling too long.",
+  "sources": [
+    "dtli"
+  ]
+}

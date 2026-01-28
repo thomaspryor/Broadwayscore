@@ -1,0 +1,73 @@
+{
+  "showId": "chess-2025",
+  "outletId": "nypost",
+  "outlet": "New York Post",
+  "criticName": "Johnny Oleksinski",
+  "url": "https://nypost.com/2025/11/16/entertainment/chess-review-lea-michele-leaves-you-cold-in-cold-war-musical-revival-on-broadway/",
+  "publishDate": "November 16th, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "\"The endless production becomes totally reliant on the amped-up singing of leads... I was board all right.\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/chess-broadway",
+  "originalScore": null,
+  "assignedScore": 25,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 30,
+      "direction": 20
+    },
+    "keyPhrases": [
+      {
+        "quote": "The endless production becomes totally reliant on the amped-up singing of leads",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I was board all right",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "I was bored all right.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states they were bored and criticizes the production as 'endless' and overly reliant on loud performances to compensate for other weaknesses. | GPT-4o-mini: The review expresses clear dissatisfaction with the production, indicating a lack of engagement and reliance on singing rather than a well-rounded experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:22.999Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

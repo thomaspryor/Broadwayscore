@@ -1,0 +1,72 @@
+{
+  "showId": "mother-play-2024",
+  "outletId": "hollywood-reporter",
+  "outlet": "The Hollywood Reporter",
+  "criticName": "David Rooney",
+  "url": "https://www.hollywoodreporter.com/lifestyle/arts/mother-play-broadway-review-1235889474/",
+  "publishDate": "April 16, 2024",
+  "fullText": "Under Kenny Leon's direction, the production captures both the suffocating intimacy of family bonds and the tragic weight of generational trauma with remarkable sensitivity.",
+  "isFullReview": false,
+  "dtliExcerpt": "Under Kenny Leon's direction, the production captures both the suffocating intimacy of family bonds and the tragic weight of generational trauma with remarkable sensitivity.",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "web-search",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "captures both the suffocating intimacy of family bonds and the tragic weight of generational trauma",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "with remarkable sensitivity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "captures both the suffocating intimacy of family bonds",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for direction and emotional impact suggests positive recommendation, but excerpt is too brief to determine full critical assessment. | GPT-4o-mini: The review highlights the direction's effectiveness in conveying deep emotional themes, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:13:46.438Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

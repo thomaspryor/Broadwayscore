@@ -1,0 +1,74 @@
+{
+  "showId": "harmony-2023",
+  "outletId": "guardian",
+  "outlet": "The Guardian",
+  "criticName": "Jesse Hassenger",
+  "url": "https://www.theguardian.com/stage/2023/nov/13/harmony-broadway-musical-barry-manilow",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "Perhaps the confusion is understandable; the musical has been on its way to Broadway for a quarter-century at this point, with Manilow and Sussman running versions of the show in San Diego, Atlanta and Los Angeles. (An earlier Broadway bid was canceled 20 years ago, and an off-Broadway production ran for a month in 2022 after several Covid delays.) The production that’s finally arrived feels like it’s had plenty of time to marinate in its own importance.",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
+  "bwwThumb": "Down",
+  "originalScore": null,
+  "assignedScore": 45,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "Perhaps the confusion is understandable",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "feels like it's had plenty of time to marinate in its own importance",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the production that’s finally arrived feels like it’s had plenty of time to marinate in its own importance.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt suggests a production that has become overwrought and self-important through its lengthy development process, with the critic expressing mild confusion about the show's identity. | GPT-4o-mini: The review suggests a lack of excitement and indicates that the production feels overcooked, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:22:09.718Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "showId": "an-enemy-of-the-people-2024",
+  "outletId": "ew",
+  "outlet": "Entertainment Weekly",
+  "criticName": "Adam Markavitz",
+  "url": "http://www.ew.com/ew/article/0,,20364394_20633490,00.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": ":&nbsp;Never mind that it takes place in 19th-century Norway. The battle between two brothers in&nbsp;An Enemy of the People, Henrik Ibsen's spitting-mad screed against political hypocrisy among polite small-towners, tackles more hot-button election-year issues than an average hour of MSNBC.",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
+  "bwwThumb": null,
+  "originalScore": null,
+  "assignedScore": 74,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "spitting-mad screed against political hypocrisy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "tackles more hot-button election-year issues than an average hour of MSNBC",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the battle between two brothers in An Enemy of the People",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the play's political relevance and energy with vivid language, suggesting strong engagement despite this being only a brief excerpt. | GPT-4o-mini: The review highlights relevant themes and political commentary but lacks strong enthusiasm or specific praise for performances or direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:09:18.113Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

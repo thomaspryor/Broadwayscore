@@ -1,0 +1,76 @@
+{
+  "showId": "the-notebook-2024",
+  "outletId": "hollywood-reporter",
+  "outlet": "The Hollywood Reporter",
+  "criticName": "Angie Han",
+  "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-notebook-broadway-review-1235863447/",
+  "publishDate": "March 14, 2024",
+  "fullText": "The musical adaptation of Nicholas Sparks' beloved novel manages to find its own voice while honoring the source material, though it doesn't quite achieve the emotional heights it's reaching for.",
+  "isFullReview": false,
+  "dtliExcerpt": "The musical adaptation of Nicholas Sparks' beloved novel manages to find its own voice while honoring the source material, though it doesn't quite achieve the emotional heights it's reaching for.",
+  "originalScore": null,
+  "assignedScore": 64,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The musical adaptation of Nicholas Sparks' beloved novel manages to find its own voice while honoring the source material, though it doesn't quite achieve the emotional heights it's reaching for.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "manages to find its own voice while honoring the source material",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "doesn't quite achieve the emotional heights it's reaching for",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the musical adaptation of Nicholas Sparks' beloved novel manages to find its own voice",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review balances praise for the adaptation's approach with criticism of its emotional impact, suggesting a competent but ultimately disappointing production. | GPT-4o-mini: The review indicates a mixed-positive sentiment, highlighting some strengths while acknowledging significant emotional shortcomings.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:45:49.200Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

@@ -1,18 +1,22 @@
 {
   "showId": "hamilton-2015",
-  "outletId": "USATODAY",
+  "outletId": "usatoday",
   "outlet": "USA Today",
   "criticName": "Elysa Gardner",
-  "url": "https://www.usatoday.com/story/life/theater/2015/08/06/hamilton-review/31192329/",
-  "publishDate": "August 6, 2015",
+  "url": "http://www.usatoday.com/story/life/theater/2015/08/06/hamilton-win-hearts-and-minds/31104087/?utm_source=feedblitz&amp;utm_medium=FeedBlitzRss&amp;utm_campaign=usatoday-lifetopstories",
+  "publishDate": "2015-08-06T19:44:31-04:00",
   "fullText": "Hamilton is that rarest of creatures: a work that is both an unqualified artistic triumph and a thoroughly satisfying entertainment.",
   "isFullReview": false,
-  "dtliExcerpt": "Hamilton is that rarest of creatures: a work that is both an unqualified artistic triumph and a thoroughly satisfying entertainment.",
+  "bwwExcerpt": "But there has been nothing on Broadway in the past 20 years to rival the riveting, exhilarating and haunting Hamilton (**** out of four stars), which...opened Thursday at the Richard Rodgers Theatre, its vitality and ingenuity fully intact...As written and played by Miranda, Hamilton...is a man of ferocious intelligence, enormous drive and devastating flaws. He has the outsize passions of an epic musical hero, and the verbal dexterity and bravado of a rap star; and Miranda's pulsing score and dazzling, piercing rhymes accommodate both...Lacamoire's muscular orchestration mines the melodic pull of Miranda's score, whether the performers are rapping or singing. Blankenbuehler keeps the dancers in almost constant motion, sustaining a sense of urgency that heightens our engagement and excitement.",
   "originalScore": null,
   "assignedScore": 95,
-  "source": "web-search",
-  "dtliThumb": null,
-  "needsScoring": true,
+  "source": "bww-roundup",
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-Updating-LIVE-20150806",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
   "llmScore": {
     "score": 95,
     "confidence": "high",
@@ -23,39 +27,39 @@
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 90,
+      "music": 95,
+      "performances": 94,
+      "direction": 92
     },
     "keyPhrases": [
       {
-        "quote": "unqualified artistic triumph",
+        "quote": "nothing on Broadway in the past 20 years to rival the riveting, exhilarating and haunting Hamilton",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "thoroughly satisfying entertainment",
+        "quote": "**** out of four stars",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "rarest of creatures",
+        "quote": "its vitality and ingenuity fully intact",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses superlative language calling it an 'unqualified artistic triumph' and 'rarest of creatures,' indicating the highest level of recommendation without any reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong recommendation for Hamilton as both an artistic and entertaining success.",
+    "reasoning": "Claude: Four-star rating with superlative language declaring it unrivaled on Broadway in 20 years, plus enthusiastic praise for all production elements. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its vitality, music, and performances, leading to a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T02:58:20.683Z",
+    "scoredAt": "2026-01-26T05:22:48.837Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -68,5 +72,10 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "dtliExcerpt": "Hamilton is that rarest of creatures: a work that is both an unqualified artistic triumph and a thoroughly satisfying entertainment.",
+  "sources": [
+    "bww-roundup",
+    "web-search"
+  ]
 }

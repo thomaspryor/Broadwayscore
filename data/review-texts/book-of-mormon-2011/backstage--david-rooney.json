@@ -1,0 +1,76 @@
+{
+  "showId": "book-of-mormon-2011",
+  "outletId": "backstage",
+  "outlet": "backstage",
+  "criticName": "David Sheward",
+  "url": "http://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3i5369f68f9c4d1e2f03b5f235adbbccc8",
+  "publishDate": "2011-03-25T13:49:16-04:00",
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "the sharp-edged book and fun score by Parker, Stone, and Lopez offer a screamingly funny yet sharply insightful full-length take on religion in general and Mormonism in particular. There are also pointed but loving tributes to musical comedy conventions, shockingly vulgar humor, and that rarity on Broadway these days: topical and effective satire.",
+  "originalScore": null,
+  "assignedScore": 89,
+  "source": "bww-roundup",
+  "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 88,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "screamingly funny yet sharply insightful",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "that rarity on Broadway these days: topical and effective satire",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sharp-edged book and fun score",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses strong superlatives like 'screamingly funny' and 'sharply insightful' while praising the show as a rare example of effective Broadway satire, indicating clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the book and score, highlighting humor and insight, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:05:36.714Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "showId": "back-to-the-future-2023",
+  "outletId": "hollywood-reporter",
+  "outlet": "The Hollywood Reporter",
+  "criticName": "Frank Scheck",
+  "url": "https://www.hollywoodreporter.com/movies/movie-reviews/back-to-the-future-the-musical-broadway-review-1235551654/",
+  "publishDate": "August 3, 2023",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": null,
+  "bwwExcerpt": "a terrifically fun and amusing story that works nearly as well onstage as it did on film, although the original songs, as is so often the case with these adaptations, mainly come across as superfluous.",
+  "originalScore": null,
+  "assignedScore": 71,
+  "source": "bww-roundup",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 77,
+      "music": 48,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "terrifically fun and amusing story that works nearly as well onstage as it did on film",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the original songs, as is so often the case with these adaptations, mainly come across as superfluous",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "a terrifically fun and amusing story",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoys the story and finds the adaptation successful, but has notable reservations about the music, creating a qualified positive recommendation. | GPT-4o-mini: The review expresses enjoyment of the story but notes significant shortcomings in the music, leading to a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:03:31.938Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "bwwThumb": "Up"
+}

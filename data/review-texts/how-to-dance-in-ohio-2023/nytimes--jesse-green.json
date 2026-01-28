@@ -2,24 +2,24 @@
   "showId": "how-to-dance-in-ohio-2023",
   "outletId": "nytimes",
   "outlet": "The New York Times",
-  "criticName": "Jesse Green",
+  "criticName": "Jesse",
   "url": "https://www.nytimes.com/2023/12/10/theater/how-to-dance-in-ohio-review.html",
   "publishDate": "December 10, 2023",
-  "fullText": "With all that groundbreaking, perhaps it is no surprise that the production is otherwise very conventional, sometimes dispiritingly so.",
+  "fullText": "The musical, about teenagers on the autism spectrum preparing for a spring formal, is tender and authentic, but it struggles to find its dramatic footing.",
   "isFullReview": false,
-  "bwwExcerpt": "Perhaps it’s enough that “How to Dance in Ohio” offers solace and encouragement in a mild, conventional package. (There are cool-down spaces for those who need them, as one of the actors explains in welcoming the audience.) Doing sweet, reparative work for any part of humanity means doing sweet, reparative work for it all.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
+  "dtliExcerpt": "With all that groundbreaking, perhaps it is no surprise that the production is otherwise very conventional, sometimes dispiritingly so.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "dtli",
-  "dtliThumb": "Meh",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/how-to-dance-in-ohio/",
   "needsScoring": true,
   "llmScore": {
     "score": 48,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 40.5,
-      "high": 55.5
+      "low": 43,
+      "high": 53
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -27,7 +27,7 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 40
+      "direction": 45
     },
     "keyPhrases": [
       {
@@ -36,17 +36,12 @@
         "strength": 3
       },
       {
-        "quote": "otherwise very conventional, sometimes dispiritingly so",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the production is otherwise very conventional",
+        "quote": "very conventional, sometimes dispiritingly so",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review acknowledges some groundbreaking elements but emphasizes disappointment with the conventional nature of the overall production, suggesting a mixed-negative experience. | GPT-4o-mini: The review indicates a conventional production with a negative tone, suggesting a mixed recommendation.",
+    "reasoning": "Claude: The excerpt acknowledges some groundbreaking elements but criticizes the production as disappointingly conventional, suggesting more problems than strengths.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,21 +51,25 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:16:47.271Z",
+    "scoredAt": "2026-01-27T22:15:05.076Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 50,
-    "scoreDelta": 5,
+    "claudeScore": 48,
+    "openaiScore": null,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "bwwThumb": "Meh",
+  "sources": [
+    "dtli",
+    "web-search"
+  ],
+  "bwwExcerpt": "Perhaps it’s enough that “How to Dance in Ohio” offers solace and encouragement in a mild, conventional package. (There are cool-down spaces for those who need them, as one of the actors explains in welcoming the audience.) Doing sweet, reparative work for any part of humanity means doing sweet, reparative work for it all.",
   "showScoreExcerpt": "“it is a welcome change that the seven autistic characters in ‘How to Dance in Ohio’ are presented, without condescension, as young adults a lot like most others, albeit with unusual gifts and challenges. That they are also played by autistic performers makes the feel-good show, which opened on Sunday at the Belasco Theater, more than a first: It’s a milestone.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/how-to-dance-in-ohio-broadway"
+  "bwwThumb": "Meh"
 }

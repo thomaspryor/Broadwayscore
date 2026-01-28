@@ -1,0 +1,76 @@
+{
+  "showId": "the-outsiders-2024",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Chris Jones",
+  "url": "https://www.nydailynews.com/2024/04/11/the-outsiders-broadway-review/",
+  "publishDate": "2024-04-11",
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "its insightful ruminations on brotherhood, identity, and the cycles of grief and violence. While its musical adaptation may have its squabbles, its heart of gold still remains firmly intact. Grade: B Chris Jones, Chicago Tribune: It also doesn’t help that the young guy’s love interest drops away from the narrative. All in all, and with all due respect to the many capable artists here and the fame of the book, the emotional landscape just has not been shaped to fit the needs of a Broadway musical. “The Outsiders” needed greater expansion of character, a gentler, simpler touch, a better sense of authentic teenage angst and a deeper focus on the heart. Adrian Horton, The Guardian: The production is the platonic ideal of a retro classic rebooted for Broadway, broadly appealing to audiences young and old (my showing was split between boomers and kids) but not particularly searing, recognizable but not terribly distinct, sincere and competent yet not resounding. Kobi Kassal, Theatrely: What",
+  "originalScore": "B",
+  "assignedScore": 57,
+  "source": "bww-roundup",
+  "needsFullText": false,
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "extracted-grade",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 65,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "its heart of gold still remains firmly intact. Grade: B",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the emotional landscape just has not been shaped to fit the needs of a Broadway musical",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "sincere and competent yet not resounding",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Multiple critics offer mixed assessments with a B grade suggesting competent work that falls short of full recommendation, citing structural issues with the adaptation while acknowledging capable performances and intact emotional core. | GPT-4o-mini: The review presents a mixed perspective, highlighting both strengths and significant weaknesses, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:57:14.217Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

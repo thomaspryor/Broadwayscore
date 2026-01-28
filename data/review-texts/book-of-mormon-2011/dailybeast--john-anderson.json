@@ -1,0 +1,71 @@
+{
+  "showId": "book-of-mormon-2011",
+  "outletId": "dailybeast",
+  "outlet": "The Daily Beast",
+  "criticName": "John Anderson",
+  "url": "https://www.thedailybeast.com/the-book-of-mormon-broadways-brilliant-blasphemy",
+  "publishDate": "March 25, 2011",
+  "fullText": "The Book of Mormon is funny enough to make you forget you're supposed to be offended, and offensive enough to make you forget you're supposed to be having fun.",
+  "isFullReview": false,
+  "dtliExcerpt": "The Book of Mormon is funny enough to make you forget you're supposed to be offended, and offensive enough to make you forget you're supposed to be having fun.",
+  "originalScore": null,
+  "assignedScore": 74,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The Book of Mormon is funny enough to make you forget you're supposed to be offended, and offensive enough to make you forget you're supposed to be having fun.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "funny enough to make you forget you're supposed to be offended",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "offensive enough to make you forget you're supposed to be having fun",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses a clever paradox that ultimately celebrates the show's ability to balance humor and controversy effectively, suggesting strong entertainment value despite provocative content. | GPT-4o-mini: The review presents a mix of humor and offense, suggesting a qualified recommendation rather than unqualified enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:09:45.732Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

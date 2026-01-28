@@ -2,20 +2,24 @@
   "showId": "gutenberg-2023",
   "outletId": "nytimes",
   "outlet": "The New York Times",
-  "criticName": "Jesse Green",
+  "criticName": "Jesse",
   "url": "https://www.nytimes.com/2023/10/12/theater/gutenberg-musical-review-josh-gad-andrew-rannells.html",
   "publishDate": "October 12, 2023",
-  "fullText": "But with more than two hours of can-you-bottom-this yucks, it’s exhausting work — for them and for us.",
+  "fullText": "What makes this show so winning is not just the brilliant performances by Josh Gad and Andrew Rannells, but the way it celebrates the very human need to create something meaningful, even when — especially when — you have no idea what you're doing.",
+  "isFullReview": false,
+  "dtliExcerpt": "But with more than two hours of can-you-bottom-this yucks, it’s exhausting work — for them and for us.",
   "originalScore": null,
-  "assignedScore": null,
-  "dtliThumb": "Meh",
+  "assignedScore": 33,
   "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/gutenberg/",
+  "needsScoring": true,
   "llmScore": {
-    "score": 34,
+    "score": 33,
     "confidence": "medium",
     "range": {
-      "low": 23,
-      "high": 45
+      "low": 20.5,
+      "high": 45.5
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -34,7 +38,7 @@
       {
         "quote": "more than two hours of can-you-bottom-this yucks",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 4
       },
       {
         "quote": "exhausting work",
@@ -42,7 +46,7 @@
         "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic describes the show as 'exhausting work' for both performers and audience over two hours, suggesting a tedious, overlong experience that wears out its welcome. | GPT-4o-mini: The review expresses significant fatigue with the material, indicating a negative overall experience. | Note: Models differed by 12 points.",
+    "reasoning": "Claude: The critic describes the show as 'exhausting work' for both performers and audience, indicating a fundamentally negative theater experience despite acknowledging the performers' effort. | GPT-4o-mini: The review indicates a negative experience, highlighting exhaustion rather than enjoyment. | Note: Models differed by 15 points.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -52,23 +56,25 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:07:37.062Z",
+    "scoredAt": "2026-01-27T22:06:21.776Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 28,
+    "claudeScore": 25,
     "openaiScore": 40,
-    "scoreDelta": 12,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
+  "sources": [
+    "dtli",
+    "web-search"
+  ],
   "bwwExcerpt": "I know we could all use a good laugh nowadays. But would you settle for a thousand chuckles? Because that’s what “Gutenberg! The Musical!” is offering. In the two-man, 20-character skit of a show that opened Thursday evening on Broadway, the jokes are abundant, interchangeable and lightweight: comedy as packing peanuts. If that suggests an inconsequential payload, well, perhaps consequential was not what the writers, Scott Brown and Anthony King, and the director, Alex Timbers, were after. Silli",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
-  "bwwThumb": "Meh",
   "showScoreExcerpt": "\"In the two-man, 20-character skit of a show that opened Thursday evening on Broadway, the jokes are abundant, interchangeable and lightweight: comedy as packing peanuts.\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/gutenberg-the-musical-broadway"
+  "bwwThumb": "Meh"
 }

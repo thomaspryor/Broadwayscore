@@ -1,0 +1,76 @@
+{
+  "showId": "harmony-2023",
+  "outletId": "stageandcinema",
+  "outlet": "Stage and Cinema",
+  "criticName": "Matthew Murray",
+  "url": "https://stageandcinema.com/2023/11/13/harmony-broadway-review/",
+  "publishDate": "November 13, 2023",
+  "fullText": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists is a deeply personal work that manages to be both intimate and epic in scope.",
+  "isFullReview": false,
+  "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists is a deeply personal work that manages to be both intimate and epic in scope.",
+  "originalScore": null,
+  "assignedScore": 73,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists is a deeply personal work that manages to be both intimate and epic in scope.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 85.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "deeply personal work",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "manages to be both intimate and epic in scope",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "both intimate and epic in scope",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review contains only praise for the work's personal nature and scope, but with no specific recommendations, critical assessment, or evaluation of theatrical elements, making it impossible to determine actual recommendation strength from this brief excerpt. | GPT-4o-mini: The review expresses a strong appreciation for the musical's emotional depth and scope, indicating a positive recommendation despite lacking specific critiques. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:46:36.106Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 80,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

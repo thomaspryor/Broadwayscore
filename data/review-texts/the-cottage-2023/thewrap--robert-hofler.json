@@ -1,69 +1,74 @@
 {
   "showId": "the-cottage-2023",
   "outletId": "thewrap",
-  "outlet": "TheWrap",
+  "outlet": "The Wrap",
   "criticName": "Robert Hofler",
   "url": "https://www.thewrap.com/the-cottage-broadway-review-jason-alexander-eric-mccormack/",
   "publishDate": "July 24, 2023",
   "fullText": "Yes, there is a world of lousy theater beyond New York City, and “The Cottage,” which opened Monday on Broadway at the Hayes Theatre, is destined for it.",
+  "isFullReview": false,
+  "bwwExcerpt": "Sometimes a bio in the Playbill is an apt warning for what you’re about to see.  For instance, the Playbill for the new comedy “The Cottage” includes a bio of the playwright Sandy Rustin. It reads, “Her adaptation of the film ‘Clue’ is one of the most-produced plays in the U.S.” Yes, there is a world of lousy theater beyond New York City, and “The Cottage,” which opened Monday on Broadway at the Hayes Theatre, is destined for it.",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
+  "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
-  "dtliThumb": "Down",
-  "source": "dtli",
+  "assignedScore": 25,
+  "source": "bww-roundup",
+  "dtliThumb": "DOWN",
+  "needsScoring": true,
   "llmScore": {
-    "score": 13,
-    "confidence": "high",
+    "score": 25,
+    "confidence": "medium",
     "range": {
-      "low": 5.5,
-      "high": 20.5
+      "low": 20,
+      "high": 30
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 20,
       "music": null,
       "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "there is a world of lousy theater beyond New York City",
+        "quote": "Yes, there is a world of lousy theater beyond New York City, and 'The Cottage,' which opened Monday on Broadway at the Hayes Theatre, is destined for it.",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "destined for it",
+        "quote": "Sometimes a bio in the Playbill is an apt warning for what you're about to see.",
         "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "a world of lousy theater",
-        "sentiment": "negative",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic explicitly calls the show 'lousy theater' and predicts it will fail on Broadway, making this an unqualified pan with zero recommendation value. | GPT-4o-mini: The review strongly criticizes the show, indicating it is of poor quality and likely to fail.",
+    "reasoning": "Claude: The critic delivers a scathing dismissal, calling the show 'lousy theater' and suggesting it belongs in regional productions rather than Broadway.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:17:08.285Z",
+    "scoredAt": "2026-01-28T01:20:10.441Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 15,
-    "openaiScore": 10,
-    "scoreDelta": 5,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 25,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "dtliExcerpt": "Yes, there is a world of lousy theater beyond New York City, and “The Cottage,” which opened Monday on Broadway at the Hayes Theatre, is destined for it.",
+  "sources": [
+    "bww-roundup",
+    "dtli"
+  ]
 }

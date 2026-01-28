@@ -1,0 +1,76 @@
+{
+  "showId": "merrily-we-roll-along-2023",
+  "outletId": "theatermania",
+  "outlet": "TheaterMania",
+  "criticName": "Jesse Green",
+  "url": "https://www.theatermania.com/new-york-city-theater/reviews/merrily-we-roll-along-broadway_96127.html",
+  "publishDate": "December 8, 2023",
+  "fullText": "This production, directed by Maria Friedman, finally gets the show right, with a cast that makes the reverse chronology feel natural and necessary rather than gimmicky.",
+  "isFullReview": false,
+  "dtliExcerpt": "This production, directed by Maria Friedman, finally gets the show right, with a cast that makes the reverse chronology feel natural and necessary rather than gimmicky.",
+  "originalScore": null,
+  "assignedScore": 79,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "This production, directed by Maria Friedman, finally gets the show right, with a cast that makes the reverse chronology feel natural and necessary rather than gimmicky.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "finally gets the show right",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes the reverse chronology feel natural and necessary rather than gimmicky",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "cast that makes the reverse chronology feel natural",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic praises both the direction and cast with strong positive language, suggesting this production succeeds where others may have failed. | GPT-4o-mini: The review expresses a strong positive sentiment towards the direction and the cast's performance, indicating a clear recommendation with minor reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:50.719Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

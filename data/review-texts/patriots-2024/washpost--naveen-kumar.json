@@ -1,0 +1,68 @@
+{
+  "showId": "patriots-2024",
+  "outletId": "washpost",
+  "outlet": "The Washington Post",
+  "criticName": "Naveen Kumar",
+  "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/22/patriots-broadway-review/",
+  "publishDate": "April 22nd, 2024",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "\"...most gripping when it delivers...the inner workings of a burgeoning mastermind\"",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/patriots-broadway",
+  "originalScore": null,
+  "assignedScore": 68,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "most gripping when it delivers",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the inner workings of a burgeoning mastermind",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The fragment suggests qualified praise with 'most gripping when it delivers' implying the show works well in certain moments but may not be consistently engaging throughout. | GPT-4o-mini: The review indicates some positive aspects but lacks a strong overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:19.226Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

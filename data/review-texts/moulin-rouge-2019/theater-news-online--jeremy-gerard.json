@@ -1,26 +1,28 @@
 {
   "showId": "moulin-rouge-2019",
   "outletId": "theater-news-online",
-  "outlet": "Theater News Online",
+  "outlet": "theater-news-online",
   "criticName": "Jeremy Gerard",
   "url": "http://www.theaternewsonline.com/NYTheaterReviews/SHIMMERINGSPECTACLE.cfm",
-  "publishDate": null,
+  "publishDate": "2019-07-25T20:29:53-04:00",
   "fullText": null,
   "isFullReview": false,
-  "bwwExcerpt": ": After close to three hours I stumbled out of that fanciful world feeling somewhat pummeled by the heightened visual and aural, not to mention emotional, assault. Yet I woke up the next morning in love with the show. There's genius in that, I think.",
-  "bwwRoundupUrl": null,
-  "bwwThumb": null,
+  "bwwExcerpt": "After close to three hours I stumbled out of that fanciful world feeling somewhat pummeled by the heightened visual and aural, not to mention emotional, assault. Yet I woke up the next morning in love with the show. There's genius in that, I think.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 81,
   "source": "bww-roundup",
-  "dtliThumb": null,
-  "needsScoring": true,
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-pan",
+  "scoreConfidence": "medium",
   "llmScore": {
-    "score": 85,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 75,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +30,7 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": 80
     },
     "keyPhrases": [
       {
@@ -47,7 +49,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Despite initial overwhelming feelings, the critic's overnight reflection led to love for the show and recognition of genius, indicating strong positive recommendation. | GPT-4o-mini: The review expresses initial discomfort but concludes with a strong positive sentiment, indicating a clear recommendation despite some reservations.",
+    "reasoning": "Claude: Despite initial overwhelming feelings, the critic's morning-after realization of being 'in love with the show' and recognition of 'genius' indicates strong positive recommendation with appreciation for the show's intentional emotional impact. | GPT-4o-mini: The review expresses initial overwhelm but ultimately concludes with a strong affection for the show, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,18 +59,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:54.848Z",
+    "scoredAt": "2026-01-26T05:39:07.523Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "sources": [
+    "bww-roundup"
+  ]
 }
