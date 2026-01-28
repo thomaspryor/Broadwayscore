@@ -15,6 +15,7 @@ import * as path from 'path';
 const GROSSES_URL = 'https://www.broadwayworld.com/grosses.cfm';
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
+const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
 
 interface ShowGrosses {
   thisWeek: {
@@ -42,6 +43,22 @@ interface GrossesData {
   lastUpdated: string;
   weekEnding: string;
   shows: Record<string, ShowGrosses>;
+}
+
+interface HistoryEntry {
+  gross: number | null;
+  capacity: number | null;
+  atp: number | null;
+  attendance: number | null;
+  performances: number | null;
+}
+
+interface GrossesHistory {
+  _meta: {
+    description: string;
+    lastUpdated: string;
+  };
+  weeks: Record<string, Record<string, HistoryEntry>>;
 }
 
 interface BWWRowData {
@@ -160,6 +177,73 @@ function parseNumber(value: string | null | undefined): number | null {
   return isNaN(num) ? null : num;
 }
 
+// Parse "M/DD/YYYY" or "MM/DD/YYYY" to "YYYY-MM-DD"
+function parseWeekEndingToISO(weekEnding: string): string {
+  const parts = weekEnding.split('/');
+  const month = parts[0].padStart(2, '0');
+  const day = parts[1].padStart(2, '0');
+  const year = parts[2].length === 2 ? `20${parts[2]}` : parts[2];
+  return `${year}-${month}-${day}`;
+}
+
+// Load or initialize grosses history
+function loadHistory(): GrossesHistory {
+  if (fs.existsSync(HISTORY_PATH)) {
+    return JSON.parse(fs.readFileSync(HISTORY_PATH, 'utf-8'));
+  }
+  return {
+    _meta: {
+      description: 'Weekly box office snapshots for computing WoW and YoY comparisons',
+      lastUpdated: new Date().toISOString()
+    },
+    weeks: {}
+  };
+}
+
+// Find the closest week in history to a target date (within maxDaysDiff)
+function findClosestWeek(history: GrossesHistory, targetDate: Date, maxDaysDiff: number = 7): string | null {
+  const targetTime = targetDate.getTime();
+  let closestKey: string | null = null;
+  let closestDiff = Infinity;
+
+  for (const weekKey of Object.keys(history.weeks)) {
+    const weekDate = new Date(weekKey + 'T00:00:00Z');
+    const diff = Math.abs(weekDate.getTime() - targetTime);
+    const daysDiff = diff / (1000 * 60 * 60 * 24);
+
+    if (daysDiff <= maxDaysDiff && daysDiff < closestDiff) {
+      closestDiff = daysDiff;
+      closestKey = weekKey;
+    }
+  }
+
+  return closestKey;
+}
+
+// Get previous week's data for a show from history
+function getPrevWeekData(history: GrossesHistory, currentWeekISO: string, showSlug: string): HistoryEntry | null {
+  const currentDate = new Date(currentWeekISO + 'T00:00:00Z');
+  const prevTarget = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const prevWeekKey = findClosestWeek(history, prevTarget);
+
+  if (prevWeekKey && history.weeks[prevWeekKey]?.[showSlug]) {
+    return history.weeks[prevWeekKey][showSlug];
+  }
+  return null;
+}
+
+// Get same-week-last-year data for a show from history
+function getYoYData(history: GrossesHistory, currentWeekISO: string, showSlug: string): HistoryEntry | null {
+  const currentDate = new Date(currentWeekISO + 'T00:00:00Z');
+  const yoyTarget = new Date(currentDate.getTime() - 364 * 24 * 60 * 60 * 1000); // 52 weeks
+  const yoyWeekKey = findClosestWeek(history, yoyTarget);
+
+  if (yoyWeekKey && history.weeks[yoyWeekKey]?.[showSlug]) {
+    return history.weeks[yoyWeekKey][showSlug];
+  }
+  return null;
+}
+
 async function scrapeGrosses(): Promise<void> {
   console.log('Starting Broadway grosses scrape...');
 
@@ -266,10 +350,10 @@ async function scrapeGrosses(): Promise<void> {
             grossYoY: parseCurrency(row.grossYoY),
             capacity: parsePercentage(row.capacityPct),
             capacityPrevWeek: parsePercentage(row.capacityPctPrevWeek),
-            capacityYoY: null, // Would need to scrape last year's page
+            capacityYoY: null, // Enriched from history below
             atp: parseCurrency(row.atp),
-            atpPrevWeek: null, // Not directly available
-            atpYoY: null, // Would need to scrape last year's page
+            atpPrevWeek: null, // Enriched from history below
+            atpYoY: null, // Enriched from history below
             attendance: parseNumber(row.attendance),
             performances: parseNumber(row.performances)
           },
@@ -293,9 +377,63 @@ async function scrapeGrosses(): Promise<void> {
       unmatchedShows.forEach(s => console.log(`  - ${s}`));
     }
 
-    // Write the data
+    // Load history and enrich with WoW/YoY comparisons
+    const history = loadHistory();
+    const weekISO = parseWeekEndingToISO(weekEnding);
+    console.log(`\nLooking up history for week ${weekISO}...`);
+
+    let atpWoWCount = 0;
+    let capYoYCount = 0;
+    let atpYoYCount = 0;
+
+    for (const [slug, data] of Object.entries(grossesData.shows)) {
+      if (!data.thisWeek) continue;
+
+      // ATP WoW from previous week in history
+      const prevWeek = getPrevWeekData(history, weekISO, slug);
+      if (prevWeek?.atp != null) {
+        data.thisWeek.atpPrevWeek = prevWeek.atp;
+        atpWoWCount++;
+      }
+
+      // Capacity YoY and ATP YoY from ~52 weeks ago in history
+      const yoyWeek = getYoYData(history, weekISO, slug);
+      if (yoyWeek) {
+        if (yoyWeek.capacity != null) {
+          data.thisWeek.capacityYoY = yoyWeek.capacity;
+          capYoYCount++;
+        }
+        if (yoyWeek.atp != null) {
+          data.thisWeek.atpYoY = yoyWeek.atp;
+          atpYoYCount++;
+        }
+      }
+    }
+
+    console.log(`  History enrichment: ATP WoW=${atpWoWCount}, Capacity YoY=${capYoYCount}, ATP YoY=${atpYoYCount}`);
+
+    // Save current week snapshot to history
+    const currentSnapshot: Record<string, HistoryEntry> = {};
+    for (const [slug, data] of Object.entries(grossesData.shows)) {
+      if (data.thisWeek) {
+        currentSnapshot[slug] = {
+          gross: data.thisWeek.gross,
+          capacity: data.thisWeek.capacity,
+          atp: data.thisWeek.atp,
+          attendance: data.thisWeek.attendance,
+          performances: data.thisWeek.performances
+        };
+      }
+    }
+    history.weeks[weekISO] = currentSnapshot;
+    history._meta.lastUpdated = new Date().toISOString();
+
+    // Write both files
     fs.writeFileSync(GROSSES_PATH, JSON.stringify(grossesData, null, 2) + '\n');
     console.log(`\nWrote grosses data to ${GROSSES_PATH}`);
+
+    fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2) + '\n');
+    console.log(`Wrote grosses history to ${HISTORY_PATH} (${Object.keys(history.weeks).length} weeks stored)`);
 
   } catch (error) {
     console.error('Scraping failed:', error);
