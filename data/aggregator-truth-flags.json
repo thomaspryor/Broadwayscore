@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-01-28T18:25:31.317Z",
+    "generatedAt": "2026-01-28T18:53:20.673Z",
     "description": "Flagged shows with potential anomalies",
     "totalFlagged": 49
   },
@@ -60,27 +60,12 @@
         }
       ]
     },
-    "oh-mary-2024": {
-      "title": "Oh, Mary!",
-      "flags": [
-        {
-          "type": "likely-duplicates",
-          "message": "localCount (36) > maxAggregator (18) * 1.5",
-          "severity": "warning"
-        },
-        {
-          "type": "check-show-score-url",
-          "message": "Show Score has 0 reviews but we have 36 local",
-          "severity": "warning"
-        }
-      ]
-    },
     "the-great-gatsby-2024": {
       "title": "The Great Gatsby",
       "flags": [
         {
           "type": "likely-duplicates",
-          "message": "localCount (31) > maxAggregator (17) * 1.5",
+          "message": "localCount (31) > maxAggregator (18) * 1.5",
           "severity": "warning"
         }
       ]
@@ -110,7 +95,7 @@
       "flags": [
         {
           "type": "likely-duplicates",
-          "message": "localCount (75) > maxAggregator (27) * 1.5",
+          "message": "localCount (75) > maxAggregator (19) * 1.5",
           "severity": "warning"
         }
       ]
@@ -160,7 +145,7 @@
       "flags": [
         {
           "type": "likely-duplicates",
-          "message": "localCount (50) > maxAggregator (19) * 1.5",
+          "message": "localCount (50) > maxAggregator (16) * 1.5",
           "severity": "warning"
         }
       ]
@@ -181,6 +166,16 @@
         {
           "type": "likely-duplicates",
           "message": "localCount (40) > maxAggregator (20) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "marjorie-prime-2025": {
+      "title": "Marjorie Prime",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (29) > maxAggregator (17) * 1.5",
           "severity": "warning"
         }
       ]
