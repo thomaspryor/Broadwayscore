@@ -452,6 +452,12 @@ showDirs.forEach(showId => {
       const filePath = path.join(showDir, file);
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
+      // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
+      if (data.wrongProduction === true) {
+        stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
+        return;
+      }
+
       // Create deduplication key
       const outletKey = normalizeOutletId(data.outlet || data.outletId);
       const criticKey = normalizeOutletId(data.criticName || '');
@@ -531,6 +537,7 @@ const output = {
       totalReviews: stats.totalReviews,
       skippedNoScore: stats.skippedNoScore,
       skippedDuplicate: stats.skippedDuplicate,
+      skippedWrongProduction: stats.skippedWrongProduction || 0,
       scoreSources: stats.scoreSources
     }
   },
@@ -546,6 +553,7 @@ console.log(`Total files processed: ${stats.totalFiles}`);
 console.log(`Total reviews INCLUDED: ${stats.totalReviews}`);
 console.log(`  Skipped (no valid score): ${stats.skippedNoScore}`);
 console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
+console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
 
 console.log('\nScore sources:');
 Object.entries(stats.scoreSources).forEach(([source, count]) => {
