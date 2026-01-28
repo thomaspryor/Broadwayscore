@@ -10,11 +10,67 @@
   "bwwExcerpt": "Tears were streaming down my face for much of the last half hour of this revival; perhaps you will feel the same way. But while we in the audience might weep, Wilder's view, though always sympathetic, stays clear and dry. He has a eye on the eternal.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "\"But while we in the audience might weep, Wilder's view, though always sympathetic, stays clear and dry. He has an eye on the eternal.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/our-town-broadway",
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tears were streaming down my face for much of the last half hour of this revival",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Wilder's view, though always sympathetic, stays clear and dry. He has an eye on the eternal",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Wilder's view, though always sympathetic, stays clear and dry",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic describes a deeply emotional response to the revival and praises Wilder's masterful perspective, suggesting strong appreciation despite the brief excerpt. | GPT-4o-mini: The review expresses emotional engagement but lacks a clear recommendation, suggesting a mixed-positive sentiment overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:08.060Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

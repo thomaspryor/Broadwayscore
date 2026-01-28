@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"the new production deftly underscores the parallels of our current ugly political divide\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "deftly underscores",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "parallels of our current ugly political divide",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "the new production deftly underscores the parallels of our current ugly political divide",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The word 'deftly' suggests skillful execution and the production's relevance to current events implies thoughtful direction, but the fragment is too brief to determine overall recommendation strength. | GPT-4o-mini: The review highlights a positive aspect of the production's thematic relevance but lacks a strong overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:32.266Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
