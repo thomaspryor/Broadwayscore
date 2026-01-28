@@ -973,6 +973,109 @@ async function scrapeArticle(url, fallbackSnippet) {
 }
 
 // ---------------------------------------------------------------------------
+// Sprint 4.5: SEC EDGAR Filing Gathering (Optional)
+// ---------------------------------------------------------------------------
+
+/**
+ * Gather SEC Form D filings for Broadway shows (if module available).
+ *
+ * Feature-flagged: Only runs if SEC_EDGAR_ENABLED and --gather-sec flag is set.
+ * Searches for theatrical LLCs and extracts capitalization data.
+ *
+ * @param {Object[]} shows - Shows from shows.json
+ * @param {Object} commercial - commercial.json data (to skip shows with existing SEC data)
+ * @returns {Promise<Object[]>} Array of { showSlug, capitalization, source, filingUrl, confidence }
+ */
+async function gatherSECFilings(shows, commercial) {
+  // Feature flag check
+  if (!SEC_EDGAR_ENABLED) {
+    console.log('SEC EDGAR scraping is disabled (module not available)');
+    return [];
+  }
+
+  if (!GATHER_SEC) {
+    console.log('Skipping SEC gathering (--gather-sec flag not set)');
+    return [];
+  }
+
+  console.log('Gathering SEC Form D filings for Broadway shows...');
+
+  let secScraper;
+  try {
+    secScraper = require('./lib/sec-edgar-scraper');
+  } catch (e) {
+    console.error('  Failed to load sec-edgar-scraper:', e.message);
+    return [];
+  }
+
+  // Check if module is available
+  if (typeof secScraper.isAvailable === 'function' && !secScraper.isAvailable()) {
+    console.log('  SEC EDGAR API is not available');
+    return [];
+  }
+
+  const results = [];
+
+  // Focus on shows without SEC-sourced capitalization
+  const showsToSearch = (shows || []).filter(show => {
+    const slug = show.slug || show.id;
+    const existing = commercial?.shows?.[slug];
+    // Skip if already has SEC-sourced capitalization
+    return !existing?.capitalizationSource?.toLowerCase().includes('sec');
+  });
+
+  console.log(`  Searching ${showsToSearch.length} shows for SEC filings...`);
+
+  for (const show of showsToSearch.slice(0, 20)) { // Limit to 20 shows per run
+    const slug = show.slug || show.id;
+    const title = show.title;
+
+    try {
+      // Use BROADWAY_LLC_PATTERNS to generate search terms
+      const searchTerms = secScraper.BROADWAY_LLC_PATTERNS?.map(pattern =>
+        pattern.replace('{show}', title)
+      ) || [`${title} LLC`, `${title} Broadway LLC`];
+
+      for (const term of searchTerms.slice(0, 3)) { // Limit to 3 patterns per show
+        try {
+          const filings = await secScraper.searchFormDFilings({ companyName: term });
+
+          if (filings && filings.length > 0) {
+            // Parse the most recent filing
+            const latestFiling = filings[0];
+            const parsed = await secScraper.parseFormDFiling(latestFiling.url || latestFiling.filingUrl);
+
+            if (parsed?.totalOfferingAmount) {
+              results.push({
+                showSlug: slug,
+                capitalization: parsed.totalOfferingAmount,
+                source: `SEC Form D: ${parsed.companyName || term}`,
+                filingUrl: latestFiling.url || latestFiling.filingUrl,
+                filingDate: parsed.filingDate,
+                confidence: 'high' // SEC data is always high confidence
+              });
+
+              console.log(`    Found: ${title} - $${(parsed.totalOfferingAmount / 1e6).toFixed(1)}M`);
+              break; // Found a match, move to next show
+            }
+          }
+        } catch (searchError) {
+          // Non-fatal, continue to next search term
+        }
+
+        // Rate limiting
+        await sleep(1000);
+      }
+    } catch (e) {
+      console.error(`    Error searching for ${title}: ${e.message}`);
+    }
+  }
+
+  console.log(`  Found ${results.length} SEC filings`);
+  return results;
+}
+
+// ---------------------------------------------------------------------------
 // Sprint 5: Build Analysis Context
 // ---------------------------------------------------------------------------
 
@@ -988,6 +1091,7 @@ async function scrapeArticle(url, fallbackSnippet) {
  * @param {Object[]} data.grossesComments - Comments on grosses post
  * @param {Object[]} data.redditFinancial - Reddit financial threads
  * @param {Object[]} data.tradeArticles - Trade press articles with text
+ * @param {Object[]} data.secFilings - SEC Form D filings (Sprint 4.5)
  * @returns {string} Context document
  */
 function buildAnalysisContext(data) {
@@ -1093,6 +1197,23 @@ function buildAnalysisContext(data) {
     const slug = show.slug || show.id;
     if (!commercialSlugs.has(slug)) {
       sections.push(`${slug} (${show.title}) - status: ${show.status}, venue: ${show.venue}`);
+    }
+  }
+
+  // Section H: SEC EDGAR Filings (Sprint 4.7)
+  if (data.secFilings && data.secFilings.length > 0) {
+    sections.push('\n=== SECTION H: SEC EDGAR FORM D FILINGS (HIGHEST AUTHORITY) ===');
+    sections.push('NOTE: SEC filings are official government documents. Use these values with HIGH confidence.');
+    sections.push('');
+    for (const filing of data.secFilings) {
+      sections.push(`${filing.showSlug}:`);
+      sections.push(`  Capitalization: $${(filing.capitalization / 1e6).toFixed(2)}M`);
+      sections.push(`  Source: ${filing.source}`);
+      sections.push(`  Filing URL: ${filing.filingUrl}`);
+      if (filing.filingDate) {
+        sections.push(`  Filing Date: ${filing.filingDate}`);
+      }
+      sections.push('---');
     }
   }
 
@@ -1736,6 +1857,19 @@ function buildValidationSources(gathered) {
     }
   }
 
+  // Add SEC filings (highest confidence - Sprint 4.5)
+  if (gathered.secFilings && gathered.secFilings.length > 0) {
+    for (const filing of gathered.secFilings) {
+      sources.push({
+        showSlug: filing.showSlug,
+        field: 'capitalization',
+        value: filing.capitalization,
+        sourceType: 'SEC Form D',
+        url: filing.filingUrl
+      });
+    }
+  }
+
   return sources;
 }
 
@@ -1863,7 +1997,8 @@ async function main() {
     grossesPostParsed: [],
     grossesComments: [],
     redditFinancial: [],
-    tradeArticles: []
+    tradeArticles: [],
+    secFilings: []  // Sprint 4.5: SEC Form D filings
   };
 
   // Total gather timeout: 5 minutes
@@ -1957,6 +2092,17 @@ async function main() {
       } catch (e) {
         console.error(`Trade press search failed: ${e.message}`);
       }
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // Step 4.5: Gather SEC filings (Sprint 4.5 - optional)
+  // -----------------------------------------------------------------------
+  if (!isTimedOut() && GATHER_SEC) {
+    try {
+      gathered.secFilings = await gatherSECFilings(allShows, commercial);
+    } catch (e) {
+      console.error(`SEC filing search failed: ${e.message}`);
     }
   }
 
@@ -2089,6 +2235,7 @@ async function main() {
   console.log(`Shows parsed from GA: ${gathered.grossesPostParsed.length}`);
   console.log(`Reddit financial threads: ${gathered.redditFinancial.length}`);
   console.log(`Trade press articles: ${gathered.tradeArticles.length}`);
+  console.log(`SEC Form D filings: ${gathered.secFilings.length}`);
   console.log(`Changes applied: ${applied.length}`);
   console.log(`Changes flagged: ${flagged.length}`);
   console.log(`Changes skipped: ${skipped.length}`);
