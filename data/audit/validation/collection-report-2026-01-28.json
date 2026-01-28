@@ -1,84 +1,96 @@
 {
-  "runDate": "2026-01-28T23:50:05.805Z",
+  "runDate": "2026-01-28T23:51:04.244Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 30,
+    "maxReviews": 35,
     "priority": "all",
-    "showFilter": "hells-kitchen-2024",
+    "showFilter": "harmony-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 23,
+    "processed": 15,
+    "failed": 16,
     "skipped": 0,
-    "successRate": "20.7%"
+    "successRate": "48.4%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 3,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 4
+    "brightdata": 3,
+    "archive": 9
   },
   "statistics": {
     "tier1Attempts": 26,
-    "tier1Success": 0,
-    "tier2Attempts": 26,
+    "tier1Success": 3,
+    "tier2Attempts": 23,
     "tier2Success": 0,
-    "tier3Attempts": 26,
-    "tier3Success": 2,
-    "tier4Attempts": 59,
-    "tier4Success": 4,
-    "totalFailed": 23,
-    "scrapingBeeCreditsUsed": 110
+    "tier3Attempts": 23,
+    "tier3Success": 3,
+    "tier4Attempts": 50,
+    "tier4Success": 9,
+    "totalFailed": 16,
+    "scrapingBeeCreditsUsed": 60
   },
   "processed": [
-    "hells-kitchen-2024/nytimes--elizabeth-vincentelli.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/nydailynews--chris-jones.json",
-    "hells-kitchen-2024/observer--jesse-green.json",
-    "hells-kitchen-2024/observer--rex-reed.json",
-    "hells-kitchen-2024/the-new-york-sun--elysa-gardner.json"
+    "harmony-2023/nyt-theater--jonathan-mandell.json",
+    "harmony-2023/variety--trish-deitch.json",
+    "harmony-2023/deadline--greg-evans.json",
+    "harmony-2023/nypost--johnny-oleksinski.json",
+    "harmony-2023/observer--jesse-green.json",
+    "harmony-2023/observer--rex-reed.json",
+    "harmony-2023/the-new-york-sun--elysa-gardner.json",
+    "harmony-2023/thewrap--robert-hofler.json",
+    "harmony-2023/thewrap--robert.json",
+    "harmony-2023/amny--matt-windman.json",
+    "harmony-2023/chicagotribune--chris-jones.json",
+    "harmony-2023/nysr--david-finkle.json",
+    "harmony-2023/nysr--sandy-macdonald.json",
+    "harmony-2023/talkinbroadway--matthew-murray.json",
+    "harmony-2023/washpost--peter-marks.json"
   ],
   "failed": [
-    "hells-kitchen-2024/hollywood-reporter--angie-han.json",
-    "hells-kitchen-2024/nytg--david-nounou.json",
-    "hells-kitchen-2024/nytimes--jesse-green.json",
-    "hells-kitchen-2024/vulture--helen-shaw.json",
-    "hells-kitchen-2024/deadline--greg-evans.json",
-    "hells-kitchen-2024/deadline--pete-hammond.json",
-    "hells-kitchen-2024/ew--joey-nolfi.json",
-    "hells-kitchen-2024/ew--kristen-baldwin.json",
-    "hells-kitchen-2024/guardian--adrian-horton.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/theatermania--adam-feldman.json",
-    "hells-kitchen-2024/theatermania--david-gordon.json",
-    "hells-kitchen-2024/wsj--charles-isherwood.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json",
-    "hells-kitchen-2024/billboard--david-rooney.json",
-    "hells-kitchen-2024/billboard--isabela-raygoza.json",
-    "hells-kitchen-2024/billboard--juan-a-ramirez.json",
-    "hells-kitchen-2024/culturesauce--thom-geier.json",
-    "hells-kitchen-2024/dailybeast--tim-teeman.json",
-    "hells-kitchen-2024/stageandcinema--victor-gluck.json",
-    "hells-kitchen-2024/usatoday--charles-isherwood.json",
-    "hells-kitchen-2024/usatoday--david-rooney.json",
-    "hells-kitchen-2024/washpost--peter-marks.json"
+    "harmony-2023/hollywood-reporter--angie-han.json",
+    "harmony-2023/hollywood-reporter--david-rooney.json",
+    "harmony-2023/variety--aramide-tinubu.json",
+    "harmony-2023/variety--charles-isherwood.json",
+    "harmony-2023/variety--frank-rizzo.json",
+    "harmony-2023/variety--peter-marks.json",
+    "harmony-2023/vulture--helen-shaw.json",
+    "harmony-2023/deadline--pete-hammond.json",
+    "harmony-2023/guardian--adrian-horton.json",
+    "harmony-2023/guardian--jesse-hassenger.json",
+    "harmony-2023/observer--david-cote.json",
+    "harmony-2023/theatermania--adam-feldman.json",
+    "harmony-2023/forward--jesse-green.json",
+    "harmony-2023/theatrely--michael-appler.json",
+    "harmony-2023/stageandcinema--matthew-murray.json",
+    "harmony-2023/usatoday--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "harmony-2023/nyt-theater--jonathan-mandell.json",
+      "harmony-2023/nysr--david-finkle.json",
+      "harmony-2023/nysr--sandy-macdonald.json"
+    ],
     "scrapingbee": [],
     "brightdata": [
-      "hells-kitchen-2024/observer--jesse-green.json",
-      "hells-kitchen-2024/observer--rex-reed.json"
+      "harmony-2023/observer--jesse-green.json",
+      "harmony-2023/observer--rex-reed.json",
+      "harmony-2023/chicagotribune--chris-jones.json"
     ],
     "archive": [
-      "hells-kitchen-2024/nytimes--elizabeth-vincentelli.json",
-      "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-      "hells-kitchen-2024/nydailynews--chris-jones.json",
-      "hells-kitchen-2024/the-new-york-sun--elysa-gardner.json"
+      "harmony-2023/variety--trish-deitch.json",
+      "harmony-2023/deadline--greg-evans.json",
+      "harmony-2023/nypost--johnny-oleksinski.json",
+      "harmony-2023/the-new-york-sun--elysa-gardner.json",
+      "harmony-2023/thewrap--robert-hofler.json",
+      "harmony-2023/thewrap--robert.json",
+      "harmony-2023/amny--matt-windman.json",
+      "harmony-2023/talkinbroadway--matthew-murray.json",
+      "harmony-2023/washpost--peter-marks.json"
     ]
   }
 }
