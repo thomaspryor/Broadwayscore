@@ -3,74 +3,79 @@
   "outletId": "WSJ",
   "outlet": "The Wall Street Journal",
   "criticName": "Terry Teachout",
-  "url": "https://www.wsj.com/articles/hadestown-review-a-journey-to-hell-and-back-11555632000",
-  "publishDate": "April 19, 2019",
-  "fullText": "Ms. Mitchell has created a work of genuine theatrical distinction that succeeds in making the ancient myth of Orpheus and Eurydice speak directly to contemporary audiences without sacrificing any of its timeless power.",
+  "url": "https://www.wsj.com/arts-culture/theater/hadestown-broadway-review",
+  "publishDate": "2019-04-17",
+  "fullText": null,
   "isFullReview": false,
-  "dtliExcerpt": "Ms. Mitchell has created a work of genuine theatrical distinction that succeeds in making the ancient myth of Orpheus and Eurydice speak directly to contemporary audiences without sacrificing any of its timeless power.",
+  "bwwExcerpt": "t to remarkable life by director Rachel Chavkin, who does for the Quarter and hell what she did for Tolstoy's Russia with 2016's equally fine Natasha, Pierre & the Great Comet of 1812. Terry Teachout, The Wall Street Journal : While the stage version of \"Hadestown\" is longer and considerably more elaborate than the 2010 concept album, it still bears the mark of its origins, and therein lies its chief flaw. Ms. Mitchell's songs are beautiful but undramatic-the score runs mainly to slow and medium tempos-which means that the overall narrative pace can feel a bit sluggish, enthralling though it is from moment to moment. Even at its frequent best, \"Hadestown\" plays more like a song cycle than a stage show. I won't pretend that this isn't a problem, but Rachel Chavkin's endlessly varied direction and David Neumann's dances, all of them fully integrated into the staging, help to keep things on the move, as does Rachel Hauck's turntable-and-trap-door set. Thom Geier, TheWrap : Chavkin, her pro",
   "originalScore": null,
-  "assignedScore": 89,
-  "source": "web-search",
-  "dtliThumb": null,
-  "dtliUrl": null,
-  "bwwExcerpt": null,
-  "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Ms. Mitchell has created a work of genuine theatrical distinction that succeeds in making the ancient myth of Orpheus and Eurydice speak directly to contemporary audiences without sacrificing any of its timeless power.",
-  "needsScoring": true,
+  "assignedScore": 69,
+  "source": "bww-roundup",
+  "needsFullText": false,
+  "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
+  "textStatus": "missing",
+  "textQuality": "missing",
+  "sourceMethod": "bww-roundup",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 69,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 60.5,
+      "high": 77.5
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
-      "music": null,
+      "music": 73,
       "performances": null,
-      "direction": 89
+      "direction": 77
     },
     "keyPhrases": [
       {
-        "quote": "work of genuine theatrical distinction",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "succeeds in making the ancient myth...speak directly to contemporary audiences",
-        "sentiment": "positive",
+        "quote": "Ms. Mitchell's songs are beautiful but undramatic-the score runs mainly to slow and medium tempos-which means that the overall narrative pace can feel a bit sluggish",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "without sacrificing any of its timeless power",
+        "quote": "I won't pretend that this isn't a problem, but Rachel Chavkin's endlessly varied direction and David Neumann's dances, all of them fully integrated into the staging, help to keep things on the move",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
+      },
+      {
+        "quote": "enthralling though it is from moment to moment",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong praise for the creative achievement with language like 'genuine theatrical distinction' and 'succeeds' indicates clear positive recommendation despite being a brief excerpt. | GPT-4o-mini: The review expresses strong admiration for the production's ability to connect ancient themes with contemporary relevance, indicating a high recommendation.",
+    "reasoning": "Claude: The review acknowledges significant structural flaws (sluggish pace, plays like a song cycle rather than stage show) but praises the direction, choreography, and moment-to-moment appeal, suggesting a qualified positive recommendation despite clear reservations. | GPT-4o-mini: The review presents a mix of praise for direction and choreography while highlighting significant flaws in pacing and narrative structure, leading to a conditional recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:48.542Z",
+    "scoredAt": "2026-01-26T05:15:38.951Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "sources": [
+    "bww-roundup",
+    "web-search"
+  ]
 }
