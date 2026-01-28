@@ -11,8 +11,66 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "low",
+    "range": {
+      "low": 35,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "seems restrained and merely atmospheric",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "without the extra-special touch he has brought to various projects in the past",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The always-expert Natasha Katz creates magical images",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Review excerpt shows disappointment with director and designer not living up to past work, with mixed signals about production elements but overall sense of underperformance. | GPT-4o-mini: The review indicates a mix of praise for the director's reputation and some elements of the production, but also significant reservations about the first act being restrained, leading to a mixed recommendation. | Note: Models differed by 20 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:15.904Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 60,
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 20 points (Claude: 40, OpenAI: 60)"
+    ]
+  }
 }

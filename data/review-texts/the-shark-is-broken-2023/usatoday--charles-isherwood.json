@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The play, which imagines the tensions and camaraderie among the three actors during the famously troubled filming of 'Jaws,' is an affectionate tribute to moviemaking and male friendship.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play, which imagines the tensions and camaraderie among the three actors during the famously troubled filming of 'Jaws,' is an affectionate tribute to moviemaking and male friendship.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "affectionate tribute to moviemaking and male friendship",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "imagines the tensions and camaraderie among the three actors",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "an affectionate tribute to moviemaking",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Brief excerpt shows warm appreciation for the play's themes and concept, suggesting qualified positive recommendation, but lacks detail for confident scoring. | GPT-4o-mini: The review indicates a positive sentiment towards the themes of the play but lacks strong enthusiasm or specific praise for performances or direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:18.914Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

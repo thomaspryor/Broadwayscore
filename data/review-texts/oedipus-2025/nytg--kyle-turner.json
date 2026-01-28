@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"This new adaptation is less about what will happen or how, and without that thrust, Icke's Oedipus struggles to find its meaning.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/oedipus-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "struggles to find its meaning",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "without that thrust",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "this new adaptation is less about what will happen or how",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the adaptation's lack of dramatic momentum and suggests it fails to achieve meaningful impact, indicating the critic found significant problems with the production. | GPT-4o-mini: The review indicates significant shortcomings in the adaptation's clarity and meaning, leading to a negative overall impression.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:53.311Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 45,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

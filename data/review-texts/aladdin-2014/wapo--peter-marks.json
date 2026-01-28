@@ -11,10 +11,66 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "\"This version of 'Aladdin' will doubtless keep your kiddies happy; for adults, one would like to press Iglehart in the cause of conjuring a desert kingdom of richer enchantments.\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 45,
+      "performances": 79,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This version of 'Aladdin' will doubtless keep your kiddies happy; for adults, one would like to press Iglehart in the cause of conjuring a desert kingdom of richer enchantments",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "James Monroe Iglehart is the embodiment here of the role Robin Williams voiced in the 1992 movie, and schtick for schtick and wisecrack for wisecrack, the performance very much keeps to the hyper-caff",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "works so hard you wouldn't be stunned to find him continuing to grant wishes at the stage door",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises Iglehart's energetic performance but clearly suggests the show lacks sophistication for adult audiences, making it a qualified recommendation primarily for families with children. | GPT-4o-mini: The review highlights strong performances, particularly by Iglehart, but expresses a desire for a more enriching experience overall, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:59.887Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

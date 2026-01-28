@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\" ''Grey Houe' is built around themes of guilt, expiation and retribution, but not very solidly—and as a spectator, you’re too busy puzzling out what is happening to think much about what it means...Amid such excellent atmospherics, you may not care when the play itself creaks.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/grey-house-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": null,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "not very solidly—and as a spectator, you're too busy puzzling out what is happening to think much about what it means",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Amid such excellent atmospherics",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "you may not care when the play itself creaks",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises production values ('excellent atmospherics') but criticizes the confusing plot and structural problems ('the play itself creaks'), resulting in a mixed recommendation that leans slightly positive due to technical merits. | GPT-4o-mini: The review indicates a mixed experience, with some appreciation for the atmosphere but significant concerns about the clarity and solidity of the play's themes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:21.843Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,9 +10,65 @@
   "bwwExcerpt": "When Bess Wohl’s Liberation began performances off-Broadway at the Roundabout’s Laura Pels Theatre earlier this year, it was just after Trump’s second inauguration. The time-hopping memory play—which looks at a multigenerational group of second-wave feminists through a world-weary modern-day lens—registered as capital-I Important. Though not in a didactic, dullsville way. In a Heidi Chronicles kind of way.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "registered as capital-I Important",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Though not in a didactic, dullsville way",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "In a Heidi Chronicles kind of way",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic frames the play as 'capital-I Important' while explicitly distinguishing it from boring didactic theater and comparing it favorably to the acclaimed 'Heidi Chronicles,' suggesting qualified but clear appreciation. | GPT-4o-mini: The review indicates a positive sentiment towards the play's importance and execution, suggesting a clear recommendation despite a lack of specific praise for performances or direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:54.234Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

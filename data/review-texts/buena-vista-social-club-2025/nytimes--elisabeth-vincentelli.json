@@ -10,8 +10,64 @@
   "showScoreExcerpt": "âThe interconnections between musicians, songs and a society have rarely been evoked as vividly, and as lovingly, as they are in âBuena Vista Social Club.ââ",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/buena-vista-social-club",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 88,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "rarely been evoked as vividly, and as lovingly",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "interconnections between musicians, songs and a society",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The interconnections between musicians, songs and a society have rarely been evoked as vividly",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the musical's vivid and loving evocation of cultural connections, but extremely limited excerpt provides little context for full assessment. | GPT-4o-mini: The review expresses strong enthusiasm for the show's vivid and loving portrayal of its themes, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:39.892Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
