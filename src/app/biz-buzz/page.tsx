@@ -222,6 +222,11 @@ export default function BizBuzzPage() {
                         {item.commercial?.recoupedWeeks && (
                           <span className="text-gray-500 ml-2">({item.commercial.recoupedWeeks} wks)</span>
                         )}
+                        {item.commercial?.estimatedRecoupmentPct && (
+                          <span className="text-xs text-gray-500 ml-2">
+                            ~{item.commercial.estimatedRecoupmentPct[0]}-{item.commercial.estimatedRecoupmentPct[1]}% recouped
+                          </span>
+                        )}
                       </li>
                     ))}
                     {shows.length > 8 && (
