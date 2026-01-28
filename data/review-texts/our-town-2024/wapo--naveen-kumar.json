@@ -10,9 +10,67 @@
   "bwwExcerpt": "Leon’s staging is lovely, but I found myself craving a daring challenge to the idea of convention rather than simply an inclusive version of it. Why should the picture of a “typical American life” remain so narrow? Why stuff it with more types of people rather than pull it apart? That’s a job for other storytellers — whose repudiation of norms will hopefully become the new one.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 55,
+    "confidence": "high",
+    "range": {
+      "low": 50,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "Leon's staging is lovely",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "I found myself craving a daring challenge to the idea of convention rather than simply an inclusive version of it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Why stuff it with more types of people rather than pull it apart?",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the staging but expresses significant disappointment with the show's conceptual approach, wanting more radical reimagining rather than conventional inclusivity. | GPT-4o-mini: The review expresses a desire for more innovation and challenges to convention, indicating a mixed recommendation despite acknowledging the direction's quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:27.790Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 55,
+    "scoreDelta": 0,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (55 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

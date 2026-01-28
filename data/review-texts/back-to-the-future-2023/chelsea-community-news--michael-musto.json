@@ -11,8 +11,66 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is lavish and, as directed by John Rando (Urinetown, Mr. Saturday Night), never slows down",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The whole thing is basically a big, flashy, speeding car, but it's apt for today's Broadway",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "combines a familiar title, a sampling of hit songs, and some slick special effects, while vaguely touching on the fantasy",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the production's lavish qualities and skilled direction but describes it in somewhat mechanical terms as a 'big, flashy, speeding car' that fits today's Broadway formula without deeper artistic merit. | GPT-4o-mini: The review indicates a mix of positive elements like direction and production quality but lacks strong enthusiasm or a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:48.246Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (64 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

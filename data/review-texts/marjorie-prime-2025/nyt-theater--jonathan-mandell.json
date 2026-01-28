@@ -10,9 +10,67 @@
   "bwwExcerpt": "What’s most uncanny for me about “Marjorie Prime,” though, is that the new production, especially the ending, struck me as having been revised, not necessarily for the better. Yet it turns out that the script is exactly the same (I still have the old one; I went back and checked it.) The director and most of the design team are the same as well. The show is being billed as a look at “memory, loss and AI” — I didn’t realize it would be a look at my memory too. There is still much in the play that",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "struck me as having been revised, not necessarily for the better",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "There is still much in the play that",
+        "sentiment": "neutral",
+        "strength": 1
+      },
+      {
+        "quote": "the script is exactly the same",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The incomplete excerpt suggests disappointment with the revival compared to the original, but lacks sufficient content to determine the critic's overall recommendation. | GPT-4o-mini: The review expresses disappointment in the production's changes while acknowledging that the script remains unchanged, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:14.043Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (50 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

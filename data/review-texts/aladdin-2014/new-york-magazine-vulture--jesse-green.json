@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"So why is Aladdin a bit of a chore? Even the best of what the writers offer doesn’t seem to stick very long; if it weren’t for Nicholaw’s merciless flogging, you feel the story would simply evaporate in the desert heat.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 41,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": null,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "So why is Aladdin a bit of a chore?",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Even the best of what the writers offer doesn't seem to stick very long",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "you feel the story would simply evaporate in the desert heat",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic frames the show as 'a chore' and suggests the material is so weak it would collapse without aggressive direction, indicating clear problems that make it hard to recommend. | GPT-4o-mini: The review expresses significant dissatisfaction with the story's impact and engagement, indicating a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:26.859Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

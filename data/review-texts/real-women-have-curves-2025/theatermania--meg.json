@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "As pertinent as that notion is, it’s just one empowering theme in this triumphant musical. While some might find the plot to be all-over-the-place, it’s about Ana’s experience. Serving as a slice-of-life, it is desperately needed now, at a time when so many women like her are dehumanized on a daily basis, whether because of their body, race, or immigration status. Just as beauty is so much more than meets the eye, Real Women Have Curves offers far more than just its body-positive title. It may not be the flashiest musical of the season, but it’s real. The realest thing Broadway has seen in quite some time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/real-women-have-curves/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 79.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "triumphant musical",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "desperately needed now",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The realest thing Broadway has seen in quite some time",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses strong superlatives like 'triumphant' and 'realest thing Broadway has seen in quite some time' while acknowledging the show's cultural importance and authenticity, clearly recommending despite minor plot criticisms. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's themes and relevance, indicating a clear recommendation despite some minor reservations about the plot.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:15.884Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 84,
+    "openaiScore": 85,
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
