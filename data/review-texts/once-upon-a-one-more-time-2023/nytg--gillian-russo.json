@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“The dance is truly what makes ‘Once Upon a One More Time’ worth the price of admission...also ultimately urges us not only to be willing to change the stories we tell and be open to new ideas, but also that sometimes, we must pass the pen to new writers to tell their stories themselves. That message has continued relevance — if anything, it's continually stronger than yesterday.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/once-upon-a-one-more-time-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "The dance is truly what makes 'Once Upon a One More Time' worth the price of admission",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "worth the price of admission",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "That message has continued relevance — if anything, it's continually stronger than yesterday",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the show is 'worth the price of admission' and praises both the dance and the thematic relevance, indicating a clear positive recommendation despite limited scope of the excerpt. | GPT-4o-mini: The review highlights the dance as a standout element and conveys a positive message about the show's themes, suggesting a clear recommendation despite not detailing other aspects.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:05.962Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 75,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

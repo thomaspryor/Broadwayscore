@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“This timidity is but one example of the ways in which the show comes up short, both as a feminist text and as a tribute to Spears’s songbook — and, yes, her life. The last thing her fans might have expected from a Britney Spears musical is dutiful conventionality.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/once-upon-a-one-more-time-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show comes up short, both as a feminist text and as a tribute to Spears's songbook",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "dutiful conventionality",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "This timidity",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic criticizes the show for being timid, conventional, and failing both as feminist text and Spears tribute, indicating clear disappointment without redeeming qualities mentioned. | GPT-4o-mini: The review expresses significant disappointment in the show's execution and thematic depth, indicating a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:10.940Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

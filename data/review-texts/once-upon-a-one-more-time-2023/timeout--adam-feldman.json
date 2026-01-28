@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is undeniably fun, with energetic performances and catchy pop songs, but it struggles to find emotional depth beneath its glittery surface.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is undeniably fun, with energetic performances and catchy pop songs, but it struggles to find emotional depth beneath its glittery surface.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 73
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 74,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "undeniably fun",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "struggles to find emotional depth",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "beneath its glittery surface",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed review that acknowledges the show's entertainment value but criticizes its lack of substance, landing in qualified territory without a clear recommendation either way. | GPT-4o-mini: The review highlights fun performances and catchy music but indicates a lack of emotional depth, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:25.030Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
