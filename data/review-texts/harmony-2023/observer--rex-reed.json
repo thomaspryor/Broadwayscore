@@ -5,7 +5,7 @@
   "criticName": "Rex Reed",
   "url": "https://observer.com/2023/11/harmony-broadway-review-barry-manilow/",
   "publishDate": "November 15, 2023",
-  "fullText": "Despite some flaws in the book and a few pacing issues, Harmony succeeds as a moving testament to the power of music and friendship in the face of unimaginable evil.",
+  "fullText": "We noticed you're using an ad blocker.\n\t\t\tWe get it: you like to have control of your own internet experience. But advertising revenue helps support our journalism. To read our full stories, please turn off your ad blocker.We'd really appreciate it.\n\nBelow are steps you can take in order to whitelist Observer.com on your browser:\n\nClick the AdBlock button on your browser and select Don't run on pages on this domain.\n\nClick the AdBlock Plus button on your browser and select Enabled on this site.\n\nClick the AdBlock Plus button on your browser and select Disable on Observer.com.",
   "isFullReview": false,
   "dtliExcerpt": "Despite some flaws in the book and a few pacing issues, Harmony succeeds as a moving testament to the power of music and friendship in the face of unimaginable evil.",
   "originalScore": null,
@@ -72,5 +72,43 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 98,
+  "archivePath": "data/archives/reviews/harmony-2023/observer--rex-reed_2026-01-28.html",
+  "textFetchedAt": "2026-01-28T23:42:26.018Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (404): Request failed with status code 404"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 98 (min: 300)",
+    "Show title not found in text"
+  ]
 }
