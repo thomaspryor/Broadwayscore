@@ -129,7 +129,7 @@ A website aggregating Broadway show reviews into composite scores (independent B
 - **1,150+ critic reviews** across all shows in `data/review-texts/`
 - **Critics-only scoring** (V1 approach)
 - **TodayTix-inspired UI** with card layout, hero images, show detail pages
-- **External CDN images** from Contentful (TodayTix's CDN)
+- **Locally archived images** (poster, thumbnail, hero) in `public/images/shows/`, with CDN URL backups in `data/image-sources.json`
 - **URL-based filtering** with shareable filter state (?status=now_playing&sort=score_desc)
 
 ### Shows Database
@@ -172,6 +172,8 @@ data/
   historical-shows-pending.json   # Auto-generated: historical shows awaiting metadata
   show-score.json                 # Show Score aggregator data (audience scores + critic reviews)
   show-score-urls.json            # URL mapping for Show Score pages
+  image-sources.json              # Backup of original CDN URLs before local archival
+  todaytix-ids.json               # Cached TodayTix show IDs for image discovery
   audience-buzz.json              # Audience Buzz data (Show Score, Mezzanine, Reddit)
   audience.json                   # (Legacy/Future) Audience scores
   buzz.json                       # (Legacy/Future) Social buzz data
@@ -346,6 +348,9 @@ This gives more weight to sources with larger sample sizes.
 - `scripts/audit-scores.js` - Validates all review scores, flags wrong conversions, sentiment placeholders, duplicates
 - `scripts/fix-scores.js` - Automated fix for common scoring issues (wrong star/letter conversions)
 - `scripts/rebuild-show-reviews.js` - Rebuilds reviews.json for specific shows from review-texts data
+- `scripts/fetch-show-images-auto.js` - Discovers and fetches show images from TodayTix CDN
+- `scripts/archive-show-images.js` - Archives CDN images locally to `public/images/shows/` as WebP
+- `src/components/ShowImage.tsx` - Image component with cascading source fallback and onError handling
 - `scripts/validate-data.js` - **Run before pushing** - validates shows.json for duplicates, missing fields, etc.
 - `tests/e2e/` - Playwright E2E tests for homepage and show pages
 - `playwright.config.ts` - Playwright test configuration
@@ -506,9 +511,21 @@ All automation runs via GitHub Actions - no local commands needed.
 - **Archives saved to:** `data/aggregator-archive/{show-score,dtli,bww-roundups}/`
 - **Why archive?** Avoid painful re-scraping - pages are saved locally with timestamps
 
-### `.github/workflows/fetch-images.yml`
-- **Runs:** When triggered
-- **Does:** Fetches show images from TodayTix CDN
+### `.github/workflows/fetch-all-image-formats.yml`
+- **Runs:** Twice weekly (Mon & Thu at 6 AM UTC), or when triggered by show discovery workflows
+- **Does:**
+  1. Fetches poster, thumbnail, and hero images from TodayTix CDN (via Contentful)
+  2. Archives images locally to `public/images/shows/{show-id}/` as WebP
+  3. Backs up original CDN URLs to `data/image-sources.json`
+  4. Updates `shows.json` to use local paths (e.g., `/images/shows/hamilton-2015/poster.webp`)
+- **Scripts:** `scripts/fetch-show-images-auto.js` (fetch from CDN) → `scripts/archive-show-images.js` (download + localize)
+- **Triggered by:** `update-show-status.yml` (new shows) and `discover-historical-shows.yml` (historical shows)
+- **Manual trigger:** `gh workflow run "Fetch Show Images"` with optional `show_id` or `only_missing=true`
+- **Image formats archived:**
+  - Poster: 720×1080 WebP (face-focused crop)
+  - Thumbnail: 540×540 WebP (face-focused crop)
+  - Hero: 1920×800 WebP (center crop)
+- **ShowImage component:** `src/components/ShowImage.tsx` renders images with cascading source fallback and onError handling — if local file fails, tries next source; if all fail, renders emoji fallback
 
 ### `.github/workflows/update-grosses.yml`
 - **Runs:** Every Tuesday & Wednesday at 3pm UTC (10am ET)
