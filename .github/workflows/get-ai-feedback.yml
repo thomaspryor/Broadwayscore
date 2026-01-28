@@ -1,0 +1,184 @@
+name: Get AI Feedback
+
+on:
+  workflow_dispatch:
+    inputs:
+      plan_file:
+        description: 'Path to plan file (relative to repo root)'
+        required: true
+        default: 'docs/biz-section-plan.md'
+      question:
+        description: 'Optional specific question to ask (leave empty for default review)'
+        required: false
+        default: ''
+
+jobs:
+  get-feedback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get AI Feedback
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PLAN_FILE: ${{ github.event.inputs.plan_file }}
+          CUSTOM_QUESTION: ${{ github.event.inputs.question }}
+        run: |
+          node << 'EOF'
+          const fs = require('fs');
+
+          const planContent = fs.readFileSync(process.env.PLAN_FILE, 'utf-8');
+          const customQuestion = process.env.CUSTOM_QUESTION || '';
+
+          const defaultPrompt = `You are reviewing a product plan. Please provide concise, actionable feedback.
+
+          The owner says: "The data itself is the value proposition. I don't need bells and whistles - just the right presentation."
+
+          ## Plan Document
+
+          ${planContent}
+
+          ## Your Task
+
+          Answer these questions directly (total response under 400 words):
+
+          1. **Recommendation**: Option A, B, or C? Why?
+          2. **Cut**: What should be removed from the plan?
+          3. **Missing**: What high-value/low-effort feature is missing?
+          4. **Red flags**: Any UX or technical concerns?
+
+          Be direct and opinionated. No hedging.`;
+
+          const customPrompt = `You are reviewing a product plan. Please provide concise, actionable feedback.
+
+          ## Plan Document
+
+          ${planContent}
+
+          ## Question
+
+          ${customQuestion}
+
+          Be direct and specific. Keep response under 400 words.`;
+
+          const prompt = customQuestion ? customPrompt : defaultPrompt;
+
+          async function askClaude() {
+            const apiKey = process.env.ANTHROPIC_API_KEY;
+            if (!apiKey) return { model: 'Claude', error: 'API key not set' };
+
+            try {
+              const response = await fetch('https://api.anthropic.com/v1/messages', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'x-api-key': apiKey,
+                  'anthropic-version': '2023-06-01',
+                },
+                body: JSON.stringify({
+                  model: 'claude-sonnet-4-20250514',
+                  max_tokens: 1024,
+                  messages: [{ role: 'user', content: prompt }],
+                }),
+              });
+
+              if (!response.ok) {
+                const error = await response.text();
+                return { model: 'Claude', error };
+              }
+
+              const data = await response.json();
+              return { model: 'Claude (Sonnet)', response: data.content[0].text };
+            } catch (e) {
+              return { model: 'Claude', error: e.message };
+            }
+          }
+
+          async function askGPT() {
+            const apiKey = process.env.OPENAI_API_KEY;
+            if (!apiKey) return { model: 'GPT-4', error: 'API key not set' };
+
+            try {
+              const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${apiKey}`,
+                },
+                body: JSON.stringify({
+                  model: 'gpt-4o',
+                  max_tokens: 1024,
+                  messages: [{ role: 'user', content: prompt }],
+                }),
+              });
+
+              if (!response.ok) {
+                const error = await response.text();
+                return { model: 'GPT-4o', error };
+              }
+
+              const data = await response.json();
+              return { model: 'GPT-4o', response: data.choices[0].message.content };
+            } catch (e) {
+              return { model: 'GPT-4o', error: e.message };
+            }
+          }
+
+          async function main() {
+            console.log('Querying Claude and GPT-4...\n');
+
+            const [claude, gpt] = await Promise.all([askClaude(), askGPT()]);
+
+            const timestamp = new Date().toISOString().split('T')[0];
+            const outputFile = `docs/ai-feedback-${timestamp}.md`;
+
+            let output = `# AI Feedback on Plan\n\n`;
+            output += `**Generated:** ${new Date().toISOString()}\n`;
+            output += `**Plan file:** ${process.env.PLAN_FILE}\n`;
+            if (customQuestion) {
+              output += `**Custom question:** ${customQuestion}\n`;
+            }
+            output += `\n---\n\n`;
+
+            // Claude response
+            output += `## Claude (Sonnet) Feedback\n\n`;
+            if (claude.error) {
+              output += `*Error: ${claude.error}*\n\n`;
+            } else {
+              output += claude.response + '\n\n';
+            }
+
+            output += `---\n\n`;
+
+            // GPT response
+            output += `## GPT-4o Feedback\n\n`;
+            if (gpt.error) {
+              output += `*Error: ${gpt.error}*\n\n`;
+            } else {
+              output += gpt.response + '\n\n';
+            }
+
+            fs.writeFileSync(outputFile, output);
+            console.log(`Feedback written to ${outputFile}`);
+
+            // Also output to console for the workflow log
+            console.log('\n' + '='.repeat(60));
+            console.log(output);
+          }
+
+          main().catch(console.error);
+          EOF
+
+      - name: Commit feedback
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/ai-feedback-*.md
+          git diff --staged --quiet || git commit -m "Add AI feedback on plan"
+          git push
