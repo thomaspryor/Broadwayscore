@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“There’s a certain kind of numbness that sets in when you’re stuck in a theater and you realize that the characters up onstage are going to keep playing the same scene, over and over again, for the rest of the evening.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/i-need-that-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's a certain kind of numbness that sets in when you're stuck in a theater",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "characters up onstage are going to keep playing the same scene, over and over again",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "numbness that sets in when you’re stuck in a theater",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic describes a deeply negative theater experience characterized by repetitiveness, audience numbness, and feeling 'stuck,' indicating a clear pan of the production. | GPT-4o-mini: The review expresses a strong sense of dissatisfaction and boredom with the repetitive nature of the performance, indicating a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:43.104Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
