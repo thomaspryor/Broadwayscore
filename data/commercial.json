@@ -274,21 +274,22 @@
       "designation": "TBD",
       "capitalization": 31500000,
       "capitalizationSource": "Forbes / Broadway World",
-      "weeklyRunningCost": 900000,
+      "weeklyRunningCost": 1000000,
+      "weeklyRunningCostSource": "Deep Research: $1.0-1.1M weekly operating costs",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
       "estimatedRecoupmentPct": [
-        10,
-        30
+        70,
+        80
       ],
-      "estimatedRecoupmentSource": "Section C: Reddit Grosses Analysis - recoup listed as 10-30%",
+      "estimatedRecoupmentSource": "Deep Research Jan 2026: $63M+ gross - ~$45M costs = ~$18M profit toward $31.5M cap (57-73%)",
       "estimatedRecoupmentDate": "2026-01-28",
       "isEstimate": {
-        "weeklyRunningCost": true
+        "weeklyRunningCost": false
       },
-      "notes": "Most expensive show of 2024-2025 season. Projected to recoup Spring 2026 if grosses hold. Has grossed $63M+ in 46 weeks."
+      "notes": "Most expensive show of 2024-2025 season. Grossed $63M+ in 46 weeks with $1.0-1.1M weekly costs. On track to recoup Spring 2026. Eligible for $3M NY tax credit (25% of costs up to $12M). Break-even ~$1.2M weekly."
     },
     "the-great-gatsby": {
       "designation": "TBD",
@@ -326,24 +327,18 @@
       }
     },
     "stranger-things": {
-      "designation": "TBD",
-      "capitalization": 25000000,
-      "capitalizationSource": "Industry estimates (high-budget spectacle)",
+      "designation": "Windfall",
+      "capitalization": 20000000,
+      "capitalizationSource": "Deep Research: $20M+ (revised from earlier $25M estimates)",
       "weeklyRunningCost": 1000000,
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedWeeks": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": [
-        30,
-        50
-      ],
-      "estimatedRecoupmentSource": "Reddit Grosses Analysis (u/Boring_Waltz_9545)",
-      "estimatedRecoupmentDate": "2026-01-25",
+      "recouped": true,
+      "recoupedDate": "2025-12",
+      "recoupedWeeks": 40,
+      "recoupedSource": "Deep Research / Industry analysis (Dec 2025 recoupment)",
       "isEstimate": {
         "weeklyRunningCost": true
       },
-      "notes": "Netflix/Sonia Friedman production. Won 4 Tony Awards 2025. Set Marquis Theatre record of $2.51M during Christmas week 2025. Season 5 finale boosted ticket sales significantly."
+      "notes": "Netflix/Sonia Friedman production. Won 4 Tony Awards 2025. RECOUPED December 2025 - grossed $57M+ in 40 weeks with $1M/week costs = $17M+ profit toward $20M cap. Set Marquis Theatre record of $2.51M during Christmas week 2025. Season 5 finale boosted ticket sales significantly."
     },
     "buena-vista-social-club": {
       "designation": "TBD",
@@ -373,19 +368,20 @@
       "capitalActual": 11500000,
       "capitalActualSource": "Bloomberg",
       "weeklyRunningCost": 500000,
+      "weeklyRunningCostSource": "Deep Research: $500K weekly (5x London's £100K)",
       "isEstimate": {
-        "weeklyRunningCost": true
+        "weeklyRunningCost": false
       },
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "West End hit. Strong word-of-mouth. Extended through Feb 2026. Running costs 5x London production.",
+      "notes": "West End hit transferred to Broadway. Weekly costs $500K vs London's £100K. Break-even ~$600K weekly but averaging $580K - running below break-even. Extended through Feb 2026 on strong word-of-mouth despite soft grosses.",
       "estimatedRecoupmentPct": [
         0,
         20
       ],
-      "estimatedRecoupmentSource": "Section C: Reddit Grosses Analysis - recoup listed as 0-20%",
+      "estimatedRecoupmentSource": "Deep Research: below break-even, unlikely to recoup before closing",
       "estimatedRecoupmentDate": "2026-01-28"
     },
     "just-in-time": {
@@ -393,20 +389,21 @@
       "capitalization": 9400000,
       "capitalizationSource": "Broadway Journal",
       "weeklyRunningCost": 600000,
+      "weeklyRunningCostSource": "Deep Research: $600K weekly operating costs",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
       "estimatedRecoupmentPct": [
-        80,
+        90,
         100
       ],
-      "estimatedRecoupmentSource": "Reddit Grosses Analysis (u/Boring_Waltz_9545)",
-      "estimatedRecoupmentDate": "2026-01-25",
+      "estimatedRecoupmentSource": "Deep Research: 90+% recouped, recoupment 'imminent'",
+      "estimatedRecoupmentDate": "2026-01-28",
       "isEstimate": {
-        "weeklyRunningCost": true
+        "weeklyRunningCost": false
       },
-      "notes": "Jonathan Groff star vehicle. Projected to recoup if $1.2M weekly gross sustained. Bobby Darin jukebox musical."
+      "notes": "Jonathan Groff star vehicle. Bobby Darin jukebox musical with $9.4M cap and $600K weekly costs. Averaging $1.2M+ weekly gross - recoupment imminent (likely Feb 2026). Strong reviews and Groff's star power driving consistent sales."
     },
     "two-strangers": {
       "designation": "TBD",
@@ -593,16 +590,22 @@
       "designation": "TBD",
       "capitalization": 5000000,
       "capitalizationSource": "SEC filing (All In was $4.8M, All Out comparable)",
-      "weeklyRunningCost": 550000,
-      "weeklyRunningCostSource": "Industry estimates ($500-600K, lean cost structure)",
+      "weeklyRunningCost": 250000,
+      "weeklyRunningCostSource": "Deep Research: $200-300K weekly (lean 4-performer format)",
       "isEstimate": {
-        "weeklyRunningCost": true
+        "weeklyRunningCost": false
       },
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Sequel to All In: Comedy About Love which recouped its $4.8M in just 10 weeks. Same format: rotating celebrity comedians with live band, David Korins design. Hit $2M+ weekly gross (record for a play). Limited engagement through March 8, 2026. Stars include Sarah Silverman, Ray Romano, Jason Mantzoukas. Low capitalization + lean 4-performer format makes recoupment highly likely."
+      "estimatedRecoupmentPct": [
+        60,
+        80
+      ],
+      "estimatedRecoupmentSource": "Deep Research: $2M+ weekly gross with $250K costs = strong profit margin",
+      "estimatedRecoupmentDate": "2026-01-28",
+      "notes": "Sequel to All In: Comedy About Love which recouped its $4.8M in just 10 weeks. Same format: rotating celebrity comedians with live band. Hit $2M+ weekly gross (record for a play). Very lean $200-300K weekly costs with 4-performer format. LIMITED RUN through March 8, 2026 - did NOT receive NY tax credit (missed application deadline by 2 months). Stars include Sarah Silverman, Ray Romano, Jason Mantzoukas."
     },
     "art-2025": {
       "designation": "Easy Winner",
