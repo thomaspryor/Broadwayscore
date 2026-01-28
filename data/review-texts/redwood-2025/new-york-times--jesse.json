@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical &#8216;Redwood' features two great stars. One is an awe-inspiring force of nature. The other is a tree.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 28,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/redwood/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 28,
+    "confidence": "medium",
+    "range": {
+      "low": 15.5,
+      "high": 40.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "two great stars",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The other is a tree",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "awe-inspiring force of nature",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses clever wordplay to suggest that a literal tree upstages the human performer, which is a devastating critique disguised as wit. | GPT-4o-mini: The review is primarily a humorous critique that implies a lack of substance in the show, leading to a clear rejection. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:36.446Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 20,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
