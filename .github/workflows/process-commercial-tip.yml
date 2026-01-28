@@ -1,0 +1,56 @@
+name: Process Commercial Tip
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  process-tip:
+    if: contains(github.event.issue.labels.*.name, 'commercial-tip')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Process tip
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: node scripts/process-commercial-tip.js
+
+      - name: Commit and push (if changes made)
+        if: always()
+        run: |
+          git add data/commercial.json data/commercial-changelog.json
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "data: Process commercial tip from issue #${{ github.event.issue.number }}
+
+            Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            for i in 1 2 3; do
+              if git push origin main; then break; fi
+              git pull --rebase origin main
+              sleep 2
+            done
+          fi

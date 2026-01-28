@@ -352,7 +352,12 @@ This gives more weight to sources with larger sample sizes.
 - `scripts/archive-show-images.js` - Archives CDN images locally to `public/images/shows/` as WebP
 - `src/components/ShowImage.tsx` - Image component with cascading source fallback and onError handling
 - `scripts/validate-data.js` - **Run before pushing** - validates shows.json for duplicates, missing fields, etc.
-- `tests/e2e/` - Playwright E2E tests for homepage and show pages
+- `scripts/update-commercial-data.js` - Weekly commercial data automation (Reddit + trade press + Claude analysis)
+- `scripts/lib/parse-grosses.js` - Reddit Grosses Analysis post parser (exported for unit testing)
+- `scripts/process-commercial-tip.js` - Processes user-submitted commercial data tips from GitHub issues
+- `data/commercial-changelog.json` - Changelog of automated commercial data updates
+- `tests/unit/` - Unit tests (parse-grosses, commercial filtering, shadow classifier)
+- `tests/e2e/` - Playwright E2E tests for homepage, show pages, and biz-buzz
 - `playwright.config.ts` - Playwright test configuration
 
 ### Show Deduplication System
@@ -678,6 +683,34 @@ All automation runs via GitHub Actions - no local commands needed.
 - **Script:** `scripts/process-feedback.js`
 - **Setup guide:** `FORMSPREE-SETUP.md`
 - **Requires:** FORMSPREE_TOKEN secret (see setup guide)
+
+### `.github/workflows/update-commercial.yml`
+- **Runs:** Every Wednesday at 4 PM UTC (11 AM EST) (or manually via GitHub UI)
+- **Does:**
+  - Scrapes Reddit for u/Boring_Waltz_9545's weekly Grosses Analysis posts
+  - Searches trade press (Deadline, Variety, Broadway Journal, etc.) for financial news
+  - Uses Claude Sonnet to analyze gathered data and propose commercial.json updates
+  - Applies high/medium confidence changes automatically, flags low confidence for review
+  - Runs shadow classifier to detect designation disagreements
+  - Creates GitHub issue summarizing all changes
+  - Writes to `data/commercial-changelog.json`
+- **Manual trigger options:**
+  - `dry_run`: Don't save changes (default: false)
+  - `gather_only`: Stop after gathering data, don't run AI analysis (default: false)
+- **Script:** `scripts/update-commercial-data.js`
+- **Parser module:** `scripts/lib/parse-grosses.js` (exported for unit testing)
+- **Requires:** ANTHROPIC_API_KEY, SCRAPINGBEE_API_KEY secrets
+
+### `.github/workflows/process-commercial-tip.yml`
+- **Runs:** When a GitHub issue is created/edited with the `commercial-tip` label
+- **Does:**
+  - Validates commercial data tips submitted by users via issue template
+  - Uses Claude API to assess accuracy and relevance
+  - If valid: applies changes to `data/commercial.json` and commits
+  - Posts validation result as issue comment
+- **Issue template:** `.github/ISSUE_TEMPLATE/commercial-tip.yml`
+- **Script:** `scripts/process-commercial-tip.js`
+- **Requires:** ANTHROPIC_API_KEY secret
 
 ### `.github/workflows/collect-review-texts.yml`
 - **Runs:** Manual trigger only (workflow_dispatch)
