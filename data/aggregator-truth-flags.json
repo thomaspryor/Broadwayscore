@@ -1,0 +1,539 @@
+{
+  "_meta": {
+    "generatedAt": "2026-01-28T18:25:31.317Z",
+    "description": "Flagged shows with potential anomalies",
+    "totalFlagged": 49
+  },
+  "shows": {
+    "two-strangers-bway-2025": {
+      "title": "Two Strangers (Carry a Cake Across New York)",
+      "flags": [
+        {
+          "type": "check-show-score-url",
+          "message": "Show Score has 0 reviews but we have 18 local",
+          "severity": "warning"
+        },
+        {
+          "type": "check-bww-url",
+          "message": "BWW has 0 reviews but we have 18 local",
+          "severity": "warning"
+        }
+      ]
+    },
+    "maybe-happy-ending-2024": {
+      "title": "Maybe Happy Ending",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (23) > maxAggregator (14) * 1.5",
+          "severity": "warning"
+        },
+        {
+          "type": "check-show-score-url",
+          "message": "Show Score has 0 reviews but we have 23 local",
+          "severity": "warning"
+        },
+        {
+          "type": "check-bww-url",
+          "message": "BWW has 0 reviews but we have 23 local",
+          "severity": "warning"
+        }
+      ]
+    },
+    "the-outsiders-2024": {
+      "title": "The Outsiders",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (27) > maxAggregator (14) * 1.5",
+          "severity": "warning"
+        },
+        {
+          "type": "check-show-score-url",
+          "message": "Show Score has 0 reviews but we have 27 local",
+          "severity": "warning"
+        },
+        {
+          "type": "check-bww-url",
+          "message": "BWW has 0 reviews but we have 27 local",
+          "severity": "warning"
+        }
+      ]
+    },
+    "oh-mary-2024": {
+      "title": "Oh, Mary!",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (36) > maxAggregator (18) * 1.5",
+          "severity": "warning"
+        },
+        {
+          "type": "check-show-score-url",
+          "message": "Show Score has 0 reviews but we have 36 local",
+          "severity": "warning"
+        }
+      ]
+    },
+    "the-great-gatsby-2024": {
+      "title": "The Great Gatsby",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (31) > maxAggregator (17) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "wicked-2003": {
+      "title": "Wicked",
+      "flags": [
+        {
+          "type": "check-bww-url",
+          "message": "BWW has 0 reviews but we have 27 local",
+          "severity": "warning"
+        }
+      ]
+    },
+    "the-lion-king-1997": {
+      "title": "The Lion King",
+      "flags": [
+        {
+          "type": "check-bww-url",
+          "message": "BWW has 0 reviews but we have 28 local",
+          "severity": "warning"
+        }
+      ]
+    },
+    "hadestown-2019": {
+      "title": "Hadestown",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (75) > maxAggregator (27) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "mj-2022": {
+      "title": "MJ The Musical",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (43) > maxAggregator (23) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "six-2021": {
+      "title": "SIX",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (31) > maxAggregator (19) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "mamma-mia-2025": {
+      "title": "Mamma Mia!",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (28) > maxAggregator (18) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "stranger-things-2024": {
+      "title": "Stranger Things: The First Shadow",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (32) > maxAggregator (17) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "stereophonic-2024": {
+      "title": "Stereophonic",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (50) > maxAggregator (19) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "suffs-2024": {
+      "title": "Suffs",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (40) > maxAggregator (17) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "the-notebook-2024": {
+      "title": "The Notebook",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (40) > maxAggregator (20) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "queen-versailles-2025": {
+      "title": "The Queen of Versailles",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (31) > maxAggregator (20) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "death-becomes-her-2024": {
+      "title": "Death Becomes Her",
+      "flags": [
+        {
+          "type": "check-bww-url",
+          "message": "BWW has 0 reviews but we have 21 local",
+          "severity": "warning"
+        }
+      ]
+    },
+    "buena-vista-social-club-2025": {
+      "title": "Buena Vista Social Club",
+      "flags": [
+        {
+          "type": "check-bww-url",
+          "message": "BWW has 0 reviews but we have 24 local",
+          "severity": "warning"
+        }
+      ]
+    },
+    "chess-2025": {
+      "title": "Chess",
+      "flags": [
+        {
+          "type": "check-bww-url",
+          "message": "BWW has 0 reviews but we have 19 local",
+          "severity": "warning"
+        }
+      ]
+    },
+    "the-roommate-2024": {
+      "title": "The Roommate",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (36) > maxAggregator (18) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "our-town-2024": {
+      "title": "Our Town",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (29) > maxAggregator (19) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "back-to-the-future-2023": {
+      "title": "Back to the Future: The Musical",
+      "flags": [
+        {
+          "type": "check-dtli-url",
+          "message": "DTLI has 0 reviews but we have 30 local",
+          "severity": "warning"
+        }
+      ]
+    },
+    "every-brilliant-thing-2026": {
+      "title": "Every Brilliant Thing",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "death-of-a-salesman-2026": {
+      "title": "Death of a Salesman",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "beaches-2026": {
+      "title": "Beaches, A New Musical",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "the-balusters-2026": {
+      "title": "The Balusters",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "becky-shaw-2026": {
+      "title": "Becky Shaw",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "cats-the-jellicle-ball-2026": {
+      "title": "CATS: The Jellicle Ball",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "dog-day-afternoon-2026": {
+      "title": "Dog Day Afternoon",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "fallen-angels-2026": {
+      "title": "Fallen Angels",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "the-fear-of-13-2026": {
+      "title": "The Fear of 13",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "giant-2026": {
+      "title": "Giant",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "joe-turners-come-and-gone-2026": {
+      "title": "Joe Turner's Come and Gone",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "the-lost-boys-2026": {
+      "title": "The Lost Boys",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "proof-2026": {
+      "title": "Proof",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "the-rocky-horror-show-2026": {
+      "title": "The Rocky Horror Show",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "schmigadoon-2026": {
+      "title": "Schmigadoon!",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "titanique-2026": {
+      "title": "Titanique",
+      "flags": [
+        {
+          "type": "no-archives",
+          "message": "No aggregator archives exist for this show",
+          "severity": "info"
+        }
+      ]
+    },
+    "illinoise-2024": {
+      "title": "Illinoise",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (40) > maxAggregator (13) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "lempicka-2024": {
+      "title": "Lempicka",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (28) > maxAggregator (18) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "heart-of-rock-and-roll-2024": {
+      "title": "The Heart of Rock and Roll",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (20) > maxAggregator (13) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "merrily-we-roll-along-2023": {
+      "title": "Merrily We Roll Along",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (32) > maxAggregator (20) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "the-whos-tommy-2024": {
+      "title": "The Who's Tommy",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (23) > maxAggregator (14) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "the-wiz-2024": {
+      "title": "The Wiz",
+      "flags": [
+        {
+          "type": "check-bww-url",
+          "message": "BWW has 0 reviews but we have 15 local",
+          "severity": "warning"
+        }
+      ]
+    },
+    "jajas-african-hair-braiding-2023": {
+      "title": "Jaja's African Hair Braiding",
+      "flags": [
+        {
+          "type": "possibly-missing",
+          "message": "localCount (20) < maxAggregator (26) * 0.8 - missing ~6 reviews",
+          "severity": "info"
+        }
+      ]
+    },
+    "mary-jane-2024": {
+      "title": "Mary Jane",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (23) > maxAggregator (14) * 1.5",
+          "severity": "warning"
+        },
+        {
+          "type": "check-bww-url",
+          "message": "BWW has 0 reviews but we have 23 local",
+          "severity": "warning"
+        }
+      ]
+    },
+    "mother-play-2024": {
+      "title": "Mother Play",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (24) > maxAggregator (14) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    },
+    "patriots-2024": {
+      "title": "Patriots",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (26) > maxAggregator (16) * 1.5",
+          "severity": "warning"
+        },
+        {
+          "type": "check-bww-url",
+          "message": "BWW has 0 reviews but we have 26 local",
+          "severity": "warning"
+        }
+      ]
+    },
+    "an-enemy-of-the-people-2024": {
+      "title": "An Enemy of the People",
+      "flags": [
+        {
+          "type": "likely-duplicates",
+          "message": "localCount (41) > maxAggregator (19) * 1.5",
+          "severity": "warning"
+        }
+      ]
+    }
+  }
+}
