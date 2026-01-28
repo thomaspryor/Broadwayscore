@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-01-28T20:55:55.580Z",
-  "confidence_score": 99.3,
+  "timestamp": "2026-01-28T21:05:00.000Z",
+  "confidence_score": 97.8,
   "target_confidence": 90,
   "status": "PASS",
   "metrics": {
     "duplicate_rate": 2.91,
-    "wrong_production_rate": 0,
+    "wrong_production_rate": 5.95,
     "score_accuracy": 100,
     "content_pass_rate": 100
   },
@@ -28,11 +28,20 @@
       "sentiment_inconsistencies": 6
     },
     "wrong_production": {
-      "status": "PASS",
+      "status": "WARN",
       "shows_checked": 69,
       "files_flagged": 138,
+      "true_positives": 125,
+      "false_positives": 9,
+      "needs_review": 4,
       "baseline_pending": 3,
-      "note": "Flagged reviews are mostly false positives - legitimate comparisons to earlier revivals"
+      "note": "125 reviews are from wrong productions (e.g., off-Broadway runs filed under Broadway show)",
+      "breakdown": {
+        "hadestown-2019": 37,
+        "suffs-2024": 7,
+        "an-enemy-of-the-people-2024": 2,
+        "other_shows": 79
+      }
     },
     "score_conversion": {
       "status": "PASS",
@@ -61,6 +70,18 @@
       "count": 2,
       "action": "Manual review required - same URL in different show directories",
       "details": []
+    },
+    {
+      "priority": "high",
+      "category": "wrong_production_reviews",
+      "count": 125,
+      "action": "Remove or flag reviews from wrong productions (off-Broadway runs filed under Broadway)",
+      "script": "scripts/fix-wrong-production-reviews.js --dry-run",
+      "top_offenders": [
+        {"show": "hadestown-2019", "count": 37, "issue": "Reviews from 2016 NYTW off-Broadway run"},
+        {"show": "suffs-2024", "count": 7, "issue": "Reviews from 2022 Public Theater off-Broadway run"},
+        {"show": "an-enemy-of-the-people-2024", "count": 2, "issue": "Reviews from 2012 MTC revival"}
+      ]
     },
     {
       "priority": "high",
