@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a musical that knows exactly what it is and revels in every over-the-top moment, delivering a theatrical experience that is pure joy from start to finish.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a musical that knows exactly what it is and revels in every over-the-top moment, delivering a theatrical experience that is pure joy from start to finish.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "knows exactly what it is and revels in every over-the-top moment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "pure joy from start to finish",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "delivering a theatrical experience",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive language with superlatives like 'pure joy from start to finish' and praise for the production's clear vision indicates a clear recommendation despite brief length. | GPT-4o-mini: The review expresses unqualified enthusiasm and joy for the musical, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:08:11.539Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
