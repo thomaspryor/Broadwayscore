@@ -1,0 +1,113 @@
+name: Mezzanine Data Reminder
+
+on:
+  schedule:
+    # Monthly on the 1st at 2 PM UTC (9 AM EST)
+    - cron: '0 14 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  create-reminder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate Mezzanine update list
+        id: shows
+        run: |
+          node << 'SCRIPT'
+          const fs = require('fs');
+
+          const shows = JSON.parse(fs.readFileSync('data/shows.json', 'utf8')).shows;
+          const audienceBuzz = JSON.parse(fs.readFileSync('data/audience-buzz.json', 'utf8'));
+
+          // Find open shows that could benefit from Mezzanine updates
+          const openShows = shows.filter(s => s.status === 'open');
+
+          const needsUpdate = [];
+          const hasData = [];
+
+          for (const show of openShows) {
+            const buzz = audienceBuzz.shows?.[show.id];
+            const mezz = buzz?.sources?.mezzanine;
+
+            if (!mezz || !mezz.score) {
+              needsUpdate.push({ title: show.title, id: show.id, reason: 'No Mezzanine data' });
+            } else if (mezz.reviewCount < 50) {
+              needsUpdate.push({ title: show.title, id: show.id, reason: `Only ${mezz.reviewCount} reviews`, score: mezz.score });
+            } else {
+              hasData.push({ title: show.title, count: mezz.reviewCount, score: mezz.score });
+            }
+          }
+
+          // Sort: no data first, then by lowest review count
+          needsUpdate.sort((a, b) => {
+            if (!a.score && b.score) return -1;
+            if (a.score && !b.score) return 1;
+            return 0;
+          });
+
+          let body = `## Monthly Mezzanine Data Update\n\n`;
+          body += `Mezzanine audience scores are collected manually via the iOS app. `;
+          body += `The following **${needsUpdate.length} open shows** need fresh Mezzanine screenshots:\n\n`;
+
+          if (needsUpdate.length > 0) {
+            body += `### Shows needing Mezzanine data\n\n`;
+            body += `| Show | Status |\n|------|--------|\n`;
+            for (const s of needsUpdate) {
+              body += `| ${s.title} | ${s.reason} |\n`;
+            }
+          }
+
+          if (hasData.length > 0) {
+            body += `\n### Shows with existing data (${hasData.length})\n\n`;
+            body += `These have adequate Mezzanine coverage already.\n\n`;
+            body += `<details><summary>Click to expand</summary>\n\n`;
+            body += `| Show | Reviews | Score |\n|------|---------|-------|\n`;
+            for (const s of hasData) {
+              body += `| ${s.title} | ${s.count} | ${s.score} |\n`;
+            }
+            body += `\n</details>\n`;
+          }
+
+          body += `\n### How to update\n`;
+          body += `1. Open the Mezzanine app on your iPhone\n`;
+          body += `2. Search for each show above\n`;
+          body += `3. Take a screenshot of the audience score page\n`;
+          body += `4. Share the screenshots in a reply to this issue\n`;
+
+          // Write to file for the next step
+          fs.writeFileSync('/tmp/mezz-body.md', body);
+
+          const outputFile = process.env.GITHUB_OUTPUT;
+          fs.appendFileSync(outputFile, `count=${needsUpdate.length}\n`);
+          SCRIPT
+
+      - name: Create reminder issue
+        if: steps.shows.outputs.count > 0
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('/tmp/mezz-body.md', 'utf8');
+            const month = new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Mezzanine data update needed - ${month}`,
+              body: body,
+              labels: ['data-update', 'mezzanine']
+            });
+
+            console.log('Created Mezzanine reminder issue');

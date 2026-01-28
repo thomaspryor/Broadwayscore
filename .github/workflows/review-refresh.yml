@@ -4,10 +4,8 @@ name: Refresh Review Data
 
 on:
   schedule:
-    # Awards season (April-June): Weekly on Mondays at 9 AM UTC
-    - cron: '0 9 * 4-6 1'
-    # Rest of year: Bi-weekly on 1st and 15th at 9 AM UTC
-    - cron: '0 9 1,15 1-3,7-12 *'
+    # Weekly on Mondays at 9 AM UTC (4 AM EST), year-round
+    - cron: '0 9 * * 1'
   workflow_dispatch:
     inputs:
       show_filter:
@@ -273,25 +271,37 @@ jobs:
     if: needs.check-for-new-reviews.outputs.has_new_reviews == 'true' && needs.check-for-new-reviews.outputs.shows_with_updates != ''
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger review collection workflow
+      - name: Trigger review collection for each show
         uses: actions/github-script@v7
         with:
           script: |
-            const shows = '${{ needs.check-for-new-reviews.outputs.shows_with_updates }}';
-            console.log(`Triggering review collection for: ${shows}`);
-            try {
-              await github.rest.actions.createWorkflowDispatch({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                workflow_id: 'collect-review-texts.yml',
-                ref: 'main',
-                inputs: {
-                  show_filter: shows.split(',')[0],
-                  max_reviews: '100',
-                  priority: 'all'
-                }
-              });
-              console.log('Successfully triggered collect-review-texts workflow');
-            } catch (e) {
-              console.log(`Note: Could not trigger collection workflow: ${e.message}`);
+            const shows = '${{ needs.check-for-new-reviews.outputs.shows_with_updates }}'.split(',').filter(Boolean);
+            console.log(`Triggering review collection for ${shows.length} shows: ${shows.join(', ')}`);
+
+            let triggered = 0;
+            let failed = 0;
+
+            for (const show of shows) {
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'collect-review-texts.yml',
+                  ref: 'main',
+                  inputs: {
+                    show_filter: show.trim(),
+                    max_reviews: '100',
+                    priority: 'all'
+                  }
+                });
+                console.log(`  Triggered collection for: ${show}`);
+                triggered++;
+                // Brief pause to avoid API rate limits
+                await new Promise(r => setTimeout(r, 2000));
+              } catch (e) {
+                console.log(`  Failed to trigger for ${show}: ${e.message}`);
+                failed++;
+              }
             }
+
+            console.log(`\nDone: ${triggered} triggered, ${failed} failed out of ${shows.length} shows`);
