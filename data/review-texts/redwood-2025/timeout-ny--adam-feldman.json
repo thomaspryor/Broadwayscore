@@ -7,7 +7,63 @@
   "publishDate": "February 13, 2025",
   "fullText": "As in 2018’s unfortunate King Kong, the colossal title character of Redwood (which Jesse christens Stella) is the best thing about this musical, even though—or maybe because—it doesn’t sing. But arboreal splendor can’t compensate for the blandness that surrounds it. The show is all bark and no bite.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 33,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 33,
+    "confidence": "high",
+    "range": {
+      "low": 25.5,
+      "high": 40.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": null,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "arboreal splendor can't compensate for the blandness that surrounds it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The show is all bark and no bite",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "the colossal title character...is the best thing about this musical",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite praising the title character's design, the critic delivers a clear pan with phrases like 'blandness' and 'all bark and no bite,' indicating fundamental problems with the show's substance. | GPT-4o-mini: The review expresses significant disappointment with the overall production, highlighting blandness and a lack of engaging content despite some praise for the title character.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:39.039Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
