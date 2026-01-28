@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "This show about the life and death of Alexander Hamilton is a revolutionary moment in American theater — a musical that marries the storytelling traditions of Broadway to the lyrical dexterity and syncopated energy of hip-hop in a way that feels not just right but inevitable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This show about the life and death of Alexander Hamilton is a revolutionary moment in American theater — a musical that marries the storytelling traditions of Broadway to the lyrical dexterity and syncopated energy of hip-hop in a way that feels not just right but inevitable.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 95,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "revolutionary moment in American theater",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "feels not just right but inevitable",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "marries the storytelling traditions of Broadway to the lyrical dexterity and syncopated energy of hip-hop",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language calling it a 'revolutionary moment' and describes the fusion of musical styles as 'inevitable' with no caveats or criticisms, indicating unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show's innovative approach and significance in theater, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:01.141Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

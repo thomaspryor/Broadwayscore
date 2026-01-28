@@ -7,7 +7,63 @@
   "publishDate": "February 13, 2025",
   "fullText": "Yet what’s so puzzling about “Redwood” is that it’s a textbook tearjerker — a mom in mourning rediscovering herself midair, weighty speeches about losing everything — that leaves your eyes totally dry.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "dtliThumb": "Down",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "textbook tearjerker",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "leaves your eyes totally dry",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "what's so puzzling",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic expresses fundamental disappointment that an emotional show designed to make audiences cry completely fails to deliver its intended impact. | GPT-4o-mini: The review expresses disappointment in the emotional impact of the show, indicating a clear negative sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:41.582Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

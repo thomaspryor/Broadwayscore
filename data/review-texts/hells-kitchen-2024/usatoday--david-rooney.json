@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "This jukebox musical built around Alicia Keys' catalog is a passionate coming-of-age story that pulses with authentic New York energy and showcases powerhouse performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This jukebox musical built around Alicia Keys' catalog is a passionate coming-of-age story that pulses with authentic New York energy and showcases powerhouse performances.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 88,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "passionate coming-of-age story",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "pulses with authentic New York energy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "showcases powerhouse performances",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently positive language praising story, energy, and performances without reservations suggests a clear recommendation in the positive range. | GPT-4o-mini: The review highlights strong performances and an engaging story, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:59.462Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "showScoreExcerpt": "CRITIC’S PICK: “The real giveaway, though, is the compulsive ingratiation. Though it produces much laughter, including too many giggles from the comic himself, the doggy overeagerness could stand to be toned down”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 66,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 65,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "CRITIC'S PICK",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it produces much laughter",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the doggy overeagerness could stand to be toned down",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite criticizing the performer's overeagerness, the 'CRITIC'S PICK' designation and acknowledgment of laughter indicates a qualified positive recommendation. | GPT-4o-mini: The review indicates a mix of humor and criticism, suggesting a qualified recommendation rather than a strong endorsement. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:31.120Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 60,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
