@@ -261,3 +261,24 @@ jobs:
             } catch (e) {
               console.log('Show Score workflow trigger failed:', e.message);
             }
+
+      - name: Trigger image fetching workflow
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger image fetching + archival for newly opened shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'fetch-all-image-formats.yml',
+                ref: 'main',
+                inputs: {
+                  only_missing: 'true'
+                }
+              });
+              console.log('Triggered image fetching workflow for newly opened shows');
+            } catch (e) {
+              console.log('Image fetching workflow trigger failed:', e.message);
+            }
