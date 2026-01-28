@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"A few instances of more heavy-handed literalism are sprinkled through the piece\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 48,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "heavy-handed literalism",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "a few instances",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "A few instances of more heavy-handed literalism are sprinkled through the piece",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This tiny excerpt criticizes 'heavy-handed literalism' but the scope ('a few instances') suggests it's not pervasive, making it impossible to determine overall recommendation. | GPT-4o-mini: The mention of 'heavy-handed literalism' suggests a critical view of the script, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:01.305Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
