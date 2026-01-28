@@ -10,8 +10,64 @@
   "showScoreExcerpt": "Stop the presses! The headline news of the day is The Heart of Rock and Roll is...not bad.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stop the presses!",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "is...not bad",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "The headline news of the day is The Heart of Rock and Roll is...not bad.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review uses ironic enthusiasm ('Stop the presses!') to highlight that the show merely achieves the low bar of being 'not bad', suggesting mild surprise at basic competence rather than genuine recommendation. | GPT-4o-mini: The review suggests a lukewarm reception with a neutral statement indicating the show is 'not bad', implying a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:22:00.891Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
