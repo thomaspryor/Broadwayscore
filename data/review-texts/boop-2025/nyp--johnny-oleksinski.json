@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"She [Rogers] may be playing a two-dimensional character, but sheâs one heâck of a triple threat.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/boop-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "two-dimensional character",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "one heck of a triple threat",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "she’s one heck of a triple threat.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The fragment praises Rogers' performance skills while criticizing the character writing, suggesting a mixed-positive assessment with strong individual merit despite material limitations. | GPT-4o-mini: The review highlights the performer's strengths but also notes the limitations of the character, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:25.986Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

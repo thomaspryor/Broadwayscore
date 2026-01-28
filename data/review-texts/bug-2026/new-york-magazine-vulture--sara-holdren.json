@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"To really do its work, Bug needs to get under our skin, and here it never quite does. Weâve got to feel not only the ick but the itch.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/bug-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "To really do its work, Bug needs to get under our skin, and here it never quite does",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "We've got to feel not only the ick but the itch",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Bug needs to get under our skin",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly states the production fails to achieve its essential theatrical goal of creating visceral impact, indicating a fundamental failure despite measured language. | GPT-4o-mini: The review expresses a lack of emotional impact and connection, indicating a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:20.447Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,9 +10,65 @@
   "bwwExcerpt": "It’s debatable whether one of American literature’s most mysterious characters should ever sing. What Gatsby should definitely not ever do is lead a chorus of tap dancers. That not-since-“Carrie” spectacle sums up what goes wrong with the new musical “The Great Gatsby,” with book by Kati Kerrigan and score by composer Jason Howland and lyricist Nathan Tysen.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Down"
+  "bwwThumb": "Down",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "What Gatsby should definitely not ever do is lead a chorus of tap dancers",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "That not-since-'Carrie' spectacle sums up what goes wrong",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It's debatable whether one of American literature's most mysterious characters should ever sing",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses the notorious flop 'Carrie' as a comparison point and criticizes fundamental creative choices, indicating strong negative assessment of the adaptation's concept and execution. | GPT-4o-mini: The review expresses strong disapproval of the musical's concept and execution, indicating a clear rejection of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:38.483Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 75,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's likely to be a satisfying one",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "do an impressive job updating an oft-recounted myth",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "whose basso profundo is the stuff of nightmares and/or action movie trailers",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review excerpt shows clear praise for the creative team's work and specific performances, with 'satisfying' and 'impressive job' indicating a positive recommendation, though the incomplete nature limits confidence. | GPT-4o-mini: The review indicates a clear positive sentiment towards the production's direction and overall experience, suggesting a recommendation for first-time viewers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:14:48.642Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

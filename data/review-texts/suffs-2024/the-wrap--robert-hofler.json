@@ -11,8 +11,67 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 65,
+    "confidence": "low",
+    "range": {
+      "low": 50,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Suffs entertains because Taub makes her show all about the women",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "she makes those women committed but very flawed individuals",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Suffs is filled with rivalries",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review excerpt shows appreciation for character development and entertainment value but is too incomplete to determine overall recommendation strength. | GPT-4o-mini: The review expresses a clear positive sentiment about the show's focus on women's stories and character complexities, indicating a recommendation to see it. | Note: Models differed by 20 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:34.960Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 75,
+    "scoreDelta": 20,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 20 points (Claude: 55, OpenAI: 75)",
+      "Score (65 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

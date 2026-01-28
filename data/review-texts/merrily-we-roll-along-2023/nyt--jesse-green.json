@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "This production, directed by Maria Friedman, finally solves the show's problems not by fixing them but by embracing them, finding in the musical's formal bizarreness a perfect match for its theme of time's cruel reversals.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production, directed by Maria Friedman, finally solves the show's problems not by fixing them but by embracing them, finding in the musical's formal bizarreness a perfect match for its theme of time's cruel reversals.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "finally solves the show's problems",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "finding in the musical's formal bizarreness a perfect match for its theme",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "finally solves the show's problems not by fixing them but by embracing them",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the director for solving longstanding problems with the show through a clever interpretive approach, indicating clear approval of this production despite the show's inherent challenges. | GPT-4o-mini: The review expresses a positive sentiment towards the direction and the thematic alignment of the production, indicating a strong recommendation despite not addressing performances or the book.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:39.259Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
