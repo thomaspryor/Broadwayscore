@@ -11,8 +11,64 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 28,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 28,
+    "confidence": "high",
+    "range": {
+      "low": 20.5,
+      "high": 35.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I hate to carp, but while Jaws may be the ultimate fish story, The Shark Is Broken flounders to the end",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "with neither an engaging hook nor a line of compelling dialog to keep it afloat",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The Shark Is Broken flounders to the end",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a clear pan with fish puns emphasizing the show's failure, specifically criticizing the lack of engaging dialogue and compelling content throughout. | GPT-4o-mini: The review expresses strong dissatisfaction with the script and overall execution, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:00.832Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

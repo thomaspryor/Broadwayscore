@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "There was a palpable feeling of deflation after the first number, a sense of trepidation that did not ease for the remainder of the show.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/redwood/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 20,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "palpable feeling of deflation after the first number",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "sense of trepidation that did not ease for the remainder of the show",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "sense of trepidation that did not ease",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review describes sustained negative audience reaction from the opening number through the entire show, indicating a clear pan with no redeeming elements mentioned. | GPT-4o-mini: The review expresses a strong sense of disappointment and negativity towards the overall experience of the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:04.651Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

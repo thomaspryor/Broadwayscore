@@ -11,10 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 66,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "“For a play that draws much of its appeal from nostalgia, ’The Shark Is Broken’ mostly avoids documentary-style exposition about the making of Jaws...In any case, the play has the good sense to end with Shaw’s performance of that very speech—which the actor also had a hand in writing—in its entirety. Intense and lean, it handily outmatches the preceding scenes of uneasy boatmates bobbing in the drink.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-shark-is-broken-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-shark-is-broken-broadway",
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": 75,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play makes for pleasant entertainment",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "would be of limited interest",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "handily outmatches the preceding scenes",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the play moderately entertaining but acknowledges it would be 'of limited interest' without the Jaws connection, with praise for direction and final performance but clear reservations about the material itself. | GPT-4o-mini: The review indicates that while the play is enjoyable and well-directed, it lacks depth and is primarily appealing due to nostalgia, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:10.722Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

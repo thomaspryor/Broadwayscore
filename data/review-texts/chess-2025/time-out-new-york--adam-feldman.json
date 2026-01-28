@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"has plenty of good moves...but no checkmate. Once again, the show blows its assets; shackled to storytelling that is arguably worse than ever, Chess goes down in forfeit.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chess-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 29,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 20.5,
+      "high": 37.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 13,
+      "music": 65,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "no checkmate",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "storytelling that is arguably worse than ever",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Chess goes down in forfeit",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging some strengths ('good moves'), the critic delivers harsh condemnation of the storytelling and concludes with a chess metaphor indicating total failure. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the storytelling and suggesting a complete failure of the production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:13.570Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": 25,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

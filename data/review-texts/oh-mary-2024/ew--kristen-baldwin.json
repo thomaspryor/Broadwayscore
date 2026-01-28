@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Cole Escola's outrageous comedy is a raunchy, irreverent romp that transforms Mary Todd Lincoln into a foul-mouthed, wine-guzzling scene-stealer who's desperate to become a cabaret star.",
   "originalScore": 88,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cole Escola's outrageous comedy is a raunchy, irreverent romp that transforms Mary Todd Lincoln into a foul-mouthed, wine-guzzling scene-stealer who's desperate to become a cabaret star.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 85.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "outrageous comedy",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "raunchy, irreverent romp",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "foul-mouthed, wine-guzzling scene-stealer",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This appears to be a descriptive excerpt rather than an evaluative review, using generally positive descriptors but lacking clear recommendation signals or critical assessment. | GPT-4o-mini: The review conveys a strong positive sentiment towards the show's comedic elements and character portrayal, suggesting a recommendation to see it. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:46.299Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 80,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 83,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "delicious to look at and listen to",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes for a joyful performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "its story is as wan as its central couple",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly enjoys the musical and production elements while acknowledging significant story weaknesses, landing in mixed-positive territory with more strengths than flaws. | GPT-4o-mini: The review expresses enjoyment of the music and visual elements but notes significant weaknesses in the story, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:14:38.295Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
