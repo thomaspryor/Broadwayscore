@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, about young people with autism preparing for a spring formal, is well-intentioned and occasionally moving, but it struggles to find its theatrical footing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "web-search",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "well-intentioned and occasionally moving",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "struggles to find its theatrical footing",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges positive intentions and some emotional moments but emphasizes fundamental theatrical problems, landing in true mixed territory without a clear recommendation. | GPT-4o-mini: The review acknowledges some emotional impact but highlights significant struggles in the production, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:16.973Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

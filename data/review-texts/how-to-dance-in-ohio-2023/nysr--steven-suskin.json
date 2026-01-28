@@ -11,8 +11,64 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 38,
+      "music": 45,
+      "performances": 70,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "good intentions alone, alas, do not a compelling musical make",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "a score that is little more than functional",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "a book that devolves into flimsy musical comedy style",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising performances and acknowledging good intentions, the critic finds fundamental flaws in the score and book that prevent recommending the show. | GPT-4o-mini: The review indicates mixed feelings, praising performances but criticizing the score and book, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:48.607Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
