@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Metcalf and Nixon make a fascinating pair of mismatched souls in Jen Silverman's comedy about female friendship and reinvention.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Metcalf and Nixon make a fascinating pair of mismatched souls in Jen Silverman's comedy about female friendship and reinvention.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 79,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "make a fascinating pair",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "mismatched souls",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Metcalf and Nixon make a fascinating pair of mismatched souls",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt praises the lead performances as 'fascinating' but provides insufficient context about the overall show quality or explicit recommendation. | GPT-4o-mini: The review highlights the performances positively and suggests an engaging premise, indicating a clear recommendation despite lacking detailed critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:49.351Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

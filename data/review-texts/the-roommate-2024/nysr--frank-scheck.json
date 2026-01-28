@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 75,
+      "performances": 80,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "always feels predictable despite its procession of narrative surprises designed for easy laughs",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "that's no reason not to take advantage of the unique opportunity to watch Farrow and LuPone play off each other",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "expert comic timing of seasoned vaudevillians",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant flaws in the predictable material but explicitly recommends seeing it for the exceptional performances of Farrow and LuPone. | GPT-4o-mini: The review acknowledges strong performances but criticizes the predictability of the script, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:45.122Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
