@@ -1,0 +1,660 @@
+{
+  "_meta": {
+    "createdAt": "2026-01-28",
+    "description": "Comprehensive audit of review data pipeline against ideal flow",
+    "auditor": "Claude Opus 4.5"
+  },
+
+  "idealFlow": [
+    {
+      "step": 1,
+      "name": "Find Shows Needed",
+      "description": "Identify which shows need review data collection"
+    },
+    {
+      "step": "2a",
+      "name": "Show Score Extraction",
+      "description": "Save page, extract review count, date, every review (outlet, author, date, excerpt, URL), audience data"
+    },
+    {
+      "step": "2b",
+      "name": "DTLI Extraction",
+      "description": "Save page, extract review count, date, every review with THUMBS (up/flat/down)"
+    },
+    {
+      "step": "2c",
+      "name": "BWW Roundup Extraction",
+      "description": "Save page, extract review count, date, every review with THUMBS"
+    },
+    {
+      "step": 3,
+      "name": "Combine & Dedupe",
+      "description": "Merge reviews from all sources into one canonical list, removing duplicates"
+    },
+    {
+      "step": 4,
+      "name": "Production Verification",
+      "description": "Verify correct production (Broadway not off-Broadway, not touring, not West End, not wrong revival)"
+    },
+    {
+      "step": 5,
+      "name": "Full Text Retrieval",
+      "description": "Fetch 90%+ full review texts, capture original scores (4/5 stars), capture designations (Critic's Pick)"
+    },
+    {
+      "step": 6,
+      "name": "Content Verification",
+      "description": "Verify right text, full review, paywall handling, correct production, score conversion correctness"
+    },
+    {
+      "step": 7,
+      "name": "LLM Ensemble Scoring",
+      "description": "Score reviews using LLM ensemble (AFTER all above steps complete)"
+    },
+    {
+      "step": 8,
+      "name": "Other Show Data",
+      "description": "Metadata, images, audience buzz, box office, etc."
+    }
+  ],
+
+  "currentState": {
+    "step1_findShows": {
+      "status": "IMPLEMENTED",
+      "scripts": [
+        "scripts/discover-new-shows.js",
+        "scripts/discover-historical-shows.js"
+      ],
+      "workflows": [
+        ".github/workflows/update-show-status.yml",
+        ".github/workflows/discover-historical-shows.yml"
+      ],
+      "completeness": "95%",
+      "gaps": [
+        {
+          "issue": "No automated tracking of which shows need review refresh",
+          "severity": "Medium",
+          "notes": "check-show-freshness.js exists but runs weekly, not on-demand"
+        }
+      ]
+    },
+
+    "step2a_showScore": {
+      "status": "PARTIALLY_IMPLEMENTED",
+      "scripts": [
+        "scripts/gather-reviews.js (searchShowScore, scrapeShowScoreWithPlaywright)",
+        "scripts/extract-show-score-reviews.js"
+      ],
+      "archiveLocation": "data/aggregator-archive/show-score/",
+      "completeness": "70%",
+      "gaps": [
+        {
+          "issue": "Carousel scrolling doesn't always capture ALL reviews",
+          "severity": "High",
+          "notes": "Sample: Show Score reports X reviews, we often capture <X"
+        },
+        {
+          "issue": "Audience score extraction exists but not consistently integrated",
+          "severity": "Medium",
+          "notes": "JSON-LD extraction works but separate from main review gathering"
+        },
+        {
+          "issue": "Review date extraction is inconsistent",
+          "severity": "Medium",
+          "notes": "Date field often null in extracted reviews"
+        },
+        {
+          "issue": "showScoreExcerpt not always populated in review files",
+          "severity": "Low",
+          "notes": "Sample hadestown-2019: many reviews missing showScoreExcerpt"
+        }
+      ]
+    },
+
+    "step2b_dtli": {
+      "status": "PARTIALLY_IMPLEMENTED",
+      "scripts": [
+        "scripts/gather-reviews.js (searchDTLI, extractDTLIReviews)"
+      ],
+      "archiveLocation": "data/aggregator-archive/dtli/",
+      "completeness": "60%",
+      "gaps": [
+        {
+          "issue": "DTLI thumbs NOT consistently captured for all reviews",
+          "severity": "CRITICAL",
+          "notes": "Sample: hadestown-2019 has 72 reviews but only 6 (8.3%) have dtliThumb populated"
+        },
+        {
+          "issue": "extractDTLIReviews HTML parsing may miss reviews",
+          "severity": "High",
+          "notes": "Regex-based extraction may not handle all HTML variations"
+        },
+        {
+          "issue": "DTLI excerpt often contains multiple critics concatenated",
+          "severity": "Medium",
+          "notes": "cleanExcerpt in rebuild-all-reviews.js tries to fix this but imperfect"
+        },
+        {
+          "issue": "No validation that extracted thumb count matches DTLI reported count",
+          "severity": "Medium",
+          "notes": "extractDTLIReviews logs summary but doesn't verify per-review thumbs"
+        }
+      ]
+    },
+
+    "step2c_bwwRoundup": {
+      "status": "PARTIALLY_IMPLEMENTED",
+      "scripts": [
+        "scripts/gather-reviews.js (searchBWWRoundup, extractBWWRoundupReviews)",
+        "scripts/extract-bww-reviews.js"
+      ],
+      "archiveLocation": "data/aggregator-archive/bww-roundups/",
+      "completeness": "50%",
+      "gaps": [
+        {
+          "issue": "BWW Roundups do NOT have thumb data - need to extract sentiment indicators",
+          "severity": "High",
+          "notes": "BWW uses Rave/Positive/Mixed/Negative categories, not thumbs"
+        },
+        {
+          "issue": "bwwThumb field exists but rarely populated from actual BWW data",
+          "severity": "High",
+          "notes": "Overall stats show 674 bwwThumb but these may be derived, not extracted"
+        },
+        {
+          "issue": "extractBWWRoundupReviews only handles limited critic patterns",
+          "severity": "Medium",
+          "notes": "Hardcoded critic patterns miss many reviews"
+        },
+        {
+          "issue": "URL extraction from BWW roundups often fails",
+          "severity": "Medium",
+          "notes": "Many BWW-sourced reviews have url: null"
+        }
+      ]
+    },
+
+    "step3_combineDedup": {
+      "status": "IMPLEMENTED",
+      "scripts": [
+        "scripts/lib/review-normalization.js",
+        "scripts/gather-reviews.js (createReviewFile with dedup)",
+        "scripts/rebuild-all-reviews.js"
+      ],
+      "completeness": "85%",
+      "gaps": [
+        {
+          "issue": "Dedup sometimes creates separate files for same review from different sources",
+          "severity": "Medium",
+          "notes": "e.g., theatermania--jesse-green.json and theatermania--adam-feldman.json may both exist for same show"
+        },
+        {
+          "issue": "mergeReviews doesn't always preserve best excerpt from each source",
+          "severity": "Low",
+          "notes": "showScoreExcerpt, dtliExcerpt, bwwExcerpt should all be retained"
+        }
+      ]
+    },
+
+    "step4_productionVerification": {
+      "status": "PARTIALLY_IMPLEMENTED",
+      "scripts": [
+        "scripts/validate-archive-productions.js",
+        "scripts/audit-wrong-production-reviews.js",
+        "scripts/fix-wrong-production-reviews.js"
+      ],
+      "completeness": "40%",
+      "gaps": [
+        {
+          "issue": "Wrong production detection is MANUAL - no automated verification",
+          "severity": "CRITICAL",
+          "notes": "wrongProduction flag exists (59 flagged) but requires manual review to set"
+        },
+        {
+          "issue": "No automated West End/touring/revival detection",
+          "severity": "High",
+          "notes": "Show Score redirect detection exists but limited"
+        },
+        {
+          "issue": "Verification happens AFTER review collection, not during",
+          "severity": "High",
+          "notes": "Ideal flow verifies BEFORE adding to database"
+        },
+        {
+          "issue": "No systematic audit of all reviews for wrong production",
+          "severity": "Medium",
+          "notes": "audit script exists but not automated in pipeline"
+        }
+      ]
+    },
+
+    "step5_fullTextRetrieval": {
+      "status": "PARTIALLY_IMPLEMENTED",
+      "scripts": [
+        "scripts/collect-review-texts.js (4-tier fallback: Playwright, ScrapingBee, BrightData, Archive.org)"
+      ],
+      "workflows": [
+        ".github/workflows/collect-review-texts.yml"
+      ],
+      "completeness": "49%",
+      "gaps": [
+        {
+          "issue": "Full text coverage is only 48.9% (target: 90%+)",
+          "severity": "CRITICAL",
+          "notes": "1010/2067 reviews have fullText >500 chars"
+        },
+        {
+          "issue": "Original scores captured for only 5.9% of reviews",
+          "severity": "CRITICAL",
+          "notes": "121/2067 reviews have originalScore field populated"
+        },
+        {
+          "issue": "Designation capture is inconsistent",
+          "severity": "High",
+          "notes": "Critics_Pick, Must_See not systematically extracted from review pages"
+        },
+        {
+          "issue": "Paywall sites still challenging despite login support",
+          "severity": "High",
+          "notes": "NYT, Vulture, WSJ logins in place but success rate varies"
+        },
+        {
+          "issue": "Archive.org fallback is most successful but slowest",
+          "severity": "Medium",
+          "notes": "Many successful fetches are tier 4 (archive)"
+        },
+        {
+          "issue": "Truncation detection exists but not comprehensive",
+          "severity": "Medium",
+          "notes": "textQuality field: 508 full, 120 partial, 79 truncated - many unlabeled"
+        }
+      ]
+    },
+
+    "step6_contentVerification": {
+      "status": "PARTIALLY_IMPLEMENTED",
+      "scripts": [
+        "scripts/audit-scores.js",
+        "scripts/fix-scores.js",
+        "scripts/audit-truncated-reviews.js"
+      ],
+      "completeness": "35%",
+      "gaps": [
+        {
+          "issue": "No automated verification that scraped text is the RIGHT review",
+          "severity": "CRITICAL",
+          "notes": "Could scrape wrong article on same site, no content matching"
+        },
+        {
+          "issue": "Score conversion validation is manual via audit script",
+          "severity": "High",
+          "notes": "audit-scores.js exists but not automated in pipeline"
+        },
+        {
+          "issue": "Paywall detection sometimes gives false positives/negatives",
+          "severity": "Medium",
+          "notes": "isPaywalled() heuristic may miss new paywall patterns"
+        },
+        {
+          "issue": "No cross-verification of scraped text against excerpt",
+          "severity": "Medium",
+          "notes": "Could verify fullText contains dtliExcerpt/showScoreExcerpt"
+        }
+      ]
+    },
+
+    "step7_llmScoring": {
+      "status": "IMPLEMENTED",
+      "scripts": [
+        "scripts/llm-scoring/index.ts"
+      ],
+      "workflows": [
+        ".github/workflows/llm-ensemble-score.yml"
+      ],
+      "completeness": "93%",
+      "gaps": [
+        {
+          "issue": "LLM scoring runs on incomplete data (before full text achieved)",
+          "severity": "High",
+          "notes": "1923/2067 (93%) have llmScore, but many scored on excerpts not full text"
+        },
+        {
+          "issue": "needsReview flag not systematically actioned",
+          "severity": "Medium",
+          "notes": "ensembleData.needsReview identifies disagreements but no automated follow-up"
+        },
+        {
+          "issue": "Low confidence scores still included in final scoring",
+          "severity": "Medium",
+          "notes": "confidence: low scores filtered in rebuild but still calculated"
+        }
+      ]
+    },
+
+    "step8_otherData": {
+      "status": "IMPLEMENTED",
+      "scripts": [
+        "scripts/fetch-show-images-auto.js",
+        "scripts/archive-show-images.js",
+        "scripts/scrape-grosses.ts",
+        "scripts/scrape-reddit-sentiment.js",
+        "scripts/scrape-show-score-audience.js"
+      ],
+      "workflows": [
+        ".github/workflows/fetch-all-image-formats.yml",
+        ".github/workflows/weekly-grosses.yml",
+        ".github/workflows/update-reddit-sentiment.yml",
+        ".github/workflows/update-show-score.yml"
+      ],
+      "completeness": "80%",
+      "gaps": [
+        {
+          "issue": "Audience buzz weighting may not reflect sample sizes well",
+          "severity": "Low",
+          "notes": "Dynamic weighting implemented but untested at scale"
+        }
+      ]
+    }
+  },
+
+  "sampleShowAudit": {
+    "show": "hadestown-2019",
+    "totalReviews": 72,
+    "metrics": {
+      "fullTextCoverage": {
+        "count": 45,
+        "percentage": "62.5%",
+        "target": "90%",
+        "gap": "27.5 percentage points below target"
+      },
+      "dtliThumbCoverage": {
+        "count": 6,
+        "percentage": "8.3%",
+        "target": "100% from DTLI source",
+        "gap": "CRITICAL: Most DTLI thumbs not extracted"
+      },
+      "originalScoreCoverage": {
+        "count": 6,
+        "percentage": "8.3%",
+        "target": "100% when available on page",
+        "gap": "CRITICAL: Star ratings, letter grades not captured"
+      },
+      "llmScoreCoverage": {
+        "count": 68,
+        "percentage": "94.4%",
+        "target": "100%",
+        "status": "OK but scored before full text"
+      }
+    },
+    "sampleReviewAnalysis": [
+      {
+        "file": "nytimes--jesse-green.json",
+        "hasFullText": true,
+        "fullTextLength": 5847,
+        "hasOriginalScore": false,
+        "hasDtliThumb": true,
+        "dtliThumb": "Up",
+        "hasLlmScore": true,
+        "llmScore": 84,
+        "notes": "Good example - full text and thumb captured"
+      },
+      {
+        "file": "variety--marilyn-stasio.json",
+        "hasFullText": true,
+        "fullTextLength": 2890,
+        "hasOriginalScore": false,
+        "hasDtliThumb": true,
+        "dtliThumb": "Up",
+        "hasLlmScore": true,
+        "llmScore": 84,
+        "notes": "Full text via Archive.org tier 4"
+      },
+      {
+        "file": "theatermania--zachary-stewart.json",
+        "hasFullText": true,
+        "fullTextLength": 4520,
+        "hasOriginalScore": false,
+        "hasDtliThumb": false,
+        "hasLlmScore": true,
+        "llmScore": 92,
+        "designation": "Must_See",
+        "notes": "Missing DTLI thumb - should have been captured"
+      },
+      {
+        "file": "timeout--adam-feldman.json",
+        "hasFullText": true,
+        "fullTextLength": 3100,
+        "hasOriginalScore": "5/5",
+        "hasDtliThumb": true,
+        "hasLlmScore": true,
+        "llmScore": 89,
+        "notes": "Good example - has original score captured"
+      }
+    ]
+  },
+
+  "prioritizedGaps": [
+    {
+      "rank": 1,
+      "gap": "DTLI thumb extraction failing for most reviews",
+      "severity": "CRITICAL",
+      "impact": "Thumbs are a reliable sentiment signal, missing ~92% of them",
+      "effort": "Medium",
+      "recommendation": "Rewrite extractDTLIReviews with better HTML parsing, add validation"
+    },
+    {
+      "rank": 2,
+      "gap": "Full text coverage at 49% vs 90% target",
+      "severity": "CRITICAL",
+      "impact": "LLM scoring on excerpts is less accurate than full text",
+      "effort": "High",
+      "recommendation": "Prioritize Archive.org as primary source, enhance paywall handling"
+    },
+    {
+      "rank": 3,
+      "gap": "Original scores captured for only 6% of reviews",
+      "severity": "CRITICAL",
+      "impact": "Missing authoritative 4/5 stars, A+, etc. that should override LLM",
+      "effort": "Medium",
+      "recommendation": "Add score extraction patterns for each outlet's format"
+    },
+    {
+      "rank": 4,
+      "gap": "No automated wrong-production verification",
+      "severity": "CRITICAL",
+      "impact": "Off-Broadway, touring, West End reviews pollute Broadway scores",
+      "effort": "High",
+      "recommendation": "Add URL/content verification step before review is saved"
+    },
+    {
+      "rank": 5,
+      "gap": "BWW sentiment categories not extracted as thumbs",
+      "severity": "High",
+      "impact": "Missing Rave/Positive/Mixed/Negative signals from BWW",
+      "effort": "Medium",
+      "recommendation": "Map BWW categories to bwwThumb field during extraction"
+    },
+    {
+      "rank": 6,
+      "gap": "Show Score carousel doesn't capture all reviews",
+      "severity": "High",
+      "impact": "Missing reviews from comprehensive aggregator",
+      "effort": "High",
+      "recommendation": "Improve Playwright carousel scrolling or use API if available"
+    },
+    {
+      "rank": 7,
+      "gap": "LLM scoring happens before data is complete",
+      "severity": "High",
+      "impact": "Scores based on excerpts may differ from full-text scores",
+      "effort": "Low",
+      "recommendation": "Restructure pipeline: collect all data first, then score"
+    },
+    {
+      "rank": 8,
+      "gap": "No content verification that scraped text matches expected review",
+      "severity": "High",
+      "impact": "Could be scoring wrong article",
+      "effort": "Medium",
+      "recommendation": "Add fuzzy match between fullText and excerpts"
+    },
+    {
+      "rank": 9,
+      "gap": "Designation capture (Critics_Pick, Must_See) inconsistent",
+      "severity": "Medium",
+      "impact": "Missing +3 score bumps for notable designations",
+      "effort": "Medium",
+      "recommendation": "Add designation extraction patterns per outlet"
+    },
+    {
+      "rank": 10,
+      "gap": "Review refresh workflow doesn't trigger rebuild",
+      "severity": "Medium",
+      "impact": "New reviews discovered but not incorporated until manual rebuild",
+      "effort": "Low",
+      "recommendation": "Add rebuild-all-reviews.js call at end of review-refresh workflow"
+    }
+  ],
+
+  "recommendedSprints": [
+    {
+      "sprint": 1,
+      "name": "Critical Data Quality Fixes",
+      "duration": "1-2 weeks",
+      "priority": "Highest",
+      "tasks": [
+        {
+          "task": "Fix DTLI thumb extraction",
+          "details": "Rewrite extractDTLIReviews to capture ALL thumb data",
+          "files": ["scripts/gather-reviews.js", "scripts/lib/extract-dtli.js (new)"],
+          "acceptance": "100% of DTLI reviews have dtliThumb populated"
+        },
+        {
+          "task": "Add BWW sentiment extraction",
+          "details": "Map Rave/Positive/Mixed/Negative to bwwThumb",
+          "files": ["scripts/extract-bww-reviews.js"],
+          "acceptance": "All BWW reviews have bwwThumb populated"
+        },
+        {
+          "task": "Backfill thumbs for existing reviews",
+          "details": "Re-extract from archived pages to populate missing thumbs",
+          "files": ["scripts/backfill-thumbs.js (new)"],
+          "acceptance": "70%+ of all reviews have at least one thumb"
+        }
+      ]
+    },
+    {
+      "sprint": 2,
+      "name": "Original Score Capture",
+      "duration": "1-2 weeks",
+      "priority": "High",
+      "tasks": [
+        {
+          "task": "Create outlet-specific score extractors",
+          "details": "Pattern matching for NYT, TimeOut (5 stars), EW (letter grades), etc.",
+          "files": ["scripts/lib/score-extractors.js (new)"],
+          "acceptance": "50%+ of Tier 1 outlets have originalScore"
+        },
+        {
+          "task": "Extract scores during text collection",
+          "details": "Modify collect-review-texts.js to extract scores while scraping",
+          "files": ["scripts/collect-review-texts.js"],
+          "acceptance": "originalScore populated when page has explicit rating"
+        },
+        {
+          "task": "Add designation extraction",
+          "details": "Detect Critics_Pick, Must_See, Recommended etc.",
+          "files": ["scripts/collect-review-texts.js"],
+          "acceptance": "designation field populated for NYT Critics Pick, etc."
+        }
+      ]
+    },
+    {
+      "sprint": 3,
+      "name": "Full Text Coverage Push",
+      "duration": "2-3 weeks",
+      "priority": "High",
+      "tasks": [
+        {
+          "task": "Archive.org as primary for paywalled sites",
+          "details": "Try Archive.org FIRST for known paywalled domains",
+          "files": ["scripts/collect-review-texts.js"],
+          "acceptance": "Paywall sites: 80%+ full text via Archive.org"
+        },
+        {
+          "task": "Parallel collection workflow",
+          "details": "Run multiple shows in parallel to increase throughput",
+          "files": [".github/workflows/collect-review-texts.yml"],
+          "acceptance": "10+ shows can run simultaneously"
+        },
+        {
+          "task": "Prioritize Tier 1 outlets for collection",
+          "details": "Ensure NYT, Vulture, Variety have full text first",
+          "files": ["scripts/collect-review-texts.js"],
+          "acceptance": "Tier 1: 95%+ full text coverage"
+        }
+      ]
+    },
+    {
+      "sprint": 4,
+      "name": "Production Verification",
+      "duration": "1-2 weeks",
+      "priority": "High",
+      "tasks": [
+        {
+          "task": "Automated wrong-production detection",
+          "details": "Check URL patterns, page content for off-broadway/touring/WestEnd signals",
+          "files": ["scripts/lib/production-verifier.js (new)"],
+          "acceptance": "95%+ of wrong-production reviews auto-flagged"
+        },
+        {
+          "task": "Pre-save verification hook",
+          "details": "Verify production before creating review file",
+          "files": ["scripts/gather-reviews.js"],
+          "acceptance": "Wrong-production reviews never added, only logged"
+        },
+        {
+          "task": "Audit existing reviews",
+          "details": "Run verification on all 2000+ reviews",
+          "files": ["scripts/audit-all-productions.js (new)"],
+          "acceptance": "All flagged reviews reviewed and corrected"
+        }
+      ]
+    },
+    {
+      "sprint": 5,
+      "name": "Pipeline Restructure",
+      "duration": "1 week",
+      "priority": "Medium",
+      "tasks": [
+        {
+          "task": "Sequential pipeline enforcement",
+          "details": "Ensure LLM scoring only runs AFTER text collection complete",
+          "files": [".github/workflows/llm-ensemble-score.yml"],
+          "acceptance": "LLM scoring blocked if <80% full text"
+        },
+        {
+          "task": "Content verification step",
+          "details": "Verify fullText contains excerpt before accepting",
+          "files": ["scripts/collect-review-texts.js"],
+          "acceptance": "Mismatch alerts generated for review"
+        },
+        {
+          "task": "Automated rebuild after collection",
+          "details": "reviews.json rebuilt automatically after text collection",
+          "files": [".github/workflows/collect-review-texts.yml"],
+          "acceptance": "reviews.json always up-to-date"
+        }
+      ]
+    }
+  ],
+
+  "overallAssessment": {
+    "currentPipelineHealth": "FAIR",
+    "biggestRisk": "Low data quality (thumbs, original scores) undermines scoring accuracy",
+    "quickestWin": "Fix DTLI thumb extraction - immediate 60%+ improvement in sentiment signals",
+    "longestPole": "Full text coverage - requires sustained effort across multiple outlets",
+    "recommendedFocus": "Sprint 1 (Data Quality) should be completed before expansion to new shows",
+    "estimatedEffort": "4-6 weeks for Sprints 1-3, 8-10 weeks for all 5 sprints"
+  }
+}
