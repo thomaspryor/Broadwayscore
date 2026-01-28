@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"A fun treat for the kids for sure, and even the adults who loathe Disney's theatrical presence will find themselves enjoying the show.\"",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 74,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -22,19 +22,19 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 76,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 81.5
+      "low": 67.5,
+      "high": 80.5
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 78,
-      "performances": 70,
-      "direction": 78
+      "music": 75,
+      "performances": 68,
+      "direction": 79
     },
     "keyPhrases": [
       {
@@ -53,31 +53,31 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The reviewer clearly recommends the show with phrases like 'fantastic musical experience' and 'pretty good,' stating even Disney skeptics will enjoy it, despite some qualified praise and minor criticisms. | GPT-4o-mini: The review provides a clear positive recommendation for 'Aladdin', highlighting its entertainment value while acknowledging some limitations.",
+    "reasoning": "Claude: The critic gives qualified praise calling it 'fantastic' and 'pretty good,' acknowledging it follows Disney formula but recommending it will entertain both kids and adults, including Disney skeptics. | GPT-4o-mini: The review expresses a clear positive sentiment towards the production, highlighting its entertainment value for both children and adults, despite some reservations about the performances compared to the original film.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:00:11.260Z",
+    "scoredAt": "2026-01-28T23:26:42.237Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 72,
     "openaiScore": 75,
-    "scoreDelta": 1,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 76
+  "previousLlmScore": 76,
+  "rescoreCompletedAt": "2026-01-28T23:26:42.237Z"
 }

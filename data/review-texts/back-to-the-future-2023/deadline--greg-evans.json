@@ -10,7 +10,7 @@
   "showScoreExcerpt": "With a cast directed to exaggerate every joke, gesture and facial expression - only the always reliable Roger Bart, who plays the eccentric genius inventor Doc Brown, has the chops and instincts to nail the over-the-topness...With a show like 'Back To The Future: The Musical,' comparisons are, like resistance, futile. And your kids are gonna love it.",
   "bwwExcerpt": "Clock tower climax finally and fully justifies its transition from screen to stage",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 62,
   "source": "show-score",
   "textWordCount": 1172,
   "textStatus": "complete",
@@ -22,19 +22,19 @@
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 64,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 57.5,
+      "low": 53.5,
       "high": 70.5
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 58,
-      "music": 50,
-      "performances": 70,
-      "direction": 58
+      "book": 55,
+      "music": 48,
+      "performances": 68,
+      "direction": 55
     },
     "keyPhrases": [
       {
@@ -43,17 +43,17 @@
         "strength": 3
       },
       {
-        "quote": "Part of the blame for the mostly lackluster experience falls to the music and lyrics by Alan Silvestri and Glen Ballard, a generic-sounding pastiche",
+        "quote": "bombastically intent on justifying its existence that it bullies away whatever warm nostalgia we might have for the movie",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Back To The Future: The Musical finally and fully justifies its transition from screen to stage",
+        "quote": "And your kids are gonna love it",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review describes a 'mostly lackluster experience' with significant criticism of music, direction, and pacing, but acknowledges it becomes 'enjoyable-enough' with strong final sequences and some good performances, landing in mixed territory. | GPT-4o-mini: The review expresses a mix of enjoyment and disappointment, highlighting some positive elements but ultimately suggesting a lack of overall impact compared to the original film.",
+    "reasoning": "Claude: The reviewer finds the show 'enjoyable-enough' but criticizes the overacting, generic music, and failure to capture the film's charm, settling on a qualified middle-ground recommendation. | GPT-4o-mini: The review expresses mixed feelings, highlighting some enjoyable aspects but ultimately suggesting that the production doesn't live up to its source material.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -63,22 +63,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:01:55.686Z",
+    "scoredAt": "2026-01-28T23:31:41.509Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 58,
     "openaiScore": 65,
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
     "needsReview": false,
     "needsReviewReasons": []
   },
   "bwwThumb": "Meh",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 64
+  "previousLlmScore": 64,
+  "rescoreCompletedAt": "2026-01-28T23:31:41.509Z"
 }

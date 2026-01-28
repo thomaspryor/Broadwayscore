@@ -11,7 +11,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -23,19 +23,19 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 60,
-    "confidence": "low",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 80
+      "low": 67,
+      "high": 83
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 75,
       "music": null,
-      "performances": null,
-      "direction": 73
+      "performances": 85,
+      "direction": 75
     },
     "keyPhrases": [
       {
@@ -44,43 +44,41 @@
         "strength": 4
       },
       {
-        "quote": "The set, by multi-disciplinary collective dots, is highly effective",
+        "quote": "incredible performances from the entire cast, particularly Paulson and Stoll",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "an effect that's more jarring than",
+        "quote": "with a runtime approaching three hours, even the humorous bits that slice through the heaviness of the material can't save some of the overlong sections and monologues",
         "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The excerpt shows mixed signals with strong praise for direction and set design but criticism of technical choices, and cuts off mid-sentence making assessment very uncertain. | GPT-4o-mini: The review highlights strong direction and effective set design but notes a potential issue with scene transitions, leading to a positive overall recommendation. | Note: Models differed by 30 points.",
+    "reasoning": "Claude: The reviewer praises the engaging family dynamics, incredible performances, and thematic depth while acknowledging significant structural problems with pacing and runtime, resulting in a qualified positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and the engaging family dynamics, but notes some pacing issues and a lengthy runtime, leading to a positive but qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:16:57.874Z",
+    "scoredAt": "2026-01-28T23:31:26.922Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 75,
-    "scoreDelta": 30,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 30 points (Claude: 45, OpenAI: 75)"
-    ]
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "scoreDelta": 6,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 60
+  "previousLlmScore": 60,
+  "rescoreCompletedAt": "2026-01-28T23:31:26.922Z"
 }

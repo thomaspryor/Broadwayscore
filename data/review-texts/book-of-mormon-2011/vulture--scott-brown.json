@@ -37,10 +37,10 @@
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": 88,
+      "book": 89,
+      "music": 93,
       "performances": 88,
-      "direction": 87
+      "direction": 92
     },
     "keyPhrases": [
       {
@@ -49,17 +49,17 @@
         "strength": 5
       },
       {
-        "quote": "therein lies the real miracle",
+        "quote": "And therein lies the real miracle: With muscular assists from clued-in co-director and choreographer Casey Nicholaw",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "an often uproarious, spiritually up-tempo satire",
+        "quote": "What's so uniquely winning about The Book of Mormon is its scruffy humanism, its eagerness to redeem its characters",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses superlative language throughout ('miracle', 'delivers even more than promised', 'uproarious') and celebrates the show's achievement in revitalizing the Broadway musical form while being hilariously entertaining. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show, highlighting its humor, creativity, and strong performances, indicating a must-see experience.",
+    "reasoning": "Claude: The critic uses superlative language throughout ('miracle,' 'delivers even more than promised,' 'astonishingly good'), praises virtually every aspect of the production, and frames it as a transformative work that could reinvigorate Broadway musicals. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's humor, creativity, and performances, indicating a strong recommendation to see it.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -69,7 +69,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:04:40.673Z",
+    "scoredAt": "2026-01-28T23:34:42.503Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -96,7 +96,7 @@
       "mergedAt": "2026-01-28T21:15:21.831Z"
     }
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 94
+  "previousLlmScore": 94,
+  "rescoreCompletedAt": "2026-01-28T23:34:42.503Z"
 }

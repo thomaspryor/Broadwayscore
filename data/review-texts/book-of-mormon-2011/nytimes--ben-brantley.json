@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is to all the doubters and deniers out there, the ones who say that heaven on Broadway does not exist, that it’s only some myth our ancestors dreamed up. I am here to report that a newborn, old-fashioned, pleasure-giving musical has arrived at the Eugene O’Neill Theater, the kind our grandparents told us left them walking on air if not on water. So hie thee hence, nonbelievers (and believers too), to “The Book of Mormon,” and feast upon its sweetness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "dtliUrl": null,
@@ -18,56 +18,56 @@
   "showScoreExcerpt": "The Book of Mormon achieves something quite magical: Even as it profanes some serious articles of faith, it affirms the profound value of belief itself.",
   "needsScoring": true,
   "llmScore": {
-    "score": 86,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 95
+      "low": 83.5,
+      "high": 100
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 85,
+      "music": 88,
+      "performances": 90,
+      "direction": 87
     },
     "keyPhrases": [
       {
-        "quote": "achieves something quite magical",
+        "quote": "the show still had me at 'Hello,' the first word of the first song",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "it affirms the profound value of belief itself",
+        "quote": "gosh darn it if I didn't feel born again all over again, ready to spread the word about the faith that this show preaches",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "profane some serious articles of faith",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "Much of this show's enduring freshness comes from its unabashed identity as an archetypal musical",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses strong positive language ('magical', 'profound value') and presents the show's controversial nature as a strength rather than weakness, indicating clear appreciation and recommendation. | GPT-4o-mini: The review expresses strong admiration for the show's ability to balance irreverence with a meaningful message, indicating a high recommendation.",
+    "reasoning": "Claude: The critic expresses sustained enthusiasm after four visits, praising the show's enduring freshness, performances, and ability to maintain its energy after three years on Broadway. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong praise for the musical's enduring appeal and performances, indicating a must-see recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:13:38.406Z",
+    "scoredAt": "2026-01-28T23:34:04.239Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "scoreDelta": 8,
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -79,7 +79,7 @@
   ],
   "bwwThumb": null,
   "designation": "Critics_Pick",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 86
+  "previousLlmScore": 86,
+  "rescoreCompletedAt": "2026-01-28T23:34:04.239Z"
 }

@@ -32,9 +32,9 @@
     "thumb": "Down",
     "components": {
       "book": 20,
-      "music": 45,
-      "performances": 73,
-      "direction": 23
+      "music": 40,
+      "performances": 68,
+      "direction": 25
     },
     "keyPhrases": [
       {
@@ -53,7 +53,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic explicitly states they cannot recommend paying full price, describes the show as a 'grueling endurance test,' and systematically criticizes the adaptation choices while praising only individual performances. | GPT-4o-mini: The review is overwhelmingly negative about the adaptation of Aladdin, with only a few positive remarks about performances, leading to a strong recommendation against seeing the show.",
+    "reasoning": "Claude: Despite praising specific performances, the critic explicitly states they cannot recommend paying full price and describes the show as a 'grueling endurance test' with poor adaptation choices. | GPT-4o-mini: The review is overwhelmingly critical of the adaptation and its execution, leading to a clear recommendation against seeing the show despite some praise for individual performances.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -63,7 +63,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T04:57:58.805Z",
+    "scoredAt": "2026-01-28T23:24:33.201Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -77,7 +77,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 25
+  "previousLlmScore": 25,
+  "rescoreCompletedAt": "2026-01-28T23:24:33.201Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "But just as it starts to feel as if watching the \"South Park\" guys deconstruct the apparent illogicalities of Mormonism is starting to sound the same, one-sided note, Parker, Stone and Lopez engineer a very savvy twist in the narrative. This re-energizes the show early in the second act, focuses it more acutely on those \"Avenue Q\"-like themes of young people seeking out their purpose and propels it to a conclusion that leaves audience members feeling they've attended something weightier than a series of pointed laughs fired into a soft religious target.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 87,
   "source": "bww-roundup",
   "bwwThumb": null,
   "bwwUrl": "http://leisureblogs.chicagotribune.com/the_theater_loop/2011/03/book-of-mormon-broadway-review-south-park.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+chicagotribune%2Fthetheaterloop+%28Chicago+Tribune+-+The+Theater+Loop%29",
@@ -25,56 +25,56 @@
   "dtliExcerpt": "If any show could make the case that you can have fun with absolutely anything in the oft-painful run of human experience — AIDS, genocide, genital mutilation, poverty, religion, “The Lion King” — then that show is “The Book of Mormon,” the shrewd, remarkably well-crafted and wholly hilarious new Broadway musical from the creators of “South Park” and the composer of “Avenue Q.”",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 50,
-    "confidence": "medium",
+    "score": 87,
+    "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 55
+      "low": 80.5,
+      "high": 93.5
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 83,
+      "music": 90,
+      "performances": 87,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "you can see a new show in this singularly remarkable theater city pretty much every night",
+        "quote": "shrewd, remarkably well-crafted and wholly hilarious new Broadway musical",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 5
       },
       {
-        "quote": "Chicago has its own trio of high-profile new musicals",
+        "quote": "By the end of a night more emotional than many will expect, the show is arguing the importance of finding a spiritual center",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "the outer edges of eccentric celebrity and the way happiness and fulfillment can pass us by in an instant",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "But after you hold that trial in your head, between laughs, you ultimately end up dismissing the case",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "GPT-4o-mini: The review provides a broad overview of upcoming shows without strong recommendations or critiques, leading to a mixed sentiment.",
+    "reasoning": "Claude: The critic delivers overwhelmingly positive praise calling it 'remarkably well-crafted and wholly hilarious,' acknowledges potential objections but ultimately dismisses them, and praises all aspects from performances to direction. | GPT-4o-mini: The review expresses strong praise for the show's humor, craftsmanship, and emotional depth, despite acknowledging some potential criticisms.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:05:51.325Z",
+    "scoredAt": "2026-01-28T23:33:29.542Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 50,
-    "scoreDelta": 0,
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -84,7 +84,7 @@
     "bww-roundup",
     "dtli"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 50
+  "previousLlmScore": 50,
+  "rescoreCompletedAt": "2026-01-28T23:33:29.542Z"
 }

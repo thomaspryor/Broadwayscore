@@ -30,8 +30,8 @@
     "components": {
       "book": 53,
       "music": 71,
-      "performances": null,
-      "direction": 45
+      "performances": 65,
+      "direction": 50
     },
     "keyPhrases": [
       {
@@ -47,10 +47,10 @@
       {
         "quote": "the selection overall feels random... it's certainly a grab-bag",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic finds the show 'sufficiently entertaining' at lottery prices but criticizes its lack of ambition, random selection of material, and misleading marketing, resulting in a qualified, price-dependent recommendation. | GPT-4o-mini: The review presents a mixed view, acknowledging some entertainment value while criticizing the show's ambition and marketing, leading to a conditional recommendation.",
+    "reasoning": "Claude: The critic gives a qualified recommendation dependent on ticket price and expectations, finding it 'sufficiently entertaining' at $45 but criticizing its lack of ambition and random structure. | GPT-4o-mini: The review presents a mixed perspective, acknowledging some entertainment value but also significant criticisms about the show's ambition and structure.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -60,7 +60,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T22:18:58.558Z",
+    "scoredAt": "2026-01-28T23:27:14.396Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -78,7 +78,7 @@
     "playwright-scraped",
     "show-score"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 61
+  "previousLlmScore": 61,
+  "rescoreCompletedAt": "2026-01-28T23:27:14.396Z"
 }

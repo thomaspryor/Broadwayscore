@@ -9,24 +9,24 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"The real stars here are the songs, all from the catalogue of Max Martin and his collaborators...At its best, the show just does away with logic and gives you full-throated renditions of Martinâs more insistent anthems.\"",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 64,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:56:44.667Z",
   "llmScore": {
-    "score": 65,
+    "score": 64,
     "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 57.5,
+      "high": 70.5
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 50,
+      "book": 45,
       "music": 73,
-      "performances": 73,
-      "direction": 63
+      "performances": 70,
+      "direction": 65
     },
     "keyPhrases": [
       {
@@ -40,12 +40,12 @@
         "strength": 3
       },
       {
-        "quote": "You'll have that ephemeral thrill of being alive on a dance floor & end up with a hangover",
+        "quote": "Then you go home and back to your life, and you wake up the next morning groggy, aching, and longing for coffee",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic finds the show entertaining and energetic with strong musical moments but criticizes the plot coherence and corporate feel, ultimately describing it as a mixed experience with both thrills and disappointments. | GPT-4o-mini: The review presents a mix of enthusiasm for the musical's energy and performances, but also highlights significant flaws in the plot and emotional depth, leading to a qualified recommendation.",
+    "reasoning": "Claude: The critic acknowledges the show's infectious energy and strong musical moments while consistently critiquing its corporate calculation, weak book, and hangover-like aftermath - a qualified mixed experience that neither fully recommends nor dismisses. | GPT-4o-mini: The review presents a mix of enjoyment and critique, highlighting fun moments and strong performances while also pointing out significant flaws in the script and overall coherence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -55,15 +55,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:52:46.151Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-28T23:30:41.672Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 65,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -82,7 +82,7 @@
     "show-score"
   ],
   "bwwExcerpt": "If you were to adapt the feeling of getting day-drunk on cheap ros&eacute; for the stage, you&#39;d get &amp; Juliet. The aggressively effervescent musical has come to Broadway, &amp; it intends to wash you away in the blushy delights of pop feminism &amp; hit singles &amp; middle-school-level Shakespeare jokes. At times, such as when someone belts the chorus of &quot;Since U Been Gone&quot; at you, it is impossible not to feel intoxicated. &amp; at others, such as when any character tries to ex",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 65
+  "previousLlmScore": 65,
+  "rescoreCompletedAt": "2026-01-28T23:30:41.672Z"
 }

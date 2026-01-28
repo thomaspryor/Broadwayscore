@@ -52,20 +52,20 @@
       {
         "quote": "Boop! has nothing to offer an audience but a bunch of sly laughs, kicky tunes, dazzling staging, inventive design, a company of pros, and a star being born eight times a week. I'm afraid theatergoers will simply have to make do.",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       },
       {
-        "quote": "whatever is going on at the Broadhurst is often surprisingly sophisticated and filled with an unquenchable spirit of fun. Boop! is one musical that earns its exclamation point.",
+        "quote": "But whatever is going on at the Broadhurst is often surprisingly sophisticated and filled with an unquenchable spirit of fun. Boop! is one musical that earns its exclamation point.",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Martin and company can't outrun the many questions the book leaves unanswered. Instead of finding a satisfying resolution, they throw their hands in the air",
+        "quote": "Instead of finding a satisfying resolution, they throw their hands in the air, hoping to distract us with a high-stepping finale that resolves nothing.",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Despite significant book problems, the critic praises almost every other element (star performance, staging, design, music) and concludes with enthusiastic endorsement, suggesting audiences should 'sit back and surrender' to the fun. | GPT-4o-mini: The review highlights strong performances and lively music while acknowledging significant flaws in the book, leading to a positive overall recommendation despite mixed elements.",
+    "reasoning": "Claude: Despite significant plot weaknesses, the critic is clearly charmed by the performances (especially the star-making turn), staging, and overall entertainment value, using enthusiastic language and ending on a strong positive note. | GPT-4o-mini: The review highlights strong performances and lively music, but notes significant weaknesses in the plot, leading to a clear but qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -75,7 +75,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:54.031Z",
+    "scoredAt": "2026-01-28T23:35:16.187Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -89,7 +89,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 77
+  "previousLlmScore": 77,
+  "rescoreCompletedAt": "2026-01-28T23:35:16.187Z"
 }

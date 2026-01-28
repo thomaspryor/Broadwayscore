@@ -10,63 +10,63 @@
   "dtliExcerpt": "It’s not that & Juliet is unenjoyable – it isn’t. Somewhere beneath the bombast and repetition and overwrought-from-minute-one approach is a sweet(ish) and smart(ish) tale that gives voice to the marginalized and, not incidentally, provides fans of the music of Britney Spears, Backstreet Boys, Katy Perry, Kesha, Demi Lovato, Ariana Grande, Bon Jovi, Celine Dion, Pink and Justin Timberlake a chance to hear their favorite songs in a musical that makes no secret of its identity: A jukebox takes early pride of place on the set.",
   "showScoreExcerpt": "\"Itâs not that '& Juliet' is unenjoyable â it isnât. Somewhere beneath the bombast and repetition and overwrought-from-minute-one approach is a sweet(ish) and smart(ish) tale that gives voice to the marginalized.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:57:18.264Z",
   "dtliThumb": "Meh",
   "bwwExcerpt": "It's not that & Juliet is unenjoyable - it isn't. Somewhere beneath the bombast and repetition and overwrought-from-minute-one approach is a sweet(ish) and smart(ish) tale that gives voice to the marginalized and, not incidentally, provides fans of the music of Britney Spears, Backstreet Boys, Katy ...",
   "llmScore": {
-    "score": 62,
+    "score": 59,
     "confidence": "medium",
     "range": {
-      "low": 53.5,
+      "low": 47.5,
       "high": 70.5
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 53,
-      "music": 68,
-      "performances": null,
-      "direction": 50
+      "book": 45,
+      "music": 70,
+      "performances": 60,
+      "direction": 58
     },
     "keyPhrases": [
       {
         "quote": "It's not that & Juliet is unenjoyable – it isn't",
-        "sentiment": "neutral",
-        "strength": 3
+        "sentiment": "positive",
+        "strength": 2
       },
       {
-        "quote": "Somewhere beneath the bombast and repetition and overwrought-from-minute-one approach",
+        "quote": "the songs can move from inspirational to browbeating in record time. And they do",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "is a sweet(ish) and smart(ish) tale that gives voice to the marginalized",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "Read has fashioned a sort of instructional guide to feminism... rendered with the subtlety of a middle school pep rally",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic finds redeeming qualities but buries them under significant criticisms of bombast, repetition, and overwrought execution, suggesting a conflicted recommendation that leans slightly positive but with major reservations. | GPT-4o-mini: The review acknowledges enjoyment and some positive elements but also highlights issues with the execution, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: The critic acknowledges the show isn't unenjoyable and praises some technical elements, but heavily criticizes the book's lack of subtlety, the repetitive nature of the songs, and over-the-top performances, resulting in a neutral recommendation. | GPT-4o-mini: The review presents a mix of enjoyment and criticism, highlighting both the fun aspects of the music and performances while also noting significant flaws in the book and execution. | Note: Models differed by 13 points.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:53:15.425Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-28T23:29:26.273Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 58,
+    "claudeScore": 52,
     "openaiScore": 65,
-    "scoreDelta": 7,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -84,7 +84,7 @@
   "scoreConfidence": "medium",
   "extractedPhrase": "avoid",
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 62
+  "previousLlmScore": 62,
+  "rescoreCompletedAt": "2026-01-28T23:29:26.273Z"
 }

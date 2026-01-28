@@ -10,61 +10,61 @@
   "bwwExcerpt": "Like its spiritual grandchild The Normal Heart, Ibsen’s drama scores hard points against real social ills while also suggesting that a passionate crusader, frozen in the spotlight of his truth, can sometimes be his own worst enemy. Adam Markavitz, Entertainment Weekly: Never mind that it takes place in 19th-century Norway. The battle between two brothers in An Enemy of the People, Henrik Ibsen's spitting-mad screed against political hypocrisy among polite small-towners, tackles more hot-button e",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "originalScore": "4/5",
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 75,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 73,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": 78,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 84,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "scores hard points against real social ills",
+        "quote": "4 out of 5 stars",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "tackles more hot-button",
+        "quote": "this engrossing new production",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "spitting-mad screed against political hypocrisy",
+        "quote": "none that focused so intently and mournfully on the underlying issue of contamination, both of the environment and of public discourse",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review excerpt shows clear appreciation for the play's social relevance and political power, with strong positive language about its contemporary impact, but the text appears incomplete making confidence low. | GPT-4o-mini: The review indicates a clear positive sentiment towards the themes and relevance of the play, suggesting a recommendation to see it, albeit with some reservations.",
+    "reasoning": "Claude: A 4/5 star review with consistent praise for the production's focus and relevance, strong performances, and effective direction, despite some minor reservations about character development. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some limitations in comparison to previous productions, leading to a solid recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:15:58.631Z",
+    "scoredAt": "2026-01-28T23:28:27.685Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 75,
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -83,7 +83,7 @@
   "scoreSource": "text-pattern",
   "scoreExtractedFrom": "fullText",
   "designation": "Recommended",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 75
+  "previousLlmScore": 75,
+  "rescoreCompletedAt": "2026-01-28T23:28:27.685Z"
 }

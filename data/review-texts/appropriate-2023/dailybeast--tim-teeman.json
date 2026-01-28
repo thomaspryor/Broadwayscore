@@ -11,7 +11,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -21,62 +21,62 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 74,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 73,
+      "high": 85
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": 80,
       "music": null,
-      "performances": null,
-      "direction": 73
+      "performances": 84,
+      "direction": 78
     },
     "keyPhrases": [
       {
-        "quote": "interweaving layers and intentions",
+        "quote": "Two-time Pulitzer finalist Jacobs-Jenkins really knows how to craft cutting zingers, wincingly comic and dramatic set-pieces, and lacerating verbal battles",
         "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "as brilliantly as it is written, the play feels too shouty at times, too beholden to constant blow-ups and conflagrations",
+        "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "raucous, argument-filled family drama meets comedy, and a pointed indictment of racism meets ghost story",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the past vibrates meaningfully in each scene",
+        "quote": "Appropriate shows how the persistence of racism and prejudice does not just come down to the practice of overt racism, but the practice of unthinking, lazy, deliberate ignorance",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review appreciates the play's complex layering and thematic depth, suggesting intellectual engagement and artistic merit, but lacks explicit recommendation language or emotional enthusiasm. | GPT-4o-mini: The review highlights the play's engaging themes and direction, indicating a clear recommendation despite not explicitly urging attendance.",
+    "reasoning": "Claude: The critic clearly appreciates Jacobs-Jenkins' craft and the play's important themes while praising multiple strong performances, though notes some structural issues with excessive shouting. | GPT-4o-mini: The review highlights strong performances and sharp writing, but notes some issues with pacing and intensity, leading to a solid recommendation overall.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:56.841Z",
+    "scoredAt": "2026-01-28T23:30:54.245Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 74
+  "previousLlmScore": 74,
+  "rescoreCompletedAt": "2026-01-28T23:30:54.245Z"
 }

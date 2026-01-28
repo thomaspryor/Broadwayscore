@@ -24,39 +24,39 @@
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 88,
-      "performances": null,
-      "direction": null
+      "book": 93,
+      "music": 92,
+      "performances": 90,
+      "direction": 93
     },
     "keyPhrases": [
       {
-        "quote": "the most exuberantly entertaining Broadway musical in years",
+        "quote": "The Book of Mormon is a sick mystic revelation, the most exuberantly entertaining Broadway musical in years",
         "sentiment": "positive",
         "strength": 5
-      },
-      {
-        "quote": "sick mystic revelation",
-        "sentiment": "positive",
-        "strength": 4
       },
       {
         "quote": "Brimming with cheerful obscenity, sharp satire and catchy tunes",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "you will be transported back ten years, when The Producers and Urinetown resurrected American musical comedy",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Unqualified superlative praise calling it 'the most exuberantly entertaining Broadway musical in years' with multiple positive descriptors and no caveats indicates a clear rave recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong praise, indicating a must-see experience.",
+    "reasoning": "Claude: 5/5 stars with unqualified superlatives like 'sick mystic revelation' and 'most exuberantly entertaining Broadway musical in years' indicate a rave review despite controversial content. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's humor, writing, and overall entertainment value with no significant reservations.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:13:48.177Z",
+    "scoredAt": "2026-01-28T23:34:22.027Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -75,7 +75,7 @@
     "show-score",
     "web-search"
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 94
+  "previousLlmScore": 94,
+  "rescoreCompletedAt": "2026-01-28T23:34:22.027Z"
 }

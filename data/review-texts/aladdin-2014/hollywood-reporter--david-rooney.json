@@ -9,44 +9,44 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"While it doesn't rival the imagination or innovation of \"The Lion King,\"  the show's ebullient comic spirit should make it a popular hit. It's not the most sophisticated entertainment, but the target demographic won't mind at all.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "dtli",
   "needsFullText": false,
   "urlUpdated": "2026-01-23T05:30:05.962Z",
   "fetchedAt": "2026-01-23T05:23:06.420Z",
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 71,
+    "confidence": "high",
     "range": {
-      "low": 67,
-      "high": 85
+      "low": 65,
+      "high": 77
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": 63,
       "music": 70,
-      "performances": 83,
-      "direction": 78
+      "performances": 80,
+      "direction": 73
     },
     "keyPhrases": [
       {
-        "quote": "But that shouldn't deter audiences from making this splashy Arabian Nights wish-fulfillment fantasy into a family-friendly hit",
+        "quote": "this splashy Arabian Nights wish-fulfillment fantasy into a family-friendly hit",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "this is sweet, silly fun. It's not the most sophisticated entertainment, but the target demographic won't mind at all",
-        "sentiment": "positive",
+        "quote": "It's not the most sophisticated entertainment, but the target demographic won't mind at all",
+        "sentiment": "neutral",
         "strength": 3
       },
       {
-        "quote": "The songs are tuneful, if not quite top-drawer",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "this is sweet, silly fun",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic clearly recommends the show with qualified enthusiasm, praising the spectacle and performances while acknowledging it's not sophisticated - a solid mixed-positive recommendation for family audiences. | GPT-4o-mini: The review expresses clear enjoyment of the production's fun and performances, while acknowledging it lacks sophistication, leading to a strong but not unqualified recommendation.",
+    "reasoning": "Claude: The critic acknowledges the show's entertainment value and commercial appeal while noting its lack of sophistication, predicting success despite creative limitations. | GPT-4o-mini: The review expresses a generally positive view of the show's entertainment value and performances, but notes significant shortcomings in the book and emotional depth, leading to a mixed-positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -56,15 +56,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:26:19.378Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-28T23:24:41.303Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
+    "openaiScore": 70,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -90,7 +90,7 @@
   ],
   "bwwThumb": null,
   "designation": "Recommended",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 76
+  "previousLlmScore": 76,
+  "rescoreCompletedAt": "2026-01-28T23:24:41.303Z"
 }

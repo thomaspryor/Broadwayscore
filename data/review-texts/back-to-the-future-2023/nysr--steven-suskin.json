@@ -38,22 +38,22 @@
     },
     "keyPhrases": [
       {
-        "quote": "Joshua Henry gives what’s destined to be a Tony-winning performance in this much-needed revival",
+        "quote": "Joshua Henry gives what’s destined to be a Tony-winning performance",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "Lesley Manville and Mark Strong have disturbingly good chemistry as theater’s most famous twice-related couple",
+        "quote": "Lesley Manville and Mark Strong have disturbingly good chemistry",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Laurie Metcalf and Micah Stock star in Samuel D. Hunter's acclaimed drama",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "a self-absorbed filmmaker and the people who love him",
+        "sentiment": "neutral",
+        "strength": 3
       }
     ],
-    "reasoning": "GPT-4o-mini: The review highlights strong performances and chemistry among the cast, indicating a positive recommendation overall despite the lack of specific details about the script or direction.",
+    "reasoning": "GPT-4o-mini: The review highlights strong performances and chemistry among the cast, suggesting a positive recommendation overall despite the lack of detailed commentary on the script or direction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -63,7 +63,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:02:35.534Z",
+    "scoredAt": "2026-01-28T23:32:07.743Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -72,13 +72,13 @@
     "claudeScore": null,
     "openaiScore": 75,
     "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
   "bwwThumb": "Up",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 75
+  "previousLlmScore": 75,
+  "rescoreCompletedAt": "2026-01-28T23:32:07.743Z"
 }

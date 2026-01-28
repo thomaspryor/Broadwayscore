@@ -10,55 +10,60 @@
   "showScoreExcerpt": "\"Strong and Imperioli both bring a vigorous contemporary affect to the material.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 71,
+    "score": 89,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 83,
+      "high": 95
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 88,
       "music": null,
-      "performances": 75,
-      "direction": null
+      "performances": 89,
+      "direction": 91
     },
     "keyPhrases": [
       {
-        "quote": "Strong and Imperioli both bring a vigorous contemporary affect to the material",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Strong and Imperioli both bring a vigorous contemporary affect to the material.",
+        "quote": "the gesture is as profound as it is pleasurable",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "Herzog and Gold have cleared away any fustiness and have drawn out Enemy's inherent muscularity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's thrilling to see an American production push further both into visual metaphor and into physical courage and trust than many are ever willing to go",
+        "sentiment": "positive",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: This extremely brief excerpt only praises the lead performances with moderate enthusiasm ('vigorous contemporary affect'), but provides no context about overall show quality or recommendation. | GPT-4o-mini: The review praises the performances but lacks a broader recommendation for the overall production.",
+    "reasoning": "Claude: The reviewer offers sustained, detailed praise for the innovative direction, strong performances, and intelligent adaptation, with particular enthusiasm for the creative staging choices and contemporary relevance. | GPT-4o-mini: The review expresses strong enthusiasm for the production's innovative direction, performances, and thematic depth, indicating it as a must-see.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:09:27.898Z",
+    "scoredAt": "2026-01-28T23:28:53.562Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
+    "claudeScore": 88,
+    "openaiScore": 90,
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
@@ -72,7 +77,7 @@
   "dtliExcerpt": "But Herzog and Gold have cleared away any fustiness (which really lies not in Ibsen but in us) and have drawn out Enemy’s inherent muscularity.",
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 71
+  "previousLlmScore": 71,
+  "rescoreCompletedAt": "2026-01-28T23:28:53.562Z"
 }

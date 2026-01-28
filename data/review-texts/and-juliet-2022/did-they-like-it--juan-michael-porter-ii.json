@@ -9,60 +9,60 @@
   "isFullReview": false,
   "dtliExcerpt": "But in refusing to take itself deadly seriously reminds us that theatre doesn’t have to look a certain way or fulfill specific mandates to be worthwhile. Sometimes having a good time is enough―something that was acceptable for tired, old, businessmen, but that has been denied younger and queerer audiences for decades.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 71,
-    "confidence": "high",
+    "score": 86,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 77,
+      "high": 95
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 78,
+      "music": 80,
+      "performances": 93,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "reminds us that theatre doesn't have to look a certain way or fulfill specific mandates to be worthwhile",
+        "quote": "I totally fell in love",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "Sometimes having a good time is enough",
+        "quote": "I had such a wonderful time that I plan on twerking my butt back to the Stephen Sondheim Theatre to slurp up the pop scrumptiousness at least two more times",
         "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "felt like someone fed Gen Z tweets to artificial intelligence",
+        "sentiment": "negative",
         "strength": 3
-      },
-      {
-        "quote": "theatre doesn’t have to look a certain way or fulfill specific mandates to be worthwhile",
-        "sentiment": "positive",
-        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic defends the show's lighter approach and suggests it provides worthwhile entertainment, indicating a qualified positive recommendation despite the excerpt's brevity. | GPT-4o-mini: The review suggests a positive experience with an emphasis on enjoyment, but lacks strong enthusiasm or specific recommendations.",
+    "reasoning": "Claude: Despite initial skepticism and acknowledging the show's silliness, the critic ultimately 'fell in love' with the production and plans to see it multiple times, indicating strong enthusiasm despite reservations about the concept. | GPT-4o-mini: The review expresses strong enthusiasm for the show, highlighting its fun, performances, and overall enjoyment, indicating a must-see experience.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:53:20.284Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-28T23:29:34.870Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -82,7 +82,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 71
+  "previousLlmScore": 71,
+  "rescoreCompletedAt": "2026-01-28T23:29:34.870Z"
 }

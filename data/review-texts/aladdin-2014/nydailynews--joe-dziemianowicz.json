@@ -10,7 +10,7 @@
   "bwwExcerpt": "While burning through wishes, you should ask for the musical to have a lot more heart. The absence is glaring, given that Disney excels at tugging at tickers and then making them melt. But this show seldom moves you. The title character's yearning ballad, \"Proud of Your Boy,\" sung to his long-gone mom, isn't enough to make this anything better than a Bedouin \"Beauty and the Beast\" - a cartoon on stage.",
   "showScoreExcerpt": "\"The show is as colorful as the Crayola 64 box, and as tirelessly energetic as a toddler, but it also feels canned. While burning through wishes, you should ask for the musical to have a lot more heart. The absence is glaring, given that Disney excels at tugging at tickers and then making them melt.\"",
   "originalScore": 80,
-  "assignedScore": 37,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
   "textStatus": "complete",
@@ -21,56 +21,56 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 37,
-    "confidence": "high",
+    "score": 69,
+    "confidence": "medium",
     "range": {
-      "low": 30.5,
-      "high": 43.5
+      "low": 60.5,
+      "high": 77.5
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 33,
-      "music": 40,
-      "performances": null,
-      "direction": 38
+      "book": 58,
+      "music": 70,
+      "performances": 80,
+      "direction": 73
     },
     "keyPhrases": [
       {
-        "quote": "this show seldom moves you",
+        "quote": "entertaining but emotionally sparse",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "While burning through wishes, you should ask for the musical to have a lot more heart",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "it also feels canned",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "a cartoon on stage",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "James Monroe Iglehart shines with enough charisma to light a thousand and one nights",
+        "sentiment": "positive",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic acknowledges the show's energy and visual appeal but delivers harsh criticism about its emotional emptiness and manufactured feel, with no clear recommendation to see it. | GPT-4o-mini: The review expresses significant disappointment in the emotional depth and overall impact of the musical, leading to a clear negative recommendation.",
+    "reasoning": "Claude: The critic finds the show entertaining with impressive technical elements and standout performances (especially Iglehart), but criticizes its emotional emptiness and formulaic nature, resulting in a qualified recommendation. | GPT-4o-mini: The review highlights strong performances and vibrant production but notes a lack of emotional depth, leading to a mixed-positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T04:58:44.789Z",
+    "scoredAt": "2026-01-28T23:25:13.537Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 35,
-    "scoreDelta": 3,
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -113,7 +113,7 @@
     "bww-roundup",
     "web-search"
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 37
+  "previousLlmScore": 37,
+  "rescoreCompletedAt": "2026-01-28T23:25:13.537Z"
 }

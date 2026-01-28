@@ -11,72 +11,56 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 49,
+  "assignedScore": 0,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 49,
-    "confidence": "high",
+    "score": 0,
+    "confidence": "medium",
     "range": {
-      "low": 43,
-      "high": 55
+      "low": 0,
+      "high": 5
     },
-    "bucket": "Negative",
+    "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 45,
-      "music": 53,
-      "performances": 58,
-      "direction": 50
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "lost opportunity to reimagine a story",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "serviceable score or familiar choreography or competent cast",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "it's the DeLorean that redeems this musical",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The review describes the show as a 'lost opportunity' with only 'serviceable' and 'competent' elements, suggesting disappointment despite acknowledging one redeeming feature. | GPT-4o-mini: The review expresses disappointment in the lack of reimagining and highlights the DeLorean as the main redeeming feature, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "GPT-4o-mini: The review contains no content related to the show itself and appears to be a placeholder or error, indicating a complete lack of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:12:19.854Z",
+    "scoredAt": "2026-01-28T23:32:16.661Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 50,
-    "scoreDelta": 2,
+    "claudeScore": null,
+    "openaiScore": 0,
+    "scoreDelta": 0,
     "thumbsMatch": false,
     "expectedThumb": "Up",
     "needsReview": true,
     "needsReviewReasons": [
-      "Score (49 → Down) conflicts with aggregator thumbs (Up)"
+      "Score (0 → Down) conflicts with aggregator thumbs (Up)"
     ]
   },
   "sources": [
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 49
+  "previousLlmScore": 49,
+  "rescoreCompletedAt": "2026-01-28T23:32:16.661Z"
 }

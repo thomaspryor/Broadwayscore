@@ -10,60 +10,60 @@
   "showScoreExcerpt": "“Neugebauer is doing fine work with the whole ensemble, and Paulson and Stoll provide a supercharged core.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/appropriate-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 89,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 83,
+      "high": 95
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 90,
       "music": null,
-      "performances": 84,
-      "direction": 75
+      "performances": 92,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "doing fine work with the whole ensemble",
+        "quote": "Jacobs-Jenkins's writing lives entirely and electrically in the space of 'and'",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 5
       },
       {
-        "quote": "provide a supercharged core",
+        "quote": "Neugebauer is doing fine work with the whole ensemble, and Paulson and Stoll provide a supercharged core",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Neugebauer is doing fine work with the whole ensemble",
+        "quote": "It is funny, and it does burn",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Positive language about direction and especially strong praise for lead performances, but excerpt is too brief to assess full recommendation strength. | GPT-4o-mini: The review highlights strong performances and direction, indicating a positive recommendation overall.",
+    "reasoning": "Claude: This is a deeply engaged, intellectually rigorous review that praises the writing, performances, and direction while acknowledging the challenging subject matter as a strength rather than weakness. | GPT-4o-mini: The review expresses strong enthusiasm for the writing, performances, and direction, indicating a must-see production.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:11:18.663Z",
+    "scoredAt": "2026-01-28T23:31:34.279Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
+    "claudeScore": 88,
+    "openaiScore": 90,
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
@@ -78,7 +78,7 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 79
+  "previousLlmScore": 79,
+  "rescoreCompletedAt": "2026-01-28T23:31:34.279Z"
 }

@@ -10,18 +10,18 @@
   "showScoreExcerpt": "The musical has been staged in lavish style...And the DeLorean, with its glowing neon trim, has been glamorized effectively...But the musical as a whole never achieves liftoff, or even the stage equivalent of 88 miles an hour. It cruises along in a low gear for almost three hours.",
   "bwwExcerpt": "avoiding having to view the sluggish slog that is the stage adaptation",
   "originalScore": null,
-  "assignedScore": 33,
+  "assignedScore": 15,
   "source": "show-score",
   "textQuality": "truncated",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 33,
+    "score": 15,
     "confidence": "high",
     "range": {
-      "low": 25.5,
-      "high": 40.5
+      "low": 10,
+      "high": 20
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -29,26 +29,26 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 43
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "sluggish slog that is the stage adaptation",
+        "quote": "sluggish slog that is the stage adaptation of 'Back to the Future'",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "musical as a whole never achieves liftoff",
+        "quote": "fairly high on the list of life changes I'd consider would be somehow avoiding having to view",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "cruises along in a low gear for almost three hours",
+        "quote": "sluggish slog that is the stage adaptation",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: Despite acknowledging lavish production values and effective staging elements, the critic fundamentally characterizes the show as a 'sluggish slog' that fails to engage, making it difficult to recommend. | GPT-4o-mini: The review expresses strong dissatisfaction with the overall experience of the musical, indicating a clear rejection of the adaptation.",
+    "reasoning": "Claude: The critic uses extremely harsh language calling the show a 'sluggish slog' and expresses they would time travel to avoid seeing it, indicating an unqualified rejection. | GPT-4o-mini: The review expresses a strong aversion to the production, indicating it is a tedious experience and suggesting avoidance.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -58,17 +58,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:04:21.189Z",
+    "scoredAt": "2026-01-28T23:33:14.194Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 30,
-    "scoreDelta": 5,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 15,
+    "openaiScore": 15,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -114,7 +114,7 @@
     "Word count too low: 97 (min: 300)"
   ],
   "bwwThumb": "Down",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 33
+  "previousLlmScore": 33,
+  "rescoreCompletedAt": "2026-01-28T23:33:14.194Z"
 }

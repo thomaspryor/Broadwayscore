@@ -66,7 +66,7 @@
       "book": 78,
       "music": 82,
       "performances": 89,
-      "direction": 84
+      "direction": 83
     },
     "keyPhrases": [
       {
@@ -75,7 +75,7 @@
         "strength": 4
       },
       {
-        "quote": "Thus 'BOOP!' builds and communicates its own optimistic world, inhabits it fully and makes no apology to anyone",
+        "quote": "builds and communicates its own optimistic world, inhabits it fully and makes no apology to anyone",
         "sentiment": "positive",
         "strength": 4
       },
@@ -85,7 +85,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Critic consistently praises the lead performance, improvements from the tryout, and the show's confidence in its own world, with only minor reservations about score elements. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall production quality, with only minor reservations about the script, leading to a clear recommendation.",
+    "reasoning": "Claude: The review is overwhelmingly positive with strong praise for the lead performance, significant improvements from the tryout, and appreciation for the show's confident execution of its concept, despite acknowledging some minor flaws. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall production quality, indicating a clear recommendation to see the show.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -95,7 +95,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:01.722Z",
+    "scoredAt": "2026-01-28T23:35:22.656Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -109,7 +109,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 85
+  "previousLlmScore": 85,
+  "rescoreCompletedAt": "2026-01-28T23:35:22.656Z"
 }

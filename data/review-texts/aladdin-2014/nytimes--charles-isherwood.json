@@ -10,7 +10,7 @@
   "dtliExcerpt": "If a genie had sprung from my teakettle last week and offered to grant me three wishes, I might impulsively have asked to be spared any more children’s musicals. Since a certain blockbuster feline arrived well over a decade ago, Broadway has been lapped by wave after wave of big, often gloppy songfests adapted from animated movies, mostly from the mother ship, Disney. So the prospect of Aladdin, promising another weary night in the presence of a spunky youngster and wisecracking animals, didn’t exactly set my heart racing. But this latest musical adapted from one of Disney’s popular movies, which opened on Thursday night at the New Amsterdam Theater, defied my dour expectations. As directed and choreographed (and choreographed, and choreographed) by Casey Nicholaw, and adapted by the book writer Chad Beguelin, Aladdin has an infectious and only mildly syrupy spirit. Not to mention enough baubles, bangles and beading to keep a whole season of RuPaul’s Drag Race contestants in runway attire.",
   "showScoreExcerpt": "\"This latest musical adapted from one of Disney’s popular movies defied my dour expectations...“Aladdin” has an infectious and only mildly syrupy spirit. Not to mention enough baubles, bangles and beading to keep a whole season of “RuPaul’s Drag Race” contestants in runway attire.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
   "dtliThumb": "Up",
@@ -19,16 +19,16 @@
     "score": 76,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 81.5
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
-      "music": null,
-      "performances": null,
-      "direction": 79
+      "book": 65,
+      "music": 73,
+      "performances": 81,
+      "direction": 83
     },
     "keyPhrases": [
       {
@@ -42,30 +42,30 @@
         "strength": 4
       },
       {
-        "quote": "didn't exactly set my heart racing",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "Mr. Nicholaw and Mr. Beguelin's inexhaustible determination to put a cockeyed slant on the trademark Disney musical formula",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic overcomes initial skepticism to deliver clear praise for the production's spirit and spectacle, with specific acclaim for Nicholaw's direction and choreography, indicating a positive recommendation despite genre fatigue. | GPT-4o-mini: The review expresses a positive turnaround from initial skepticism, highlighting the show's infectious spirit and quality direction, though it does not fully endorse it without reservations.",
+    "reasoning": "Claude: Critic enters with low expectations but finds the production surprisingly entertaining, praising the direction, choreography, and performances (especially Iglehart) while acknowledging formulaic elements but appreciating the show's self-aware humor and spectacular production values. | GPT-4o-mini: The review expresses a generally positive view of the production, highlighting its entertainment value and performances while acknowledging some weaknesses in the music and story.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:51:59.052Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-28T23:25:34.040Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 75,
-    "scoreDelta": 1,
+    "openaiScore": 76,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -86,7 +86,7 @@
   "sourceMethod": "dtli",
   "bwwExcerpt": "The prospect of \"Aladdin,\" promising another weary night in the presence of a spunky youngster and wisecracking animals, didn't exactly set my heart racing. But this latest musical adapted from one of Disney's popular movies, which opened on Thursday night at the New Amsterdam Theater, defied my dou...",
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 76
+  "previousLlmScore": 76,
+  "rescoreCompletedAt": "2026-01-28T23:25:34.040Z"
 }

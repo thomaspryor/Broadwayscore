@@ -33,9 +33,9 @@
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": 92,
-      "performances": 88,
+      "book": 88,
+      "music": 90,
+      "performances": 85,
       "direction": 90
     },
     "keyPhrases": [
@@ -55,7 +55,7 @@
         "strength": 5
       }
     ],
-    "reasoning": "Claude: This is an unqualified rave review with superlative praise throughout, declaring it 'a hit' and expressing desire to see it again immediately, with detailed appreciation for all creative elements. | GPT-4o-mini: The review is filled with unqualified praise and enthusiasm, indicating a strong recommendation to see the show.",
+    "reasoning": "Claude: This is an unqualified rave with superlative language throughout, declaring it both 'a hoot' and 'a hit' with sustained enthusiasm for all elements and an explicit desire to see it again. | GPT-4o-mini: The review is overwhelmingly positive, praising the show's craftsmanship, humor, and entertainment value without any significant reservations.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -65,7 +65,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:04:48.765Z",
+    "scoredAt": "2026-01-28T23:33:54.376Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -86,7 +86,7 @@
   ],
   "originalScoreNormalized": 95,
   "scoreExtractedFrom": "fullText",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 94
+  "previousLlmScore": 94,
+  "rescoreCompletedAt": "2026-01-28T23:33:54.376Z"
 }

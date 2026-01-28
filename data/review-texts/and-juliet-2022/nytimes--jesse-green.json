@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The wit operates on many levels in the musical “& Juliet,” starring Lorna Courtney, at the Stephen Sondheim Theater in Manhattan.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "dtliUrl": null,
@@ -18,55 +18,55 @@
   "showScoreExcerpt": "Though the show is often funny and the performances are winning, the historical cuteness and presentist messaging eventually wear thin.",
   "needsScoring": true,
   "llmScore": {
-    "score": 61,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 67
+      "low": 73,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 50,
-      "music": null,
-      "performances": 74,
-      "direction": null
+      "book": 75,
+      "music": 75,
+      "performances": 85,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "often funny and the performances are winning",
+        "quote": "So shoot me: I liked it. It felt so wrong; it felt so right.",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "historical cuteness and presentist messaging eventually wear thin",
-        "sentiment": "negative",
+        "quote": "What saves '& Juliet' from being a lowest-common-denominator corporate byproduct is something else, something I never expected: wit.",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Though",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "Jukebox musicals may still be bottom feeders, but, as '& Juliet' proves, there are sometimes small treasures to be found in the murk.",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic acknowledges strong performances and humor but expresses significant reservations about the material's approach and messaging, resulting in a qualified mixed assessment. | GPT-4o-mini: The review acknowledges some humor and strong performances but ultimately suggests that the material becomes tiresome, leading to a mixed recommendation.",
+    "reasoning": "Claude: Despite the critic's admitted bias against jukebox musicals, he gives a clear positive recommendation, praising the wit, performances (especially Wolfe and Courtney), and clever feminist reimagining of the source material. | GPT-4o-mini: The review expresses a strong appreciation for the show's wit, performances, and overall enjoyment despite some reservations about the genre.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T03:09:46.652Z",
+    "scoredAt": "2026-01-28T23:30:05.736Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 60,
+    "claudeScore": 78,
+    "openaiScore": 80,
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
@@ -79,7 +79,7 @@
   ],
   "bwwThumb": null,
   "designation": "Critics_Pick",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 61
+  "previousLlmScore": 61,
+  "rescoreCompletedAt": "2026-01-28T23:30:05.736Z"
 }

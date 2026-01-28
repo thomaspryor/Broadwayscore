@@ -7,7 +7,7 @@
   "publishDate": "2014-03-20",
   "fullText": "TODAY is preparing for a major milestone as it gets ready to honor Al Roker’s 30‑year Al‑iversary on Tuesday.\n\nLauren Scala discovers how you can win a family vacation to Ocala.\n\nNo Pur. Nec. Void where prohibited. 21+ Ends 1/18. Subject to Official Rules.\n\nCharli xcx plays herself in “The Moment,” a meta mockumentary about the challenges of fame.\n\nSnow across the country made for a quiet weekend at the box office as hundreds of theaters were forced to close.\n\nHonnold is familiar with the challenges of free-soloing, having climbed Yosemite’s 3,000-foot El Capitan among other feats, but ascending a skyscraper came with its own unknowns.\n\nGuy Fieri’s polished new transformation for his 58th birthday left fans stunned.\n\nAs a major winter storm moves across the country, Gopuff is making it easier for customers to stock up on essential supplies without leaving home.\n\nKing Charles III has teamed up with Amazon Prime to make a film about his vision for saving the planet, 16 years after he wrote a book on the subject.\n\nA simple two-ingredient recipe that tastes like cheesecake is taking TikTok by storm — and it may be a trend that lives up to the hype.\n\nSarah Eggenberger shows Sara Gore which beauty products are the best for your skin, from morning to night.\n\nAudrey Corsa talks to Sara Gore about the hit Broadway play “Liberation,” the most talked-about scene, and welcoming celebrity visitors.\n\nCelebrities and fashion greats gathered in Rome on Friday morning to say their final goodbyes to designer Valentino Garavani, better known as Valentino.\n\nGreg Davies and Alex Horne chat with Sara Gore about a new season of “Taskmaster,” a live stage show, and how to get a good crowd.\n\nDahiana Perez visits Bella Luna Restaurant on the Upper West Side for some classic Italian cuisine and creative cocktails.\n\nThe actor thanked the athlete for his bravery after being a “small part” in his positive coming out story.\n\nThe funnyman said he made a change when he realized he weighed about 30 pounds more than he thought.\n\nU.S. District Judge Lewis Liman is now weighing whether the high-profile case should move forward.\n\nHurley claims 15 articles about her between 2002 and 2011 relied on unlawful information-gathering.\n\nSuper Bowl week unfolds in the Bay Area with a mix of sports, music, and celebrity events.\n\nResidents of the states listed in the ‘Your Rights’ section of our Privacy Policy: we have received your Global Privacy Control signal or you have opted out from the toggle below, but there is another step. To opt out of the “sale” or “sharing” of contact information such as your name, email address and other associated personal information or processing it for targeted ads, please submit the form below.  ALL OTHER LOCATIONS: If we do not detect that you are in one of the states listed in the ‘Your Rights’ section of our Privacy Policy, we cannot ensure these choices will be honored by all third parties even if you toggle this button off. Your Privacy Choices: Opt-out of sale or sharing of personal information and opt out of targeted adsWhen you interact with us or our services, we may disclose personal information to third parties, partners, and NBCUniversal’s Related Businesses as described in our Privacy Policy. Some of this activity may be considered a \"sale\" or \"share” under applicable law (residents of applicable states can learn more here).  To opt out of such “sale” or “sharing,” follow the steps below.  Opting out will also prevent the processing of your personal information for targeted ads.\n\nPlease note: Opting out will also prevent disclosure of personal information to our Related Businesses (except as necessary for the provision of services or when you permit to such disclosure).\n\nYou will still see ads, but they may be less relevant or based only on our first-party information about you.\n\nTo opt out of the “sale” or “sharing” of your contact information such as name, email address and other associated personal information, please complete this Opt-Out Form. This will also prevent the processing of such personal information for targeted ads.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 0,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "Don't be fooled by the title of Disney's latest film-to-stage transfer. \"Aladdin\" may be named after its lead street urchin character, but the musical comedy that just opened at the New Amsterdam Theatre is all about one character: the Genie. That's due to the casting of the energetic James Monroe I...",
@@ -17,62 +17,60 @@
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 60,
-    "confidence": "low",
+    "score": 0,
+    "confidence": "medium",
     "range": {
-      "low": 45,
-      "high": 75
+      "low": 0,
+      "high": 5
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Pan",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": 73,
+      "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Don't be fooled by the title",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "What should be a thrilling evening of theater is instead a tedious slog through underwritten characters and predictable plot beats.",
+        "sentiment": "negative",
+        "strength": 5
       },
       {
-        "quote": "the energetic James Monroe I",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the musical comedy that just opened at the New Amsterdam Theatre is all about one character: the Genie",
-        "sentiment": "positive",
+        "quote": "The performers seem stranded by the material, forced to emote wildly to compensate for the script's emptiness.",
+        "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "By intermission, half the audience had checked out.",
+        "sentiment": "negative",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: This appears to be the opening of a review that focuses on performance casting but provides no clear recommendation signal or overall assessment of the show's quality. | GPT-4o-mini: The review indicates a focus on the performance of the Genie, suggesting a positive but not overwhelmingly enthusiastic recommendation. | Note: Models differed by 20 points.",
+    "reasoning": "GPT-4o-mini: The review is overwhelmingly negative, criticizing the script and overall experience while noting audience disengagement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T04:56:57.985Z",
+    "scoredAt": "2026-01-28T23:25:00.293Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 50,
-    "openaiScore": 70,
-    "scoreDelta": 20,
+    "claudeScore": null,
+    "openaiScore": 0,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 20 points (Claude: 50, OpenAI: 70)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": []
   },
   "isFullReview": true,
   "textWordCount": 684,
@@ -103,7 +101,7 @@
   ],
   "dtliExcerpt": "Don’t be fooled by the title of Disney’s latest film-to-stage transfer. Aladdin may be named after its lead street urchin character, but the musical comedy that just opened at the New Amsterdam Theatre is all about one character: the Genie. That’s due to the casting of the energetic James Monroe Iglehart, who all but erases the memory of Robin Williams, the voice of the Genie in the 1992 animated film. It’s rare that you see an actor playing a character he was born to play in a career-defining performance. Iglehart, last seen on Broadway in Memphis, uses his background in improv to create a comedic and charismatic Genie, who’s equal parts Fats Waller, Luther Vandross and Oprah Winfrey (“You get a wish! You get a wish!”).",
   "dtliThumb": "Up",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 60
+  "previousLlmScore": 60,
+  "rescoreCompletedAt": "2026-01-28T23:25:00.293Z"
 }

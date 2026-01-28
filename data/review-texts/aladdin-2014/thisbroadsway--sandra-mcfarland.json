@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"The stage is alive from beginning to end. It's a spectacle of lights and sound...Iglehart was a most lovable Genie, and the audience ate him up. It's not often you see a standing ovation partial.\"",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 94,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "incomplete",
@@ -18,38 +18,38 @@
   "scoreSource": "enhanced-sentiment-lean-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 84,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 87.5,
+      "high": 100
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": null,
-      "performances": 89,
-      "direction": 85
+      "music": 90,
+      "performances": 95,
+      "direction": 94
     },
     "keyPhrases": [
       {
-        "quote": "The stage is alive from beginning to end. It's a spectacle of lights and sound",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Iglehart was a most lovable Genie, and the audience ate him up",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's not often you see a standing ovation partial",
+        "quote": "Don't walk….RUN",
         "sentiment": "positive",
         "strength": 5
+      },
+      {
+        "quote": "It's not often you see a standing ovation partially through the 1st act, but this stuff is so good",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "perhaps one wish should be to see Aladdin on Broadway",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong positive language about the production spectacle and lead performance, with concrete evidence of audience enthusiasm including a rare partial standing ovation. | GPT-4o-mini: The review expresses strong enthusiasm for the production, particularly highlighting the performances and overall spectacle, indicating a clear recommendation to see the show.",
+    "reasoning": "Claude: Unqualified enthusiasm with superlatives throughout, explicit strong recommendation to 'RUN' to see it, and extraordinary audience response described (mid-first-act standing ovation). | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and overall experience, indicating a strong recommendation to see the show.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -59,14 +59,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T04:59:58.145Z",
+    "scoredAt": "2026-01-28T23:26:23.750Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
+    "claudeScore": 92,
+    "openaiScore": 95,
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
@@ -111,7 +111,7 @@
   "truncationSignals": [
     "has_footer_text"
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 84
+  "previousLlmScore": 84,
+  "rescoreCompletedAt": "2026-01-28T23:26:23.750Z"
 }

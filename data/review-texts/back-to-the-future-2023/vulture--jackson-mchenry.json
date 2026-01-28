@@ -10,55 +10,67 @@
   "showScoreExcerpt": "“ ‘Back to the Future’ simply tries to hold up its plutonium-weight source material.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/back-to-the-future-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": 36,
+  "assignedScore": 49,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 36,
+    "score": 49,
     "confidence": "medium",
     "range": {
-      "low": 25,
-      "high": 47
+      "low": 37.5,
+      "high": 60.5
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 43,
+      "music": 48,
+      "performances": 55,
+      "direction": 50
     },
     "keyPhrases": [
       {
-        "quote": "simply tries to hold up its plutonium-weight source material",
+        "quote": "it's impressive as a meticulous stage-to-screen translation of a vibe but less compelling in and of itself",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 4
+      },
+      {
+        "quote": "If this is the future arriving on Broadway, it looks way too much like another medium's past",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The stagecraft is well managed",
+        "sentiment": "positive",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The metaphor of struggling to 'hold up' heavy source material suggests the show is weighed down and failing to succeed, indicating a negative assessment despite the brief excerpt. | GPT-4o-mini: The review conveys a strong negative sentiment, indicating a failure to effectively adapt the source material. | Note: Models differed by 12 points.",
+    "reasoning": "Claude: The critic acknowledges technical competence but fundamentally criticizes the adaptation as uninspired, overly faithful, and missing opportunities for deeper commentary, ultimately questioning its value as theater. | GPT-4o-mini: The review expresses a mix of appreciation for the production's stagecraft and performances but ultimately criticizes its lack of depth and originality, leading to a conditional recommendation. | Note: Models differed by 13 points.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:12:09.523Z",
+    "scoredAt": "2026-01-28T23:33:09.121Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 30,
-    "scoreDelta": 12,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (49 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
   },
   "bwwExcerpt": "looks way too much like another medium's past with screens dominating the stage",
   "sources": [
@@ -66,7 +78,7 @@
     "bww-roundup"
   ],
   "bwwThumb": "Meh",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 36
+  "previousLlmScore": 36,
+  "rescoreCompletedAt": "2026-01-28T23:33:09.121Z"
 }

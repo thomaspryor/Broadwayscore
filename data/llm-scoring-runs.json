@@ -16145,5 +16145,396 @@
         "disagreementDetails": "DTLI: Down thumbs differ by 55% (ours: 20%, theirs: 75%)"
       }
     ]
+  },
+  {
+    "startedAt": "2026-01-28T23:23:19.151Z",
+    "completedAt": "2026-01-28T23:35:22.657Z",
+    "totalReviews": 2260,
+    "processed": 100,
+    "skipped": 1323,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 738786,
+      "output": 66057,
+      "total": 804843
+    },
+    "errorDetails": [],
+    "calibration": {
+      "count": 1823,
+      "mae": 1.19,
+      "rmse": 6.91,
+      "meanBias": -0.67,
+      "stdDev": 6.88,
+      "bucketAccuracy": 66.1,
+      "byConfidence": {
+        "high": {
+          "count": 1133,
+          "mae": 0.62
+        },
+        "medium": {
+          "count": 652,
+          "mae": 1.84
+        },
+        "low": {
+          "count": 38,
+          "mae": 6.97
+        }
+      },
+      "byTier": {
+        "tier1": {
+          "count": 277,
+          "mae": 2.16,
+          "meanBias": -1.93
+        },
+        "tier2": {
+          "count": 353,
+          "mae": 0.29,
+          "meanBias": -0.17
+        },
+        "tier3": {
+          "count": 1193,
+          "mae": 1.23,
+          "meanBias": -0.53
+        }
+      },
+      "outletBias": {
+        "Associated Press": {
+          "count": 10,
+          "meanBias": 0
+        },
+        "Billboard": {
+          "count": 4,
+          "meanBias": 0
+        },
+        "chicagotribune": {
+          "count": 14,
+          "meanBias": 0.6428571428571429
+        },
+        "Cititour": {
+          "count": 32,
+          "meanBias": 0
+        },
+        "Deadline": {
+          "count": 56,
+          "meanBias": -0.9821428571428571
+        },
+        "Entertainment Weekly": {
+          "count": 72,
+          "meanBias": 0.05555555555555555
+        },
+        "financial-times-uk": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "The Guardian": {
+          "count": 43,
+          "meanBias": -3.0232558139534884
+        },
+        "The Hollywood Reporter": {
+          "count": 43,
+          "meanBias": 0.23255813953488372
+        },
+        "NBC New York": {
+          "count": 2,
+          "meanBias": -30
+        },
+        "Newsday": {
+          "count": 7,
+          "meanBias": 0
+        },
+        "northjerseycom": {
+          "count": 3,
+          "meanBias": -5
+        },
+        "New York Daily News": {
+          "count": 58,
+          "meanBias": 0.5172413793103449
+        },
+        "New York Post": {
+          "count": 61,
+          "meanBias": -0.8688524590163934
+        },
+        "New York Stage Review": {
+          "count": 104,
+          "meanBias": 0.08653846153846154
+        },
+        "New York Theater": {
+          "count": 43,
+          "meanBias": -1.186046511627907
+        },
+        "The New York Times": {
+          "count": 70,
+          "meanBias": 0.7
+        },
+        "Theater Pizzazz": {
+          "count": 2,
+          "meanBias": 1.5
+        },
+        "TheaterMania": {
+          "count": 96,
+          "meanBias": 0.07291666666666667
+        },
+        "Theatermania": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "The Stage": {
+          "count": 4,
+          "meanBias": -20
+        },
+        "The Wrap": {
+          "count": 60,
+          "meanBias": -0.85
+        },
+        "ThisbroadSway": {
+          "count": 2,
+          "meanBias": 5
+        },
+        "Time Out New York": {
+          "count": 68,
+          "meanBias": -3.926470588235294
+        },
+        "unknown": {
+          "count": 39,
+          "meanBias": 0.5641025641025641
+        },
+        "USA Today": {
+          "count": 26,
+          "meanBias": 0
+        },
+        "Variety": {
+          "count": 114,
+          "meanBias": -0.8596491228070176
+        },
+        "Vulture": {
+          "count": 91,
+          "meanBias": -0.6043956043956044
+        },
+        "The Washington Post": {
+          "count": 51,
+          "meanBias": -2.372549019607843
+        },
+        "The Wall Street Journal": {
+          "count": 50,
+          "meanBias": -1.56
+        },
+        "zeal-nyc": {
+          "count": 2,
+          "meanBias": -1.5
+        },
+        "amNewYork": {
+          "count": 17,
+          "meanBias": 0.17647058823529413
+        },
+        "bergen-record": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "Broadway News": {
+          "count": 49,
+          "meanBias": 0.02040816326530612
+        },
+        "New York Theatre Guide": {
+          "count": 59,
+          "meanBias": 0.13559322033898305
+        },
+        "Talkin' Broadway": {
+          "count": 40,
+          "meanBias": -0.625
+        },
+        "Theatrely": {
+          "count": 56,
+          "meanBias": -0.5892857142857143
+        },
+        "village-voice": {
+          "count": 4,
+          "meanBias": 0
+        },
+        "Chicago Tribune": {
+          "count": 19,
+          "meanBias": 0.8947368421052632
+        },
+        "The Daily Beast": {
+          "count": 42,
+          "meanBias": 0.047619047619047616
+        },
+        "did-they-like-it": {
+          "count": 4,
+          "meanBias": 3.75
+        },
+        "Observer": {
+          "count": 32,
+          "meanBias": -0.78125
+        },
+        "chelsea-community-news": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "Queerty": {
+          "count": 5,
+          "meanBias": 0
+        },
+        "Slash Film": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "latimes": {
+          "count": 5,
+          "meanBias": -23
+        },
+        "Toronto Star": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "Culture Sauce": {
+          "count": 5,
+          "meanBias": 0
+        },
+        "lighting-and-sound-america": {
+          "count": 9,
+          "meanBias": 0
+        },
+        "Slant Magazine": {
+          "count": 7,
+          "meanBias": -5.142857142857143
+        },
+        "Pages on Stages": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "Front Mezz Junkies": {
+          "count": 6,
+          "meanBias": 0
+        },
+        "The New Yorker": {
+          "count": 7,
+          "meanBias": 0
+        },
+        "One-Minute Critic": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "Forward": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "The Observer": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "CurtainUp": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "BroadwayWorld": {
+          "count": 7,
+          "meanBias": 0
+        },
+        "dcmetro": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "DC Theatre Scene": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "NY1": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "Rolling Stone": {
+          "count": 5,
+          "meanBias": 0
+        },
+        "stage-left": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "Towleroad": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "nbcnews": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "StageZine": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "theater-scene": {
+          "count": 5,
+          "meanBias": 0
+        },
+        "theatre-reviews-limited": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "amny": {
+          "count": 6,
+          "meanBias": 0
+        },
+        "The Forward": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "Stage and Cinema": {
+          "count": 4,
+          "meanBias": 0
+        },
+        "The New York Sun": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "Front Row Center": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "Mashable": {
+          "count": 4,
+          "meanBias": 0
+        },
+        "njcom": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "The Telegraph": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "The Times": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "culturesauce": {
+          "count": 10,
+          "meanBias": 0
+        },
+        "new-york-sun": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "New York Sun": {
+          "count": 3,
+          "meanBias": 0
+        },
+        "DC Theater Arts": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "the-village-voice": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "the-interested-bystander": {
+          "count": 2,
+          "meanBias": 0
+        },
+        "Wall Street Journal": {
+          "count": 3,
+          "meanBias": 0
+        }
+      }
+    }
   }
 ]

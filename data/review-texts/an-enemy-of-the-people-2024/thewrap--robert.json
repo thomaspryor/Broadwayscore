@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Best of all is Jeremy Strong’s Dr. Thomas Stockmann, who vividly recalls Dr. Anthony Fauci, especially when this good Norwegian doctor is warning a town about the dangers of an impending epidemic. The only problem with making “Enemy” a blow-by-blow retelling of Trump and Fauci’s battles is that what we all endured in real life a few years ago was so much more dramatic than what’s being offered onstage under the direction of Sam Gold.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 71,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -51,10 +51,10 @@
   "archiveOrgTimestamp": "20250918201449",
   "archiveOrgUrl": "http://web.archive.org/web/20250918201449/https://www.thewrap.com/an-enemy-of-the-people-broadway-review-jeremy-strong/",
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 71,
+    "confidence": "high",
     "range": {
-      "low": 67,
+      "low": 65,
       "high": 77
     },
     "bucket": "Mixed",
@@ -62,7 +62,7 @@
     "components": {
       "book": 65,
       "music": null,
-      "performances": 85,
+      "performances": 83,
       "direction": 70
     },
     "keyPhrases": [
@@ -82,7 +82,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic praises Strong's performance enthusiastically and finds the production improvements over Herzog's previous work, but criticizes the adaptation for being less dramatic than real-life events it mirrors.",
+    "reasoning": "Claude: The critic praises Strong's performance extensively and appreciates the production's technical elements, but finds the adaptation less compelling than the real-life events it mirrors, resulting in qualified approval. | GPT-4o-mini: The review highlights strong performances, particularly by Jeremy Strong, but also expresses significant reservations about the adaptation's impact compared to real-life events.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -92,15 +92,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:14:24.505Z",
+    "scoredAt": "2026-01-28T23:28:20.526Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "openaiScore": 70,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -109,7 +109,7 @@
   "sources": [
     "dtli"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 72
+  "previousLlmScore": 72,
+  "rescoreCompletedAt": "2026-01-28T23:28:20.526Z"
 }

@@ -52,7 +52,7 @@
     "components": {
       "book": 68,
       "music": 70,
-      "performances": 65,
+      "performances": 68,
       "direction": 58
     },
     "keyPhrases": [
@@ -72,7 +72,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite calling it the 'freshest and funniest' musical in seasons and praising its subversive nature, the critic expresses significant disappointment that it falls short of Parker and Stone's potential, resulting in a qualified positive recommendation with substantial reservations. | GPT-4o-mini: The review presents a mix of praise for humor and originality but highlights significant shortcomings in execution and consistency, leading to a conditional recommendation.",
+    "reasoning": "Claude: The critic acknowledges this as the 'freshest and funniest' musical in seasons and praises its subversive elements, but expresses significant disappointment that it doesn't reach its full potential, creating a qualified positive recommendation despite major reservations. | GPT-4o-mini: The review expresses a mix of praise for the humor and originality of the show but also highlights significant shortcomings in its execution and familiarity, leading to a conditional recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -82,7 +82,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T02:49:32.194Z",
+    "scoredAt": "2026-01-28T23:34:15.450Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -99,7 +99,7 @@
   "sources": [
     "web-search"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 69
+  "previousLlmScore": 69,
+  "rescoreCompletedAt": "2026-01-28T23:34:15.450Z"
 }

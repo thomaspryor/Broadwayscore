@@ -55,7 +55,7 @@
     "components": {
       "book": 48,
       "music": 60,
-      "performances": 70,
+      "performances": 73,
       "direction": 55
     },
     "keyPhrases": [
@@ -75,7 +75,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The 3/5 star rating combined with significant structural criticisms ('short on magic', 'weightless silliness') outweighs praise for individual performances, landing in mixed territory. | GPT-4o-mini: The review presents a mixed view, highlighting some enjoyable performances but ultimately criticizing the lack of depth and magic in the production.",
+    "reasoning": "Claude: The 3/5 star rating and predominantly critical language about the show being 'short on magic' with 'weightless silliness' indicates a mixed review that leans slightly negative despite some praise for Iglehart's performance. | GPT-4o-mini: The review expresses mixed feelings, highlighting some enjoyable performances but ultimately criticizing the show's lack of depth and coherence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -85,7 +85,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:46.044Z",
+    "scoredAt": "2026-01-28T23:26:35.637Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -106,7 +106,7 @@
     "web-search",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 57
+  "previousLlmScore": 57,
+  "rescoreCompletedAt": "2026-01-28T23:26:35.637Z"
 }

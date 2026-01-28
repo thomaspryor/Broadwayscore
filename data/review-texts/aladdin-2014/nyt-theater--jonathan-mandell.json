@@ -48,12 +48,12 @@
         "strength": 4
       },
       {
-        "quote": "Chad Beguelin's book exceeds the acceptable quota of dumb jokes",
+        "quote": "Beneath all that shimmer and talent is a unmistakeable Disney product... Chad Beguelin's book exceeds the acceptable quota of dumb jokes",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic clearly enjoys the spectacle and James Monroe Iglehart's performance but has significant reservations about the book's quality and some musical elements, resulting in a qualified positive recommendation. | GPT-4o-mini: The review highlights strong performances and visual spectacle while noting some weaknesses in the book and music, leading to a clear but qualified recommendation.",
+    "reasoning": "Claude: The critic clearly enjoys the spectacle, direction, and especially James Monroe Iglehart's performance, but has significant reservations about the book's quality and dialogue, resulting in a qualified positive recommendation. | GPT-4o-mini: The review expresses clear enjoyment of the performances and production design, while noting some weaknesses in the book and music, leading to a solid recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -63,7 +63,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T04:58:27.734Z",
+    "scoredAt": "2026-01-28T23:25:27.828Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -77,7 +77,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 74
+  "previousLlmScore": 74,
+  "rescoreCompletedAt": "2026-01-28T23:25:27.828Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "CRITIC'S PICK\n\"On my fourth visit on a recent night, the show still had me at “Hello,”...I had anticipated a certain falling off of religious fervor: three years is a long time for a peppy musical to stay peppy. But gosh darn it if I didn’t feel born again all over again, ready to spread the word about the faith that this show preaches and, more importantly practices: the holy faith of musical comedy.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -49,38 +49,38 @@
   "archiveOrgTimestamp": "20151018122035",
   "archiveOrgUrl": "http://web.archive.org/web/20151018122035/http://articles.philly.com/2011-03-24/news/29181934_1_mormonism-andrew-rannells-show-ends",
   "llmScore": {
-    "score": 89,
-    "confidence": "medium",
+    "score": 84,
+    "confidence": "high",
     "range": {
       "low": 77.5,
-      "high": 100
+      "high": 90.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
-      "music": null,
-      "performances": 88,
-      "direction": 82
+      "book": 83,
+      "music": 83,
+      "performances": 89,
+      "direction": 84
     },
     "keyPhrases": [
       {
-        "quote": "Its triumph - that's not too strong a word",
+        "quote": "it redeems itself, gloriously",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "The show is a hoot - and a literal guilty pleasure",
+        "quote": "a happy musical, the kind of traditional sweet and sassy Broadway entertainment that offers a generous and strategic mix of gorgeous sets, razzmatazz dance numbers, catchy tunes, a clever story, and well-timed hilarity",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "the ultimate feel-good musical, and Broadway's genuine paradox",
+        "quote": "The Book of Mormon has enough heart (its leads are characters, not caricatures), makes pointed commentary about organized religion in such insightful and entertaining ways",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses strong positive language like 'triumph' and 'ultimate feel-good musical,' praises performances as 'wonderful' and 'maximum ingratiation,' and despite noting the show's controversial content, ultimately celebrates its deeper message about faith and comfort. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show, highlighting its humor and underlying message, leading to a strong recommendation. | Note: Models differed by 13 points.",
+    "reasoning": "Claude: Despite acknowledging controversial content and some criticisms about targeting Mormons specifically, the reviewer ultimately praises the show's entertainment value, performances, and redemptive qualities, concluding it 'redeems itself, gloriously.' | GPT-4o-mini: The review expresses strong praise for the musical's entertainment value and performances while acknowledging some discomfort with its subject matter, leading to a solid positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -90,15 +90,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T02:48:08.792Z",
+    "scoredAt": "2026-01-28T23:34:30.212Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 95,
-    "scoreDelta": 13,
+    "openaiScore": 85,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -108,7 +108,7 @@
     "show-score-playwright"
   ],
   "showScoreExcerpt": "CRITIC'S PICK\n\"On my fourth visit on a recent night, the show still had me at “Hello,”...I had anticipated a certain falling off of religious fervor: three years is a long time for a peppy musical to stay peppy. But gosh darn it if I didn’t feel born again all over again, ready to spread the word about the faith that this show preaches and, more importantly practices: the holy faith of musical comedy.\"\n\nRead more",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 89
+  "previousLlmScore": 89,
+  "rescoreCompletedAt": "2026-01-28T23:34:30.212Z"
 }

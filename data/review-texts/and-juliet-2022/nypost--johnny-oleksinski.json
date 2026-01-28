@@ -10,24 +10,24 @@
   "bwwExcerpt": "This sporadically fun musical from - where else! - Great Britain with a loony book by David West Read suggests this idea is somehow very feminist; that taking a dagger for your poisoned man is the ultimate failure of the Bechdel test. A bit self-righteous coming from a show that includes &quot;I Kissed a Girl and I Liked It&quot; by Katy Perry, dontcha think? The key to enjoying yourself at &quot;&amp; Juliet&quot; - and it is, indeed, an empty-headed good time - is to ignore the plot entirely a",
   "bwwRoundupUrl": null,
   "bwwThumb": null,
-  "assignedScore": 54,
+  "assignedScore": 49,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "needsScoring": true,
   "llmScore": {
-    "score": 54,
-    "confidence": "low",
+    "score": 49,
+    "confidence": "medium",
     "range": {
       "low": 40.5,
-      "high": 67.5
+      "high": 57.5
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": 38,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "music": 48,
+      "performances": 66,
+      "direction": 55
     },
     "keyPhrases": [
       {
@@ -36,41 +36,39 @@
         "strength": 3
       },
       {
-        "quote": "loony book",
+        "quote": "The key to enjoying yourself at '& Juliet' ... is to ignore the plot entirely and pretend you're at a concert",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "The key to enjoying yourself at '& Juliet' ... is to ignore the plot entirely",
+        "quote": "With 29 of his songs strung together and orchestrated to sound roughly the same, the effect can be mind-numbing",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic acknowledges the show as 'sporadically fun' and an 'empty-headed good time' but severely criticizes the book and suggests ignoring the plot entirely, indicating mixed feelings with slight positive lean. | GPT-4o-mini: The review expresses significant criticism of the book and suggests that the show lacks substance, leading to a negative overall recommendation. | Note: Models differed by 17 points.",
+    "reasoning": "Claude: The critic acknowledges the show as fun entertainment but criticizes fundamental elements like the plot, music arrangement, and writing, ultimately suggesting audiences should ignore key aspects to enjoy it. | GPT-4o-mini: The review expresses significant criticism of the book and music while acknowledging some enjoyment from performances, leading to a negative overall recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:10:35.418Z",
+    "scoredAt": "2026-01-28T23:29:40.921Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 52,
     "openaiScore": 45,
-    "scoreDelta": 17,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 17 points (Claude: 62, OpenAI: 45)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": []
   },
   "dtliExcerpt": "This sporadically fun musical from — where else! — Great Britain with a loony book by David West Read suggests this idea is somehow very feminist; that taking a dagger for your poisoned man is the ultimate failure of the Bechdel test.",
   "sources": [
@@ -80,7 +78,7 @@
   ],
   "showScoreExcerpt": null,
   "designation": "Recommended",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 54
+  "previousLlmScore": 54,
+  "rescoreCompletedAt": "2026-01-28T23:29:40.921Z"
 }

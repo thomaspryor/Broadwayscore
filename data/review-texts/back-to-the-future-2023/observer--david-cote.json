@@ -10,65 +10,49 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "gifted cast with thankless roles and abysmal score; the car is the star",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 0,
   "source": "bww-roundup",
   "textQuality": "partial",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 25,
-    "confidence": "high",
+    "score": 0,
+    "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 0,
+      "high": 5
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
       "book": null,
-      "music": 10,
-      "performances": 63,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "abysmal score",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "thankless roles",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "gifted cast",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Despite praising the cast as 'gifted,' the critic condemns the score as 'abysmal' and notes the performers have 'thankless roles,' with the dismissive comment that 'the car is the star' suggesting the production fails to showcase human talent effectively. | GPT-4o-mini: The review highlights significant flaws in the music and roles while only acknowledging the cast's talent, leading to a clear negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "GPT-4o-mini: The review does not contain any content related to the show itself, indicating a complete lack of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:03:08.806Z",
+    "scoredAt": "2026-01-28T23:32:40.496Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 25,
+    "claudeScore": null,
+    "openaiScore": 0,
     "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -102,7 +86,7 @@
     "Show title not found in text"
   ],
   "bwwThumb": "Down",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 25
+  "previousLlmScore": 25,
+  "rescoreCompletedAt": "2026-01-28T23:32:40.496Z"
 }

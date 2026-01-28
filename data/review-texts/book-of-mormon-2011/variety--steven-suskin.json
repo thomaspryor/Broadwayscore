@@ -30,16 +30,16 @@
     "score": 94,
     "confidence": "high",
     "range": {
-      "low": 88,
+      "low": 87.5,
       "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": 88,
-      "music": 95,
+      "music": 93,
       "performances": 90,
-      "direction": 94
+      "direction": 92
     },
     "keyPhrases": [
       {
@@ -53,12 +53,12 @@
         "strength": 5
       },
       {
-        "quote": "approaches musical-comedy Rapture",
+        "quote": "an original made-up-for-Broadway production that approaches musical-comedy Rapture",
         "sentiment": "positive",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: Unqualified rave with superlative language throughout, comparing favorably to Tony winners and declaring it approaches 'musical-comedy Rapture' with no significant criticisms. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's humor, performances, and production quality with no significant reservations.",
+    "reasoning": "Claude: The reviewer uses superlative language throughout, declaring the show surpasses Tony winners, comparing it favorably to 'The Producers' but with better songs, and ending with the phrase 'approaches musical-comedy Rapture' - all indicating unqualified enthusiasm. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's humor, music, and performances with no significant caveats.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -68,15 +68,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:07:21.309Z",
+    "scoredAt": "2026-01-28T23:34:35.982Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 93,
+    "claudeScore": 92,
     "openaiScore": 95,
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -87,7 +87,7 @@
     "dtli",
     "show-score"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 94
+  "previousLlmScore": 94,
+  "rescoreCompletedAt": "2026-01-28T23:34:35.982Z"
 }

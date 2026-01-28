@@ -10,63 +10,63 @@
   "dtliExcerpt": "Shakespeare’s Juliet singing Britney Spears’ “Oops…I Did It Again” is certainly a surprising and unexpected juxtaposition. While there is every reason to be skeptical of a Shakespearean jukebox musical, “& Juliet” makes it work remarkably well. It’s the most fun you’ll have in a Broadway theater right now.",
   "showScoreExcerpt": "\"What the show lacks in plotting, it more than makes up for musically. It is a jukebox, but itâs a smart one, using the songs in deft, humorous and unexpected ways.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:57:21.504Z",
   "dtliThumb": "Up",
   "bwwExcerpt": "All this could have come across as a high school English class assignment, but Read manages to make it work. He clearly has respect for and knowledge of the source material but also isn't afraid to highlight just how ridiculous the play really is. (As we are reminded here, Romeo and Juliet only knew...",
   "llmScore": {
-    "score": 84,
-    "confidence": "high",
+    "score": 85,
+    "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 90
+      "low": 77,
+      "high": 93
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 85,
-      "performances": null,
-      "direction": 80
+      "book": 74,
+      "music": 89,
+      "performances": 88,
+      "direction": 69
     },
     "keyPhrases": [
-      {
-        "quote": "makes it work remarkably well",
-        "sentiment": "positive",
-        "strength": 4
-      },
       {
         "quote": "It's the most fun you'll have in a Broadway theater right now",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "there is every reason to be skeptical of a Shakespearean jukebox musical",
+        "quote": "'& Juliet' is exactly the show Broadway needs right now: fun, exuberant, supremely joyful, hilarious, and excellently performed by a talented and diverse cast",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The musical could use more conflict, and although this is acknowledged by Shakespeare at the top of the second act, Read doesn't manage to do anything substantial about it, leaving some of the action to feel belabored",
         "sentiment": "negative",
-        "strength": 2
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Despite acknowledging skepticism about the concept, the critic enthusiastically endorses the show with superlative language about fun and effectiveness, indicating a strong positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the show's execution and enjoyment factor, indicating a clear recommendation despite initial skepticism.",
+    "reasoning": "Claude: The critic delivers a clear positive recommendation with enthusiastic language about the show being essential Broadway entertainment, despite noting some structural weaknesses in plotting and design elements. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's fun, performances, and innovative use of music, despite some minor critiques of the book and direction.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:53:57.626Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-28T23:30:33.202Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 83,
-    "openaiScore": 85,
-    "scoreDelta": 2,
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -81,7 +81,7 @@
   "textQuality": "full",
   "sourceMethod": "dtli",
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 84
+  "previousLlmScore": 84,
+  "rescoreCompletedAt": "2026-01-28T23:30:33.202Z"
 }

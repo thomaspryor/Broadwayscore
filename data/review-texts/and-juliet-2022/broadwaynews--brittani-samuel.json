@@ -9,43 +9,43 @@
   "isFullReview": true,
   "dtliExcerpt": "Allow Juliet to reintroduce herself. Or rather, let Anne Hathaway do it for her. No, not the Oscar-winning actress known for “The Devil Wears Prada.” The Anne Hathaway I’m referring to is William&#8230;",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:02:05.738Z",
   "llmScore": {
-    "score": 50,
+    "score": 72,
     "confidence": "medium",
     "range": {
-      "low": 45,
-      "high": 55
+      "low": 63.5,
+      "high": 80.5
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
+      "book": 60,
+      "music": 75,
+      "performances": 82,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Allow Juliet to reintroduce herself.",
+        "quote": "part-pop music fantasia, part-failed feminist retelling, but all heart",
         "sentiment": "neutral",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "let Anne Hathaway do it for her.",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "a flawless Lorna Courtney",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "No, not the Oscar-winning actress known for 'The Devil Wears Prada.'",
-        "sentiment": "neutral",
+        "quote": "part-failed feminist retelling",
+        "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "GPT-4o-mini: The review does not provide enough information to gauge a strong recommendation, leading to a mixed score.",
+    "reasoning": "Claude: Review acknowledges the show's energy and strong performances while criticizing it as a 'failed feminist retelling,' suggesting mixed feelings about the overall execution despite appreciating individual elements. | GPT-4o-mini: The review expresses a clear appreciation for the performances and music while noting some reservations about the script, leading to a positive overall recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -55,15 +55,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:53:04.549Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-28T23:29:06.080Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 50,
-    "scoreDelta": 0,
+    "claudeScore": 68,
+    "openaiScore": 75,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -78,7 +78,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 50
+  "previousLlmScore": 50,
+  "rescoreCompletedAt": "2026-01-28T23:29:06.080Z"
 }

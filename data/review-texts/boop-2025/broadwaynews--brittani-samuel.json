@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "In “Boop! The Musical,” the canonical cartoon recounts stints as a lion tamer, judge and hula dancer — professions lifted straight from her shorts. But evidently, Betty Boop missed a credit: magician. Because by the end of this new musical, she left us all boop-boop-a-bewitched.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "complete",
@@ -19,62 +19,60 @@
   "textQuality": "full",
   "sourceMethod": "scrapingbee",
   "llmScore": {
-    "score": 50,
-    "confidence": "low",
+    "score": 81,
+    "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 80
+      "low": 75,
+      "high": 87
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 88,
+      "direction": 85
     },
     "keyPhrases": [
       {
         "quote": "big Broadway joy bomb",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "isn't original, but excites nonetheless with glittering stagecraft and a knockout star",
+        "quote": "excites nonetheless with glittering stagecraft and a knockout star",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "The new musical isn’t original, but excites nonetheless with glittering stagecraft and a knockout star.",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "isn't original",
+        "sentiment": "negative",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: This appears to be a truncated excerpt or navigation page rather than a complete review, making reliable scoring impossible with such limited substantive content. | GPT-4o-mini: The review expresses a clear positive sentiment towards the production, highlighting its excitement and stagecraft despite noting a lack of originality. | Note: Models differed by 50 points.",
+    "reasoning": "Claude: The review uses enthusiastic language like 'joy bomb' and 'knockout star' while acknowledging the show's lack of originality, indicating a strong positive recommendation despite some reservations. | GPT-4o-mini: The review expresses clear enthusiasm for the production's excitement and quality, indicating a strong recommendation despite noting it isn't original.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:07:57.452Z",
+    "scoredAt": "2026-01-28T23:35:00.542Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 75,
-    "scoreDelta": 50,
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 50 points (Claude: 25, OpenAI: 75)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": []
   },
   "scoreSource": "manual-override",
   "scoreOverrideReason": "LLM confused by truncated text; headline clearly indicates sentiment",
@@ -100,7 +98,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 50
+  "previousLlmScore": 50,
+  "rescoreCompletedAt": "2026-01-28T23:35:00.542Z"
 }

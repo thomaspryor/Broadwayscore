@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"Aladdin, while charming and fun, lacks the enchantment and savviness of Disney's most notable theatrical productions.\"",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 71,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -18,56 +18,56 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 65,
+    "score": 71,
     "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 65,
+      "high": 77
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 63,
+      "music": 75,
+      "performances": 81,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "charming and fun",
+        "quote": "Aladdin is solidly good, sometimes great but, overall, enjoyable and energetically fine are apt descriptors",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "lacks the enchantment and savviness of Disney's most notable theatrical productions",
-        "sentiment": "negative",
+        "quote": "it will be a perfect choice",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "lacks the enchantment and savviness",
+        "quote": "Aladdin, while charming and fun, lacks the enchantment and savviness of Disney's most notable theatrical productions",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review gives qualified praise ('charming and fun') but then delivers a significant criticism comparing it unfavorably to Disney's better theatrical work, suggesting it's decent but disappointing relative to expectations. | GPT-4o-mini: The review indicates a generally positive experience but highlights significant shortcomings compared to other Disney productions, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: The critic gives a qualified positive recommendation, especially for families, praising performances and spectacle while noting it falls short of Disney's best theatrical work. | GPT-4o-mini: The review presents a generally positive view of the show, particularly for families, but notes significant shortcomings compared to other Disney productions, leading to a mixed-positive recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T04:59:15.862Z",
+    "scoredAt": "2026-01-28T23:25:55.672Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 65,
-    "scoreDelta": 0,
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -85,7 +85,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 65
+  "previousLlmScore": 65,
+  "rescoreCompletedAt": "2026-01-28T23:25:55.672Z"
 }

@@ -10,7 +10,7 @@
   "showScoreExcerpt": "...with the frequent breaking of the fourth wall and the milking of some meta moments, you wonder what exactly the show's aiming to be: a self-aware joke for fans or a thrill ride with sincerity.",
   "bwwExcerpt": "time just stands still with the musical lacking fresh, theatrical moments",
   "originalScore": null,
-  "assignedScore": 49,
+  "assignedScore": 48,
   "source": "show-score",
   "textWordCount": 879,
   "textStatus": "complete",
@@ -22,19 +22,19 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 49,
+    "score": 48,
     "confidence": "high",
     "range": {
       "low": 43,
-      "high": 55
+      "high": 53
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 40,
+      "book": 38,
       "music": 45,
       "performances": 50,
-      "direction": 53
+      "direction": 50
     },
     "keyPhrases": [
       {
@@ -48,37 +48,39 @@
         "strength": 4
       },
       {
-        "quote": "time just stands still",
+        "quote": "Sometimes looking at the past with fresh eyes can lead to a new road forward, but with 'Back to the Future,' time just stands still",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The review is predominantly critical, calling the show more suited for a theme park than Broadway, criticizing the unoriginal approach and weak songs, while acknowledging impressive technical effects and some solid performances. | GPT-4o-mini: The review presents a mix of spectacle and disappointment, indicating a conditional recommendation that leans towards ambivalence.",
+    "reasoning": "Claude: The critic finds the production technically impressive but fundamentally lacking in theatrical imagination, describing it as better suited for a theme park than Broadway with derivative performances and uninspired material. | GPT-4o-mini: The review expresses significant disappointment with the production's reliance on spectacle over substance, indicating a hard recommendation against it despite some redeeming qualities in performances and design.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:03:55.799Z",
+    "scoredAt": "2026-01-28T23:33:01.973Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 48,
-    "openaiScore": 50,
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "openaiScore": 48,
+    "scoreDelta": 0,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (48 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
   },
   "bwwThumb": "Meh",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 49
+  "previousLlmScore": 49,
+  "rescoreCompletedAt": "2026-01-28T23:33:01.973Z"
 }

@@ -10,56 +10,61 @@
   "showScoreExcerpt": "\"Gold's production...skillfully balances the play’s history and its timeliness.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 85,
   "source": "show-score",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 85,
+    "confidence": "medium",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 77,
+      "high": 93
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": null,
-      "direction": 77
+      "performances": 89,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "skillfully balances the play's history and its timeliness",
+        "quote": "Director Sam Gold's production of An Enemy of the People skillfully balances the play's history and its timeliness",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "skillfully balances the play’s history and its timeliness",
+        "quote": "Strong expertly portrays the demise... It's an impactful message",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This production of An Enemy of the People may be driven by star power, but its enduring message packs a punch",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The excerpt praises Gold's direction as 'skillful' in balancing historical context with contemporary relevance, suggesting a well-executed production, but the fragment is too brief for high confidence. | GPT-4o-mini: The review indicates a clear positive sentiment towards the production's direction and its thematic relevance, suggesting a recommendation to see it.",
+    "reasoning": "Claude: The review consistently praises the performances, direction, and relevance of the production with specific examples of effective staging and Strong's compelling performance, while noting the show's contemporary resonance and innovative staging choices. | GPT-4o-mini: The review expresses strong praise for the production's relevance, performances, and direction while maintaining a positive tone throughout, indicating a clear recommendation to see the show.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:09:36.975Z",
+    "scoredAt": "2026-01-28T23:28:01.532Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -73,7 +78,7 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "designation": "Recommended",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 77
+  "previousLlmScore": 77,
+  "rescoreCompletedAt": "2026-01-28T23:28:01.533Z"
 }

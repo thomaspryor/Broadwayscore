@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Here's the thing: this production is a huge and colorful spectacle, but ultimately, I thought it lacked heart – the heart that I feel is deeply a part of the movie...I don't think the show goes far enough.\"",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -22,18 +22,18 @@
   "scoreSource": "sentiment-mixed",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 62,
+    "score": 64,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 57.5,
+      "high": 70.5
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": 48,
-      "music": 68,
-      "performances": 77,
+      "music": 70,
+      "performances": 78,
       "direction": 58
     },
     "keyPhrases": [
@@ -43,17 +43,17 @@
         "strength": 3
       },
       {
-        "quote": "I thought it lacked heart – the heart that I feel is deeply a part of the movie",
+        "quote": "this production is a huge and colorful spectacle, but ultimately, I thought it lacked heart",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "The show is still fun as a whole, and the target audience will certainly be entertained",
+        "quote": "the Genie is the show... 'Friend Like Me' is an enormous production number and is the principal reason to buy a ticket",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic acknowledges the show is entertaining and fun but expresses significant disappointment with missed opportunities, lack of heart, and creative choices, resulting in a qualified mixed recommendation. | GPT-4o-mini: The review expresses both enjoyment and significant reservations, indicating a mixed-positive recommendation overall.",
+    "reasoning": "Claude: The reviewer acknowledges the show's entertainment value and spectacle while expressing significant disappointment with its emotional depth and creative choices, resulting in a qualified, lukewarm recommendation. | GPT-4o-mini: The review expresses mixed feelings, praising performances and spectacle while criticizing the lack of emotional depth and missed opportunities.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -63,21 +63,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T04:57:17.983Z",
+    "scoredAt": "2026-01-28T23:23:34.826Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 62,
-    "scoreDelta": 0,
+    "openaiScore": 65,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 62
+  "previousLlmScore": 62,
+  "rescoreCompletedAt": "2026-01-28T23:23:34.826Z"
 }

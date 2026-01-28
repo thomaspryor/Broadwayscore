@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 56,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -35,56 +35,56 @@
   "textQuality": "partial",
   "sourceMethod": "scrapingbee",
   "llmScore": {
-    "score": 82,
+    "score": 56,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 47,
+      "high": 65
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 78,
-      "music": 86,
-      "performances": 85,
-      "direction": 75
+      "book": 50,
+      "music": 48,
+      "performances": 65,
+      "direction": 60
     },
     "keyPhrases": [
       {
-        "quote": "Grade: B+",
-        "sentiment": "positive",
+        "quote": "It's a classic example of a just-good-enough musical, a fast, sometimes funny evening that might really take off if it had a decent original score",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Courtney...is a tiny dynamo, her singing voice scraping the rafters on showstopper anthems",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "There's something a little relentless about & Juliet's dogged eagerness to entertain, but nakedly joyful too",
+        "quote": "Audiences looking to rock out to these vintage hits are likely to go with the book's cheerful, breezily inclusive tone",
         "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "If you like it that way, you'll have a fine time at the Sondheim",
+        "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: B+ grade with consistent praise for performances and energy, some reservations about choreography and pacing, but overall positive recommendation. | GPT-4o-mini: The review conveys strong enthusiasm for the show's energy, performances, and music, with only minor reservations about its relentless entertainment style.",
+    "reasoning": "Claude: The critic clearly identifies this as audience-dependent entertainment that is 'just-good-enough' with significant reservations about the jukebox format and writing quality, but acknowledges it will likely succeed with its target demographic. | GPT-4o-mini: The review presents a mixed perspective, highlighting both enjoyable elements and significant flaws, leading to a conditional recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T05:24:34.464Z",
+    "scoredAt": "2026-01-28T23:30:25.036Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 52,
+    "openaiScore": 60,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -94,7 +94,7 @@
     "show-score-playwright"
   ],
   "showScoreExcerpt": "\"Jukebox musicals may still be bottom feeders, but, as '& Juliet' proves, there are sometimes small treasures to be found in the murk.\"\n\nRead more",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-28T23:30:25.036Z"
 }
