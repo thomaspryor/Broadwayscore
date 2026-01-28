@@ -7,7 +7,63 @@
   "publishDate": "February 13, 2025",
   "fullText": "Redwood, though, ultimately is just a shade too thin in its storytelling imagination, hitting the familiar dramatic beats we’ve come to expect through countless grief and recovery stories. Still, it’s not hard to focus your attention on the successful aspects — Menzel, that set, the sky dancing, and across-the-board fine performances from the rest of the cast.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": null,
+      "performances": 77,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "ultimately is just a shade too thin in its storytelling imagination, hitting the familiar dramatic beats",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it's not hard to focus your attention on the successful aspects — Menzel, that set, the sky dancing",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "across-the-board fine performances from the rest of the cast",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant storytelling weaknesses but balances this with praise for performances and production elements, suggesting a qualified, lukewarm recommendation. | GPT-4o-mini: The review highlights strong performances and production elements but criticizes the storytelling, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:14:43.417Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

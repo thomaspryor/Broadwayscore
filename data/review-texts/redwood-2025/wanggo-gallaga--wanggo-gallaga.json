@@ -10,8 +10,64 @@
   "bwwExcerpt": "Juice.ph: \"Red\" is a relatively quiet play. It involves only two characters discussing art and while they do play music while working and later, as tensions rise, they start to raise their voices to shout at each other, it can't ever get too loud or busy on set because, well, there's just two people on stage at any given time, in a quiet studio of one artist. But \"Red\" gets very loud, on an intellectual level, because the text is so damned brilliant that it bellows and howls inside your head. It",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REDWOOD-2025",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the text is so damned brilliant that it bellows and howls inside your head",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Red gets very loud, on an intellectual level",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the text is so damned brilliant",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review uses highly enthusiastic language about the script being 'damned brilliant' with powerful intellectual impact, indicating strong appreciation despite the excerpt being incomplete. | GPT-4o-mini: The review praises the brilliance of the text and suggests a strong intellectual engagement, indicating a positive recommendation despite a lack of explicit performance or production critiques.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:01.802Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

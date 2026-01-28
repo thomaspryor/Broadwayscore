@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Strong delivers a commanding performance as Dr. Thomas Stockmann, bringing both intellectual fire and physical intensity to Ibsen's idealistic physician who discovers his town's profitable spa is contaminated.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Strong delivers a commanding performance as Dr. Thomas Stockmann, bringing both intellectual fire and physical intensity to Ibsen's idealistic physician who discovers his town's profitable spa is contaminated.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strong delivers a commanding performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "bringing both intellectual fire and physical intensity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Ibsen's idealistic physician",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This excerpt focuses solely on praising Strong's lead performance with strong descriptive language, but provides no information about the overall production quality or explicit recommendation. | GPT-4o-mini: The review highlights a strong performance with positive language, indicating a clear recommendation despite not addressing other aspects of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:49.054Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

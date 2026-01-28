@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Cole Escola's deliriously funny farce about Mary Todd Lincoln getting high and horny in the White House is a masterclass in controlled chaos that had me gasping for air between laughs.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cole Escola's deliriously funny farce about Mary Todd Lincoln getting high and horny in the White House is a masterclass in controlled chaos that had me gasping for air between laughs.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 95,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "deliriously funny farce",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "masterclass in controlled chaos",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "had me gasping for air between laughs",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified enthusiasm with superlative language ('deliriously funny', 'masterclass') and vivid description of physical comedy response indicates a rave review. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong enjoyment, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:11.885Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

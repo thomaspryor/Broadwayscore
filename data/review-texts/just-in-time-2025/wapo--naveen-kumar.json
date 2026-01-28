@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"Itâs another magnificent performance â kind-eyed, honey-voiced and all but irresistible.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/just-in-time-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "magnificent performance",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "all but irresistible",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "kind-eyed, honey-voiced and all but irresistible",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Extremely positive language about performance quality with superlatives like 'magnificent' and 'irresistible', but excerpt is too brief to assess overall show recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the performance, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:47.912Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"But while the singing is always superb, one still wishes that the starsâ barkâand the showâs as a wholeâhad more dramatic bite.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chess-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 53.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 85,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "the singing is always superb",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "one still wishes that the starsâ barkâand the showâs as a wholeâhad more dramatic bite",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "wishes that the stars’ bark had more dramatic bite",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for singing/performances is significantly undermined by criticism that both the stars and entire show lack dramatic impact and engagement. | GPT-4o-mini: While the performances, particularly the singing, are praised, the critic expresses a desire for more dramatic impact, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:22.445Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

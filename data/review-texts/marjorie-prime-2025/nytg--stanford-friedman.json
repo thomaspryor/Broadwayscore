@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"This is a play of ideas and, as such, there is more discourse than there is dramatic action, and characterizations do not run especially deep...Time is intentionally fluid in this work but, under Anne Kauffman’s otherwise thoughtful direction, leaps of many years feel more disjointed than they should be.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/marjorie-prime-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 51,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 51,
+    "confidence": "high",
+    "range": {
+      "low": 45,
+      "high": 57
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "more discourse than there is dramatic action, and characterizations do not run especially deep",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "under Anne Kauffman's otherwise thoughtful direction",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "leaps of many years feel more disjointed than they should be",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges some positive elements (thoughtful direction) but criticizes fundamental dramatic weaknesses (lack of action, shallow characterizations, disjointed pacing), suggesting a mixed but ultimately disappointing experience. | GPT-4o-mini: The review indicates a mixed experience, with significant criticisms of the script and character depth but acknowledges thoughtful direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:24.518Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 50,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
