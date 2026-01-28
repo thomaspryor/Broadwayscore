@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "great children's theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Tiffany has wisely chosen to give the 'Cursed Child' a low-tech look",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Tiffany avoids that visual trap",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows clear praise for the production's visual choices and calls it 'great children's theater,' but the fragment is too incomplete to assess the full recommendation. | GPT-4o-mini: The review expresses a clear positive sentiment towards the production's approach and its suitability for children, indicating a recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:42.974Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
