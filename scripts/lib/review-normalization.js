@@ -206,43 +206,46 @@ const OUTLET_ALIASES = {
  * Format: 'canonical-name': ['variation1', 'variation2', ...]
  */
 const CRITIC_ALIASES = {
-  'jesse-green': ['jesse green', 'jesse', 'j green', 'j. green'],
-  'ben-brantley': ['ben brantley', 'ben', 'b brantley', 'b. brantley'],
-  'charles-isherwood': ['charles isherwood', 'charles', 'c isherwood', 'c. isherwood'],
-  'johnny-oleksinski': ['johnny oleksinski', 'johnny oleksinki', 'johnny', 'j oleksinski', 'john oleksinski'],
-  'sara-holdren': ['sara holdren', 'sara', 's holdren'],
-  'helen-shaw': ['helen shaw', 'helen', 'h shaw'],
-  'adam-feldman': ['adam feldman', 'adam', 'a feldman'],
-  'david-rooney': ['david rooney', 'david', 'd rooney'],
-  'frank-scheck': ['frank scheck', 'frank', 'f scheck'],
-  'greg-evans': ['greg evans', 'greg', 'g evans'],
-  'dalton-ross': ['dalton ross', 'dalton', 'd ross'],
-  'aramide-tinubu': ['aramide tinubu', 'aramide timubu', 'aramide', 'a tinubu'], // Note: common typo
-  'juan-a-ramirez': ['juan a ramirez', 'juan a. ramirez', 'juan ramirez', 'juan a', 'juan'],
-  'zachary-stewart': ['zachary stewart', 'zachary', 'zach stewart', 'z stewart'],
-  'brittani-samuel': ['brittani samuel', 'brittani', 'b samuel'],
-  'chris-jones': ['chris jones', 'chris', 'c jones'],
-  'gillian-russo': ['gillian russo', 'gillian', 'g russo'],
-  'jd-knapp': ['jd knapp', 'j.d. knapp', 'jd', 'j d knapp'],
-  'vinson-cunningham': ['vinson cunningham', 'vinson', 'v cunningham'],
-  'naveen-kumar': ['naveen kumar', 'naveen', 'n kumar'],
-  'jonathan-mandell': ['jonathan mandell', 'jonathan', 'j mandell', 'jon mandell'],
-  'brian-scott-lipton': ['brian scott lipton', 'brian lipton', 'brian', 'b lipton'],
-  'melissa-rose-bernardo': ['melissa rose bernardo', 'melissa bernardo', 'melissa', 'm bernardo'],
-  'david-finkle': ['david finkle', 'david', 'd finkle'],
-  'david-cote': ['david cote', 'd cote'],
-  'tim-teeman': ['tim teeman', 'tim', 't teeman'],
-  'kristen-baldwin': ['kristen baldwin', 'kristen', 'k baldwin'],
-  'adrian-horton': ['adrian horton', 'adrian', 'a horton'],
-  'lane-williamson': ['lane williamson', 'lane', 'l williamson'],
-  'linda-winer': ['linda winer', 'linda', 'l winer'],
-  'michael-kuchwara': ['michael kuchwara', 'michael', 'm kuchwara'],
-  'rex-reed': ['rex reed', 'rex', 'r reed'],
-  'elysa-gardner': ['elysa gardner', 'elysa', 'e gardner'],
-  'peter-marks': ['peter marks', 'peter', 'p marks'],
-  'matt-windman': ['matt windman', 'matt', 'm windman', 'matthew windman'],
-  'robert-hofler': ['robert hofler', 'robert', 'r hofler', 'bob hofler'],
-  'steven-suskin': ['steven suskin', 'steven', 's suskin', 'steve suskin'],
+  // IMPORTANT: Only include FULL NAME variations and KNOWN TYPOS.
+  // Do NOT include first-name-only aliases (e.g., 'jesse', 'ben') as they
+  // will incorrectly match other critics with the same first name.
+  'jesse-green': ['jesse green', 'j. green'],
+  'ben-brantley': ['ben brantley', 'b. brantley'],
+  'charles-isherwood': ['charles isherwood', 'c. isherwood'],
+  'johnny-oleksinski': ['johnny oleksinski', 'johnny oleksinki', 'john oleksinski'], // Note: 'oleksinki' typo
+  'sara-holdren': ['sara holdren', 's. holdren'],
+  'helen-shaw': ['helen shaw', 'h. shaw'],
+  'adam-feldman': ['adam feldman', 'a. feldman'],
+  'david-rooney': ['david rooney', 'd. rooney'],
+  'frank-scheck': ['frank scheck', 'f. scheck'],
+  'greg-evans': ['greg evans', 'g. evans'],
+  'dalton-ross': ['dalton ross', 'd. ross'],
+  'aramide-tinubu': ['aramide tinubu', 'aramide timubu'], // Note: 'timubu' typo
+  'juan-a-ramirez': ['juan a ramirez', 'juan a. ramirez', 'juan ramirez'],
+  'zachary-stewart': ['zachary stewart', 'zach stewart', 'z. stewart'],
+  'brittani-samuel': ['brittani samuel', 'b. samuel'],
+  'chris-jones': ['chris jones', 'c. jones', 'christopher jones'],
+  'gillian-russo': ['gillian russo', 'g. russo'],
+  'jd-knapp': ['jd knapp', 'j.d. knapp', 'j d knapp'],
+  'vinson-cunningham': ['vinson cunningham', 'v. cunningham'],
+  'naveen-kumar': ['naveen kumar', 'n. kumar'],
+  'jonathan-mandell': ['jonathan mandell', 'j. mandell', 'jon mandell'],
+  'brian-scott-lipton': ['brian scott lipton', 'brian lipton', 'b. lipton'],
+  'melissa-rose-bernardo': ['melissa rose bernardo', 'melissa bernardo', 'm. bernardo'],
+  'david-finkle': ['david finkle', 'd. finkle'],
+  'david-cote': ['david cote', 'd. cote'],
+  'tim-teeman': ['tim teeman', 't. teeman'],
+  'kristen-baldwin': ['kristen baldwin', 'k. baldwin'],
+  'adrian-horton': ['adrian horton', 'a. horton'],
+  'lane-williamson': ['lane williamson', 'l. williamson'],
+  'linda-winer': ['linda winer', 'l. winer'],
+  'michael-kuchwara': ['michael kuchwara', 'm. kuchwara'],
+  'rex-reed': ['rex reed', 'r. reed'],
+  'elysa-gardner': ['elysa gardner', 'e. gardner'],
+  'peter-marks': ['peter marks', 'p. marks'],
+  'matt-windman': ['matt windman', 'm. windman', 'matthew windman'],
+  'robert-hofler': ['robert hofler', 'r. hofler', 'bob hofler'],
+  'steven-suskin': ['steven suskin', 's. suskin', 'steve suskin'],
 };
 
 /**
@@ -284,11 +287,9 @@ function normalizeCritic(criticName) {
   // Check against all aliases
   for (const [canonical, aliases] of Object.entries(CRITIC_ALIASES)) {
     if (aliases.some(alias => {
-      // Exact match
+      // Exact match only - no partial/first-name matching
+      // (first-name matching was causing Jesse Oxfeld → jesse-green)
       if (lower === alias) return true;
-      // First name only match (if alias is just first name)
-      const firstName = lower.split(/\s+/)[0];
-      if (alias === firstName && aliases.includes(firstName)) return true;
       return false;
     })) {
       return canonical;
