@@ -11,8 +11,64 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 40,
+      "performances": 50,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "I wish the revival, directed and choreographed by Josh Rhodes, had more of an explicit and distinct point of view",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the cast's exuberance adds too much moisture to the sandpaper-dry humor and even gets in the way of Du Prez and Idle's lyrics",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Leslie Rodriguez Kritzer, fun as she is",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic expresses multiple significant criticisms about direction lacking vision and performances undermining the material, with only minor positive notes, suggesting more problems than strengths. | GPT-4o-mini: The review expresses significant concerns about the direction and overall execution while acknowledging some positive aspects, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:39.239Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

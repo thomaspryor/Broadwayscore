@@ -11,10 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "“Rhodes’s cast of show-tune pros is highly capable, and the show’s laughter now seems more like it’s coming from inside the Broadway house. It’s a true ensemble effort...In this company of men, however, it is a woman who really dazzles: Leslie Rodriguez Kritzer as the sword-bestowing Lady of the Lake...It’s in the Lady of the Lake’s spotlight moments, the show’s biggest departure from the nearly all-male Grail, that Spamalot comes into its own most effectively and takes flight—not as an African swallow, capable of carrying significant weight, or merely as a parrot, possibly dead, but as what it is: a lark.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 89,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "a full-tilt comedic and vocal tour de force",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Spamalot comes into its own most effectively and takes flight",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Rhodes's cast of show-tune pros is highly capable",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The reviewer expresses clear enthusiasm for the performances, especially Kritzer's 'tour de force,' and describes the show as finding its footing and 'taking flight,' indicating a positive recommendation despite the excerpt's incomplete nature. | GPT-4o-mini: The review highlights a standout performance and overall positive ensemble work, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:45.760Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 33,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 33,
+    "confidence": "medium",
+    "range": {
+      "low": 20.5,
+      "high": 45.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 40,
+      "performances": null,
+      "direction": 32
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical constantly makes easier, cheaper choices",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "This thing just never breathes",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "At times, the wackiness is sufficiently wacky",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review is predominantly critical of the musical's aesthetic choices, pacing, and superficiality, with only faint praise for occasional wackiness, indicating significant problems that outweigh any positives. | GPT-4o-mini: The review is predominantly negative, criticizing the script and direction while indicating a lack of depth and emotional engagement. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:53.030Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 25,
+    "scoreDelta": 15,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

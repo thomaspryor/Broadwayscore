@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"The real stars here are the songs, all from the catalogue of Max Martin and his collaborators...At its best, the show just does away with logic and gives you full-throated renditions of Martinâs more insistent anthems.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/juliet-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 83,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The real stars here are the songs",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "At its best, the show just does away with logic",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "gives you full-throated renditions of Martinâs more insistent anthems",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt strongly praises the music but implies the show works best when abandoning narrative logic, suggesting mixed feelings about the overall production despite musical strengths. | GPT-4o-mini: While the review highlights the strength of the music, it lacks a strong recommendation for the overall show, suggesting a mixed-positive sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:17.179Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -11,10 +11,66 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "“...I have to admit that the car alone might be worth a ticket. It fills a deep Broadway longing for large objects performing audience flyovers — and, like the dear departed arthritic chandelier, may be doing so for the foreseeable future.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/back-to-the-future-the-musical-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/back-to-the-future-the-musical-broadway",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 57.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "I have to admit that the car alone might be worth a ticket",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the famously souped-up DeLorean DMC, or a life-size replica thereof, is terrific — in some ways more exciting than the one in the movies",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "may be doing so for the foreseeable future",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic is clearly impressed by the production design (especially the DeLorean car) but this appears to be an excerpt focusing only on technical elements, with qualified praise suggesting the spectacle might be the main draw. | GPT-4o-mini: The review expresses a clear appreciation for the production's visual elements, particularly the DeLorean, but lacks a comprehensive assessment of the overall show, leading to a positive but cautious recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:30.172Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 75,
+    "scoreDelta": 13,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

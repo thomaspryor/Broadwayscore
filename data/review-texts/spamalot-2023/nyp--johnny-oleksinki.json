@@ -11,8 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 33
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's yet another missed opportunity for the revival to be something at least a little different",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "This one settles for mere functionality",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "if you can't afford to be spectacular, like Mike Nichols' original production was, then make the design clever and funny. Nope.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently criticizes the production's design choices and missed opportunities, with dismissive language like 'Nope' and 'settles for mere functionality,' indicating clear disappointment. | GPT-4o-mini: The review expresses significant disappointment in the production's design and overall execution, indicating a clear negative sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:54.171Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (37 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

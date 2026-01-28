@@ -10,9 +10,65 @@
   "bwwExcerpt": "As at Encores, the three principal cast members carry us through the swirl and the sprawl, with their credible, impassioned performances and their golden voices; it helps that each is given some of composer Stephen Flaherty’s most distinctive songs, reflecting their character’s individual personality and culture. One can question whether “Ragtime” will be considered one of the great American musicals and still feel grateful to have been able to witness Joshua Henry, the Baritenor of Broadway, de",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 82,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "credible, impassioned performances and their golden voices",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "feel grateful to have been able to witness Joshua Henry",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "One can question whether 'Ragtime' will be considered one of the great American musicals",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Fragment shows clear appreciation for performances and music with language like 'grateful to witness' and 'golden voices,' suggesting positive recommendation despite incomplete text. | GPT-4o-mini: The review highlights strong performances but questions the overall impact of the musical, leading to a positive but cautious recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:38.470Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 78,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
