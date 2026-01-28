@@ -458,6 +458,12 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Skip wrong-show reviews (review content is for a different show)
+      if (data.wrongShow === true) {
+        stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
+        return;
+      }
+
       // Create deduplication key
       const outletKey = normalizeOutletId(data.outlet || data.outletId);
       const criticKey = normalizeOutletId(data.criticName || '');
