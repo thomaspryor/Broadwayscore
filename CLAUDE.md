@@ -1046,6 +1046,77 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json` h
 - `showScoreExcerpt` - Excerpt from Show Score aggregator
 - `source` - Where the data came from: `dtli`, `bww-roundup`, `playwright-scraped`, `webfetch-scraped`, `manual`
 
+### Data Quality Flags
+
+Reviews may have these flags to indicate data quality issues:
+
+| Flag | Purpose | Effect |
+|------|---------|--------|
+| `wrongProduction: true` | Review is from wrong production (e.g., off-Broadway run filed under Broadway) | Excluded from reviews.json |
+| `wrongShow: true` | Review content is for a completely different show | Excluded from reviews.json |
+| `isRoundupArticle: true` | Article reviews multiple shows (same URL legitimately in multiple show directories) | Included but flagged |
+| `mergedFrom: [...]` | File was merged from duplicates | Tracks merge history |
+
+**Common wrongProduction cases:**
+- Hadestown: 37 reviews from 2016 NYTW off-Broadway run (Broadway opened 2019)
+- Suffs: Reviews from 2022 Public Theater run (Broadway opened 2024)
+- An Enemy of the People: Reviews from 2012 MTC revival
+
+**wrongShow example:**
+- `wicked-2003/newyorker--unknown.json` contained a review of "Cat on a Hot Tin Roof"
+
+### Data Quality Fix Scripts
+
+| Script | Purpose | Usage |
+|--------|---------|-------|
+| `scripts/fix-wrong-production-reviews.js` | Flags reviews from wrong productions | `--dry-run` first |
+| `scripts/fix-url-outlet-mismatches.js` | Fixes files where outlet doesn't match URL domain | `--dry-run` first |
+| `scripts/fix-url-duplicates-same-show.js` | Merges files with same URL in same show | `--dry-run` first |
+| `scripts/fix-critic-name-duplicates.js` | Merges "jesse-green" and "jesse" variants | `--dry-run` first |
+| `scripts/audit-scores.js` | Validates score conversions | Report only |
+| `scripts/cleanup-duplicate-reviews.js` | Merges duplicate files | `--dry-run` first |
+
+**Always run with `--dry-run` first to preview changes!**
+
+### Common Data Issues & Fixes
+
+**1. URL-Outlet Mismatches** (outlet doesn't match URL domain)
+```
+nydailynews--chris-jones.json with chicagotribune.com URL
+→ Rename to chicagotribune--chris-jones.json
+```
+Run: `node scripts/fix-url-outlet-mismatches.js --dry-run`
+
+**2. Same-URL Duplicates** (multiple files for same review)
+```
+amny--matt-windman.json and amny--unknown.json with same URL
+→ Merge into single file, keep best data
+```
+Run: `node scripts/fix-url-duplicates-same-show.js --dry-run`
+
+**3. Critic Name Variations** (partial names create duplicates)
+```
+nytimes--jesse-green.json and nytimes--jesse.json
+→ Merge into canonical full-name version
+```
+This is handled by `scripts/lib/review-normalization.js` during extraction.
+
+**4. Wrong Production Detection**
+Reviews are flagged if `publishDate` predates show's `openingDate` by >6 months.
+Check `data/shows.json` opening dates are correct first!
+
+**Known date corrections:**
+- Harry Potter: Opens 2018-04-22 (not 2021 - that was post-COVID reopen)
+
+### Validation Checks
+
+Run `node scripts/validate-data.js` before pushing. It checks:
+- No duplicate shows (ID, slug, title)
+- Required fields present
+- No duplicate outlet+critic combos in reviews.json
+- Review directories match show IDs
+- Critic-outlet associations (warnings for unexpected combos - critics freelance)
+
 ## Subscription Access for Paywalled Sites
 
 For scraping paywalled review sites, the user has subscriptions:
