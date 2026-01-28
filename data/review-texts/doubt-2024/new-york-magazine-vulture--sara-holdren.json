@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"...Doubt is still a sharp and sturdy piece of writing.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/doubt-a-parable",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "sharp and sturdy piece of writing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "still",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Doubt is still a sharp and sturdy piece of writing.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the writing quality with strong positive descriptors, though the brief excerpt limits confidence in the overall assessment. | GPT-4o-mini: The review indicates a strong appreciation for the writing, suggesting a positive recommendation despite lacking detail on other aspects.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:29.691Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

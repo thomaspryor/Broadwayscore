@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"Liev Schreiber’s performance cuts through a somber and confining single act\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/doubt-a-parable",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Liev Schreiber's performance cuts through",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "somber and confining single act",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Liev Schreiber’s performance cuts through",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises Schreiber's strong performance but criticizes the production as 'somber and confining,' creating a mixed assessment with limited context for full evaluation. | GPT-4o-mini: The review highlights a strong performance but suggests limitations in the overall production, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:37.766Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
