@@ -10,11 +10,67 @@
   "bwwExcerpt": "In “Lempicka,” history is, as they say, just one dance number after another. It summons the shocks and jolts that forge the identity and resiliency of the artist, which doesn’t yield an actual character, but more of a ready-made hero for contemporary political tastes. Espinosa does heroic work tying the threads together, but instead of inhabiting a character with multiple facets, she’s left to reconcile multiple characters serving various theatrical purposes.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "bwwThumb": "Meh",
   "showScoreExcerpt": "\"An artist with a big, messy life gets a big, messy musical\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/lempicka-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/lempicka-broadway",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 73,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "doesn't yield an actual character, but more of a ready-made hero for contemporary political tastes",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Espinosa does heroic work tying the threads together",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "An artist with a big, messy life gets a big, messy musical",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review criticizes fundamental character development and structural issues while praising the lead performance, suggesting a flawed show elevated somewhat by strong acting. | GPT-4o-mini: The review highlights some strong performances but critiques the character development and overall cohesion of the musical, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:58.698Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
