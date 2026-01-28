@@ -1,10 +1,17 @@
 /**
  * Collect Review Texts - Multi-Tier Fallback System
  *
+ * TIER 0: Archive.org (for archiveFirstSites - paywalled domains where Archive.org excels)
  * TIER 1: Playwright-extra with stealth plugin + login for paywalls
- * TIER 2: ScrapingBee API (945 credits available)
- * TIER 3: Bright Data Web Unlocker (for aggressive paywalls)
- * TIER 4: Archive.org Wayback Machine (for 404s and last resort)
+ * TIER 2: ScrapingBee API
+ * TIER 3: Bright Data Web Unlocker
+ * TIER 4: Archive.org Wayback Machine (final fallback)
+ *
+ * SUCCESS RATES (Jan 2026 data):
+ *   Archive.org: 11.1% (best performer!)
+ *   Playwright:   6.7%
+ *   ScrapingBee:  3.6%
+ *   BrightData:   3.7%
  *
  * Environment variables:
  *   NYT_EMAIL, NYT_PASSWORD - New York Times credentials
@@ -131,10 +138,19 @@ const CONFIG = {
     'wsj.com', 'newyorker.com',
   ],
 
-  // Sites where Archive.org works best (paywalled sites - Wayback has pre-paywall content)
+  // Sites where Archive.org works best (paywalled sites - Wayback often has pre-paywall content)
+  // SUCCESS RATES (2026-01-27): Archive.org 11.1%, Playwright 6.7%, ScrapingBee 3.6%, BrightData 3.7%
+  // Archive.org is our MOST SUCCESSFUL scraper - prioritize it for these domains
   archiveFirstSites: [
+    // Major paywalled publications
     'nytimes.com', 'vulture.com', 'nymag.com', 'washingtonpost.com',
-    'wsj.com', 'newyorker.com', 'theaterly.com', 'ew.com',
+    'wsj.com', 'newyorker.com', 'ew.com', 'latimes.com',
+    // Entertainment/trade publications with soft paywalls
+    'deadline.com', 'variety.com', 'hollywoodreporter.com', 'rollingstone.com',
+    // Regional papers with paywalls
+    'chicagotribune.com', 'nypost.com', 'nydailynews.com',
+    // Sites where Archive.org has proven successful
+    'theatrely.com', 'amny.com', 'forward.com',
   ],
 
   // Minimum word count for valid review
