@@ -11,8 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 38,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 45.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 25,
+      "performances": 53,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "overblown crap like 'Let It Go'",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The audience reaction at the St. James is decidedly more animated regarding the over-the-top performance of Leslie Rodriguez Kritzer",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "Long stretches of this",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review fragment shows strong negative sentiment toward the musical elements and overall production, with only neutral acknowledgment of one performer's audience appeal, suggesting the critic cannot recommend the show. | GPT-4o-mini: The review expresses significant criticism of the show despite acknowledging some animated audience reactions, leading to a negative overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:40.827Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 40,
+    "scoreDelta": 5,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (38 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }
