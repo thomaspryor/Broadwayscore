@@ -10,9 +10,65 @@
   "bwwExcerpt": "Kenny Leon’s production of Our Town is – as might be his calling cards – straightforward and effective. The prolific director is well-suited to Thornton Wilder’s seminal 1938 play, which tracks the daily lives of a small New Hampshire town across twelve years as a petri dish of humanist beauty. Though Leon’s simple staging, which trims the three-act work into a 100-minute piece, could use a few more beats, it succeeds largely because of a terrifically calibrated lead performance.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "straightforward and effective",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "it succeeds largely because of a terrifically calibrated lead performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "could use a few more beats",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Review expresses clear approval calling the production 'effective' and praising the lead performance as 'terrifically calibrated,' with only minor staging concerns. | GPT-4o-mini: The review expresses a clear recommendation with praise for the lead performance and direction, despite noting some areas for improvement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:59.127Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -11,8 +11,66 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 37.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "at its most invigorating when Taub hits on these collisions of the political and personal",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "But such moments are few and far between",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The show is overburdened by too many characters and too much historical ground to cover",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges some effective moments but emphasizes these are rare in an 'overburdened' and 'sprawling' work with structural problems. | GPT-4o-mini: The review indicates a mixed response, highlighting some invigorating moments but ultimately criticizing the show's structure and character overload. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:39.953Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (49 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }
