@@ -1,0 +1,92 @@
+{
+  "showId": "stranger-things-2024",
+  "outletId": "broadwayworld",
+  "outlet": "BroadwayWorld",
+  "criticName": "Alexander Cohen",
+  "url": "https://www.broadwayworld.com/article/Review-STRANGER-THINGS-THE-FIRST-SHADOW-Phoenix-Theatre-20231215",
+  "publishDate": "December 15th, 2023",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "“The stage and the screen will never be substitutes but Stranger Things: The First Shadow never feels limited by the medium. It leans into the theatricality hammering the audience with slick illusions and visually stunning trickery applied impasto. No expense is spared but that is hardly surprising.”",
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/stranger-things-the-first-shadow-broadway",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "never feels limited by the medium",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "hammering the audience with slick illusions and visually stunning trickery",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "No expense is spared",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the production's theatricality and visual spectacle with strong positive language, though the excerpt focuses only on technical elements without addressing story or performances. | GPT-4o-mini: The review highlights strong visual and theatrical elements, indicating a solid recommendation despite the lack of details on other components.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:48.146Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "bwwExcerpt": "It could have risked devolving into campy schmaltz but Kate Trefry, along with Jack Thorne, pen a standalone story that stands strongly on its own two feet. An adventure romp brimming with action and exploding with spectacle, expect a fare few winks to the fans along the way and a healthy dash of horror.",
+  "bwwThumb": "Up",
+  "sources": [
+    "show-score",
+    "bww-roundup"
+  ],
+  "wrongProduction": true,
+  "wrongProductionReason": "Date/URL year mismatch: Publish date shows year 2023, expected 2024 (or 2023 for previews)",
+  "wrongProductionConfidence": "high",
+  "designation": "Recommended",
+  "_quarantine": {
+    "quarantinedAt": "2026-01-28T23:25:46.058Z",
+    "reason": "likely_wrong_production",
+    "confidence": "high",
+    "indicators": [
+      "Publish date shows year 2023, expected 2024 (or 2023 for previews)"
+    ],
+    "originalPath": "review-texts/stranger-things-2024/broadwayworld--alexander-cohen.json"
+  }
+}

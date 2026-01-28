@@ -1,0 +1,87 @@
+{
+  "showId": "purlie-victorious-2023",
+  "outletId": "nysr",
+  "outlet": "New York Stage Review",
+  "criticName": "Frank Scheck",
+  "url": "https://nystagereview.com/2023/09/27/purlie-victorious-a-revival-that-lives-up-to-its-title/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": "Satire doesn’t always age particularly well. Fortunately, the new production of Ossie Davis’ 1961 play Purlie Victorious has sidestepped any issues about its being dated for two reasons, one good and one bad. The good is that director Kenny Leon has provided such a breakneck, well-staged rendition, superbly performed by its terrific ensemble, that the fun never lags. The bad is that the issues depicted in the play have lost little of their resonance even in these supposedly “post-racial” times. ",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "breakneck, well-staged rendition, superbly performed by its terrific ensemble, that the fun never lags",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Fortunately, the new production of Ossie Davis' 1961 play Purlie Victorious has sidestepped any issues about its being dated",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the issues depicted in the play have lost little of their resonance",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise for direction and ensemble performances with no significant criticisms suggests a clear positive recommendation despite brief concerns about the material's age. | GPT-4o-mini: The review highlights strong performances and direction while maintaining a positive tone, indicating a clear recommendation despite acknowledging some thematic weight.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:06:54.552Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "bwwThumb": "Up",
+  "wrongProduction": true,
+  "wrongProductionReason": "1961, Ossie Davis",
+  "wrongProductionConfidence": "high",
+  "_quarantine": {
+    "quarantinedAt": "2026-01-28T23:25:46.057Z",
+    "reason": "likely_wrong_production",
+    "confidence": "high",
+    "indicators": [
+      "1961",
+      "Ossie Davis"
+    ],
+    "originalPath": "review-texts/purlie-victorious-2023/nysr--frank-scheck.json"
+  }
+}

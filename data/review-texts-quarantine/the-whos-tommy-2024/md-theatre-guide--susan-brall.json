@@ -1,0 +1,86 @@
+{
+  "showId": "the-whos-tommy-2024",
+  "outletId": "md-theatre-guide",
+  "outlet": "MD Theatre Guide",
+  "criticName": "Susan Brall",
+  "url": "https://mdtheatreguide.com/2019/04/theatre-review-the-whos-tommy-at-the-kennedy-center/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "bwwExcerpt": ": This production of \"The Who's Tommy\" is loaded with talent. Christian Borle and Mandy Gonzalez who play Captain and Mrs. Walker-Tommy's parents-are award-winning Broadway performers. They deliver seamless performances. Both renown actors capture the famous hard rock sound of The Who. Borle's and Gonzalez's duet, \"I Believe My Own Eyes\" is quite compelling as they convincingly play the parent of a child, now a man, they cannot make well.",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-WHOS-TOMMY-2024",
+  "bwwThumb": null,
+  "originalScore": null,
+  "assignedScore": 79,
+  "source": "bww-roundup",
+  "dtliThumb": null,
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production of 'The Who's Tommy' is loaded with talent",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "They deliver seamless performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "quite compelling as they convincingly play the parent of a child",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances and musical execution with no negative elements mentioned, indicating clear positive recommendation despite limited scope of review. | GPT-4o-mini: The review highlights strong performances from the lead actors, indicating a clear recommendation despite not addressing other aspects of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:25.637Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "Date/URL year mismatch: URL contains year 2019, expected 2024 (or 2023 for previews)",
+  "wrongProductionConfidence": "high",
+  "_quarantine": {
+    "quarantinedAt": "2026-01-28T23:25:46.069Z",
+    "reason": "likely_wrong_production",
+    "confidence": "high",
+    "indicators": [
+      "URL contains year 2019, expected 2024 (or 2023 for previews)"
+    ],
+    "originalPath": "review-texts/the-whos-tommy-2024/md-theatre-guide--susan-brall.json"
+  }
+}

@@ -18,6 +18,7 @@ import buzzData from '../../data/buzz.json';
 import grossesData from '../../data/grosses.json';
 import awardsData from '../../data/awards.json';
 import commercialData from '../../data/commercial.json';
+import grossesHistoryData from '../../data/grosses-history.json';
 import audienceBuzzData from '../../data/audience-buzz.json';
 import criticConsensusData from '../../data/critic-consensus.json';
 import lotteryRushData from '../../data/lottery-rush.json';
@@ -931,6 +932,352 @@ export function getCommercialLastUpdated(): string {
  */
 export function getDesignationDescription(designation: CommercialDesignation): string {
   return commercial._meta.designations[designation] || '';
+}
+
+// ============================================
+// Biz Dashboard / Investment Tracker
+// ============================================
+
+// Type for grosses history data
+interface GrossesHistoryWeek {
+  gross: number | null;
+  capacity: number | null;
+  atp: number | null;
+  attendance: number | null;
+  performances: number | null;
+}
+
+interface GrossesHistoryFile {
+  _meta: {
+    description: string;
+    lastUpdated: string;
+  };
+  weeks: Record<string, Record<string, GrossesHistoryWeek>>;
+}
+
+const grossesHistory = grossesHistoryData as unknown as GrossesHistoryFile;
+
+// New types for biz dashboard
+export type RecoupmentTrend = 'improving' | 'steady' | 'declining' | 'unknown';
+
+export interface SeasonStats {
+  season: string;
+  capitalAtRisk: number;
+  recoupedCount: number;
+  totalShows: number;
+  recoupedShows: string[];
+}
+
+export interface ApproachingRecoupmentShow {
+  slug: string;
+  title: string;
+  season: string;
+  capitalization: number;
+  estimatedRecoupmentPct: [number, number];
+  trend: RecoupmentTrend;
+  weeklyGross: number | null;
+}
+
+export interface AtRiskShow {
+  slug: string;
+  title: string;
+  season: string;
+  capitalization: number;
+  weeklyGross: number;
+  weeklyRunningCost: number;
+  trend: RecoupmentTrend;
+}
+
+export interface RecentRecoupmentShow {
+  slug: string;
+  title: string;
+  season: string;
+  weeksToRecoup: number;
+  capitalization: number;
+  recoupDate: string;
+}
+
+/**
+ * Get Broadway season for a given date
+ * Broadway seasons run July 1 - June 30
+ * Returns format: "2024-2025"
+ */
+export function getSeason(dateString: string | null | undefined): string | null {
+  if (!dateString) return null;
+
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return null;
+
+  const year = date.getFullYear();
+  const month = date.getMonth(); // 0-indexed (0 = January)
+
+  // July (6) through December (11) = first year of season
+  // January (0) through June (5) = second year of season
+  if (month >= 6) {
+    return `${year}-${year + 1}`;
+  } else {
+    return `${year - 1}-${year}`;
+  }
+}
+
+/**
+ * Get season statistics: capital at risk, recoupment count, etc.
+ */
+export function getSeasonStats(season: string): SeasonStats {
+  const allShows = getAllShows();
+  const recoupedShowsList: string[] = [];
+  let capitalAtRisk = 0;
+  let recoupedCount = 0;
+  let totalShows = 0;
+
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    // Get show info
+    const show = allShows.find(s => s.slug === slug);
+    if (!show) continue;
+
+    // Check if show is in this season
+    const showSeason = getSeason(show.openingDate);
+    if (showSeason !== season) continue;
+
+    // Skip non-commercial designations
+    if (data.designation === 'Nonprofit' || data.designation === 'Tour Stop') continue;
+
+    totalShows++;
+
+    if (data.recouped === true) {
+      recoupedCount++;
+      recoupedShowsList.push(show.title);
+    } else if (
+      data.designation === 'TBD' &&
+      show.status === 'open' &&
+      data.capitalization
+    ) {
+      // Capital at risk: TBD shows still running with known capitalization
+      capitalAtRisk += data.capitalization;
+    }
+  }
+
+  return {
+    season,
+    capitalAtRisk,
+    recoupedCount,
+    totalShows,
+    recoupedShows: recoupedShowsList,
+  };
+}
+
+/**
+ * Get recoupment trend for a show based on recent grosses history
+ * Uses last 4 weeks of data, calculates average WoW change
+ */
+export function getRecoupmentTrend(slug: string): RecoupmentTrend {
+  // Get sorted week keys (most recent first)
+  const weekKeys = Object.keys(grossesHistory.weeks).sort().reverse();
+
+  if (weekKeys.length < 3) return 'unknown';
+
+  // Get last 4 weeks of gross data for this show
+  const grosses: number[] = [];
+  for (let i = 0; i < Math.min(4, weekKeys.length); i++) {
+    const weekData = grossesHistory.weeks[weekKeys[i]]?.[slug];
+    if (weekData?.gross) {
+      grosses.push(weekData.gross);
+    }
+  }
+
+  // Need at least 3 data points to calculate trend
+  if (grosses.length < 3) return 'unknown';
+
+  // Calculate week-over-week percentage changes
+  // grosses[0] is most recent, so we compare grosses[i] to grosses[i+1]
+  const wowChanges: number[] = [];
+  for (let i = 0; i < grosses.length - 1; i++) {
+    const current = grosses[i];
+    const previous = grosses[i + 1];
+    if (previous > 0) {
+      const change = ((current - previous) / previous) * 100;
+      wowChanges.push(change);
+    }
+  }
+
+  if (wowChanges.length === 0) return 'unknown';
+
+  // Calculate average WoW change
+  const avgChange = wowChanges.reduce((a, b) => a + b, 0) / wowChanges.length;
+
+  // Categorize based on threshold
+  if (avgChange > 2) return 'improving';
+  if (avgChange < -2) return 'declining';
+  return 'steady';
+}
+
+/**
+ * Get shows approaching recoupment (TBD with 40%+ recoupment estimate, not declining)
+ */
+export function getShowsApproachingRecoupment(): ApproachingRecoupmentShow[] {
+  const allShows = getAllShows();
+  const results: ApproachingRecoupmentShow[] = [];
+
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    // Only TBD shows with estimated recoupment percentage
+    if (data.designation !== 'TBD') continue;
+    if (!data.estimatedRecoupmentPct) continue;
+
+    // Lower bound must be >= 40%
+    const [lower] = data.estimatedRecoupmentPct;
+    if (lower < 40) continue;
+
+    const show = allShows.find(s => s.slug === slug);
+    if (!show || show.status !== 'open') continue;
+
+    const trend = getRecoupmentTrend(slug);
+    if (trend === 'declining') continue;
+
+    // Get latest weekly gross
+    const grossData = getShowGrosses(slug);
+
+    results.push({
+      slug,
+      title: show.title,
+      season: getSeason(show.openingDate) || 'Unknown',
+      capitalization: data.capitalization || 0,
+      estimatedRecoupmentPct: data.estimatedRecoupmentPct,
+      trend,
+      weeklyGross: grossData?.thisWeek?.gross || null,
+    });
+  }
+
+  // Sort by estimated recoupment % descending (use upper bound)
+  return results.sort((a, b) => b.estimatedRecoupmentPct[1] - a.estimatedRecoupmentPct[1]);
+}
+
+/**
+ * Get shows at risk (below break-even or declining trajectory)
+ */
+export function getShowsAtRisk(): AtRiskShow[] {
+  const allShows = getAllShows();
+  const results: AtRiskShow[] = [];
+
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    // Only TBD shows
+    if (data.designation !== 'TBD') continue;
+
+    const show = allShows.find(s => s.slug === slug);
+    if (!show || show.status !== 'open') continue;
+
+    const trend = getRecoupmentTrend(slug);
+    const grossData = getShowGrosses(slug);
+    const weeklyGross = grossData?.thisWeek?.gross;
+    const weeklyRunningCost = data.weeklyRunningCost;
+
+    // Include if: declining trend OR operating below break-even
+    const isBelowBreakEven = weeklyGross && weeklyRunningCost && weeklyGross < weeklyRunningCost;
+    const isDeclining = trend === 'declining';
+
+    if (!isBelowBreakEven && !isDeclining) continue;
+    if (!weeklyGross || !weeklyRunningCost) continue;
+
+    results.push({
+      slug,
+      title: show.title,
+      season: getSeason(show.openingDate) || 'Unknown',
+      capitalization: data.capitalization || 0,
+      weeklyGross,
+      weeklyRunningCost,
+      trend,
+    });
+  }
+
+  // Sort by severity: below break-even first, then by deficit amount
+  return results.sort((a, b) => {
+    const deficitA = a.weeklyRunningCost - a.weeklyGross;
+    const deficitB = b.weeklyRunningCost - b.weeklyGross;
+    return deficitB - deficitA;
+  });
+}
+
+/**
+ * Get shows that recouped within the specified number of months
+ */
+export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[] {
+  const allShows = getAllShows();
+  const results: RecentRecoupmentShow[] = [];
+  const cutoffDate = new Date();
+  cutoffDate.setMonth(cutoffDate.getMonth() - months);
+
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    if (!data.recouped || !data.recoupedDate || !data.recoupedWeeks) continue;
+
+    // Parse recoup date (formats vary: "2025-01", "2024-06", "2022-12")
+    const recoupDate = new Date(data.recoupedDate + '-01'); // Add day for parsing
+    if (isNaN(recoupDate.getTime()) || recoupDate < cutoffDate) continue;
+
+    const show = allShows.find(s => s.slug === slug);
+    if (!show) continue;
+
+    results.push({
+      slug,
+      title: show.title,
+      season: getSeason(show.openingDate) || 'Unknown',
+      weeksToRecoup: data.recoupedWeeks,
+      capitalization: data.capitalization || 0,
+      recoupDate: data.recoupedDate,
+    });
+  }
+
+  // Sort by recoup date descending (most recent first)
+  return results.sort((a, b) => {
+    return new Date(b.recoupDate).getTime() - new Date(a.recoupDate).getTime();
+  });
+}
+
+/**
+ * Get all open shows with commercial data for the full table
+ */
+export function getAllOpenShowsWithCommercial(): Array<{
+  slug: string;
+  title: string;
+  designation: CommercialDesignation;
+  capitalization: number | null;
+  weeklyGross: number | null;
+  estimatedRecoupmentPct: [number, number] | null;
+  trend: RecoupmentTrend;
+  recouped: boolean | null;
+  recoupedWeeks: number | null;
+}> {
+  const allShows = getAllShows();
+  const results: Array<{
+    slug: string;
+    title: string;
+    designation: CommercialDesignation;
+    capitalization: number | null;
+    weeklyGross: number | null;
+    estimatedRecoupmentPct: [number, number] | null;
+    trend: RecoupmentTrend;
+    recouped: boolean | null;
+    recoupedWeeks: number | null;
+  }> = [];
+
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    const show = allShows.find(s => s.slug === slug);
+    if (!show || show.status !== 'open') continue;
+
+    const grossData = getShowGrosses(slug);
+
+    results.push({
+      slug,
+      title: show.title,
+      designation: data.designation,
+      capitalization: data.capitalization,
+      weeklyGross: grossData?.thisWeek?.gross || null,
+      estimatedRecoupmentPct: data.estimatedRecoupmentPct || null,
+      trend: getRecoupmentTrend(slug),
+      recouped: data.recouped,
+      recoupedWeeks: data.recoupedWeeks,
+    });
+  }
+
+  return results;
 }
 
 // ============================================

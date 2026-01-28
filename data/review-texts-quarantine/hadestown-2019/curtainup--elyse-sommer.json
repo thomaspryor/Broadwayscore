@@ -1,0 +1,88 @@
+{
+  "showId": "hadestown-2019",
+  "outletId": "curtainup",
+  "outlet": "CurtainUp",
+  "criticName": "Elyse Sommer",
+  "url": "http://www.curtainup.com/hadestown16.html",
+  "publishDate": "May 2016",
+  "fullText": null,
+  "isFullReview": false,
+  "showScoreExcerpt": "I wouldn't be surprised if Hadestown also ends up moving uptown. But don't wait. Catch it while you can in this smaller, more intimate setting.",
+  "originalScore": null,
+  "assignedScore": 84,
+  "source": "web-search",
+  "note": "Off-Broadway NYTW production review - site has expired SSL certificate",
+  "textStatus": "excerpt_only",
+  "textQuality": "missing",
+  "sourceMethod": "web-search",
+  "scoreSource": "sentiment-strong-positive",
+  "scoreConfidence": "medium",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "don't wait",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Catch it while you can",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this smaller, more intimate setting",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly urges readers not to wait and to catch the show, indicating strong positive recommendation despite the brief excerpt. | GPT-4o-mini: The review encourages seeing the show in its current setting, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:16:27.445Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "Date/URL year mismatch: Publish date shows year 2016, expected 2019 (or 2018 for previews)",
+  "wrongProductionConfidence": "high",
+  "_quarantine": {
+    "quarantinedAt": "2026-01-28T23:25:46.041Z",
+    "reason": "likely_wrong_production",
+    "confidence": "high",
+    "indicators": [
+      "Publish date shows year 2016, expected 2019 (or 2018 for previews)"
+    ],
+    "originalPath": "review-texts/hadestown-2019/curtainup--elyse-sommer.json"
+  }
+}

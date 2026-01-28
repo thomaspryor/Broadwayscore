@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-01-28T20:54:40.764Z",
+  "timestamp": "2026-01-28T23:26:40.482Z",
   "summary": {
     "shows_checked": 69,
     "shows_with_indicators": 10,
-    "files_scanned": 2101,
-    "files_flagged": 138,
+    "files_scanned": 2176,
+    "files_flagged": 13,
     "baseline_pending": 3,
     "false_positive_mitigated": 0,
-    "likely_wrong_production": 125,
+    "likely_wrong_production": 0,
     "comparison_mentions": 9,
     "needs_review": 4
   },
@@ -106,34 +106,6 @@
     },
     {
       "showId": "cabaret-2024",
-      "file": "advertisement--chris-jones.json",
-      "outlet": "Advertisement",
-      "critic": "Chris Jones",
-      "url": "https://www.nydailynews.com/2024/04/21/broadway-review-interactive-cabaret-revival-is-a-money-grabbing-misfire/",
-      "publishDate": "April 21, 2024",
-      "indicators_found": [
-        "1998",
-        "Alan Cumming",
-        "Natasha Richardson"
-      ],
-      "expected_found": [
-        "August Wilson Theatre",
-        "Eddie Redmayne",
-        "Gayle Rankin",
-        "Kit Kat Club"
-      ],
-      "confidence": "medium",
-      "classification": "comparison_mentions",
-      "isGenericIndicators": false,
-      "isDateMismatch": false,
-      "contexts": [
-        "hrined on Broadway in a searing and unforgettable 1998 revival starring Natasha Richardson and Alan Cumm",
-        "able 1998 revival starring Natasha Richardson and Alan Cumming, is entirely another. “Cabaret” is not a high-pri",
-        "a searing and unforgettable 1998 revival starring Natasha Richardson and Alan Cumming, is entirely another. “Cabaret” "
-      ]
-    },
-    {
-      "showId": "cabaret-2024",
       "file": "forward--pj-grisar.json",
       "outlet": "Forward",
       "critic": "PJ Grisar",
@@ -160,6 +132,34 @@
         "ke-makeup rictus could not be more different than Alan Cumming’s gaunt, garter-wearing compere who, in Sam Mende",
         "n Cumming’s gaunt, garter-wearing compere who, in Sam Mendes’ revival, was hinted to be a victim of the Holoca",
         "it table with built-in telephone. If the original 1966 production held a literal mirror to its audience,"
+      ]
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "nydailynews--chris.json",
+      "outlet": "New York Daily News",
+      "critic": "Chris",
+      "url": "https://www.nydailynews.com/2024/04/21/broadway-review-interactive-cabaret-revival-is-a-money-grabbing-misfire/",
+      "publishDate": "April 21, 2024",
+      "indicators_found": [
+        "1998",
+        "Alan Cumming",
+        "Natasha Richardson"
+      ],
+      "expected_found": [
+        "August Wilson Theatre",
+        "Eddie Redmayne",
+        "Gayle Rankin",
+        "Kit Kat Club"
+      ],
+      "confidence": "medium",
+      "classification": "comparison_mentions",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        "hrined on Broadway in a searing and unforgettable 1998 revival starring Natasha Richardson and Alan Cumm",
+        "able 1998 revival starring Natasha Richardson and Alan Cumming, is entirely another. “Cabaret” is not a high-pri",
+        "a searing and unforgettable 1998 revival starring Natasha Richardson and Alan Cumming, is entirely another. “Cabaret” "
       ]
     },
     {
@@ -358,2297 +358,6 @@
       "contexts": [
         "Scene\nKen Davenport blog\nLibrary of Congress blog\nLincoln Center Theater blog\nOn Stage\nPataphysicalSci, Linda Buch"
       ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
-      "file": "nytimes--charles-isherwood.json",
-      "outlet": "The New York Times",
-      "critic": "Charles Isherwood",
-      "url": "http://theater.nytimes.com/2012/09/28/theater/reviews/an-enemy-of-the-people-at-samuel-j-friedman-theater.html?ref=theater&amp;pagewanted=all",
-      "publishDate": null,
-      "indicators_found": [
-        "URL contains year 2012, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
-      "file": "usatoday--elysa-gardner.json",
-      "outlet": "USA Today",
-      "critic": "Elysa Gardner",
-      "url": "http://www.usatoday.com/life/people/story/2012/09/27/ibsens-an-enemy-of-the-people-gets-timely-revival/57849738/1",
-      "publishDate": null,
-      "indicators_found": [
-        "URL contains year 2012, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "amny--matt-windman.json",
-      "outlet": "amny",
-      "critic": "Matt Windman",
-      "url": "http://www.amny.com/entertainment/hadestown-review-a-folk-music-take-on-an-ancient-greek-tale-1.11831751",
-      "publishDate": "May 23rd, 2016",
-      "indicators_found": [
-        "Publish date shows year 2016, expected 2019 (or 2018 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "curtainup--elyse-sommer.json",
-      "outlet": "CurtainUp",
-      "critic": "Elyse Sommer",
-      "url": "http://www.curtainup.com/hadestown16.html",
-      "publishDate": "May 2016",
-      "indicators_found": [
-        "Publish date shows year 2016, expected 2019 (or 2018 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "dc-theater-arts--richard-seff.json",
-      "outlet": "dc-theater-arts",
-      "critic": "Richard Seff",
-      "url": "https://dctheaterarts.org/2016/06/28/hadestown-new-york-theatre-workshop-2/",
-      "publishDate": "June 28, 2016",
-      "indicators_found": [
-        "URL contains year 2016, expected 2019 (or 2018 for previews)",
-        "Publish date shows year 2016, expected 2019 (or 2018 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "deadline--jeremy-gerard.json",
-      "outlet": "Deadline",
-      "critic": "Jeremy Gerard",
-      "url": "http://deadline.com/2016/05/hadestown-new-musical-review-1201761800/",
-      "publishDate": "May 23rd, 2016",
-      "indicators_found": [
-        "URL contains year 2016, expected 2019 (or 2018 for previews)",
-        "Publish date shows year 2016, expected 2019 (or 2018 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "hollywood-reporter--frank-scheck.json",
-      "outlet": "The Hollywood Reporter",
-      "critic": "Frank Scheck",
-      "url": "http://www.hollywoodreporter.com/review/anais-mitchells-hadestown-theater-review-896631",
-      "publishDate": "May 23rd, 2016",
-      "indicators_found": [
-        "Publish date shows year 2016, expected 2019 (or 2018 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "outlet": "lighting-and-sound-america",
-      "critic": "David Barbour",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-RNLI6N",
-      "publishDate": "June 2nd, 2016",
-      "indicators_found": [
-        "Publish date shows year 2016, expected 2019 (or 2018 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "critic": "Ben Brantley",
-      "url": "http://www.nytimes.com/2016/05/24/theater/review-hadestown-reanimates-a-well-known-myth.html",
-      "publishDate": "2019-04-17T20:11:26-04:00",
-      "indicators_found": [
-        "URL contains year 2016, expected 2019 (or 2018 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "nytimes--charles-isherwood.json",
-      "outlet": "The New York Times",
-      "critic": "Charles Isherwood",
-      "url": "http://www.nytimes.com/2016/05/24/theater/review-hadestown-reanimates-a-well-known-myth.html",
-      "publishDate": "May 23rd, 2016",
-      "indicators_found": [
-        "URL contains year 2016, expected 2019 (or 2018 for previews)",
-        "Publish date shows year 2016, expected 2019 (or 2018 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "onstage-blog--david-roberts.json",
-      "outlet": "onstage-blog",
-      "critic": "David Roberts",
-      "url": "https://www.onstageblog.com/reviews/2016/5/23/review-hadestown-redefines-mythos-at-the-new-york-theatre-workshop",
-      "publishDate": "May 23, 2016",
-      "indicators_found": [
-        "URL contains year 2016, expected 2019 (or 2018 for previews)",
-        "Publish date shows year 2016, expected 2019 (or 2018 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "talkinbroadway--matthew-murray.json",
-      "outlet": "Talkin' Broadway",
-      "critic": "Matthew Murray",
-      "url": "https://www.talkinbroadway.com/page/ob/5_23_16.html",
-      "publishDate": "May 23, 2016",
-      "indicators_found": [
-        "Publish date shows year 2016, expected 2019 (or 2018 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "timeout--jenna-scherer.json",
-      "outlet": "Time Out New York",
-      "critic": "Jenna Scherer",
-      "url": "http://www.timeout.com/newyork/theater/hadestown",
-      "publishDate": "May 23rd, 2016",
-      "indicators_found": [
-        "Publish date shows year 2016, expected 2019 (or 2018 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "vulture--jesse-green.json",
-      "outlet": "Vulture",
-      "critic": "Jesse Green",
-      "url": "http://www.vulture.com/2016/05/theater-review-hadestown.html",
-      "publishDate": "May 23rd, 2016",
-      "indicators_found": [
-        "URL contains year 2016, expected 2019 (or 2018 for previews)",
-        "Publish date shows year 2016, expected 2019 (or 2018 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "vulture--sara-holdren.json",
-      "outlet": "Vulture",
-      "critic": "Sara Holdren",
-      "url": "http://www.vulture.com/2016/05/theater-review-hadestown.html",
-      "publishDate": "2019-04-17",
-      "indicators_found": [
-        "URL contains year 2016, expected 2019 (or 2018 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "amny--matt-windman.json",
-      "outlet": "amNewYork",
-      "critic": "Matt Windman",
-      "url": null,
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "broadway-and-me--janice-c-simpson.json",
-      "outlet": "Broadway & Me",
-      "critic": "Janice C. Simpson",
-      "url": "http://broadwayandme.blogspot.com/2018/05/the-unabashed-confessions-of-harry.html",
-      "publishDate": "May 19, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "broadway-blog--matthew-wexler.json",
-      "outlet": "Broadway Blog",
-      "critic": "Matthew Wexler",
-      "url": "http://thebroadwayblog.com/harry-potter-cursed-child-review/",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "broadwaynews--elizabeth-bradley.json",
-      "outlet": "Broadway News",
-      "critic": "Elizabeth Bradley",
-      "url": "https://broadwaynews.com/2018/04/22/review-harry-potter-and-the-cursed-child/",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "broadwayworld--michael-dale.json",
-      "outlet": "BroadwayWorld",
-      "critic": "Michael Dale",
-      "url": "/article/BWW-Review-A-Complete-Neophytes-Guide-To-HARRY-POTTER-AND-THE-CURSED-CHILD-20180423",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "chicagotribune--chris-jones.json",
-      "outlet": "chicagotribune",
-      "critic": "Chris Jones",
-      "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-harry-potter-broadway-review-0422-story.html",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "cititour--brian-scott-lipton.json",
-      "outlet": "Cititour",
-      "critic": "Brian Scott Lipton",
-      "url": "https://www.cititour.com/harry-potter-cursed-child-review/",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "city-cabaret--elizabeth-ahlfors.json",
-      "outlet": "City Cabaret",
-      "critic": "Elizabeth Ahlfors",
-      "url": "http://www.citycabaret.com/harry-potter-and-the-cursed-child.html",
-      "publishDate": "May 22, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "curtainup--elyse-sommer.json",
-      "outlet": "CurtainUp",
-      "critic": "Elyse Sommer",
-      "url": "http://www.curtainup.com/harrypottercursedchild.html",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "dailybeast--tim-teeman.json",
-      "outlet": "The Daily Beast",
-      "critic": "Tim Teeman",
-      "url": "https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "dc-metro-theater-arts--deb-miller.json",
-      "outlet": "DC Metro Theater Arts",
-      "critic": "Deb Miller",
-      "url": "https://dcmetrotheaterarts.com/2018/04/28/review-harry-potter-and-the-cursed-child-at-the-lyric-theatre/",
-      "publishDate": "April 28, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "dc-theatre-scene--jonathan-mandell.json",
-      "outlet": "DC Theatre Scene",
-      "critic": "Jonathan Mandell",
-      "url": "https://dctheatrescene.com/2018/04/26/harry-potter-and-the-cursed-child-review-a-spectacle-that-even-muggles-can-love/",
-      "publishDate": "April 26, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "drama-queen-nyc--jonathan-warman.json",
-      "outlet": "drama-queen-nyc",
-      "critic": "Jonathan Warman",
-      "url": "https://dramaqueennyc.com/2018/04/29/review-harry-potter-and-the-cursed-child/",
-      "publishDate": "April 29, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "ew--marc-snetiker.json",
-      "outlet": "Entertainment Weekly",
-      "critic": "Marc Snetiker",
-      "url": "http://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "exeunt-magazine--kev-berry.json",
-      "outlet": "exeunt-magazine",
-      "critic": "Kev Berry",
-      "url": "http://exeuntmagazine.com/reviews/harry-potter-cursed-child/",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "financial-times-uk--charles-isherwood.json",
-      "outlet": "financial-times-uk",
-      "critic": "Charles Isherwood",
-      "url": "https://www.ft.com/content/b7a31170-4481-11e8-97ce-ea0c2bf34a0b",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "fordham-observer--michael-appler.json",
-      "outlet": "fordham-observer",
-      "critic": "Michael Appler",
-      "url": "http://www.fordhamobserver.com/review-harry-potter-and-the-cursed-child-comes-to-broadway-spellbound/",
-      "publishDate": "May 1, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "forward--jay-michaelson.json",
-      "outlet": "Forward",
-      "critic": "Jay Michaelson",
-      "url": "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "forward--matthew-murphy.json",
-      "outlet": "Forward",
-      "critic": "Matthew Murphy",
-      "url": "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "front-row-center--tulis-mccall.json",
-      "outlet": "Front Row Center",
-      "critic": "Tulis McCall",
-      "url": "http://www.frontrowcenter.com/harry-potter-cursed-child/",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "frontmezzjunkies--steven-ross.json",
-      "outlet": "Front Mezz Junkies",
-      "critic": "Steven Ross",
-      "url": "http://frontmezzjunkies.com/harry-potter-cursed-child-review/",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "gotham-playgoer--robert-sholiton.json",
-      "outlet": "gotham-playgoer",
-      "critic": "Robert Sholiton",
-      "url": "https://gotham-playgoer.blogspot.com/2018/04/harry-potter-and-cursed-child.html",
-      "publishDate": "April 26, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "guardian--alexis-soloski.json",
-      "outlet": "The Guardian",
-      "critic": "Alexis Soloski",
-      "url": "https://www.theguardian.com/stage/2018/apr/22/harry-potter-and-the-cursed-child-review-thrilling-broadway-transfer-is-magic",
-      "publishDate": null,
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "The Hollywood Reporter",
-      "critic": "David Rooney",
-      "url": "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "outlet": "lighting-and-sound-america",
-      "critic": "David Barbour",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=KEZ4I3",
-      "publishDate": "April 23, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "limelight-magazine-au--clive-paget.json",
-      "outlet": "limelight-magazine-au",
-      "critic": "Clive Paget",
-      "url": "https://www.limelightmagazine.com.au/reviews/harry-potter-cursed-child-broadway/",
-      "publishDate": "April 23, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "mashable--erin-strecker.json",
-      "outlet": "Mashable",
-      "critic": "Erin Strecker",
-      "url": "https://mashable.com/2018/04/22/harry-potter-cursed-child-broadway-review/#WGc2XqATSiqg",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "medium--christian-lewis.json",
-      "outlet": "Medium",
-      "critic": "Christian Lewis",
-      "url": "https://medium.com/@christianlewis_11156/review-harry-potter-and-the-cursed-child-is-even-more-magical-than-expected-9d88587832a6",
-      "publishDate": "May 1, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "melindas-malarky--melinda-pressler.json",
-      "outlet": "Melinda's Malarky",
-      "critic": "Melinda Pressler",
-      "url": "https://melindasmalarky.blogspot.com/2018/05/harry-potter-and-cursed-child-you-dont.html",
-      "publishDate": "May 20, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "national-review--kyle-smith.json",
-      "outlet": "National Review",
-      "critic": "Kyle Smith",
-      "url": "https://www.nationalreview.com/2018/04/harry-potter-broadway-play-turning-point-for-american-theater/",
-      "publishDate": "April 27, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "newsday--barbara-schuler.json",
-      "outlet": "Newsday",
-      "critic": "Barbara Schuler",
-      "url": "https://www.newsday.com/entertainment/theater/harry-potter-cursed-child-review-1.18173469",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "njcom--christopher-kelly.json",
-      "outlet": "njcom",
-      "critic": "Christopher Kelly",
-      "url": "http://www.nj.com/entertainment/index.ssf/2018/04/harry_potter_cursed_child_broadway_review.html",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "ny1--roma-torre.json",
-      "outlet": "NY1",
-      "critic": "Roma Torre",
-      "url": "http://www.ny1.com/nyc/all-boroughs/news/2018/04/22/roma-torre-broadway-theater-review-harry-potter-and-the-cursed-child.html",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "outlet": "New York Daily News",
-      "critic": "Joe Dziemianowicz",
-      "url": "http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "nysr--elysa-gardner.json",
-      "outlet": "New York Stage Review",
-      "critic": "Elysa Gardner",
-      "url": "http://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-a-magic-man-tested/",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "nysr--steven-suskin.json",
-      "outlet": "New York Stage Review",
-      "critic": "Steven Suskin",
-      "url": "http://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-broadways-enchanted-kingdom/",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "critic": "Ben Brantley",
-      "url": "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "parade--janice-kaplan.json",
-      "outlet": "Parade",
-      "critic": "Janice Kaplan",
-      "url": "https://parade.com/663638/janicekaplan/harry-potters-brand-new-magic-hits-broadway/",
-      "publishDate": "April 23, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "people--dave-quinn.json",
-      "outlet": "People",
-      "critic": "Dave Quinn",
-      "url": "http://people.com/theater/harry-potter-and-the-cursed-child-broadway-review/",
-      "publishDate": "April 23, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "rollingstone--peter-travers.json",
-      "outlet": "Rolling Stone",
-      "critic": "Peter Travers",
-      "url": "https://www.rollingstone.com/culture/news/harry-potter-cursed-child-peter-travers-broadway-w519415",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "slate--dan-kois.json",
-      "outlet": "Slate",
-      "critic": "Dan Kois",
-      "url": "https://slate.com/culture/2018/04/harry-potter-and-the-cursed-child-on-broadway-reviewed.html",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "stage-left--robert-russo.json",
-      "outlet": "stage-left",
-      "critic": "Robert Russo",
-      "url": "https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "stagezine--scott-harrah.json",
-      "outlet": "StageZine",
-      "critic": "Scott Harrah",
-      "url": "http://www.stagezine.com/harry-potter-and-the-cursed-child-epic-magic/",
-      "publishDate": "April 30, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "talkinbroadway--howard-miller.json",
-      "outlet": "Talkin' Broadway",
-      "critic": "Howard Miller",
-      "url": "https://www.talkinbroadway.com/page/world/HarryPotterCursedChild2018.html",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "telegraph--diana-snyder.json",
-      "outlet": "The Telegraph",
-      "critic": "Diana Snyder",
-      "url": null,
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "the-stage-uk--mark-shenton.json",
-      "outlet": "the-stage-uk",
-      "critic": "Mark Shenton",
-      "url": "https://www.thestage.co.uk/reviews/2018/harry-potter-and-the-cursed-child-review-at-lyric-theatre-new-york-a-continuing-marvel/",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "the-times--ann-treneman.json",
-      "outlet": "The Times",
-      "critic": "Ann Treneman",
-      "url": "https://www.thetimes.co.uk/article/theatre-review-harry-potter-and-the-cursed-child-i-and-ii-at-the-lyric-theatre-new-york-jsc7khbbf",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "theater-life--isa-goldberg.json",
-      "outlet": "Theater Life",
-      "critic": "Isa Goldberg",
-      "url": "http://theaterlife.com/harry-potter-and-the-cursed-child-parts-one-and-two/",
-      "publishDate": "May 4, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "theater-pizzazz--michael-bracken.json",
-      "outlet": "theater-pizzazz",
-      "critic": "Michael Bracken",
-      "url": "http://www.theaterpizzazz.com/harry-potter-cursed-child-review/",
-      "publishDate": "April 22, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "theaterscenecom--julia-polinsky.json",
-      "outlet": "theaterscenecom",
-      "critic": "Julia Polinsky",
-      "url": "http://theaterscene.com/Harry-Potter-and-the-Cursed-Child.html",
-      "publishDate": "May 5, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "theatres-leiter-side--samuel-l-leiter.json",
-      "outlet": "Theatre's Leiter Side",
-      "critic": "Samuel L. Leiter",
-      "url": "https://slleiter.blogspot.com/2018/04/215-2017-2018-review-harry-potter-and.html",
-      "publishDate": "April 30, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "thewrap--robert-hofler.json",
-      "outlet": "The Wrap",
-      "critic": "Robert Hofler",
-      "url": "https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "timeout--adam-feldman.json",
-      "outlet": "Time Out New York",
-      "critic": "Adam Feldman",
-      "url": "https://www.timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "troy-record--bob-goepfert.json",
-      "outlet": "Troy Record",
-      "critic": "Bob Goepfert",
-      "url": "http://www.troyrecord.com/arts-and-entertainment/20180502/review-harry-potter-stage-show-in-nyc-not-for-the-casual-fan",
-      "publishDate": "May 2, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "usatoday--maeve-mcdermott.json",
-      "outlet": "USA Today",
-      "critic": "Maeve McDermott",
-      "url": "https://www.usatoday.com/story/life/entertainthis/2018/04/23/review-harry-potter-and-cursed-child-massive-sometimes-messy-masterpiece/543061002/",
-      "publishDate": "April 23, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "vanity-fair--richard-lawson.json",
-      "outlet": "Vanity Fair",
-      "critic": "Richard Lawson",
-      "url": "https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "variety--marilyn-stasio.json",
-      "outlet": "Variety",
-      "critic": "Marilyn Stasio",
-      "url": "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "village-voice--michael-feingold.json",
-      "outlet": "village-voice",
-      "critic": "Michael Feingold",
-      "url": "https://www.villagevoice.com/2018/04/25/in-broadways-harry-potter-and-the-cursed-child-magic-mingles-with-tedium/",
-      "publishDate": "April 25, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "vulture--sara-holdren.json",
-      "outlet": "Vulture",
-      "critic": "Sara Holdren",
-      "url": "http://www.vulture.com/2018/04/theater-review-harry-potter-and-the-broadway-spectacle.html",
-      "publishDate": "April 22nd, 2018",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "washpost--peter-marks.json",
-      "outlet": "The Washington Post",
-      "critic": "Peter Marks",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-charms-of-harry-potter-work-on-broadway--but-read-the-books-first/2018/04/20/817f793a-44a9-11e8-baaf-8b3c5a3da888_story.html?noredirect=on&amp;utm_term=.c8fd35f6388c",
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "indicators_found": [
-        "URL contains year 2018, expected 2021 (or 2020 for previews)",
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "wnyc--jennifer-vanasco.json",
-      "outlet": "WNYC",
-      "critic": "Jennifer Vanasco",
-      "url": "https://www.wnyc.org/story/review-harry-potter-cursed-child-magical-tale-about-parents-and-children/",
-      "publishDate": "April 28, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "wolf-entertainment-guide--william-wolf.json",
-      "outlet": "Wolf Entertainment Guide",
-      "critic": "William Wolf",
-      "url": "http://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=9433",
-      "publishDate": "April 23, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "woman-around-town--alix-cohen.json",
-      "outlet": "Woman Around Town",
-      "critic": "Alix Cohen",
-      "url": "https://www.womanaroundtown.com/sections/playing-around/harry-potter-cursed-child/",
-      "publishDate": "April 28, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "wsj--terry-teachout.json",
-      "outlet": "The Wall Street Journal",
-      "critic": "Terry Teachout",
-      "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-bringing-the-magic-to-life-1524677142",
-      "publishDate": "April 25, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "zeal-nyc--chris-caggiano.json",
-      "outlet": "zeal-nyc",
-      "critic": "Chris Caggiano",
-      "url": "https://zealnyc.com/review-harry-potter-and-the-cursed-child-is-enchanting/",
-      "publishDate": "May 2, 2018",
-      "indicators_found": [
-        "Publish date shows year 2018, expected 2021 (or 2020 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "mamma-mia-2025",
-      "file": "nydailynews--howard-kissel.json",
-      "outlet": "New York Daily News",
-      "critic": "Howard Kissel",
-      "url": "http://www.nydailynews.com/archives/nydn-features/hey-abba-musical-diehards-night-woe-mia-capable-cast-article-1.937314",
-      "publishDate": "October 19th, 2001",
-      "indicators_found": [
-        "Publish date shows year 2001, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "mamma-mia-2025",
-      "file": "nypost--clive-barnes.json",
-      "outlet": "New York Post",
-      "critic": "Clive Barnes",
-      "url": "http://nypost.com/2001/10/19/abba-dabba-do-lend-mia-an-ear-mamma-is-a-pop-solid-sensation/",
-      "publishDate": "October 19th, 2001",
-      "indicators_found": [
-        "URL contains year 2001, expected 2025 (or 2024 for previews)",
-        "Publish date shows year 2001, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "mamma-mia-2025",
-      "file": "nytimes--anita-gates.json",
-      "outlet": "The New York Times",
-      "critic": "Anita Gates",
-      "url": "http://www.nytimes.com/2014/08/19/theater/mamma-mia-no-longer-inspires-dancing-in-the-aisles.html",
-      "publishDate": "August 18th, 2014",
-      "indicators_found": [
-        "URL contains year 2014, expected 2025 (or 2024 for previews)",
-        "Publish date shows year 2014, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "mamma-mia-2025",
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "critic": "Ben Brantley",
-      "url": "http://www.nytimes.com/2001/10/19/movies/theater-review-mom-had-a-trio-and-a-band-too.html",
-      "publishDate": "October 19th, 2001",
-      "indicators_found": [
-        "URL contains year 2001, expected 2025 (or 2024 for previews)",
-        "Publish date shows year 2001, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "mamma-mia-2025",
-      "file": "nytimes--elisabeth-vincentelli.json",
-      "outlet": "The New York Times",
-      "critic": "Elisabeth Vincentelli",
-      "url": "http://www.nytimes.com/2014/08/19/theater/mamma-mia-no-longer-inspires-dancing-in-the-aisles.html",
-      "publishDate": null,
-      "indicators_found": [
-        "URL contains year 2014, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "mamma-mia-2025",
-      "file": "timeout--david-cote.json",
-      "outlet": "Time Out New York",
-      "critic": "David Cote",
-      "url": "http://www.timeout.com/newyork/theater/mamma-mia-1",
-      "publishDate": "October 19th, 2011",
-      "indicators_found": [
-        "Publish date shows year 2011, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "mamma-mia-2025",
-      "file": "variety--charles-isherwood.json",
-      "outlet": "Variety",
-      "critic": "Charles Isherwood",
-      "url": "http://variety.com/2001/legit/reviews/mamma-mia-7-1200553290/",
-      "publishDate": "October 18th, 2001",
-      "indicators_found": [
-        "URL contains year 2001, expected 2025 (or 2024 for previews)",
-        "Publish date shows year 2001, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "mamma-mia-2025",
-      "file": "variety--steven-oxman.json",
-      "outlet": "Variety",
-      "critic": "Steven Oxman",
-      "url": "http://variety.com/2001/legit/reviews/mamma-mia-3-1200466555/",
-      "publishDate": "February 27th, 2001",
-      "indicators_found": [
-        "URL contains year 2001, expected 2025 (or 2024 for previews)",
-        "Publish date shows year 2001, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "mamma-mia-2025",
-      "file": "vulture--john-simon.json",
-      "outlet": "Vulture",
-      "critic": "John Simon",
-      "url": "http://nymag.com/nymetro/arts/theater/reviews/5312/",
-      "publishDate": "October 29th, 2001",
-      "indicators_found": [
-        "Publish date shows year 2001, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "marjorie-prime-2025",
-      "file": "hollywood-reporter--frank-scheck.json",
-      "outlet": "The Hollywood Reporter",
-      "critic": "Frank Scheck",
-      "url": "http://www.hollywoodreporter.com/review/lois-smith-marjorie-prime-theater-848279?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Freviews%2Ftheater+%28The+Hollywood+Reporter+-+Theater+Reviews%29",
-      "publishDate": "December 14th, 2015",
-      "indicators_found": [
-        "Publish date shows year 2015, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "marjorie-prime-2025",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "outlet": "New York Daily News",
-      "critic": "Joe Dziemianowicz",
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/marjorie-prime-review-article-1.2463387",
-      "publishDate": "December 14th, 2015",
-      "indicators_found": [
-        "Publish date shows year 2015, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "marjorie-prime-2025",
-      "file": "nytg--stanford-friedman.json",
-      "outlet": "New York Theatre Guide",
-      "critic": "Stanford Friedman",
-      "url": "http://www.newyorktheatreguide.com/reviews/marjorieprime15.htm",
-      "publishDate": "December 15th, 2015",
-      "indicators_found": [
-        "Publish date shows year 2015, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "marjorie-prime-2025",
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "critic": "Ben Brantley",
-      "url": "http://www.nytimes.com/2015/12/15/theater/review-in-marjorie-prime-lois-smith-connects-with-the-past.html",
-      "publishDate": "December 14th, 2015",
-      "indicators_found": [
-        "URL contains year 2015, expected 2025 (or 2024 for previews)",
-        "Publish date shows year 2015, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "marjorie-prime-2025",
-      "file": "theatermania--david-gordon.json",
-      "outlet": "TheaterMania",
-      "critic": "David Gordon",
-      "url": "http://www.theatermania.com/off-broadway/reviews/marjorie-prime_75289.html",
-      "publishDate": "December 14th, 2015",
-      "indicators_found": [
-        "Publish date shows year 2015, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "marjorie-prime-2025",
-      "file": "timeout--david-cote.json",
-      "outlet": "Time Out New York",
-      "critic": "David Cote",
-      "url": "http://www.timeout.com/newyork/theater/marjorie-prime",
-      "publishDate": "December 14th, 2015",
-      "indicators_found": [
-        "Publish date shows year 2015, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "marjorie-prime-2025",
-      "file": "variety--marilyn-stasio.json",
-      "outlet": "Variety",
-      "critic": "Marilyn Stasio",
-      "url": "http://variety.com/2015/legit/reviews/marjorie-prime-review-1201661106/",
-      "publishDate": "December 14th, 2015",
-      "indicators_found": [
-        "URL contains year 2015, expected 2025 (or 2024 for previews)",
-        "Publish date shows year 2015, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "marjorie-prime-2025",
-      "file": "vulture--jesse-green.json",
-      "outlet": "Vulture",
-      "critic": "Jesse Green",
-      "url": "http://www.vulture.com/2015/12/theater-review-marjorie-prime.html#",
-      "publishDate": "December 14th, 2015",
-      "indicators_found": [
-        "URL contains year 2015, expected 2025 (or 2024 for previews)",
-        "Publish date shows year 2015, expected 2025 (or 2024 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "once-upon-a-one-more-time-2023",
-      "file": "dc-metro--nicole-hertvik.json",
-      "outlet": "dc-metro",
-      "critic": "Nicole Hertvik",
-      "url": "https://dcmetrotheaterarts.com/2021/12/19/once-upon-a-one-more-time-is-wacky-but-it-works/",
-      "publishDate": null,
-      "indicators_found": [
-        "URL contains year 2021, expected 2023 (or 2022 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "once-upon-a-one-more-time-2023",
-      "file": "nytimes--maya-phillips.json",
-      "outlet": "The New York Times",
-      "critic": "Maya Phillips",
-      "url": "https://www.nytimes.com/2021/12/23/theater/once-upon-a-one-more-time-a-strange-loop.html",
-      "publishDate": null,
-      "indicators_found": [
-        "URL contains year 2021, expected 2023 (or 2022 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "our-town-2024",
-      "file": "nytimes--alvin-klein.json",
-      "outlet": "The New York Times",
-      "critic": "Alvin Klein",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9503E5DA163CF936A1575BC0A9649C8B63&amp;fta=y",
-      "publishDate": "June 28, 2011",
-      "indicators_found": [
-        "Publish date shows year 2011, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "prayer-for-the-french-republic-2024",
-      "file": "nypost--johnny-oleksinski.json",
-      "outlet": "New York Post",
-      "critic": "Johnny Oleksinski",
-      "url": "https://nypost.com/2022/02/08/prayer-for-the-french-republic-review-a-powerful-jewish-drama/",
-      "publishDate": "February 8, 2022",
-      "indicators_found": [
-        "URL contains year 2022, expected 2024 (or 2023 for previews)",
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "purlie-victorious-2023",
-      "file": "nysr--frank-scheck.json",
-      "outlet": "New York Stage Review",
-      "critic": "Frank Scheck",
-      "url": "https://nystagereview.com/2023/09/27/purlie-victorious-a-revival-that-lives-up-to-its-title/",
-      "publishDate": null,
-      "indicators_found": [
-        "1961",
-        "Ossie Davis"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": false,
-      "contexts": [
-        ". Fortunately, the new production of Ossie Davis’ 1961 play Purlie Victorious has sidestepped any issues",
-        "icularly well. Fortunately, the new production of Ossie Davis’ 1961 play Purlie Victorious has sidestepped any "
-      ]
-    },
-    {
-      "showId": "purlie-victorious-2023",
-      "file": "unknown--unknown.json",
-      "outlet": "unknown",
-      "critic": "Unknown",
-      "url": "https://www.broadwaynews.com/purlie-victorious-delivers-a-masterful-sermon-on-satire/",
-      "publishDate": null,
-      "indicators_found": [
-        "1961",
-        "Ossie Davis"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": false,
-      "contexts": [
-        "al of Ossie Davis’ killingly funny and perceptive 1961 play is as close to Biblical scripture as Black t",
-        " masterful sermon on satire\n\n      The revival of Ossie Davis’ killingly funny and perceptive 1961 play is as c"
-      ]
-    },
-    {
-      "showId": "stranger-things-2024",
-      "file": "broadwayworld--alexander-cohen.json",
-      "outlet": "BroadwayWorld",
-      "critic": "Alexander Cohen",
-      "url": "https://www.broadwayworld.com/article/Review-STRANGER-THINGS-THE-FIRST-SHADOW-Phoenix-Theatre-20231215",
-      "publishDate": "December 15th, 2023",
-      "indicators_found": [
-        "Publish date shows year 2023, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "stranger-things-2024",
-      "file": "guardian--arifa-akbar.json",
-      "outlet": "The Guardian",
-      "critic": "Arifa Akbar",
-      "url": "https://www.theguardian.com/stage/2023/dec/14/stranger-things-the-first-shadow-review-phoenix-theatre-duffer-brothers",
-      "publishDate": null,
-      "indicators_found": [
-        "URL contains year 2023, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "stranger-things-2024",
-      "file": "guardian--michael-billington.json",
-      "outlet": "The Guardian",
-      "critic": "Michael Billington",
-      "url": "https://www.theguardian.com/stage/2023/dec/15/stranger-things-the-first-shadow-review-phoenix-theatre-london",
-      "publishDate": "December 15, 2023",
-      "indicators_found": [
-        "URL contains year 2023, expected 2024 (or 2023 for previews)",
-        "Publish date shows year 2023, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "stranger-things-2024",
-      "file": "nypost--johnny-oleksinski.json",
-      "outlet": "New York Post",
-      "critic": "Johnny Oleksinski",
-      "url": "https://nypost.com/2023/12/14/entertainment/stranger-things-the-first-shadow-review-netflix-stage-play-is-a-disaster/",
-      "publishDate": "April 23, 2025",
-      "indicators_found": [
-        "URL contains year 2023, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "stranger-things-2024",
-      "file": "nytimes--houman-barekat.json",
-      "outlet": "The New York Times",
-      "critic": "Houman Barekat",
-      "url": "https://www.nytimes.com/2023/12/14/theater/stranger-things-the-first-shadow-london.html?smid=nytcore-ios-share&referringSource=articleShare",
-      "publishDate": null,
-      "indicators_found": [
-        "URL contains year 2023, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "stranger-things-2024",
-      "file": "variety--david-benedict.json",
-      "outlet": "Variety",
-      "critic": "David Benedict",
-      "url": "https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/",
-      "publishDate": null,
-      "indicators_found": [
-        "URL contains year 2023, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "did-they-like-it--juan-michael-porter-ii.json",
-      "outlet": "did-they-like-it",
-      "critic": "Juan Michael Porter II",
-      "url": "https://didtheylikeit.com/shows/suffs/while-looking-at-history-suffs-elects-didacticism-over-adventurousness/",
-      "publishDate": "April 6, 2022",
-      "indicators_found": [
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [
-        "Shaina Taub",
-        "Nikki M. James",
-        "Jenn Colella"
-      ],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "ew--andrea.json",
-      "outlet": "Entertainment Weekly",
-      "critic": "Andrea",
-      "url": "https://ew.com/theater/suffs-review-shaina-taub/",
-      "publishDate": "April 6, 2022",
-      "indicators_found": [
-        "Public Theater",
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [
-        "Broadway",
-        "Shaina Taub",
-        "Nikki M. James",
-        "Jenn Colella"
-      ],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": [
-        "d enough about. Suffs, which opens tonight at the Public Theater and runs until May 15th, is sharp, engaging, and "
-      ]
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "front-row-center--sarah-downs.json",
-      "outlet": "Front Row Center",
-      "critic": "Sarah Downs",
-      "url": "https://thefrontrowcenter.com/2022/05/suffs/",
-      "publishDate": "May 5th, 2022",
-      "indicators_found": [
-        "2022",
-        "Public Theater",
-        "URL contains year 2022, expected 2024 (or 2023 for previews)",
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [
-        "Shaina Taub",
-        "Nikki M. James",
-        "Jenn Colella"
-      ],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": [
-        "Posted by Sarah Downs | May 5, 2022 | Reviews\n\nIn her extraordinary musical play Suff",
-        "d makeup by Matthew Armentrout.\n\nPresented by the Public Theater (425 Lafayette St.) through May 29th.  For schedu"
-      ]
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "nyt-theater--jonathan-mandell.json",
-      "outlet": "New York Theater",
-      "critic": "Jonathan Mandell",
-      "url": "https://newyorktheater.me/2022/05/15/suffs-review/",
-      "publishDate": "May 15th, 2022",
-      "indicators_found": [
-        "2022",
-        "Public Theater",
-        "off-Broadway",
-        "Off-Broadway",
-        "off Broadway",
-        "URL contains year 2022, expected 2024 (or 2023 for previews)",
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [
-        "2024",
-        "Broadway",
-        "Shaina Taub",
-        "Nikki M. James",
-        "Jenn Colella"
-      ],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": [
-        "bruary 2023  (30)\n\t January 2023  (33)\n\t December 2022  (32)\n\t November 2022  (33)\n\t October 2022  (30)\n",
-        "es an audience past its current run.\n\nSuffsAt the Public Theater through May 29Running time: 2 hours and 45 minute",
-        "York Theater Weekly Summary\n\tNightlife\n\tObituary\n\tOff-Broadway\n\tOff-Off Broadway\n\topera\n\tOut of town\n\toutdoor th",
-        "York Theater Weekly Summary\n\tNightlife\n\tObituary\n\tOff-Broadway\n\tOff-Off Broadway\n\topera\n\tOut of town\n\toutdoor th",
-        "y Summary\n\tNightlife\n\tObituary\n\tOff-Broadway\n\tOff-Off Broadway\n\topera\n\tOut of town\n\toutdoor theater\n\tperformance"
-      ]
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "nytg--diep-tran.json",
-      "outlet": "New York Theatre Guide",
-      "critic": "Diep Tran",
-      "url": "https://www.newyorktheatreguide.com/reviews/suffs-off-broadway-review-public-theater",
-      "publishDate": "April 6th, 2022",
-      "indicators_found": [
-        "Public Theater",
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [
-        "Music Box Theatre",
-        "Broadway",
-        "Shaina Taub",
-        "Nikki M. James",
-        "Jenn Colella"
-      ],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": [
-        " is female, and it's about time.\n\nSuffs is at The Public Theater through May 15. Get Suffs tickets on New York The"
-      ]
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "nytimes--maya-phillips.json",
-      "outlet": "The New York Times",
-      "critic": "Maya Phillips",
-      "url": "https://www.nytimes.com/2022/04/06/theater/suffs-review-public-theater.html",
-      "publishDate": "April 6, 2022",
-      "indicators_found": [
-        "Public Theater",
-        "URL contains year 2022, expected 2024 (or 2023 for previews)",
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [
-        "Broadway",
-        "Shaina Taub",
-        "Nikki M. James",
-        "Jenn Colella"
-      ],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": [
-        " (The show was scheduled to open Wednesday at the Public Theater, but canceled because of positive coronavirus tes"
-      ]
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "talkinbroadway--james-wilson.json",
-      "outlet": "Talkin' Broadway",
-      "critic": "James Wilson",
-      "url": "https://www.talkinbroadway.com/page/ob/04_21_22.html",
-      "publishDate": "April 17th, 2022",
-      "indicators_found": [
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "theatermania--hayley-levitt.json",
-      "outlet": "TheaterMania",
-      "critic": "Hayley Levitt",
-      "url": "https://www.theatermania.com/off-broadway/reviews/review-shaina-taub-suffs-public-theater_93610.html",
-      "publishDate": "April 6, 2022",
-      "indicators_found": [
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [
-        "Shaina Taub",
-        "Nikki M. James",
-        "Jenn Colella"
-      ],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "theaterscenenet--joseph-pisano.json",
-      "outlet": "theaterscenenet",
-      "critic": "Joseph Pisano",
-      "url": "http://www.theaterscene.net/musicals/offbway/suffs/joseph-pisano/",
-      "publishDate": "April 30th, 2022",
-      "indicators_found": [
-        "2022",
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [
-        "Broadway",
-        "Shaina Taub",
-        "Nikki M. James",
-        "Jenn Colella"
-      ],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": [
-        "Posted on April 30, 2022 by Joseph Pisano in Musicals, Off-Broadway Ally B"
-      ]
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "theatrely--juan-a-ramirez.json",
-      "outlet": "Theatrely",
-      "critic": "Juan A. Ramirez",
-      "url": "https://www.theatrely.com/post/suffs-suffers-from-stasis-review",
-      "publishDate": "April 6, 2022",
-      "indicators_found": [
-        "2022",
-        "Public Theater",
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [
-        "Broadway",
-        "Shaina Taub",
-        "Nikki M. James",
-        "Jenn Colella"
-      ],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": [
-        "beating.\n\nSuffs is in performance through May 15, 2022 at the Public Theater on Lafayette Street in New ",
-        "ffs is in performance through May 15, 2022 at the Public Theater on Lafayette Street in New York City. For tickets"
-      ]
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "thewrap--robert-hofler.json",
-      "outlet": "The Wrap",
-      "critic": "Robert Hofler",
-      "url": "https://www.thewrap.com/suffs-broadway-review-shaina-taub/",
-      "publishDate": "April 6, 2022",
-      "indicators_found": [
-        "2022",
-        "Public Theater",
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [
-        "Broadway",
-        "Shaina Taub",
-        "Nikki M. James",
-        "Jenn Colella"
-      ],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": [
-        "\n\t\t\t\n\n\n\t\n\n\t\n\t\t\n\t\t\t\n\t\t\t\tBy Robert Hofler\n\nApril 6, 2022 @ 7:30 PM\n\n\n\n    \n\t\n\t\t\n\t\n\n\t\n\t\n\n\n\n    \n\n\n\n\n\t\t\t\t\n\n\t",
-        "rring new musical — which opened Wednesday at the Public Theater — with a big disclaimer and an even bigger wink. "
-      ]
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "timeout--raven-snook.json",
-      "outlet": "Time Out New York",
-      "critic": "Raven Snook",
-      "url": "https://www.timeout.com/newyork/theater/suffs-review-public-theater-musical-feminism-shaina-taub",
-      "publishDate": "April 6th, 2022",
-      "indicators_found": [
-        "2022",
-        "Public Theater",
-        "off Broadway",
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [
-        "Broadway",
-        "Shaina Taub",
-        "Nikki M. James",
-        "Jenn Colella"
-      ],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": [
-        "lifeTheater, MusicalsRecommendedWednesday April 6 2022ShareCopy LinkFacebookTwitterPinterestEmailWhatsAp",
-        " juggernaut with Phillipa Soo that started at the Public Theater—there's even a song about not being in the room w",
-        "gressive work in progress. Suffs. Public Theater (Off Broadway). Book, music, and lyrics by Shaina Taub. Directe"
-      ]
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "variety--marylin-stasio.json",
-      "outlet": "Variety",
-      "critic": "Marylin Stasio",
-      "url": "https://variety.com/2022/legit/reviews/suffs-review-musical-shaina-taub-1235226941/",
-      "publishDate": "April 6, 2022",
-      "indicators_found": [
-        "Public Theater",
-        "URL contains year 2022, expected 2024 (or 2023 for previews)",
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [
-        "Shaina Taub",
-        "Nikki M. James",
-        "Jenn Colella"
-      ],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": [
-        " new musical by Shaina Taub now premiering at the Public Theater. Coming from a bunch of men portrayed as vaudevil"
-      ]
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "vulture--helen-shaw.json",
-      "outlet": "Vulture",
-      "critic": "Helen Shaw",
-      "url": "https://www.vulture.com/2022/04/theater-review-shaina-taubs-suffs.html",
-      "publishDate": "April 6th, 2022",
-      "indicators_found": [
-        "Public Theater",
-        "URL contains year 2022, expected 2024 (or 2023 for previews)",
-        "Publish date shows year 2022, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [
-        "Shaina Taub",
-        "Nikki M. James",
-        "Jenn Colella"
-      ],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": [
-        "oidable: They’re kindred projects, opening at the Public Theater in the same room, even featuring (in a cosmetical"
-      ]
-    },
-    {
-      "showId": "the-whos-tommy-2024",
-      "file": "dc-metro--john-stoltenberg.json",
-      "outlet": "DC Metro",
-      "critic": "John Stoltenberg",
-      "url": "https://dcmetrotheaterarts.com/2019/04/26/review-broadway-center-stage-the-whos-tommy-at-kennedy-center/",
-      "publishDate": null,
-      "indicators_found": [
-        "URL contains year 2019, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
-    },
-    {
-      "showId": "the-whos-tommy-2024",
-      "file": "md-theatre-guide--susan-brall.json",
-      "outlet": "MD Theatre Guide",
-      "critic": "Susan Brall",
-      "url": "https://mdtheatreguide.com/2019/04/theatre-review-the-whos-tommy-at-the-kennedy-center/",
-      "publishDate": null,
-      "indicators_found": [
-        "URL contains year 2019, expected 2024 (or 2023 for previews)"
-      ],
-      "expected_found": [],
-      "confidence": "high",
-      "classification": "likely_wrong_production",
-      "isGenericIndicators": false,
-      "isDateMismatch": true,
-      "contexts": []
     }
   ],
   "baseline_pending": [
@@ -2660,7 +369,7 @@
     {
       "showId": "bug-2026",
       "reason": "Show opened <30 days ago",
-      "reviewCount": 25
+      "reviewCount": 27
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -2677,7 +386,7 @@
     },
     {
       "showId": "an-enemy-of-the-people-2024",
-      "reviewCount": 41,
+      "reviewCount": 42,
       "hasManualIndicators": true,
       "hasGenericIndicators": false,
       "isIdentifiedRevival": true
@@ -2690,7 +399,7 @@
     },
     {
       "showId": "appropriate-2023",
-      "reviewCount": 28,
+      "reviewCount": 29,
       "hasManualIndicators": true,
       "hasGenericIndicators": false,
       "isIdentifiedRevival": true
@@ -2703,25 +412,25 @@
     },
     {
       "showId": "book-of-mormon-2011",
-      "reviewCount": 33,
+      "reviewCount": 36,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "boop-2025",
-      "reviewCount": 24,
+      "reviewCount": 29,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "buena-vista-social-club-2025",
-      "reviewCount": 24,
+      "reviewCount": 23,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "cabaret-2024",
-      "reviewCount": 29,
+      "reviewCount": 33,
       "hasManualIndicators": true,
       "hasGenericIndicators": false,
       "isIdentifiedRevival": true
@@ -2735,14 +444,14 @@
     },
     {
       "showId": "chicago-1996",
-      "reviewCount": 8,
+      "reviewCount": 10,
       "hasManualIndicators": false,
       "hasGenericIndicators": true,
       "isIdentifiedRevival": true
     },
     {
       "showId": "days-of-wine-and-roses-2024",
-      "reviewCount": 30,
+      "reviewCount": 31,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
@@ -2754,51 +463,51 @@
     },
     {
       "showId": "doubt-2024",
-      "reviewCount": 25,
+      "reviewCount": 31,
       "hasManualIndicators": true,
       "hasGenericIndicators": false,
       "isIdentifiedRevival": true
     },
     {
       "showId": "grey-house-2023",
-      "reviewCount": 29,
+      "reviewCount": 30,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "gutenberg-2023",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "hasManualIndicators": false,
       "hasGenericIndicators": true,
       "isIdentifiedRevival": true
     },
     {
       "showId": "hadestown-2019",
-      "reviewCount": 75,
+      "reviewCount": 61,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "hamilton-2015",
-      "reviewCount": 60,
+      "reviewCount": 59,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "harmony-2023",
-      "reviewCount": 41,
+      "reviewCount": 43,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "harry-potter-2021",
-      "reviewCount": 74,
+      "reviewCount": 72,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
-      "reviewCount": 20,
+      "reviewCount": 23,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
@@ -2810,31 +519,31 @@
     },
     {
       "showId": "here-lies-love-2023",
-      "reviewCount": 32,
+      "reviewCount": 35,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "how-to-dance-in-ohio-2023",
-      "reviewCount": 26,
+      "reviewCount": 28,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "i-need-that-2023",
-      "reviewCount": 22,
+      "reviewCount": 27,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "illinoise-2024",
-      "reviewCount": 40,
+      "reviewCount": 43,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "jajas-african-hair-braiding-2023",
-      "reviewCount": 20,
+      "reviewCount": 22,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
@@ -2846,13 +555,13 @@
     },
     {
       "showId": "just-in-time-2025",
-      "reviewCount": 26,
+      "reviewCount": 24,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "lempicka-2024",
-      "reviewCount": 28,
+      "reviewCount": 31,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
@@ -2864,20 +573,20 @@
     },
     {
       "showId": "mamma-mia-2025",
-      "reviewCount": 28,
+      "reviewCount": 19,
       "hasManualIndicators": false,
       "hasGenericIndicators": true,
       "isIdentifiedRevival": true
     },
     {
       "showId": "marjorie-prime-2025",
-      "reviewCount": 29,
+      "reviewCount": 20,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "mary-jane-2024",
-      "reviewCount": 23,
+      "reviewCount": 26,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
@@ -2896,31 +605,31 @@
     },
     {
       "showId": "mj-2022",
-      "reviewCount": 43,
+      "reviewCount": 42,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "mother-play-2024",
-      "reviewCount": 24,
+      "reviewCount": 26,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "moulin-rouge-2019",
-      "reviewCount": 37,
+      "reviewCount": 33,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "oedipus-2025",
-      "reviewCount": 22,
+      "reviewCount": 23,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "oh-mary-2024",
-      "reviewCount": 36,
+      "reviewCount": 38,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
@@ -2932,7 +641,7 @@
     },
     {
       "showId": "operation-mincemeat-2025",
-      "reviewCount": 22,
+      "reviewCount": 27,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
@@ -2945,13 +654,13 @@
     },
     {
       "showId": "patriots-2024",
-      "reviewCount": 26,
+      "reviewCount": 35,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "prayer-for-the-french-republic-2024",
-      "reviewCount": 33,
+      "reviewCount": 32,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
@@ -2964,7 +673,7 @@
     },
     {
       "showId": "queen-versailles-2025",
-      "reviewCount": 31,
+      "reviewCount": 35,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
@@ -2983,114 +692,114 @@
     },
     {
       "showId": "redwood-2025",
-      "reviewCount": 24,
+      "reviewCount": 34,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "six-2021",
-      "reviewCount": 31,
+      "reviewCount": 33,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "spamalot-2023",
-      "reviewCount": 27,
+      "reviewCount": 31,
       "hasManualIndicators": false,
       "hasGenericIndicators": true,
       "isIdentifiedRevival": true
     },
     {
       "showId": "stereophonic-2024",
-      "reviewCount": 50,
+      "reviewCount": 53,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "stranger-things-2024",
-      "reviewCount": 32,
+      "reviewCount": 28,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "suffs-2024",
-      "reviewCount": 40,
+      "reviewCount": 26,
       "hasManualIndicators": true,
       "hasGenericIndicators": false,
       "isIdentifiedRevival": true
     },
     {
       "showId": "the-cottage-2023",
-      "reviewCount": 22,
+      "reviewCount": 23,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "the-great-gatsby-2024",
-      "reviewCount": 31,
+      "reviewCount": 32,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "the-lion-king-1997",
-      "reviewCount": 28,
+      "reviewCount": 26,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "the-notebook-2024",
-      "reviewCount": 40,
+      "reviewCount": 43,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "the-outsiders-2024",
-      "reviewCount": 27,
+      "reviewCount": 33,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "the-roommate-2024",
-      "reviewCount": 36,
+      "reviewCount": 39,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "the-shark-is-broken-2023",
-      "reviewCount": 27,
+      "reviewCount": 30,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "the-whos-tommy-2024",
-      "reviewCount": 23,
+      "reviewCount": 31,
       "hasManualIndicators": true,
       "hasGenericIndicators": false,
       "isIdentifiedRevival": true
     },
     {
       "showId": "the-wiz-2024",
-      "reviewCount": 15,
+      "reviewCount": 28,
       "hasManualIndicators": true,
       "hasGenericIndicators": false,
       "isIdentifiedRevival": true
     },
     {
       "showId": "two-strangers-bway-2025",
-      "reviewCount": 18,
+      "reviewCount": 19,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
     {
       "showId": "uncle-vanya-2024",
-      "reviewCount": 20,
+      "reviewCount": 24,
       "hasManualIndicators": false,
       "hasGenericIndicators": true,
       "isIdentifiedRevival": true
     },
     {
       "showId": "water-for-elephants-2024",
-      "reviewCount": 30,
+      "reviewCount": 33,
       "hasManualIndicators": false,
       "isIdentifiedRevival": false
     },
