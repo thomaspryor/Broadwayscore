@@ -91,6 +91,15 @@ const CHANGELOG_PATH = path.join(DATA_DIR, 'commercial-changelog.json');
 const DEBUG_DIR = path.join(DATA_DIR, 'debug');
 
 // ---------------------------------------------------------------------------
+// Sprint 4.12: Claude API Usage Tracking
+// ---------------------------------------------------------------------------
+const claudeApiUsage = {
+  inputTokens: 0,
+  outputTokens: 0,
+  calls: 0
+};
+
+// ---------------------------------------------------------------------------
 // Known Aliases: Reddit show names -> slugs in commercial.json / shows.json
 // ---------------------------------------------------------------------------
 const KNOWN_ALIASES = {
@@ -598,6 +607,13 @@ ${selftext.slice(0, 12000)}`
         'anthropic-version': '2023-06-01'
       }
     }, body);
+
+    // Sprint 4.12: Track Claude API usage
+    claudeApiUsage.calls++;
+    if (response.usage) {
+      claudeApiUsage.inputTokens += response.usage.input_tokens || 0;
+      claudeApiUsage.outputTokens += response.usage.output_tokens || 0;
+    }
 
     const text = response.content?.[0]?.text || '';
     const jsonMatch = text.match(/\[[\s\S]*\]/);
@@ -1119,6 +1135,16 @@ RULES:
 9. For weeklyRunningCost: mark as estimate if from Reddit (isEstimate: { weeklyRunningCost: true }).
 10. For capitalization: prefer SEC filings > trade press > Reddit estimates.
 
+SPRINT 4 SEC PRIORITY RULES:
+11. SEC Form D data is ALWAYS high confidence - it is an official government filing.
+12. For capitalization amounts, source hierarchy (highest to lowest):
+    - SEC Form D filings (totalOfferingAmount) - MOST authoritative
+    - Trade press articles (Deadline, Variety, NYT) - reliable
+    - Reddit Grosses Analysis estimates - use with caution
+    - Single Reddit comments - low confidence only
+13. If SEC data contradicts other sources, PREFER the SEC data and note the discrepancy.
+14. When SEC Form D shows totalOfferingAmount, use it as capitalization with high confidence.
+
 Respond with ONLY valid JSON (no markdown code fences):
 {
   "proposedChanges": [
@@ -1174,6 +1200,14 @@ Respond with ONLY valid JSON (no markdown code fences):
     }
   }, body);
 
+  // Sprint 4.12: Track Claude API usage
+  claudeApiUsage.calls++;
+  if (response.usage) {
+    claudeApiUsage.inputTokens += response.usage.input_tokens || 0;
+    claudeApiUsage.outputTokens += response.usage.output_tokens || 0;
+    console.log(`  Claude API usage: ${response.usage.input_tokens} input, ${response.usage.output_tokens} output tokens`);
+  }
+
   const text = response.content?.[0]?.text || '';
 
   // Parse JSON (strip markdown fences if present)
@@ -1205,12 +1239,13 @@ Respond with ONLY valid JSON (no markdown code fences):
  *
  * - high/medium confidence -> applied
  * - low confidence -> skipped
+ * - flagged confidence (Sprint 4.10) -> flagged with sources disagree reason
  * - Designation changes to/from Miracle/Nonprofit/Tour Stop -> skipped
  * - Designation upgrades (non-TBD to non-TBD) -> flagged
  * - TBD -> Windfall/Fizzle/Flop with high/medium -> applied
  * - productionType changes -> flagged
  *
- * @param {Object[]} proposedChanges - From Claude analysis
+ * @param {Object[]} proposedChanges - From Claude analysis (with validatedConfidence from Sprint 4.9)
  * @returns {{ applied: Object[], flagged: Object[], skipped: Object[] }}
  */
 function filterByConfidence(proposedChanges) {
@@ -1223,9 +1258,22 @@ function filterByConfidence(proposedChanges) {
   for (const change of (proposedChanges || [])) {
     const { field, oldValue, newValue, confidence } = change;
 
+    // Sprint 4.10: Use validatedConfidence if available (from source validation)
+    const effectiveConfidence = change.validatedConfidence || confidence;
+
     // Low confidence -> always skip
-    if (confidence === 'low') {
+    if (effectiveConfidence === 'low') {
       skipped.push({ ...change, skipReason: 'Low confidence' });
+      continue;
+    }
+
+    // Sprint 4.10: Flagged confidence (sources disagree) -> flag for manual review
+    if (effectiveConfidence === 'flagged') {
+      flagged.push({
+        ...change,
+        flagReason: 'Sources disagree',
+        validationDetails: change.validationNotes || 'Contradicting sources found'
+      });
       continue;
     }
 
@@ -1508,17 +1556,30 @@ async function createGitHubIssue(summary) {
 
   let body = `## Commercial Data Auto-Update: ${dateStr}\n\n`;
 
-  // Applied changes table
+  // Applied changes table (Sprint 4.11: Enhanced with validation details)
   if (applied.length > 0) {
     body += `### Applied Changes (${applied.length})\n\n`;
-    body += '| Show | Field | Old | New | Confidence | Source |\n';
-    body += '|------|-------|-----|-----|------------|--------|\n';
+    body += '| Show | Field | Old | New | Confidence | Validated | Supporting | Contradicting |\n';
+    body += '|------|-------|-----|-----|------------|-----------|------------|---------------|\n';
     for (const c of applied) {
       const old = JSON.stringify(c.oldValue) || 'null';
       const val = JSON.stringify(c.newValue) || 'null';
-      body += `| ${c.slug} | ${c.field} | ${old} | ${val} | ${c.confidence} | ${(c.source || '').slice(0, 50)} |\n`;
+      const validated = c.validatedConfidence || c.confidence;
+      const supporting = c.supportingSourcesCount != null ? c.supportingSourcesCount : '-';
+      const contradicting = c.contradictingSourcesCount != null ? c.contradictingSourcesCount : '-';
+      body += `| ${c.slug} | ${c.field} | ${old} | ${val} | ${c.confidence} | ${validated} | ${supporting} | ${contradicting} |\n`;
     }
     body += '\n';
+
+    // Add validation notes if any changes had them
+    const changesWithNotes = applied.filter(c => c.validationNotes && c.validationNotes !== 'No corroborating sources found');
+    if (changesWithNotes.length > 0) {
+      body += '<details><summary>Validation Notes</summary>\n\n';
+      for (const c of changesWithNotes) {
+        body += `- **${c.slug}.${c.field}**: ${c.validationNotes}\n`;
+      }
+      body += '\n</details>\n\n';
+    }
   } else {
     body += '### No Changes Applied\n\n';
   }
@@ -1532,15 +1593,27 @@ async function createGitHubIssue(summary) {
     body += '\n';
   }
 
-  // Flagged changes
+  // Flagged changes (Sprint 4.11: Enhanced with validation details)
   if (flagged.length > 0) {
     body += `### Flagged for Manual Review (${flagged.length})\n\n`;
-    body += '| Show | Field | Old | New | Reason |\n';
-    body += '|------|-------|-----|-----|--------|\n';
+    body += '| Show | Field | Old | New | Reason | Supporting | Contradicting |\n';
+    body += '|------|-------|-----|-----|--------|------------|---------------|\n';
     for (const c of flagged) {
-      body += `| ${c.slug} | ${c.field} | ${JSON.stringify(c.oldValue)} | ${JSON.stringify(c.newValue)} | ${c.flagReason || ''} |\n`;
+      const supporting = c.supportingSourcesCount != null ? c.supportingSourcesCount : '-';
+      const contradicting = c.contradictingSourcesCount != null ? c.contradictingSourcesCount : '-';
+      body += `| ${c.slug} | ${c.field} | ${JSON.stringify(c.oldValue)} | ${JSON.stringify(c.newValue)} | ${c.flagReason || ''} | ${supporting} | ${contradicting} |\n`;
     }
     body += '\n';
+
+    // Add validation details for source disagreements
+    const sourceDisagreements = flagged.filter(c => c.flagReason === 'Sources disagree' && c.validationDetails);
+    if (sourceDisagreements.length > 0) {
+      body += '#### Source Disagreement Details\n\n';
+      for (const c of sourceDisagreements) {
+        body += `- **${c.slug}.${c.field}**: ${c.validationDetails}\n`;
+      }
+      body += '\n';
+    }
   }
 
   // Skipped
@@ -1588,6 +1661,162 @@ async function createGitHubIssue(summary) {
   } catch (e) {
     console.error(`  Failed to create GitHub issue: ${e.message}`);
   }
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 4.9: Source Validation Helper
+// ---------------------------------------------------------------------------
+
+/**
+ * Build an array of sources for validation from gathered data.
+ * Converts Reddit posts, trade articles, and parsed data into the format
+ * expected by source-validator.
+ *
+ * @param {Object} gathered - Gathered data object
+ * @returns {Object[]} Array of source objects for validation
+ */
+function buildValidationSources(gathered) {
+  const sources = [];
+
+  // Add Grosses Analysis post parsed data
+  if (gathered.grossesPostParsed && gathered.grossesPostParsed.length > 0) {
+    for (const show of gathered.grossesPostParsed) {
+      if (!show.matchedSlug) continue;
+
+      // Add each field as a separate source entry
+      if (show.estimatedWeeklyCost) {
+        sources.push({
+          showSlug: show.matchedSlug,
+          field: 'weeklyRunningCost',
+          value: show.estimatedWeeklyCost,
+          sourceType: 'Reddit Grosses Analysis',
+          url: gathered.grossesPost?.permalink ? `https://www.reddit.com${gathered.grossesPost.permalink}` : null
+        });
+      }
+
+      if (show.estimatedRecoupmentPct) {
+        sources.push({
+          showSlug: show.matchedSlug,
+          field: 'estimatedRecoupmentPct',
+          value: show.estimatedRecoupmentPct,
+          sourceType: 'Reddit Grosses Analysis',
+          url: gathered.grossesPost?.permalink ? `https://www.reddit.com${gathered.grossesPost.permalink}` : null
+        });
+      }
+    }
+  }
+
+  // Add Reddit financial thread mentions (lower confidence)
+  if (gathered.redditFinancial && gathered.redditFinancial.length > 0) {
+    for (const post of gathered.redditFinancial) {
+      // Parse the post content for financial mentions
+      // These would need NLP/regex parsing - for now just track as general sources
+      sources.push({
+        showSlug: null, // Unknown - would need parsing
+        field: null,
+        value: null,
+        sourceType: 'Reddit comment',
+        url: post.url,
+        rawText: post.selftext
+      });
+    }
+  }
+
+  // Add trade press articles (higher confidence)
+  if (gathered.tradeArticles && gathered.tradeArticles.length > 0) {
+    for (const article of gathered.tradeArticles) {
+      sources.push({
+        showSlug: null, // Would need parsing to extract show
+        field: null,
+        value: null,
+        sourceType: article.source, // e.g., 'Deadline', 'Variety'
+        url: article.url,
+        rawText: article.text || article.snippet
+      });
+    }
+  }
+
+  return sources;
+}
+
+/**
+ * Validate proposed changes using source-validator module.
+ * Returns changes with validatedConfidence added.
+ *
+ * @param {Object[]} proposedChanges - Changes from Claude analysis
+ * @param {Object[]} allSources - Sources for validation
+ * @returns {Object[]} Validated changes with validatedConfidence
+ */
+function validateProposedChanges(proposedChanges, allSources) {
+  if (!sourceValidator || SKIP_VALIDATION) {
+    console.log('  Skipping validation (module not available or --skip-validation flag)');
+    return proposedChanges.map(c => ({ ...c, validatedConfidence: c.confidence }));
+  }
+
+  console.log('  Validating proposed changes against gathered sources...');
+
+  const validated = [];
+  for (const change of proposedChanges) {
+    // Adapt change format for validator
+    const changeForValidator = {
+      showSlug: change.slug,
+      field: change.field,
+      newValue: change.newValue,
+      oldValue: change.oldValue,
+      confidence: change.confidence,
+      sourceType: extractSourceType(change.source),
+      sourceUrl: extractSourceUrl(change.source)
+    };
+
+    const result = sourceValidator.validateChange(changeForValidator, allSources);
+
+    validated.push({
+      ...change,
+      validatedConfidence: result.validatedConfidence,
+      supportingSourcesCount: result.supportingSources?.length || 0,
+      contradictingSourcesCount: result.contradictingSources?.length || 0,
+      validationNotes: result.validationNotes
+    });
+
+    // Log if confidence was adjusted
+    if (result.validatedConfidence !== change.confidence) {
+      console.log(`    ${change.slug}.${change.field}: ${change.confidence} -> ${result.validatedConfidence}`);
+    }
+  }
+
+  return validated;
+}
+
+/**
+ * Extract source type from Claude's source string.
+ * @param {string} source - Source citation from Claude
+ * @returns {string} Source type for validator
+ */
+function extractSourceType(source) {
+  if (!source) return 'unknown';
+  const sourceLower = source.toLowerCase();
+
+  if (sourceLower.includes('sec') || sourceLower.includes('form d')) return 'SEC Form D';
+  if (sourceLower.includes('deadline')) return 'Deadline';
+  if (sourceLower.includes('variety')) return 'Variety';
+  if (sourceLower.includes('nyt') || sourceLower.includes('new york times')) return 'New York Times';
+  if (sourceLower.includes('broadway journal')) return 'Broadway Journal';
+  if (sourceLower.includes('playbill')) return 'Playbill';
+  if (sourceLower.includes('grosses analysis')) return 'Reddit Grosses Analysis';
+  if (sourceLower.includes('reddit')) return 'Reddit comment';
+
+  return 'estimate';
+}
+
+/**
+ * Extract URL from Claude's source string if present.
+ * @param {string} source - Source citation from Claude
+ * @returns {string|null} URL or null
+ */
+function extractSourceUrl(source) {
+  if (!source) return null;
+  const urlMatch = source.match(/https?:\/\/[^\s]+/);
+  return urlMatch ? urlMatch[0] : null;
 }
 
 // ---------------------------------------------------------------------------
@@ -1765,7 +1994,22 @@ async function main() {
   }
 
   // -----------------------------------------------------------------------
-  // Step 8: Filter by confidence
+  // Step 7.5 (Sprint 4.9): Source validation pipeline
+  // -----------------------------------------------------------------------
+  console.log('\nRunning source validation...');
+  const validationSources = buildValidationSources(gathered);
+  console.log(`  Built ${validationSources.length} validation sources from gathered data`);
+
+  const validatedChanges = validateProposedChanges(
+    analysisResult.proposedChanges || [],
+    validationSources
+  );
+
+  // Replace proposed changes with validated versions
+  analysisResult.proposedChanges = validatedChanges;
+
+  // -----------------------------------------------------------------------
+  // Step 8: Filter by confidence (now uses validatedConfidence)
   // -----------------------------------------------------------------------
   const { applied, flagged, skipped } = filterByConfidence(analysisResult.proposedChanges || []);
   console.log(`\nFiltered: ${applied.length} applied, ${flagged.length} flagged, ${skipped.length} skipped`);
@@ -1849,7 +2093,23 @@ async function main() {
   console.log(`Changes flagged: ${flagged.length}`);
   console.log(`Changes skipped: ${skipped.length}`);
   console.log(`Shadow disagreements: ${disagreements.length}`);
-  if (DRY_RUN) console.log('(DRY RUN -- no files modified)');
+
+  // Sprint 4.12: Display Claude API usage summary
+  if (claudeApiUsage.calls > 0) {
+    console.log('');
+    console.log('=== Claude API Usage ===');
+    console.log(`API Calls: ${claudeApiUsage.calls}`);
+    console.log(`Input Tokens: ${claudeApiUsage.inputTokens.toLocaleString()}`);
+    console.log(`Output Tokens: ${claudeApiUsage.outputTokens.toLocaleString()}`);
+    console.log(`Total Tokens: ${(claudeApiUsage.inputTokens + claudeApiUsage.outputTokens).toLocaleString()}`);
+
+    // Estimate cost (Claude Sonnet pricing as of Jan 2026: ~$3/MTok input, ~$15/MTok output)
+    const inputCost = (claudeApiUsage.inputTokens / 1000000) * 3;
+    const outputCost = (claudeApiUsage.outputTokens / 1000000) * 15;
+    console.log(`Estimated Cost: $${(inputCost + outputCost).toFixed(4)}`);
+  }
+
+  if (DRY_RUN) console.log('\n(DRY RUN -- no files modified)');
   console.log('');
 }
 
