@@ -1,53 +1,51 @@
 {
   "processed": [
-    "hamilton-2015/ew--leah-greenblatt.json",
-    "hamilton-2015/nypost--elisabeth-vincentelli.json",
-    "hamilton-2015/observer--david-cote.json",
-    "hamilton-2015/observer--rex-reed.json",
-    "hamilton-2015/thewrap--robert-hofler.json",
-    "hamilton-2015/wsj--terry-teachout.json",
-    "hamilton-2015/chicagotribune--chris-jones.json",
-    "hamilton-2015/dctheatrescene--jonathan-mandell.json",
-    "hamilton-2015/huffpost--steven-suskin.json",
-    "hamilton-2015/usatoday--elysa-gardner.json"
+    "stereophonic-2024/nyt-theater--jonathan-mandell.json",
+    "stereophonic-2024/nytimes--jesse-green.json",
+    "stereophonic-2024/nytimes--naveen-kumar.json",
+    "stereophonic-2024/ew--dalton-ross.json",
+    "stereophonic-2024/nydailynews--chris-jones.json",
+    "stereophonic-2024/observer--rex-reed.json",
+    "stereophonic-2024/nysr--melissa-rose-bernardo.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json"
   ],
   "failed": [
-    "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "hamilton-2015/ew--tim-stack.json",
-    "hamilton-2015/guardian--jesse-green.json",
-    "hamilton-2015/nbcnews--elysa-gardner.json",
-    "hamilton-2015/nbcnews--kristy-puchko.json",
-    "hamilton-2015/nbcnews--melissa-locker.json",
-    "hamilton-2015/newsday--linda-winer.json",
-    "hamilton-2015/nypost--jesse-green.json",
-    "hamilton-2015/nypost--johnny-oleksinski.json",
-    "hamilton-2015/theatermania--adam-feldman.json",
-    "hamilton-2015/theatermania--charles-isherwood.json",
-    "hamilton-2015/ap--mark-kennedy.json",
-    "hamilton-2015/backstage-barbie--backstage-barbie.json",
-    "hamilton-2015/dailybeast--tim-teeman.json",
-    "hamilton-2015/rollingstone--rob-sheffield.json",
-    "hamilton-2015/the-clyde-fitch-report--david-finkle.json"
+    "stereophonic-2024/hollywood-reporter--angie-han.json",
+    "stereophonic-2024/variety--aramide-tinubu.json",
+    "stereophonic-2024/variety--jesse-green.json",
+    "stereophonic-2024/variety--peter-marks.json",
+    "stereophonic-2024/vulture--helen-shaw.json",
+    "stereophonic-2024/deadline--pete-hammond.json",
+    "stereophonic-2024/guardian--adrian-horton.json",
+    "stereophonic-2024/guardian--gloria-oladipo.json",
+    "stereophonic-2024/theatermania--adam-feldman.json",
+    "stereophonic-2024/theatermania--jesse-green.json",
+    "stereophonic-2024/theatermania--zachary-stewart.json",
+    "stereophonic-2024/wsj--charles-isherwood.json",
+    "stereophonic-2024/wsj--terry-teachout.json",
+    "stereophonic-2024/theatrely--juan-a-ramirez.json",
+    "stereophonic-2024/ap--mark-kennedy.json",
+    "stereophonic-2024/rollingstone--kalia-richardson.json",
+    "stereophonic-2024/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "stereophonic-2024/nysr--melissa-rose-bernardo.json"
+    ],
     "scrapingbee": [],
     "brightdata": [
-      "hamilton-2015/observer--david-cote.json",
-      "hamilton-2015/observer--rex-reed.json"
+      "stereophonic-2024/observer--rex-reed.json",
+      "stereophonic-2024/usatoday--charles-isherwood.json"
     ],
     "archive": [
-      "hamilton-2015/ew--leah-greenblatt.json",
-      "hamilton-2015/nypost--elisabeth-vincentelli.json",
-      "hamilton-2015/thewrap--robert-hofler.json",
-      "hamilton-2015/wsj--terry-teachout.json",
-      "hamilton-2015/chicagotribune--chris-jones.json",
-      "hamilton-2015/dctheatrescene--jonathan-mandell.json",
-      "hamilton-2015/huffpost--steven-suskin.json",
-      "hamilton-2015/usatoday--elysa-gardner.json"
+      "stereophonic-2024/nyt-theater--jonathan-mandell.json",
+      "stereophonic-2024/nytimes--jesse-green.json",
+      "stereophonic-2024/nytimes--naveen-kumar.json",
+      "stereophonic-2024/ew--dalton-ross.json",
+      "stereophonic-2024/nydailynews--chris-jones.json"
     ]
   },
-  "startTime": "2026-01-28T23:29:17.769Z",
-  "lastProcessed": "hamilton-2015/usatoday--elysa-gardner.json"
+  "startTime": "2026-01-28T23:29:17.681Z",
+  "lastProcessed": "stereophonic-2024/washpost--peter-marks.json"
 }
