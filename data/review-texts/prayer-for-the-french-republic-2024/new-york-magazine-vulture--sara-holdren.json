@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“Though it’s surrounded by heavy clouds, Harmon’s play is plenty sharp and by no means gloomy...How much you respond to ‘Prayer’ may ultimately rest on your taste for such harangues. I admit to finding them hard to follow — not intellectually but emotionally. They leave me cold and a little suspicious.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/prayer-for-the-french-republic-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 51,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 51,
+    "confidence": "high",
+    "range": {
+      "low": 45,
+      "high": 57
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 49,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harmon's play is plenty sharp and by no means gloomy",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "They leave me cold and a little suspicious",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "How much you respond to 'Prayer' may ultimately rest on your taste",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the play's quality but admits to being emotionally disconnected from it, suggesting a lukewarm personal response that makes it hard to recommend broadly. | GPT-4o-mini: The review presents a mixed perspective, acknowledging some sharpness in the play while expressing emotional disengagement, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:54.460Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 50,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

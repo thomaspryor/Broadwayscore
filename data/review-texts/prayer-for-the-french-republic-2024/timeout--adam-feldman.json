@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Joshua Harmon's ambitious family epic spans decades of Jewish experience in France, building to a powerful exploration of antisemitism and belonging that feels urgently relevant.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Joshua Harmon's ambitious family epic spans decades of Jewish experience in France, building to a powerful exploration of antisemitism and belonging that feels urgently relevant.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "ambitious family epic",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "powerful exploration of antisemitism and belonging",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "feels urgently relevant",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the play's ambition, power, and relevance with no negative language, but lacks specific performance details or explicit recommendation language to confirm higher enthusiasm. | GPT-4o-mini: The review highlights the ambitious nature and relevance of the play, indicating a strong recommendation without any noted reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:26.259Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 85,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
