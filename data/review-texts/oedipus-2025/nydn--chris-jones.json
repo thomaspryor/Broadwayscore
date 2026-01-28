@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"Manville, in a blistering and deeply complicated performance, certainly keeps one guessing, until the truth overwhelms her and the audience.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/oedipus-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "blistering and deeply complicated performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "certainly keeps one guessing",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the truth overwhelms her and the audience",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for Manville's performance with vivid descriptors suggests positive recommendation, but excerpt is too brief to gauge overall show quality. | GPT-4o-mini: The review highlights a strong performance with positive language, indicating a solid recommendation despite lacking details on other aspects.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:18.944Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

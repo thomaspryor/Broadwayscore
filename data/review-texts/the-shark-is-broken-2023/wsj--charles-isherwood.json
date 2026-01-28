@@ -11,10 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "“ ‘The Shark Is Broken’ is not a play for the ages, or even for those who have never seen ‘Jaws,’ but it’s a frisky and continuously amusing diversion—perfect late-summer entertainment if you want to stay away from the ocean.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-shark-is-broken-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-shark-is-broken-broadway",
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the actors playing their more famous counterparts are so superb, giving performances that perfectly capture the personas, mannerisms and idiosyncrasies",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "'The Shark Is Broken' is not a play for the ages",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "it's a frisky and continuously amusing diversion—perfect late-summer entertainment",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances highly while acknowledging the play's limitations, ultimately recommending it as entertaining summer diversion despite not being groundbreaking theater. | GPT-4o-mini: The review highlights strong performances but indicates the play lacks depth and is not essential viewing, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:40.536Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,9 +10,65 @@
   "bwwExcerpt": "Critic's Pick. Icke’s change in timeline trades catastrophe for suspense, ontological disaster for down-to-the-cuticles nail biting. Is this a fair exchange? Maybe. Is it electrifying? God, yes. The results are slick, sleek, mordant. It’s a spine tingler, if not quite the ethics tangler of the original.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "designation": "Critics_Pick"
+  "designation": "Critics_Pick",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 78.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Is it electrifying? God, yes.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The results are slick, sleek, mordant. It's a spine tingler",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "if not quite the ethics tangler of the original",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite one comparative reservation about depth versus the original, the critic's enthusiasm is unmistakable with 'Critic's Pick' designation and strong positive language like 'electrifying' and 'God, yes.' | GPT-4o-mini: The review expresses strong enthusiasm and excitement about the production, indicating it is a must-see despite minor reservations.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:58.581Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
