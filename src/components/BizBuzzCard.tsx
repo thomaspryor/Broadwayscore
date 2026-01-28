@@ -19,6 +19,10 @@ function formatCurrency(value: number | null): string {
   return `$${value.toLocaleString()}`;
 }
 
+function formatWithEstimate(formatted: string, isEstimate: boolean): string {
+  return isEstimate ? `~${formatted}` : formatted;
+}
+
 function formatWeeksToRecoup(weeks: number | null): string {
   if (weeks === null) return '';
   if (weeks < 52) {
@@ -43,7 +47,7 @@ function getDesignationStyle(designation: CommercialDesignation): {
         textClass: 'text-amber-400',
         borderClass: 'border-amber-500/30',
         icon: '✨',
-        description: 'Legendary hit - 3x+ return',
+        description: 'Long-running mega-hit -- extraordinary returns',
       };
     case 'Windfall':
       return {
@@ -51,7 +55,7 @@ function getDesignationStyle(designation: CommercialDesignation): {
         textClass: 'text-emerald-400',
         borderClass: 'border-emerald-500/25',
         icon: '💰',
-        description: 'Solid hit - profitable',
+        description: 'Solid hit -- recouped and profitable',
       };
     case 'Trickle':
       return {
@@ -59,7 +63,7 @@ function getDesignationStyle(designation: CommercialDesignation): {
         textClass: 'text-blue-400',
         borderClass: 'border-blue-500/25',
         icon: '💧',
-        description: 'Broke even',
+        description: 'Broke even or modest profit',
       };
     case 'Easy Winner':
       return {
@@ -75,7 +79,7 @@ function getDesignationStyle(designation: CommercialDesignation): {
         textClass: 'text-orange-400',
         borderClass: 'border-orange-500/25',
         icon: '📉',
-        description: 'Lost some money',
+        description: 'Closed without recouping (~30%+ recovered)',
       };
     case 'Flop':
       return {
@@ -83,7 +87,7 @@ function getDesignationStyle(designation: CommercialDesignation): {
         textClass: 'text-red-400',
         borderClass: 'border-red-500/25',
         icon: '💸',
-        description: 'Lost most investment',
+        description: 'Closed without recouping (~<30% recovered)',
       };
     case 'Nonprofit':
       return {
@@ -108,7 +112,7 @@ function getDesignationStyle(designation: CommercialDesignation): {
         textClass: 'text-gray-400',
         borderClass: 'border-gray-500/25',
         icon: '⏳',
-        description: 'Too early to tell',
+        description: 'Too early to determine',
       };
   }
 }
@@ -179,7 +183,7 @@ export default function BizBuzzCard({ commercial, showTitle }: BizBuzzCardProps)
           {/* Capitalization */}
           <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
             <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
-              {formatCurrency(commercial.capitalization)}
+              {formatWithEstimate(formatCurrency(commercial.capitalization), commercial.isEstimate?.capitalization ?? false)}
             </div>
             <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
               Capitalization
@@ -190,7 +194,7 @@ export default function BizBuzzCard({ commercial, showTitle }: BizBuzzCardProps)
           {commercial.weeklyRunningCost && (
             <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
-                {formatCurrency(commercial.weeklyRunningCost)}
+                {formatWithEstimate(formatCurrency(commercial.weeklyRunningCost), commercial.isEstimate?.weeklyRunningCost ?? false)}
               </div>
               <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
                 Weekly Cost
@@ -235,6 +239,16 @@ export default function BizBuzzCard({ commercial, showTitle }: BizBuzzCardProps)
                 {commercial.recoupedDate && (
                   <p className="text-xs text-gray-600 mt-1">
                     Recouped: {commercial.recoupedDate}
+                  </p>
+                )}
+                {commercial.weeklyRunningCostSource && (
+                  <p className="text-xs text-gray-600 mt-1">
+                    Weekly cost source: {commercial.weeklyRunningCostSource}
+                  </p>
+                )}
+                {commercial.estimatedRecoupmentSource && (
+                  <p className="text-xs text-gray-600 mt-1">
+                    Recoupment estimate source: {commercial.estimatedRecoupmentSource}
                   </p>
                 )}
               </div>
