@@ -10,9 +10,67 @@
   "bwwExcerpt": "At its core, “Marjorie Prime” tells a simple kitchen-sink story of two adults trying to care for an aging relative. Harrison tries to up the ante by dipping into his gothic drawer of horrors to deliver not one but two suicides that push the human narrative into the contrived. In the end, the machines are more honest than the humans and, better yet, there’s none of the angst.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 47,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 47,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 53.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harrison tries to up the ante by dipping into his gothic drawer of horrors to deliver not one but two suicides that push the human narrative into the contrived",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the machines are more honest than the humans and, better yet, there's none of the angst",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "tells a simple kitchen-sink story",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the playwright's choices as 'contrived' and excessive, but offers some measured praise for thematic elements, resulting in a mixed-negative assessment without a clear recommendation. | GPT-4o-mini: The review expresses significant criticism of the narrative and its execution, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:40.028Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (47 → Down) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

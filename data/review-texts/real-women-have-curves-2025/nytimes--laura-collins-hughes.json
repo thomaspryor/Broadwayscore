@@ -7,12 +7,70 @@
   "publishDate": "April 27, 2025",
   "fullText": "What buoys it is an extremely likable cast, riding the waves of a hummable score that sounds variously of Mexico, Broadway and American pop. (The music director is Roberto Sinha.) And it doesn’t hurt that the show has a luscious color palette, or that its version of a disco ball is shaped like a dressmaker’s mannequin.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "dtliThumb": "Up",
   "source": "dtli",
   "bwwExcerpt": "What buoys it is an extremely likable cast, riding the waves of a hummable score that sounds variously of Mexico, Broadway and American pop. (The music director is Roberto Sinha.) And it doesn’t hurt that the show has a luscious color palette, or that its version of a disco ball is shaped like a dressmaker’s mannequin. (The set is by Arnulfo Maldonado, lighting by Natasha Katz, video by Hana S. Kim and costumes by Wilberth Gonzalez and Paloma Young.)",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Meh",
   "showScoreExcerpt": "\"it is a bouncy, crowd-pleasing comedy about female empowerment, self-acceptance and chasing one’s ambitions.\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/real-women-have-curves-the-musical-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/real-women-have-curves-the-musical-broadway",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 77,
+      "performances": 78,
+      "direction": 71
+    },
+    "keyPhrases": [
+      {
+        "quote": "extremely likable cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "hummable score",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "What buoys it",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review highlights several positive elements (likable cast, hummable score, attractive design) but the phrase 'what buoys it' suggests these are redeeming qualities that compensate for unmentioned weaknesses. | GPT-4o-mini: The review highlights the likable cast and hummable score, indicating a clear recommendation despite lacking strong enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:43.372Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (74 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

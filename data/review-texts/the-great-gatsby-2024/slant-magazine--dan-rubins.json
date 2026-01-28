@@ -10,9 +10,67 @@
   "bwwExcerpt": "And while any adaptation of The Great Gatsby has to thread the needle between wowing audiences with opulence and inviting critique of the ostentatious hollow center (those pyrotechnics are surely ironic, right?), the show’s final images seem to find that balance successfully. “I don’t want to live here, but I never want to leave,” the bombastically independent Jordan Baker (Samantha Pauly) sings as she enters one of Gatsby’s extravagant parties. That’s about right: If The Great Gatsby doesn’t ha",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Meh"
+  "bwwThumb": "Meh",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show's final images seem to find that balance successfully",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "I don't want to live here, but I never want to leave",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "If The Great Gatsby doesn't ha",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review is cut off mid-sentence with what appears to be the beginning of a negative conclusion ('If The Great Gatsby doesn't ha[ve something]'), despite some positive notes about production balance and a strong performance highlight.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:27.912Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (45 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

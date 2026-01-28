@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Mitchell's Hadestown is a rare thing: a musical that feels both ancient and contemporary, that speaks to our current moment while drawing on timeless themes.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mitchell's Hadestown is a rare thing: a musical that feels both ancient and contemporary, that speaks to our current moment while drawing on timeless themes.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a rare thing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "feels both ancient and contemporary",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "speaks to our current moment while drawing on timeless themes",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise calling the musical 'a rare thing' and highlighting its relevance and timeless appeal suggests clear recommendation, but the brief excerpt limits confidence in the exact score. | GPT-4o-mini: The review expresses strong appreciation for the musical's relevance and depth, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:51.595Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
