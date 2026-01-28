@@ -1,0 +1,118 @@
+# Scrape review data from aggregator sites (DTLI, BWW)
+# Replaces previous version that had stale GitHub Actions index
+name: Scrape Aggregators
+
+on:
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated show IDs (e.g., merrily-we-roll-along-2023,doubt-2024)'
+        required: false
+      aggregator:
+        description: 'Which aggregator to scrape'
+        required: true
+        type: choice
+        options:
+          - all
+          - dtli
+          - bww
+
+jobs:
+  scrape-dtli:
+    if: ${{ inputs.aggregator == 'all' || inputs.aggregator == 'dtli' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape DTLI reviews
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SHOWS: ${{ inputs.shows }}
+        run: |
+          echo "Scraping Did They Like It reviews..."
+          node scripts/extract-dtli-reviews.js ${{ inputs.shows && format('--shows {0}', inputs.shows) || '' }}
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "chore: Update DTLI review data"
+
+          # Retry push with rebase in case remote has new commits
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase origin main
+            sleep $((RANDOM % 5 + 2))
+          done
+
+  scrape-bww:
+    if: ${{ inputs.aggregator == 'all' || inputs.aggregator == 'bww' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs: [scrape-dtli]
+    # Allow this to run even if dtli is skipped
+    if: ${{ always() && (inputs.aggregator == 'all' || inputs.aggregator == 'bww') }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape BWW Review Roundups
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SHOWS: ${{ inputs.shows }}
+        run: |
+          echo "Scraping BroadwayWorld Review Roundups..."
+          node scripts/extract-bww-reviews.js ${{ inputs.shows && format('--shows {0}', inputs.shows) || '' }}
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "chore: Update BWW Review Roundup data"
+
+          # Retry push with rebase in case remote has new commits
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase origin main
+            sleep $((RANDOM % 5 + 2))
+          done
