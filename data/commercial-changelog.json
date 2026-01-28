@@ -1,6 +1,89 @@
 [
   {
     "date": "2026-01-28",
+    "timestamp": "2026-01-28T23:16:23.390Z",
+    "changesApplied": 6,
+    "changesFlagged": 2,
+    "changesSkipped": 0,
+    "newEntries": 1,
+    "shadowDisagreements": 9,
+    "applied": [
+      {
+        "slug": "the-outsiders",
+        "field": "recoupedDate",
+        "oldValue": "2025-12",
+        "newValue": "2025-12-28",
+        "confidence": "high",
+        "source": "Section F: Deadline article confirms recoupment 'reached during the week ending December 28, 2025'"
+      },
+      {
+        "slug": "the-outsiders",
+        "field": "notes",
+        "oldValue": "Won Best Musical Tony 2024. Recouped $22M investment by late 2025. Post-Tony grosses hit $1.4M/week record at Bernard B. Jacobs Theatre.",
+        "newValue": "Won Best Musical Tony 2024. Recouped $22M investment week ending December 28, 2025 after 744 performances and $121M total grosses. First new musical to recoup since 2022. Post-Tony grosses hit $1.4M/week record at Bernard B. Jacobs Theatre.",
+        "confidence": "high",
+        "source": "Section C: Grosses Analysis post states '744 performances on Broadway and $121 million in total grosses' and Section F: Deadline confirms historical significance"
+      },
+      {
+        "slug": "the-great-gatsby",
+        "field": "weeklyRunningCost",
+        "oldValue": 900000,
+        "newValue": 850000,
+        "confidence": "medium",
+        "source": "Section C: Grosses Analysis post lists weeklyCost=$850000 vs current $900k"
+      },
+      {
+        "slug": "the-great-gatsby",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "confidence": "medium",
+        "source": "Section C: Weekly cost from Reddit Grosses Analysis post"
+      },
+      {
+        "slug": "death-becomes-her",
+        "field": "weeklyRunningCost",
+        "oldValue": 1000000,
+        "newValue": 900000,
+        "confidence": "medium",
+        "source": "Section C: Grosses Analysis post lists weeklyCost=$900000 vs current $1000k"
+      },
+      {
+        "slug": "death-becomes-her",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "confidence": "medium",
+        "source": "Section C: Weekly cost from Reddit Grosses Analysis post"
+      }
+    ],
+    "flagged": [
+      {
+        "slug": "just-in-time",
+        "field": "estimatedRecoupmentPct",
+        "newValue": [
+          95,
+          100
+        ],
+        "flagReason": "Sources disagree"
+      },
+      {
+        "slug": "two-strangers",
+        "field": "estimatedRecoupmentPct",
+        "newValue": [
+          0,
+          5
+        ],
+        "flagReason": "Sources disagree"
+      }
+    ]
+  },
+  {
+    "date": "2026-01-28",
     "timestamp": "2026-01-28T16:30:04.061Z",
     "changesApplied": 29,
     "changesFlagged": 1,
