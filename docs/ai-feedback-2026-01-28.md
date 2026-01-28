@@ -1,57 +1,56 @@
 # AI Feedback on Plan
 
-**Generated:** 2026-01-28T21:47:59.860Z
+**Generated:** 2026-01-28T21:53:34.054Z
 **Plan file:** docs/biz-section-plan.md
 
 ---
 
 ## Claude (Sonnet) Feedback
 
-## Recommendation: Option B
+## 1. Recommendation: Option B
 
-Go with the Dashboard + Deep Dives approach. Option A leaves too much value on the table, and Option C spreads your unique data too thin across pages that don't add meaningful differentiation.
+Option A is too minimal - you're underselling unique data. Option C spreads thin across too many pages. Option B hits the sweet spot: a dashboard for overview/discovery, individual show pages for deep dives. Industry insiders want to quickly scan the market, then drill down on specific shows.
 
-## Cut These Features
+## 2. Cut These Features
 
-- **Weekly running costs prominently** - only 20 shows have this data, making it feel incomplete
-- **Individual `/biz/[slug]` pages** - enhance existing show pages instead 
+- **Weekly running costs section** - only 20 shows, incomplete dataset
+- **Budget tier comparisons** - artificial complexity, just sort by capitalization
 - **Progress bars for TBD shows** - you're right about false precision
-- **Color-coded status systems** - unnecessary visual complexity
+- **Color-coded status tracking** - unnecessary visual noise
 
-## High-Value/Low-Effort Missing Feature
+Keep the estimated recoupment percentages as simple text ranges.
 
-**"Capital at Risk" tracker** - a running tally of total investment dollars in currently non-recouped shows. This is a single number that tells a powerful story about industry risk that literally no one else publishes. Update it monthly and it becomes a metric people will quote.
+## 3. Missing: Capital at Risk Leaderboard
 
-Also add **recoupment speed by budget tier** (Under $10M, $10-20M, $20M+). Simple categorization that reveals investment patterns.
+Add a "Money on the Line" section showing total unrecouped capital by show. This is pure industry insider gold - producers/investors want to see which shows are bleeding the most money. Sort by `(capitalization * (1 - estimatedRecoupmentPct))` for TBDs, full capitalization for confirmed flops.
 
-## Red Flags
+Also missing: **ROI timeline**. For recouped shows, calculate simple ROI based on continued earnings post-recoupment. Hamilton didn't just recoup - it became a money printer.
 
-**UX**: Don't bury the lead. Your homepage mentions "commercial data" but doesn't emphasize how rare this is. The `/biz` section should be prominently featured - this is your moat.
+## 4. Red Flags
 
-**Technical**: Static export is smart, but make sure you're not over-engineering the data structure. Keep it flat and simple.
+**Technical**: Static export with 55+ weeks of grosses data could create massive JSON bundles. Consider lazy-loading historical gross data or paginating it.
 
-**Positioning**: "Business Intelligence" sounds corporate. Call it "Investment Tracker" or "Recoupment Watch" - language that reflects what industry insiders actually care about.
+**UX**: Don't create separate `/biz/[slug]` pages. Enhance existing `/show/[slug]` pages with expanded commercial sections. Users shouldn't have to remember two different URLs for the same show.
 
-**Mobile**: Tables with financial data are brutal on mobile. Plan for card-based layouts that stack key metrics vertically.
+**Data freshness**: How do you update recoupment estimates? Industry insiders will quickly lose trust if your "70-80% recouped" estimates go stale. Consider adding "last updated" timestamps.
+
+**Mobile**: Sortable tables with 6+ columns will be brutal on mobile. Plan for horizontal scrolling or stacked card layouts.
 
 ## Bottom Line
 
-Your instinct is right - the data IS the value. Focus on making it scannable and quotable rather than interactive and fancy. Two well-designed pages (dashboard + enhanced show pages) will serve your audience better than four mediocre ones.
+Your instinct is right - the data sells itself. Build Option B, cut the bells and whistles, add the capital-at-risk view, and keep show data on existing show pages. Ship fast, then iterate based on user behavior.
 
 ---
 
 ## GPT-4o Feedback
 
-1. **Recommendation**: I recommend Option B. It provides a balanced approach, offering a comprehensive dashboard with key metrics while also allowing deeper financial insights for individual shows. This option effectively highlights the unique data without overwhelming users with too much complexity, as Option C might.
+1. **Recommendation**: Go with Option B. It provides a balanced approach by offering more detailed insights without overwhelming complexity. Option B improves the current offering by providing deeper dives into individual shows while offering a new dashboard interface that can better showcase key metrics in one place. It avoids the potential overreach and maintenance burden of Option C while still significantly upgrading the user experience over Option A.
 
-2. **Cut**: Eliminate the `/biz/recoupment` and `/biz/investments` sections from Option C. These may be redundant or overly detailed, making the platform more complex than necessary. Focus on strengthening the dashboard and enhancing individual show pages instead.
+2. **Cut**: Remove the separate `/biz/recoupment` and `/biz/investments` pages from Option C if selected. These pages may overlap with the dashboard and individual show deep dives, leading to unnecessary content fragmentation. Simplifying the structure will help maintain focus on truly valuable insights without diluting the information across too many pages.
 
-3. **Missing**: Introduce a simple alert or notification system for industry insiders to track new insights (e.g., status changes in recoupment or significant fluctuations in running costs). This feature could be implemented as a high-value, low-effort addition that drives engagement without complicating the user interface.
+3. **Missing**: Consider adding a simple feature that allows users to set alerts or notifications for status changes or milestones (e.g., when shows reach certain recoupment percentages or designations). This is high-value for industry insiders who want timely updates and represents a relatively low-effort enhancement if implemented through a straightforward email system.
 
-4. **Red flags**:
-   - **UX Concerns**: Be cautious with progress bars for recoupment—they can imply a false sense of precision. Opt for text-based percentage ranges with color-coded statuses to convey both progress and uncertainty effectively.
-   - **Technical Constraints**: Ensure all enhancements are well-suited for the static nature of the site. Particularly, ensure that loading large datasets at build time doesn’t hinder performance, especially on mobile devices.
-   - **Data Visualization**: Avoid overcrowding the dashboard; maintain a clean layout by highlighting the most critical metrics without excessive detail or extraneous visuals.
+4. **Red flags**: Ensure that the design maintains a clear hierarchy, especially with the addition of more detailed data. Avoid information overload on the dashboard to keep it user-friendly. Technically, confirm that static JSON loading at build time will handle the anticipated volume efficiently, especially as data grows. Keep an eye on ensuring the mobile responsiveness doesn’t compromise the readability of complex data, particularly on smaller screens.
 
 ---
 
@@ -60,7 +59,7 @@ Your instinct is right - the data IS the value. Focus on making it scannable and
 *Error: {
   "error": {
     "code": 429,
-    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\nPlease retry in 12.941102168s.",
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\nPlease retry in 41.957307234s.",
     "status": "RESOURCE_EXHAUSTED",
     "details": [
       {
@@ -76,8 +75,8 @@ Your instinct is right - the data IS the value. Focus on making it scannable and
         "@type": "type.googleapis.com/google.rpc.QuotaFailure",
         "violations": [
           {
-            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
-            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
             "quotaDimensions": {
               "location": "global",
               "model": "gemini-2.0-flash"
@@ -92,8 +91,8 @@ Your instinct is right - the data IS the value. Focus on making it scannable and
             }
           },
           {
-            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
-            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
+            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
             "quotaDimensions": {
               "location": "global",
               "model": "gemini-2.0-flash"
@@ -103,7 +102,7 @@ Your instinct is right - the data IS the value. Focus on making it scannable and
       },
       {
         "@type": "type.googleapis.com/google.rpc.RetryInfo",
-        "retryDelay": "12s"
+        "retryDelay": "41s"
       }
     ]
   }
