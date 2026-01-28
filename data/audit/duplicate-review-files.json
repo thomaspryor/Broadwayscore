@@ -1,0 +1,710 @@
+{
+  "timestamp": "2026-01-28T20:50:39.312Z",
+  "summary": {
+    "total_files": 2128,
+    "total_shows": 72,
+    "duplicate_groups": 0,
+    "cross_show_duplicates": 2,
+    "url_duplicates_same_show": 60,
+    "sentiment_inconsistencies": 6
+  },
+  "duplicates": [],
+  "url_duplicates": [
+    {
+      "url": "https://www.chicagotribune.com/entertainment/theater/ct-aladdin-broadway-review-column.html",
+      "showId": "aladdin-2014",
+      "files": [
+        "data/review-texts/aladdin-2014/chicagotribune--chris-jones.json",
+        "data/review-texts/aladdin-2014/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-the-book-of-mormon-4-stars-1.2780979",
+      "showId": "book-of-mormon-2011",
+      "files": [
+        "data/review-texts/book-of-mormon-2011/amny--matt-windman.json",
+        "data/review-texts/book-of-mormon-2011/amny--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "http://nymag.com/arts/theater/reviews/the-book-of-mormon-brown-review-2011-4/",
+      "showId": "book-of-mormon-2011",
+      "files": [
+        "data/review-texts/book-of-mormon-2011/newyorkmagazine--scott-brown.json",
+        "data/review-texts/book-of-mormon-2011/vulture--scott-brown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://newyorktheater.me/2025/04/07/boop-broadway-review/",
+      "showId": "boop-2025",
+      "files": [
+        "data/review-texts/boop-2025/advertisement--jonathan-mandell.json",
+        "data/review-texts/boop-2025/nyt-theater--jonathan-mandell.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://newyorktheater.me/2025/03/19/buena-vista-social-club-broadway-review/",
+      "showId": "buena-vista-social-club-2025",
+      "files": [
+        "data/review-texts/buena-vista-social-club-2025/nyt-theater--jonathan-mandell.json",
+        "data/review-texts/buena-vista-social-club-2025/timeout--adam-feldman.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html",
+      "showId": "buena-vista-social-club-2025",
+      "files": [
+        "data/review-texts/buena-vista-social-club-2025/nytimes--elisabeth-vincentelli.json",
+        "data/review-texts/buena-vista-social-club-2025/nytimes--elizabeth-vincentelli.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://pagesonstages.com/2025/05/04/buena-vista-social-club/",
+      "showId": "buena-vista-social-club-2025",
+      "files": [
+        "data/review-texts/buena-vista-social-club-2025/pages-on-stages--mason-pilevsky.json",
+        "data/review-texts/buena-vista-social-club-2025/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.theatermania.com/news/review-carrie-coon-and-namir-smallwood-as-paranoid-crackheads-in-love-in-bug_1816676/",
+      "showId": "bug-2026",
+      "files": [
+        "data/review-texts/bug-2026/theatermania--david-gordon.json",
+        "data/review-texts/bug-2026/theatermania--zachary-stewart.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.nydailynews.com/2024/04/21/broadway-review-interactive-cabaret-revival-is-a-money-grabbing-misfire/",
+      "showId": "cabaret-2024",
+      "files": [
+        "data/review-texts/cabaret-2024/advertisement--chris-jones.json",
+        "data/review-texts/cabaret-2024/nydailynews--chris.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.amny.com/news/review-cabaret-revival-2024/",
+      "showId": "cabaret-2024",
+      "files": [
+        "data/review-texts/cabaret-2024/amny--matt-windman.json",
+        "data/review-texts/cabaret-2024/ew--emlyn-travis.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "http://www.curtainup.com/chicago.html",
+      "showId": "chicago-1996",
+      "files": [
+        "data/review-texts/chicago-1996/curtainup--elyse-sommer.json",
+        "data/review-texts/chicago-1996/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.amny.com/entertainment/theater/review-days-of-wine-and-roses/",
+      "showId": "days-of-wine-and-roses-2024",
+      "files": [
+        "data/review-texts/days-of-wine-and-roses-2024/amny--matt-windman.json",
+        "data/review-texts/days-of-wine-and-roses-2024/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.broadwaynews.com/review-the-devils-in-the-details-of-grey-house/",
+      "showId": "grey-house-2023",
+      "files": [
+        "data/review-texts/grey-house-2023/broadwaynews--brittani-samuel.json",
+        "data/review-texts/grey-house-2023/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.theatrely.com/post/grey-house-keeps-us-wondering-review",
+      "showId": "grey-house-2023",
+      "files": [
+        "data/review-texts/grey-house-2023/theatrely--joey-sims.json",
+        "data/review-texts/grey-house-2023/theatrely--kobi-kassal.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.amny.com/entertainment/gutenberg-review-andrew-rannells-josh-gad-musical/",
+      "showId": "gutenberg-2023",
+      "files": [
+        "data/review-texts/gutenberg-2023/amny--matt-windman.json",
+        "data/review-texts/gutenberg-2023/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-gutenberg-musical-broadway-review-20231013-zuik74fcf5hxvnjlqdrmfffb3u-story.html",
+      "showId": "gutenberg-2023",
+      "files": [
+        "data/review-texts/gutenberg-2023/chicagotribune--chris-jones.json",
+        "data/review-texts/gutenberg-2023/nydailynews--chris.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "http://www.nytimes.com/2016/05/24/theater/review-hadestown-reanimates-a-well-known-myth.html",
+      "showId": "hadestown-2019",
+      "files": [
+        "data/review-texts/hadestown-2019/nytimes--ben-brantley.json",
+        "data/review-texts/hadestown-2019/nytimes--charles-isherwood.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/hadestown",
+      "showId": "hadestown-2019",
+      "files": [
+        "data/review-texts/hadestown-2019/timeout--adam-feldman.json",
+        "data/review-texts/hadestown-2019/timeout--jenna-scherer.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "http://www.vulture.com/2016/05/theater-review-hadestown.html",
+      "showId": "hadestown-2019",
+      "files": [
+        "data/review-texts/hadestown-2019/vulture--jesse-green.json",
+        "data/review-texts/hadestown-2019/vulture--sara-holdren.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "http://www.amny.com/entertainment/hamilton-review-lin-manuel-miranda-alexander-hamilton-musical-inventive-1.10715576",
+      "showId": "hamilton-2015",
+      "files": [
+        "data/review-texts/hamilton-2015/amny--matt-windman.json",
+        "data/review-texts/hamilton-2015/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.amny.com/entertainment/review-manilow-harmony/",
+      "showId": "harmony-2023",
+      "files": [
+        "data/review-texts/harmony-2023/amny--matt.json",
+        "data/review-texts/harmony-2023/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/",
+      "showId": "harry-potter-2021",
+      "files": [
+        "data/review-texts/harry-potter-2021/forward--jay-michaelson.json",
+        "data/review-texts/harry-potter-2021/forward--matthew-murphy.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.nytimes.com/2024/04/20/theater/hells-kitchen-review-alicia-keys.html",
+      "showId": "hells-kitchen-2024",
+      "files": [
+        "data/review-texts/hells-kitchen-2024/nytimes--elisabeth-vincentelli.json",
+        "data/review-texts/hells-kitchen-2024/nytimes--marc-j-franklin-elisabeth-vincentelli.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/i-need-that-broadway-review-danny-devito",
+      "showId": "i-need-that-2023",
+      "files": [
+        "data/review-texts/i-need-that-2023/timeout--adam.json",
+        "data/review-texts/i-need-that-2023/timeout--will-gleason.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.broadwaynews.com/the-broadway-review/",
+      "showId": "jajas-african-hair-braiding-2023",
+      "files": [
+        "data/review-texts/jajas-african-hair-braiding-2023/broadwaynews--brittani-samuel.json",
+        "data/review-texts/jajas-african-hair-braiding-2023/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-ECYTB4",
+      "showId": "just-in-time-2025",
+      "files": [
+        "data/review-texts/just-in-time-2025/lighting-and-sound-america--david-barbour.json",
+        "data/review-texts/just-in-time-2025/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff",
+      "showId": "just-in-time-2025",
+      "files": [
+        "data/review-texts/just-in-time-2025/nytimes--adam-feldman.json",
+        "data/review-texts/just-in-time-2025/timeout--adam-feldman.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.thewrap.com/liberation-broadway-review/",
+      "showId": "liberation-2025",
+      "files": [
+        "data/review-texts/liberation-2025/ew--emlyn-travis.json",
+        "data/review-texts/liberation-2025/thewrap--robert-hofler.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/liberation-broadway-review",
+      "showId": "liberation-2025",
+      "files": [
+        "data/review-texts/liberation-2025/nytg--amelia-merrill.json",
+        "data/review-texts/liberation-2025/nytg--austin-fimmano.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.nytimes.com/2025/10/28/theater/liberation-review-broadway-bess-wohl.html",
+      "showId": "liberation-2025",
+      "files": [
+        "data/review-texts/liberation-2025/nytimes--elisabeth-vincentelli.json",
+        "data/review-texts/liberation-2025/nytimes--elisabeth-vincetelli.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "http://www.nydailynews.com/archives/nydn-features/hey-abba-musical-diehards-night-woe-mia-capable-cast-article-1.937314",
+      "showId": "mamma-mia-2025",
+      "files": [
+        "data/review-texts/mamma-mia-2025/nydailynews--chris-jones.json",
+        "data/review-texts/mamma-mia-2025/nydailynews--howard-kissel.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "http://www.nytimes.com/2014/08/19/theater/mamma-mia-no-longer-inspires-dancing-in-the-aisles.html",
+      "showId": "mamma-mia-2025",
+      "files": [
+        "data/review-texts/mamma-mia-2025/nytimes--anita-gates.json",
+        "data/review-texts/mamma-mia-2025/nytimes--elisabeth-vincentelli.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://ew.com/marjorie-prime-review-broadway-june-squibb-11863980",
+      "showId": "marjorie-prime-2025",
+      "files": [
+        "data/review-texts/marjorie-prime-2025/ew--shania-russell.json",
+        "data/review-texts/marjorie-prime-2025/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/marjorie-prime-review-article-1.2463387",
+      "showId": "marjorie-prime-2025",
+      "files": [
+        "data/review-texts/marjorie-prime-2025/nydailynews--chris-jones.json",
+        "data/review-texts/marjorie-prime-2025/nydailynews--joe-dziemianowicz.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.amny.com/entertainment/broadway/merrily-broadway-revival-is-a-triumph/",
+      "showId": "merrily-we-roll-along-2023",
+      "files": [
+        "data/review-texts/merrily-we-roll-along-2023/amny--matt-windman.json",
+        "data/review-texts/merrily-we-roll-along-2023/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.amny.com/entertainment/theater/review-mj-is-a-sanitized-michael-jackson-tribute/",
+      "showId": "mj-2022",
+      "files": [
+        "data/review-texts/mj-2022/amny--matt-windman.json",
+        "data/review-texts/mj-2022/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/moulin-rouge-musical-al-hirschfeld-theatre-new-york-review-exactly/",
+      "showId": "moulin-rouge-2019",
+      "files": [
+        "data/review-texts/moulin-rouge-2019/ap--diane-snyder.json",
+        "data/review-texts/moulin-rouge-2019/telegraph--diane-snyder.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html",
+      "showId": "moulin-rouge-2019",
+      "files": [
+        "data/review-texts/moulin-rouge-2019/vulture--sara-holdren.json",
+        "data/review-texts/moulin-rouge-2019/vulture--sarah-holdren.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-britney-spears-jukebox-musical-awful-20230623-pqw63uxcyjbe5dk3r462vmiv5a-story.html",
+      "showId": "once-upon-a-one-more-time-2023",
+      "files": [
+        "data/review-texts/once-upon-a-one-more-time-2023/nydailynews--chris.json",
+        "data/review-texts/once-upon-a-one-more-time-2023/nydailynews--new-york-daily-news.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html",
+      "showId": "once-upon-a-one-more-time-2023",
+      "files": [
+        "data/review-texts/once-upon-a-one-more-time-2023/nytimes--elisabeth-vincentelli.json",
+        "data/review-texts/once-upon-a-one-more-time-2023/nytimes--elizabeth-vincentelli.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.amny.com/entertainment/theater/review-prayer-for-the-french-republic/",
+      "showId": "prayer-for-the-french-republic-2024",
+      "files": [
+        "data/review-texts/prayer-for-the-french-republic-2024/amny--matt-windman.json",
+        "data/review-texts/prayer-for-the-french-republic-2024/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/prayer-for-the-french-republic-review-broadway-1235865240/",
+      "showId": "prayer-for-the-french-republic-2024",
+      "files": [
+        "data/review-texts/prayer-for-the-french-republic-2024/variety--daniel-daddario.json",
+        "data/review-texts/prayer-for-the-french-republic-2024/variety--daniel-dand8217addario.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.broadwaynews.com/purlie-victorious-delivers-a-masterful-sermon-on-satire/",
+      "showId": "purlie-victorious-2023",
+      "files": [
+        "data/review-texts/purlie-victorious-2023/broadwaynews--brittani-samuel.json",
+        "data/review-texts/purlie-victorious-2023/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://newyorktheater.me/2025/11/09/queen-of-versailles-broadway-review/",
+      "showId": "queen-versailles-2025",
+      "files": [
+        "data/review-texts/queen-versailles-2025/advertisement--jonathan-mandell.json",
+        "data/review-texts/queen-versailles-2025/nyt-theater--jonathan-mandell.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.latimes.com/entertainment-arts/story/2025-11-09/kristin-chenoweth-pulls-out-all-the-stops-to-rescue-the-queen-of-versailles-from-broadway-foreclosure",
+      "showId": "queen-versailles-2025",
+      "files": [
+        "data/review-texts/queen-versailles-2025/latimes--charles.json",
+        "data/review-texts/queen-versailles-2025/latimes--charlesmcnulty.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
+      "showId": "queen-versailles-2025",
+      "files": [
+        "data/review-texts/queen-versailles-2025/the-interested-bystander--cary-wong.json",
+        "data/review-texts/queen-versailles-2025/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-the-queen-of-versailles-broadway-burning-cauldron-fiery-fire.html",
+      "showId": "queen-versailles-2025",
+      "files": [
+        "data/review-texts/queen-versailles-2025/vulture--david-fox.json",
+        "data/review-texts/queen-versailles-2025/vulture--sara-holdren.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.amny.com/entertainment/broadway/review-divided-america-ragtime-strikes-defiant-chord/",
+      "showId": "ragtime-2025",
+      "files": [
+        "data/review-texts/ragtime-2025/amny--matt-windman.json",
+        "data/review-texts/ragtime-2025/ew--shania-russell.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://nystagereview.com/2025/10/16/ragtime-breaking-our-hearts-opening-a-door/",
+      "showId": "ragtime-2025",
+      "files": [
+        "data/review-texts/ragtime-2025/nysr--melissa-rose-bernardo.json",
+        "data/review-texts/ragtime-2025/nysr--rose-bernardo.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://culturesauce.com/2025/04/27/real-women-have-curves-broadway-review/",
+      "showId": "real-women-have-curves-2025",
+      "files": [
+        "data/review-texts/real-women-have-curves-2025/culturesauce--thom-geier.json",
+        "data/review-texts/real-women-have-curves-2025/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://deadline.com/2025/04/real-women-have-curves-broadway-review-1236378219/",
+      "showId": "real-women-have-curves-2025",
+      "files": [
+        "data/review-texts/real-women-have-curves-2025/deadline--greg-evans.json",
+        "data/review-texts/real-women-have-curves-2025/deadline--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-WBRPD6",
+      "showId": "six-2021",
+      "files": [
+        "data/review-texts/six-2021/lighting-and-sound-america--david-barbour.json",
+        "data/review-texts/six-2021/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://ew.com/stereophonic-review-broadway-8635241",
+      "showId": "stereophonic-2024",
+      "files": [
+        "data/review-texts/stereophonic-2024/ew--dalton.json",
+        "data/review-texts/stereophonic-2024/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://nystagereview.com/2023/07/24/the-cottage-a-new-sex-farce-that-already-feels-dated/",
+      "showId": "the-cottage-2023",
+      "files": [
+        "data/review-texts/the-cottage-2023/nysr--frank-scheck.json",
+        "data/review-texts/the-cottage-2023/timeout--adam-feldman.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.thewrap.com/the-great-gatsby-broadway-review/",
+      "showId": "the-great-gatsby-2024",
+      "files": [
+        "data/review-texts/the-great-gatsby-2024/ew--emlyn-travis.json",
+        "data/review-texts/the-great-gatsby-2024/thewrap--robert-hofler.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "http://www.jasonraize.net/pr_tlk_spt112197.html",
+      "showId": "the-lion-king-1997",
+      "files": [
+        "data/review-texts/the-lion-king-1997/hollywood-reporter--frank-scheck.json",
+        "data/review-texts/the-lion-king-1997/unknown--frank-scheck.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html",
+      "showId": "the-notebook-2024",
+      "files": [
+        "data/review-texts/the-notebook-2024/vu--sara-holdren.json",
+        "data/review-texts/the-notebook-2024/vulture--sara-holdren.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-shark-is-broken-chris-jones-20230811-kv4cwl4kqnd65ll7eqlysa4jle-story.html",
+      "showId": "the-shark-is-broken-2023",
+      "files": [
+        "data/review-texts/the-shark-is-broken-2023/nydailynews--chris.json",
+        "data/review-texts/the-shark-is-broken-2023/nydailynews--new-york-daily-news.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://ew.com/the-wiz-broadway-revival-review-8635100",
+      "showId": "the-wiz-2024",
+      "files": [
+        "data/review-texts/the-wiz-2024/ew--lester-fabian-brathwaite.json",
+        "data/review-texts/the-wiz-2024/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    },
+    {
+      "url": "https://deadline.com/2024/03/water-for-elephants-broadway-review-1235863179/",
+      "showId": "water-for-elephants-2024",
+      "files": [
+        "data/review-texts/water-for-elephants-2024/deadline--greg-evans.json",
+        "data/review-texts/water-for-elephants-2024/unknown--unknown.json"
+      ],
+      "reason": "Same URL in multiple files for same show"
+    }
+  ],
+  "cross_show": [
+    {
+      "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
+      "shows": [
+        "cabaret-2024",
+        "illinoise-2024",
+        "lempicka-2024",
+        "patriots-2024",
+        "stereophonic-2024",
+        "the-outsiders-2024",
+        "uncle-vanya-2024"
+      ],
+      "files": [
+        "data/review-texts/cabaret-2024/deadline--greg-evans.json",
+        "data/review-texts/illinoise-2024/deadline--greg-evans.json",
+        "data/review-texts/lempicka-2024/deadline--greg-evans.json",
+        "data/review-texts/patriots-2024/deadline--greg-evans.json",
+        "data/review-texts/stereophonic-2024/deadline--greg-evans.json",
+        "data/review-texts/the-outsiders-2024/deadline--greg-evans.json",
+        "data/review-texts/uncle-vanya-2024/deadline--greg-evans.json"
+      ],
+      "severity": "CRITICAL",
+      "reason": "Same URL appears in different show directories"
+    },
+    {
+      "url": "https://www.talkinbroadway.com/page/world/index.html",
+      "shows": [
+        "purlie-victorious-2023",
+        "real-women-have-curves-2025",
+        "the-shark-is-broken-2023"
+      ],
+      "files": [
+        "data/review-texts/purlie-victorious-2023/talkinbroadway--howard-miller.json",
+        "data/review-texts/real-women-have-curves-2025/talkinbroadway--kimberly-ramirez.json",
+        "data/review-texts/the-shark-is-broken-2023/talkinbroadway--howard-miller.json"
+      ],
+      "severity": "CRITICAL",
+      "reason": "Same URL appears in different show directories"
+    }
+  ],
+  "sentiment_issues": [
+    {
+      "file": "data/review-texts/appropriate-2023/nytg--allison-considine.json",
+      "showId": "appropriate-2023",
+      "outlet": "New York Theatre Guide",
+      "critic": "Allison Considine",
+      "conflicting_excerpts": [
+        {
+          "source": "bww",
+          "sentiment": "positive",
+          "excerpt": "Director Lila Neugebauer carefully threads the complexities of grief and racism with humor and light..."
+        },
+        {
+          "source": "showScore",
+          "sentiment": "negative",
+          "excerpt": "“The sound design, by Bray Poor and Will Pickens, transports audiences into the sweltering discomfor..."
+        }
+      ],
+      "reason": "Excerpts from different sources have conflicting sentiment"
+    },
+    {
+      "file": "data/review-texts/chess-2025/variety--christian-lewis.json",
+      "showId": "chess-2025",
+      "outlet": "Variety",
+      "critic": "Christian Lewis",
+      "conflicting_excerpts": [
+        {
+          "source": "dtli",
+          "sentiment": "negative",
+          "excerpt": "Home Legit Reviews Nov 16, 2025 8:00pm PT &#8216;Chess&#8217; Review: Lea Michele Reigns as Queen of..."
+        },
+        {
+          "source": "showScore",
+          "sentiment": "positive",
+          "excerpt": "\"Although this 'Chess' match may not have produced a new champion, thereâs still some thrilling ga..."
+        }
+      ],
+      "reason": "Excerpts from different sources have conflicting sentiment"
+    },
+    {
+      "file": "data/review-texts/marjorie-prime-2025/nypost--johnny-oleksinski.json",
+      "showId": "marjorie-prime-2025",
+      "outlet": "New York Post",
+      "critic": "Johnny Oleksinki",
+      "conflicting_excerpts": [
+        {
+          "source": "dtli",
+          "sentiment": "positive",
+          "excerpt": "From the moment June Squibb takes the stage at the Hayes Theater in “Marjorie Prime,” you feel lucky..."
+        },
+        {
+          "source": "bww",
+          "sentiment": "negative",
+          "excerpt": "Harrison’s story is topical, that’s for sure. Frighteningly so. What elevates it above the ripped-fr..."
+        }
+      ],
+      "reason": "Excerpts from different sources have conflicting sentiment"
+    },
+    {
+      "file": "data/review-texts/maybe-happy-ending-2024/variety--christian-lewis.json",
+      "showId": "maybe-happy-ending-2024",
+      "outlet": "Variety",
+      "critic": "Christian Lewis",
+      "conflicting_excerpts": [
+        {
+          "source": "dtli",
+          "sentiment": "negative",
+          "excerpt": "Home Legit Reviews Nov 12, 2024 11:00am PT ‘Maybe Happy Ending’ Review: Broadway’s Deeply Moving Rob..."
+        },
+        {
+          "source": "showScore",
+          "sentiment": "positive",
+          "excerpt": "\"Both Criss and Shen give excellent, very different performances... One of the achievements of the p..."
+        }
+      ],
+      "reason": "Excerpts from different sources have conflicting sentiment"
+    },
+    {
+      "file": "data/review-texts/mother-play-2024/vulture--jackson-mchenry.json",
+      "showId": "mother-play-2024",
+      "outlet": "Vulture",
+      "critic": "Jackson McHenry",
+      "conflicting_excerpts": [
+        {
+          "source": "dtli",
+          "sentiment": "negative",
+          "excerpt": "Her title, like many theatrical matriarchs, is awfully hard to live up to, which is also what Mother..."
+        },
+        {
+          "source": "bww",
+          "sentiment": "positive",
+          "excerpt": "As Phyllis, Lange has to carry the play, which she manages to do in fits and starts. What she can do..."
+        }
+      ],
+      "reason": "Excerpts from different sources have conflicting sentiment"
+    },
+    {
+      "file": "data/review-texts/prayer-for-the-french-republic-2024/nytimes--visit-jesse-green.json",
+      "showId": "prayer-for-the-french-republic-2024",
+      "outlet": "The New York Times",
+      "critic": "Visit.     Jesse Green",
+      "conflicting_excerpts": [
+        {
+          "source": "dtli",
+          "sentiment": "negative",
+          "excerpt": "When it ran Off Broadway in 2022, “Prayer for the French Republic” already seemed painfully timely, ..."
+        },
+        {
+          "source": "bww",
+          "sentiment": "positive",
+          "excerpt": "That this Manhattan Theater Club production, directed by David Cromer, remains mostly riveting is th..."
+        }
+      ],
+      "reason": "Excerpts from different sources have conflicting sentiment"
+    }
+  ]
+}

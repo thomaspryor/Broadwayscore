@@ -73,7 +73,7 @@ const OUTLET_ALIASES = {
     'broadwayworld', 'broadway world', 'bww', 'broadway-world'
   ],
   'playbill': [
-    'playbill', 'play bill'
+    'playbill', 'play bill', 'playbill.com'
   ],
   'thewrap': [
     'thewrap', 'the wrap', 'wrap', 'the-wrap'
