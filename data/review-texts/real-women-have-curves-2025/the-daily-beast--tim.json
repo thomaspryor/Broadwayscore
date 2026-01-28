@@ -9,9 +9,67 @@
   "isFullReview": false,
   "dtliExcerpt": "The show’s vibe of joy and strength is crystallized in a final parade of Estela’s winningly glamorous creations (designed by Wilberth Gonzalez and Paloma Young), underlining again the affirming sentiment of the show’s title. Unsurprisingly, the audience rises again to applaud with delight.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/real-women-have-curves/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "low",
+    "range": {
+      "low": 30,
+      "high": 90
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "vibe of joy and strength is crystallized",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "winningly glamorous creations",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "audience rises again to applaud with delight",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This appears to be a brief excerpt focusing only on costume design and audience reaction from what seems like the show's finale, providing insufficient context to assess the critic's overall recommendation of the production. | GPT-4o-mini: The review expresses strong positive sentiment about the show's joyful atmosphere and audience reaction, indicating a clear recommendation to see it. | Note: Models differed by 50 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:53.438Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 85,
+    "scoreDelta": 50,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 50 points (Claude: 35, OpenAI: 85)"
+    ]
+  }
 }

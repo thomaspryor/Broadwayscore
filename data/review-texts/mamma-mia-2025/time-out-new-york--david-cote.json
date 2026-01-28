@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"Almost two dozen hits by ABBA form the spine of this worldwide smash, which book writer Catherine Johnson has feebly fleshed out into a mother-daughter comedy-drama. As theater, Mamma Mia! is forgettable. As a delivery system for pop-culture nostalgia, it’s ruthless.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mamma-mia-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 36,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 36,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": 75,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As theater, Mamma Mia! is forgettable",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "book writer Catherine Johnson has feebly fleshed out",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "As a delivery system for pop-culture nostalgia, it's ruthless",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic dismisses the theatrical merit as 'forgettable' with a 'feeble' book, but acknowledges the show's effectiveness as nostalgic entertainment, resulting in a mixed-negative assessment. | GPT-4o-mini: The review expresses strong disapproval of the show's script and overall theatrical quality, indicating a clear rejection of the production. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:48.941Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 30,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

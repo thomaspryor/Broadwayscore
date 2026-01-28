@@ -11,10 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "“The production is so richly stocked with prime talent that there isn’t a smidgen of a lull in the proceedings.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "heady bouts of pure glee",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "within just a few blissful minutes any reservations were vanquished",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "so richly stocked with prime talent that there isn't a smidgen of a lull in the proceedings",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong enthusiasm with superlative language ('pure glee', 'blazing', 'prime talent') and complete conversion from initial skepticism indicates clear positive recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the revival, highlighting the talent and the joy it brings, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:40.420Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

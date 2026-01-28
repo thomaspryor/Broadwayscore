@@ -11,10 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "“ ‘Grey House’ is trying to honor that unstinting parentage, despite the baked-in demands on a mostly young cast of kids, who give it all they’ve got. The show also has to whip up interest on a hot summer night. That’s not an easy combo, and you can see the strains it puts on the second half of the show, but much of worth gets unpacked here. Scarily so, to boot.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/grey-house-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/grey-house-broadway",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 73,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "much of worth gets unpacked here. Scarily so, to boot",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "you can see the strains it puts on the second half of the show",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "kids, who give it all they've got",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant problems (second half strains) but finds enough merit to suggest the show has value, landing in qualified recommendation territory. | GPT-4o-mini: The review acknowledges strong performances from the young cast but also highlights significant issues with the second half of the show, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:38.004Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

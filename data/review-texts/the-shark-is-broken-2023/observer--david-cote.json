@@ -11,8 +11,64 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": 65,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "sinks from memory not long after you exit the Golden Theatre",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "three skilled and likable actors do celebrity impressions",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "is a handful of chum in a very",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising the actors as 'skilled and likable' with 'decent punch lines,' the critic clearly finds the show forgettable and uses dismissive metaphors like 'chum,' indicating a negative overall assessment. | GPT-4o-mini: The review expresses significant disappointment in the production's lasting impact and overall quality, despite acknowledging some decent moments.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:42.715Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "scoreDelta": 5,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,12 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "Grey House is a handsome production with some genuinely creepy moments, but it never quite coalesces into the spine-tingling experience it aspires to be.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Grey House is a handsome production with some genuinely creepy moments, but it never quite coalesces into the spine-tingling experience it aspires to be.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "handsome production with some genuinely creepy moments",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "never quite coalesces into the spine-tingling experience it aspires to be",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges production values and effective moments but expresses disappointment that the show fails to achieve its core goal of being truly frightening.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:36.179Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The show feels like comfort food — familiar, warm and satisfying, even if it's not particularly challenging or groundbreaking.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show feels like comfort food — familiar, warm and satisfying, even if it's not particularly challenging or groundbreaking.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "comfort food — familiar, warm and satisfying",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "not particularly challenging or groundbreaking",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The show feels like comfort food",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The comfort food metaphor suggests pleasant but unambitious entertainment, with clear positives tempered by acknowledgment of creative limitations. | GPT-4o-mini: The review expresses a generally positive sentiment but notes a lack of challenge or innovation, leading to a mixed-positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:05.366Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

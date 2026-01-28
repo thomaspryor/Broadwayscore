@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The show has been trimmed from its original two-part, five-and-a-half-hour format to a single evening of three hours and 30 minutes, and the editing has been done with care and intelligence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show has been trimmed from its original two-part, five-and-a-half-hour format to a single evening of three hours and 30 minutes, and the editing has been done with care and intelligence.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "editing has been done with care and intelligence",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "trimmed from its original two-part, five-and-a-half-hour format",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "the editing has been done with care and intelligence",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt only addresses the editing/adaptation quality positively but provides no information about performances, overall recommendation, or other production elements. | GPT-4o-mini: The review indicates a positive sentiment regarding the careful editing of the show, suggesting a clear recommendation despite the lack of detail on other elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:10.564Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
