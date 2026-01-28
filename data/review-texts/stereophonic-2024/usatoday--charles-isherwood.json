@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "This ambitious musical about a '70s rock band creating an album is a tour de force of theatrical storytelling that captures the messy, exhilarating process of artistic creation.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This ambitious musical about a '70s rock band creating an album is a tour de force of theatrical storytelling that captures the messy, exhilarating process of artistic creation.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 78.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "tour de force of theatrical storytelling",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "ambitious musical",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "captures the messy, exhilarating process of artistic creation",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language including 'tour de force' and 'exhilarating' indicates clear recommendation, though brevity of excerpt limits confidence in score precision. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's storytelling and artistic themes, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:09:04.174Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
