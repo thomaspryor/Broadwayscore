@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists has heart, but the score lacks memorable melodies and the book struggles with pacing issues.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists has heart, but the score lacks memorable melodies and the book struggles with pacing issues.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 35,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has heart",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "the score lacks memorable melodies",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the book struggles with pacing issues",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging the musical 'has heart', the critic identifies significant problems with both the score and book, making it hard to recommend. | GPT-4o-mini: The review indicates significant issues with the score and book, leading to a mixed recommendation despite acknowledging some emotional depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:46:56.659Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

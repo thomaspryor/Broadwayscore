@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German singing group that was torn apart by the rise of the Nazis, is a work of undeniable sincerity and craft.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German singing group that was torn apart by the rise of the Nazis, is a work of undeniable sincerity and craft.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "undeniable sincerity and craft",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "work of undeniable sincerity and craft",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "a work of undeniable sincerity and craft",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt acknowledges quality ('sincerity and craft') but uses measured language that suggests respect rather than enthusiasm, with no clear recommendation signal. | GPT-4o-mini: The review highlights the sincerity and craftsmanship of the musical, suggesting a clear recommendation despite the lack of detailed praise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:47:11.269Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

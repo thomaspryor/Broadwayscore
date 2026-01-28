@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite some flaws in the book and a few pacing issues, Harmony succeeds as a moving testament to the power of music and friendship in the face of unimaginable evil.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite some flaws in the book and a few pacing issues, Harmony succeeds as a moving testament to the power of music and friendship in the face of unimaginable evil.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite some flaws in the book and a few pacing issues",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "succeeds as a moving testament to the power of music and friendship",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "in the face of unimaginable evil",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges clear flaws but ultimately concludes the show 'succeeds' with emotionally resonant themes, indicating a qualified positive recommendation. | GPT-4o-mini: The review acknowledges flaws but emphasizes the emotional impact of the show, leading to a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:46:30.275Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
