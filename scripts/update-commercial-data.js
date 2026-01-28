@@ -935,14 +935,28 @@ async function searchTradePress() {
     // Look for article links with titles
     const linkMatches = html.match(/<a[^>]+href=["']([^"']+)["'][^>]*>([^<]+)<\/a>/gi) || [];
     for (const match of linkMatches) {
-      const urlMatch = match.match(/href=["']([^"']+)["']/i);
-      const titleMatch = match.match(/>([^<]+)</);
-      if (urlMatch && titleMatch) {
-        let url = urlMatch[1];
-        if (url.startsWith('/')) url = new URL(url, baseUrl).href;
-        if (url.includes('/202') && !url.includes('/tag/') && !url.includes('/category/')) {
-          items.push({ title: titleMatch[1].trim(), url, snippet: '' });
+      try {
+        const urlMatch = match.match(/href=["']([^"']+)["']/i);
+        const titleMatch = match.match(/>([^<]+)</);
+        if (urlMatch && titleMatch) {
+          let url = urlMatch[1];
+          // Skip javascript: and mailto: links
+          if (url.startsWith('javascript:') || url.startsWith('mailto:')) continue;
+          // Convert relative to absolute URL
+          if (url.startsWith('/')) {
+            try {
+              url = new URL(url, baseUrl).href;
+            } catch (e) {
+              continue;
+            }
+          }
+          if (url.includes('/202') && !url.includes('/tag/') && !url.includes('/category/')) {
+            items.push({ title: titleMatch[1].trim(), url, snippet: '' });
+          }
         }
+      } catch (e) {
+        // Skip malformed links
+        continue;
       }
     }
     return items;
@@ -1008,9 +1022,21 @@ async function searchTradePress() {
 async function fetchPageSimple(url, timeoutMs = 15000) {
   const https = require('https');
   const http = require('http');
-  const protocol = url.startsWith('https') ? https : http;
+  const { URL } = require('url');
 
   return new Promise((resolve) => {
+    // Validate URL first
+    let parsedUrl;
+    try {
+      parsedUrl = new URL(url);
+    } catch (e) {
+      console.log(`    Invalid URL: ${url}`);
+      resolve(null);
+      return;
+    }
+
+    const protocol = parsedUrl.protocol === 'https:' ? https : http;
+
     // Overall timeout
     const timeoutId = setTimeout(() => {
       resolve(null);
@@ -1026,7 +1052,17 @@ async function fetchPageSimple(url, timeoutMs = 15000) {
       // Follow redirects
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         clearTimeout(timeoutId);
-        fetchPageSimple(res.headers.location, timeoutMs - 5000).then(resolve);
+        // Convert relative redirect URLs to absolute
+        let redirectUrl = res.headers.location;
+        if (!redirectUrl.startsWith('http')) {
+          try {
+            redirectUrl = new URL(redirectUrl, url).href;
+          } catch (e) {
+            resolve(null);
+            return;
+          }
+        }
+        fetchPageSimple(redirectUrl, timeoutMs - 5000).then(resolve);
         return;
       }
       if (res.statusCode !== 200) {
