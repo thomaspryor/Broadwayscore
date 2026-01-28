@@ -165,15 +165,43 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
 }
 
 // === DID THEY LIKE IT ===
+// DTLI uses different URLs for different productions of the same show:
+//   /shows/our-town/     = 2002 revival
+//   /shows/our-town-2/   = 2024 revival
+//   /shows/suffs/        = off-Broadway 2022
+//   /shows/suffs-bway/   = Broadway 2024
+// We need to search DTLI to find the correct URL for our specific production.
+
 async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>): Promise<FetchResult> {
   const show = shows[showId];
   if (!show) {
     return { showId, aggregator: 'dtli', success: false, error: 'Show not found in shows.json' };
   }
 
-  // DTLI uses slug-based URLs
-  // Convert show slug to DTLI format (they use the raw title slug)
-  const dtliSlug = show.title
+  const expectedYear = showId.match(/-(\d{4})$/)?.[1];
+  const expectedVenue = show.venue?.toLowerCase() || '';
+
+  // Helper to validate page matches expected production
+  const validateProduction = (html: string): boolean => {
+    // Extract opening date from DTLI page
+    const openingMatch = html.match(/Opening Night[:\s]*(?:&nbsp;)?(?:<[^>]+>)?([A-Za-z]+\s+\d+,?\s+\d{4})/i);
+    if (openingMatch && expectedYear) {
+      const pageYear = openingMatch[1].match(/\d{4}/)?.[0];
+      if (pageYear && Math.abs(parseInt(pageYear) - parseInt(expectedYear)) > 1) {
+        console.log(`    ⚠️ Year mismatch: page has ${pageYear}, expected ${expectedYear}`);
+        return false;
+      }
+    }
+    // Also check for "Broadway" tab if this is a Broadway show
+    if (show.venue && html.includes('off-broadway') && !html.includes('broadway-shows')) {
+      console.log(`    ⚠️ Page appears to be off-Broadway, not Broadway`);
+      return false;
+    }
+    return true;
+  };
+
+  // URL patterns to try, in order of likelihood for revivals
+  const baseSlug = show.title
     .toLowerCase()
     .replace(/['']/g, '')
     .replace(/[!?.,]/g, '')
@@ -181,42 +209,41 @@ async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-');
 
-  const url = `https://didtheylikeit.com/shows/${dtliSlug}/`;
+  // For revivals/transfers, DTLI often uses suffixes like -2, -bway, -broadway, etc.
+  const urlPatterns = [
+    `https://didtheylikeit.com/shows/${baseSlug}-bway/`,      // Broadway transfer (suffs-bway)
+    `https://didtheylikeit.com/shows/${baseSlug}-broadway/`,  // Broadway suffix
+    `https://didtheylikeit.com/shows/${baseSlug}-2/`,         // Revival suffix (our-town-2)
+    `https://didtheylikeit.com/shows/${baseSlug}-3/`,         // Third production
+    `https://didtheylikeit.com/shows/${baseSlug}-at-the-kit-kat-club/`, // Cabaret special case
+    `https://didtheylikeit.com/shows/${baseSlug}/`,           // Base URL (try last - may be old production)
+    `https://didtheylikeit.com/shows/${show.slug}/`,          // Show ID slug
+  ];
 
   try {
-    const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    for (const url of urlPatterns) {
+      console.log(`    Trying: ${url}`);
+      const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
-    if (!response || response.status() === 404) {
-      // Try alternative slug formats
-      const altSlugs = [
-        show.slug,
-        show.title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-'),
-      ];
+      if (response && response.status() === 200) {
+        await page.waitForTimeout(500);
+        const html = await page.content();
 
-      for (const altSlug of altSlugs) {
-        const altUrl = `https://didtheylikeit.com/shows/${altSlug}/`;
-        const altResponse = await page.goto(altUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
-        if (altResponse && altResponse.status() === 200) {
-          const html = await page.content();
-          if (html.includes('didtheylikeit') && !html.includes('Page not found')) {
-            saveHtml('dtli', showId, html, show.title, altUrl);
-            return { showId, aggregator: 'dtli', success: true };
-          }
+        if (html.includes('Page not found') || html.includes('404') || !html.includes('didtheylikeit')) {
+          continue;
+        }
+
+        // Validate this is the right production
+        if (validateProduction(html)) {
+          saveHtml('dtli', showId, html, show.title, url);
+          return { showId, aggregator: 'dtli', success: true };
+        } else {
+          console.log(`    Skipping ${url} - wrong production`);
         }
       }
-
-      return { showId, aggregator: 'dtli', success: false, error: 'Page not found (tried multiple slug formats)' };
     }
 
-    await page.waitForTimeout(1000);
-    const html = await page.content();
-
-    if (html.includes('Page not found') || html.includes('404')) {
-      return { showId, aggregator: 'dtli', success: false, error: 'Page not found' };
-    }
-
-    saveHtml('dtli', showId, html, show.title, url);
-    return { showId, aggregator: 'dtli', success: true };
+    return { showId, aggregator: 'dtli', success: false, error: 'Page not found or wrong production (tried multiple URL patterns)' };
   } catch (error) {
     return { showId, aggregator: 'dtli', success: false, error: String(error) };
   }
