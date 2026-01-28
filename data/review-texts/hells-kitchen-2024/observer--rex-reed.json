@@ -5,7 +5,7 @@
   "criticName": "Rex Reed",
   "url": "https://observer.com/2024/04/hells-kitchen-review-broadway-alicia-keys/",
   "publishDate": "April 22, 2024",
-  "fullText": "Hell's Kitchen is a jukebox musical that works because it's not really a jukebox musical at all—it's a deeply personal story that happens to be told through the songs of Alicia Keys.",
+  "fullText": "We noticed you're using an ad blocker.\n\t\t\tWe get it: you like to have control of your own internet experience. But advertising revenue helps support our journalism. To read our full stories, please turn off your ad blocker.We'd really appreciate it.\n\nBelow are steps you can take in order to whitelist Observer.com on your browser:\n\nClick the AdBlock button on your browser and select Don't run on pages on this domain.\n\nClick the AdBlock Plus button on your browser and select Enabled on this site.\n\nClick the AdBlock Plus button on your browser and select Disable on Observer.com.",
   "isFullReview": false,
   "dtliExcerpt": "Hell's Kitchen is a jukebox musical that works because it's not really a jukebox musical at all—it's a deeply personal story that happens to be told through the songs of Alicia Keys.",
   "originalScore": null,
@@ -16,5 +16,43 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hell's Kitchen is a jukebox musical that works because it's not really a jukebox musical at all—it's a deeply personal story that happens to be told through the songs of Alicia Keys.",
-  "needsScoring": true
+  "needsScoring": true,
+  "textWordCount": 98,
+  "archivePath": "data/archives/reviews/hells-kitchen-2024/observer--rex-reed_2026-01-28.html",
+  "textFetchedAt": "2026-01-28T23:39:04.804Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 98 (min: 300)",
+    "Show title not found in text"
+  ]
 }
