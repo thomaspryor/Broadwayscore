@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Barry Manilow's 'Harmony' is a well-intentioned but overstuffed musical that struggles to find its emotional center despite touching on the real-life story of a German singing group persecuted by the Nazis.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Barry Manilow's 'Harmony' is a well-intentioned but overstuffed musical that struggles to find its emotional center despite touching on the real-life story of a German singing group persecuted by the Nazis.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "well-intentioned but overstuffed",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "struggles to find its emotional center",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "touching on the real-life story",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges good intentions and meaningful subject matter but identifies fundamental structural problems ('overstuffed', 'struggles to find its emotional center') that undermine the production's effectiveness. | GPT-4o-mini: The review indicates a struggle with emotional depth and an overstuffed narrative, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:08:58.617Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

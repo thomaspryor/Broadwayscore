@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical succeeds best when it focuses on Jackson's artistry and creative process, but struggles when it attempts to address the controversies that shadowed his later years.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical succeeds best when it focuses on Jackson's artistry and creative process, but struggles when it attempts to address the controversies that shadowed his later years.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical succeeds best when it focuses on Jackson's artistry and creative process",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "but struggles when it attempts to address the controversies that shadowed his later years",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "struggles when it attempts to address the controversies that shadowed his later years",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: A balanced mixed review that identifies clear strengths (artistry focus) and weaknesses (controversy handling) without offering a clear recommendation either way. | GPT-4o-mini: The review indicates a mixed experience, praising the focus on artistry while criticizing the handling of controversies, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:08:18.491Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
