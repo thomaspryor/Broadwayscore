@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "This is the best musical of the decade, and maybe the most important one of our lifetime.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 96,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is the best musical of the decade, and maybe the most important one of our lifetime.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 96,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is the best musical of the decade",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "maybe the most important one of our lifetime",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the best musical of the decade",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified superlatives declaring it the 'best' and 'most important' indicate maximum enthusiasm despite the brevity of the review. | GPT-4o-mini: The review expresses unqualified enthusiasm and high praise, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:56.263Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 97,
+    "openaiScore": 95,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

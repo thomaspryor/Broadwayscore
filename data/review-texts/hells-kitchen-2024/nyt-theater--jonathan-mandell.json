@@ -10,9 +10,67 @@
   "bwwExcerpt": "If Dixon and Bean give swoon-worthy interpretations of some of Keys’ catchiest melodies, Kecia Lewis is on fire in Keys’ most moving and intense tune, “Perfect Way To Die.” The song is about a woman whose son has been shot dead. Nobody is shot dead in “Hell’s Kitchen.” There’s no indication that Miss Liza Jane had a son who was killed. Miss Jane sings the song after Ali enters the Ellington room and tells her she is too angry to play piano right now. In the scene right before, the police have a ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HELLS-KITCHEN-Opens-on-Broadway-20240420",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kecia Lewis is on fire in Keys’ most moving and intense tune, 'Perfect Way To Die.'",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "If Dixon and Bean give swoon-worthy interpretations of some of Keys’ catchiest melodies.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Nobody is shot dead in 'Hell’s Kitchen.'",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review highlights strong performances but raises concerns about the script's coherence, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:13.692Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (65 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a remarkable piece of theater that takes you inside the creative process of making an album, with all the passion, pain, and personal drama that comes with it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a remarkable piece of theater that takes you inside the creative process of making an album, with all the passion, pain, and personal drama that comes with it.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "remarkable piece of theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "takes you inside the creative process",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "passion, pain, and personal drama",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive language ('remarkable') with appreciation for the show's immersive quality and emotional depth, indicating clear recommendation despite brevity. | GPT-4o-mini: The review expresses strong enthusiasm for the production, indicating it is a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:59.397Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
