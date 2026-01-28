@@ -9,8 +9,64 @@
   "showScoreExcerpt": "\"...a sui generis multidisciplinary marvel that suggests new possibilities\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "sui generis multidisciplinary marvel",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "suggests new possibilities",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a sui generis multidisciplinary marvel",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The language is highly praising with 'marvel' and suggests groundbreaking artistic achievement, but the excerpt is too brief to determine full critical assessment. | GPT-4o-mini: The review expresses strong enthusiasm and suggests a significant impact, indicating a high recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:16.896Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

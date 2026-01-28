@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 88,
+      "performances": 82,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "wildly entertaining adaptation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "an absurd combination that by no means should work, but winds up being the undeniable highlight",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "vigorously performed by a group of hot-blooded bohemians",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic describes the show as 'wildly entertaining' and calls a key sequence 'the undeniable highlight,' indicating strong positive sentiment despite acknowledging its absurdity. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's entertainment value and creativity, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:00.018Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -11,8 +11,64 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 70,
+      "performances": null,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's no denying that Illinoise is effective",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "providing the cherished songs with a connecting plot hasn't necessarily resulted in an instantly graspable tale",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "longtime Stevens fans need only hear the material they love now presented as dance to carry on about it",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's effectiveness and appeals to fans, but criticizes the narrative coherence, resulting in a lukewarm, conditional assessment. | GPT-4o-mini: The review acknowledges effectiveness but highlights significant issues with the plot, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:57.362Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
