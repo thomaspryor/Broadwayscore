@@ -233,6 +233,15 @@ function downloadPage(url, filepath) {
           const urlObj = new URL(url);
           redirectUrl = `${urlObj.protocol}//${urlObj.host}${redirectUrl}`;
         }
+
+        // CRITICAL: Reject redirects from Broadway to off-Broadway/off-off-Broadway
+        // Show Score sometimes redirects broadway-shows/* to off-broadway-shows/*
+        if (url.includes('/broadway-shows/') &&
+            (redirectUrl.includes('/off-broadway-shows/') || redirectUrl.includes('/off-off-broadway-shows/'))) {
+          resolve({ error: true, message: `Redirect to wrong show type: ${redirectUrl}` });
+          return;
+        }
+
         downloadPage(redirectUrl, filepath).then(resolve).catch(reject);
         return;
       }
