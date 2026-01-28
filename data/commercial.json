@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Biz Buzz - Commercial performance data for Broadway shows",
-    "lastUpdated": "2026-01-25",
+    "lastUpdated": "2026-01-28",
     "sources": "SEC filings, trade press (Broadway Journal, Broadway News, Deadline, Variety), Reddit r/Broadway",
     "designations": {
       "Miracle": "Long-running mega-hit -- extraordinary returns",
@@ -131,7 +131,9 @@
       "capitalization": 35500000,
       "capitalizationSource": "Broadway News / Broadway Journal",
       "weeklyRunningCost": 1000000,
-      "isEstimate": { "weeklyRunningCost": true },
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "recouped": true,
       "recoupedDate": "2022-12",
       "recoupedWeeks": null,
@@ -164,19 +166,24 @@
       "designation": "Fizzle",
       "capitalization": 22000000,
       "capitalizationSource": "NY Times",
-      "weeklyRunningCost": null,
+      "weeklyRunningCost": 775000,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Closing Feb 2026 without recouping. Won 2 Tonys + Grammy. Grossed $100M+ but high running costs prevented recoupment. International productions planned."
+      "notes": "Closing Feb 2026 without recouping. Won 2 Tonys + Grammy. Grossed $100M+ but high running costs prevented recoupment. International productions planned.",
+      "isEstimate": {
+        "weeklyRunningCost": true
+      }
     },
     "cabaret-2024": {
       "designation": "Fizzle",
       "capitalization": 26000000,
       "capitalizationSource": "Broadway Journal / Playbill",
       "weeklyRunningCost": 1500000,
-      "isEstimate": { "weeklyRunningCost": true },
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -188,7 +195,9 @@
       "capitalization": 25000000,
       "capitalizationSource": "SEC filing / NY Times",
       "weeklyRunningCost": 960000,
-      "isEstimate": { "weeklyRunningCost": true },
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -265,39 +274,55 @@
       "designation": "TBD",
       "capitalization": 31500000,
       "capitalizationSource": "Forbes / Broadway World",
-      "weeklyRunningCost": 1100000,
+      "weeklyRunningCost": 900000,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "estimatedRecoupmentPct": [60, 80],
-      "estimatedRecoupmentSource": "Reddit Grosses Analysis (u/Boring_Waltz_9545)",
-      "estimatedRecoupmentDate": "2026-01-25",
-      "isEstimate": { "weeklyRunningCost": true },
+      "estimatedRecoupmentPct": [
+        10,
+        30
+      ],
+      "estimatedRecoupmentSource": "Section C: Reddit Grosses Analysis - recoup listed as 10-30%",
+      "estimatedRecoupmentDate": "2026-01-28",
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "notes": "Most expensive show of 2024-2025 season. Projected to recoup Spring 2026 if grosses hold. Has grossed $63M+ in 46 weeks."
     },
     "the-great-gatsby": {
       "designation": "TBD",
       "capitalization": 25000000,
       "capitalizationSource": "Gordon Cox / Forbes",
-      "weeklyRunningCost": 900000,
-      "isEstimate": { "weeklyRunningCost": true },
+      "weeklyRunningCost": 850000,
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Unlikely to recoup based on current trajectory. Grosses declining ~$250K/week. Korean producer backing."
+      "notes": "Unlikely to recoup based on current trajectory. Grosses declining ~$250K/week. Korean producer backing.",
+      "estimatedRecoupmentPct": [
+        10,
+        30
+      ],
+      "estimatedRecoupmentSource": "Section C: Reddit Grosses Analysis - recoup listed as 10-30%",
+      "estimatedRecoupmentDate": "2026-01-28"
     },
     "the-outsiders": {
       "designation": "Windfall",
       "capitalization": 22000000,
       "capitalizationSource": "Press announcement / SEC filing",
-      "weeklyRunningCost": null,
+      "weeklyRunningCost": 725000,
       "recouped": true,
       "recoupedDate": "2025-12",
-      "recoupedWeeks": null,
+      "recoupedWeeks": 744,
       "recoupedSource": "Reddit Grosses Analysis / Broadway Journal",
-      "notes": "Won Best Musical Tony 2024. Recouped $22M investment by late 2025. Post-Tony grosses hit $1.4M/week record at Bernard B. Jacobs Theatre."
+      "notes": "Won Best Musical Tony 2024. Recouped $22M investment by late 2025. Post-Tony grosses hit $1.4M/week record at Bernard B. Jacobs Theatre.",
+      "isEstimate": {
+        "weeklyRunningCost": true
+      }
     },
     "stranger-things": {
       "designation": "TBD",
@@ -308,22 +333,36 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "estimatedRecoupmentPct": [30, 50],
+      "estimatedRecoupmentPct": [
+        30,
+        50
+      ],
       "estimatedRecoupmentSource": "Reddit Grosses Analysis (u/Boring_Waltz_9545)",
       "estimatedRecoupmentDate": "2026-01-25",
-      "isEstimate": { "weeklyRunningCost": true },
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "notes": "Netflix/Sonia Friedman production. Won 4 Tony Awards 2025. Set Marquis Theatre record of $2.51M during Christmas week 2025. Season 5 finale boosted ticket sales significantly."
     },
     "buena-vista-social-club": {
       "designation": "TBD",
       "capitalization": 17000000,
       "capitalizationSource": "SEC filing / NY Times",
-      "weeklyRunningCost": null,
+      "weeklyRunningCost": 700000,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Strong opening grosses. Critics' Pick. Could recoup if momentum holds."
+      "notes": "Strong opening grosses. Critics' Pick. Could recoup if momentum holds.",
+      "estimatedRecoupmentPct": [
+        10,
+        30
+      ],
+      "estimatedRecoupmentSource": "Section C: Reddit Grosses Analysis - recoup listed as 10-30%",
+      "estimatedRecoupmentDate": "2026-01-28",
+      "isEstimate": {
+        "weeklyRunningCost": true
+      }
     },
     "operation-mincemeat": {
       "designation": "TBD",
@@ -331,76 +370,116 @@
       "capitalizationSource": "Broadway Journal (max cap)",
       "capitalActual": 11500000,
       "capitalActualSource": "Bloomberg",
-      "weeklyRunningCost": 950000,
-      "isEstimate": { "weeklyRunningCost": true },
+      "weeklyRunningCost": 500000,
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "West End hit. Strong word-of-mouth. Extended through Feb 2026. Running costs 5x London production."
+      "notes": "West End hit. Strong word-of-mouth. Extended through Feb 2026. Running costs 5x London production.",
+      "estimatedRecoupmentPct": [
+        0,
+        20
+      ],
+      "estimatedRecoupmentSource": "Section C: Reddit Grosses Analysis - recoup listed as 0-20%",
+      "estimatedRecoupmentDate": "2026-01-28"
     },
     "just-in-time": {
       "designation": "TBD",
       "capitalization": 9400000,
       "capitalizationSource": "Broadway Journal",
-      "weeklyRunningCost": null,
+      "weeklyRunningCost": 600000,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "estimatedRecoupmentPct": [80, 100],
+      "estimatedRecoupmentPct": [
+        80,
+        100
+      ],
       "estimatedRecoupmentSource": "Reddit Grosses Analysis (u/Boring_Waltz_9545)",
       "estimatedRecoupmentDate": "2026-01-25",
-      "isEstimate": { "weeklyRunningCost": true },
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "notes": "Jonathan Groff star vehicle. Projected to recoup if $1.2M weekly gross sustained. Bobby Darin jukebox musical."
     },
     "two-strangers": {
       "designation": "TBD",
       "capitalization": 8000000,
       "capitalizationSource": "Forbes",
-      "weeklyRunningCost": null,
+      "weeklyRunningCost": 480000,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "One of lowest-capitalized new musicals. Small cast, intimate staging. Critics' Pick. Good value proposition."
+      "notes": "One of lowest-capitalized new musicals. Small cast, intimate staging. Critics' Pick. Good value proposition.",
+      "estimatedRecoupmentPct": [
+        0,
+        0
+      ],
+      "estimatedRecoupmentSource": "Section C: Reddit Grosses Analysis - recoup listed as 0-0%",
+      "estimatedRecoupmentDate": "2026-01-28",
+      "isEstimate": {
+        "weeklyRunningCost": true
+      }
     },
     "chess": {
       "designation": "TBD",
       "capitalization": null,
       "capitalizationSource": null,
-      "weeklyRunningCost": null,
+      "weeklyRunningCost": 900000,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Revival with new orchestrations. Selling out regularly. Strong grosses of $1.7M/week."
+      "notes": "Revival with new orchestrations. Selling out regularly. Strong grosses of $1.7M/week.",
+      "estimatedRecoupmentPct": [
+        10,
+        20
+      ],
+      "estimatedRecoupmentSource": "Section C: Reddit Grosses Analysis - recoup listed as 10-20%",
+      "estimatedRecoupmentDate": "2026-01-28",
+      "isEstimate": {
+        "weeklyRunningCost": true
+      }
     },
     "ragtime": {
       "designation": "Nonprofit",
       "capitalization": null,
       "capitalizationSource": null,
-      "weeklyRunningCost": null,
+      "weeklyRunningCost": 850000,
       "recouped": null,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
       "nonprofitOrg": "Lincoln Center Theater",
-      "notes": "Lincoln Center Theater revival. LCT operates on subscriber/nonprofit model - doesn't seek traditional recoupment. 32-member cast, 28-piece orchestra. Extended through June 2026. 100% capacity."
+      "notes": "Lincoln Center Theater revival. LCT operates on subscriber/nonprofit model - doesn't seek traditional recoupment. 32-member cast, 28-piece orchestra. Extended through June 2026. 100% capacity.",
+      "isEstimate": {
+        "weeklyRunningCost": true
+      }
     },
     "maybe-happy-ending": {
       "designation": "TBD",
       "capitalization": 18250000,
       "capitalizationSource": "SEC filing / Broadway Journal",
-      "weeklyRunningCost": null,
+      "weeklyRunningCost": 765000,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "estimatedRecoupmentPct": [10, 30],
-      "estimatedRecoupmentSource": "Reddit Grosses Analysis (u/Boring_Waltz_9545)",
-      "estimatedRecoupmentDate": "2026-01-25",
-      "notes": "Critics' Pick. Darren Criss + Helen J Shen. Small cast reduces running costs. Struggled financially early but has been selling out consistently."
+      "estimatedRecoupmentPct": [
+        20,
+        40
+      ],
+      "estimatedRecoupmentSource": "Section C: Reddit Grosses Analysis - recoup listed as 20-40%",
+      "estimatedRecoupmentDate": "2026-01-28",
+      "notes": "Critics' Pick. Darren Criss + Helen J Shen. Small cast reduces running costs. Struggled financially early but has been selling out consistently.",
+      "isEstimate": {
+        "weeklyRunningCost": true
+      }
     },
     "liberation": {
       "designation": "Fizzle",
@@ -408,7 +487,10 @@
       "capitalizationSource": "Industry estimates ($5-8M range, comparable plays like Grey House at $8M)",
       "weeklyRunningCost": 450000,
       "weeklyRunningCostSource": "Industry estimates (mid six-figures for straight play)",
-      "isEstimate": { "weeklyRunningCost": true, "capitalization": true },
+      "isEstimate": {
+        "weeklyRunningCost": true,
+        "capitalization": true
+      },
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -456,7 +538,9 @@
       "capitalizationSource": "LA Times / industry estimates ($12-15M reported, some insiders estimated ~$20M)",
       "weeklyRunningCost": 750000,
       "weeklyRunningCostSource": "Industry estimates ($700K-$900K range)",
-      "isEstimate": { "weeklyRunningCost": true },
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "recouped": true,
       "recoupedDate": "2014-12",
       "recoupedWeeks": 38,
@@ -469,11 +553,14 @@
       "originalProductionId": "mamma-mia-2001",
       "capitalization": null,
       "capitalizationSource": null,
-      "weeklyRunningCost": null,
+      "weeklyRunningCost": 750000,
       "recouped": null,
       "recoupedDate": null,
       "recoupedWeeks": null,
-      "notes": "25th Anniversary Tour Broadway engagement (Aug 2025 - Feb 2026). See mamma-mia-2001 for original production."
+      "notes": "25th Anniversary Tour Broadway engagement (Aug 2025 - Feb 2026). See mamma-mia-2001 for original production.",
+      "isEstimate": {
+        "weeklyRunningCost": true
+      }
     },
     "mamma-mia-2001": {
       "designation": "Miracle",
@@ -504,12 +591,47 @@
       "capitalizationSource": "SEC filing (All In was $4.8M, All Out comparable)",
       "weeklyRunningCost": 550000,
       "weeklyRunningCostSource": "Industry estimates ($500-600K, lean cost structure)",
-      "isEstimate": { "weeklyRunningCost": true },
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
       "notes": "Sequel to All In: Comedy About Love which recouped its $4.8M in just 10 weeks. Same format: rotating celebrity comedians with live band, David Korins design. Hit $2M+ weekly gross (record for a play). Limited engagement through March 8, 2026. Stars include Sarah Silverman, Ray Romano, Jason Mantzoukas. Low capitalization + lean 4-performer format makes recoupment highly likely."
+    },
+    "art-2025": {
+      "designation": "Easy Winner",
+      "capitalization": 6000000,
+      "capitalizationSource": "Estimated from trade press reports",
+      "weeklyRunningCost": null,
+      "recouped": true,
+      "recoupedDate": "2025-12",
+      "recoupedWeeks": null,
+      "recoupedSource": "Deadline and Playbill reports",
+      "notes": "Bobby Cannavale, James Corden & Neil Patrick Harris revival. Limited run that recouped in December 2025."
+    },
+    "othello-2025": {
+      "designation": "Easy Winner",
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "recouped": true,
+      "recoupedDate": "2025-05",
+      "recoupedWeeks": null,
+      "recoupedSource": "Deadline report",
+      "notes": "Called 'The Highest Grossing Play Revival In World History' by producers despite no Tony nominations."
+    },
+    "glengarry-glen-ross-2025": {
+      "designation": "Easy Winner",
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "recouped": true,
+      "recoupedDate": "2025-05",
+      "recoupedWeeks": null,
+      "recoupedSource": "Deadline report",
+      "notes": "Broadway revival that recouped its investment in May 2025."
     }
   }
 }
