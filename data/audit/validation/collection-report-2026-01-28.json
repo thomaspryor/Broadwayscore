@@ -1,91 +1,83 @@
 {
-  "runDate": "2026-01-28T23:46:21.816Z",
+  "runDate": "2026-01-28T23:46:39.355Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "merrily-we-roll-along-2023",
+    "showFilter": "stereophonic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 14,
-    "failed": 12,
+    "processed": 8,
+    "failed": 17,
     "skipped": 0,
-    "successRate": "53.8%"
+    "successRate": "32.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 11
+    "scrapingbee": 0,
+    "brightdata": 2,
+    "archive": 5
   },
   "statistics": {
-    "tier1Attempts": 16,
+    "tier1Attempts": 20,
     "tier1Success": 1,
-    "tier2Attempts": 15,
-    "tier2Success": 1,
-    "tier3Attempts": 14,
-    "tier3Success": 1,
-    "tier4Attempts": 35,
-    "tier4Success": 11,
-    "totalFailed": 12,
-    "scrapingBeeCreditsUsed": 90
+    "tier2Attempts": 19,
+    "tier2Success": 0,
+    "tier3Attempts": 19,
+    "tier3Success": 2,
+    "tier4Attempts": 46,
+    "tier4Success": 5,
+    "totalFailed": 17,
+    "scrapingBeeCreditsUsed": 80
   },
   "processed": [
-    "merrily-we-roll-along-2023/nytg--joe-dziemianowicz.json",
-    "merrily-we-roll-along-2023/variety--trish-deitch.json",
-    "merrily-we-roll-along-2023/nydailynews--chris-jones.json",
-    "merrily-we-roll-along-2023/nypost--johnny-oleksinski.json",
-    "merrily-we-roll-along-2023/theatermania--david-gordon.json",
-    "merrily-we-roll-along-2023/thewrap--robert-hofler.json",
-    "merrily-we-roll-along-2023/wsj--charles-isherwood.json",
-    "merrily-we-roll-along-2023/chicagotribune--chris.json",
-    "merrily-we-roll-along-2023/nysr--melissa-rose-bernardo.json",
-    "merrily-we-roll-along-2023/nysr--steven-suskin.json",
-    "merrily-we-roll-along-2023/slash-film--caroline-cao.json",
-    "merrily-we-roll-along-2023/the-village-voice--michael-musto.json",
-    "merrily-we-roll-along-2023/usatoday--patrick-ryan.json",
-    "merrily-we-roll-along-2023/whatsonstage--david-gordon.json"
+    "stereophonic-2024/nyt-theater--jonathan-mandell.json",
+    "stereophonic-2024/nytimes--jesse-green.json",
+    "stereophonic-2024/nytimes--naveen-kumar.json",
+    "stereophonic-2024/ew--dalton-ross.json",
+    "stereophonic-2024/nydailynews--chris-jones.json",
+    "stereophonic-2024/observer--rex-reed.json",
+    "stereophonic-2024/nysr--melissa-rose-bernardo.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json"
   ],
   "failed": [
-    "merrily-we-roll-along-2023/hollywood-reporter--angie-han.json",
-    "merrily-we-roll-along-2023/nytimes--jesse-green.json",
-    "merrily-we-roll-along-2023/variety--aramide-tinubu.json",
-    "merrily-we-roll-along-2023/variety--charles-isherwood.json",
-    "merrily-we-roll-along-2023/vulture--jackson-mchenry.json",
-    "merrily-we-roll-along-2023/vulture--sara-holdren.json",
-    "merrily-we-roll-along-2023/theatermania--jesse-green.json",
-    "merrily-we-roll-along-2023/wsj--terry-teachout.json",
-    "merrily-we-roll-along-2023/the-times--will-pavia.json",
-    "merrily-we-roll-along-2023/usatoday--charles-isherwood.json",
-    "merrily-we-roll-along-2023/usatoday--david-rooney.json",
-    "merrily-we-roll-along-2023/washpost--peter-marks.json"
+    "stereophonic-2024/hollywood-reporter--angie-han.json",
+    "stereophonic-2024/variety--aramide-tinubu.json",
+    "stereophonic-2024/variety--jesse-green.json",
+    "stereophonic-2024/variety--peter-marks.json",
+    "stereophonic-2024/vulture--helen-shaw.json",
+    "stereophonic-2024/deadline--pete-hammond.json",
+    "stereophonic-2024/guardian--adrian-horton.json",
+    "stereophonic-2024/guardian--gloria-oladipo.json",
+    "stereophonic-2024/theatermania--adam-feldman.json",
+    "stereophonic-2024/theatermania--jesse-green.json",
+    "stereophonic-2024/theatermania--zachary-stewart.json",
+    "stereophonic-2024/wsj--charles-isherwood.json",
+    "stereophonic-2024/wsj--terry-teachout.json",
+    "stereophonic-2024/theatrely--juan-a-ramirez.json",
+    "stereophonic-2024/ap--mark-kennedy.json",
+    "stereophonic-2024/rollingstone--kalia-richardson.json",
+    "stereophonic-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
-      "merrily-we-roll-along-2023/slash-film--caroline-cao.json"
+      "stereophonic-2024/nysr--melissa-rose-bernardo.json"
     ],
-    "scrapingbee": [
-      "merrily-we-roll-along-2023/the-village-voice--michael-musto.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
-      "merrily-we-roll-along-2023/usatoday--patrick-ryan.json"
+      "stereophonic-2024/observer--rex-reed.json",
+      "stereophonic-2024/usatoday--charles-isherwood.json"
     ],
     "archive": [
-      "merrily-we-roll-along-2023/nytg--joe-dziemianowicz.json",
-      "merrily-we-roll-along-2023/variety--trish-deitch.json",
-      "merrily-we-roll-along-2023/nydailynews--chris-jones.json",
-      "merrily-we-roll-along-2023/nypost--johnny-oleksinski.json",
-      "merrily-we-roll-along-2023/theatermania--david-gordon.json",
-      "merrily-we-roll-along-2023/thewrap--robert-hofler.json",
-      "merrily-we-roll-along-2023/wsj--charles-isherwood.json",
-      "merrily-we-roll-along-2023/chicagotribune--chris.json",
-      "merrily-we-roll-along-2023/nysr--melissa-rose-bernardo.json",
-      "merrily-we-roll-along-2023/nysr--steven-suskin.json",
-      "merrily-we-roll-along-2023/whatsonstage--david-gordon.json"
+      "stereophonic-2024/nyt-theater--jonathan-mandell.json",
+      "stereophonic-2024/nytimes--jesse-green.json",
+      "stereophonic-2024/nytimes--naveen-kumar.json",
+      "stereophonic-2024/ew--dalton-ross.json",
+      "stereophonic-2024/nydailynews--chris-jones.json"
     ]
   }
 }
