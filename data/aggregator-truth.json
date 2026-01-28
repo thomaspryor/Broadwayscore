@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-01-28T18:25:30.801Z",
+    "generatedAt": "2026-01-28T18:53:20.177Z",
     "description": "Expected review counts from all three aggregators compared to local counts",
     "sources": {
       "showScore": "show-score.com",
@@ -136,9 +136,9 @@
     },
     "oh-mary-2024": {
       "showScore": {
-        "reviewCount": 0,
+        "reviewCount": 29,
         "hasArchive": true,
-        "method": "none-found"
+        "method": "heading"
       },
       "dtli": {
         "reviewCount": 18,
@@ -155,13 +155,13 @@
         "hasArchive": true,
         "method": "blog-postings"
       },
-      "maxAggregator": 18,
+      "maxAggregator": 29,
       "localCount": 36,
-      "ratio": 2
+      "ratio": 1.24
     },
     "the-great-gatsby-2024": {
       "showScore": {
-        "reviewCount": 6,
+        "reviewCount": 18,
         "hasArchive": true,
         "method": "heading"
       },
@@ -180,9 +180,9 @@
         "hasArchive": true,
         "method": "blog-postings"
       },
-      "maxAggregator": 17,
+      "maxAggregator": 18,
       "localCount": 31,
-      "ratio": 1.82
+      "ratio": 1.72
     },
     "bug-2026": {
       "showScore": {
@@ -361,9 +361,8 @@
     },
     "hadestown-2019": {
       "showScore": {
-        "reviewCount": 27,
-        "hasArchive": true,
-        "method": "heading"
+        "reviewCount": null,
+        "hasArchive": false
       },
       "dtli": {
         "reviewCount": 5,
@@ -380,9 +379,9 @@
         "hasArchive": true,
         "method": "article-body"
       },
-      "maxAggregator": 27,
+      "maxAggregator": 19,
       "localCount": 75,
-      "ratio": 2.78
+      "ratio": 3.95
     },
     "mj-2022": {
       "showScore": {
@@ -611,7 +610,7 @@
     },
     "stereophonic-2024": {
       "showScore": {
-        "reviewCount": 19,
+        "reviewCount": 13,
         "hasArchive": true,
         "method": "heading"
       },
@@ -630,9 +629,9 @@
         "hasArchive": true,
         "method": "blog-postings"
       },
-      "maxAggregator": 19,
+      "maxAggregator": 16,
       "localCount": 50,
-      "ratio": 2.63
+      "ratio": 3.13
     },
     "water-for-elephants-2024": {
       "showScore": {
@@ -711,7 +710,7 @@
     },
     "marjorie-prime-2025": {
       "showScore": {
-        "reviewCount": 28,
+        "reviewCount": 17,
         "hasArchive": true,
         "method": "heading"
       },
@@ -730,9 +729,9 @@
         "hasArchive": true,
         "method": "blog-postings"
       },
-      "maxAggregator": 28,
+      "maxAggregator": 17,
       "localCount": 29,
-      "ratio": 1.04
+      "ratio": 1.71
     },
     "liberation-2025": {
       "showScore": {
