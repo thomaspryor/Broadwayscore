@@ -10,9 +10,68 @@
   "bwwExcerpt": "Leon’s “Our Town” solves that problem, in part, by not having an intermission. The Stage Manager now simply informs us that Act 1 and then Act 2 have finished, the audience applauds, and we’re off to Act 3 without a break. “Our Town” now runs 100 minutes without intermission, and I have to ask this: Would you do that to any three-act play that normally runs around two and a half hours if you were a director who considered it the best American play ever?",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Meh"
+  "bwwThumb": "Meh",
+  "llmScore": {
+    "score": 38,
+    "confidence": "low",
+    "range": {
+      "low": 20.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 20
+    },
+    "keyPhrases": [
+      {
+        "quote": "Would you do that to any three-act play that normally runs around two and a half hours if you were a director who considered it the best American play ever?",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Leon's 'Our Town' solves that problem, in part, by not having an intermission",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "I have to ask this: Would you do that to any three-act play that normally runs around two and a half hours?",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic strongly questions the director's decision to cut intermissions from a revered play, implying this is a problematic choice that undermines the work. | GPT-4o-mini: The review raises a critical question about the decision to eliminate the intermission, indicating a lack of strong recommendation. | Note: Models differed by 25 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:53.243Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 50,
+    "scoreDelta": 25,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 25, OpenAI: 50)",
+      "Score (38 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

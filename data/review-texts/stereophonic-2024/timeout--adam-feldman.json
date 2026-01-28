@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a masterpiece of musical theater, a work of staggering ambition and achievement that sets a new standard for what the medium can accomplish.",
   "originalScore": 100,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a masterpiece of musical theater, a work of staggering ambition and achievement that sets a new standard for what the medium can accomplish.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a masterpiece of musical theater",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a work of staggering ambition and achievement",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "sets a new standard for what the medium can accomplish",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Uses the strongest possible superlatives including 'masterpiece' and 'sets a new standard', indicating unqualified enthusiasm and must-see recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and high praise, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:22.518Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

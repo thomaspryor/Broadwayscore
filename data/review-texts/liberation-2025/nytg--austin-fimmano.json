@@ -10,9 +10,67 @@
   "bwwExcerpt": "Tackling misogyny, internalized homophobia, domestic abuse, gender roles, and the need for intersectionality, Liberation leaves no stone unturned in its quest for answers about the past and the present. But with any of these topics, no play can have the answers to something that we haven’t figured out yet in real life – and that’s all part of the point.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "leaves no stone unturned in its quest for answers",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "no play can have the answers to something that we haven't figured out yet in real life",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "that's all part of the point",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges the play's ambitious scope and thematic complexity but offers no clear judgment on execution or recommendation, suggesting intellectual engagement without strong advocacy. | GPT-4o-mini: The review acknowledges the ambitious themes tackled by the play but suggests a lack of resolution, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:13.290Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (64 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

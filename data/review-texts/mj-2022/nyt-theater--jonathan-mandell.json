@@ -11,8 +11,66 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": 70,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "There are some three dozen songs presented in 135 minutes, with exciting choreography",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "performed by an energetic ensemble and three different Michael Jackson impersonators",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "exciting choreography by director Christopher Wheeldon built on Jackson's signature moves",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This appears to be an incomplete excerpt focusing mainly on factual description rather than critical evaluation, making it impossible to determine the critic's actual recommendation. | GPT-4o-mini: The review highlights the energetic performances and choreography, indicating a positive recommendation despite lacking detailed praise for the overall narrative or music. | Note: Models differed by 30 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:00.160Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 75,
+    "scoreDelta": 30,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 30 points (Claude: 45, OpenAI: 75)"
+    ]
+  }
 }

@@ -10,9 +10,65 @@
   "bwwExcerpt": "But for all its clairvoyance and foresight about technology, Marjorie Prime’s most potent superpowers are its sensitivity and tenderness. Harrison’s spare, gently gripping script is a model of eloquent economy as the characters grapple with grief and what it means to truly love and remember someone.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "most potent superpowers are its sensitivity and tenderness",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "spare, gently gripping script is a model of eloquent economy",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "clairvoyance and foresight about technology",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the script's emotional depth and craftsmanship with superlative language like 'potent superpowers' and 'model of eloquent economy' indicates clear positive recommendation. | GPT-4o-mini: The review expresses strong admiration for the script's eloquence and emotional depth, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:19.576Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
