@@ -224,7 +224,8 @@ function validateSlugs(shows) {
 
 function validateImageUrls(shows) {
   info('Checking image URLs...');
-  const urlRegex = /^https?:\/\/.+/;
+  // Accept both external URLs (https://) and local paths (/images/)
+  const urlRegex = /^(https?:\/\/.+|\/images\/.+)/;
   let invalid = 0;
 
   for (const show of shows) {
