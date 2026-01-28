@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“Neugebauer is doing fine work with the whole ensemble, and Paulson and Stoll provide a supercharged core.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/appropriate-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "doing fine work with the whole ensemble",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "provide a supercharged core",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Neugebauer is doing fine work with the whole ensemble",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This brief excerpt shows clear praise for both the direction and lead performances with positive language like 'fine work' and 'supercharged,' suggesting a solid positive recommendation despite limited context. | GPT-4o-mini: The review highlights strong performances and effective direction, indicating a clear recommendation despite the lack of detail on the script or music.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:22.467Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

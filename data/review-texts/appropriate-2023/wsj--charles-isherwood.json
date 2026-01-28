@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"This being a drama firmly grounded in the hallowed miserable-American-family tradition, by the conclusion all the secrets have tumbled out, and the ugly bones of long-held resentments have been picked over. And over, and over—the play runs nearly three hours.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/appropriate-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And over, and over—the play runs nearly three hours",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the ugly bones of long-held resentments have been picked over",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the play runs nearly three hours",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic emphasizes excessive length and repetitive exploration of familiar dramatic territory, suggesting tedium and questioning the play's value. | GPT-4o-mini: The review highlights the play's excessive length and repetitive themes, indicating a lack of strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:50.704Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,12 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "Branden Jacobs-Jenkins's family drama burns with a slow, hypnotic fire, and this Broadway revival directed by Lila Neugebauer is spectacular.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Branden Jacobs-Jenkins's family drama burns with a slow, hypnotic fire, and this Broadway revival directed by Lila Neugebauer is spectacular.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "burns with a slow, hypnotic fire",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this Broadway revival directed by Lila Neugebauer is spectacular",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review uses strong positive language ('spectacular', 'hypnotic fire') to praise both the writing and direction, indicating a clear recommendation despite the brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the production, particularly praising the direction and overall impact, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:46.620Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
