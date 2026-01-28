@@ -12,6 +12,7 @@ import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import LotteryRushCard from '@/components/LotteryRushCard';
 import BizBuzzCard from '@/components/BizBuzzCard';
 import ScoreTooltip from '@/components/ScoreTooltip';
+import { getTierLabel } from '@/lib/scoring-labels';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -290,12 +291,7 @@ function ScoreLabel({ score }: { score: number }) {
 }
 
 function getSentimentLabel(score: number): { label: string; colorClass: string } {
-  const roundedScore = Math.round(score);
-  if (roundedScore >= 85) return { label: 'Must-See', colorClass: 'text-score-must-see' };
-  if (roundedScore >= 75) return { label: 'Recommended', colorClass: 'text-score-great' };
-  if (roundedScore >= 65) return { label: 'Worth Seeing', colorClass: 'text-score-good' };
-  if (roundedScore >= 55) return { label: 'Skippable', colorClass: 'text-score-tepid' };
-  return { label: 'Stay Away', colorClass: 'text-score-skip' };
+  return getTierLabel(score);
 }
 
 interface ReviewForBreakdown {
