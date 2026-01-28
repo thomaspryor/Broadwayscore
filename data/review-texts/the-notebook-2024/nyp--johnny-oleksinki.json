@@ -11,8 +11,67 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there is an even more dramatic performance going on in the seats. The sniffle chorus",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Like Pavlov's pups, millennials habitually sob during that 2004 film",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the cast of “The Notebook” sings and dances up onstage",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt suggests the show relies heavily on audience conditioning from the movie rather than its own theatrical merits, with dismissive language about audience reactions. | GPT-4o-mini: The review suggests a mix of emotional engagement with the material but lacks strong endorsement, indicating a mixed-positive sentiment overall. | Note: Models differed by 20 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:07.580Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "scoreDelta": 20,
+    "thumbsMatch": false,
+    "expectedThumb": "Down",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 20 points (Claude: 45, OpenAI: 65)",
+      "Score (55 → Flat) conflicts with aggregator thumbs (Down)"
+    ]
+  }
 }

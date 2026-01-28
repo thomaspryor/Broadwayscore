@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“A central trio as sensitive and superb as this one doesn’t just make ’Merrily’ more moving; it makes it much more fun. It even adds a faint glimmer of something resembling hope...With their irresistible energy and chemistry, Mendez, Groff, and Radcliffe lift ’Merrily’ up, yet keep it grounded with real, apparent affection and emotional heft. They are the ones reviving the play, by revealing and jump-starting its heart.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/merrily-we-roll-along-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A central trio as sensitive and superb as this one doesn't just make 'Merrily' more moving; it makes it much more fun",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "With their irresistible energy and chemistry, Mendez, Groff, and Radcliffe lift 'Merrily' up",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "They are the ones reviving the play, by revealing and jump-starting its heart",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses superlative language ('superb', 'irresistible', 'reviving the play') to praise the lead performances with no negative caveats, indicating strong recommendation despite being performance-focused. | GPT-4o-mini: The review expresses strong praise for the performances and their impact on the production, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:31.724Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 88,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 34,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 34,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 43
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": null,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "finds no magic whatsoever in a story rife with magic lanterns, carpets, genies and sultry Arabian nights",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "loaded with some clever 'Sesame Street' word play",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "Isn't mocking stage traditions a rather cynical way to introduce children to the theater?",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic harshly criticizes the book for lacking magic and questions the cynical approach to children's theater, with only minor praise for wordplay. | GPT-4o-mini: The review expresses strong disappointment in the book's lack of magic and questions the approach to humor, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:42.870Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 30,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

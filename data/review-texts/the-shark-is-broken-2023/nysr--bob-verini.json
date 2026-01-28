@@ -11,8 +11,64 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it truly is a most enjoyable 95 minutes",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the comfort that The Shark Is Broken brings",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the canny way in which it channels Jaws itself",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly describes the show as 'most enjoyable' and praises how it cleverly channels the source material, indicating a positive recommendation despite the incomplete excerpt. | GPT-4o-mini: The review expresses enjoyment and positive sentiment towards the play, indicating a strong recommendation despite lacking detailed critiques.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:07.771Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,8 +9,64 @@
   "showScoreExcerpt": "\"For a light, frothy evening out, this immersive show is your ticket, but don’t expect anything to last longer than the bubbles in the champagne they’re selling. Try reading the book.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-great-gatsby-musical",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 40.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For a light, frothy evening out, this immersive show is your ticket",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "don't expect anything to last longer than the bubbles in the champagne",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Try reading the book",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic gives a qualified recommendation for entertainment value but clearly signals the show lacks substance and suggests the source material is superior. | GPT-4o-mini: The review suggests a lack of substance and recommends an alternative to the show, indicating a clear negative sentiment. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:58.189Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

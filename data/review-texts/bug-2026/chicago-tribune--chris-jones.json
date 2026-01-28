@@ -10,9 +10,65 @@
   "bwwExcerpt": "The scariest change, though, is that in an America where guardrails have fallen, tech-sector parasites run amok in our hands and heads, and trust in government is close to nonexistent, what seemed totally implausible in 1996 now feels like reasonable societal comment. At one point, there is worry about whether one of the characters is some kind of robot. Thirty years ago, I vividly recall laughing that off as a device of plotting and one of Letts’ signature, genre-driven games with many more yet",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "what seemed totally implausible in 1996 now feels like reasonable societal comment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Letts' signature, genre-driven games",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the scariest change, though, is that in an America where guardrails have fallen",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates how the play has gained new relevance and praises Letts' writing craft, but this appears to be an incomplete excerpt making confident scoring difficult. | GPT-4o-mini: The review reflects a thoughtful engagement with the themes but lacks strong enthusiasm for the production itself, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:15.896Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 65,
+    "scoreDelta": 10,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

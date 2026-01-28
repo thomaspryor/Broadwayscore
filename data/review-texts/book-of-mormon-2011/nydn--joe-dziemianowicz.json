@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"Oh boy, it's a real winner.The show is blissfully original, irreverent, outspoken and hilarious. And all that's tucked inside good -- no, great -- old-fashioned musical. It's a show where you catch yourself laughing one minute, mouth agape the next, eventually wiping away tears, and, finally, cheering.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-book-of-mormon",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 88,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Oh boy, it's a real winner",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "blissfully original, irreverent, outspoken and hilarious",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "eventually wiping away tears, and, finally, cheering",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Unqualified enthusiasm with multiple superlatives ('real winner', 'blissfully original', 'great old-fashioned musical') and description of powerful emotional journey from laughter to tears to cheering. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong emotional engagement, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:58.679Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

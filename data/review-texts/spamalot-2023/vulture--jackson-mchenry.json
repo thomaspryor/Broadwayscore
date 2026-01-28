@@ -11,8 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "in its best moments, Spamalot knows its business, and that's show business, baby",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Its smart move was to translate Grail's cheeky meta-ness into a new medium",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "oddly well positioned to lure people in with the promise of the quotably familiar, then blast them in the face with a confetti cannon",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is incomplete but shows enthusiasm for the show's meta-theatrical approach and entertainment value, suggesting a qualified positive recommendation despite limited context. | GPT-4o-mini: The review expresses strong enthusiasm for the show's self-awareness and entertainment value, indicating a clear recommendation despite some ambiguity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:28.212Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (76 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

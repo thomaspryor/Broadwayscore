@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“A central trio as sensitive and superb as this one doesn’t just make ’Merrily’ more moving; it makes it much more fun. It even adds a faint glimmer of something resembling hope...With their irresistible energy and chemistry, Mendez, Groff, and Radcliffe lift ’Merrily’ up, yet keep it grounded with real, apparent affection and emotional heft. They are the ones reviving the play, by revealing and jump-starting its heart.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240614191049",
-  "archiveOrgUrl": "http://web.archive.org/web/20240614191049/https://www.vulture.com/2023/10/theater-review-merrily-we-roll-along-sondheim-radcliffe-groff-mendez.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20240614191049/https://www.vulture.com/2023/10/theater-review-merrily-we-roll-along-sondheim-radcliffe-groff-mendez.html",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": 88,
+      "performances": 95,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "Friedman and her ensemble render the show exquisite",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "With their irresistible energy and chemistry, Mendez, Groff, and Radcliffe lift Merrily up",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "They are the ones reviving the play, by revealing and jump-starting its heart",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic offers enthusiastic praise for the performances, direction, and overall production, calling it 'exquisite' and crediting the cast with 'reviving the play' through their exceptional work. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, highlighting the emotional depth and quality of the production, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:11.887Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
