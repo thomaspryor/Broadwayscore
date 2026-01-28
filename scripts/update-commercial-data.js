@@ -853,71 +853,178 @@ async function searchRedditFinancial(grossesPostPermalink) {
 async function searchTradePress() {
   console.log('Searching trade press for Broadway financial news...');
 
-  if (!SCRAPINGBEE_KEY) {
-    console.error('  SCRAPINGBEE_API_KEY required for trade press search');
-    return [];
-  }
-
-  const queries = [
-    // Original queries
-    'Broadway show recouped investment 2026',
-    'Broadway musical closing capitalization 2026',
-    'Broadway box office recoupment weekly gross 2026',
-    'Broadway production budget investors profit 2026',
-    // Sprint 4.4: New financial-specific queries
-    '"recouped its" Broadway',
-    '"capitalized at" Broadway musical',
-    '"break even" Broadway show',
-    '"Form D" Broadway theatrical',
-    '"investors" Broadway musical profit',
-    'Broadway "running costs" weekly nut'
+  // Direct RSS feeds and section URLs for Broadway/theater news
+  // This approach is more reliable than Google Search APIs
+  const TRADE_SOURCES = [
+    {
+      name: 'Deadline',
+      rssUrl: 'https://deadline.com/tag/broadway/feed/',
+      sectionUrl: 'https://deadline.com/tag/broadway/',
+      source: 'Deadline'
+    },
+    {
+      name: 'Variety',
+      rssUrl: 'https://variety.com/t/broadway/feed/',
+      sectionUrl: 'https://variety.com/t/broadway/',
+      source: 'Variety'
+    },
+    {
+      name: 'Playbill',
+      rssUrl: 'https://www.playbill.com/rss/news',
+      sectionUrl: 'https://www.playbill.com/news',
+      source: 'Playbill'
+    },
+    {
+      name: 'Broadway Journal',
+      rssUrl: null,
+      sectionUrl: 'https://broadwayjournal.com/category/news/',
+      source: 'Broadway Journal'
+    }
   ];
 
-  const sites = 'site:deadline.com OR site:variety.com OR site:broadwayjournal.com OR site:playbill.com OR site:nytimes.com OR site:forbes.com';
+  // Financial keywords to filter for
+  const FINANCIAL_KEYWORDS = [
+    'recoup', 'recouped', 'recoupment',
+    'capitalization', 'capitalized', 'capital',
+    'investment', 'investor', 'investors',
+    'profit', 'profitable', 'profitability',
+    'break even', 'break-even', 'breakeven',
+    'budget', 'cost', 'costs',
+    'gross', 'grosses', 'grossing',
+    'closing', 'close', 'closes',
+    'SEC', 'Form D', 'filing',
+    'million', '$', 'financial'
+  ];
+
   const results = [];
   const seenUrls = new Set();
 
-  for (const query of queries) {
-    const fullQuery = `${query} ${sites}`;
-    const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(fullQuery)}`;
+  // Helper to check if text contains financial keywords
+  const hasFinancialKeywords = (text) => {
+    if (!text) return false;
+    const lower = text.toLowerCase();
+    return FINANCIAL_KEYWORDS.some(kw => lower.includes(kw.toLowerCase()));
+  };
 
-    try {
-      const response = await fetchViaScrapingBee(apiUrl, { premiumProxy: false });
+  // Helper to parse RSS XML
+  const parseRSS = (xml) => {
+    const items = [];
+    const itemMatches = xml.match(/<item>([\s\S]*?)<\/item>/gi) || [];
+    for (const item of itemMatches) {
+      const title = item.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/i)?.[1] || '';
+      const link = item.match(/<link>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/link>/i)?.[1] || '';
+      const desc = item.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/i)?.[1] || '';
+      if (link) {
+        items.push({ title: title.trim(), url: link.trim(), snippet: desc.replace(/<[^>]+>/g, '').trim() });
+      }
+    }
+    return items;
+  };
 
-      // ScrapingBee Google search returns organic_results array
-      const organicResults = response?.organic_results || response?.results || [];
-      if (Array.isArray(organicResults)) {
-        for (const result of organicResults) {
-          const url = result.url || result.link || '';
-          if (!url || seenUrls.has(url)) continue;
-          seenUrls.add(url);
-
-          // Detect source from URL
-          let source = 'unknown';
-          if (url.includes('deadline.com')) source = 'Deadline';
-          else if (url.includes('variety.com')) source = 'Variety';
-          else if (url.includes('broadwayjournal.com')) source = 'Broadway Journal';
-          else if (url.includes('playbill.com')) source = 'Playbill';
-          else if (url.includes('nytimes.com')) source = 'New York Times';
-          else if (url.includes('forbes.com')) source = 'Forbes';
-
-          results.push({
-            title: result.title || '',
-            url,
-            snippet: result.snippet || result.description || '',
-            source
-          });
+  // Helper to parse HTML section page for article links
+  const parseHTMLSection = (html, baseUrl) => {
+    const items = [];
+    // Look for article links with titles
+    const linkMatches = html.match(/<a[^>]+href=["']([^"']+)["'][^>]*>([^<]+)<\/a>/gi) || [];
+    for (const match of linkMatches) {
+      const urlMatch = match.match(/href=["']([^"']+)["']/i);
+      const titleMatch = match.match(/>([^<]+)</);
+      if (urlMatch && titleMatch) {
+        let url = urlMatch[1];
+        if (url.startsWith('/')) url = new URL(url, baseUrl).href;
+        if (url.includes('/202') && !url.includes('/tag/') && !url.includes('/category/')) {
+          items.push({ title: titleMatch[1].trim(), url, snippet: '' });
         }
       }
-    } catch (e) {
-      console.error(`  Trade press search failed for "${query.slice(0, 40)}...": ${e.message}`);
+    }
+    return items;
+  };
+
+  for (const source of TRADE_SOURCES) {
+    console.log(`  Checking ${source.name}...`);
+
+    // Try RSS first (faster, less bandwidth)
+    if (source.rssUrl) {
+      try {
+        const rssContent = await fetchPageSimple(source.rssUrl);
+        if (rssContent) {
+          const items = parseRSS(rssContent);
+          for (const item of items.slice(0, 20)) { // Last 20 articles
+            if (seenUrls.has(item.url)) continue;
+            if (hasFinancialKeywords(item.title) || hasFinancialKeywords(item.snippet)) {
+              seenUrls.add(item.url);
+              results.push({ ...item, source: source.source });
+            }
+          }
+          console.log(`    RSS: found ${items.length} articles, ${results.filter(r => r.source === source.source).length} with financial keywords`);
+          continue; // Skip section scraping if RSS worked
+        }
+      } catch (e) {
+        console.log(`    RSS failed: ${e.message}, trying section page...`);
+      }
     }
 
-    await sleep(1000);
+    // Fall back to section page scraping
+    if (source.sectionUrl) {
+      try {
+        const html = await fetchPageSimple(source.sectionUrl);
+        if (html) {
+          const items = parseHTMLSection(html, source.sectionUrl);
+          for (const item of items.slice(0, 30)) {
+            if (seenUrls.has(item.url)) continue;
+            // For section pages, we need to fetch each article to check keywords
+            // But to avoid too many requests, just add articles with promising titles
+            if (hasFinancialKeywords(item.title)) {
+              seenUrls.add(item.url);
+              results.push({ ...item, source: source.source });
+            }
+          }
+          console.log(`    Section: found ${items.length} links, ${results.filter(r => r.source === source.source).length} with financial titles`);
+        }
+      } catch (e) {
+        console.log(`    Section scrape failed: ${e.message}`);
+      }
+    }
+
+    await sleep(500);
   }
 
-  console.log(`  Found ${results.length} trade press articles`);
+  console.log(`  Found ${results.length} trade press articles with financial keywords`);
   return results;
+}
+
+/**
+ * Simple fetch without proxies - for RSS feeds and basic HTML
+ */
+async function fetchPageSimple(url) {
+  const https = require('https');
+  const http = require('http');
+  const protocol = url.startsWith('https') ? https : http;
+
+  return new Promise((resolve) => {
+    const req = protocol.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+      },
+      timeout: 10000
+    }, (res) => {
+      // Follow redirects
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        fetchPageSimple(res.headers.location).then(resolve);
+        return;
+      }
+      if (res.statusCode !== 200) {
+        resolve(null);
+        return;
+      }
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+    });
+    req.on('error', () => resolve(null));
+    req.on('timeout', () => { req.destroy(); resolve(null); });
+  });
 }
 
 /**
