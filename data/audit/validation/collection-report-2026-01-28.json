@@ -1,96 +1,77 @@
 {
-  "runDate": "2026-01-28T23:51:04.244Z",
+  "runDate": "2026-01-28T23:52:05.512Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 35,
+    "maxReviews": 30,
     "priority": "all",
-    "showFilter": "harmony-2023",
+    "showFilter": "an-enemy-of-the-people-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 15,
-    "failed": 16,
+    "processed": 6,
+    "failed": 17,
     "skipped": 0,
-    "successRate": "48.4%"
+    "successRate": "26.1%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "scrapingbee": 0,
-    "brightdata": 3,
-    "archive": 9
+    "brightdata": 0,
+    "archive": 6
   },
   "statistics": {
-    "tier1Attempts": 26,
-    "tier1Success": 3,
-    "tier2Attempts": 23,
+    "tier1Attempts": 19,
+    "tier1Success": 0,
+    "tier2Attempts": 18,
     "tier2Success": 0,
-    "tier3Attempts": 23,
-    "tier3Success": 3,
-    "tier4Attempts": 50,
-    "tier4Success": 9,
-    "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 60
+    "tier3Attempts": 18,
+    "tier3Success": 0,
+    "tier4Attempts": 40,
+    "tier4Success": 6,
+    "totalFailed": 17,
+    "scrapingBeeCreditsUsed": 70
   },
   "processed": [
-    "harmony-2023/nyt-theater--jonathan-mandell.json",
-    "harmony-2023/variety--trish-deitch.json",
-    "harmony-2023/deadline--greg-evans.json",
-    "harmony-2023/nypost--johnny-oleksinski.json",
-    "harmony-2023/observer--jesse-green.json",
-    "harmony-2023/observer--rex-reed.json",
-    "harmony-2023/the-new-york-sun--elysa-gardner.json",
-    "harmony-2023/thewrap--robert-hofler.json",
-    "harmony-2023/thewrap--robert.json",
-    "harmony-2023/amny--matt-windman.json",
-    "harmony-2023/chicagotribune--chris-jones.json",
-    "harmony-2023/nysr--david-finkle.json",
-    "harmony-2023/nysr--sandy-macdonald.json",
-    "harmony-2023/talkinbroadway--matthew-murray.json",
-    "harmony-2023/washpost--peter-marks.json"
+    "an-enemy-of-the-people-2024/variety--daniel-daddario.json",
+    "an-enemy-of-the-people-2024/ew--adam-markavitz.json",
+    "an-enemy-of-the-people-2024/ew--dalton-ross.json",
+    "an-enemy-of-the-people-2024/newsday--linda-winer.json",
+    "an-enemy-of-the-people-2024/thewrap--robert-hofler.json",
+    "an-enemy-of-the-people-2024/wallstreet-journal--terry-teachout.json"
   ],
   "failed": [
-    "harmony-2023/hollywood-reporter--angie-han.json",
-    "harmony-2023/hollywood-reporter--david-rooney.json",
-    "harmony-2023/variety--aramide-tinubu.json",
-    "harmony-2023/variety--charles-isherwood.json",
-    "harmony-2023/variety--frank-rizzo.json",
-    "harmony-2023/variety--peter-marks.json",
-    "harmony-2023/vulture--helen-shaw.json",
-    "harmony-2023/deadline--pete-hammond.json",
-    "harmony-2023/guardian--adrian-horton.json",
-    "harmony-2023/guardian--jesse-hassenger.json",
-    "harmony-2023/observer--david-cote.json",
-    "harmony-2023/theatermania--adam-feldman.json",
-    "harmony-2023/forward--jesse-green.json",
-    "harmony-2023/theatrely--michael-appler.json",
-    "harmony-2023/stageandcinema--matthew-murray.json",
-    "harmony-2023/usatoday--charles-isherwood.json"
+    "an-enemy-of-the-people-2024/hollywood-reporter--angie-han.json",
+    "an-enemy-of-the-people-2024/nytg--david-gordon.json",
+    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+    "an-enemy-of-the-people-2024/variety--peter-marks.json",
+    "an-enemy-of-the-people-2024/vulture--helen-shaw.json",
+    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris.json",
+    "an-enemy-of-the-people-2024/theatermania--jesse-green.json",
+    "an-enemy-of-the-people-2024/wsj--terry-teachout.json",
+    "an-enemy-of-the-people-2024/backstage--suzt-evans.json",
+    "an-enemy-of-the-people-2024/bergen-record--robert-feldberg.json",
+    "an-enemy-of-the-people-2024/bloomberg--andnbspjeremy-gerard.json",
+    "an-enemy-of-the-people-2024/philadelphia-inquirer--howard-shapiro.json",
+    "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
+    "an-enemy-of-the-people-2024/washpost--naveen-kumar.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "harmony-2023/nyt-theater--jonathan-mandell.json",
-      "harmony-2023/nysr--david-finkle.json",
-      "harmony-2023/nysr--sandy-macdonald.json"
-    ],
+    "playwright": [],
     "scrapingbee": [],
-    "brightdata": [
-      "harmony-2023/observer--jesse-green.json",
-      "harmony-2023/observer--rex-reed.json",
-      "harmony-2023/chicagotribune--chris-jones.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "harmony-2023/variety--trish-deitch.json",
-      "harmony-2023/deadline--greg-evans.json",
-      "harmony-2023/nypost--johnny-oleksinski.json",
-      "harmony-2023/the-new-york-sun--elysa-gardner.json",
-      "harmony-2023/thewrap--robert-hofler.json",
-      "harmony-2023/thewrap--robert.json",
-      "harmony-2023/amny--matt-windman.json",
-      "harmony-2023/talkinbroadway--matthew-murray.json",
-      "harmony-2023/washpost--peter-marks.json"
+      "an-enemy-of-the-people-2024/variety--daniel-daddario.json",
+      "an-enemy-of-the-people-2024/ew--adam-markavitz.json",
+      "an-enemy-of-the-people-2024/ew--dalton-ross.json",
+      "an-enemy-of-the-people-2024/newsday--linda-winer.json",
+      "an-enemy-of-the-people-2024/thewrap--robert-hofler.json",
+      "an-enemy-of-the-people-2024/wallstreet-journal--terry-teachout.json"
     ]
   }
 }
