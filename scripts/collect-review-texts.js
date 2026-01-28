@@ -40,6 +40,9 @@ const https = require('https');
 // Score extraction for original scores
 const { extractScore, extractDesignation } = require('./lib/score-extractors');
 
+// LLM-based content verification
+const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
+
 // Parse CLI arguments
 const args = process.argv.slice(2);
 const CLI = {
@@ -47,6 +50,7 @@ const CLI = {
   forceTier: args.find(a => a.startsWith('--tier='))?.split('=')[1],
   testUrl: args.find(a => a.startsWith('--test-url='))?.split('=')[1],
   stealthProxy: args.includes('--stealth-proxy'), // Use ScrapingBee stealth proxy (25 credits/req)
+  llmVerify: args.includes('--llm-verify') || process.env.LLM_VERIFY === 'true', // Use LLM to verify content
 };
 
 // Dependencies (loaded dynamically)
@@ -1075,7 +1079,7 @@ function mapSourceMethod(method) {
   return map[method] || method;
 }
 
-function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '') {
+function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '', contentVerification = null) {
   const data = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
 
   // Get excerpt length for truncation detection
@@ -1157,6 +1161,28 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
   } else {
     delete data.textIssues;
     delete data.textIssue;
+  }
+
+  // Store LLM content verification results
+  if (contentVerification) {
+    data.contentVerification = {
+      isValid: contentVerification.isValid,
+      confidence: contentVerification.confidence,
+      truncated: contentVerification.truncated,
+      wrongArticle: contentVerification.wrongArticle,
+      issues: contentVerification.issues,
+      verifiedBy: contentVerification.verifiedBy,
+      verifiedAt: new Date().toISOString()
+    };
+
+    // Flag for manual review if LLM detected issues
+    if (contentVerification.wrongArticle) {
+      data.flaggedForReview = true;
+      data.flagReason = 'LLM detected possible wrong article';
+    }
+    if (contentVerification.truncated && !data.truncationSignals) {
+      data.textQuality = 'truncated';
+    }
   }
 
   fs.writeFileSync(review.filePath, JSON.stringify(data, null, 2));
@@ -1613,8 +1639,40 @@ async function processReview(review) {
       console.log(`  Issues: ${validation.issues.join(', ')}`);
     }
 
+    // LLM-based content verification (if enabled)
+    let contentVerification = null;
+    if (CLI.llmVerify && validation.wordCount >= 200) {
+      console.log(`  LLM Verification...`);
+      try {
+        // Get excerpt from existing review data
+        const reviewData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        const excerpt = reviewData.dtliExcerpt || reviewData.bwwExcerpt || reviewData.showScoreExcerpt || '';
+
+        contentVerification = await verifyContent({
+          scrapedText: result.text,
+          excerpt: excerpt,
+          showTitle: reviewData.showId?.replace(/-\d{4}$/, '').replace(/-/g, ' ') || '',
+          outletName: review.outlet,
+          criticName: review.critic
+        });
+
+        console.log(`  LLM Verify: ${contentVerification.isValid ? 'VALID' : 'ISSUES'} (${contentVerification.confidence} confidence)`);
+        if (contentVerification.issues.length > 0) {
+          console.log(`  LLM Issues: ${contentVerification.issues.join(', ')}`);
+        }
+        if (contentVerification.wrongArticle) {
+          console.log(`  ⚠ WARNING: May be wrong article!`);
+        }
+        if (contentVerification.truncated) {
+          console.log(`  ⚠ WARNING: Content appears truncated`);
+        }
+      } catch (e) {
+        console.log(`  LLM Verify error: ${e.message}`);
+      }
+    }
+
     // Update JSON (pass HTML for score extraction)
-    updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {}, result.html || '');
+    updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {}, result.html || '', contentVerification);
 
     // Track tier breakdown
     if (result.method && state.tierBreakdown[result.method]) {
