@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“Bioh has written a colorful, tactile, and caring work, letting us in on both the beauty of the braiding process...and the intense labor of it”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/jaja-s-african-hair-braiding-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "colorful, tactile, and caring work",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "letting us in on both the beauty of the braiding process",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "a colorful, tactile, and caring work",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the writing as 'colorful, tactile, and caring' and appreciates how it reveals both beauty and labor, indicating clear positive sentiment about the work, though the excerpt is too brief for high confidence. | GPT-4o-mini: The review expresses strong appreciation for the work's qualities, indicating a clear recommendation despite lacking explicit calls to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:49.073Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
