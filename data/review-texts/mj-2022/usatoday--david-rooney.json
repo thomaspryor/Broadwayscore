@@ -5,7 +5,7 @@
   "criticName": "David Rooney",
   "url": "https://www.usatoday.com/story/entertainment/theater/2022/02/01/mj-musical-broadway-review-michael-jackson/9301234002/",
   "publishDate": "February 1, 2022",
-  "fullText": "The musical succeeds best when it focuses on Jackson's artistry and creative process, but struggles when it attempts to address the controversies that shadowed his later years.",
+  "fullText": "NEWSAbilene, TXAdd TopicAbilene Salvation Army asks for help stocking shelter before freeze hitsStaff reportFeb. 1, 2022, 1:57 p.m. ETIn advance of extreme winter weather expected to arrive in the Big Country Wednesday afternoon, the Salvation Army is asking residents to help stock its shelter with hygiene items.\n\nIn a Tuesday news release, the organization said its supplies of soap, shampoo, toothpaste and other hygiene items are \"dangerously low.\"\n\nThe Salvation Army's local emergency shelter, at 1726 Butternut St., provided shelter to 160 people without homes in January, the release said, and many are expected to seek refuge from the cold weather.\n\n\"When temperatures drop, The Salvation Army makes extra beds available, expecting an influx of people seeking shelter from the cold,\" Captain Joshua Mckain, Commanding Officer of The Salvation Army, said in the release.\n\n\"In addition to a hot meal and a warm bed, we also provide essential hygiene items. Our supplies of these items are extremely low, and I am appealing to the community to step up and help us out.\"\n\nDonations can be delivered to the Salvation Army shelter and administration office, or pickup can be arranged for businesses. For information, call 325-677-1408.",
   "isFullReview": false,
   "dtliExcerpt": "The musical succeeds best when it focuses on Jackson's artistry and creative process, but struggles when it attempts to address the controversies that shadowed his later years.",
   "originalScore": null,
@@ -75,5 +75,46 @@
   },
   "sources": [
     "web-search"
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 195,
+  "archivePath": "data/archives/reviews/mj-2022/usatoday--david-rooney_2026-01-28.html",
+  "textFetchedAt": "2026-01-28T23:53:46.032Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 195 (min: 300)",
+    "Show title not found in text"
   ]
 }
