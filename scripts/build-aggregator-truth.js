@@ -46,7 +46,21 @@ function countLocalReviews(showId) {
   const files = fs.readdirSync(showDir)
     .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
 
-  return files.length;
+  // Count only valid reviews (exclude wrongProduction and wrongShow)
+  let validCount = 0;
+  for (const file of files) {
+    try {
+      const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
+      if (!data.wrongProduction && !data.wrongShow) {
+        validCount++;
+      }
+    } catch (e) {
+      // If we can't read/parse, count it as valid (better to overcount than undercount)
+      validCount++;
+    }
+  }
+
+  return validCount;
 }
 
 /**

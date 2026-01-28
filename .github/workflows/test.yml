@@ -44,6 +44,11 @@ jobs:
         run: node scripts/validate-archive-productions.js
         continue-on-error: true  # Don't fail build, just warn - archives need manual refetch
 
+      - name: Validate aggregator truth
+        run: node scripts/validate-aggregator-truth.js
+        # Compares local review counts to aggregator data
+        # High-coverage shows (Tony winners, etc.) are exempt from strict ratio limits
+
       - name: Create issue on failure
         if: failure() && github.event_name == 'schedule'
         uses: actions/github-script@v7
