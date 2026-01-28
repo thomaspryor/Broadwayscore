@@ -1,0 +1,297 @@
+# Automated review refresh - checks for new reviews and triggers collection
+# Replaces the previous scheduled-review-refresh workflow
+name: Refresh Review Data
+
+on:
+  schedule:
+    # Awards season (April-June): Weekly on Mondays at 9 AM UTC
+    - cron: '0 9 * 4-6 1'
+    # Rest of year: Bi-weekly on 1st and 15th at 9 AM UTC
+    - cron: '0 9 1,15 1-3,7-12 *'
+  workflow_dispatch:
+    inputs:
+      show_filter:
+        description: 'Specific show ID to refresh (leave empty for all open shows)'
+        required: false
+        default: ''
+        type: string
+      force_collection:
+        description: 'Force review collection even if no new reviews detected'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  check-for-new-reviews:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      has_new_reviews: ${{ steps.check.outputs.has_new_reviews }}
+      shows_with_updates: ${{ steps.check.outputs.shows_with_updates }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Determine if awards season
+        id: season
+        run: |
+          MONTH=$(date +%m)
+          if [ "$MONTH" -ge 4 ] && [ "$MONTH" -le 6 ]; then
+            echo "is_awards_season=true" >> $GITHUB_OUTPUT
+            echo "Awards season detected (April-June) - enhanced monitoring active"
+          else
+            echo "is_awards_season=false" >> $GITHUB_OUTPUT
+            echo "Regular season - standard monitoring"
+          fi
+
+      - name: Check aggregators for new reviews
+        id: check
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SHOW_FILTER: ${{ inputs.show_filter }}
+          IS_AWARDS_SEASON: ${{ steps.season.outputs.is_awards_season }}
+        run: |
+          node << 'SCRIPT'
+          const fs = require('fs');
+          const path = require('path');
+
+          // Load current show and review data
+          const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+          const reviewsData = JSON.parse(fs.readFileSync('data/reviews.json', 'utf8'));
+
+          // Get open shows (or filtered show)
+          const showFilter = process.env.SHOW_FILTER;
+          let showsToCheck = showsData.shows.filter(s => s.status === 'open' || s.status === 'previews');
+
+          if (showFilter) {
+            showsToCheck = showsToCheck.filter(s => s.id === showFilter || s.slug === showFilter);
+          }
+
+          console.log(`Checking ${showsToCheck.length} shows for new reviews...`);
+
+          // Count current reviews per show
+          const currentReviewCounts = {};
+          for (const show of showsToCheck) {
+            const showReviews = reviewsData.reviews?.filter(r => r.showId === show.id) || [];
+            currentReviewCounts[show.id] = showReviews.length;
+            console.log(`  ${show.title}: ${showReviews.length} reviews currently`);
+          }
+
+          // Check review-texts directory for actual file counts
+          const reviewTextsDir = 'data/review-texts';
+          const fileReviewCounts = {};
+          for (const show of showsToCheck) {
+            const showDir = path.join(reviewTextsDir, show.id);
+            try {
+              const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+              fileReviewCounts[show.id] = files.length;
+            } catch {
+              fileReviewCounts[show.id] = 0;
+            }
+          }
+
+          // Load show-score data to check for discrepancies
+          let showScoreData = {};
+          try {
+            showScoreData = JSON.parse(fs.readFileSync('data/show-score.json', 'utf8'));
+          } catch {}
+
+          // Identify shows that might have new reviews available
+          const showsNeedingUpdate = [];
+          const isAwardsSeason = process.env.IS_AWARDS_SEASON === 'true';
+
+          for (const show of showsToCheck) {
+            const showId = show.id;
+            const currentCount = currentReviewCounts[showId] || 0;
+            const fileCount = fileReviewCounts[showId] || 0;
+            const showScoreCount = showScoreData[showId]?.criticReviewCount || 0;
+
+            // Flag if Show Score reports more reviews than we have
+            if (showScoreCount > currentCount + 2) {
+              console.log(`  [NEW] ${show.title}: Show Score reports ${showScoreCount} reviews, we have ${currentCount}`);
+              showsNeedingUpdate.push(showId);
+            }
+            // During awards season, also check shows with few reviews
+            else if (isAwardsSeason && currentCount < 5) {
+              console.log(`  [LOW] ${show.title}: Only ${currentCount} reviews during awards season`);
+              showsNeedingUpdate.push(showId);
+            }
+            // Check for file vs database mismatch
+            else if (fileCount > currentCount) {
+              console.log(`  [SYNC] ${show.title}: ${fileCount} files but only ${currentCount} in reviews.json`);
+              showsNeedingUpdate.push(showId);
+            }
+          }
+
+          // Remove duplicates
+          const uniqueShows = [...new Set(showsNeedingUpdate)];
+
+          console.log(`\nFound ${uniqueShows.length} shows that may need review updates`);
+
+          // Write outputs
+          const hasNew = uniqueShows.length > 0 || process.env.FORCE_COLLECTION === 'true';
+
+          // GitHub Actions output
+          const outputFile = process.env.GITHUB_OUTPUT;
+          if (outputFile) {
+            fs.appendFileSync(outputFile, `has_new_reviews=${hasNew}\n`);
+            fs.appendFileSync(outputFile, `shows_with_updates=${uniqueShows.join(',')}\n`);
+          }
+
+          // Save detailed report for debugging
+          const report = {
+            timestamp: new Date().toISOString(),
+            isAwardsSeason,
+            showsChecked: showsToCheck.length,
+            showsNeedingUpdate: uniqueShows,
+            reviewCounts: currentReviewCounts,
+            showScoreCounts: Object.fromEntries(
+              showsToCheck.map(s => [s.id, showScoreData[s.id]?.criticReviewCount || 0])
+            )
+          };
+
+          fs.writeFileSync('data/review-refresh-report.json', JSON.stringify(report, null, 2));
+          console.log('\nReport saved to data/review-refresh-report.json');
+          SCRIPT
+
+      - name: Fetch updated aggregator pages
+        if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          SHOWS="${{ steps.check.outputs.shows_with_updates }}"
+          if [ -n "$SHOWS" ]; then
+            echo "Fetching aggregator pages for: $SHOWS"
+            for SHOW_ID in $(echo $SHOWS | tr ',' ' '); do
+              echo "Processing $SHOW_ID..."
+              node scripts/fetch-aggregator-pages.ts --aggregator show-score --shows "$SHOW_ID" 2>/dev/null || true
+            done
+          fi
+
+      - name: Extract reviews from aggregator pages
+        if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
+        run: |
+          echo "Extracting reviews from archived aggregator pages..."
+          node scripts/extract-show-score-reviews.js 2>/dev/null || true
+          node scripts/extract-dtli-reviews.js 2>/dev/null || true
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected:"
+            git diff --stat data/
+          fi
+
+      - name: Commit and push changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/
+
+          SEASON_NOTE=""
+          if [ "${{ steps.season.outputs.is_awards_season }}" == "true" ]; then
+            SEASON_NOTE=" (awards season)"
+          fi
+
+          SHOWS_UPDATED="${{ steps.check.outputs.shows_with_updates }}"
+          if [ -n "$SHOWS_UPDATED" ]; then
+            COUNT=$(echo "$SHOWS_UPDATED" | tr ',' '\n' | wc -l | tr -d ' ')
+            git commit -m "data: Refresh review data for $COUNT shows$SEASON_NOTE
+
+          Updated shows: $SHOWS_UPDATED
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          else
+            git commit -m "data: Scheduled review refresh check$SEASON_NOTE
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          fi
+
+          # Retry push with rebase in case remote has new commits
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase origin main
+            sleep $((RANDOM % 5 + 2))
+          done
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Review Refresh Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ steps.season.outputs.is_awards_season }}" == "true" ]; then
+            echo "**Season:** Awards Season (enhanced monitoring)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Season:** Regular" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "**New reviews detected:** ${{ steps.check.outputs.has_new_reviews }}" >> $GITHUB_STEP_SUMMARY
+
+          if [ -n "${{ steps.check.outputs.shows_with_updates }}" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Shows with potential updates:" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            echo "${{ steps.check.outputs.shows_with_updates }}" | tr ',' '\n' >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # Trigger full review collection if significant updates detected
+  trigger-collection:
+    needs: check-for-new-reviews
+    if: needs.check-for-new-reviews.outputs.has_new_reviews == 'true' && needs.check-for-new-reviews.outputs.shows_with_updates != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger review collection workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const shows = '${{ needs.check-for-new-reviews.outputs.shows_with_updates }}';
+            console.log(`Triggering review collection for: ${shows}`);
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'collect-review-texts.yml',
+                ref: 'main',
+                inputs: {
+                  show_filter: shows.split(',')[0],
+                  max_reviews: '100',
+                  priority: 'all'
+                }
+              });
+              console.log('Successfully triggered collect-review-texts workflow');
+            } catch (e) {
+              console.log(`Note: Could not trigger collection workflow: ${e.message}`);
+            }
