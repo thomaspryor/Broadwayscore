@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The Book of Mormon is a consistently funny, irreverent, and surprisingly sweet musical that manages to be both blasphemous and respectful at the same time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Book of Mormon is a consistently funny, irreverent, and surprisingly sweet musical that manages to be both blasphemous and respectful at the same time.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "consistently funny, irreverent, and surprisingly sweet",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "manages to be both blasphemous and respectful at the same time",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "consistently funny",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review uses consistently positive language with no caveats or criticisms, praising the show's humor, tone, and ability to balance potentially offensive material with respect. | GPT-4o-mini: The review expresses strong positive sentiment with descriptors like 'consistently funny' and 'surprisingly sweet', indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:09:50.978Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
