@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, memo } from 'react';
-import { getOutletLogoUrl, getOutletFaviconUrl, getOutletConfig } from '@/config/outlet-logos';
+import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
 
 interface Review {
   showId: string;
@@ -56,34 +56,21 @@ function getScoreClasses(score: number): string {
 
 function OutletLogo({ outlet }: { outlet: string }) {
   const [imageError, setImageError] = useState(false);
-  const [useFallbackFavicon, setUseFallbackFavicon] = useState(false);
 
   const logoUrl = getOutletLogoUrl(outlet);
-  const faviconUrl = getOutletFaviconUrl(outlet);
   const config = getOutletConfig(outlet);
 
-  // If we have a logo URL and haven't errored, try to show the logo
   if (logoUrl && !imageError) {
-    const imgSrc = useFallbackFavicon ? faviconUrl : logoUrl;
-
-    if (imgSrc) {
-      return (
-        <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 overflow-hidden">
-          <img
-            src={imgSrc}
-            alt=""
-            className="w-6 h-6 object-contain"
-            onError={() => {
-              if (!useFallbackFavicon && faviconUrl) {
-                setUseFallbackFavicon(true);
-              } else {
-                setImageError(true);
-              }
-            }}
-          />
-        </div>
-      );
-    }
+    return (
+      <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 overflow-hidden">
+        <img
+          src={logoUrl}
+          alt=""
+          className="w-6 h-6 object-contain"
+          onError={() => setImageError(true)}
+        />
+      </div>
+    );
   }
 
   // Fallback to colored circle with abbreviation
