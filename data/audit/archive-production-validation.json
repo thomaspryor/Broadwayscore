@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-01-28T20:12:50.210Z",
+  "summary": {
+    "checked": 211,
+    "valid": 208,
+    "mismatches": 3,
+    "warnings": 2
+  },
+  "mismatches": [
+    {
+      "showId": "our-town-2024",
+      "source": "dtli",
+      "file": "our-town-2024.html",
+      "expected": {
+        "year": 2024,
+        "venue": "Barrymore Theatre"
+      },
+      "found": {
+        "year": 2002,
+        "theater": "booth theatre"
+      },
+      "issue": "Year mismatch: expected 2024, found 2002"
+    },
+    {
+      "showId": "suffs-2024",
+      "source": "dtli",
+      "file": "suffs-2024.html",
+      "expected": {
+        "year": 2024,
+        "venue": "Music Box Theatre"
+      },
+      "found": {
+        "year": 2022,
+        "theater": "public theater"
+      },
+      "issue": "Year mismatch: expected 2024, found 2022"
+    },
+    {
+      "showId": "the-whos-tommy-2024",
+      "source": "bww",
+      "file": "the-whos-tommy-2024.html",
+      "expected": {
+        "venue": "Nederlander Theatre"
+      },
+      "found": {
+        "title": "review roundup: the who's tommy at kennedy center - what did the critics think?"
+      },
+      "issue": "Page TITLE references Kennedy Center - this is a tour/tryout page, not Broadway"
+    }
+  ],
+  "warnings": [
+    {
+      "showId": "bug-2025",
+      "source": "bww",
+      "issue": "Show not found in shows.json"
+    },
+    {
+      "showId": "bug-2025",
+      "source": "show-score",
+      "issue": "Show not found in shows.json"
+    }
+  ]
+}
