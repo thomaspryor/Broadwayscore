@@ -73,10 +73,16 @@
     "needsReviewReasons": []
   },
   "textWordCount": 122,
-  "archivePath": "data/archives/reviews/harry-potter-2021/financial-times--charles-isherwood_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T20:26:47.986Z",
+  "archivePath": "data/archives/reviews/harry-potter-2021/financial-times-uk--charles-isherwood_2026-01-28.html",
+  "textFetchedAt": "2026-01-28T23:36:44.466Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "Insufficient text in archive: 134 chars"
+    },
     {
       "tier": 1,
       "method": "playwright",
@@ -94,5 +100,6 @@
     "Word count too low: 122 (min: 300)",
     "Show title not found in text"
   ],
-  "truncationSignals": []
+  "truncationSignals": [],
+  "designation": "Recommended"
 }
