@@ -60,6 +60,14 @@ jobs:
             git commit -m "chore: LLM evaluation results (n=${{ github.event.inputs.test_size }})
 
             Co-Authored-By: Claude <noreply@anthropic.com>"
-            git pull --rebase origin claude/broadway-metascore-site-8jjx7 || true
-            git push
+            # Retry push with rebase in case remote has new commits
+            for i in 1 2 3 4 5; do
+              if git push origin main; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              echo "Push failed (attempt $i), pulling and rebasing..."
+              git pull --rebase origin main
+              sleep $((RANDOM % 5 + 2))
+            done
           fi

@@ -51,8 +51,17 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/
           git diff --staged --quiet || git commit -m "chore: Update DTLI review data"
-          git pull --rebase origin main
-          git push origin main
+
+          # Retry push with rebase in case remote has new commits
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase origin main
+            sleep $((RANDOM % 5 + 2))
+          done
 
   scrape-bww:
     if: ${{ inputs.aggregator == 'all' || inputs.aggregator == 'bww' }}
@@ -91,5 +100,14 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/
           git diff --staged --quiet || git commit -m "chore: Update BWW Review Roundup data"
-          git pull --rebase origin main
-          git push origin main
+
+          # Retry push with rebase in case remote has new commits
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase origin main
+            sleep $((RANDOM % 5 + 2))
+          done
