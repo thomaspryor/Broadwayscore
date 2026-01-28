@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 91,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Get ready to book the Palace, the Palladium, the Hollywood Bowl and the Baths of Caracalla!",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "headliner Jonathan Groff is ready for his own solo show on any of the world's most famous stages",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "headliner Jonathan Groff is ready for his own solo show",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review opens with enthusiastic exclamation about booking world-famous venues and declares Groff ready for solo stardom, indicating strong positive recommendation despite being performance-focused. | GPT-4o-mini: The review expresses strong enthusiasm for Jonathan Groff's performance, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:38.271Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

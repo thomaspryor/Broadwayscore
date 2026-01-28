@@ -11,10 +11,66 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "\"That sordid history would not seem to have foretold a jukebox musical devoted to the upside of Jacksonâs genius â and certainly not by artists of the caliber of two-time Pulitzer winner Nottage (âRuined,â âSweatâ) and the celebrated ballet world fixture Wheeldon. The showâs decidedly selective memory may be off-putting to theatergoers appalled by the stories of Jacksonâs alleged misdeeds. Nevertheless, the creative teamâs painstaking work has resulted in a riveting, adrenaline rush of a show, propelled by remarkable dancing and a mesmerizing central performance by Myles Frost as the sleek, soft-spoken pop megastar.\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/mj"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/mj",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 87,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "riveting, adrenaline rush of a show",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "propelled by remarkable dancing and a mesmerizing central performance",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "may be off-putting to theatergoers appalled by the stories",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging ethical concerns about the subject matter, the critic praises the 'painstaking work' of top-tier artists and describes the result as 'riveting' with 'remarkable' performances, indicating a clear positive recommendation. | GPT-4o-mini: The review highlights strong performances and an engaging production but acknowledges potential issues with the show's narrative focus.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:47.316Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

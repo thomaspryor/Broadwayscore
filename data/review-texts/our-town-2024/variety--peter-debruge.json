@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of Thornton Wilder's 1938 Pulitzer Prize-winning play feels especially urgent, reminding us to appreciate the ordinary moments that make up our lives.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production of Thornton Wilder's 1938 Pulitzer Prize-winning play feels especially urgent, reminding us to appreciate the ordinary moments that make up our lives.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels especially urgent",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "reminding us to appreciate the ordinary moments that make up our lives",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "reminding us to appreciate the ordinary moments",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review expresses appreciation for the production's relevance and emotional impact, but lacks specific praise for performances or production elements and provides no explicit recommendation. | GPT-4o-mini: The review expresses a positive sentiment about the production's urgency and its thematic relevance, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:22.010Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

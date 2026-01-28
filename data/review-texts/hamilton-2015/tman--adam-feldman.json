@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Hamilton is a musical about the tension between idealism and pragmatism, and it comes down firmly on the side of both.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hamilton is a musical about the tension between idealism and pragmatism, and it comes down firmly on the side of both.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 83
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hamilton is a musical about the tension between idealism and pragmatism",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "it comes down firmly on the side of both",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "tension between idealism and pragmatism",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The phrase 'comes down firmly on the side of both' suggests the critic appreciates how the musical successfully balances complex themes, indicating intellectual respect and moderate positive sentiment, but the excerpt lacks clear recommendation language or enthusiasm markers. | GPT-4o-mini: The review suggests a thoughtful exploration of themes but lacks strong enthusiasm or explicit recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:20.331Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 70,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "bwwExcerpt": "Objectively speaking, John O’Farrell’s Live Aid retrospective doesn’t stand out among the sea of jukebox musicals that wash up on our shores these days. His dialogue is often trite. The characters come across as one-dimensional, cardboard cut-outs. And the songs (including hits such as “Dancing in the Streets,” “My Generation” and “All You Need Is Love”) aren’t integrated with the story so much as they’re body checked into the plot.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JUST-FOR-US-2023",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": 30,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "His dialogue is often trite",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The characters come across as one-dimensional, cardboard cut-outs",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "doesn't stand out among the sea of jukebox musicals",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic systematically criticizes every major element - calling the dialogue trite, characters one-dimensional, and song integration poor - with no redeeming qualities mentioned. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the script and character development, leading to a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:17.684Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
