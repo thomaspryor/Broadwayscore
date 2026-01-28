@@ -489,6 +489,16 @@ All automation runs via GitHub Actions - no local commands needed.
   - Uses retry loop (5 attempts) with random backoff for git push conflicts
   - After batch runs complete, rebuild `reviews.json` with: `node scripts/rebuild-all-reviews.js`
 
+### `.github/workflows/review-refresh.yml`
+- **Runs:** Weekly on Mondays at 9 AM UTC (4 AM EST), year-round
+- **Does:**
+  - Checks all open shows for new reviews not yet in the database
+  - Compares Show Score / DTLI / BWW review counts against local review-texts
+  - If new reviews found, triggers `collect-review-texts.yml` for each show individually
+- **Manual trigger:** `gh workflow run "Refresh Review Data"` with optional `show_filter` or `force_collection`
+- **Script:** `scripts/check-show-freshness.js`
+- **Note:** This workflow discovers new reviews but does NOT rebuild `reviews.json` — that requires a separate `rebuild-all-reviews.js` run (Gap #1, pending)
+
 ### `.github/workflows/fetch-aggregator-pages.yml`
 - **Runs:** Manual trigger only
 - **Does:** Fetches and archives HTML pages from ALL THREE aggregator sources
@@ -527,7 +537,7 @@ All automation runs via GitHub Actions - no local commands needed.
   - Hero: 1920×800 WebP (center crop)
 - **ShowImage component:** `src/components/ShowImage.tsx` renders images with cascading source fallback and onError handling — if local file fails, tries next source; if all fail, renders emoji fallback
 
-### `.github/workflows/update-grosses.yml`
+### `.github/workflows/weekly-grosses.yml`
 - **Runs:** Every Tuesday & Wednesday at 3pm UTC (10am ET)
 - **Does:** Scrapes BroadwayWorld for weekly box office data and all-time stats
 - **Also:** Enriches `grosses.json` with WoW/YoY data from `grosses-history.json`, saves current week to history
@@ -542,7 +552,7 @@ All automation runs via GitHub Actions - no local commands needed.
 - **Options:** `weeks` (default 55), `start_from` (YYYY-MM-DD)
 - **Reliability:** Uses `domcontentloaded` (not `networkidle`), 3 retries per week, `if: always()` commit, push retry with rebase
 - **Script:** `scripts/backfill-grosses-history.ts`
-- **Note:** Only needed for initial setup or extending history range. Weekly updates happen automatically via `update-grosses.yml`
+- **Note:** Only needed for initial setup or extending history range. Weekly updates happen automatically via `weekly-grosses.yml`
 
 ### `.github/workflows/discover-historical-shows.yml`
 - **Runs:** Manual trigger only (workflow_dispatch)
