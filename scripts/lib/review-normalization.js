@@ -58,7 +58,7 @@ const OUTLET_ALIASES = {
   ],
   'nydailynews': [
     'nydailynews', 'new york daily news', 'daily news', 'ny daily news',
-    'nydn', 'newyorkdailynews', 'new-york-daily-news'
+    'nydn', 'newyorkdailynews', 'new-york-daily-news', 'ny-daily-news'
   ],
   'ew': [
     'ew', 'entertainment weekly', 'entertainmentweekly', 'entertainment-weekly'
@@ -121,7 +121,7 @@ const OUTLET_ALIASES = {
     'frontmezzjunkies', 'front mezz junkies', 'front-mezz-junkies', 'fmj'
   ],
   'dailybeast': [
-    'dailybeast', 'the daily beast', 'daily beast', 'tdb', 'the-daily-beast'
+    'dailybeast', 'the daily beast', 'daily beast', 'tdb', 'the-daily-beast', 'daily-beast'
   ],
   'usatoday': [
     'usatoday', 'usa today', 'usa-today'
