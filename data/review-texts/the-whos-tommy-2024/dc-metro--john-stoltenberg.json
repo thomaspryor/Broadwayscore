@@ -11,8 +11,64 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-WHOS-TOMMY-2024",
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 78,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "Far from blunting dramatic impact, it makes us care about Tommy all the more",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "intensified concern for Tommy the character",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "our emotional identification with Cott's grownup Tommy",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt praises the directorial approach for creating stronger emotional connection and dramatic impact, suggesting a positive assessment, though limited context makes precise scoring difficult. | GPT-4o-mini: The review indicates a clear positive sentiment towards the direction and its emotional impact on the audience, suggesting a recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:16.057Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

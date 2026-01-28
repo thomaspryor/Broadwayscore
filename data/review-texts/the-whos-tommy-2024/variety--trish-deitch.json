@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"...this production of 'Tommy' is basically for old people, and not for a new generation\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 38,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 45.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this production of 'Tommy' is basically for old people, and not for a new generation",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "this production of 'Tommy' is basically for old people",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "not for a new generation",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic suggests the production is dated and lacks relevance for contemporary audiences, implying limited appeal and accessibility. | GPT-4o-mini: The review expresses a clear negative sentiment about the production's appeal, suggesting it is outdated and not suitable for younger audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:48.472Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 35,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
