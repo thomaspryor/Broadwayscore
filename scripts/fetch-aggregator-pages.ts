@@ -191,12 +191,12 @@ async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>
         console.log(`    ⚠️ Year mismatch: page has ${pageYear}, expected ${expectedYear}`);
         return false;
       }
+      // Year matches - this is likely the right production
+      console.log(`    ✓ Year matches: ${pageYear}`);
+      return true;
     }
-    // Also check for "Broadway" tab if this is a Broadway show
-    if (show.venue && html.includes('off-broadway') && !html.includes('broadway-shows')) {
-      console.log(`    ⚠️ Page appears to be off-Broadway, not Broadway`);
-      return false;
-    }
+    // No opening date found - accept the page (can't validate, rely on URL pattern)
+    console.log(`    ⚠️ No opening date found, accepting based on URL pattern`);
     return true;
   };
 
