@@ -225,8 +225,8 @@ export function getOutletLogoUrl(outlet: string): string | null {
   const config = OUTLET_LOGOS[outlet];
   if (!config) return null;
 
-  // Use Clearbit for high-quality logos
-  return `https://logo.clearbit.com/${config.domain}`;
+  // Use Google Favicons (Clearbit Logo API was shut down after HubSpot acquisition)
+  return `https://www.google.com/s2/favicons?domain=${config.domain}&sz=64`;
 }
 
 // Get fallback favicon URL
