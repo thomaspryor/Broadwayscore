@@ -667,6 +667,9 @@ function runWrongProductionAudit() {
   console.log(`  Shows with wrong-production indicators: ${report.summary.shows_with_indicators}`);
   console.log(`  Files scanned: ${report.summary.files_scanned}`);
   console.log(`  Files flagged: ${report.summary.files_flagged}`);
+  console.log(`    - Likely wrong production: ${report.summary.likely_wrong_production}`);
+  console.log(`    - Comparison mentions (false positives): ${report.summary.comparison_mentions}`);
+  console.log(`    - Needs manual review: ${report.summary.needs_review}`);
   console.log(`  Shows in baseline pending: ${report.summary.baseline_pending}`);
 
   if (report.flagged.length > 0) {
