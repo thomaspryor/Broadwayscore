@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "What starts as a gentle comedy about two women of a certain age finding companionship gradually reveals darker undercurrents, thanks to committed performances from Mia Farrow and Patti LuPone.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What starts as a gentle comedy about two women of a certain age finding companionship gradually reveals darker undercurrents, thanks to committed performances from Mia Farrow and Patti LuPone.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "committed performances from Mia Farrow and Patti LuPone",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "gradually reveals darker undercurrents",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "gentle comedy about two women of a certain age",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Brief excerpt praises strong performances and suggests thoughtful dramatic development, but lacks explicit recommendation or detailed evaluation to indicate stronger enthusiasm. | GPT-4o-mini: The review highlights strong performances and a positive premise, indicating a clear recommendation despite some ambiguity about the overall impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:08:54.833Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

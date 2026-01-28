@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Though 'MJ' is undeniably a crowd-pleaser that will satisfy Jackson devotees, it feels more like a concert than a cohesive musical with a clear dramatic arc.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though 'MJ' is undeniably a crowd-pleaser that will satisfy Jackson devotees, it feels more like a concert than a cohesive musical with a clear dramatic arc.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "undeniably a crowd-pleaser that will satisfy Jackson devotees",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "feels more like a concert than a cohesive musical with a clear dramatic arc",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "'MJ' is undeniably a crowd-pleaser",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges the show's entertainment value and fan appeal but criticizes its fundamental theatrical structure, creating a mixed assessment that leans slightly positive due to crowd-pleasing qualities. | GPT-4o-mini: The review acknowledges the show's appeal to fans while highlighting significant structural weaknesses, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:08:23.422Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

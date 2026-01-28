@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a spirited, if somewhat scattershot, celebration of female empowerment that gives Shakespeare's tragic heroine a chance to rewrite her story with a happier ending.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a spirited, if somewhat scattershot, celebration of female empowerment that gives Shakespeare's tragic heroine a chance to rewrite her story with a happier ending.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 63,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "spirited...celebration of female empowerment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "if somewhat scattershot",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "gives Shakespeare's tragic heroine a chance to rewrite her story with a happier ending",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed-positive review that praises the show's empowering themes and spirit but notes significant structural issues ('scattershot'), suggesting a qualified recommendation. | GPT-4o-mini: The review indicates a positive sentiment towards the theme of empowerment but notes a lack of cohesion, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:10:01.703Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
