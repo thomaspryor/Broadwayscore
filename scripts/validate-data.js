@@ -347,6 +347,103 @@ function validateReviewData(shows) {
   }
 }
 
+function validateReviewsJson() {
+  info('Checking reviews.json for duplicate outlet+critic combos...');
+  const reviewsFile = path.join(DATA_DIR, 'reviews.json');
+
+  if (!fs.existsSync(reviewsFile)) {
+    info('reviews.json does not exist, skipping');
+    return;
+  }
+
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(reviewsFile, 'utf8'));
+  } catch (e) {
+    error(`reviews.json parse error: ${e.message}`);
+    return;
+  }
+
+  const reviews = data.reviews || [];
+  ok(`Loaded ${reviews.length} reviews from reviews.json`);
+
+  // Check for duplicate outlet+critic per show
+  const byShow = {};
+  const duplicates = [];
+
+  for (const r of reviews) {
+    const showId = r.showId || 'unknown';
+    const outletKey = (r.outlet || 'unknown').toLowerCase().trim();
+    const criticKey = (r.criticName || 'unknown').toLowerCase().trim();
+    const key = `${outletKey}|${criticKey}`;
+
+    if (!byShow[showId]) {
+      byShow[showId] = new Set();
+    }
+
+    if (byShow[showId].has(key)) {
+      duplicates.push({ showId, outlet: r.outlet, critic: r.criticName });
+    } else {
+      byShow[showId].add(key);
+    }
+  }
+
+  if (duplicates.length > 0) {
+    error(`Found ${duplicates.length} duplicate outlet+critic combos in reviews.json:`);
+    duplicates.slice(0, 10).forEach(d => {
+      error(`  ${d.showId}: ${d.outlet} + ${d.critic}`);
+    });
+    if (duplicates.length > 10) {
+      error(`  ...and ${duplicates.length - 10} more`);
+    }
+  } else {
+    ok('No duplicate outlet+critic combos in reviews.json');
+  }
+
+  // Check for known critic misattribution
+  const KNOWN_CRITICS = {
+    'jesse green': ['the new york times', 'nytimes', 'nyt'],
+    'maya phillips': ['the new york times', 'nytimes', 'nyt'],
+    'peter marks': ['the washington post', 'washington post', 'washpost'],
+    'adam feldman': ['time out', 'time out new york', 'timeout'],
+    'charles isherwood': ['the wall street journal', 'wsj'],
+    'ben brantley': ['the new york times', 'nytimes', 'nyt'],
+    'frank scheck': ['the hollywood reporter', 'hollywood reporter'],
+    'david rooney': ['the hollywood reporter', 'hollywood reporter'],
+    'helen shaw': ['vulture', 'new york magazine'],
+    'sara holdren': ['vulture', 'new york magazine'],
+    'johnny oleksinski': ['new york post', 'nypost'],
+    'chris jones': ['chicago tribune', 'chicagotribune'],
+  };
+
+  const misattributed = [];
+  for (const r of reviews) {
+    const criticLower = (r.criticName || '').toLowerCase().trim();
+    const outletLower = (r.outlet || '').toLowerCase().trim();
+
+    if (KNOWN_CRITICS[criticLower]) {
+      const allowedOutlets = KNOWN_CRITICS[criticLower];
+      const isAllowed = allowedOutlets.some(o => outletLower.includes(o) || o.includes(outletLower));
+
+      if (!isAllowed) {
+        misattributed.push({ showId: r.showId, outlet: r.outlet, critic: r.criticName });
+      }
+    }
+  }
+
+  if (misattributed.length > 0) {
+    error(`Found ${misattributed.length} misattributed reviews (critic at wrong outlet):`);
+    misattributed.slice(0, 5).forEach(m => {
+      error(`  ${m.showId}: ${m.critic} at ${m.outlet}`);
+    });
+    if (misattributed.length > 5) {
+      error(`  ...and ${misattributed.length - 5} more`);
+    }
+  } else {
+    ok('No known critic misattributions detected');
+  }
+}
+
 // ===========================================
 // COMMERCIAL DATA VALIDATION
 // ===========================================
@@ -514,6 +611,8 @@ function runValidation() {
   validateCommercialJson();
   console.log('');
   validateReviewData(shows);
+  console.log('');
+  validateReviewsJson();
 
   // Summary
   console.log('');
