@@ -5,7 +5,7 @@
   "criticName": "Jesse Green",
   "url": "https://observer.com/2024/04/illinoise-broadway-review/",
   "publishDate": "April 25, 2024",
-  "fullText": "The show succeeds in translating Sufjan Stevens's beloved 2005 concept album into a moving theatrical experience that honors both the source material and the medium of dance.",
+  "fullText": "We noticed you're using an ad blocker.\n\t\t\tWe get it: you like to have control of your own internet experience. But advertising revenue helps support our journalism. To read our full stories, please turn off your ad blocker.We'd really appreciate it.\n\nBelow are steps you can take in order to whitelist Observer.com on your browser:\n\nClick the AdBlock button on your browser and select Don't run on pages on this domain.\n\nClick the AdBlock Plus button on your browser and select Enabled on this site.\n\nClick the AdBlock Plus button on your browser and select Disable on Observer.com.",
   "isFullReview": false,
   "dtliExcerpt": "The show succeeds in translating Sufjan Stevens's beloved 2005 concept album into a moving theatrical experience that honors both the source material and the medium of dance.",
   "originalScore": null,
@@ -72,5 +72,43 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 98,
+  "archivePath": "data/archives/reviews/illinoise-2024/observer--jesse-green_2026-01-28.html",
+  "textFetchedAt": "2026-01-28T23:35:43.808Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (404): Request failed with status code 404"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 98 (min: 300)",
+    "Show title not found in text"
+  ]
 }
