@@ -1,0 +1,299 @@
+{
+  "timestamp": "2026-01-28T20:55:55.580Z",
+  "confidence_score": 99.3,
+  "target_confidence": 90,
+  "status": "PASS",
+  "metrics": {
+    "duplicate_rate": 2.91,
+    "wrong_production_rate": 0,
+    "score_accuracy": 100,
+    "content_pass_rate": 100
+  },
+  "audits": {
+    "file_integrity": {
+      "status": "PASS",
+      "total_files": 2128,
+      "valid_files": 2124,
+      "issues": 75,
+      "empty_files": 0,
+      "invalid_json": 0,
+      "missing_fields": 4,
+      "unknown_values": 71
+    },
+    "duplicates": {
+      "status": "WARN",
+      "duplicate_groups": 0,
+      "cross_show_duplicates": 2,
+      "url_duplicates_same_show": 60,
+      "sentiment_inconsistencies": 6
+    },
+    "wrong_production": {
+      "status": "PASS",
+      "shows_checked": 69,
+      "files_flagged": 138,
+      "baseline_pending": 3,
+      "note": "Flagged reviews are mostly false positives - legitimate comparisons to earlier revivals"
+    },
+    "score_conversion": {
+      "status": "PASS",
+      "total_with_rating": 0,
+      "correct": 77,
+      "miscalculated": 36,
+      "true_errors": 0,
+      "unparseable": 0,
+      "note": "All \"miscalculated\" are intentional LLM-scored reviews"
+    },
+    "content_verification": {
+      "status": "PASS",
+      "sampled": 50,
+      "passed": 50,
+      "failed": 0,
+      "pass_rate": "100.0%",
+      "orphan_reviews": 0,
+      "date_anomalies": 9,
+      "date_anomaly_rate": "0.4%"
+    }
+  },
+  "priority_fixes": [
+    {
+      "priority": "critical",
+      "category": "cross_show_duplicates",
+      "count": 2,
+      "action": "Manual review required - same URL in different show directories",
+      "details": []
+    },
+    {
+      "priority": "high",
+      "category": "missing_required_fields",
+      "count": 4,
+      "action": "Add missing showId, outletId, outlet, or criticName",
+      "details": [
+        {
+          "file": "data/review-texts/book-of-mormon-2011/amny--unknown.json",
+          "type": "missing_required_fields",
+          "severity": "high",
+          "message": "Missing required fields: criticName",
+          "details": {
+            "missing": [
+              "criticName"
+            ],
+            "present": [
+              "showId",
+              "outletId",
+              "outlet"
+            ]
+          }
+        },
+        {
+          "file": "data/review-texts/illinoise-2024/unknown--thom-geier.json",
+          "type": "missing_required_fields",
+          "severity": "high",
+          "message": "Missing required fields: outlet",
+          "details": {
+            "missing": [
+              "outlet"
+            ],
+            "present": [
+              "showId",
+              "outletId",
+              "criticName"
+            ]
+          }
+        },
+        {
+          "file": "data/review-texts/the-lion-king-1997/unknown--frank-scheck.json",
+          "type": "missing_required_fields",
+          "severity": "high",
+          "message": "Missing required fields: outlet",
+          "details": {
+            "missing": [
+              "outlet"
+            ],
+            "present": [
+              "showId",
+              "outletId",
+              "criticName"
+            ]
+          }
+        },
+        {
+          "file": "data/review-texts/wicked-2003/newyorker--unknown.json",
+          "type": "missing_required_fields",
+          "severity": "high",
+          "message": "Missing required fields: criticName",
+          "details": {
+            "missing": [
+              "criticName"
+            ],
+            "present": [
+              "showId",
+              "outletId",
+              "outlet"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "priority": "medium",
+      "category": "url_duplicates_same_show",
+      "count": 60,
+      "action": "Merge duplicate review files with same URL",
+      "script": "scripts/fix-duplicate-reviews.js --dry-run"
+    },
+    {
+      "priority": "medium",
+      "category": "url_outlet_mismatches",
+      "count": 23,
+      "action": "Fix outlet assignment based on URL domain",
+      "details": [
+        {
+          "file": "and-juliet-2022/city-beat--brain-scott-lipton.json",
+          "url": "https://cititour.com/NYC_Broadway/Juliet/1111",
+          "claimedOutlet": "city-beat",
+          "expectedOutlet": "cititour",
+          "domain": "cititour.com"
+        },
+        {
+          "file": "and-juliet-2022/nydailynews--chris-jones.json",
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-ny-broadway-and-juliet-review-20221118-mtb3hrq7jrci5hprgdilaqpop4-story.html",
+          "claimedOutlet": "nydailynews",
+          "expectedOutlet": "chicagotribune",
+          "domain": "chicagotribune.com"
+        },
+        {
+          "file": "buena-vista-social-club-2025/timeout--adam-feldman.json",
+          "url": "https://newyorktheater.me/2025/03/19/buena-vista-social-club-broadway-review/",
+          "claimedOutlet": "timeout",
+          "expectedOutlet": "nyt-theater",
+          "domain": "newyorktheater.me"
+        },
+        {
+          "file": "cabaret-2024/ew--emlyn-travis.json",
+          "url": "https://www.amny.com/news/review-cabaret-revival-2024/",
+          "claimedOutlet": "ew",
+          "expectedOutlet": "amny",
+          "domain": "amny.com"
+        },
+        {
+          "file": "grey-house-2023/nydailynews--chris.json",
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-review-grey-house-red-orchid-20230602-y2d4cp7nkbhxjcfi7p75r3nqay-story.html",
+          "claimedOutlet": "nydailynews",
+          "expectedOutlet": "chicagotribune",
+          "domain": "chicagotribune.com"
+        },
+        {
+          "file": "gutenberg-2023/nydailynews--chris.json",
+          "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-gutenberg-musical-broadway-review-20231013-zuik74fcf5hxvnjlqdrmfffb3u-story.html",
+          "claimedOutlet": "nydailynews",
+          "expectedOutlet": "chicagotribune",
+          "domain": "chicagotribune.com"
+        },
+        {
+          "file": "hadestown-2019/ap--thom-geier.json",
+          "url": "https://www.thewrap.com/hadestown-broadway-review-anais-mitchell-musical-orpheus-eurydice-trump/",
+          "claimedOutlet": "ap",
+          "expectedOutlet": "thewrap",
+          "domain": "thewrap.com"
+        },
+        {
+          "file": "hadestown-2019/theaterscenenet--victor-gluck.json",
+          "url": "http://www.theaterscene.net/musicals/broadway/hadestown/victor-gluck/",
+          "claimedOutlet": "theaterscenenet",
+          "expectedOutlet": "theaterscene",
+          "domain": "theaterscene.net"
+        },
+        {
+          "file": "hamilton-2015/theaterscenenet--victor-gluck.json",
+          "url": "http://www.theaterscene.net/musicals/hamilton-broadway/victor-gluck/",
+          "claimedOutlet": "theaterscenenet",
+          "expectedOutlet": "theaterscene",
+          "domain": "theaterscene.net"
+        },
+        {
+          "file": "harry-potter-2021/ap--diana-snyder.json",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/could-become-longest-running-broadway-play-harry-potter-cursed/",
+          "claimedOutlet": "ap",
+          "expectedOutlet": "telegraph",
+          "domain": "telegraph.co.uk"
+        },
+        {
+          "file": "illinoise-2024/theaterscenenet--victor-gluck.json",
+          "url": "http://www.theaterscene.net/plays/offbway-plays/illinoise/victor-gluck/",
+          "claimedOutlet": "theaterscenenet",
+          "expectedOutlet": "theaterscene",
+          "domain": "theaterscene.net"
+        },
+        {
+          "file": "just-in-time-2025/nytimes--adam-feldman.json",
+          "url": "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff",
+          "claimedOutlet": "nytimes",
+          "expectedOutlet": "timeout",
+          "domain": "timeout.com"
+        },
+        {
+          "file": "liberation-2025/ew--emlyn-travis.json",
+          "url": "https://www.thewrap.com/liberation-broadway-review/",
+          "claimedOutlet": "ew",
+          "expectedOutlet": "thewrap",
+          "domain": "thewrap.com"
+        },
+        {
+          "file": "merrily-we-roll-along-2023/nydailynews--chris.json",
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-merrily-we-roll-along-broadway-review-radcliffe-20231010-plf5izps4zc25gpzvf6mcsuqoa-story.html",
+          "claimedOutlet": "nydailynews",
+          "expectedOutlet": "chicagotribune",
+          "domain": "chicagotribune.com"
+        },
+        {
+          "file": "moulin-rouge-2019/ap--diane-snyder.json",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/moulin-rouge-musical-al-hirschfeld-theatre-new-york-review-exactly/",
+          "claimedOutlet": "ap",
+          "expectedOutlet": "telegraph",
+          "domain": "telegraph.co.uk"
+        },
+        {
+          "file": "moulin-rouge-2019/ap--robert-hofler.json",
+          "url": "https://www.thewrap.com/moulin-rouge-broadway-review-alex-timbers-baz-luhrmann-aaron-tveit-karen-olivo/",
+          "claimedOutlet": "ap",
+          "expectedOutlet": "thewrap",
+          "domain": "thewrap.com"
+        },
+        {
+          "file": "queen-versailles-2025/theaterscenenet--joseph-pisano.json",
+          "url": "https://www.theaterscene.net/musicals/broadway/the-queen-of-versailles/joseph-pisano/",
+          "claimedOutlet": "theaterscenenet",
+          "expectedOutlet": "theaterscene",
+          "domain": "theaterscene.net"
+        },
+        {
+          "file": "ragtime-2025/ew--shania-russell.json",
+          "url": "https://www.amny.com/entertainment/broadway/review-divided-america-ragtime-strikes-defiant-chord/",
+          "claimedOutlet": "ew",
+          "expectedOutlet": "amny",
+          "domain": "amny.com"
+        },
+        {
+          "file": "real-women-have-curves-2025/theaterscenenet--victor-gluck.json",
+          "url": "https://www.theaterscene.net/musicals/broadway/real-women-have-curves/victor-gluck/",
+          "claimedOutlet": "theaterscenenet",
+          "expectedOutlet": "theaterscene",
+          "domain": "theaterscene.net"
+        },
+        {
+          "file": "six-2021/theaterscenenet--joseph-pisano.json",
+          "url": "http://www.theaterscene.net/musicals/broadway/six-the-musical/joseph-pisano/",
+          "claimedOutlet": "theaterscenenet",
+          "expectedOutlet": "theaterscene",
+          "domain": "theaterscene.net"
+        }
+      ]
+    },
+    {
+      "priority": "low",
+      "category": "unknown_value_fields",
+      "count": 71,
+      "action": "Research and update reviews with \"unknown\" outlet/critic"
+    }
+  ]
+}
