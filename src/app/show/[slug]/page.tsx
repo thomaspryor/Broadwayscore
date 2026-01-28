@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus, getLotteryRush, getShowCommercial, getShowLastUpdated } from '@/lib/data';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
+import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
 import BoxOfficeStats from '@/components/BoxOfficeStats';
@@ -486,41 +487,24 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             {/* Poster Card - fetchpriority high for LCP optimization */}
             <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40">
               <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
-                {show.images?.poster ? (
-                  <img
-                    src={getOptimizedImageUrl(show.images.poster, 'poster')}
-                    alt={show.title}
-                    width={176}
-                    height={264}
-                    decoding="async"
-                    fetchPriority="high"
-                    className="w-full h-full object-contain"
-                  />
-                ) : show.images?.thumbnail ? (
-                  <img
-                    src={getOptimizedImageUrl(show.images.thumbnail, 'poster')}
-                    alt={show.title}
-                    width={176}
-                    height={264}
-                    decoding="async"
-                    fetchPriority="high"
-                    className="w-full h-full object-contain"
-                  />
-                ) : show.images?.hero ? (
-                  <img
-                    src={getOptimizedImageUrl(show.images.hero, 'poster')}
-                    alt={show.title}
-                    width={176}
-                    height={264}
-                    decoding="async"
-                    fetchPriority="high"
-                    className="w-full h-full object-contain"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                    <span className="text-4xl text-gray-600">🎭</span>
-                  </div>
-                )}
+                <ShowImage
+                  sources={[
+                    show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'poster') : null,
+                    show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'poster') : null,
+                    show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'poster') : null,
+                  ]}
+                  alt={show.title}
+                  width={176}
+                  height={264}
+                  decoding="async"
+                  priority
+                  className="w-full h-full object-contain"
+                  fallback={
+                    <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                      <span className="text-4xl text-gray-600">🎭</span>
+                    </div>
+                  }
+                />
               </div>
             </div>
 
