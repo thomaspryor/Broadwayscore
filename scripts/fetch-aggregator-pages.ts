@@ -97,65 +97,68 @@ function archiveExists(aggregator: string, showId: string): boolean {
 }
 
 // === SHOW SCORE ===
-// Show Score blocks direct URL access, so we use search
+// Try direct URLs with -broadway suffix first (most reliable)
 async function fetchShowScore(page: Page, showId: string, shows: Record<string, Show>, urlMappings: Record<string, string>): Promise<FetchResult> {
   const show = shows[showId];
   if (!show) {
     return { showId, aggregator: 'show-score', success: false, error: 'Show not found in shows.json' };
   }
 
+  // Generate URL slug from title
+  const baseSlug = show.title
+    .toLowerCase()
+    .replace(/['']/g, '')
+    .replace(/[!?.,&:]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+
+  // Try URL patterns in order of reliability
+  // Pattern 1: {slug}-broadway (for shows with multiple productions like hadestown-broadway)
+  // Pattern 2: {slug} (simple case)
+  // Pattern 3: {slug}-the-musical-broadway (for musicals)
+  const urlPatterns = [
+    `https://www.show-score.com/broadway-shows/${baseSlug}-broadway`,
+    `https://www.show-score.com/broadway-shows/${baseSlug}`,
+    `https://www.show-score.com/broadway-shows/${baseSlug}-the-musical-broadway`,
+  ];
+
   try {
-    // Navigate to homepage
-    await page.goto('https://www.show-score.com', { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(1000);
+    for (const tryUrl of urlPatterns) {
+      const response = await page.goto(tryUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      await page.waitForTimeout(1000);
 
-    // Search for the show
-    const searchBox = page.getByRole('textbox', { name: 'Search' });
-    await searchBox.fill(show.title);
-    await searchBox.press('Enter');
-    await page.waitForTimeout(2000);
+      const pageUrl = page.url();
 
-    // Look for Broadway show in results
-    const broadwayLink = page.locator(`a:has-text("${show.title}"):has-text("Broadway")`).first();
-
-    if (await broadwayLink.count() === 0) {
-      // Try partial match
-      const anyLink = page.locator('a[href*="/broadway-shows/"]').first();
-      if (await anyLink.count() === 0) {
-        return { showId, aggregator: 'show-score', success: false, error: 'No Broadway show found in search results' };
+      // Reject if redirected to off-Broadway
+      if (pageUrl.includes('/off-broadway-shows/') || pageUrl.includes('/off-off-broadway-shows/')) {
+        continue; // Try next pattern
       }
-      await anyLink.click();
-    } else {
-      await broadwayLink.click();
+
+      // Check if we landed on a valid Broadway show page
+      if (!pageUrl.includes('/broadway-shows/') || pageUrl.includes('/search')) {
+        continue; // Try next pattern
+      }
+
+      const html = await page.content();
+
+      // Verify it has show data
+      if (!html.includes('aggregateRating') && !html.includes('Critic Reviews')) {
+        continue; // Try next pattern
+      }
+
+      // Success! Save and return
+      saveHtml('show-score', showId, html, show.title, pageUrl);
+
+      if (urlMappings[showId] !== pageUrl) {
+        urlMappings[showId] = pageUrl;
+      }
+
+      return { showId, aggregator: 'show-score', success: true };
     }
 
-    await page.waitForTimeout(2000);
-
-    // Verify we're on a Broadway show page (not search, off-broadway, or general page)
-    const pageUrl = page.url();
-    if (pageUrl.includes('/off-broadway-shows/') || pageUrl.includes('/off-off-broadway-shows/')) {
-      return { showId, aggregator: 'show-score', success: false, error: `Redirected to off-Broadway: ${pageUrl}` };
-    }
-    if (!pageUrl.includes('/broadway-shows/') || pageUrl.includes('/search')) {
-      return { showId, aggregator: 'show-score', success: false, error: `Landed on wrong page: ${pageUrl}` };
-    }
-
-    // Get HTML
-    const html = await page.content();
-
-    // Verify it has show data
-    if (!html.includes('aggregateRating') && !html.includes('Critic Reviews')) {
-      return { showId, aggregator: 'show-score', success: false, error: 'Page does not contain expected show data' };
-    }
-
-    saveHtml('show-score', showId, html, show.title, pageUrl);
-
-    // Update URL mapping if it's different
-    if (urlMappings[showId] !== pageUrl) {
-      urlMappings[showId] = pageUrl;
-    }
-
-    return { showId, aggregator: 'show-score', success: true };
+    // All patterns failed
+    return { showId, aggregator: 'show-score', success: false, error: `No Broadway page found (tried ${urlPatterns.length} URL patterns)` };
   } catch (error) {
     return { showId, aggregator: 'show-score', success: false, error: String(error) };
   }
