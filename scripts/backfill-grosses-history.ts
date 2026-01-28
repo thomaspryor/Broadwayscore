@@ -207,96 +207,108 @@ async function backfillHistory(): Promise<void> {
 
   try {
     for (const weekDate of weeksToDo) {
-      const page = await context.newPage();
+      const MAX_RETRIES = 3;
+      let succeeded = false;
 
-      try {
-        const url = `${PLAYBILL_URL}?week=${weekDate}`;
-        console.log(`\nFetching week ${weekDate}...`);
+      for (let attempt = 1; attempt <= MAX_RETRIES && !succeeded; attempt++) {
+        const page = await context.newPage();
 
-        await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
-        await page.waitForTimeout(3000);
-
-        // Wait for the grosses table to appear
-        await page.waitForSelector('table', { timeout: 15000 });
-
-        // Extract data from the table
-        const rowData = await page.$$eval('table tbody tr', (rows) => {
-          return rows.map(row => {
-            const cells = row.querySelectorAll('td');
-            if (cells.length < 7) return null;
-
-            // Cell 0: Show name + theater
-            const showCell = cells[0];
-            const showLink = showCell?.querySelector('a');
-            const showName = showLink?.textContent?.trim() || '';
-
-            // Cell 1: This Week Gross + Potential Gross
-            const grossText = cells[1]?.textContent?.trim() || '';
-            const gross = grossText.split('\n')[0]?.trim() || '';
-
-            // Cell 3: Avg Ticket + Top Ticket
-            const atpText = cells[3]?.textContent?.trim() || '';
-            const atp = atpText.split('\n')[0]?.replace(/\s+/g, ' ')?.trim()?.split(' ')[0] || '';
-
-            // Cell 4: Seats Sold + Seats in Theatre
-            const seatsText = cells[4]?.textContent?.trim() || '';
-            const seatsSold = seatsText.split('\n')[0]?.replace(/\s+/g, '')?.trim() || '';
-
-            // Cell 5: Perfs + Previews
-            const perfsText = cells[5]?.textContent?.trim() || '';
-            const perfs = perfsText.split('\n')[0]?.replace(/\s+/g, '')?.trim() || '';
-
-            // Cell 6: % Cap
-            const capText = cells[6]?.textContent?.trim() || '';
-
-            return { showName, gross, atp, seatsSold, perfs, capText };
-          }).filter(Boolean);
-        });
-
-        const weekSnapshot: Record<string, HistoryEntry> = {};
-        let matched = 0;
-
-        for (const row of rowData) {
-          if (!row || !row.showName) continue;
-
-          const slug = findMatchingSlug(row.showName, showMap);
-          if (slug) {
-            weekSnapshot[slug] = {
-              gross: parseCurrency(row.gross),
-              capacity: parsePercentage(row.capText),
-              atp: parseCurrency(row.atp),
-              attendance: parseNumber(row.seatsSold),
-              performances: parseNumber(row.perfs)
-            };
-            matched++;
+        try {
+          const url = `${PLAYBILL_URL}?week=${weekDate}`;
+          if (attempt === 1) {
+            console.log(`\nFetching week ${weekDate}...`);
+          } else {
+            console.log(`  Retry ${attempt}/${MAX_RETRIES} for week ${weekDate}...`);
           }
+
+          await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+
+          // Wait for the grosses table to appear (JS-rendered)
+          await page.waitForSelector('table tbody tr', { timeout: 20000 });
+
+          // Extract data from the table
+          const rowData = await page.$$eval('table tbody tr', (rows) => {
+            return rows.map(row => {
+              const cells = row.querySelectorAll('td');
+              if (cells.length < 7) return null;
+
+              // Cell 0: Show name + theater
+              const showCell = cells[0];
+              const showLink = showCell?.querySelector('a');
+              const showName = showLink?.textContent?.trim() || '';
+
+              // Cell 1: This Week Gross + Potential Gross
+              const grossText = cells[1]?.textContent?.trim() || '';
+              const gross = grossText.split('\n')[0]?.trim() || '';
+
+              // Cell 3: Avg Ticket + Top Ticket
+              const atpText = cells[3]?.textContent?.trim() || '';
+              const atp = atpText.split('\n')[0]?.replace(/\s+/g, ' ')?.trim()?.split(' ')[0] || '';
+
+              // Cell 4: Seats Sold + Seats in Theatre
+              const seatsText = cells[4]?.textContent?.trim() || '';
+              const seatsSold = seatsText.split('\n')[0]?.replace(/\s+/g, '')?.trim() || '';
+
+              // Cell 5: Perfs + Previews
+              const perfsText = cells[5]?.textContent?.trim() || '';
+              const perfs = perfsText.split('\n')[0]?.replace(/\s+/g, '')?.trim() || '';
+
+              // Cell 6: % Cap
+              const capText = cells[6]?.textContent?.trim() || '';
+
+              return { showName, gross, atp, seatsSold, perfs, capText };
+            }).filter(Boolean);
+          });
+
+          const weekSnapshot: Record<string, HistoryEntry> = {};
+          let matched = 0;
+
+          for (const row of rowData) {
+            if (!row || !row.showName) continue;
+
+            const slug = findMatchingSlug(row.showName, showMap);
+            if (slug) {
+              weekSnapshot[slug] = {
+                gross: parseCurrency(row.gross),
+                capacity: parsePercentage(row.capText),
+                atp: parseCurrency(row.atp),
+                attendance: parseNumber(row.seatsSold),
+                performances: parseNumber(row.perfs)
+              };
+              matched++;
+            }
+          }
+
+          if (matched > 0) {
+            history.weeks[weekDate] = weekSnapshot;
+            console.log(`  ✓ ${matched} shows matched for week ${weekDate}`);
+            successCount++;
+            succeeded = true;
+
+            // Save incrementally every 3 weeks
+            if (successCount % 3 === 0) {
+              history._meta.lastUpdated = new Date().toISOString();
+              fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2) + '\n');
+              console.log(`  [Saved progress: ${Object.keys(history.weeks).length} weeks]`);
+            }
+          } else {
+            console.log(`  ⚠ No shows matched for week ${weekDate} (${rowData.length} rows found)`);
+            if (attempt === MAX_RETRIES) failCount++;
+          }
+
+        } catch (error: any) {
+          if (attempt === MAX_RETRIES) {
+            console.error(`  ✗ Failed for week ${weekDate} after ${MAX_RETRIES} attempts: ${error.message}`);
+            failCount++;
+          }
+        } finally {
+          await page.close();
         }
 
-        if (matched > 0) {
-          history.weeks[weekDate] = weekSnapshot;
-          console.log(`  ✓ ${matched} shows matched for week ${weekDate}`);
-          successCount++;
-
-          // Save incrementally every 5 weeks
-          if (successCount % 5 === 0) {
-            history._meta.lastUpdated = new Date().toISOString();
-            fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2) + '\n');
-            console.log(`  [Saved progress: ${Object.keys(history.weeks).length} weeks]`);
-          }
-        } else {
-          console.log(`  ⚠ No shows matched for week ${weekDate} (${rowData.length} rows found)`);
-          failCount++;
-        }
-
-      } catch (error: any) {
-        console.error(`  ✗ Failed for week ${weekDate}: ${error.message}`);
-        failCount++;
-      } finally {
-        await page.close();
+        // Delay between requests (longer on retry)
+        const delay = succeeded ? 2000 : (attempt < MAX_RETRIES ? 5000 : 2000);
+        await new Promise(resolve => setTimeout(resolve, delay));
       }
-
-      // Respectful delay between requests
-      await new Promise(resolve => setTimeout(resolve, 2000));
     }
   } finally {
     await browser.close();
