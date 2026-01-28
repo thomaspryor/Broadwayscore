@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 89,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "it was revelatory",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Despite some structural weaknesses that remain",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "a beautiful work featuring an ensemble of actors at the top of their game",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances and overall quality ('revelatory', 'beautiful work') with acknowledgment of structural issues, suggesting clear recommendation despite reservations. | GPT-4o-mini: The review expresses strong praise for the performances and overall beauty of the play, despite acknowledging some structural weaknesses, leading to a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:58.900Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

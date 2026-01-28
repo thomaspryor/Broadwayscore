@@ -10,8 +10,64 @@
   "showScoreExcerpt": "CRITICâS PICK: âSo however you want to categorize âStereophonicâ â perhaps a playical?...The music justifies the long buildup, and the play, Adjmiâs best so far, is as rich and lustrous as they come. You could even call it platinum.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/stereophonic",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 88,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "CRITIC'S PICK",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "as rich and lustrous as they come",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You could even call it platinum",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The 'Critic's Pick' designation combined with superlative language like 'rich and lustrous as they come' and the platinum metaphor indicates unqualified enthusiasm and strong recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and high praise for the play, indicating it is a must-see production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:09.297Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
