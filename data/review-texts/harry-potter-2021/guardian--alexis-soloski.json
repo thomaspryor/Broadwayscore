@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "suspense is the spell that keeps it whooshing along",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "fans of the source texts (who cheered and gasped their way through a recent, all-day performance",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Cynics not already ensorcelled will wonder if Harry Potter belongs on Broadway at all",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review excerpt presents mixed signals - praising the suspense and noting fan enthusiasm while questioning whether the material belongs on Broadway, but the fragment is too incomplete for confident scoring. | GPT-4o-mini: The review presents a mixed sentiment, acknowledging the appeal for fans while also raising doubts about the show's legitimacy on Broadway.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:23:35.214Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

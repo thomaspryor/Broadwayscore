@@ -10,8 +10,54 @@
   "showScoreExcerpt": "“ ‘Back to the Future’ simply tries to hold up its plutonium-weight source material.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/back-to-the-future-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 36,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 36,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "simply tries to hold up its plutonium-weight source material",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The metaphor of struggling to 'hold up' heavy source material suggests the show is weighed down and failing to succeed, indicating a negative assessment despite the brief excerpt. | GPT-4o-mini: The review conveys a strong negative sentiment, indicating a failure to effectively adapt the source material. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:12:09.523Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 30,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

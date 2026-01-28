@@ -11,10 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "“The problem with the train story is that, like other plot points, it is underdeveloped: It seems to have been added for extra weight. And that reflects the fundamental problem that Harmony struggles to overcome...As enjoyable and affecting as ‘Harmony’is—and as timely, with antisemitism on the rise worldwide—it doesn’t make the case that, among all that we must never forget, the Comedian Harmonists merit quite this degree of remembrance.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/harmony-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/harmony-broadway",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 71,
+      "performances": 77,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "blend together beautifully without disappearing into anonymity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it doesn't make the case that, among all that we must never forget, the Comedian Harmonists merit quite this degree of remembrance",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "As enjoyable and affecting as 'Harmony' is",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show is 'enjoyable and affecting' with strong performances and attractive music, but expresses fundamental doubts about whether the material justifies a Broadway musical, indicating qualified appreciation rather than recommendation. | GPT-4o-mini: The review highlights strong performances and enjoyable music but notes significant limitations in the book, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:23:11.188Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

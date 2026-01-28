@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 67,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 73.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 45,
+      "performances": null,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "underwhelming song or misfires a gag",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the production's hyperactivity and spectacle can draw you back in",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Props sizzle with pyrotechnics and Finn Ross's video designs zip",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review presents a mixed assessment praising the spectacular production values and technical elements while acknowledging significant weaknesses in songs and comedy, suggesting a show that relies on spectacle to compensate for creative shortcomings. | GPT-4o-mini: The review highlights both impressive production elements and significant flaws, leading to a mixed recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:12:33.740Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 68,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

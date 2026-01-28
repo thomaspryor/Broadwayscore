@@ -11,8 +11,66 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 48,
+    "confidence": "low",
+    "range": {
+      "low": 30.5,
+      "high": 65.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "seems restrained and merely atmospheric",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "without the extra-special touch he has brought to various projects in the past",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The always-expert Natasha Katz creates magical images with her lighting",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The incomplete review fragment suggests disappointment with direction and design elements falling short of past work, with only lighting receiving unqualified praise. | GPT-4o-mini: The review contains both praise for the director's reputation and criticism of the first act's execution, leading to a mixed recommendation. | Note: Models differed by 25 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:08:06.783Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 60,
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 35, OpenAI: 60)"
+    ]
+  }
 }

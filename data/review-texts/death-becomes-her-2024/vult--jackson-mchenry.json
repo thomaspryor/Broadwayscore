@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Death Becomes Her is a musical that knows exactly what it is: a splashy, campy celebration of vanity and rivalry that doesn't pretend to be anything deeper than pure entertainment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Death Becomes Her is a musical that knows exactly what it is: a splashy, campy celebration of vanity and rivalry that doesn't pretend to be anything deeper than pure entertainment.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 85.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "knows exactly what it is",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "splashy, campy celebration",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "doesn't pretend to be anything deeper than pure entertainment",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges the show's self-aware entertainment value and campy appeal but frames it as limited to 'pure entertainment,' suggesting moderate appreciation without strong enthusiasm. | GPT-4o-mini: The review highlights the show's entertaining qualities and clear self-awareness, indicating a strong recommendation despite the lack of depth. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:44.374Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 80,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

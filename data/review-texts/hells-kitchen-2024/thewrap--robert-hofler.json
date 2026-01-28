@@ -7,7 +7,63 @@
   "publishDate": "April 20, 2024",
   "fullText": "Keys and Diaz can concoct any story they want, and what they’ve come up with resembles a publicist’s press release.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "dtliThumb": "Meh",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 18,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "what they've come up with resembles a publicist's press release",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Keys and Diaz can concoct any story they want",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "resembles a publicist’s press release",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The comparison to a 'publicist's press release' is a clear dismissal of the material as shallow and artificial rather than genuine theatrical storytelling. | GPT-4o-mini: The review indicates a strong disapproval of the story, suggesting it lacks substance and creativity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:25:41.156Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

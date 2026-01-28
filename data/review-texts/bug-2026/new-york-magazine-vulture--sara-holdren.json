@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"To really do its work, Bug needs to get under our skin, and here it never quite does. Weâve got to feel not only the ick but the itch.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/bug-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "To really do its work, Bug needs to get under our skin, and here it never quite does",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "We've got to feel not only the ick but the itch",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Bug needs to get under our skin",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly states the production fails at its essential task of creating visceral engagement, indicating a fundamental failure despite the measured tone. | GPT-4o-mini: The review expresses a clear sense of disappointment regarding the production's ability to evoke the intended emotional response, leading to a mixed recommendation. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:14:52.660Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 50,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

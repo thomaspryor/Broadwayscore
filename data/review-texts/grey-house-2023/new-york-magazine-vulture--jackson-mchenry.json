@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“Once you get to huge Broadway houses, claustrophobia is harder to maintain... But it was also fun to see the production swing so hard at genre tropiness. If it doesn’t fully succeed on its own terms, it’s at least a solid reminder that terror is as worthy of drama as any other kind of spectacle.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/grey-house-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "If it doesn't fully succeed on its own terms",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it's at least a solid reminder that terror is as worthy of drama as any other kind of spectacle",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "it was also fun to see the production swing so hard at genre tropiness",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Mixed review that acknowledges the production doesn't fully succeed but finds value in its ambitious attempt at horror theater and its entertainment value. | GPT-4o-mini: The review expresses a mix of appreciation for the production's ambition and acknowledgment of its shortcomings, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:34.428Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

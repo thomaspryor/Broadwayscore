@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"Like the art it’s satirizing, it’s a genre that can sometimes feel a little dippy and indulgent, but at its best it’s both outrageously funny and strangely, sweetly sublime...Rannells and Gad are wonderfully matched and, it appears, having a real blast with each other. Their comic timing is wetsuit tight, their chemistry indisputable, their energy manic but precise and, crucially, unflagging.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/gutenberg-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 87,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "at its best it's both outrageously funny and strangely, sweetly sublime",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Their comic timing is wetsuit tight, their chemistry indisputable, their energy manic but precise and, crucially, unflagging",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "can sometimes feel a little dippy and indulgent",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the lead performances and their chemistry, with vivid positive language about the comic execution, though acknowledges some genre limitations. | GPT-4o-mini: The review highlights strong performances and humor, indicating a clear recommendation despite some minor reservations about the genre.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:59.836Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a landmark American musical that is gloriously alive with the substance and complication of actual life. It is an achievement of historical and cultural imagination.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a landmark American musical that is gloriously alive with the substance and complication of actual life. It is an achievement of historical and cultural imagination.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 83.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "landmark American musical",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "gloriously alive with the substance and complication of actual life",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "achievement of historical and cultural imagination",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses exceptionally strong positive language including 'landmark,' 'gloriously alive,' and 'achievement,' indicating clear enthusiasm and recommendation despite being brief. | GPT-4o-mini: The review expresses unqualified enthusiasm and high praise for the musical's significance and depth, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:46.072Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

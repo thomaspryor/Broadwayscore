@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"The sensationally unnerving Broadway premiere of 'Bug'... reads like an origin story for our climate of mistrust and isolation.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/bug-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "sensationally unnerving",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "reads like an origin story for our climate of mistrust and isolation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The sensationally unnerving Broadway premiere of 'Bug'",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The strong positive adjective 'sensationally' combined with praise for the play's relevance and timeliness indicates clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the production's impact and relevance, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:05.993Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

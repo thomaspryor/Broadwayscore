@@ -9,12 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "The show has been trimmed from its original two-part, five-and-a-half-hour format to a single evening of three hours and 30 minutes, and the editing has been done with care and intelligence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show has been trimmed from its original two-part, five-and-a-half-hour format to a single evening of three hours and 30 minutes, and the editing has been done with care and intelligence.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "the editing has been done with care and intelligence",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "trimmed from its original two-part, five-and-a-half-hour format to a single evening",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This excerpt only discusses the editing/trimming process positively but provides no information about performances, story quality, or overall recommendation, making it impossible to determine the critic's full assessment. | GPT-4o-mini: The review indicates a positive aspect of the editing but lacks a strong overall recommendation or mention of performances and story quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:24:17.981Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

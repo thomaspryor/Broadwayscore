@@ -10,8 +10,66 @@
   "showScoreExcerpt": "\"If the result is an unwieldy but rousing hot mess with outsize ambitions, maybe now we know how its chess prodigies feel.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chess-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "low",
+    "range": {
+      "low": 50.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "unwieldy but rousing hot mess",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "outsize ambitions",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "maybe now we know how its chess prodigies feel",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses 'rousing' and 'outsize ambitions' positively while acknowledging flaws ('unwieldy', 'hot mess'), suggesting a flawed but energetic production worth experiencing. | GPT-4o-mini: The review indicates a mix of admiration for ambition but acknowledges significant flaws, leading to a conditional recommendation. | Note: Models differed by 17 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:46.381Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 55,
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 17 points (Claude: 72, OpenAI: 55)"
+    ]
+  }
 }

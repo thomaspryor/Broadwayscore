@@ -11,8 +11,67 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 78,
+      "performances": 73,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "has provided the company with both haunting romantic ballads and snazzy production numbers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Mr. Carlyle serves the latter with predictable buoyancy and wit",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "Mr. Manilow... has provided the company with both haunting romantic ballads and snazzy production numbers.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows praise for Manilow's music and Carlyle's performance but appears to be cut off mid-sentence, making it impossible to assess the critic's overall recommendation or identify any significant criticisms. | GPT-4o-mini: The review highlights strong musical elements and performances, indicating a clear recommendation despite some predictability in execution. | Note: Models differed by 30 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:23:06.094Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 75,
+    "scoreDelta": 30,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 30 points (Claude: 45, OpenAI: 75)",
+      "Score (60 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

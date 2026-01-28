@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": 75,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "aggressively effervescent musical has come to Broadway, & it intends to wash you away in the blushy delights of pop feminism & hit singles",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "At times, such as when someone belts the chorus of \"Since U Been Gone\" at you, it is impossible not to feel intoxicated",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "middle-school-level Shakespeare jokes",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Review excerpt shows mixed signals - acknowledges the musical's intoxicating moments while criticizing juvenile humor, but cuts off mid-sentence limiting assessment. | GPT-4o-mini: The review expresses enjoyment of the musical's energy and fun but hints at some shortcomings, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:11:08.999Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

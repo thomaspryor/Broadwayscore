@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical works best when it focuses on the relationship between Ali and her mother Jersey, played with fierce maternal protectiveness by Shoshana Bean, whose powerhouse vocals are ideally suited to Keys' R&B-inflected songs.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical works best when it focuses on the relationship between Ali and her mother Jersey, played with fierce maternal protectiveness by Shoshana Bean, whose powerhouse vocals are ideally suited to Keys' R&B-inflected songs.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": 83,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical works best when it focuses on the relationship between Ali and her mother Jersey",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "played with fierce maternal protectiveness by Shoshana Bean, whose powerhouse vocals are ideally suited to Keys' R&B-inflected songs",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "played with fierce maternal protectiveness by Shoshana Bean",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt only highlights what works well (performances and music) but the phrase 'works best when' implies other elements don't work as effectively, suggesting mixed overall quality. | GPT-4o-mini: The review highlights strong performances, particularly praising Shoshana Bean's vocals, indicating a clear recommendation despite a lack of detail on other aspects.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:24:34.920Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 75,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

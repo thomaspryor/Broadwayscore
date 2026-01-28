@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -41,5 +41,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230721083008/https://ew.com/theater/death-of-a-salesman-broadway-revival-review-wendell-pierce/",
   "scoreSource": "extracted-grade",
   "scoreConfidence": "medium",
-  "extractedGrade": "A"
+  "extractedGrade": "A",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Both are sensational, imbuing the relationship between Willy and Linda with genuine warmth",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Death of a Salesman hums along, thanks in part to Pierce's performance, but also credit must be paid to the kinetic direction",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Grade: A-",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The A- grade combined with consistent praise for performances ('sensational'), direction ('kinetic'), and design elements, plus positive language about the production 'humming along' despite minor reservations about racial themes and runtime, indicates a strong positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some thematic limitations, leading to a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:51.112Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"The slipperiness of ostensible skepticism into utter credulity is what makes Bug continue to resonate so powerfully today.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/bug-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "continue to resonate so powerfully today",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "slipperiness of ostensible skepticism into utter credulity",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The slipperiness of ostensible skepticism into utter credulity",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the play's continued relevance and power, suggesting intellectual engagement and artistic merit, but this excerpt is too brief to determine full recommendation strength. | GPT-4o-mini: The review highlights the powerful resonance of the play's themes, indicating a clear positive sentiment without explicit reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:01.413Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

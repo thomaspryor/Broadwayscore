@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"This being a drama firmly grounded in the hallowed miserable-American-family tradition, by the conclusion all the secrets have tumbled out, and the ugly bones of long-held resentments have been picked over. And over, and over—the play runs nearly three hours.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/appropriate-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play runs nearly three hours",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "And over, and over—the play runs nearly three hours",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "ugly bones of long-held resentments have been picked over",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic emphasizes excessive length and repetitive exploration of family dysfunction, suggesting the play overstays its welcome and becomes tedious. | GPT-4o-mini: The review indicates a lengthy and potentially tedious experience without strong enthusiasm, leading to a mixed recommendation. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:11:47.006Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 50,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

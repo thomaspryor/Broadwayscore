@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 33,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 33,
+    "confidence": "high",
+    "range": {
+      "low": 25.5,
+      "high": 40.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": 25,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "forgoes the basic mechanics of a successful musical: a coherent book and catchy score",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "gambles on name recognition and nostalgia but forgoes the basic mechanics",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "forgoes the basic mechanics of a successful musical",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic directly states the musical lacks fundamental elements of success - a coherent book and catchy score - indicating a clear negative assessment. | GPT-4o-mini: The review strongly criticizes the show's lack of essential musical elements, indicating a clear rejection of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:12:28.724Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

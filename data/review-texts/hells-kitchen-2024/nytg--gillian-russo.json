@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"Alicia Keys musical is on fire with powerhouse performances\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/hell-s-kitchen",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 93,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "on fire",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "powerhouse performances",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Alicia Keys musical is on fire",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong positive language ('on fire', 'powerhouse performances') suggests clear recommendation, but extremely brief headline format limits confidence in scoring. | GPT-4o-mini: The review conveys strong enthusiasm for the performances, suggesting a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:25:17.490Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

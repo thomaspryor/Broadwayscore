@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Eddie Redmayne and Gayle Rankin lead a revival that transforms the August Wilson Theatre into an immersive cabaret experience, though the production occasionally prioritizes spectacle over storytelling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Eddie Redmayne and Gayle Rankin lead a revival that transforms the August Wilson Theatre into an immersive cabaret experience, though the production occasionally prioritizes spectacle over storytelling.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "transforms the August Wilson Theatre into an immersive cabaret experience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "occasionally prioritizes spectacle over storytelling",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Eddie Redmayne and Gayle Rankin lead a revival",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the lead performances and innovative staging concept but criticizes the production for emphasizing spectacle over substance, suggesting a mixed experience with both strengths and notable weaknesses. | GPT-4o-mini: The review highlights strong performances and an immersive experience but notes a significant drawback in storytelling, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:12.343Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

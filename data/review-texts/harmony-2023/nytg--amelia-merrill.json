@@ -11,10 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 56,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "“Though its quality is not consistent throughout, ‘Harmony’ has its high points...This immersive quality is chilling, but doesn’t make up for 'Harmony’s' dissonance.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/harmony-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/harmony-broadway",
+  "llmScore": {
+    "score": 56,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 68,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though its quality is not consistent throughout",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Harmony has its high points",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "doesn't make up for 'Harmony's' dissonance",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges both strengths (individual performances) and weaknesses (inconsistent quality, overall dissonance), with the critic ultimately finding the show's problems outweigh its merits. | GPT-4o-mini: The review highlights strong performances but indicates significant inconsistencies in quality, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:22:56.423Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 60,
+    "scoreDelta": 8,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

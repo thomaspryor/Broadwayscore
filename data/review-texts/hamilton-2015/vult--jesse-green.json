@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Hamilton is the most exciting and significant musical to hit Broadway in years, a show that rewrites the rules of what American musical theater can be and do.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hamilton is the most exciting and significant musical to hit Broadway in years, a show that rewrites the rules of what American musical theater can be and do.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "most exciting and significant musical to hit Broadway in years",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "rewrites the rules of what American musical theater can be and do",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the most exciting and significant musical to hit Broadway in years",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified superlatives declaring Hamilton the most exciting and significant musical in years with praise for revolutionizing the art form signals a clear rave review. | GPT-4o-mini: The review expresses unqualified enthusiasm and highlights the show's groundbreaking nature, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:41.024Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

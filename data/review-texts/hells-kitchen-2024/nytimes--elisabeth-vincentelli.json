@@ -11,10 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HELLS-KITCHEN-Opens-on-Broadway-20240420",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "\"CRITIC’S PICK:...easily stands out as one of the rare must-sees in a crowded season.\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/hell-s-kitchen"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/hell-s-kitchen",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "CRITIC'S PICK:...easily stands out as one of the rare must-sees in a crowded season",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The movement pulses with life and is fully integrated into the show's overall aesthetics",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Brown and her troupe brilliantly find the individual in the group",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The 'CRITIC'S PICK' designation combined with calling it 'one of the rare must-sees' signals unqualified enthusiasm and strong recommendation despite the excerpt's focus on choreography. | GPT-4o-mini: The review highlights exceptional choreography and emphasizes the show as a must-see, indicating strong enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:25:22.535Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\" ''Grey Houe' is built around themes of guilt, expiation and retribution, but not very solidly—and as a spectator, you’re too busy puzzling out what is happening to think much about what it means...Amid such excellent atmospherics, you may not care when the play itself creaks.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/grey-house-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "excellent atmospherics",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "not very solidly",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "you may not care when the play itself creaks",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges strong production values ('excellent atmospherics') but criticizes the fundamental structure and clarity of the play, suggesting audiences might overlook flaws due to production quality rather than the play being genuinely successful. | GPT-4o-mini: The review expresses mixed feelings, noting strong atmospherics but significant issues with the script and overall coherence, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:49.654Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

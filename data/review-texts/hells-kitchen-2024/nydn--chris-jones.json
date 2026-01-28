@@ -10,9 +10,67 @@
   "bwwExcerpt": "The young actress Moon has a formidable task on her plate here and she’s a charming lead. But she doesn’t always sing in the middle of the notes of these blazing Keys songs, or at least that was the case at the performance I saw. In all fairness, it sounded like her instrument was not at its healthiest in the typically exhausting run up to opening night. So that may not be your experience. Dixon, though, sounds just as spectacular as Bean and Lewis, embodying as he does the unreliable charmer — ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HELLS-KITCHEN-Opens-on-Broadway-20240420",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 55.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": 68,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "she's a charming lead",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "she doesn't always sing in the middle of the notes of these blazing Keys songs",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "sounds just as spectacular as Bean and Lewis",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt shows mixed elements with vocal performance concerns balanced by praise for other performers, but the fragment nature makes overall recommendation unclear. | GPT-4o-mini: The review presents a mixed view, praising some performances while highlighting significant vocal issues, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:24:49.790Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 60,
+    "scoreDelta": 5,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (63 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }

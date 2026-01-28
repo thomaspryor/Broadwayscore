@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Hadestown is a thrilling musical that combines Greek mythology with American folk music in a way that feels both ancient and contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hadestown is a thrilling musical that combines Greek mythology with American folk music in a way that feels both ancient and contemporary.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "thrilling musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "feels both ancient and contemporary",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "combines Greek mythology with American folk music",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses strong positive language ('thrilling') and praises the musical's conceptual achievement, but the excerpt is too brief to assess full recommendation strength. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's innovative blend of themes, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:13.119Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

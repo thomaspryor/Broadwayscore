@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Hadestown is a musical that gets almost everything right, marrying ancient myth with modern sensibilities in a way that feels both timeless and urgently contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hadestown is a musical that gets almost everything right, marrying ancient myth with modern sensibilities in a way that feels both timeless and urgently contemporary.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gets almost everything right",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "feels both timeless and urgently contemporary",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "marrying ancient myth with modern sensibilities",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The phrase 'gets almost everything right' is exceptionally strong praise from a critic, indicating near-universal approval of the production. | GPT-4o-mini: The review expresses strong approval of the musical's execution and thematic relevance, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:24.045Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

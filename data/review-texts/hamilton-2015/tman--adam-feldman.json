@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Hamilton is a musical about the tension between idealism and pragmatism, and it comes down firmly on the side of both.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hamilton is a musical about the tension between idealism and pragmatism, and it comes down firmly on the side of both.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 70,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hamilton is a musical about the tension between idealism and pragmatism",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "it comes down firmly on the side of both",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "tension between idealism and pragmatism",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review presents Hamilton as successfully balancing complex themes, suggesting intellectual appreciation, but the excerpt is too brief to determine clear recommendation strength. | GPT-4o-mini: The review suggests a thoughtful exploration of themes but lacks strong enthusiasm or explicit recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:36.272Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 70,
+    "openaiScore": 70,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
