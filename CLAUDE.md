@@ -381,6 +381,41 @@ The `scripts/lib/deduplication.js` module prevents duplicate shows from being ad
 'show name': ['show name', 'show name the musical', 'other variation'],
 ```
 
+### Review Normalization System (CRITICAL)
+
+The `scripts/lib/review-normalization.js` module prevents duplicate review files from being created. This is essential because different sources use different naming:
+
+**Problem it solves:**
+- "The New York Times" vs "NYT" vs "nytimes" → all become `nytimes`
+- "Jesse Green" vs "Jesse" vs "jesse-green" → all become `jesse-green`
+- "Johnny Oleksinski" vs "Johnny Oleksinki" (typo!) → both become `johnny-oleksinski`
+
+**Key functions:**
+- `normalizeOutlet(name)` - Returns canonical outlet ID (e.g., `nytimes`, `vulture`)
+- `normalizeCritic(name)` - Returns canonical critic slug (e.g., `jesse-green`)
+- `generateReviewFilename(outlet, critic)` - Returns consistent filename
+- `generateReviewKey(outlet, critic)` - Returns key for deduplication
+- `areCriticsSimilar(name1, name2)` - Handles partial names and typos
+
+**Outlet aliases (40+ variations):** Maps all variations to canonical IDs:
+```javascript
+'nytimes': ['nytimes', 'new york times', 'the new york times', 'ny times', 'nyt', ...]
+'vulture': ['vulture', 'new york magazine / vulture', 'ny mag', 'nymag', 'vult', ...]
+```
+
+**Critic aliases (30+ variations):** Maps name variations and typos:
+```javascript
+'jesse-green': ['jesse green', 'jesse', 'j green'],
+'johnny-oleksinski': ['johnny oleksinski', 'johnny oleksinki', 'johnny'], // Note typo
+```
+
+**To add new aliases:** Edit `OUTLET_ALIASES` or `CRITIC_ALIASES` in `scripts/lib/review-normalization.js`
+
+**Cleanup script:** `scripts/cleanup-duplicate-reviews.js`
+- Run with `--dry-run` first to see what would change
+- Merges duplicate files, keeping best data from each
+- Renames files to canonical format
+
 ## Automated Testing
 
 The site has comprehensive automated testing that runs via GitHub Actions.
