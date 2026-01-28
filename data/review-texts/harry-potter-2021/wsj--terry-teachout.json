@@ -93,5 +93,8 @@
     "no_ending_punctuation",
     "has_footer_text",
     "possible_mid_word_cutoff"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 54
 }

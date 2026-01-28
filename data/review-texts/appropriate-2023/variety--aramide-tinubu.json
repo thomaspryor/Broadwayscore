@@ -79,5 +79,8 @@
     "needsReviewReasons": [
       "Models disagree by 30 points (Claude: 45, OpenAI: 75)"
     ]
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 60
 }

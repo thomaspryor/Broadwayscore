@@ -84,5 +84,8 @@
       "success": true
     }
   ],
-  "fetchTier": 1
+  "fetchTier": 1,
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 95
 }

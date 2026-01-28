@@ -94,5 +94,8 @@
   ],
   "wrongProduction": true,
   "wrongProductionReason": "Date/URL year mismatch: Publish date shows year 2016, expected 2019 (or 2018 for previews)",
-  "wrongProductionConfidence": "high"
+  "wrongProductionConfidence": "high",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 92
 }

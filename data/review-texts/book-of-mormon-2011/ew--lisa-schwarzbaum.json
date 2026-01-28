@@ -83,5 +83,8 @@
     "needsReviewReasons": []
   },
   "originalScoreNormalized": 85,
-  "scoreExtractedFrom": "fullText"
+  "scoreExtractedFrom": "fullText",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 95
 }

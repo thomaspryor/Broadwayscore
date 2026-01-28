@@ -113,5 +113,8 @@
   "wrongProduction": true,
   "wrongProductionReason": "Date/URL year mismatch: Public Theater, URL contains year 2022, expected 2024 (or 2023 for previews), Publish date shows year 2022, expected 2024 (or 2023 for previews)",
   "wrongProductionConfidence": "high",
-  "designation": "Critics_Pick"
+  "designation": "Critics_Pick",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 52
 }

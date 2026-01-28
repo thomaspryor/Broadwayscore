@@ -114,5 +114,8 @@
   ],
   "originalScoreNormalized": 95,
   "scoreSource": "letter-grade",
-  "scoreExtractedFrom": "excerpt"
+  "scoreExtractedFrom": "excerpt",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 69
 }

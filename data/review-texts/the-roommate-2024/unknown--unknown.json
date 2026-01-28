@@ -87,5 +87,8 @@
   "sources": [
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"...Jen Silverman’s funny, moving Broadway play\"\n\nRead more"
+  "showScoreExcerpt": "\"...Jen Silverman’s funny, moving Broadway play\"\n\nRead more",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 69
 }

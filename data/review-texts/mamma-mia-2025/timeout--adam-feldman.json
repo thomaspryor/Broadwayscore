@@ -81,5 +81,8 @@
   ],
   "originalScoreNormalized": 60,
   "scoreSource": "text-pattern",
-  "scoreExtractedFrom": "fullText"
+  "scoreExtractedFrom": "fullText",
+  "needsRescore": true,
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 58
 }

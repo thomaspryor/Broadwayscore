@@ -87,5 +87,8 @@
   "textIssues": [
     "Word count too low: 206 (min: 300)"
   ],
-  "truncationSignals": []
+  "truncationSignals": [],
+  "needsRescore": true,
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 89
 }

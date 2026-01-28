@@ -93,5 +93,8 @@
   "sources": [
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Jukebox musicals may still be bottom feeders, but, as '& Juliet' proves, there are sometimes small treasures to be found in the murk.\"\n\nRead more"
+  "showScoreExcerpt": "\"Jukebox musicals may still be bottom feeders, but, as '& Juliet' proves, there are sometimes small treasures to be found in the murk.\"\n\nRead more",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 82
 }

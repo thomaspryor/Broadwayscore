@@ -80,5 +80,8 @@
   "sources": [
     "bww-roundup",
     "web-search"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 74
 }

@@ -90,5 +90,8 @@
   "showScoreExcerpt": "\"The Notebook’s songs at times barely make lyrical sense.\"\n\nRead more",
   "originalScoreNormalized": 80,
   "scoreSource": "numeric-stars",
-  "scoreExtractedFrom": "fullText"
+  "scoreExtractedFrom": "fullText",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 49
 }

@@ -78,5 +78,8 @@
   "sourceMethod": "stub",
   "scoreSource": "llm-corrected",
   "scoreConfidence": "medium",
-  "scoreNote": "Cleared wrong assignedScore of 88; headline says Little Punch (negative)"
+  "scoreNote": "Cleared wrong assignedScore of 88; headline says Little Punch (negative)",
+  "needsRescore": true,
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 45
 }

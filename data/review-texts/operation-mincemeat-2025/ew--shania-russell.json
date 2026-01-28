@@ -91,5 +91,8 @@
   ],
   "showScoreExcerpt": null,
   "originalScoreNormalized": 95,
-  "scoreExtractedFrom": "fullText"
+  "scoreExtractedFrom": "fullText",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 85
 }

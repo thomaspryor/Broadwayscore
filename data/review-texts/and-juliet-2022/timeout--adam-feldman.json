@@ -87,5 +87,8 @@
   "bwwThumb": null,
   "originalScoreNormalized": 60,
   "scoreSource": "text-pattern",
-  "scoreExtractedFrom": "fullText"
+  "scoreExtractedFrom": "fullText",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 68
 }

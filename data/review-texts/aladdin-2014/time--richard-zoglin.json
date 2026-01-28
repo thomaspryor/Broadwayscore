@@ -76,5 +76,8 @@
   "textFetchMethod": "playwright",
   "archivePath": "data/archives/reviews/aladdin-2014/TIME--richard-zoglin_2026-01-25.html",
   "textQuality": "full",
-  "sourceMethod": "stub"
+  "sourceMethod": "stub",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 77
 }

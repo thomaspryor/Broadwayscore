@@ -110,5 +110,8 @@
   },
   "wrongProduction": true,
   "wrongProductionReason": "Date/URL year mismatch: URL contains year 2016, expected 2019 (or 2018 for previews), Publish date shows year 2016, expected 2019 (or 2018 for previews)",
-  "wrongProductionConfidence": "high"
+  "wrongProductionConfidence": "high",
+  "needsRescore": true,
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 76
 }

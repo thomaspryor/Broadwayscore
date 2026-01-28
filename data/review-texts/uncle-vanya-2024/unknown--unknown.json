@@ -89,5 +89,8 @@
   },
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 60
 }

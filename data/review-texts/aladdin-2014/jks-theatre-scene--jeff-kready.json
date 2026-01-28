@@ -86,5 +86,8 @@
   ],
   "fetchTier": 1,
   "originalScoreNormalized": 95,
-  "scoreExtractedFrom": "fullText"
+  "scoreExtractedFrom": "fullText",
+  "needsRescore": true,
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 84
 }

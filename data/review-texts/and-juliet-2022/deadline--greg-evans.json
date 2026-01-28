@@ -83,5 +83,8 @@
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
   "extractedPhrase": "avoid",
-  "bwwThumb": null
+  "bwwThumb": null,
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 62
 }

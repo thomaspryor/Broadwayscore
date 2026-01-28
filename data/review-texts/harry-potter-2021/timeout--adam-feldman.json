@@ -90,5 +90,8 @@
   "dtliThumb": "Up",
   "bwwThumb": null,
   "originalScoreNormalized": 100,
-  "scoreExtractedFrom": "fullText"
+  "scoreExtractedFrom": "fullText",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 86
 }

@@ -1069,6 +1069,19 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
     (data.showScoreExcerpt || '').length
   );
 
+  // RESCORE TRIGGER: If adding fullText to a review that was scored on excerpt
+  const hadFullTextBefore = data.fullText && data.fullText.length > 500;
+  const hasLlmScore = data.llmScore && data.llmScore.score;
+  const newTextIsSubstantial = text.length > 1000;
+
+  if (!hadFullTextBefore && hasLlmScore && newTextIsSubstantial) {
+    // Review was scored on excerpt, now has fullText - flag for rescoring
+    data.needsRescore = true;
+    data.rescoreReason = 'fullText added after excerpt-based scoring';
+    data.previousLlmScore = data.llmScore.score;
+    console.log(`    → Flagged for rescore: was scored at ${data.llmScore.score} on excerpt, now has ${text.length} char fullText`);
+  }
+
   data.fullText = text;
   data.isFullReview = text.length > 1500;
   data.textWordCount = validation.wordCount;

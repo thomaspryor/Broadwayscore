@@ -103,5 +103,8 @@
     "dtli",
     "web-search"
   ],
-  "showScoreExcerpt": "\"its approach misses the central thrust of Hinton’s story.\""
+  "showScoreExcerpt": "\"its approach misses the central thrust of Hinton’s story.\"",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 59
 }

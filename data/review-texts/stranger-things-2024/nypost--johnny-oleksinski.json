@@ -80,5 +80,8 @@
   "wrongProductionReason": "Date/URL year mismatch: URL contains year 2023, expected 2024 (or 2023 for previews)",
   "wrongProductionConfidence": "high",
   "showScoreExcerpt": null,
-  "designation": "Recommended"
+  "designation": "Recommended",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 25
 }

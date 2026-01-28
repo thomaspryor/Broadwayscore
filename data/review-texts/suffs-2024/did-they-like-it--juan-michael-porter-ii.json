@@ -94,5 +94,8 @@
   ],
   "wrongProduction": true,
   "wrongProductionReason": "Date/URL year mismatch: Publish date shows year 2022, expected 2024 (or 2023 for previews)",
-  "wrongProductionConfidence": "high"
+  "wrongProductionConfidence": "high",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 65
 }

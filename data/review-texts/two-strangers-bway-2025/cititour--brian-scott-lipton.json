@@ -70,5 +70,8 @@
   },
   "textStatus": "complete",
   "textQuality": "full",
-  "sourceMethod": "webfetch"
+  "sourceMethod": "webfetch",
+  "needsRescore": true,
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 82
 }

@@ -111,5 +111,8 @@
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
   "extractedPhrase": "raves",
-  "showScoreExcerpt": null
+  "showScoreExcerpt": null,
+  "needsRescore": true,
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 71
 }

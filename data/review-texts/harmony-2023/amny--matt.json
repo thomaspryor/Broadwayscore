@@ -127,5 +127,8 @@
   "originalScoreNormalized": 65,
   "scoreSource": "letter-grade",
   "scoreExtractedFrom": "fullText",
-  "designation": "Recommended"
+  "designation": "Recommended",
+  "needsRescore": true,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 62
 }

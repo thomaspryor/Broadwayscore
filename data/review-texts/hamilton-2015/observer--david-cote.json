@@ -110,5 +110,8 @@
   ],
   "truncationSignals": [
     "shorter_than_excerpt"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 95
 }
