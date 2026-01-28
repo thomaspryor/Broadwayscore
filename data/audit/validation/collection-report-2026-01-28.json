@@ -1,82 +1,91 @@
 {
-  "runDate": "2026-01-28T23:45:03.350Z",
+  "runDate": "2026-01-28T23:46:21.816Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "the-roommate-2024",
+    "showFilter": "merrily-we-roll-along-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 9,
-    "failed": 15,
+    "processed": 14,
+    "failed": 12,
     "skipped": 0,
-    "successRate": "37.5%"
+    "successRate": "53.8%"
   },
   "tierBreakdown": {
-    "playwright": 0,
-    "scrapingbee": 3,
-    "brightdata": 0,
-    "archive": 6
+    "playwright": 1,
+    "scrapingbee": 1,
+    "brightdata": 1,
+    "archive": 11
   },
   "statistics": {
-    "tier1Attempts": 19,
-    "tier1Success": 0,
-    "tier2Attempts": 19,
-    "tier2Success": 3,
-    "tier3Attempts": 16,
-    "tier3Success": 0,
-    "tier4Attempts": 38,
-    "tier4Success": 6,
-    "totalFailed": 15,
+    "tier1Attempts": 16,
+    "tier1Success": 1,
+    "tier2Attempts": 15,
+    "tier2Success": 1,
+    "tier3Attempts": 14,
+    "tier3Success": 1,
+    "tier4Attempts": 35,
+    "tier4Success": 11,
+    "totalFailed": 12,
     "scrapingBeeCreditsUsed": 90
   },
   "processed": [
-    "the-roommate-2024/nyt-theater--jonathan-mandell.json",
-    "the-roommate-2024/nytimes--jesse-green.json",
-    "the-roommate-2024/nydailynews--chris-jones.json",
-    "the-roommate-2024/observer--rex-reed.json",
-    "the-roommate-2024/wsj--charles-isherwood.json",
-    "the-roommate-2024/cititour--brian-scott-lipton.json",
-    "the-roommate-2024/nysr--frank-scheck.json",
-    "the-roommate-2024/nysr--melissa-rose-bernardo.json",
-    "the-roommate-2024/the-village-voice--michael-musto.json"
+    "merrily-we-roll-along-2023/nytg--joe-dziemianowicz.json",
+    "merrily-we-roll-along-2023/variety--trish-deitch.json",
+    "merrily-we-roll-along-2023/nydailynews--chris-jones.json",
+    "merrily-we-roll-along-2023/nypost--johnny-oleksinski.json",
+    "merrily-we-roll-along-2023/theatermania--david-gordon.json",
+    "merrily-we-roll-along-2023/thewrap--robert-hofler.json",
+    "merrily-we-roll-along-2023/wsj--charles-isherwood.json",
+    "merrily-we-roll-along-2023/chicagotribune--chris.json",
+    "merrily-we-roll-along-2023/nysr--melissa-rose-bernardo.json",
+    "merrily-we-roll-along-2023/nysr--steven-suskin.json",
+    "merrily-we-roll-along-2023/slash-film--caroline-cao.json",
+    "merrily-we-roll-along-2023/the-village-voice--michael-musto.json",
+    "merrily-we-roll-along-2023/usatoday--patrick-ryan.json",
+    "merrily-we-roll-along-2023/whatsonstage--david-gordon.json"
   ],
   "failed": [
-    "the-roommate-2024/hollywood-reporter--angie-han.json",
-    "the-roommate-2024/variety--aramide-tinubu.json",
-    "the-roommate-2024/variety--charles-isherwood.json",
-    "the-roommate-2024/variety--frank-rizzo.json",
-    "the-roommate-2024/vulture--jackson-mchenry.json",
-    "the-roommate-2024/deadline--pete-hammond.json",
-    "the-roommate-2024/guardian--adrian-horton.json",
-    "the-roommate-2024/nypost--johnny-oleksinski.json",
-    "the-roommate-2024/theatermania--jesse-green.json",
-    "the-roommate-2024/billboard--greg-evans.json",
-    "the-roommate-2024/dailybeast--tim-teeman.json",
-    "the-roommate-2024/rollingstone--alexis-soloski.json",
-    "the-roommate-2024/talkinbroadway--matthew-murray.json",
-    "the-roommate-2024/washpost--naveen-kumar.json",
-    "the-roommate-2024/washpost--peter-marks.json"
+    "merrily-we-roll-along-2023/hollywood-reporter--angie-han.json",
+    "merrily-we-roll-along-2023/nytimes--jesse-green.json",
+    "merrily-we-roll-along-2023/variety--aramide-tinubu.json",
+    "merrily-we-roll-along-2023/variety--charles-isherwood.json",
+    "merrily-we-roll-along-2023/vulture--jackson-mchenry.json",
+    "merrily-we-roll-along-2023/vulture--sara-holdren.json",
+    "merrily-we-roll-along-2023/theatermania--jesse-green.json",
+    "merrily-we-roll-along-2023/wsj--terry-teachout.json",
+    "merrily-we-roll-along-2023/the-times--will-pavia.json",
+    "merrily-we-roll-along-2023/usatoday--charles-isherwood.json",
+    "merrily-we-roll-along-2023/usatoday--david-rooney.json",
+    "merrily-we-roll-along-2023/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "scrapingbee": [
-      "the-roommate-2024/nyt-theater--jonathan-mandell.json",
-      "the-roommate-2024/cititour--brian-scott-lipton.json",
-      "the-roommate-2024/the-village-voice--michael-musto.json"
+    "playwright": [
+      "merrily-we-roll-along-2023/slash-film--caroline-cao.json"
     ],
-    "brightdata": [],
+    "scrapingbee": [
+      "merrily-we-roll-along-2023/the-village-voice--michael-musto.json"
+    ],
+    "brightdata": [
+      "merrily-we-roll-along-2023/usatoday--patrick-ryan.json"
+    ],
     "archive": [
-      "the-roommate-2024/nytimes--jesse-green.json",
-      "the-roommate-2024/nydailynews--chris-jones.json",
-      "the-roommate-2024/observer--rex-reed.json",
-      "the-roommate-2024/wsj--charles-isherwood.json",
-      "the-roommate-2024/nysr--frank-scheck.json",
-      "the-roommate-2024/nysr--melissa-rose-bernardo.json"
+      "merrily-we-roll-along-2023/nytg--joe-dziemianowicz.json",
+      "merrily-we-roll-along-2023/variety--trish-deitch.json",
+      "merrily-we-roll-along-2023/nydailynews--chris-jones.json",
+      "merrily-we-roll-along-2023/nypost--johnny-oleksinski.json",
+      "merrily-we-roll-along-2023/theatermania--david-gordon.json",
+      "merrily-we-roll-along-2023/thewrap--robert-hofler.json",
+      "merrily-we-roll-along-2023/wsj--charles-isherwood.json",
+      "merrily-we-roll-along-2023/chicagotribune--chris.json",
+      "merrily-we-roll-along-2023/nysr--melissa-rose-bernardo.json",
+      "merrily-we-roll-along-2023/nysr--steven-suskin.json",
+      "merrily-we-roll-along-2023/whatsonstage--david-gordon.json"
     ]
   }
 }
