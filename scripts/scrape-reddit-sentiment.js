@@ -44,6 +44,24 @@ const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
 
 /**
+ * Sanitize text to remove problematic Unicode characters
+ * Removes unpaired surrogates and other characters that break JSON encoding
+ */
+function sanitizeText(text) {
+  if (!text || typeof text !== 'string') return text;
+
+  // Remove unpaired surrogates (characters in 0xD800-0xDFFF range that aren't properly paired)
+  // This regex matches lone high surrogates not followed by low surrogates,
+  // and lone low surrogates not preceded by high surrogates
+  let sanitized = text.replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, '');
+
+  // Also remove other problematic control characters (except newlines and tabs)
+  sanitized = sanitized.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+
+  return sanitized;
+}
+
+/**
  * Fetch URL through ScrapingBee proxy
  */
 function fetchViaScrapingBee(url) {
@@ -208,7 +226,7 @@ async function analyzeContent(showTitle, posts, comments) {
 
   // Add all review posts first (up to 20)
   for (const post of reviewPosts.slice(0, 20)) {
-    const text = post.title + (post.selftext ? '\n' + post.selftext.slice(0, 500) : '');
+    const text = sanitizeText(post.title + (post.selftext ? '\n' + post.selftext.slice(0, 500) : ''));
     contentItems.push({
       type: 'post',
       text: text.slice(0, 600),
@@ -220,7 +238,7 @@ async function analyzeContent(showTitle, posts, comments) {
   // Then add other top posts (up to 30 total)
   const remainingSlots = 30 - contentItems.length;
   for (const post of otherPosts.slice(0, remainingSlots)) {
-    const text = post.title + (post.selftext ? '\n' + post.selftext.slice(0, 500) : '');
+    const text = sanitizeText(post.title + (post.selftext ? '\n' + post.selftext.slice(0, 500) : ''));
     contentItems.push({
       type: 'post',
       text: text.slice(0, 600),
@@ -237,7 +255,7 @@ async function analyzeContent(showTitle, posts, comments) {
   for (const comment of topComments) {
     contentItems.push({
       type: 'comment',
-      text: comment.body.slice(0, 400),
+      text: sanitizeText(comment.body.slice(0, 400)),
       score: comment.score,
     });
   }
