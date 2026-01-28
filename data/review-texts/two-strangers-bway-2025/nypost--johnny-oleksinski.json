@@ -7,7 +7,63 @@
   "publishDate": "November 20, 2025",
   "fullText": "What elevates the show from an assembly-line rom-com is the way Barne and Buchan balance the genre’s baked-in cliches with sharp left turns and nuanced commentary about life experience and personal connection. “Two Strangers” ain’t packing snow, but it’s not powder either. The musical comes dangerously close to cloying sentimentality at times, but Dougal’s dry sense of humor and Tutty’s first-class delivery prevents the story from ever getting too soupy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 73,
+      "music": null,
+      "performances": 79,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What elevates the show from an assembly-line rom-com is the way Barne and Buchan balance the genre's baked-in cliches with sharp left turns and nuanced commentary",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "ain't packing snow, but it's not powder either",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "comes dangerously close to cloying sentimentality at times, but... prevents the story from ever getting too soupy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges the show rises above genre clichés with smart writing and strong performances, but notes it flirts with sentimentality and uses middling metaphors, suggesting a qualified positive recommendation. | GPT-4o-mini: The review expresses a clear recommendation with praise for the performances and writing, despite some concerns about sentimentality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:30.085Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
