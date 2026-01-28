@@ -11,8 +11,66 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The strains of something less than triumphant were always lurking",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Suffs has no time for wistfulness as it nears its ending. That's because it's not an ending, and there isn't one in sight",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "there isn’t one in sight",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt suggests structural and thematic concerns about the show's conclusion and overall arc, with language that implies disappointment rather than recommendation. | GPT-4o-mini: The review expresses a mixed sentiment, highlighting a lack of resolution and a feeling of something being unfinished, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:56.094Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (50 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }
