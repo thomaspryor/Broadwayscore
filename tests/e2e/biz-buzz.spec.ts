@@ -23,4 +23,28 @@ test.describe('Biz Buzz Page', () => {
     const tourStopSection = page.locator('text=Tour Stop').first();
     await expect(tourStopSection).toBeVisible();
   });
+
+  test('TBD shows display estimated recoupment percentages', async ({ page }) => {
+    const bodyText = await page.textContent('body');
+    expect(bodyText).toContain('% recouped');
+  });
+});
+
+test.describe('Recoupment Progress Bar', () => {
+  test('displays on show pages with estimates', async ({ page }) => {
+    await page.goto('/show/death-becomes-her');
+    await page.waitForLoadState('networkidle');
+    const progressBar = page.locator('[data-testid="recoupment-progress"]');
+    await expect(progressBar).toBeVisible({ timeout: 10000 });
+    const text = await progressBar.textContent();
+    expect(text).toContain('recouped');
+    expect(text).toContain('60');
+  });
+
+  test('does NOT display on shows without estimates', async ({ page }) => {
+    await page.goto('/show/hamilton');
+    await page.waitForLoadState('networkidle');
+    const progressBar = page.locator('[data-testid="recoupment-progress"]');
+    await expect(progressBar).toHaveCount(0);
+  });
 });

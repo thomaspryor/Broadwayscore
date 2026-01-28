@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ShowCommercial, CommercialDesignation } from '@/lib/data';
+import RecoupmentProgressBar from './RecoupmentProgressBar';
 
 interface BizBuzzCardProps {
   commercial: ShowCommercial;
@@ -214,6 +215,14 @@ export default function BizBuzzCard({ commercial, showTitle }: BizBuzzCardProps)
             </div>
           )}
         </div>
+
+        {/* Recoupment Progress (for shows with estimates) */}
+        {commercial.estimatedRecoupmentPct && (
+          <RecoupmentProgressBar
+            estimatedPct={commercial.estimatedRecoupmentPct}
+            source={commercial.estimatedRecoupmentSource}
+          />
+        )}
 
         {/* Expandable Details */}
         {commercial.notes && (
