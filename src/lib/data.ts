@@ -802,14 +802,15 @@ export function getAllBrowseSlugs(): string[] {
 // ============================================
 
 export type CommercialDesignation =
-  | 'Miracle'      // Profit > 3x investment (long-running mega-hits)
-  | 'Windfall'     // Profit > 1.5x investment (solid hits)
+  | 'Miracle'      // Long-running mega-hit -- extraordinary returns
+  | 'Windfall'     // Solid hit -- recouped and profitable
   | 'Trickle'      // Broke even or modest profit over time
   | 'Easy Winner'  // Limited run that made money, limited downside, limited upside
-  | 'Fizzle'       // Lost money but not all
-  | 'Flop'         // Lost most/all investment
+  | 'Fizzle'       // Closed without recouping (~30%+ recovered)
+  | 'Flop'         // Closed without recouping (~<30% recovered)
   | 'Nonprofit'    // Produced by nonprofit theater (LCT, MTC, Second Stage, etc.)
-  | 'TBD';         // Too early to tell
+  | 'TBD'          // Too early to tell
+  | 'Tour Stop';   // National tour engagement on Broadway
 
 export interface ShowCommercial {
   designation: CommercialDesignation;
@@ -824,6 +825,17 @@ export interface ShowCommercial {
   recoupedSource?: string | null;
   nonprofitOrg?: string;  // For Nonprofit designation: LCT, MTC, Second Stage, etc.
   notes?: string;
+  estimatedRecoupmentPct?: [number, number] | null;
+  estimatedRecoupmentSource?: string | null;
+  estimatedRecoupmentDate?: string | null;
+  weeklyRunningCostSource?: string | null;
+  isEstimate?: {
+    capitalization?: boolean;
+    weeklyRunningCost?: boolean;
+    recouped?: boolean;
+  };
+  productionType?: 'original' | 'tour-stop' | 'return-engagement';
+  originalProductionId?: string;
 }
 
 interface CommercialFile {
@@ -898,6 +910,13 @@ export function getRecoupedShows(): Array<{ slug: string; capitalization: number
     if (!b.recoupedDate) return -1;
     return new Date(b.recoupedDate).getTime() - new Date(a.recoupedDate).getTime();
   });
+}
+
+/**
+ * Get all show slugs that have commercial data
+ */
+export function getAllCommercialSlugs(): string[] {
+  return Object.keys(commercial.shows);
 }
 
 /**

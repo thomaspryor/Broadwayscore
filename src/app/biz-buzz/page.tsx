@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows, getShowCommercial, getCommercialLastUpdated, CommercialDesignation } from '@/lib/data';
+import { getAllShows, getShowCommercial, getCommercialLastUpdated, getAllCommercialSlugs, CommercialDesignation } from '@/lib/data';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { RecoupTable, CapitalizationTable } from '@/components/SortableBizBuzzTables';
 
@@ -59,14 +59,15 @@ const faqSchema = {
 };
 
 const designationConfig: Record<CommercialDesignation, { emoji: string; color: string; description: string }> = {
-  'Miracle': { emoji: '🌟', color: 'text-yellow-400', description: 'Profit > 3x investment (mega-hits)' },
-  'Windfall': { emoji: '💰', color: 'text-emerald-400', description: 'Profit > 1.5x investment (solid hits)' },
+  'Miracle': { emoji: '🌟', color: 'text-yellow-400', description: 'Long-running mega-hit -- extraordinary returns' },
+  'Windfall': { emoji: '💰', color: 'text-emerald-400', description: 'Solid hit -- recouped and profitable' },
   'Trickle': { emoji: '💧', color: 'text-blue-400', description: 'Broke even or modest profit' },
   'Easy Winner': { emoji: '✓', color: 'text-teal-400', description: 'Limited run that made money' },
-  'Fizzle': { emoji: '📉', color: 'text-orange-400', description: 'Lost money but not all' },
-  'Flop': { emoji: '💥', color: 'text-red-400', description: 'Lost most/all investment' },
+  'Fizzle': { emoji: '📉', color: 'text-orange-400', description: 'Closed without recouping (~30%+ recovered)' },
+  'Flop': { emoji: '💥', color: 'text-red-400', description: 'Closed without recouping (~<30% recovered)' },
   'Nonprofit': { emoji: '🎭', color: 'text-purple-400', description: 'Produced by nonprofit theater' },
   'TBD': { emoji: '⏳', color: 'text-gray-400', description: 'Too early to determine' },
+  'Tour Stop': { emoji: '🚌', color: 'text-slate-400', description: 'National tour -- Broadway engagement' },
 };
 
 function formatCurrency(amount: number | null | undefined): string {
@@ -88,6 +89,25 @@ export default function BizBuzzPage() {
       commercial: getShowCommercial(show.slug),
     }))
     .filter(item => item.commercial);
+
+  // Include commercial entries that don't have a matching show in shows.json
+  // (e.g., mamma-mia-2001 is a historical entry without a shows.json record)
+  const allShowSlugs = new Set(allShows.map(s => s.slug));
+  const allCommercialSlugs = getAllCommercialSlugs();
+  for (const slug of allCommercialSlugs) {
+    if (!allShowSlugs.has(slug)) {
+      const commercial = getShowCommercial(slug);
+      if (commercial) {
+        // Format slug into a display title: "mamma-mia-2001" -> "Mamma Mia (2001)"
+        const titleParts = slug.replace(/-(\d{4})$/, ' ($1)').replace(/-/g, ' ');
+        const displayTitle = titleParts.replace(/\b\w/g, c => c.toUpperCase());
+        showsWithCommercial.push({
+          show: { slug, title: displayTitle, id: slug, status: 'closed' as const } as any,
+          commercial,
+        });
+      }
+    }
+  }
 
   // Group by designation
   const byDesignation = showsWithCommercial.reduce((acc, item) => {
@@ -113,7 +133,7 @@ export default function BizBuzzPage() {
   ]);
 
   // Order designations for display (TBD last)
-  const designationOrder: CommercialDesignation[] = ['Miracle', 'Windfall', 'Trickle', 'Easy Winner', 'Nonprofit', 'Fizzle', 'Flop', 'TBD'];
+  const designationOrder: CommercialDesignation[] = ['Miracle', 'Windfall', 'Trickle', 'Easy Winner', 'Nonprofit', 'Tour Stop', 'Fizzle', 'Flop', 'TBD'];
 
   return (
     <>
