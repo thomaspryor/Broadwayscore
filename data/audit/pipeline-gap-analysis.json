@@ -657,35 +657,10 @@
     },
     {
       "sprint": 3,
-      "name": "Full Text Coverage Push",
-      "duration": "2-3 weeks",
-      "priority": "High",
-      "tasks": [
-        {
-          "task": "Archive.org as primary for paywalled sites",
-          "details": "Try Archive.org FIRST for known paywalled domains",
-          "files": ["scripts/collect-review-texts.js"],
-          "acceptance": "Paywall sites: 80%+ full text via Archive.org"
-        },
-        {
-          "task": "Parallel collection workflow",
-          "details": "Run multiple shows in parallel to increase throughput",
-          "files": [".github/workflows/collect-review-texts.yml"],
-          "acceptance": "10+ shows can run simultaneously"
-        },
-        {
-          "task": "Prioritize Tier 1 outlets for collection",
-          "details": "Ensure NYT, Vulture, Variety have full text first",
-          "files": ["scripts/collect-review-texts.js"],
-          "acceptance": "Tier 1: 95%+ full text coverage"
-        }
-      ]
-    },
-    {
-      "sprint": 4,
       "name": "Production Verification",
-      "duration": "1-2 weeks",
+      "status": "PENDING",
       "priority": "High",
+      "rationale": "MOVED UP: Must verify production BEFORE expensive text fetching (AI review feedback)",
       "tasks": [
         {
           "task": "Automated wrong-production detection",
@@ -708,9 +683,42 @@
       ]
     },
     {
+      "sprint": 4,
+      "name": "Full Text Coverage Push",
+      "status": "PENDING",
+      "priority": "High",
+      "rationale": "MOVED DOWN: Only fetch text for verified-production reviews",
+      "tasks": [
+        {
+          "task": "Reorder scraper tiers based on success data",
+          "details": "Archive.org: 11.1% success, Playwright: 6.7%, ScrapingBee: 3.6%, BrightData: 3.7%. Move Archive.org earlier for paywalled domains.",
+          "files": ["scripts/collect-review-texts.js"],
+          "acceptance": "Scraper order optimized per domain type"
+        },
+        {
+          "task": "Parallel collection workflow",
+          "details": "Run multiple shows in parallel to increase throughput",
+          "files": [".github/workflows/collect-review-texts.yml"],
+          "acceptance": "10+ shows can run simultaneously"
+        },
+        {
+          "task": "Prioritize Tier 1 outlets for collection",
+          "details": "Ensure NYT, Vulture, Variety have full text first",
+          "files": ["scripts/collect-review-texts.js"],
+          "acceptance": "Tier 1: 95%+ full text coverage"
+        },
+        {
+          "task": "Add rescore trigger for fullText additions",
+          "details": "When fullText added to excerpt-scored review, mark needsRescore=true",
+          "files": ["scripts/collect-review-texts.js"],
+          "acceptance": "All excerpt-scored reviews with new fullText flagged for rescore"
+        }
+      ]
+    },
+    {
       "sprint": 5,
       "name": "Pipeline Restructure",
-      "duration": "1 week",
+      "status": "PENDING",
       "priority": "Medium",
       "tasks": [
         {
@@ -732,8 +740,71 @@
           "acceptance": "reviews.json always up-to-date"
         }
       ]
+    },
+    {
+      "sprint": 6,
+      "name": "LLM-Based Error Detection",
+      "status": "PENDING",
+      "priority": "Medium",
+      "rationale": "Added based on GPT-4 feedback: use LLMs to verify scraped content quality",
+      "tasks": [
+        {
+          "task": "LLM content verification",
+          "details": "Use Claude/OpenAI to verify scraped text matches expected review (compare to excerpt, detect wrong article)",
+          "files": ["scripts/lib/content-verifier.js (new)"],
+          "acceptance": "Wrong-content reviews auto-flagged before storage"
+        },
+        {
+          "task": "LLM truncation detection",
+          "details": "Use LLM to detect if review text is complete or cut off mid-sentence/paywall",
+          "files": ["scripts/lib/content-verifier.js"],
+          "acceptance": "Truncated reviews marked textQuality='truncated' with high accuracy"
+        },
+        {
+          "task": "Centralized error logging",
+          "details": "Create unified logging system for all pipeline failures with alerting",
+          "files": ["scripts/lib/pipeline-logger.js (new)"],
+          "acceptance": "All errors logged to central location, alerts on failure patterns"
+        }
+      ]
     }
   ],
+
+  "aiFeedback": {
+    "reviewedAt": "2026-01-28",
+    "reviewers": ["Claude Opus 4.5", "GPT-4o"],
+    "keyFindings": [
+      {
+        "issue": "LLM scores on excerpts never rescored when fullText added",
+        "severity": "Critical",
+        "agreedBy": ["Claude", "GPT"],
+        "action": "Add rescore trigger in Sprint 4"
+      },
+      {
+        "issue": "Sprint order wrong - text fetch before production verification",
+        "severity": "High",
+        "agreedBy": ["Claude", "GPT"],
+        "action": "Swapped Sprint 3 and 4"
+      },
+      {
+        "issue": "No centralized error logging",
+        "severity": "Medium",
+        "agreedBy": ["GPT"],
+        "action": "Added to Sprint 6"
+      },
+      {
+        "issue": "Archive.org most successful scraper (11.1% vs others 3-7%)",
+        "severity": "Medium",
+        "agreedBy": ["Data analysis"],
+        "action": "Reorder scraper tiers in Sprint 4"
+      }
+    ],
+    "notesOnFeedback": {
+      "thumbPrecedence": "User clarified: DTLI and BWW thumbs are BOTH kept as inputs to LLM scoring, not competing. LLM sentiment is primary signal.",
+      "archiveOrg": "Claude agent was wrong about Archive.org coverage - actual data shows it's most successful scraper.",
+      "timeEstimates": "Ignored per user preference"
+    }
+  },
 
   "overallAssessment": {
     "currentPipelineHealth": "FAIR",
