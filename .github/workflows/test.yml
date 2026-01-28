@@ -40,6 +40,10 @@ jobs:
       - name: Run data validation
         run: node scripts/validate-data.js
 
+      - name: Validate archive productions
+        run: node scripts/validate-archive-productions.js
+        continue-on-error: true  # Don't fail build, just warn - archives need manual refetch
+
       - name: Create issue on failure
         if: failure() && github.event_name == 'schedule'
         uses: actions/github-script@v7
