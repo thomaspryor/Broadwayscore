@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a show that succeeds in spite of itself, propelled by the charisma of its lead performers and the undeniable pleasure of hearing Alan Menken's soaring melodies performed live.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a show that succeeds in spite of itself, propelled by the charisma of its lead performers and the undeniable pleasure of hearing Alan Menken's soaring melodies performed live.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 83,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "succeeds in spite of itself",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "propelled by the charisma of its lead performers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "undeniable pleasure of hearing Alan Menken's soaring melodies",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review suggests a qualified positive recommendation, acknowledging the show has problems but praising strong performances and music that make it worthwhile. | GPT-4o-mini: The review highlights strong performances and music but suggests significant shortcomings in other areas, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T03:08:07.789Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
