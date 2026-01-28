@@ -34,6 +34,14 @@ const https = require('https');
 
 const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
 
+// Universal scraper with Bright Data → ScrapingBee → Playwright fallback
+let universalScraper;
+try {
+  universalScraper = require('./lib/scraper');
+} catch (e) {
+  console.warn('Warning: scraper module not available');
+}
+
 // Sprint 4: Import new modules
 let tradePressScraper;
 try {
@@ -964,10 +972,10 @@ async function searchTradePress() {
       }
     }
 
-    // Fall back to section page scraping
+    // Fall back to section page scraping (uses universal scraper with fallback)
     if (source.sectionUrl) {
       try {
-        const html = await fetchPageSimple(source.sectionUrl);
+        const html = await fetchWithFallback(source.sectionUrl, 20000);
         if (html) {
           const items = parseHTMLSection(html, source.sectionUrl);
           for (const item of items.slice(0, 30)) {
@@ -995,13 +1003,19 @@ async function searchTradePress() {
 
 /**
  * Simple fetch without proxies - for RSS feeds and basic HTML
+ * Includes timeout to prevent hanging
  */
-async function fetchPageSimple(url) {
+async function fetchPageSimple(url, timeoutMs = 15000) {
   const https = require('https');
   const http = require('http');
   const protocol = url.startsWith('https') ? https : http;
 
   return new Promise((resolve) => {
+    // Overall timeout
+    const timeoutId = setTimeout(() => {
+      resolve(null);
+    }, timeoutMs);
+
     const req = protocol.get(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)',
@@ -1011,20 +1025,49 @@ async function fetchPageSimple(url) {
     }, (res) => {
       // Follow redirects
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        fetchPageSimple(res.headers.location).then(resolve);
+        clearTimeout(timeoutId);
+        fetchPageSimple(res.headers.location, timeoutMs - 5000).then(resolve);
         return;
       }
       if (res.statusCode !== 200) {
+        clearTimeout(timeoutId);
         resolve(null);
         return;
       }
       let data = '';
       res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve(data));
+      res.on('end', () => { clearTimeout(timeoutId); resolve(data); });
     });
-    req.on('error', () => resolve(null));
-    req.on('timeout', () => { req.destroy(); resolve(null); });
+    req.on('error', () => { clearTimeout(timeoutId); resolve(null); });
+    req.on('timeout', () => { clearTimeout(timeoutId); req.destroy(); resolve(null); });
   });
+}
+
+/**
+ * Fetch with universal scraper fallback (Bright Data → ScrapingBee → Playwright)
+ * Used when simple fetch fails for section pages
+ */
+async function fetchWithFallback(url, timeoutMs = 30000) {
+  // First try simple fetch
+  const simple = await fetchPageSimple(url, 10000);
+  if (simple) return simple;
+
+  // Fall back to universal scraper if available
+  if (universalScraper) {
+    try {
+      const result = await Promise.race([
+        universalScraper.fetchPage(url),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeoutMs))
+      ]);
+      if (result && result.content) {
+        return result.content;
+      }
+    } catch (e) {
+      console.log(`    Universal scraper failed: ${e.message}`);
+    }
+  }
+
+  return null;
 }
 
 /**
