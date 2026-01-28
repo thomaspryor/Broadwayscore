@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Broadway Investment Tracker - Mockup v2</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #0a0a0a; }
+    .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); }
+    .stat-card { background: rgba(255,255,255,0.05); }
+    .green { color: #34d399; }
+    .amber { color: #fbbf24; }
+    .red { color: #f87171; }
+    .estimate { opacity: 0.9; }
+  </style>
+</head>
+<body class="text-gray-100 min-h-screen p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+
+    <!-- Back Link -->
+    <a href="#" class="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 text-sm font-medium mb-4">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      All Shows
+    </a>
+
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 class="text-3xl sm:text-4xl font-bold text-white">Broadway Investment Tracker</h1>
+          <p class="text-gray-400 mt-2">Recoupment data and investment metrics for industry insiders</p>
+          <p class="text-sm text-gray-500 mt-1">Data from SEC filings, trade press · Updated January 28, 2026</p>
+          <p class="text-xs text-amber-500/70 mt-1">~ indicates estimate based on public reporting</p>
+        </div>
+        <div class="flex gap-2">
+          <button class="px-4 py-2 bg-amber-500/20 text-amber-400 rounded-lg text-sm font-medium hover:bg-amber-500/30 transition">
+            ↓ JSON
+          </button>
+          <button class="px-4 py-2 bg-amber-500/20 text-amber-400 rounded-lg text-sm font-medium hover:bg-amber-500/30 transition">
+            ↓ CSV
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Season Stats Row -->
+    <div class="mb-8">
+      <h2 class="text-sm font-medium text-gray-400 uppercase tracking-wide mb-3">By Season</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+        <!-- 2024-2025 Season -->
+        <div class="stat-card rounded-xl p-4">
+          <div class="text-xs text-gray-500 uppercase tracking-wide mb-2">2024-2025 Season</div>
+          <div class="flex justify-between items-end">
+            <div>
+              <div class="text-xl font-bold text-white">~$89M</div>
+              <div class="text-xs text-gray-500">Capital at Risk</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xl font-bold text-white">2 <span class="text-sm text-gray-400">of 14</span></div>
+              <div class="text-xs text-gray-500">Recouped</div>
+            </div>
+          </div>
+          <div class="mt-2 text-xs text-gray-600">Oh, Mary!, Stereophonic</div>
+        </div>
+
+        <!-- 2023-2024 Season -->
+        <div class="stat-card rounded-xl p-4">
+          <div class="text-xs text-gray-500 uppercase tracking-wide mb-2">2023-2024 Season</div>
+          <div class="flex justify-between items-end">
+            <div>
+              <div class="text-xl font-bold text-white">~$42M</div>
+              <div class="text-xs text-gray-500">Capital at Risk</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xl font-bold text-white">3 <span class="text-sm text-gray-400">of 11</span></div>
+              <div class="text-xs text-gray-500">Recouped</div>
+            </div>
+          </div>
+          <div class="mt-2 text-xs text-gray-600">And Juliet, Stranger Things, Cabaret (partial)</div>
+        </div>
+
+        <!-- 2022-2023 Season -->
+        <div class="stat-card rounded-xl p-4">
+          <div class="text-xs text-gray-500 uppercase tracking-wide mb-2">2022-2023 Season</div>
+          <div class="flex justify-between items-end">
+            <div>
+              <div class="text-xl font-bold text-white">~$18M</div>
+              <div class="text-xs text-gray-500">Capital at Risk</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xl font-bold text-white">4 <span class="text-sm text-gray-400">of 9</span></div>
+              <div class="text-xs text-gray-500">Recouped</div>
+            </div>
+          </div>
+          <div class="mt-2 text-xs text-gray-600">MJ, Some Like It Hot, Sweeney Todd</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Recent Changes Section -->
+    <section class="mb-8">
+      <h2 class="text-lg font-bold text-white mb-3">Recent Developments</h2>
+      <div class="card rounded-xl p-4">
+        <ul class="space-y-2 text-sm">
+          <li class="flex items-start gap-3">
+            <span class="text-xs text-gray-500 w-20 shrink-0">Jan 2025</span>
+            <span class="green">●</span>
+            <span><strong class="text-white">Stereophonic</strong> recouped in ~45 weeks — fastest play since 2019</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-xs text-gray-500 w-20 shrink-0">Jan 2025</span>
+            <span class="amber">●</span>
+            <span><strong class="text-white">Death Becomes Her</strong> now estimated ~70-80% recouped</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-xs text-gray-500 w-20 shrink-0">Jan 2025</span>
+            <span class="red">●</span>
+            <span><strong class="text-white">Liberation</strong> closing notice — will not recoup</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-xs text-gray-500 w-20 shrink-0">Dec 2024</span>
+            <span class="green">●</span>
+            <span><strong class="text-white">Oh, Mary!</strong> recouped in ~19 weeks — fastest of 2024</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-xs text-gray-500 w-20 shrink-0">Dec 2024</span>
+            <span class="amber">●</span>
+            <span><strong class="text-white">The Great Gatsby</strong> estimated ~50-60% recouped</span>
+          </li>
+        </ul>
+        <a href="#" class="text-amber-400 hover:text-amber-300 text-sm mt-3 inline-block">View full changelog →</a>
+      </div>
+    </section>
+
+    <!-- Approaching Recoupment / Trending -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-white mb-4">Approaching Recoupment</h2>
+      <p class="text-gray-400 text-sm mb-4">Shows trending toward break-even based on current run rate.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <div class="card rounded-xl p-4">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-semibold text-white">Death Becomes Her</h3>
+            <span class="text-xs px-2 py-1 rounded-full bg-amber-500/20 text-amber-400">TBD</span>
+          </div>
+          <div class="text-sm text-gray-400 mb-3">2024-2025 Season</div>
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-500">Investment</span>
+            <span class="text-white estimate">~$19M</span>
+          </div>
+          <div class="flex justify-between text-sm mt-1">
+            <span class="text-gray-500">Est. Recouped</span>
+            <span class="amber font-semibold">~70-80%</span>
+          </div>
+          <div class="flex justify-between text-sm mt-1">
+            <span class="text-gray-500">Trend</span>
+            <span class="green">↑ Improving</span>
+          </div>
+        </div>
+
+        <div class="card rounded-xl p-4">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-semibold text-white">The Great Gatsby</h3>
+            <span class="text-xs px-2 py-1 rounded-full bg-amber-500/20 text-amber-400">TBD</span>
+          </div>
+          <div class="text-sm text-gray-400 mb-3">2024-2025 Season</div>
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-500">Investment</span>
+            <span class="text-white estimate">~$22M</span>
+          </div>
+          <div class="flex justify-between text-sm mt-1">
+            <span class="text-gray-500">Est. Recouped</span>
+            <span class="amber font-semibold">~50-60%</span>
+          </div>
+          <div class="flex justify-between text-sm mt-1">
+            <span class="text-gray-500">Trend</span>
+            <span class="green">↑ Steady</span>
+          </div>
+        </div>
+
+        <div class="card rounded-xl p-4">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-semibold text-white">Maybe Happy Ending</h3>
+            <span class="text-xs px-2 py-1 rounded-full bg-amber-500/20 text-amber-400">TBD</span>
+          </div>
+          <div class="text-sm text-gray-400 mb-3">2024-2025 Season</div>
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-500">Investment</span>
+            <span class="text-white estimate">~$16M</span>
+          </div>
+          <div class="flex justify-between text-sm mt-1">
+            <span class="text-gray-500">Est. Recouped</span>
+            <span class="amber font-semibold">~40-50%</span>
+          </div>
+          <div class="flex justify-between text-sm mt-1">
+            <span class="text-gray-500">Trend</span>
+            <span class="text-gray-400">→ Flat</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Shows At Risk -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-white mb-4">Struggling / At Risk</h2>
+      <p class="text-gray-400 text-sm mb-4">Shows with declining trajectory or operating below break-even.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <div class="card rounded-xl p-4 border-l-2 border-red-500/50">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-semibold text-white">Operation Mincemeat</h3>
+            <span class="text-xs px-2 py-1 rounded-full bg-red-500/20 text-red-400">At Risk</span>
+          </div>
+          <div class="text-sm text-gray-400 mb-3">2024-2025 Season</div>
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-500">Investment</span>
+            <span class="text-white estimate">~$11.5M</span>
+          </div>
+          <div class="flex justify-between text-sm mt-1">
+            <span class="text-gray-500">Weekly Gross</span>
+            <span class="text-white">$580K</span>
+          </div>
+          <div class="flex justify-between text-sm mt-1">
+            <span class="text-gray-500">Break-even</span>
+            <span class="text-white estimate">~$600K</span>
+          </div>
+          <div class="flex justify-between text-sm mt-1">
+            <span class="text-gray-500">Trend</span>
+            <span class="red">↓ Declining</span>
+          </div>
+        </div>
+
+        <div class="card rounded-xl p-4 border-l-2 border-red-500/50">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-semibold text-white">All In</h3>
+            <span class="text-xs px-2 py-1 rounded-full bg-red-500/20 text-red-400">At Risk</span>
+          </div>
+          <div class="text-sm text-gray-400 mb-3">2024-2025 Season</div>
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-500">Investment</span>
+            <span class="text-white estimate">~$18M</span>
+          </div>
+          <div class="flex justify-between text-sm mt-1">
+            <span class="text-gray-500">Weekly Gross</span>
+            <span class="text-white">$720K</span>
+          </div>
+          <div class="flex justify-between text-sm mt-1">
+            <span class="text-gray-500">Break-even</span>
+            <span class="text-white estimate">~$850K</span>
+          </div>
+          <div class="flex justify-between text-sm mt-1">
+            <span class="text-gray-500">Trend</span>
+            <span class="red">↓ Below break-even</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Recent Recoupments (more interesting than all-time) -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-white mb-4">Recent Recoupments</h2>
+      <p class="text-gray-400 text-sm mb-4">Shows that recouped in the last 2 years.</p>
+      <div class="card rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-left text-gray-400 border-b border-white/5">
+                <th class="p-4 font-medium">Show</th>
+                <th class="p-4 font-medium">Season</th>
+                <th class="p-4 font-medium">Weeks</th>
+                <th class="p-4 font-medium">Capitalization</th>
+                <th class="p-4 font-medium hidden sm:table-cell">Recoup Date</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-300">
+              <tr class="border-b border-white/5 hover:bg-white/5">
+                <td class="p-4 font-medium text-white">Stereophonic</td>
+                <td class="p-4 text-gray-400">2023-24</td>
+                <td class="p-4 green font-semibold">~45</td>
+                <td class="p-4 estimate">~$4.8M</td>
+                <td class="p-4 text-gray-500 hidden sm:table-cell">Jan 2025</td>
+              </tr>
+              <tr class="border-b border-white/5 hover:bg-white/5">
+                <td class="p-4 font-medium text-white">Oh, Mary!</td>
+                <td class="p-4 text-gray-400">2024-25</td>
+                <td class="p-4 green font-semibold">~19</td>
+                <td class="p-4 estimate">~$4.5M</td>
+                <td class="p-4 text-gray-500 hidden sm:table-cell">Dec 2024</td>
+              </tr>
+              <tr class="border-b border-white/5 hover:bg-white/5">
+                <td class="p-4 font-medium text-white">And Juliet</td>
+                <td class="p-4 text-gray-400">2022-23</td>
+                <td class="p-4 green font-semibold">~83</td>
+                <td class="p-4 estimate">~$17M</td>
+                <td class="p-4 text-gray-500 hidden sm:table-cell">Jun 2024</td>
+              </tr>
+              <tr class="border-b border-white/5 hover:bg-white/5">
+                <td class="p-4 font-medium text-white">Stranger Things</td>
+                <td class="p-4 text-gray-400">2024-25</td>
+                <td class="p-4 green font-semibold">~52</td>
+                <td class="p-4 estimate">~$29M</td>
+                <td class="p-4 text-gray-500 hidden sm:table-cell">Nov 2024</td>
+              </tr>
+              <tr class="hover:bg-white/5">
+                <td class="p-4 font-medium text-white">MJ</td>
+                <td class="p-4 text-gray-400">2021-22</td>
+                <td class="p-4 green font-semibold">~68</td>
+                <td class="p-4 estimate">~$22.5M</td>
+                <td class="p-4 text-gray-500 hidden sm:table-cell">May 2023</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Full List: All Open Shows -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-white mb-4">All Currently Running Shows</h2>
+      <p class="text-gray-400 text-sm mb-4">Complete commercial data for all open Broadway productions.</p>
+      <div class="card rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-left text-gray-400 border-b border-white/5">
+                <th class="p-4 font-medium">Show</th>
+                <th class="p-4 font-medium">Designation</th>
+                <th class="p-4 font-medium">Capitalization</th>
+                <th class="p-4 font-medium hidden md:table-cell">Weekly Gross</th>
+                <th class="p-4 font-medium hidden lg:table-cell">Est. Recouped</th>
+                <th class="p-4 font-medium hidden sm:table-cell">Status</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-300">
+              <tr class="border-b border-white/5 hover:bg-white/5">
+                <td class="p-4 font-medium text-white">Hamilton</td>
+                <td class="p-4"><span class="text-yellow-400">Miracle</span></td>
+                <td class="p-4 estimate">~$12.5M</td>
+                <td class="p-4 hidden md:table-cell">$1.95M</td>
+                <td class="p-4 hidden lg:table-cell green">Recouped</td>
+                <td class="p-4 hidden sm:table-cell text-gray-500">~26 wks</td>
+              </tr>
+              <tr class="border-b border-white/5 hover:bg-white/5">
+                <td class="p-4 font-medium text-white">Wicked</td>
+                <td class="p-4"><span class="text-yellow-400">Miracle</span></td>
+                <td class="p-4 estimate">~$14M</td>
+                <td class="p-4 hidden md:table-cell">$3.8M</td>
+                <td class="p-4 hidden lg:table-cell green">Recouped</td>
+                <td class="p-4 hidden sm:table-cell text-gray-500">~104 wks</td>
+              </tr>
+              <tr class="border-b border-white/5 hover:bg-white/5">
+                <td class="p-4 font-medium text-white">The Lion King</td>
+                <td class="p-4"><span class="text-yellow-400">Miracle</span></td>
+                <td class="p-4 estimate">~$25M</td>
+                <td class="p-4 hidden md:table-cell">$2.1M</td>
+                <td class="p-4 hidden lg:table-cell green">Recouped</td>
+                <td class="p-4 hidden sm:table-cell text-gray-500">—</td>
+              </tr>
+              <tr class="border-b border-white/5 hover:bg-white/5">
+                <td class="p-4 font-medium text-white">Six</td>
+                <td class="p-4"><span class="text-emerald-400">Windfall</span></td>
+                <td class="p-4 estimate">~$5M</td>
+                <td class="p-4 hidden md:table-cell">$1.2M</td>
+                <td class="p-4 hidden lg:table-cell green">Recouped</td>
+                <td class="p-4 hidden sm:table-cell text-gray-500">—</td>
+              </tr>
+              <tr class="border-b border-white/5 hover:bg-white/5">
+                <td class="p-4 font-medium text-white">Death Becomes Her</td>
+                <td class="p-4"><span class="text-gray-400">TBD</span></td>
+                <td class="p-4 estimate">~$19M</td>
+                <td class="p-4 hidden md:table-cell">$1.4M</td>
+                <td class="p-4 hidden lg:table-cell amber">~70-80%</td>
+                <td class="p-4 hidden sm:table-cell text-gray-500">↑</td>
+              </tr>
+              <tr class="border-b border-white/5 hover:bg-white/5">
+                <td class="p-4 font-medium text-white">The Great Gatsby</td>
+                <td class="p-4"><span class="text-gray-400">TBD</span></td>
+                <td class="p-4 estimate">~$22M</td>
+                <td class="p-4 hidden md:table-cell">$1.1M</td>
+                <td class="p-4 hidden lg:table-cell amber">~50-60%</td>
+                <td class="p-4 hidden sm:table-cell text-gray-500">→</td>
+              </tr>
+              <tr class="border-b border-white/5 hover:bg-white/5">
+                <td class="p-4 font-medium text-white">Maybe Happy Ending</td>
+                <td class="p-4"><span class="text-gray-400">TBD</span></td>
+                <td class="p-4 estimate">~$16M</td>
+                <td class="p-4 hidden md:table-cell">$850K</td>
+                <td class="p-4 hidden lg:table-cell amber">~40-50%</td>
+                <td class="p-4 hidden sm:table-cell text-gray-500">→</td>
+              </tr>
+              <tr class="border-b border-white/5 hover:bg-white/5">
+                <td class="p-4 font-medium text-white">Operation Mincemeat</td>
+                <td class="p-4"><span class="text-gray-400">TBD</span></td>
+                <td class="p-4 estimate">~$11.5M</td>
+                <td class="p-4 hidden md:table-cell">$580K</td>
+                <td class="p-4 hidden lg:table-cell amber">~30-40%</td>
+                <td class="p-4 hidden sm:table-cell text-red-400">↓</td>
+              </tr>
+              <tr class="hover:bg-white/5">
+                <td class="p-4 font-medium text-white">Chicago</td>
+                <td class="p-4"><span class="text-yellow-400">Miracle</span></td>
+                <td class="p-4 estimate">~$2.5M</td>
+                <td class="p-4 hidden md:table-cell">$620K</td>
+                <td class="p-4 hidden lg:table-cell green">Recouped</td>
+                <td class="p-4 hidden sm:table-cell text-gray-500">—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-4 border-t border-white/5 text-center">
+          <span class="text-gray-500 text-sm">Showing 9 of 27 open shows · </span>
+          <a href="#" class="text-amber-400 hover:text-amber-300 text-sm">View all →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Designation Legend -->
+    <section class="mb-10">
+      <h2 class="text-lg font-bold text-white mb-3">Designation Guide</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="card p-3">
+          <span class="text-yellow-400 font-semibold">Miracle</span>
+          <p class="text-xs text-gray-500 mt-1">Long-running mega-hit, extraordinary returns</p>
+        </div>
+        <div class="card p-3">
+          <span class="text-emerald-400 font-semibold">Windfall</span>
+          <p class="text-xs text-gray-500 mt-1">Solid hit, recouped and profitable</p>
+        </div>
+        <div class="card p-3">
+          <span class="text-orange-400 font-semibold">Fizzle</span>
+          <p class="text-xs text-gray-500 mt-1">Closed without recouping (~30%+ back)</p>
+        </div>
+        <div class="card p-3">
+          <span class="text-red-400 font-semibold">Flop</span>
+          <p class="text-xs text-gray-500 mt-1">Closed without recouping (&lt;30% back)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="text-sm text-gray-500 border-t border-white/5 pt-6">
+      <p class="mb-2">
+        <strong class="text-gray-400">Note:</strong> All capitalization, weekly running costs, and recoupment estimates marked with ~ are based on trade press reporting, SEC filings, and industry analysis. Box office grosses are from BroadwayWorld and are actuals.
+      </p>
+      <p>
+        Data compiled from SEC filings, trade press (Broadway Journal, Broadway News, Deadline, Variety), and industry sources.
+      </p>
+      <div class="flex gap-4 mt-3">
+        <a href="#" class="text-amber-400 hover:text-amber-300">Full Commercial Scorecard →</a>
+        <a href="#" class="text-amber-400 hover:text-amber-300">Methodology →</a>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

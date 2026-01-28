@@ -43,6 +43,7 @@ const {
   getOutletDisplayName,
   mergeReviews,
 } = require('./lib/review-normalization');
+const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -1099,6 +1100,24 @@ function createReviewFile(showId, reviewData) {
   const filename = generateReviewFilename(reviewData.outlet || reviewData.outletId, reviewData.criticName);
   const filepath = path.join(showDir, filename);
   const reviewKey = generateReviewKey(reviewData.outlet || reviewData.outletId, reviewData.criticName);
+
+  // PRODUCTION VERIFICATION: Check for wrong production (off-Broadway, West End, etc.)
+  if (!quickDateCheck(showId, reviewData.url, reviewData.publishDate)) {
+    const verification = verifyProduction({
+      showId,
+      url: reviewData.url,
+      publishDate: reviewData.publishDate,
+      text: reviewData.excerpt || reviewData.fullText
+    });
+
+    if (verification.shouldReject) {
+      console.log(`    ✗ REJECTED ${filename}: Wrong production detected`);
+      for (const issue of verification.issues) {
+        console.log(`      - ${issue.message}`);
+      }
+      return false;
+    }
+  }
 
   // Check for existing review with same normalized key
   if (fs.existsSync(showDir)) {
