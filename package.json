@@ -11,6 +11,7 @@
     "test:data": "node scripts/validate-data.js",
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "npx playwright test --ui",
+    "test:unit": "node --test 'tests/unit/*.test.mjs'",
     "agent:update": "npx ts-node --project scripts/tsconfig.json scripts/agent-update.ts",
     "agent:report": "npx ts-node --project scripts/tsconfig.json scripts/agent-update.ts",
     "reviews:fetch": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts",

@@ -1,0 +1,103 @@
+name: Update Commercial Data
+
+on:
+  schedule:
+    - cron: '0 16 * * 3'  # Wednesday 4pm UTC / 11am ET
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no changes committed)'
+        required: false
+        type: boolean
+        default: false
+      gather_only:
+        description: 'Gather data only (no AI analysis)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  update-commercial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run commercial data update
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ARGS="--gather-all"
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ "${{ github.event.inputs.gather_only }}" = "true" ]; then
+            ARGS="$ARGS --gather-only"
+          fi
+          node scripts/update-commercial-data.js $ARGS
+
+      - name: Validate data
+        if: always()
+        run: npm run test:data
+
+      - name: Build site
+        if: always()
+        run: npm run build
+        env:
+          NODE_ENV: production
+        continue-on-error: true
+
+      - name: Commit and push changes
+        if: always()
+        run: |
+          git add data/commercial.json data/commercial-changelog.json
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            WEEK_ENDING=$(node -e "try{const d=require('./data/commercial-changelog.json');const e=d.entries;console.log(e.length?e[e.length-1].weekEnding:'unknown')}catch(e){console.log('unknown')}")
+            git commit -m "data: Update commercial data for week ending $WEEK_ENDING
+
+          Automated weekly update of commercial scorecard data.
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            for i in 1 2 3 4 5; do
+              if git push origin main; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              echo "Push failed (attempt $i), pulling and rebasing..."
+              git pull --rebase origin main
+              sleep $((RANDOM % 5 + 2))
+            done
+            echo "Changes committed and pushed"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Commercial Data Update" >> $GITHUB_STEP_SUMMARY
+          if [ -f data/commercial-changelog.json ]; then
+            ENTRIES=$(node -e "try{const d=require('./data/commercial-changelog.json');console.log(d.entries.length)}catch(e){console.log(0)}")
+            echo "Total changelog entries: $ENTRIES" >> $GITHUB_STEP_SUMMARY
+          fi
