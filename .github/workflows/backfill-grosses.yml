@@ -1,0 +1,81 @@
+name: Backfill Grosses History
+
+on:
+  workflow_dispatch:
+    inputs:
+      weeks:
+        description: 'Number of weeks to backfill (default 55 for ~1 year)'
+        required: false
+        default: '55'
+        type: string
+      start_from:
+        description: 'Start date (YYYY-MM-DD, defaults to most recent Sunday)'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run backfill
+        run: |
+          ARGS="--weeks ${{ github.event.inputs.weeks || '55' }}"
+          if [ -n "${{ github.event.inputs.start_from }}" ]; then
+            ARGS="$ARGS --start-from ${{ github.event.inputs.start_from }}"
+          fi
+          npx tsx scripts/backfill-grosses-history.ts $ARGS
+        env:
+          NODE_ENV: production
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/grosses-history.json 2>/dev/null || [ ! -f data/grosses-history.json ]; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            WEEK_COUNT=$(node -e "const d=JSON.parse(require('fs').readFileSync('data/grosses-history.json','utf-8'));console.log(Object.keys(d.weeks).length)")
+            echo "week_count=$WEEK_COUNT" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/grosses-history.json
+          git commit -m "data: Backfill grosses history (${{ steps.changes.outputs.week_count }} weeks)
+
+          Backfilled weekly box office snapshots from Playbill for WoW/YoY comparisons."
+          git push
+
+      - name: Summary
+        run: |
+          if [ "${{ steps.changes.outputs.has_changes }}" = "true" ]; then
+            echo "## Backfill Complete" >> $GITHUB_STEP_SUMMARY
+            echo "Added historical grosses data. Total weeks in history: **${{ steps.changes.outputs.week_count }}**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## No Changes" >> $GITHUB_STEP_SUMMARY
+            echo "All requested weeks already present in history." >> $GITHUB_STEP_SUMMARY
+          fi
