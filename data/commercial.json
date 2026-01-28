@@ -4,14 +4,15 @@
     "lastUpdated": "2026-01-25",
     "sources": "SEC filings, trade press (Broadway Journal, Broadway News, Deadline, Variety), Reddit r/Broadway",
     "designations": {
-      "Miracle": "Profit > 3x investment (long-running mega-hits)",
-      "Windfall": "Profit > 1.5x investment (solid hits)",
+      "Miracle": "Long-running mega-hit -- extraordinary returns",
+      "Windfall": "Solid hit -- recouped and profitable",
       "Trickle": "Broke even or modest profit over time",
       "Easy Winner": "Limited run that made money, limited downside, limited upside",
-      "Fizzle": "Lost money but not all",
-      "Flop": "Lost most/all investment",
+      "Fizzle": "Closed without recouping (~30%+ recovered)",
+      "Flop": "Closed without recouping (~<30% recovered)",
       "Nonprofit": "Produced by nonprofit theater (LCT, MTC, Second Stage, etc.)",
-      "TBD": "Too early to tell (still running or recently opened)"
+      "TBD": "Too early to tell (still running or recently opened)",
+      "Tour Stop": "National tour engagement on Broadway -- not rated as original production"
     }
   },
   "shows": {
@@ -280,15 +281,15 @@
       "notes": "Unlikely to recoup based on current trajectory. Grosses declining ~$250K/week. Korean producer backing."
     },
     "the-outsiders": {
-      "designation": "TBD",
-      "capitalization": 19000000,
-      "capitalizationSource": "Industry estimates (avg for 2023-24 new musicals)",
+      "designation": "Windfall",
+      "capitalization": 22000000,
+      "capitalizationSource": "Press announcement / SEC filing",
       "weeklyRunningCost": null,
-      "recouped": false,
-      "recoupedDate": null,
+      "recouped": true,
+      "recoupedDate": "2025-12",
       "recoupedWeeks": null,
-      "recoupedSource": null,
-      "notes": "Won Best Musical Tony 2024. Produced by Araca Group. Needs $1.4M+ weekly to recoup within a year. Post-Tony grosses hit $1.4M/week record at Bernard B. Jacobs Theatre."
+      "recoupedSource": "Reddit Grosses Analysis / Broadway Journal",
+      "notes": "Won Best Musical Tony 2024. Recouped $22M investment by late 2025. Post-Tony grosses hit $1.4M/week record at Bernard B. Jacobs Theatre."
     },
     "stranger-things": {
       "designation": "TBD",
@@ -441,7 +442,20 @@
       "notes": "Recouped within ~9 months. Disney never officially announced recoupment (not their practice). By May 2023 had grossed $561M+ and 3,100+ performances. Received $3M NY theater tax credit. Disney's unique New Amsterdam lease (2% gross royalty vs standard rent) affects cost structure."
     },
     "mamma-mia": {
-      "designation": "Windfall",
+      "designation": "Tour Stop",
+      "productionType": "tour-stop",
+      "originalProductionId": "mamma-mia-2001",
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedWeeks": null,
+      "notes": "25th Anniversary Tour Broadway engagement (Aug 2025 - Feb 2026). See mamma-mia-2001 for original production."
+    },
+    "mamma-mia-2001": {
+      "designation": "Miracle",
+      "productionType": "original",
       "capitalization": 10000000,
       "capitalizationSource": "Playbill (original 2001 production)",
       "weeklyRunningCost": null,
@@ -449,7 +463,7 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": "Playbill",
-      "notes": "25th Anniversary Tour return engagement. Tour recouped in just 13 weeks on the road. Original production ran 14 years/5,773 performances. $7B+ grossed across all global productions."
+      "notes": "Original production ran 14 years / 5,773 performances. $7B+ grossed across all global productions."
     },
     "queen-of-versailles": {
       "designation": "Flop",

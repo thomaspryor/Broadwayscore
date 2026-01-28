@@ -93,6 +93,14 @@ function getDesignationStyle(designation: CommercialDesignation): {
         icon: '🎭',
         description: 'Nonprofit theater production',
       };
+    case 'Tour Stop':
+      return {
+        bgClass: 'bg-slate-500/15',
+        textClass: 'text-slate-400',
+        borderClass: 'border-slate-500/25',
+        icon: '🚌',
+        description: 'National tour engagement on Broadway',
+      };
     case 'TBD':
     default:
       return {
