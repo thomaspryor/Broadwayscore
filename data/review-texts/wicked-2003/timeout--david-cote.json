@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"A musical prequel to The Wizard of Oz, that explained how the Wicked Witch of the West got that way, and explored her true relationship to Glinda the Good Witch. A combination of outstanding elements.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/wicked",
-  "originalScore": null,
+  "originalScore": "1/5",
   "assignedScore": 83,
   "source": "show-score",
   "dtliThumb": null,
@@ -40,7 +40,7 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "designation": "Critics_Choice",
-  "scoreSource": "extracted-thumbs-up",
+  "scoreSource": "star-icon",
   "scoreConfidence": "low",
   "llmScore": {
     "score": 83,
@@ -100,5 +100,7 @@
   },
   "sources": [
     "show-score"
-  ]
+  ],
+  "originalScoreNormalized": 20,
+  "scoreExtractedFrom": "archive"
 }

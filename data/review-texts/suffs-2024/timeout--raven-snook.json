@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"4/5 stars! An artful and inspiring historical epic...'Suffs' is remarkably easy to follow as it presents its sheroes in all their imperfect glory, exploring the ideological, generational and racial divides that persist to this day in feminist politics. Although the show is nearly three hours long, not every pioneering woman gets her due...Yet there's much to admire and enjoy.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/suffs",
-  "originalScore": null,
+  "originalScore": "4/5",
   "assignedScore": 79,
   "source": "show-score",
   "dtliThumb": "Up",
@@ -33,7 +33,7 @@
   ],
   "textStatus": "truncated",
   "sourceMethod": "playwright",
-  "scoreSource": "extracted-rating",
+  "scoreSource": "text-pattern",
   "scoreConfidence": "medium",
   "extractedRating": "4/5",
   "llmScore": {
@@ -99,5 +99,7 @@
   ],
   "wrongProduction": true,
   "wrongProductionReason": "Date/URL year mismatch: 2022, Public Theater, off Broadway, Publish date shows year 2022, expected 2024 (or 2023 for previews)",
-  "wrongProductionConfidence": "high"
+  "wrongProductionConfidence": "high",
+  "originalScoreNormalized": 80,
+  "scoreExtractedFrom": "fullText"
 }

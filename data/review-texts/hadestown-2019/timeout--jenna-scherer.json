@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "“The stellar ensemble fills the theater with soaring harmonies, weaving in and out of the audience and the onstage band. Mitchell’s music, lush and strange and lyrically brilliant, has found its match in this cast...The one weak spot is Daunno, whose vocal and acting chops don’t stack up against his peers. Still, ‘Hadestown’ is something special, a sensory feast that’s also a passionate debate between pragmatism and romance.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/hadestown-broadway",
-  "originalScore": null,
+  "originalScore": "4/5",
   "assignedScore": 84,
   "source": "show-score",
   "dtliThumb": null,
@@ -40,7 +40,7 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "designation": "Critics_Choice",
-  "scoreSource": "extracted-rating",
+  "scoreSource": "text-pattern",
   "scoreConfidence": "medium",
   "extractedRating": "4/5",
   "llmScore": {
@@ -101,5 +101,7 @@
   },
   "wrongProduction": true,
   "wrongProductionReason": "Date/URL year mismatch: Publish date shows year 2016, expected 2019 (or 2018 for previews)",
-  "wrongProductionConfidence": "high"
+  "wrongProductionConfidence": "high",
+  "originalScoreNormalized": 80,
+  "scoreExtractedFrom": "archive"
 }

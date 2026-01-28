@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "BOOP! The Musical proves that bringing Betty Boop to life on stage is a worthy endeavor, even if only for the spectacle of it all.",
   "showScoreExcerpt": "\" 'BOOP! The Musical' proves that bringing Betty Boop to life on stage is a worthy endeavor, even if only for the spectacle of it all.\"",
-  "originalScore": null,
+  "originalScore": "A",
   "assignedScore": 76,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
@@ -22,7 +22,7 @@
   "archivePath": "data/archives/reviews/boop-2025/new-york-theatre-guide--allison-considine_2026-01-25.html",
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
-  "scoreSource": "sentiment-positive",
+  "scoreSource": "letter-grade",
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 76,
@@ -87,5 +87,7 @@
     "dtli"
   ],
   "dtliExcerpt": "The big, dazzling musical showcases the best of Broadway, with sparkling costumes, transformative sets, and tap dancing.",
-  "dtliThumb": "Up"
+  "dtliThumb": "Up",
+  "originalScoreNormalized": 95,
+  "scoreExtractedFrom": "fullText"
 }

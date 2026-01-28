@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "Six is not a show that bears too much thinking about. Toby Marlow and Lucy Moss wrote it when they were still students at Cambridge University, and it has the feel of a very entertaining senior showcase. Its 80 minutes are stuffed with clever turns of rhyme and catchy pastiche melodies that let mega-voiced singers toss off impressive \"riffs to ruffle your ruffs.\" The show's own riffs on history are educational, too, like a cheeky new British edition of Schoolhouse Rock. If all these hors d'oeuvr",
   "bwwRoundupUrl": null,
-  "originalScore": null,
+  "originalScore": "4/5",
   "assignedScore": null,
   "source": "dtli",
   "dtliThumb": "Up",
@@ -45,7 +45,7 @@
     "Show title not found in text"
   ],
   "designation": "Critics_Choice",
-  "scoreSource": "extracted-rating",
+  "scoreSource": "text-pattern",
   "scoreConfidence": "medium",
   "extractedRating": "4/5",
   "llmScore": {
@@ -110,5 +110,7 @@
     "dtli",
     "web-search"
   ],
-  "bwwThumb": null
+  "bwwThumb": null,
+  "originalScoreNormalized": 80,
+  "scoreExtractedFrom": "fullText"
 }

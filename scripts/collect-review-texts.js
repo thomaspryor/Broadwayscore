@@ -30,6 +30,9 @@ const path = require('path');
 const https = require('https');
 // const { HttpsProxyAgent } = require('https-proxy-agent'); // Not used - Bright Data needs zone setup
 
+// Score extraction for original scores
+const { extractScore, extractDesignation } = require('./lib/score-extractors');
+
 // Parse CLI arguments
 const args = process.argv.slice(2);
 const CLI = {
@@ -1056,7 +1059,7 @@ function mapSourceMethod(method) {
   return map[method] || method;
 }
 
-function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}) {
+function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '') {
   const data = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
 
   // Get excerpt length for truncation detection
@@ -1071,6 +1074,28 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
   data.textWordCount = validation.wordCount;
   data.archivePath = archivePath;
   data.textFetchedAt = new Date().toISOString();
+
+  // Extract original score from HTML/text if not already present
+  if (!data.originalScore && (html || text)) {
+    const outletId = data.outletId || review.outletId || '';
+    const scoreResult = extractScore(html, text, outletId);
+    if (scoreResult) {
+      data.originalScore = scoreResult.originalScore;
+      data.originalScoreNormalized = scoreResult.normalizedScore;
+      data.scoreSource = scoreResult.source;
+      console.log(`    → Extracted score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)`);
+    }
+  }
+
+  // Extract designation (Critics_Pick, Must_See, etc.) if not already present
+  if (!data.designation && (html || text)) {
+    const outletId = data.outletId || review.outletId || '';
+    const designation = extractDesignation(html, text, outletId);
+    if (designation) {
+      data.designation = designation;
+      console.log(`    → Extracted designation: ${designation}`);
+    }
+  }
 
   // New tracking fields
   data.fetchMethod = method;
@@ -1559,8 +1584,8 @@ async function processReview(review) {
       console.log(`  Issues: ${validation.issues.join(', ')}`);
     }
 
-    // Update JSON
-    updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {});
+    // Update JSON (pass HTML for score extraction)
+    updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {}, result.html || '');
 
     // Track tier breakdown
     if (result.method && state.tierBreakdown[result.method]) {
