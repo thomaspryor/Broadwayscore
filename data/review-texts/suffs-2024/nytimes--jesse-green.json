@@ -11,8 +11,66 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Suffs is already good, in both senses — a good show and good for the world",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "But to be great, a musical (like a great movement) must grab you by the throat. 'Suffs' too often settles for holding up signs",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I even shed a few political tears",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critic acknowledges the show as 'good' with emotional impact but clearly states it falls short of greatness due to being too didactic rather than theatrically gripping. | GPT-4o-mini: The review expresses a generally positive view of the show but highlights significant shortcomings that prevent it from being truly great.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:19.594Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (71 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

@@ -1,0 +1,76 @@
+{
+  "showId": "how-to-dance-in-ohio-2023",
+  "outletId": "TALKINBWAY",
+  "outlet": "Talkin' Broadway",
+  "criticName": "Matthew Murray",
+  "url": "https://talkinbroadway.com/page2/htdio.html",
+  "publishDate": "December 14, 2023",
+  "fullText": "How to Dance in Ohio is a musical that succeeds in ways that matter most: It tells a story worth telling, with characters worth caring about, and does so with genuine heart and respect for its subjects.",
+  "isFullReview": false,
+  "dtliExcerpt": "How to Dance in Ohio is a musical that succeeds in ways that matter most: It tells a story worth telling, with characters worth caring about, and does so with genuine heart and respect for its subjects.",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "How to Dance in Ohio is a musical that succeeds in ways that matter most: It tells a story worth telling, with characters worth caring about, and does so with genuine heart and respect for its subjects.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "succeeds in ways that matter most",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "tells a story worth telling, with characters worth caring about",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "genuine heart and respect for its subjects",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for fundamental elements (story, characters, heart) with no caveats suggests clear positive recommendation, though language is measured rather than ecstatic. | GPT-4o-mini: The review expresses strong approval for the storytelling and character development, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:53.121Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": null,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "gets bogged down in John Logan's uninspired book",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "poorly mimics Baz Luhrmann's 2001 film",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Too often the stage musical gets bogged down",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The excerpt shows clear criticism of the book as 'uninspired' and notes the show 'gets bogged down' too often, suggesting significant structural problems despite some acknowledgment of effective moments. | GPT-4o-mini: The review highlights significant issues with the book and overall execution, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:39.879Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

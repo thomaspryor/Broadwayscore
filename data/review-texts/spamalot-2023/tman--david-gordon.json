@@ -1,0 +1,76 @@
+{
+  "showId": "spamalot-2023",
+  "outletId": "TMAN",
+  "outlet": "TheaterMania",
+  "criticName": "David Gordon",
+  "url": "https://www.theatermania.com/broadway/reviews/spamalot_91234",
+  "publishDate": "November 16, 2023",
+  "fullText": "This revival of Spamalot brings fresh energy to the Monty Python musical, with standout performances that capture both the absurdist humor and surprising heart of the original material.",
+  "isFullReview": false,
+  "dtliExcerpt": "This revival of Spamalot brings fresh energy to the Monty Python musical, with standout performances that capture both the absurdist humor and surprising heart of the original material.",
+  "originalScore": null,
+  "assignedScore": 78,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "This revival of Spamalot brings fresh energy to the Monty Python musical, with standout performances that capture both the absurdist humor and surprising heart of the original material.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 82,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "brings fresh energy",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "standout performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "capture both the absurdist humor and surprising heart",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Multiple positive signals about performances and production energy suggest a clear recommendation, but the brief excerpt lacks specificity or strong superlatives that would push it higher.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:00.083Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

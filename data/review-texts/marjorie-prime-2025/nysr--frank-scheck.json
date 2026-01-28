@@ -10,9 +10,65 @@
   "bwwExcerpt": "It also seems sharper, more resonant, and more deeply poignant in the current Broadway revival once again directed by Anne Kaufman. Partly this is due to its first-rate cast including June Squibb, miraculously still treading the boards at age 96. And on a personal note, perhaps it’s also due to my having experienced personal losses in the last decade that made the play hit home in a more profound way.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "sharper, more resonant, and more deeply poignant in the current Broadway revival",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "first-rate cast including June Squibb, miraculously still treading the boards at age 96",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "made the play hit home in a more profound way",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive language about the revival being 'sharper' and 'more deeply poignant' with praise for 'first-rate cast' and direction indicates clear recommendation despite being a brief excerpt. | GPT-4o-mini: The review expresses strong appreciation for the performances and direction, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:00.015Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

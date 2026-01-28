@@ -11,8 +11,64 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "makes for powerful theater that's as entertaining as it is enlightening",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "sublime ensemble performing with absolute authenticity",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "directed with great heart and welcome humor",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for direction, performances, and overall impact with no reservations or caveats mentioned. | GPT-4o-mini: The review expresses strong praise for direction and performances, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:04.463Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 88,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

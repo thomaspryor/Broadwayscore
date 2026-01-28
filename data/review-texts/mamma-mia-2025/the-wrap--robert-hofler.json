@@ -11,8 +11,64 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAMMA-MIA-Returns-To-Broadway-20250814",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "I went much further back, to the 1970s when vanity productions like \"Angel,\" \"Doctor Jazz,\" \"Got tu Go Disco\" and \"Platinum\" took up their brief residences on the Rialto",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The \"Mamma Mia!\" that opened Thursday at the Winter Garden is a touring production",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "the current “Mamma Mia!” remains under the control of its original director",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic unfavorably compares Mamma Mia! to notorious 1970s Broadway flops, suggesting it belongs among forgettable vanity productions rather than classic shows. | GPT-4o-mini: The review contains negative comparisons to past productions and lacks any positive recommendations, indicating a clear disapproval of the current show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:39.494Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

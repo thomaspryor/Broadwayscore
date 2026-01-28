@@ -10,8 +10,59 @@
   "showScoreExcerpt": "\"Rachel McAdams soars in poignant slice-of-life play\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mary-jane-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rachel McAdams soars",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "poignant slice-of-life play",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The headline suggests strong praise for McAdams' performance and describes the play favorably, but lacks detail for higher confidence scoring. | GPT-4o-mini: The review highlights Rachel McAdams' strong performance and describes the play positively, suggesting a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:22:15.333Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

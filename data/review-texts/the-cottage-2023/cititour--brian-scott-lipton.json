@@ -11,8 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 40.5,
+      "high": 57.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 64
+    },
+    "keyPhrases": [
+      {
+        "quote": "little more than a summertime distraction",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "luxurious casting and ultra-polished design",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "would seem like little more than a summer stock import",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review damns with faint praise, calling the show merely a 'summertime distraction' that's only saved by strong performances and production values, suggesting it's mediocre material elevated by execution. | GPT-4o-mini: The review indicates that the show lacks substance and is primarily a distraction, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:50.741Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (49 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

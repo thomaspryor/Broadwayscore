@@ -11,10 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "“...this comedy of manners by the playwright Sandy Ruskin is so thoroughly old-fashioned that it may come as a surprise it’s not based — like so many Broadway outings lately are — on existing material. Which is not to say that any part of it feels original.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "paint-by-numbers sex farce",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "familiar, superficial and fleeting",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "no part of it feels original",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic systematically dismantles the show as unoriginal, predictable, and superficial, with no redeeming qualities mentioned despite acknowledging the lavish production. | GPT-4o-mini: The review is overwhelmingly critical, describing the show as unoriginal and superficial, leading to a clear recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:20.332Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

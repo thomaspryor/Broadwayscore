@@ -11,10 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "“This Broadway revival, ‘Spamalot's’ first, feels like a proclamation that the musical's heyday is not dead yet, either...The other strength of ‘Spamalot’ is that it gives every one of its principal cast members a chance to shine. And shine they do. “",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels like a proclamation that the musical's heyday is not dead yet",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "gives every one of its principal cast members a chance to shine. And shine they do",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "your laughter will simply be proportional to how much you enjoy Monty Python's silly sketch-comedy style in general",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review expresses clear enthusiasm for the revival and performances with phrases like 'heyday is not dead yet' and 'shine they do,' though it acknowledges the humor is taste-dependent. | GPT-4o-mini: The review highlights strong performances and a nostalgic revival, leading to a clear recommendation despite some subjective humor preferences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:24.761Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

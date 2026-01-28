@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 100,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -53,5 +53,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251103053646/https://lavocedinewyork.com/en/new-york/2025/10/29/liberation-captures-a-pivotal-time-in-the-feminist-movement/",
   "scoreSource": "extracted-rating",
   "scoreConfidence": "medium",
-  "extractedRating": "2016/2025"
+  "extractedRating": "2016/2025",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": null,
+      "performances": 89,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sharply imagined, heartbreaking in places, and unexpectedly funny throughout",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the stellar cast delivers personal stories, political debates, and zinging asides with impeccable timing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Wohl's work is an essential part of getting that promise back",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Four out of five stars with consistent praise for the writing ('sharply imagined'), stellar performances with 'impeccable timing,' and thoughtful direction, concluding the work is 'essential.' | GPT-4o-mini: The review provides strong praise for the performances and direction, indicating a clear recommendation despite some minor reservations about the script.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:39.942Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Here Lies Love is a show that asks its audience to dance, and in doing so, it creates something genuinely new on Broadway — a musical that feels like a party, even when it's telling the story of a dictator's wife.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Here Lies Love is a show that asks its audience to dance, and in doing so, it creates something genuinely new on Broadway — a musical that feels like a party, even when it's telling the story of a dictator's wife.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "creates something genuinely new on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a musical that feels like a party",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "even when it's telling the story of a dictator's wife",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly celebrates the show's innovation and unique theatrical experience, praising its fresh approach to Broadway musicals despite the dark subject matter. | GPT-4o-mini: The review highlights the innovative and enjoyable aspects of the show, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:06.709Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

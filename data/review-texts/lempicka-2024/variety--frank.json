@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical no doubt will further enhance the artist’s prominence, which had waned over the decades. But even as it works to cast Lempicka in a new light, this complex artist still remains just beyond the frame.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/lempicka/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "will further enhance the artist's prominence",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "this complex artist still remains just beyond the frame",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "works to cast Lempicka in a new light",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The excerpt suggests the musical partially succeeds in its goals but ultimately fails to fully capture its subject, indicating a mixed but slightly disappointing result. | GPT-4o-mini: The review indicates a complex relationship with the musical, recognizing potential while expressing a sense of distance from the subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:38.752Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

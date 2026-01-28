@@ -1,0 +1,76 @@
+{
+  "showId": "six-2021",
+  "outletId": "TMAN",
+  "outlet": "TheaterMania",
+  "criticName": "Jesse Green",
+  "url": "https://www.theatermania.com/broadway/reviews/six_90259.html",
+  "publishDate": "October 4, 2021",
+  "fullText": "The show's concept is brilliant in its simplicity: What if Henry VIII's six wives got to tell their own stories, reclaiming their narratives from the history books that reduced them to mere footnotes in a king's biography?",
+  "isFullReview": false,
+  "dtliExcerpt": "The show's concept is brilliant in its simplicity: What if Henry VIII's six wives got to tell their own stories, reclaiming their narratives from the history books that reduced them to mere footnotes in a king's biography?",
+  "originalScore": null,
+  "assignedScore": 68,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The show's concept is brilliant in its simplicity: What if Henry VIII's six wives got to tell their own stories, reclaiming their narratives from the history books that reduced them to mere footnotes in a king's biography?",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 55.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's concept is brilliant in its simplicity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "reclaiming their narratives from the history books that reduced them to mere footnotes",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "reclaiming their narratives from the history books",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt only discusses the show's concept in positive terms but provides no information about execution, performances, or overall recommendation, making it impossible to determine the critic's final verdict. | GPT-4o-mini: The review highlights a strong and innovative concept, suggesting a clear recommendation despite lacking details on other aspects. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:08.165Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 75,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}

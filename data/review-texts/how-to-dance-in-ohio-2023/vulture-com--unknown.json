@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“It’s a credit to ‘How to Dance in Ohio’s’ cast that they deliver compelling performances, even when their material gets rote and didactic...If we’re here to meet these characters who aren’t going to be stand-ins for generalized traits, let’s really spend the time to get to know them all.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250724172416",
-  "archiveOrgUrl": "http://web.archive.org/web/20250724172416/https://www.vulture.com/2023/12/theater-review-how-to-dance-in-ohio.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250724172416/https://www.vulture.com/2023/12/theater-review-how-to-dance-in-ohio.html",
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 53,
+      "music": 53,
+      "performances": 78,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a credit to How to Dance in Ohio's cast that they deliver compelling performances, even when their material gets rote and didactic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "too much of it is taken up with blurry mid-tempo group numbers that struggle to differentiate themselves",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "so many of the structural issues are the sorts of things that get ironed out with more time in development",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises the cast's compelling performances and the show's inclusive spirit, but criticizes structural issues, generic plotting, and a forgettable score, resulting in a qualified mixed reception that acknowledges both strengths and significant weaknesses. | GPT-4o-mini: The review highlights strong performances but criticizes the music and execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:21:08.121Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

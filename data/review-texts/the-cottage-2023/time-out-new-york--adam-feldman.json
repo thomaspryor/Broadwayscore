@@ -11,10 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "\"While the architecture of the plot is solid, what really keeps 'The Cottage' up is the comedic industry of its cast. Directed by Jason Alexander, a seasoned hand at classic timing, the actors leap gamely into their funny business.\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 79,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "what really keeps 'The Cottage' up is the comedic industry of its cast",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "broader in character and characters, and less sophisticated in language",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the actors leap gamely into their funny business",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges script limitations but praises the cast's comedic work and solid direction, suggesting a qualified recommendation based on performances. | GPT-4o-mini: The review highlights solid performances and a well-structured plot, leading to a clear recommendation despite some reservations about sophistication.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:15.129Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

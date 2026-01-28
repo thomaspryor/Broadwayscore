@@ -11,8 +11,64 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 82,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's Lange who commands the evening, displaying the sort of star power and stage command that make her a Broadway diva",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's worth the price of admission to see her launch into disco dancing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Keenan-Bolger and Parsons are predictably fine in their roles, even if they're not being stretched much",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Review praises Lange's commanding performance as worth the ticket price but suggests other leads aren't challenged, indicating a recommendation based primarily on one star turn. | GPT-4o-mini: The review highlights strong performances, particularly by Lange, indicating a positive recommendation despite some reservations about the other actors' roles.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:22:09.780Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

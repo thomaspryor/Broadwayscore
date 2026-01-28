@@ -9,8 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "“In a lot of ways, ’Purlie’ is a trickster story, which means it runs on a combination of brains, guts, and charisma”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "show-score-playwright",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "runs on a combination of brains, guts, and charisma",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "’Purlie’ is a trickster story",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt only provides thematic description without any evaluative language or clear recommendation signal, making scoring highly uncertain. | GPT-4o-mini: The review hints at positive elements but lacks a clear recommendation or detailed critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:30.203Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 50,
+    "openaiScore": 60,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"...while there are sparks of exuberance in the show, they don’t come from its center.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,5 +51,61 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251130163802",
-  "archiveOrgUrl": "http://web.archive.org/web/20251130163802/https://www.vulture.com/article/theater-review-lempicka-broadway-musical.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251130163802/https://www.vulture.com/article/theater-review-lempicka-broadway-musical.html",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 45,
+      "performances": 58,
+      "direction": 42
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lempicka the musical often goes flat",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "beneath the undulating surface there's a lack of poetry to Lempicka",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Lempicka aspires, even strains, but never quite generates wonder",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic finds the musical fundamentally disappointing despite some bright spots, criticizing the direction as 'tepid,' the protagonist as 'opaque,' and concluding it 'never quite generates wonder.' | GPT-4o-mini: The review is predominantly negative, highlighting significant flaws in the musical's execution and emotional impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:53.532Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

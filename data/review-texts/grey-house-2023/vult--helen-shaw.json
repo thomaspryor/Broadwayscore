@@ -1,0 +1,71 @@
+{
+  "showId": "grey-house-2023",
+  "outletId": "VULT",
+  "outlet": "Vulture",
+  "criticName": "Helen Shaw",
+  "url": "https://www.vulture.com/2023/05/theater-review-grey-house-on-broadway.html",
+  "publishDate": "May 31, 2023",
+  "fullText": "Grey House is a haunted-house play that works overtime to be scary, but it's the kind of horror that announces itself with timpani crashes and screaming children.",
+  "isFullReview": false,
+  "dtliExcerpt": "Grey House is a haunted-house play that works overtime to be scary, but it's the kind of horror that announces itself with timpani crashes and screaming children.",
+  "originalScore": null,
+  "assignedScore": 39,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Grey House is a haunted-house play that works overtime to be scary, but it's the kind of horror that announces itself with timpani crashes and screaming children.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "works overtime to be scary",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the kind of horror that announces itself with timpani crashes and screaming children",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the play's heavy-handed, unsubtle approach to horror, suggesting it fails to achieve genuine scares through overly obvious theatrical devices. | GPT-4o-mini: The review indicates a lack of genuine horror and relies on clichéd techniques, suggesting a negative overall impression.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:44.954Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
+}
