@@ -83,22 +83,53 @@ function parseThumb(thumbAlt) {
   return null;
 }
 
+/**
+ * Clean HTML entities and tags from text
+ */
+function cleanText(text) {
+  if (!text) return null;
+  return text
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#8217;/g, "'")
+    .replace(/&#8216;/g, "'")
+    .replace(/&#8220;/g, '"')
+    .replace(/&#8221;/g, '"')
+    .replace(/&#8211;/g, '–')
+    .replace(/&#8212;/g, '—')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function extractReviewsFromDTLI(content, showId) {
   const reviews = [];
 
-  // Match each review-item block
-  const reviewPattern = /<div class="review-item">([\s\S]*?)<\/div>\s*<\/div>\s*(?=<div class="review-item">|<div class="" id="modal|<\/section>|$)/g;
-
-  // Simpler approach: split by review-item and parse each
+  // Split by review-item and parse each
   const parts = content.split('<div class="review-item">');
 
   for (let i = 1; i < parts.length; i++) {
     const part = parts[i];
 
-    // Extract outlet from aria-label
-    const outletMatch = part.match(/aria-label="([^"]+)"/);
-    if (!outletMatch) continue;
-    const outletRaw = outletMatch[1];
+    // Extract outlet - try aria-label first, then fall back to review_image div
+    let outletRaw = null;
+    const ariaLabelMatch = part.match(/aria-label="([^"]+)"/);
+    if (ariaLabelMatch) {
+      outletRaw = ariaLabelMatch[1];
+    } else {
+      // Fallback: look for <div class="review_image"><div>Outlet Name</div></div>
+      const divOutletMatch = part.match(/<div class="review_image"><div>([^<]+)<\/div><\/div>/);
+      if (divOutletMatch) {
+        outletRaw = divOutletMatch[1].trim();
+      }
+    }
+
+    // Skip if we can't identify the outlet
+    if (!outletRaw) continue;
 
     // Extract thumb from image alt
     const thumbMatch = part.match(/alt="(BigThumbs_[^"]+)"/);
@@ -115,31 +146,45 @@ function extractReviewsFromDTLI(content, showId) {
     const dateMatch = part.match(/class="review-item-date"[^>]*>([^<]+)<\/h3>/);
     const dateStr = dateMatch ? dateMatch[1].trim() : null;
 
-    // Extract full text from paragraph
-    const textMatch = part.match(/class="paragraph"[^>]*>([\s\S]*?)<\/p>/);
+    // Extract excerpt text - handle multiple formats:
+    // 1. Direct text in <p class="paragraph">text</p>
+    // 2. Nested content: <p class="paragraph"></p><div class="entry-content">text</div>
     let fullText = null;
+
+    // First try: direct paragraph content
+    const textMatch = part.match(/class="paragraph"[^>]*>([\s\S]*?)<\/p>/);
     if (textMatch) {
-      // Clean HTML tags from text
-      fullText = textMatch[1]
-        .replace(/<[^>]+>/g, '')
-        .replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&#8217;/g, "'")
-        .replace(/&#8220;/g, '"')
-        .replace(/&#8221;/g, '"')
-        .replace(/&#8211;/g, '–')
-        .replace(/&#8212;/g, '—')
-        .replace(/&nbsp;/g, ' ')
-        .trim();
+      fullText = cleanText(textMatch[1]);
+    }
+
+    // If paragraph is empty or short, try entry-content div
+    if (!fullText || fullText.length < 30) {
+      const entryContentMatch = part.match(/<div class="entry-content">([\s\S]*?)<\/div>/);
+      if (entryContentMatch) {
+        const entryText = cleanText(entryContentMatch[1]);
+        if (entryText && entryText.length > (fullText?.length || 0)) {
+          fullText = entryText;
+        }
+      }
+    }
+
+    // Also try: grab all text between review-item-date and review-item-button
+    if (!fullText || fullText.length < 30) {
+      const betweenMatch = part.match(/review-item-date[^>]*>[^<]*<\/h3>\s*([\s\S]*?)<a[^>]*class="button-pink review-item-button"/);
+      if (betweenMatch) {
+        const betweenText = cleanText(betweenMatch[1]);
+        if (betweenText && betweenText.length > (fullText?.length || 0)) {
+          fullText = betweenText;
+        }
+      }
     }
 
     // Extract URL
     const urlMatch = part.match(/href="([^"]+)"[^>]*class="button-pink review-item-button"/);
     const url = urlMatch ? urlMatch[1] : null;
 
-    if (!fullText || fullText.length < 50) continue;
+    // Skip reviews with very short excerpts (likely just a title or placeholder)
+    if (!fullText || fullText.length < 30) continue;
 
     const outlet = normalizeOutlet(outletRaw);
 
@@ -150,7 +195,9 @@ function extractReviewsFromDTLI(content, showId) {
       criticName,
       url,
       publishDate: dateStr,
-      fullText,
+      dtliExcerpt: fullText,  // Store as excerpt since DTLI only provides excerpts
+      fullText: null,          // Don't claim it's full text
+      isFullReview: false,
       originalScore: null,
       assignedScore: null,
       dtliThumb: thumb,
@@ -173,15 +220,26 @@ function saveReview(review, overwrite = false) {
   // Check if file exists and merge data if so
   if (fs.existsSync(filepath) && !overwrite) {
     const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-    // Merge: prefer DTLI data for url and thumb, keep existing fullText if longer
+    // Merge: preserve existing data while adding DTLI-specific fields
     review = {
       ...existing,
-      ...review,
-      fullText: (review.fullText && review.fullText.length > (existing.fullText || '').length)
-        ? review.fullText
-        : existing.fullText,
-      url: review.url || existing.url,
+      // Always update DTLI-specific fields from this extraction
       dtliThumb: review.dtliThumb || existing.dtliThumb,
+      dtliExcerpt: review.dtliExcerpt || existing.dtliExcerpt,
+      // Preserve existing data
+      fullText: existing.fullText || null,
+      isFullReview: existing.isFullReview || false,
+      showScoreExcerpt: existing.showScoreExcerpt || null,
+      bwwExcerpt: existing.bwwExcerpt || null,
+      bwwThumb: existing.bwwThumb || null,
+      url: existing.url || review.url,
+      publishDate: existing.publishDate || review.publishDate,
+      originalScore: existing.originalScore || null,
+      assignedScore: existing.assignedScore || null,
+      llmScore: existing.llmScore || null,
+      llmMetadata: existing.llmMetadata || null,
+      ensembleData: existing.ensembleData || null,
+      source: existing.source || review.source,
     };
   }
 
