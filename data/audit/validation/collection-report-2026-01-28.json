@@ -1,93 +1,91 @@
 {
-  "runDate": "2026-01-28T23:39:43.098Z",
+  "runDate": "2026-01-28T23:41:23.623Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "patriots-2024",
+    "showFilter": "doubt-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 16,
-    "failed": 10,
+    "processed": 18,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "61.5%"
+    "successRate": "78.3%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "scrapingbee": 2,
-    "brightdata": 1,
-    "archive": 11
+    "brightdata": 0,
+    "archive": 15
   },
   "statistics": {
-    "tier1Attempts": 15,
-    "tier1Success": 2,
-    "tier2Attempts": 13,
+    "tier1Attempts": 9,
+    "tier1Success": 1,
+    "tier2Attempts": 8,
     "tier2Success": 2,
-    "tier3Attempts": 11,
-    "tier3Success": 1,
-    "tier4Attempts": 35,
-    "tier4Success": 11,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 80
+    "tier3Attempts": 6,
+    "tier3Success": 0,
+    "tier4Attempts": 24,
+    "tier4Success": 15,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 60
   },
   "processed": [
-    "patriots-2024/nytg--kyle-turner.json",
-    "patriots-2024/nytimes--jesse-green.json",
-    "patriots-2024/variety--frank-rizzo.json",
-    "patriots-2024/broadwaynews--brittani-samuel.json",
-    "patriots-2024/ew--christian-holub.json",
-    "patriots-2024/ew--christian.json",
-    "patriots-2024/nydailynews--chris-jones.json",
-    "patriots-2024/nydailynews--chris.json",
-    "patriots-2024/thewrap--robert-hofler.json",
-    "patriots-2024/thewrap--robert.json",
-    "patriots-2024/timeout--raven-snook.json",
-    "patriots-2024/wsj--charles-isherwood.json",
-    "patriots-2024/wsj--charles.json",
-    "patriots-2024/nysr--david-finkle.json",
-    "patriots-2024/nysr--david.json",
-    "patriots-2024/washpost--naveen-kumar.json"
+    "doubt-2024/nyt-theater--jonathan-mandell.json",
+    "doubt-2024/nytg--gillian-russo.json",
+    "doubt-2024/nytg--gillian.json",
+    "doubt-2024/nytimes--jesse-green.json",
+    "doubt-2024/variety--aramide-tinubu.json",
+    "doubt-2024/ew--dalton-ross.json",
+    "doubt-2024/ew--dalton.json",
+    "doubt-2024/nydailynews--chris-jones.json",
+    "doubt-2024/nydailynews--chris.json",
+    "doubt-2024/nypost--johnny-oleksinski.json",
+    "doubt-2024/observer--david-cote.json",
+    "doubt-2024/theatermania--zachary-stewart.json",
+    "doubt-2024/wsj--charles-isherwood.json",
+    "doubt-2024/wsj--charles.json",
+    "doubt-2024/cititour--brian-scott-lipton.json",
+    "doubt-2024/nysr--david-finkle.json",
+    "doubt-2024/nysr--melissa-rose-bernardo.json",
+    "doubt-2024/thestage--lane-williamson.json"
   ],
   "failed": [
-    "patriots-2024/variety--charles-isherwood.json",
-    "patriots-2024/guardian--adrian-horton.json",
-    "patriots-2024/new-york-sun--elysa-gardner.json",
-    "patriots-2024/new-york-sun--elysa.json",
-    "patriots-2024/nypost--johnny-oleksinski.json",
-    "patriots-2024/theatermania--david-gordon.json",
-    "patriots-2024/amny--matt-windman.json",
-    "patriots-2024/nysr--frank-scheck.json",
-    "patriots-2024/nysr--frank.json",
-    "patriots-2024/talkinbroadway--matthew-murray.json"
+    "doubt-2024/newyorker--vinson-cunningham.json",
+    "doubt-2024/vulture--helen-shaw.json",
+    "doubt-2024/guardian--adrian-horton.json",
+    "doubt-2024/john-patrick-shanley--doubt-a-parable.json",
+    "doubt-2024/washpost--naveen-kumar.json"
   ],
   "tierDetails": {
     "playwright": [
-      "patriots-2024/nytg--kyle-turner.json",
-      "patriots-2024/broadwaynews--brittani-samuel.json"
+      "doubt-2024/nyt-theater--jonathan-mandell.json"
     ],
     "scrapingbee": [
-      "patriots-2024/ew--christian-holub.json",
-      "patriots-2024/timeout--raven-snook.json"
+      "doubt-2024/cititour--brian-scott-lipton.json",
+      "doubt-2024/thestage--lane-williamson.json"
     ],
-    "brightdata": [
-      "patriots-2024/ew--christian.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "patriots-2024/nytimes--jesse-green.json",
-      "patriots-2024/variety--frank-rizzo.json",
-      "patriots-2024/nydailynews--chris-jones.json",
-      "patriots-2024/nydailynews--chris.json",
-      "patriots-2024/thewrap--robert-hofler.json",
-      "patriots-2024/thewrap--robert.json",
-      "patriots-2024/wsj--charles-isherwood.json",
-      "patriots-2024/wsj--charles.json",
-      "patriots-2024/nysr--david-finkle.json",
-      "patriots-2024/nysr--david.json",
-      "patriots-2024/washpost--naveen-kumar.json"
+      "doubt-2024/nytg--gillian-russo.json",
+      "doubt-2024/nytg--gillian.json",
+      "doubt-2024/nytimes--jesse-green.json",
+      "doubt-2024/variety--aramide-tinubu.json",
+      "doubt-2024/ew--dalton-ross.json",
+      "doubt-2024/ew--dalton.json",
+      "doubt-2024/nydailynews--chris-jones.json",
+      "doubt-2024/nydailynews--chris.json",
+      "doubt-2024/nypost--johnny-oleksinski.json",
+      "doubt-2024/observer--david-cote.json",
+      "doubt-2024/theatermania--zachary-stewart.json",
+      "doubt-2024/wsj--charles-isherwood.json",
+      "doubt-2024/wsj--charles.json",
+      "doubt-2024/nysr--david-finkle.json",
+      "doubt-2024/nysr--melissa-rose-bernardo.json"
     ]
   }
 }
