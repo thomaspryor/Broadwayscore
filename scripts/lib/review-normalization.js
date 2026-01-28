@@ -85,7 +85,7 @@ const OUTLET_ALIASES = {
     'observer', 'the observer', 'ny observer', 'new york observer'
   ],
   'newyorker': [
-    'newyorker', 'the new yorker', 'new yorker', 'the-new-yorker'
+    'newyorker', 'the new yorker', 'new yorker', 'the-new-yorker', 'new-yorker'
   ],
   'ap': [
     'ap', 'associated press', 'the associated press', 'ap news'
@@ -98,7 +98,7 @@ const OUTLET_ALIASES = {
   ],
   'nysr': [
     'nysr', 'new york stage review', 'ny stage review',
-    'newyorkstagereview', 'new-york-stage-review'
+    'newyorkstagereview', 'new-york-stage-review', 'ny-stage-review'
   ],
   'nytg': [
     'nytg', 'new york theatre guide', 'ny theatre guide', 'nytheatreguide',
@@ -145,7 +145,7 @@ const OUTLET_ALIASES = {
     'thestage', 'the stage', 'stage', 'the-stage'
   ],
   'whatsonstage': [
-    'whatsonstage', "what's on stage", 'whats on stage', 'whatson'
+    'whatsonstage', "what's on stage", 'whats on stage', 'whatson', 'whats-on-stage'
   ],
   'telegraph': [
     'telegraph', 'the telegraph', 'daily telegraph'
@@ -197,6 +197,37 @@ const OUTLET_ALIASES = {
   ],
   'newyorkmagazine': [
     'newyorkmagazine', 'new york magazine', 'ny magazine', 'ny mag'
+  ],
+  // New outlets from BWW/DTLI extraction scripts
+  'newsday': [
+    'newsday', 'news day'
+  ],
+  'npr': [
+    'npr', 'national public radio', 'n.p.r.'
+  ],
+  'njcom': [
+    'njcom', 'nj.com', 'nj-com', 'nj dot com'
+  ],
+  'dctheatrescene': [
+    'dctheatrescene', 'dc theatre scene', 'dc-theatre-scene', 'dc theater scene'
+  ],
+  'nbcny': [
+    'nbcny', 'nbc new york', 'nbc-ny', 'nbc ny', 'nbc-new-york'
+  ],
+  'londontheatre': [
+    'londontheatre', 'london theatre', 'london-theatre', 'london theater'
+  ],
+  'towncountry': [
+    'towncountry', 'town & country', 'town-country', 'town and country', 'town-and-country'
+  ],
+  'vanityfair': [
+    'vanityfair', 'vanity fair', 'vanity-fair'
+  ],
+  'vogue': [
+    'vogue', 'vogue magazine'
+  ],
+  'artsdesk': [
+    'artsdesk', 'the arts desk', 'arts-desk', 'arts desk', 'the-arts-desk'
   ],
 };
 
@@ -515,6 +546,38 @@ function getOutletDisplayName(outletId) {
     'forward': 'The Forward',
     'rollingstone': 'Rolling Stone',
     'thestage': 'The Stage',
+    'chicagotribune': 'Chicago Tribune',
+    'latimes': 'Los Angeles Times',
+    'sfchronicle': 'San Francisco Chronicle',
+    'whatsonstage': "What's On Stage",
+    'telegraph': 'The Telegraph',
+    'financialtimes': 'Financial Times',
+    'billboard': 'Billboard',
+    'amny': 'amNewYork',
+    'culturesauce': 'Culture Sauce',
+    'oneminutecritic': 'One Minute Critic',
+    'artsfuse': 'The Arts Fuse',
+    'jitney': 'The Jitney',
+    'slantmagazine': 'Slant Magazine',
+    'buzzfeed': 'BuzzFeed',
+    'vox': 'Vox',
+    'huffpost': 'HuffPost',
+    'nbcnews': 'NBC News',
+    'cbsnews': 'CBS News',
+    'newsweek': 'Newsweek',
+    'time': 'Time',
+    'newyorkmagazine': 'New York Magazine',
+    // New outlets from BWW/DTLI
+    'newsday': 'Newsday',
+    'npr': 'NPR',
+    'njcom': 'NJ.com',
+    'dctheatrescene': 'DC Theatre Scene',
+    'nbcny': 'NBC New York',
+    'londontheatre': 'London Theatre',
+    'towncountry': 'Town & Country',
+    'vanityfair': 'Vanity Fair',
+    'vogue': 'Vogue',
+    'artsdesk': 'The Arts Desk',
   };
 
   return displayNames[outletId] || outletId;
