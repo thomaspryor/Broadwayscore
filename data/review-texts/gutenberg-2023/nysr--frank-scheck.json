@@ -11,8 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 48,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 55.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 65,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "thin charms and relentless meta-humor don't prove quite as accessible",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "main selling point is its stars Josh Gad and Andrew Rannells",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "commensurately extravagant ticket prices",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the show's humor thin and inaccessible for Broadway, suggesting the material doesn't justify the high ticket prices and relies primarily on star power rather than quality. | GPT-4o-mini: The review expresses significant reservations about the show's accessibility and overall charm, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:22:21.183Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "scoreDelta": 5,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (48 → Down) conflicts with aggregator thumbs (Up)"
+    ]
+  }
 }
