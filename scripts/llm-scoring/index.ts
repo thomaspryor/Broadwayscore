@@ -11,6 +11,7 @@
  *   --all                 Process all shows (default if no --show)
  *   --unscored-only       Only score reviews without existing LLM scores (default: true)
  *   --rescore             Re-score even if already scored
+ *   --needs-rescore       Only score reviews flagged with needsRescore=true (excerpt→fullText upgrades)
  *   --dry-run             Don't save results, just print what would happen
  *   --verbose             Detailed logging
  *   --limit=N             Only process N reviews
@@ -69,6 +70,7 @@ function parseArgs(): ScoringPipelineOptions & {
   validateOnly: boolean;
   ensemble: boolean;
   groundTruth: boolean;
+  needsRescore: boolean;
 } {
   const args = process.argv.slice(2);
 
@@ -89,7 +91,7 @@ function parseArgs(): ScoringPipelineOptions & {
 
   return {
     showId,
-    unscoredOnly: !args.includes('--rescore'),
+    unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore'),
     minTextLength: 50,
     model,
     dryRun: args.includes('--dry-run'),
@@ -101,7 +103,8 @@ function parseArgs(): ScoringPipelineOptions & {
     calibrateOnly: args.includes('--calibrate-only'),
     validateOnly: args.includes('--validate-only'),
     ensemble: args.includes('--ensemble'),
-    groundTruth: args.includes('--ground-truth')
+    groundTruth: args.includes('--ground-truth'),
+    needsRescore: args.includes('--needs-rescore')
   };
 }
 
@@ -258,10 +261,18 @@ async function main(): Promise<void> {
     return;
   }
 
-  // Filter to unscored if requested
-  const filesToProcess = options.unscoredOnly
-    ? allFiles.filter(f => !(f.data as any).llmScore)
-    : allFiles;
+  // Filter based on mode
+  let filesToProcess: typeof allFiles;
+  if (options.needsRescore) {
+    // Filter to reviews flagged for rescoring (had excerpt-based score, now have fullText)
+    filesToProcess = allFiles.filter(f => (f.data as any).needsRescore === true);
+    console.log(`Filtering to reviews flagged for rescoring: ${filesToProcess.length} reviews\n`);
+  } else if (options.unscoredOnly) {
+    // Filter to unscored reviews
+    filesToProcess = allFiles.filter(f => !(f.data as any).llmScore);
+  } else {
+    filesToProcess = allFiles;
+  }
 
   // Helper to get scorable text (fullText or excerpts)
   const getScorableText = (data: ReviewTextFile): string | null => {
@@ -347,6 +358,13 @@ async function main(): Promise<void> {
       const result = await scorer.scoreReviewFile(reviewFile);
 
       if (result.success && result.scoredFile) {
+        // Clear needsRescore flag and track previous score if this was a rescore
+        const scoredAny = result.scoredFile as any;
+        if (options.needsRescore && scoredAny.needsRescore) {
+          delete scoredAny.needsRescore;
+          scoredAny.rescoreCompletedAt = new Date().toISOString();
+        }
+
         if (!options.dryRun) {
           saveReviewFile(filePath, result.scoredFile);
         }
