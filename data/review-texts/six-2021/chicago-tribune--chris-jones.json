@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "as well-suited to this moment as any piece of live entertainment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "gently progressive sensibility and a youthful target demographic",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "\"Six, especially at just 80 intermission-less minutes and with low costs, an existent YouTube fame, a gently progressive sensibility and a youthful target demographic, is as well-suited to this moment as any piece of live entertainment.\"",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic positions Six as exceptionally well-suited for its moment with multiple positive attributes, suggesting clear endorsement despite the brief excerpt. | GPT-4o-mini: The review highlights the show's relevance and appeal to its target demographic, indicating a clear positive recommendation without strong reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:58.500Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
