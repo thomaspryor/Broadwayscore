@@ -79,12 +79,12 @@ jobs:
         if: steps.check.outputs.skip != 'true'
         id: changes
         run: |
-          if git diff --quiet data/grosses.json; then
+          if git diff --quiet data/grosses.json data/grosses-history.json 2>/dev/null; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
             echo "Changes detected:"
-            git diff --stat data/grosses.json
+            git diff --stat data/grosses.json data/grosses-history.json
           fi
 
       - name: Validate data integrity
@@ -105,7 +105,7 @@ jobs:
 
           WEEK_ENDING=$(jq -r '.weekEnding // "unknown"' data/grosses.json)
 
-          git add data/grosses.json
+          git add data/grosses.json data/grosses-history.json
           git commit -m "data: Update Broadway grosses for week ending $WEEK_ENDING
 
 Automated weekly update of box office data.
