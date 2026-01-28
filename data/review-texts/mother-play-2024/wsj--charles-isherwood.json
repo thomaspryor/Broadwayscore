@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"...a funny and affecting but slight and fragmentary drama depicting Ms. Lange’s Phyllis\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mother-play-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "funny and affecting",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "slight and fragmentary",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "a funny and affecting but slight and fragmentary drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Mixed signals with clear positives (funny, affecting performance) balanced by structural criticisms (slight, fragmentary), suggesting qualified recommendation in mixed-positive range. | GPT-4o-mini: The review indicates a mix of positive and negative aspects, suggesting a conditional recommendation rather than a strong endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:22:19.636Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
