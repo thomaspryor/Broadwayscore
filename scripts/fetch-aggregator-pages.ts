@@ -131,8 +131,11 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
 
     await page.waitForTimeout(2000);
 
-    // Verify we're on a show page (not search or general page)
+    // Verify we're on a Broadway show page (not search, off-broadway, or general page)
     const pageUrl = page.url();
+    if (pageUrl.includes('/off-broadway-shows/') || pageUrl.includes('/off-off-broadway-shows/')) {
+      return { showId, aggregator: 'show-score', success: false, error: `Redirected to off-Broadway: ${pageUrl}` };
+    }
     if (!pageUrl.includes('/broadway-shows/') || pageUrl.includes('/search')) {
       return { showId, aggregator: 'show-score', success: false, error: `Landed on wrong page: ${pageUrl}` };
     }
