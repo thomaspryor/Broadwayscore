@@ -1,96 +1,84 @@
 {
-  "runDate": "2026-01-28T23:48:55.055Z",
+  "runDate": "2026-01-28T23:50:05.805Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 35,
+    "maxReviews": 30,
     "priority": "all",
-    "showFilter": "illinoise-2024",
+    "showFilter": "hells-kitchen-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 14,
-    "failed": 18,
+    "processed": 6,
+    "failed": 23,
     "skipped": 0,
-    "successRate": "43.8%"
+    "successRate": "20.7%"
   },
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 7
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 25,
-    "tier1Success": 5,
-    "tier2Attempts": 20,
+    "tier1Attempts": 26,
+    "tier1Success": 0,
+    "tier2Attempts": 26,
     "tier2Success": 0,
-    "tier3Attempts": 20,
+    "tier3Attempts": 26,
     "tier3Success": 2,
-    "tier4Attempts": 48,
-    "tier4Success": 7,
-    "totalFailed": 18,
-    "scrapingBeeCreditsUsed": 50
+    "tier4Attempts": 59,
+    "tier4Success": 4,
+    "totalFailed": 23,
+    "scrapingBeeCreditsUsed": 110
   },
   "processed": [
-    "illinoise-2024/nyt-theater--jonathan-mandell.json",
-    "illinoise-2024/nytimes--jesse-green.json",
-    "illinoise-2024/broadwaynews--brittani-samuel.json",
-    "illinoise-2024/nypost--johnny-oleksinski.json",
-    "illinoise-2024/observer--jesse-green.json",
-    "illinoise-2024/timeout--adam-feldman.json",
-    "illinoise-2024/culturesauce--thom-geier.json",
-    "illinoise-2024/latimes--charles-mcnulty.json",
-    "illinoise-2024/latimes--charles.json",
-    "illinoise-2024/nysr--david-finkle.json",
-    "illinoise-2024/nysr--roma-torre.json",
-    "illinoise-2024/pages-on-stages--mason-pilevsky.json",
-    "illinoise-2024/theater-scene--victor-gluck.json",
-    "illinoise-2024/unknown--unknown.json"
+    "hells-kitchen-2024/nytimes--elizabeth-vincentelli.json",
+    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/nydailynews--chris-jones.json",
+    "hells-kitchen-2024/observer--jesse-green.json",
+    "hells-kitchen-2024/observer--rex-reed.json",
+    "hells-kitchen-2024/the-new-york-sun--elysa-gardner.json"
   ],
   "failed": [
-    "illinoise-2024/hollywood-reporter--angie-han.json",
-    "illinoise-2024/nytg--amelia-merrill.json",
-    "illinoise-2024/variety--aramide-tinubu.json",
-    "illinoise-2024/variety--charles-isherwood.json",
-    "illinoise-2024/vulture--jackson-mchenry.json",
-    "illinoise-2024/deadline--pete-hammond.json",
-    "illinoise-2024/ew--kristen-baldwin.json",
-    "illinoise-2024/guardian--adrian-horton.json",
-    "illinoise-2024/theatermania--jesse-green.json",
-    "illinoise-2024/thewrap--steve-pond.json",
-    "illinoise-2024/wsj--charles-isherwood.json",
-    "illinoise-2024/theatrely--zachary-stewart.json",
-    "illinoise-2024/ap--mark-kennedy.json",
-    "illinoise-2024/billboard--demetrios-matheou.json",
-    "illinoise-2024/talkinbroadway--matthew-murray.json",
-    "illinoise-2024/usatoday--david-oliver.json",
-    "illinoise-2024/washpost--gloria-oladipo.json",
-    "illinoise-2024/washpost--peter-marks.json"
+    "hells-kitchen-2024/hollywood-reporter--angie-han.json",
+    "hells-kitchen-2024/nytg--david-nounou.json",
+    "hells-kitchen-2024/nytimes--jesse-green.json",
+    "hells-kitchen-2024/vulture--helen-shaw.json",
+    "hells-kitchen-2024/deadline--greg-evans.json",
+    "hells-kitchen-2024/deadline--pete-hammond.json",
+    "hells-kitchen-2024/ew--joey-nolfi.json",
+    "hells-kitchen-2024/ew--kristen-baldwin.json",
+    "hells-kitchen-2024/guardian--adrian-horton.json",
+    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
+    "hells-kitchen-2024/theatermania--adam-feldman.json",
+    "hells-kitchen-2024/theatermania--david-gordon.json",
+    "hells-kitchen-2024/wsj--charles-isherwood.json",
+    "hells-kitchen-2024/ap--mark-kennedy.json",
+    "hells-kitchen-2024/billboard--david-rooney.json",
+    "hells-kitchen-2024/billboard--isabela-raygoza.json",
+    "hells-kitchen-2024/billboard--juan-a-ramirez.json",
+    "hells-kitchen-2024/culturesauce--thom-geier.json",
+    "hells-kitchen-2024/dailybeast--tim-teeman.json",
+    "hells-kitchen-2024/stageandcinema--victor-gluck.json",
+    "hells-kitchen-2024/usatoday--charles-isherwood.json",
+    "hells-kitchen-2024/usatoday--david-rooney.json",
+    "hells-kitchen-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "illinoise-2024/nyt-theater--jonathan-mandell.json",
-      "illinoise-2024/culturesauce--thom-geier.json",
-      "illinoise-2024/pages-on-stages--mason-pilevsky.json",
-      "illinoise-2024/theater-scene--victor-gluck.json",
-      "illinoise-2024/unknown--unknown.json"
-    ],
+    "playwright": [],
     "scrapingbee": [],
     "brightdata": [
-      "illinoise-2024/observer--jesse-green.json",
-      "illinoise-2024/timeout--adam-feldman.json"
+      "hells-kitchen-2024/observer--jesse-green.json",
+      "hells-kitchen-2024/observer--rex-reed.json"
     ],
     "archive": [
-      "illinoise-2024/nytimes--jesse-green.json",
-      "illinoise-2024/broadwaynews--brittani-samuel.json",
-      "illinoise-2024/nypost--johnny-oleksinski.json",
-      "illinoise-2024/latimes--charles-mcnulty.json",
-      "illinoise-2024/latimes--charles.json",
-      "illinoise-2024/nysr--david-finkle.json",
-      "illinoise-2024/nysr--roma-torre.json"
+      "hells-kitchen-2024/nytimes--elizabeth-vincentelli.json",
+      "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+      "hells-kitchen-2024/nydailynews--chris-jones.json",
+      "hells-kitchen-2024/the-new-york-sun--elysa-gardner.json"
     ]
   }
 }
