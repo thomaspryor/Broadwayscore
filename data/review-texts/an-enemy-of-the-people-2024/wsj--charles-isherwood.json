@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Strong brings a compelling intensity to the role of Dr. Stockmann, though his performance occasionally veers toward the overwrought.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Strong brings a compelling intensity to the role of Dr. Stockmann, though his performance occasionally veers toward the overwrought.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 69,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "compelling intensity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "occasionally veers toward the overwrought",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Mr. Strong brings a compelling intensity to the role of Dr. Stockmann",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This brief excerpt shows mixed feelings about the lead performance with both praise and criticism, but provides no context about the overall show quality or recommendation. | GPT-4o-mini: The review highlights a strong performance but notes a significant caveat, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:03.366Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
