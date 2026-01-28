@@ -10,9 +10,65 @@
   "bwwExcerpt": "Icke’s work is really something: I can’t recall ever being as riveted at a Greek tragedy. And my admiration for his show is increased by how Icke manages to stay remarkably true to so much of the original play while turning its dialogue into contemporary speech; this doesn’t read as something based on the Greek original, it feels like the play itself, re-energized with the kind of crackling relevance all too rare on Broadway. With Shakespeare, of course, theater artists pretty much have to stick",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "bwwThumb": "Up"
+  "bwwThumb": "Up",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "I can't recall ever being as riveted at a Greek tragedy",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "re-energized with the kind of crackling relevance all too rare on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "my admiration for his show is increased",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses exceptional enthusiasm with superlatives like 'riveted' and 'crackling relevance,' praising both the adaptation's faithfulness and contemporary impact. | GPT-4o-mini: The review expresses strong admiration for the direction and the contemporary relevance of the production, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:01.939Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
