@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"Taymor populates the stage with an amazing menagerie of beasts; her audacious staging expands a simple cub into the pride of Broadway, not merely a fable of heredity but a celebration of heritage.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-lion-king",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "amazing menagerie of beasts",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "audacious staging expands a simple cub into the pride of Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "celebration of heritage",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for Taymor's direction and staging with superlative language ('amazing', 'audacious', 'pride of Broadway') and no negative elements, indicating clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the staging and overall experience, indicating a must-see production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:35.724Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

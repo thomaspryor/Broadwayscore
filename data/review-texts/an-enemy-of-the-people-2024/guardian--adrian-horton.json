@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Strong's performance is committed and intense, but the production feels heavy-handed in its contemporary parallels, lacking the nuance that would make Ibsen's themes truly resonate for modern audiences.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Strong's performance is committed and intense, but the production feels heavy-handed in its contemporary parallels, lacking the nuance that would make Ibsen's themes truly resonate for modern audiences.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 49,
+    "confidence": "medium",
+    "range": {
+      "low": 37.5,
+      "high": 60.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 50,
+      "music": null,
+      "performances": 73,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strong's performance is committed and intense",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the production feels heavy-handed",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "lacking the nuance that would make Ibsen's themes truly resonate",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praising the lead performance, the critic finds fundamental problems with the production's execution and interpretive approach that undermine the material's impact. | GPT-4o-mini: The review highlights a strong performance but criticizes the production's lack of nuance, leading to a mixed recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:03.954Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 55,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

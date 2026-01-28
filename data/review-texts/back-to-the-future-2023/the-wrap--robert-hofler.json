@@ -11,8 +11,66 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 30,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "lackluster",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "definitely more engaging than the songs Alan Silvestri and Glen Ballard have written for 'Back to the Future'",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the Sherman brothers score is definitely more engaging than the songs Alan Silvestri and Glen Ballard have written",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic unfavorably compares the new musical's score to an admittedly 'lackluster' 2005 show, suggesting significant problems with the music, though the excerpt cuts off before full assessment. | GPT-4o-mini: The review expresses significant disappointment in the music compared to a previous musical, indicating a clear negative sentiment overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:02.149Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (39 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

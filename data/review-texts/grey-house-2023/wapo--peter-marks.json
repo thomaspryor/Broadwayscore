@@ -11,8 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 37.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": null,
+      "performances": 71,
+      "direction": 59
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play itself exists in a sort of gray zone — neither particularly terrifying nor profound",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It belongs in that lesser rank of thrillers that whip up suspense by withholding vital information",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Laurie Metcalf's enjoyable portrayal of an inscrutable mountain woman, and a set by Scott Pask out of the Grimms' grimmest fairy tale",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic clearly places this in a 'lesser rank' of thrillers with fundamental structural problems, despite praising individual elements like Metcalf's performance and the set design. | GPT-4o-mini: The review highlights a lack of depth and suspense in the play, with only the performance of Laurie Metcalf receiving positive mention, leading to a clear negative recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:50.347Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (44 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

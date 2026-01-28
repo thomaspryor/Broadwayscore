@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "In a time when immigrants are being actively dehumanized throughout the United States, Real Women Have Curves provides a vital counterpoint—partly by depicting the dreams and fears of immigrant workers in specific terms, but mostly just by being lovable. This show is a bona fide crowd pleaser: a warm hug that pulls you into its generous bosom. With a little luck, it could turn out to be a sleeper hit. Go now and get ahead of the curve.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/real-women-have-curves/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show is a bona fide crowd pleaser: a warm hug that pulls you into its generous bosom",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Go now and get ahead of the curve",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "With a little luck, it could turn out to be a sleeper hit",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic gives an unqualified recommendation with strong positive language ('bona fide crowd pleaser', 'warm hug') and explicitly tells readers to 'Go now', indicating clear enthusiasm despite no star rating. | GPT-4o-mini: The review expresses strong enthusiasm and a clear recommendation to see the show, indicating it is a crowd-pleaser with a positive message.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:01.277Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 88,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

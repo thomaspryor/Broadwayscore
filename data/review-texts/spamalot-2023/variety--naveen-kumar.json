@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“The production’s overdesign is a symptom of the broader problem, which is a lack of ingenuity in favor of sheer excess. It is a paradox of throwing money onstage that it can easily come at the expense of creativity. There may be a way to reanimate ‘Spamalot,’ and for Monty Python’s random surrealism to infect a new generation and confront the current moment. But that grail is not to be found here.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 30,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 40
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production's overdesign is a symptom of the broader problem, which is a lack of ingenuity in favor of sheer excess",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It is a paradox of throwing money onstage that it can easily come at the expense of creativity",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "But that grail is not to be found here",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic systematically criticizes the production's excess over creativity and explicitly states the show fails to achieve its potential, concluding definitively that 'that grail is not to be found here.' | GPT-4o-mini: The review expresses strong criticism of the production's lack of creativity and excess, indicating a clear rejection of the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:16.164Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 25,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

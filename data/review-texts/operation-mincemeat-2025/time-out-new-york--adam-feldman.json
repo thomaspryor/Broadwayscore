@@ -11,8 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 73,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the performer who comes across best is the one who seems the least forced",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "rings truer in feeling than anything else in the show",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "provides the show's best mincing",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: While praising one performer and moment, the review implies the rest of the show feels forced and lacks authentic feeling, suggesting significant overall problems. | GPT-4o-mini: The review highlights strong performances, particularly one standout, but does not convey overall enthusiasm for the show itself, leading to a mixed-positive recommendation. | Note: Models differed by 20 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:14.956Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "scoreDelta": 20,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 20 points (Claude: 45, OpenAI: 65)"
+    ]
+  }
 }

@@ -11,8 +11,64 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 95,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "what deserves to be a Tony Award-winning turn",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "she is both consistently hilarious and vocally spectacular, stealing every spotlight",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "that would be worth all the Spam in the world",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Effusive praise with superlatives ('divine', 'Tony Award-winning', 'vocally spectacular') and strong endorsement that seeing the show would be 'worth it' for this performance alone indicates a rave recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for Leslie Rodriguez Kritzer's performance, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:44.358Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

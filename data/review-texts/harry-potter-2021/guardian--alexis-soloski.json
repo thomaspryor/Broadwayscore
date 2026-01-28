@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "suspense is the spell that keeps it whooshing along",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "fans of the source texts (who cheered and gasped their way through a recent, all-day performance",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Cynics not already ensorcelled will wonder if Harry Potter belongs on Broadway at all",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This incomplete review excerpt shows mixed sentiment - acknowledging the show works for fans but questioning whether it belongs on Broadway, with insufficient text to determine clear recommendation. | GPT-4o-mini: The review presents a mixed view, acknowledging the appeal for fans while also raising doubts about the show's fit for Broadway.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:28.877Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
