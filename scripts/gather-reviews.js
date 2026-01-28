@@ -35,6 +35,14 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const {
+  normalizeOutlet,
+  normalizeCritic,
+  generateReviewFilename,
+  generateReviewKey,
+  getOutletDisplayName,
+  mergeReviews,
+} = require('./lib/review-normalization');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -1077,6 +1085,7 @@ function archiveAggregatorPage(aggregator, showId, url, html) {
 
 /**
  * Create a review-text file
+ * Uses centralized normalization to prevent duplicate files with different naming
  */
 function createReviewFile(showId, reviewData) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
@@ -1084,24 +1093,41 @@ function createReviewFile(showId, reviewData) {
     fs.mkdirSync(showDir, { recursive: true });
   }
 
-  const criticSlug = slugify(reviewData.criticName || 'unknown');
-  const outletSlug = reviewData.outletId.toLowerCase();
-  const filename = `${outletSlug}--${criticSlug}.json`;
+  // Use centralized normalization for consistent file naming
+  const normalizedOutletId = normalizeOutlet(reviewData.outlet || reviewData.outletId);
+  const normalizedCriticName = normalizeCritic(reviewData.criticName);
+  const filename = generateReviewFilename(reviewData.outlet || reviewData.outletId, reviewData.criticName);
   const filepath = path.join(showDir, filename);
+  const reviewKey = generateReviewKey(reviewData.outlet || reviewData.outletId, reviewData.criticName);
 
-  // Don't overwrite existing files
-  if (fs.existsSync(filepath)) {
-    console.log(`    Skipping ${filename} (already exists)`);
-    return false;
-  }
-
-  // Check for existing review with same URL (prevents duplicates with different critic names)
-  if (reviewData.url && fs.existsSync(showDir)) {
-    const existingFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+  // Check for existing review with same normalized key
+  if (fs.existsSync(showDir)) {
+    const existingFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
     for (const existingFile of existingFiles) {
       try {
         const existingReview = JSON.parse(fs.readFileSync(path.join(showDir, existingFile), 'utf8'));
-        if (existingReview.url === reviewData.url) {
+        const existingKey = generateReviewKey(existingReview.outlet, existingReview.criticName);
+
+        // Check if same review (by key or URL)
+        if (existingKey === reviewKey) {
+          // Same outlet+critic - merge data instead of skipping
+          const merged = mergeReviews(existingReview, {
+            ...reviewData,
+            source: reviewData.source || 'gather-reviews',
+          });
+          fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
+
+          // Rename to canonical filename if different
+          if (existingFile !== filename) {
+            fs.renameSync(path.join(showDir, existingFile), filepath);
+          }
+
+          console.log(`    ⟳ Merged into ${filename}`);
+          return true;
+        }
+
+        // Check URL match
+        if (reviewData.url && existingReview.url === reviewData.url) {
           console.log(`    Skipping ${filename} (URL already exists in ${existingFile})`);
           return false;
         }
@@ -1111,10 +1137,11 @@ function createReviewFile(showId, reviewData) {
     }
   }
 
+  // Create new review file with normalized data
   const review = {
     showId,
-    outletId: reviewData.outletId,
-    outlet: reviewData.outlet,
+    outletId: normalizedOutletId,
+    outlet: getOutletDisplayName(normalizedOutletId),
     criticName: reviewData.criticName || 'Unknown',
     url: reviewData.url || null,
     publishDate: reviewData.publishDate || null,

@@ -18,6 +18,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const {
+  normalizeOutlet,
+  normalizeCritic,
+  generateReviewKey,
+  areCriticsSimilar,
+  areOutletsSame,
+  getOutletDisplayName,
+} = require('./lib/review-normalization');
 
 // Paths
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -340,28 +348,36 @@ function loadShowReviews(showId) {
 
 /**
  * Check if two reviews are likely the same
+ * Uses centralized normalization for consistent matching
  */
 function isSameReview(review1, review2) {
-  // Normalize outlet IDs for comparison (nyt, nytimes, new-york-times -> nytimes)
-  const outlet1 = normalizeOutletId(review1.outletId);
-  const outlet2 = normalizeOutletId(review2.outletId);
+  // Use centralized normalization for consistent outlet matching
+  const outlet1 = normalizeOutlet(review1.outlet || review1.outletId);
+  const outlet2 = normalizeOutlet(review2.outlet || review2.outletId);
 
   // 1. Same URL (exact match)
   if (review1.url && review2.url && review1.url === review2.url) {
     return true;
   }
 
-  // 2. Same outlet + same critic (using smart name matching)
+  // 2. Same normalized key (outlet + critic)
+  const key1 = generateReviewKey(review1.outlet || review1.outletId, review1.criticName);
+  const key2 = generateReviewKey(review2.outlet || review2.outletId, review2.criticName);
+  if (key1 === key2) {
+    return true;
+  }
+
+  // 3. Same outlet + similar critic (using centralized matching)
   if (outlet1 === outlet2) {
-    if (isSameCritic(review1.criticName, review2.criticName)) {
+    if (areCriticsSimilar(review1.criticName, review2.criticName)) {
       return true;
     }
 
     // If one has Unknown critic, check excerpt similarity
-    const name1 = normalizeCriticName(review1.criticName);
-    const name2 = normalizeCriticName(review2.criticName);
-    const hasUnknown1 = !name1 || name1 === 'unknown';
-    const hasUnknown2 = !name2 || name2 === 'unknown';
+    const critic1 = normalizeCritic(review1.criticName);
+    const critic2 = normalizeCritic(review2.criticName);
+    const hasUnknown1 = !critic1 || critic1 === 'unknown';
+    const hasUnknown2 = !critic2 || critic2 === 'unknown';
 
     if (hasUnknown1 || hasUnknown2) {
       const excerpt1 = normalizeExcerpt(review1.dtliExcerpt || review1.bwwExcerpt || review1.showScoreExcerpt || review1.fullText);
@@ -374,7 +390,7 @@ function isSameReview(review1, review2) {
     }
   }
 
-  // 3. Same outlet + similar excerpt (handles different critic name spellings)
+  // 4. Same outlet + similar excerpt (handles different critic name spellings)
   if (outlet1 === outlet2) {
     const excerpt1 = normalizeExcerpt(review1.dtliExcerpt || review1.bwwExcerpt || review1.showScoreExcerpt || review1.fullText);
     const excerpt2 = normalizeExcerpt(review2.dtliExcerpt || review2.bwwExcerpt || review2.showScoreExcerpt || review2.fullText);
@@ -386,7 +402,7 @@ function isSameReview(review1, review2) {
     }
   }
 
-  // 4. Same outlet + same fullText start (most reliable for identifying duplicates)
+  // 5. Same outlet + same fullText start (most reliable for identifying duplicates)
   if (outlet1 === outlet2 && review1.fullText && review2.fullText) {
     const ft1 = normalizeExcerpt(review1.fullText);
     const ft2 = normalizeExcerpt(review2.fullText);
