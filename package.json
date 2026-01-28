@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "npm run test:data && npm run test:e2e",
+    "test": "npm run test:data && npm run test:unit && npm run test:e2e",
     "test:data": "node scripts/validate-data.js",
+    "test:unit": "vitest run",
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "npx playwright test --ui",
     "agent:update": "npx ts-node --project scripts/tsconfig.json scripts/agent-update.ts",
@@ -35,6 +36,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
+    "@supabase/supabase-js": "^2.93.2",
     "@vercel/analytics": "^1.6.1",
     "@vercel/og": "^0.8.6",
     "next": "14.2.3",
@@ -43,6 +45,8 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.58.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^20.12.12",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
@@ -58,6 +62,7 @@
     "tailwindcss": "^3.4.3",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^4.0.18"
   }
 }

@@ -3,6 +3,8 @@ import './globals.css';
 import Link from 'next/link';
 import ScrollToTop from '@/components/ScrollToTop';
 import HeaderSearch from '@/components/HeaderSearch';
+import ClientProviders from '@/components/ClientProviders';
+import UserMenu from '@/components/UserMenu';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
 import { getAllShows } from '@/lib/data';
 import { Analytics } from '@vercel/analytics/react';
@@ -114,6 +116,7 @@ export default function RootLayout({
             generateWebSiteSchema(),
           ]) }}
         />
+        <ClientProviders>
         {/* Skip Link for keyboard navigation */}
         <a
           href="#main-content"
@@ -147,6 +150,7 @@ export default function RootLayout({
                   </Link>
                 </div>
                 <HeaderSearch shows={searchShows} />
+                <UserMenu />
               </div>
             </div>
           </nav>
@@ -217,6 +221,7 @@ export default function RootLayout({
         </footer>
         <ScrollToTop />
         <Analytics />
+        </ClientProviders>
       </body>
     </html>
   );
