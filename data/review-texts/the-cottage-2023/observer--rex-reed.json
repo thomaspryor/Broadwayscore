@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“The best thing about ‘The Cottage’ is the cottage, designed by someone with the name Paul Tate dePoo III. Everything else is more like the outhouse. Even as a lark, it’s beneath the standards of Broadway.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 23
+    },
+    "keyPhrases": [
+      {
+        "quote": "Everything else is more like the outhouse",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "it's beneath the standards of Broadway",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The best thing about 'The Cottage' is the cottage, designed by someone with the name Paul Tate dePoo III",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the show is 'beneath Broadway standards' and uses harsh imagery ('outhouse') to dismiss nearly everything except the set design. | GPT-4o-mini: The review is overwhelmingly negative, indicating a clear rejection of the production with only a slight positive note about the set design.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:43.184Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

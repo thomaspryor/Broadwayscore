@@ -11,10 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "“ ‘The Cottage’ is about Sylvia opening her eyes to her relationships with men. But the moment that sticks out is the hilarious sight of Sylvia plugging her nose with an old-timey phone receiver. Moments like that make ‘The Cottage’ a Broadway funhouse.”",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 83,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Best of the bunch is Bundy, who makes every comedic line and pose gleefully giggle-inducing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Moments like that make 'The Cottage' a Broadway funhouse",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "hams it up expertly",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for individual performances and comedic moments suggests a fun, well-acted production worth seeing despite no explicit overall recommendation. | GPT-4o-mini: The review highlights strong performances and memorable comedic moments, indicating a clear recommendation despite some lack of detail on the overall production quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:36.689Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“There’s a fizz that bubbles up near the end of a door-slamming farce when the characters, one by one, have to explain to one another what’s actually going on...’The Cottage' tries to emphasize the fizz, but nobody remembered to shake the soda can beforehand. It’s full of explanations, light on mess.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 41,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "tries to emphasize the fizz, but nobody remembered to shake the soda can beforehand",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's full of explanations, light on mess",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "There's a fizz that bubbles up near the end of a door-slamming farce",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic uses vivid metaphors to describe a production that fails to deliver the energy and chaos expected from farce, emphasizing structural problems over any redeeming qualities. | GPT-4o-mini: The review expresses significant disappointment in the execution of the farce, indicating a lack of engagement and enjoyment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:01.070Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
