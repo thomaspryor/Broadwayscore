@@ -33,6 +33,7 @@ try {
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
 const GROSSES_FILE = path.join(DATA_DIR, 'grosses.json');
+const COMMERCIAL_FILE = path.join(DATA_DIR, 'commercial.json');
 
 const strictMode = process.argv.includes('--strict');
 
@@ -346,6 +347,125 @@ function validateReviewData(shows) {
 }
 
 // ===========================================
+// COMMERCIAL DATA VALIDATION
+// ===========================================
+
+function validateCommercialJson() {
+  info('Checking commercial.json...');
+
+  if (!fs.existsSync(COMMERCIAL_FILE)) {
+    warn('commercial.json does not exist (optional)');
+    return;
+  }
+
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(COMMERCIAL_FILE, 'utf8'));
+    ok('commercial.json is valid JSON');
+  } catch (e) {
+    error(`commercial.json parse error: ${e.message}`);
+    return;
+  }
+
+  // Validate _meta.designations exists
+  if (!data._meta || !data._meta.designations || typeof data._meta.designations !== 'object') {
+    error('commercial.json missing _meta.designations object');
+  } else {
+    ok('commercial.json has _meta.designations');
+  }
+
+  if (!data.shows || typeof data.shows !== 'object') {
+    warn('commercial.json missing "shows" object');
+    return;
+  }
+
+  const validProductionTypes = ['original', 'tour-stop', 'return-engagement'];
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  const showKeys = Object.keys(data.shows);
+  let issues = 0;
+
+  for (const showId of showKeys) {
+    const show = data.shows[showId];
+
+    // Validate productionType
+    if (show.productionType !== undefined) {
+      if (!validProductionTypes.includes(show.productionType)) {
+        error(`commercial.json: "${showId}" has invalid productionType: "${show.productionType}" (must be one of: ${validProductionTypes.join(', ')})`);
+        issues++;
+      }
+    }
+
+    // Validate estimatedRecoupmentPct
+    if (show.estimatedRecoupmentPct !== undefined) {
+      if (!Array.isArray(show.estimatedRecoupmentPct) || show.estimatedRecoupmentPct.length !== 2) {
+        error(`commercial.json: "${showId}" estimatedRecoupmentPct must be a 2-element array [low, high]`);
+        issues++;
+      } else {
+        const [low, high] = show.estimatedRecoupmentPct;
+        if (typeof low !== 'number' || typeof high !== 'number') {
+          error(`commercial.json: "${showId}" estimatedRecoupmentPct values must be numbers`);
+          issues++;
+        } else if (low < 0 || high > 100 || low > high) {
+          error(`commercial.json: "${showId}" estimatedRecoupmentPct must satisfy 0 <= low <= high <= 100, got [${low}, ${high}]`);
+          issues++;
+        }
+      }
+    }
+
+    // Validate originalProductionId references an existing show
+    if (show.originalProductionId !== undefined) {
+      if (!data.shows[show.originalProductionId]) {
+        error(`commercial.json: "${showId}" originalProductionId "${show.originalProductionId}" does not reference an existing show in commercial.json`);
+        issues++;
+      }
+    }
+
+    // Validate isEstimate is an object with boolean values
+    if (show.isEstimate !== undefined) {
+      if (typeof show.isEstimate !== 'object' || Array.isArray(show.isEstimate) || show.isEstimate === null) {
+        error(`commercial.json: "${showId}" isEstimate must be an object`);
+        issues++;
+      } else {
+        for (const [key, val] of Object.entries(show.isEstimate)) {
+          if (typeof val !== 'boolean') {
+            error(`commercial.json: "${showId}" isEstimate.${key} must be a boolean, got ${typeof val}`);
+            issues++;
+          }
+        }
+      }
+    }
+
+    // Validate estimatedRecoupmentDate format
+    if (show.estimatedRecoupmentDate !== undefined) {
+      if (!dateRegex.test(show.estimatedRecoupmentDate)) {
+        error(`commercial.json: "${showId}" estimatedRecoupmentDate must be YYYY-MM-DD format, got "${show.estimatedRecoupmentDate}"`);
+        issues++;
+      }
+    }
+
+    // Cross-validation: Tour Stop designation must have tour-stop or return-engagement productionType
+    if (show.designation === 'Tour Stop') {
+      if (show.productionType !== 'tour-stop' && show.productionType !== 'return-engagement') {
+        error(`commercial.json: "${showId}" has designation "Tour Stop" but productionType is "${show.productionType || 'missing'}" (must be "tour-stop" or "return-engagement")`);
+        issues++;
+      }
+    }
+
+    // Cross-validation: tour-stop productionType must have Tour Stop designation
+    if (show.productionType === 'tour-stop') {
+      if (show.designation !== 'Tour Stop') {
+        error(`commercial.json: "${showId}" has productionType "tour-stop" but designation is "${show.designation || 'missing'}" (must be "Tour Stop")`);
+        issues++;
+      }
+    }
+  }
+
+  if (issues === 0) {
+    ok(`Commercial data valid for ${showKeys.length} shows`);
+  }
+}
+
+// ===========================================
 // MAIN
 // ===========================================
 
@@ -389,6 +509,8 @@ function runValidation() {
   checkForCatastrophicChanges();
   console.log('');
   validateGrossesJson();
+  console.log('');
+  validateCommercialJson();
   console.log('');
   validateReviewData(shows);
 
