@@ -9,9 +9,65 @@
   "isFullReview": false,
   "dtliExcerpt": "Amid all the celebrity hype on Broadway this season, Real Women Have Curves arrives with an outstanding cast of mostly unknowns, as incomparable as they are unlikely to star in a major Broadway musical. They are performing their hearts out in a production that is all heart. It is also funny, touching, tuneful and refreshingly original packed with a timely message. Put it all together and you have one spicy Mexican feast of a show – as savory as a hot tamale, smooth as flan and irresistibly tasty as a deep-fried churro.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/real-women-have-curves/",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 94,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "outstanding cast of mostly unknowns, as incomparable as they are unlikely to star in a major Broadway musical",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "all heart. It is also funny, touching, tuneful and refreshingly original packed with a timely message",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "one spicy Mexican feast of a show – as savory as a hot tamale, smooth as flan and irresistibly tasty as a deep-fried churro",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified enthusiasm with superlatives throughout ('outstanding', 'incomparable', 'refreshingly original') and vivid positive metaphors comparing the show to delicious food, indicating strong recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and overall production, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:45.192Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

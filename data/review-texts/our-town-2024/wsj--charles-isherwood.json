@@ -10,11 +10,67 @@
   "bwwExcerpt": "Mr. Leon’s “Our Town” is polished and marked by moments of humor and melancholy, but they do not cohere into a powerfully affecting production. For theatergoers who saw the director David Cromer’s hyper-intimate 2009 off-Broadway production—which ran for almost 650 performances, the longest run in the play’s history—its indelible impact (it ranks as one of the best theatrical productions I have seen) will inevitably lead to disappointing comparisons, unfairly or not.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "bwwThumb": "Meh",
   "showScoreExcerpt": "\"Mr. Leon’s 'Our Town' is polished and marked by moments of humor and melancholy\"",
-  "showScoreUrl": "https://www.show-score.com/broadway-shows/our-town-broadway"
+  "showScoreUrl": "https://www.show-score.com/broadway-shows/our-town-broadway",
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 57
+    },
+    "keyPhrases": [
+      {
+        "quote": "polished and marked by moments of humor and melancholy, but they do not cohere into a powerfully affecting production",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "will inevitably lead to disappointing comparisons",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "polished and marked by moments of humor and melancholy",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges polish and moments of quality but explicitly states the production lacks cohesion and power, with disappointing comparisons to a superior previous production being inevitable. | GPT-4o-mini: The review acknowledges some positive aspects but ultimately highlights a lack of cohesion and impact compared to a previous production, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:16:33.629Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 58,
+    "scoreDelta": 6,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

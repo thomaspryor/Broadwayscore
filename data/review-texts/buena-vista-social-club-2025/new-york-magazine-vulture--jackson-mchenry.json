@@ -10,8 +10,59 @@
   "showScoreExcerpt": "\"All that adds up to a rousing evening at the theater, if also something less than a great musical.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/buena-vista-social-club",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "rousing evening at the theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "something less than a great musical",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic recommends the show as 'rousing' entertainment but explicitly tempers expectations by noting it's not 'great', indicating qualified positive recommendation. | GPT-4o-mini: The review indicates a generally enjoyable experience but acknowledges significant shortcomings, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:18.850Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

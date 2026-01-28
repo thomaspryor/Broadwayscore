@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“What makes ’Back to the Future’ so confusing, aside from the general ineptness, is how little it seems to understand its own relationship to the material it is trying to exploit...A similar fate befalls too many shows that try to cash in on cinematic IP, and the Broadway musical, as an art form, can’t keep getting lost on these roads. If this is the future, please send it back.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/back-to-the-future-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "general ineptness",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "If this is the future, please send it back",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "try to cash in on cinematic IP",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers an unqualified rejection with harsh language like 'general ineptness' and a clever dismissive closing that warns against seeing the show. | GPT-4o-mini: The review expresses strong disapproval of the show's execution and concept, indicating a clear rejection of the production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:12.576Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

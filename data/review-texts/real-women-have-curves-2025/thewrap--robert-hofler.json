@@ -7,7 +7,63 @@
   "publishDate": "April 27, 2025",
   "fullText": "In scene after scene, Lisa Loomer and Nell Benjamin’s book for the new musical “Real Women Have Curves” is a vast improvement on George LaVoo and Josefina Lopez’s screenplay, which is based on Lopez’s play. Where the 2002 film dawdles, the musical defines and drives with great narrative precision its timely tale of Latina immigrants who make dresses in a Los Angeles shop.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "dtliThumb": "Up",
-  "source": "dtli"
+  "source": "dtli",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "vast improvement on George LaVoo and Josefina Lopez's screenplay",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "defines and drives with great narrative precision",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "timely tale",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the book's improvement over source material and narrative precision suggests positive recommendation, but excerpt is too brief to assess overall show quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:46.147Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
