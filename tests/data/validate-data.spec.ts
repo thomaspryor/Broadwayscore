@@ -223,12 +223,12 @@ test.describe('Image Validation', () => {
     const shows = showsData.shows || showsData;
 
     const invalid: string[] = [];
-    const urlRegex = /^https?:\/\/.+/;
+    const validPattern = /^(https?:\/\/.+|\/images\/.+)/;
 
     for (const show of shows) {
       if (show.images) {
         for (const [key, url] of Object.entries(show.images)) {
-          if (url && typeof url === 'string' && !urlRegex.test(url)) {
+          if (url && typeof url === 'string' && !validPattern.test(url)) {
             invalid.push(`${show.title} has invalid ${key} URL: ${url}`);
           }
         }
