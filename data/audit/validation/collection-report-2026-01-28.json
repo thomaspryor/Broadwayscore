@@ -1,104 +1,89 @@
 {
-  "runDate": "2026-01-28T23:46:53.990Z",
+  "runDate": "2026-01-28T23:48:06.027Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 40,
+    "maxReviews": 30,
     "priority": "all",
-    "showFilter": "harry-potter-2021",
+    "showFilter": "suffs-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 16,
-    "failed": 21,
+    "processed": 13,
+    "failed": 12,
     "skipped": 0,
-    "successRate": "43.2%"
+    "successRate": "52.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
-    "scrapingbee": 1,
+    "scrapingbee": 3,
     "brightdata": 1,
-    "archive": 13
+    "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 24,
+    "tier1Attempts": 19,
     "tier1Success": 1,
-    "tier2Attempts": 23,
-    "tier2Success": 1,
-    "tier3Attempts": 22,
+    "tier2Attempts": 18,
+    "tier2Success": 3,
+    "tier3Attempts": 15,
     "tier3Success": 1,
-    "tier4Attempts": 63,
-    "tier4Success": 13,
-    "totalFailed": 21,
-    "scrapingBeeCreditsUsed": 110
+    "tier4Attempts": 38,
+    "tier4Success": 8,
+    "totalFailed": 12,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
-    "harry-potter-2021/hollywood-reporter--david-rooney.json",
-    "harry-potter-2021/variety--marilyn-stasio.json",
-    "harry-potter-2021/ew--marc-snetiker.json",
-    "harry-potter-2021/newsday--barbara-schuler.json",
-    "harry-potter-2021/nydailynews--joe-dziemianowicz.json",
-    "harry-potter-2021/thewrap--robert-hofler.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/chicagotribune--chris-jones.json",
-    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "harry-potter-2021/mashable--erin-strecker.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/njcom--christopher-kelly.json",
-    "harry-potter-2021/nysr--steven-suskin.json",
-    "harry-potter-2021/the-times--ann-treneman.json",
-    "harry-potter-2021/vanityfair--richard-lawson.json"
+    "suffs-2024/nytg--amelia-merrill.json",
+    "suffs-2024/variety--frank-rizzo.json",
+    "suffs-2024/vulture--sara-holdren.json",
+    "suffs-2024/chelsea-community-news--michael-musto.json",
+    "suffs-2024/nydailynews--chris-jones.json",
+    "suffs-2024/nypost--johnny-oleksinski.json",
+    "suffs-2024/observer--rex-reed.json",
+    "suffs-2024/timeout--regina-robbins.json",
+    "suffs-2024/cititour--brian-scott-lipton.json",
+    "suffs-2024/theatrely--joey-sims.json",
+    "suffs-2024/nysr--roma-torre.json",
+    "suffs-2024/nysr--steven-suskin.json",
+    "suffs-2024/the-times--nancy-durrant.json"
   ],
   "failed": [
-    "harry-potter-2021/variety--peter-marks.json",
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-    "harry-potter-2021/deadline--greg-evans.json",
-    "harry-potter-2021/guardian--alexis-soloski.json",
-    "harry-potter-2021/nypost--johnny-oleksinski.json",
-    "harry-potter-2021/broadway-blog--matthew-wexler.json",
-    "harry-potter-2021/broadwayworld--michael-dale.json",
-    "harry-potter-2021/curtainup--elyse-sommer.json",
-    "harry-potter-2021/dailybeast--tim-teeman.json",
-    "harry-potter-2021/exeunt-magazine--kev-berry.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
-    "harry-potter-2021/medium--christian-lewis.json",
-    "harry-potter-2021/ny1--roma-torre.json",
-    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
-    "harry-potter-2021/troy-record--bob-goepfert.json",
-    "harry-potter-2021/washpost--peter-marks.json",
-    "harry-potter-2021/wnyc--jennifer-vanasco.json",
-    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
-    "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "suffs-2024/hollywood-reporter--angie-han.json",
+    "suffs-2024/nytimes--jesse-green.json",
+    "suffs-2024/variety--aramide-tinubu.json",
+    "suffs-2024/variety--peter-marks.json",
+    "suffs-2024/ew--kristen-baldwin.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/guardian--jesse-green.json",
+    "suffs-2024/theatermania--jesse-green.json",
+    "suffs-2024/wsj--charles-isherwood.json",
+    "suffs-2024/talkinbroadway--matthew-murray.json",
+    "suffs-2024/washpost--elisabeth-vincentelli.json",
+    "suffs-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+      "suffs-2024/nysr--steven-suskin.json"
     ],
     "scrapingbee": [
-      "harry-potter-2021/financial-times-uk--charles-isherwood.json"
+      "suffs-2024/chelsea-community-news--michael-musto.json",
+      "suffs-2024/timeout--regina-robbins.json",
+      "suffs-2024/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [
-      "harry-potter-2021/cititour--brian-scott-lipton.json"
+      "suffs-2024/observer--rex-reed.json"
     ],
     "archive": [
-      "harry-potter-2021/hollywood-reporter--david-rooney.json",
-      "harry-potter-2021/variety--marilyn-stasio.json",
-      "harry-potter-2021/ew--marc-snetiker.json",
-      "harry-potter-2021/newsday--barbara-schuler.json",
-      "harry-potter-2021/nydailynews--joe-dziemianowicz.json",
-      "harry-potter-2021/thewrap--robert-hofler.json",
-      "harry-potter-2021/wsj--terry-teachout.json",
-      "harry-potter-2021/chicagotribune--chris-jones.json",
-      "harry-potter-2021/mashable--erin-strecker.json",
-      "harry-potter-2021/njcom--christopher-kelly.json",
-      "harry-potter-2021/nysr--steven-suskin.json",
-      "harry-potter-2021/the-times--ann-treneman.json",
-      "harry-potter-2021/vanityfair--richard-lawson.json"
+      "suffs-2024/nytg--amelia-merrill.json",
+      "suffs-2024/variety--frank-rizzo.json",
+      "suffs-2024/vulture--sara-holdren.json",
+      "suffs-2024/nydailynews--chris-jones.json",
+      "suffs-2024/nypost--johnny-oleksinski.json",
+      "suffs-2024/theatrely--joey-sims.json",
+      "suffs-2024/nysr--roma-torre.json",
+      "suffs-2024/the-times--nancy-durrant.json"
     ]
   }
 }
