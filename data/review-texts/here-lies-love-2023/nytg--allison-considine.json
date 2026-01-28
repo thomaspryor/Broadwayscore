@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“Audience members whose knowledge of Imelda Marcos is limited to the fact that she owned 3,000 pairs of shoes will only leave with a partial understanding of this violent period. The musical has no book, and the punchy songs paint broad strokes of the 60-year history... Still, this rollicking, form-breaking musical party is well worth an RSVP.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/here-lies-love-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 38,
+      "music": 75,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this rollicking, form-breaking musical party is well worth an RSVP",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The musical has no book, and the punchy songs paint broad strokes",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Audience members...will only leave with a partial understanding",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticisms of the book and historical depth, the critic explicitly recommends the show as 'well worth an RSVP' and praises it as a 'rollicking, form-breaking musical party.' | GPT-4o-mini: The review highlights the enjoyable aspects of the musical while acknowledging significant shortcomings in the script, leading to a positive but cautious recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:38.509Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

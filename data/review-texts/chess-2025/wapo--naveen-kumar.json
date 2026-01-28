@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"If the result is an unwieldy but rousing hot mess with outsize ambitions, maybe now we know how its chess prodigies feel.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chess-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 66,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "unwieldy but rousing hot mess",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "outsize ambitions",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "maybe now we know how its chess prodigies feel",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant flaws ('unwieldy', 'hot mess') but frames them as part of something energetic ('rousing') and ambitious, suggesting a qualified positive recommendation despite the chaos. | GPT-4o-mini: The review indicates a mix of admiration for ambition but acknowledges significant flaws, leading to a conditional recommendation. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:17:17.839Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 60,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

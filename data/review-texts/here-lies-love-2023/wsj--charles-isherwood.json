@@ -10,8 +10,64 @@
   "showScoreExcerpt": "“What may be most remarkable about ‘Here Lies Love’ is how deftly it pivots from the celebratory and even sentimental presentation of Imelda’s rise to the inevitably condemnatory”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/here-lies-love-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "What may be most remarkable about 'Here Lies Love' is how deftly it pivots",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "celebratory and even sentimental presentation",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "inevitably condemnatory",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This incomplete excerpt praises the show's structural deftness in handling tonal shifts but provides insufficient context to determine overall recommendation strength. | GPT-4o-mini: The review highlights a notable strength in the show's ability to shift tone, indicating a positive recommendation despite not providing extensive praise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:20:11.524Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 75,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is less a probing biographical musical than a glitzy concert experience, one that prioritizes Jackson's artistic genius over the troubling aspects of his life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is less a probing biographical musical than a glitzy concert experience, one that prioritizes Jackson's artistic genius over the troubling aspects of his life.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "prioritizes Jackson's artistic genius",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "less a probing biographical musical than a glitzy concert experience",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "prioritizes Jackson's artistic genius over the troubling aspects of his life",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review presents a neutral assessment that acknowledges the show's focus on Jackson's artistry while noting it avoids deeper biographical exploration, suggesting a competent but not exceptional production. | GPT-4o-mini: The review indicates a lack of depth in the storytelling, suggesting a mixed recommendation without strong enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:15:51.822Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 55,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

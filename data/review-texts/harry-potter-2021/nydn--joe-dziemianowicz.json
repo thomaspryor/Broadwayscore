@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": 86
+    },
+    "keyPhrases": [
+      {
+        "quote": "What's so wondrous is how low-tech stagecraft brings such high-definition delight",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Music by Imogen Heap and movement by Steven Hoggett create their own pinch-me moments",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "mobile staircases whirl as if in a living Escher print",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistent praise for technical elements with enthusiastic language like 'wondrous' and 'pinch-me moments' indicates strong positive recommendation despite being a partial excerpt. | GPT-4o-mini: The review highlights the impressive stagecraft and music, indicating a strong recommendation despite not mentioning the script or performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:19:34.054Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

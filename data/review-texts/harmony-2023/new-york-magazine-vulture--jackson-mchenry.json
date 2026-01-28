@@ -10,8 +10,66 @@
   "showScoreExcerpt": "“Lines in ‘Harmony’ about the recurrence of hate against Jews and state oppression in general, fashioned as generalities, are suddenly much more charged. The show — basically a fable — doesn’t meet the moment as much as the moment crashes over it.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/harmony-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 49,
+    "confidence": "low",
+    "range": {
+      "low": 35,
+      "high": 63
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lines in 'Harmony' about the recurrence of hate against Jews and state oppression in general, fashioned as generalities, are suddenly much more charged",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "The show — basically a fable — doesn't meet the moment as much as the moment crashes over it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the moment crashes over it",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This brief excerpt suggests the show has gained unintended relevance but fails to rise to the occasion, indicating mixed sentiment with a slight negative lean. | GPT-4o-mini: The review expresses significant disappointment in how the show addresses its themes, indicating a clear negative sentiment. | Note: Models differed by 18 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:18:50.347Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 18 points (Claude: 58, OpenAI: 40)"
+    ]
+  }
 }
